@@ -1,0 +1,145 @@
+:root {
+  --workspace-gap:13px;
+  --workspace-pad:18px;
+}
+
+html[data-workspace="semantic"] .main { padding:var(--workspace-pad); background:#f0f3f6; }
+html[data-workspace="semantic"] .page { width:min(1540px,100%); }
+html[data-workspace="semantic"] .page-header { margin-bottom:13px; }
+html[data-workspace="semantic"] .page-header h1 { font-size:23px; }
+html[data-workspace="semantic"] .workspace-grid {
+  grid-template-columns:minmax(520px,1fr) 324px;
+  grid-template-areas:"canvas side";
+  gap:13px;
+}
+html[data-workspace="semantic"] .semantic-canvas,
+html[data-workspace="semantic"] .analysis-center,
+html[data-workspace="semantic"] .query-main { grid-area:canvas; }
+html[data-workspace="semantic"] .semantic-side,
+html[data-workspace="semantic"] .evidence-rail,
+html[data-workspace="semantic"] .analysis-rail { grid-area:side; }
+html[data-workspace="semantic"] .semantic-side,
+html[data-workspace="semantic"] .evidence-rail,
+html[data-workspace="semantic"] .analysis-rail {
+  position:sticky;
+  top:0;
+  max-height:calc(100vh - 90px);
+  overflow:auto;
+  scrollbar-width:thin;
+}
+
+html[data-workspace="semantic"] .context-ribbon { margin-bottom:13px; background:#fbfcfe; }
+html[data-workspace="semantic"] .semantic-canvas { min-height:600px; background:#f7f9fc; }
+html[data-workspace="semantic"] .semantic-path {
+  min-height:190px;
+  padding:28px 18px 18px;
+  align-items:center;
+  border-color:#d2dbe6;
+  background:#fff;
+}
+html[data-workspace="semantic"] .semantic-node { width:188px; min-height:118px; padding:12px; }
+html[data-workspace="semantic"] .semantic-node .node-type { margin-bottom:4px; }
+html[data-workspace="semantic"] .semantic-node strong { font-size:13px; }
+html[data-workspace="semantic"] .semantic-edge { width:38px; min-width:38px; }
+html[data-workspace="semantic"] .semantic-side > .semantic-path {
+  min-height:0;
+  padding:14px;
+  flex-direction:column;
+  align-items:stretch;
+  overflow:visible;
+}
+html[data-workspace="semantic"] .semantic-side > .semantic-path .semantic-node {
+  width:100%;
+  min-height:92px;
+}
+html[data-workspace="semantic"] .semantic-side > .semantic-path .semantic-edge {
+  width:100%;
+  min-width:0;
+  min-height:30px;
+  padding-left:18px;
+  justify-items:start;
+}
+html[data-workspace="semantic"] .semantic-side > .semantic-path .semantic-edge::before {
+  width:1px;
+  height:100%;
+  position:absolute;
+  left:20px;
+}
+html[data-workspace="semantic"] .semantic-side > .semantic-path .semantic-edge > span {
+  padding-left:12px;
+  position:relative;
+  z-index:1;
+  background:#fff;
+}
+html[data-workspace="semantic"] .resource-detail { padding:14px; }
+html[data-workspace="semantic"] .resource-list > button,
+html[data-workspace="semantic"] .resource-list > article { min-height:60px; padding:8px 9px; }
+html[data-workspace="semantic"] .resource-list > button.selected { border-color:#bfd0e6; }
+html[data-workspace="semantic"] .owner-note { margin-top:10px; }
+
+html[data-workspace="semantic"] .ask-hero { padding:18px; box-shadow:none; }
+html[data-workspace="semantic"] .ask-heading { margin-bottom:13px; }
+html[data-workspace="semantic"] .composer textarea { min-height:80px; }
+html[data-workspace="semantic"] .agent-match-card { margin-bottom:11px; }
+html[data-workspace="semantic"] .recommendation-panel { margin-top:13px; box-shadow:none; }
+html[data-workspace="semantic"] .recommendation-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+html[data-workspace="semantic"] .question-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+html[data-workspace="semantic"] .question-card { min-height:104px; }
+
+html[data-workspace="semantic"] .run-surface { gap:13px; }
+html[data-workspace="semantic"] .question-echo { border-left:3px solid var(--blue); }
+html[data-workspace="semantic"] .answer-card { box-shadow:none; }
+html[data-workspace="semantic"] .answer-head { min-height:64px; }
+html[data-workspace="semantic"] .trust-strip { background:#f6f8fb; }
+html[data-workspace="semantic"] .result-stage { min-height:385px; }
+html[data-workspace="semantic"] .chart-stage { min-height:355px; }
+html[data-workspace="semantic"] .ui-mini-chart { height:355px; min-height:355px!important; }
+html[data-workspace="semantic"] .answer-summary { max-width:880px; line-height:1.82; }
+html[data-workspace="semantic"] .answer-proof { border-left:3px solid var(--blue); }
+html[data-workspace="semantic"] .evidence-list article.focused { box-shadow:inset 3px 0 var(--blue); }
+html[data-workspace="semantic"] .plan-list li { grid-template-columns:26px minmax(0,1fr) auto; min-height:42px; background:#fff; }
+html[data-workspace="semantic"] .scope-summary,
+html[data-workspace="semantic"] .context-summary { background:#fff; }
+
+html[data-workspace="semantic"] .resource-grid { grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
+html[data-workspace="semantic"] .resource-card { border-top:3px solid #7895bb; }
+html[data-workspace="semantic"] .resource-card:nth-child(3n+2) { border-top-color:#4b8375; }
+html[data-workspace="semantic"] .resource-card:nth-child(3n) { border-top-color:#a56a2b; }
+html[data-workspace="semantic"] .view-collection.cards { grid-template-columns:repeat(3,minmax(0,1fr)); }
+html[data-workspace="semantic"] .history-detail { grid-template-columns:minmax(280px,.65fr) minmax(0,1.35fr); }
+html[data-workspace="semantic"] .config-grid { grid-template-columns:minmax(0,1fr) minmax(380px,.78fr); }
+
+@media (max-width:1400px) {
+  html[data-workspace="semantic"] .main { padding:15px; }
+  html[data-workspace="semantic"] .workspace-grid { grid-template-columns:minmax(440px,1fr) 292px; }
+  html[data-workspace="semantic"] .semantic-node { width:170px; }
+  html[data-workspace="semantic"] .resource-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+
+@media (max-width:1120px) {
+  html[data-workspace="semantic"] .workspace-grid { grid-template-columns:1fr; grid-template-areas:"canvas" "side"; }
+  html[data-workspace="semantic"] .semantic-side,
+  html[data-workspace="semantic"] .evidence-rail,
+  html[data-workspace="semantic"] .analysis-rail { position:static; max-height:none; overflow:visible; }
+  html[data-workspace="semantic"] .semantic-canvas { min-height:0; }
+  html[data-workspace="semantic"] .history-detail { grid-template-columns:1fr; }
+}
+
+@media (max-width:960px) {
+  html[data-workspace="semantic"] .question-grid,
+  html[data-workspace="semantic"] .resource-grid,
+  html[data-workspace="semantic"] .view-collection.cards { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+
+@media (max-width:700px) {
+  html[data-workspace="semantic"] .main { padding:11px; }
+  html[data-workspace="semantic"] .semantic-path { min-height:160px; padding:18px 10px 12px; }
+  html[data-workspace="semantic"] .semantic-node { width:152px; min-height:104px; padding:9px; }
+  html[data-workspace="semantic"] .recommendation-grid,
+  html[data-workspace="semantic"] .question-grid,
+  html[data-workspace="semantic"] .resource-grid,
+  html[data-workspace="semantic"] .view-collection.cards { grid-template-columns:1fr; }
+  html[data-workspace="semantic"] .result-stage { padding:13px; }
+  html[data-workspace="semantic"] .ui-mini-chart { height:328px; min-height:328px!important; }
+  html[data-workspace="semantic"] .semantic-side { width:100%; }
+}
