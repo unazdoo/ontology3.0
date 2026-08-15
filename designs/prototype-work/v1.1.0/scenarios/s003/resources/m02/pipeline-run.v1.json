@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "ofw.s003.m02.pipeline-run.v1",
+  "pipelineRunId": "S003-M02-PIPELINE-RUN-20260815-001",
+  "pipelineId": "S003-M02-PIPELINE-001",
+  "status": "succeeded",
+  "startedAt": "2026-08-15T13:04:23.000Z",
+  "completedAt": "2026-08-15T13:04:23.000Z",
+  "owner": "M02 数据工程",
+  "inputSourceId": "S003-M02-SOURCE-XLSX-20251231",
+  "inputHumanSnapshotId": "S003-T053-INPUT-20251231-v1",
+  "outputDataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+  "qualityResultId": "S003-M02-QUALITY-20251231-v1",
+  "operations": [
+    "读取两个逻辑成员",
+    "绑定稳定测试夹具 enterpriseId",
+    "附加评估时点/币种/金额单位",
+    "标准化因子三态",
+    "执行数据质量检查"
+  ],
+  "forbiddenOperationsConfirmedAbsent": [
+    "风险评分",
+    "因子系数计算",
+    "评分权重",
+    "风险阈值",
+    "风险分档",
+    "Action Type 命中"
+  ]
+}
