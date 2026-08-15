@@ -30,7 +30,8 @@
       properties: [
         ["PROP-FINANCING-ENTITY-UNIT-CODE", "单位编码", "文本", "单位编码", "身份"],
         ["PROP-FINANCING-ENTITY-UNIT-NAME", "单位名称", "文本", "单位名称", "标题"],
-        ["PROP-FINANCING-ENTITY-SECTOR", "所属板块", "文本", "产业板块", "普通属性"]
+        ["PROP-FINANCING-ENTITY-SECTOR", "所属板块", "文本", "产业板块", "普通属性"],
+        ["PROP-FINANCING-ENTITY-OWNER-ID", "负责人标识", "文本", "负责人标识", "普通属性"]
       ]
     },
     {
@@ -38,18 +39,15 @@
       definition: "具有独立借据身份、余额、利率、期限、币种和金融机构的融资事实。", count: 5218,
       properties: [
         ["PROP-FINANCING-DETAIL-LOAN-ID", "借据编号", "文本", "借据编号", "身份"],
-        ["PROP-FINANCING-DETAIL-DOMESTIC-OVERSEAS", "境内外", "枚举", "境内外", "普通属性"],
-        ["PROP-FINANCING-DETAIL-DRAWDOWN-DATE", "提款日", "日期", "提款日期", "普通属性"],
-        ["PROP-FINANCING-DETAIL-MATURITY-DATE", "到期日", "日期", "提款到期日期", "普通属性"],
+        ["PROP-FINANCING-DETAIL-ENTITY-CODE", "单位编码", "文本", "单位编码", "普通属性"],
+        ["PROP-FINANCING-DETAIL-INSTITUTION-CODE", "机构编码", "文本", "机构编码", "普通属性"],
         ["PROP-FINANCING-DETAIL-CURRENCY", "币种", "文本", "借据币种", "普通属性"],
-        ["PROP-FINANCING-DETAIL-FX-RATE", "汇率", "数值", "提款折算人民币汇率", "普通属性"],
-        ["PROP-FINANCING-DETAIL-ORIGINAL-BALANCE", "原币余额", "数值", "借据余额（原币）", "普通属性"],
         ["PROP-FINANCING-DETAIL-CNY-BALANCE", "折合人民币余额", "数值", "借据余额（折合人民币）", "普通属性"],
         ["PROP-FINANCING-DETAIL-INTEREST-RATE", "当前利率", "数值", "当前利率", "普通属性"],
         ["PROP-FINANCING-DETAIL-RATE-TYPE", "利率形式", "枚举", "利率形式", "普通属性"],
-        ["PROP-FINANCING-DETAIL-FINANCING-TYPE", "融资类型", "枚举", "融资类型", "普通属性"],
         ["PROP-FINANCING-DETAIL-TERM-TYPE", "期限种类", "枚举", "期限种类", "普通属性"],
-        ["PROP-FINANCING-DETAIL-GUARANTEE-TYPE", "担保方式", "枚举", "担保方式", "普通属性"]
+        ["PROP-FINANCING-DETAIL-GUARANTEE-TYPE", "担保方式", "枚举", "担保方式", "普通属性"],
+        ["PROP-FINANCING-DETAIL-AS-OF-DATE", "数据截至时间", "日期", "数据截至时间", "普通属性"]
       ]
     },
     {
@@ -78,32 +76,32 @@
   ];
 
   const METRICS = [
-    ["MET-FIN-BALANCE", "融资余额", "人民币元", "集团、板块、主体及主体集合", "所选融资明细折合人民币余额之和。", ["PROP-FINANCING-DETAIL-CNY-BALANCE", "LINK-ENTITY-FINANCING"]],
-    ["MET-WAVG-COST", "余额加权平均融资成本", "%", "集团、板块、主体及主体集合", "按融资明细余额加权计算融资成本。", ["PROP-FINANCING-DETAIL-CNY-BALANCE", "PROP-FINANCING-DETAIL-INTEREST-RATE", "LINK-ENTITY-FINANCING"]],
-    ["MET-FLOATING-RATE-SHARE", "浮动利率余额占比", "%", "集团、板块、融资主体", "浮动利率融资余额占融资余额的比例。", ["PROP-FINANCING-DETAIL-CNY-BALANCE", "PROP-FINANCING-DETAIL-RATE-TYPE", "LINK-ENTITY-FINANCING"]],
-    ["MET-SHORT-DEBT-SHARE", "短期债务余额占比", "%", "集团、板块、融资主体", "短期融资余额占融资余额的比例。", ["PROP-FINANCING-DETAIL-CNY-BALANCE", "PROP-FINANCING-DETAIL-TERM-TYPE", "LINK-ENTITY-FINANCING"]],
+    ["MET-FINANCING-BALANCE", "融资余额", "人民币元", "集团、板块、主体及主体集合", "所选融资明细折合人民币余额之和。", ["PROP-FINANCING-DETAIL-CNY-BALANCE", "LINK-ENTITY-FINANCING"]],
+    ["MET-WAVG-FINANCING-COST", "余额加权平均融资成本", "%", "集团、板块、主体及主体集合", "按融资明细余额加权计算融资成本。", ["PROP-FINANCING-DETAIL-CNY-BALANCE", "PROP-FINANCING-DETAIL-INTEREST-RATE", "LINK-ENTITY-FINANCING"]],
+    ["MET-FLOATING-RATE-BALANCE-RATIO", "浮动利率余额占比", "%", "集团、板块、融资主体", "浮动利率融资余额占融资余额的比例。", ["PROP-FINANCING-DETAIL-CNY-BALANCE", "PROP-FINANCING-DETAIL-RATE-TYPE", "LINK-ENTITY-FINANCING"]],
+    ["MET-SHORT-TERM-DEBT-RATIO", "短期债务余额占比", "%", "集团、板块、融资主体", "短期融资余额占融资余额的比例。", ["PROP-FINANCING-DETAIL-CNY-BALANCE", "PROP-FINANCING-DETAIL-TERM-TYPE", "LINK-ENTITY-FINANCING"]],
     ["MET-FX-FINANCING-SHARE", "外币融资余额占比", "%", "集团、板块、融资主体", "非人民币融资折合人民币余额占比。", ["PROP-FINANCING-DETAIL-CNY-BALANCE", "PROP-FINANCING-DETAIL-CURRENCY", "LINK-ENTITY-FINANCING"]],
-    ["MET-HIGH-COST-SHARE", "高成本融资余额占比", "%", "集团、板块、融资主体", "融资成本高于业务阈值的余额占比。", ["PROP-FINANCING-DETAIL-CNY-BALANCE", "PROP-FINANCING-DETAIL-INTEREST-RATE", "LINK-ENTITY-FINANCING"]],
+    ["MET-HIGH-COST-BALANCE-RATIO", "高成本融资余额占比", "%", "集团、板块、融资主体", "融资成本高于业务阈值的余额占比。", ["PROP-FINANCING-DETAIL-CNY-BALANCE", "PROP-FINANCING-DETAIL-INTEREST-RATE", "LINK-ENTITY-FINANCING"]],
     ["MET-CREDIT-FINANCING-SHARE", "信用融资余额占比", "%", "集团、板块、融资主体", "担保方式为信用的融资余额占比。", ["PROP-FINANCING-DETAIL-CNY-BALANCE", "PROP-FINANCING-DETAIL-GUARANTEE-TYPE", "LINK-ENTITY-FINANCING"]]
   ].map(([id, name, unit, scope, definition, dependencyIds]) => ({
     id, name, unit, scope, definition, dependencyIds, type: "Metric", owner: "",
     sourceObjectId: "OBJ-FINANCING-DETAIL", subjectObjectId: "OBJ-FINANCING-ENTITY",
     time: "数据截至时点", zeroHandling: "分母为零或没有有效数据时返回无法计算",
     calculation: ({
-      "MET-FIN-BALANCE": "Σ 折合人民币余额",
-      "MET-WAVG-COST": "Σ（折合人民币余额 × 当前利率）÷ Σ 折合人民币余额",
-      "MET-FLOATING-RATE-SHARE": "浮动利率融资人民币余额 ÷ 融资余额",
-      "MET-SHORT-DEBT-SHARE": "期限种类为“短期”的人民币余额 ÷ 融资余额",
+      "MET-FINANCING-BALANCE": "Σ 折合人民币余额",
+      "MET-WAVG-FINANCING-COST": "Σ（折合人民币余额 × 当前利率）÷ Σ 折合人民币余额",
+      "MET-FLOATING-RATE-BALANCE-RATIO": "浮动利率融资人民币余额 ÷ 融资余额",
+      "MET-SHORT-TERM-DEBT-RATIO": "期限种类为“短期”的人民币余额 ÷ 融资余额",
       "MET-FX-FINANCING-SHARE": "非人民币融资的折合人民币余额 ÷ 融资余额",
-      "MET-HIGH-COST-SHARE": "当前利率高于本规则版本阈值的人民币余额 ÷ 融资余额",
+      "MET-HIGH-COST-BALANCE-RATIO": "当前利率高于本规则版本阈值的人民币余额 ÷ 融资余额",
       "MET-CREDIT-FINANCING-SHARE": "担保方式为“信用”的人民币余额 ÷ 融资余额"
     })[id]
   }));
 
   const RULES = [
-    { id: "RULE-HIGH-COST", name: "融资成本偏高", code: "R01", appliesTo: "融资主体", objectId: "OBJ-FINANCING-ENTITY", metricIds: ["MET-WAVG-COST", "MET-HIGH-COST-SHARE"], dependency: "余额加权平均融资成本、高成本融资余额占比", conclusion: "单位553", evidence: "指标快照、关联借据、前三家融资银行" },
-    { id: "RULE-FLOATING-EXPOSURE", name: "浮动利率暴露", code: "R02", appliesTo: "融资主体", objectId: "OBJ-FINANCING-ENTITY", metricIds: ["MET-FLOATING-RATE-SHARE"], dependency: "浮动利率余额占比", conclusion: "单位465", evidence: "指标快照、关联借据、前三家融资银行" },
-    { id: "RULE-SHORT-DEBT", name: "短期债务集中", code: "R03", appliesTo: "融资主体", objectId: "OBJ-FINANCING-ENTITY", metricIds: ["MET-SHORT-DEBT-SHARE"], dependency: "短期债务余额占比", conclusion: "单位561", evidence: "指标快照、关联借据、前三家融资银行" }
+    { id: "RULE-HIGH-FINANCING-COST", name: "融资成本偏高", code: "R01", appliesTo: "融资主体", objectId: "OBJ-FINANCING-ENTITY", metricIds: ["MET-WAVG-FINANCING-COST", "MET-HIGH-COST-BALANCE-RATIO"], dependency: "余额加权平均融资成本、高成本融资余额占比", conclusion: "单位553", evidence: "指标快照、关联借据、前三家融资银行" },
+    { id: "RULE-FLOATING-RATE-EXPOSURE", name: "浮动利率暴露", code: "R02", appliesTo: "融资主体", objectId: "OBJ-FINANCING-ENTITY", metricIds: ["MET-FLOATING-RATE-BALANCE-RATIO"], dependency: "浮动利率余额占比", conclusion: "单位465", evidence: "指标快照、关联借据、前三家融资银行" },
+    { id: "RULE-SHORT-TERM-DEBT-CONCENTRATION", name: "短期债务集中", code: "R03", appliesTo: "融资主体", objectId: "OBJ-FINANCING-ENTITY", metricIds: ["MET-SHORT-TERM-DEBT-RATIO"], dependency: "短期债务余额占比", conclusion: "单位561", evidence: "指标快照、关联借据、前三家融资银行" }
   ].map(item => ({
     ...item,
     type: "Rule",
@@ -119,7 +117,7 @@
 
   const ACTIONS = [{
     id: "ACTION-FINANCING-OPTIMIZATION", name: "发起融资优化建议", type: "Action Type", owner: "",
-    targetObjectId: "OBJ-FINANCING-ENTITY", ruleIds: ["RULE-HIGH-COST", "RULE-FLOATING-EXPOSURE", "RULE-SHORT-DEBT"],
+    targetObjectId: "OBJ-FINANCING-ENTITY", ruleIds: ["RULE-HIGH-FINANCING-COST", "RULE-FLOATING-RATE-EXPOSURE", "RULE-SHORT-TERM-DEBT-CONCENTRATION"],
     target: "融资主体", inputs: "主体、命中规则、指标证据、关联借据、优先协商银行、负责人、数据截至时间",
     parameters: "主体、命中规则、指标证据、关联借据、优先协商银行、负责人、数据截至时间",
     prerequisite: "目标主体、规则命中、指标快照和负责人关系均可追溯。",
@@ -161,10 +159,10 @@
     "OBJ-FINANCING-DETAIL": [110, 260], "LINK-ENTITY-FINANCING": [390, 280], "OBJ-FINANCING-ENTITY": [640, 260],
     "LINK-FINANCING-INSTITUTION": [390, 82], "OBJ-FINANCIAL-INSTITUTION": [640, 62],
     "LINK-ENTITY-OWNER": [920, 280], "OBJ-FINANCING-OWNER": [1170, 260],
-    "MET-FIN-BALANCE": [80, 570], "MET-WAVG-COST": [300, 570], "MET-HIGH-COST-SHARE": [520, 570],
-    "MET-FLOATING-RATE-SHARE": [740, 570], "MET-SHORT-DEBT-SHARE": [960, 570], "MET-FX-FINANCING-SHARE": [1180, 570],
-    "MET-CREDIT-FINANCING-SHARE": [1400, 570], "RULE-HIGH-COST": [390, 790], "RULE-FLOATING-EXPOSURE": [740, 790],
-    "RULE-SHORT-DEBT": [960, 790], "ACTION-FINANCING-OPTIMIZATION": [740, 1010]
+    "MET-FINANCING-BALANCE": [80, 570], "MET-WAVG-FINANCING-COST": [300, 570], "MET-HIGH-COST-BALANCE-RATIO": [520, 570],
+    "MET-FLOATING-RATE-BALANCE-RATIO": [740, 570], "MET-SHORT-TERM-DEBT-RATIO": [960, 570], "MET-FX-FINANCING-SHARE": [1180, 570],
+    "MET-CREDIT-FINANCING-SHARE": [1400, 570], "RULE-HIGH-FINANCING-COST": [390, 790], "RULE-FLOATING-RATE-EXPOSURE": [740, 790],
+    "RULE-SHORT-TERM-DEBT-CONCENTRATION": [960, 790], "ACTION-FINANCING-OPTIMIZATION": [740, 1010]
   };
 
   function clone(value) { return JSON.parse(JSON.stringify(value)); }
@@ -302,6 +300,7 @@
       t008AsOf: payload.t008AsOf || payload.t008 || null,
       t008Confirmation: clone(payload.t008Confirmation || null),
       sourceSnapshotId: payload.sourceSnapshotId || null,
+      sourceReadEventId: payload.sourceReadEventId || payload.t008Confirmation?.sourceReadEventId || null,
       sourceFingerprint: clone(payload.sourceFingerprint || null),
       processingModuleVersion: payload.processingModuleVersion || null,
       runEvidence: clone(payload.runEvidence || null),
@@ -383,17 +382,20 @@
     if (state?.pendingScenarioReset) issues.push("场景定向重置尚未取得平台公共层返回的新 C033，当前不接收数据资产交付");
     if (contract?.sourceModule !== "数据工程" || contract?.contractCode !== "C003") issues.push("来源模块或合同编号不符合数据资产交付合同");
     if (!resolvedExternalValue(contract?.deliveryId)) issues.push("稳定交付标识缺失");
-    const declaredAttempt = Number(contract?.attemptNumber);
-    const parsedAttempt = c003AttemptNumberFromId(contract?.deliverySeriesId, contract?.deliveryId);
-    if (!resolvedExternalValue(contract?.deliverySeriesId)
-      || !Number.isSafeInteger(declaredAttempt)
-      || declaredAttempt < 1
-      || parsedAttempt !== declaredAttempt
-      || contract.deliverySeriesId !== `C003-${contract?.assetVersion || "UNKNOWN"}`) issues.push("交付系列、稳定交付标识、精确数据版本或尝试序号不一致");
-    const previousAttempt = c003AttemptNumberFromId(contract?.deliverySeriesId, contract?.retryOf);
-    if ((contract?.retryOf || null) !== (contract?.previousDeliveryId || null)
-      || (declaredAttempt === 1 && contract?.retryOf)
-      || (declaredAttempt > 1 && (!previousAttempt || previousAttempt >= declaredAttempt))) issues.push("交付重试没有精确回指同系列更早尝试，或首次尝试错误携带重试来源");
+    const transportMetadataProvided = [contract?.deliverySeriesId, contract?.attemptNumber, contract?.retryOf, contract?.previousDeliveryId].some(value => value !== null && value !== undefined && value !== "");
+    if (transportMetadataProvided) {
+      const declaredAttempt = Number(contract?.attemptNumber);
+      const parsedAttempt = c003AttemptNumberFromId(contract?.deliverySeriesId, contract?.deliveryId);
+      if (!resolvedExternalValue(contract?.deliverySeriesId)
+        || !Number.isSafeInteger(declaredAttempt)
+        || declaredAttempt < 1
+        || parsedAttempt !== declaredAttempt
+        || contract.deliverySeriesId !== `C003-${contract?.assetVersion || "UNKNOWN"}`) issues.push("已提供的交付系列、稳定交付标识、精确数据版本或尝试序号不一致");
+      const previousAttempt = c003AttemptNumberFromId(contract?.deliverySeriesId, contract?.retryOf);
+      if ((contract?.retryOf || null) !== (contract?.previousDeliveryId || null)
+        || (declaredAttempt === 1 && contract?.retryOf)
+        || (declaredAttempt > 1 && (!previousAttempt || previousAttempt >= declaredAttempt))) issues.push("已提供的交付重试没有精确回指同系列更早尝试，或首次尝试错误携带重试来源");
+    }
     const contextIssues = scenarioContextIssues(contract?.scenarioContext);
     if (contextIssues.length) issues.push(`场景运行上下文不完整：${contextIssues.join("、")}`);
     const activeContext = state?.scenarioContexts?.[state.activeScenarioId] || DEFAULT_SCENARIO;
@@ -411,10 +413,10 @@
     if (contract?.declaredT007Version && contract.declaredT007Version !== contract.assetVersion) issues.push("T007 精确版本与数据资产版本不一致");
     if (contract?.t008AsOf && contract.t008AsOf !== contract.asOf) issues.push("T008 与数据截至时间不一致");
     const t008 = contract?.t008Confirmation;
-    if (!t008 || t008.snapshotId !== contract?.sourceSnapshotId || t008.asOf !== contract?.asOf || !resolvedExternalValue(t008.confirmedBy) || !resolvedExternalTime(t008.confirmedAt) || !resolvedExternalValue(t008.basis) || !resolvedExternalValue(t008.evidenceId) || !resolvedExternalValue(t008.evidenceLocator) || scenarioContextIssues(t008.scenarioContext).length || !sameScenarioEnvelope(t008, contract)) issues.push("T008 缺少精确快照、确认人、确认时间、依据、同轮次 C033 或证据定位");
+    if (!t008 || t008.snapshotId !== contract?.sourceSnapshotId || t008.asOf !== contract?.asOf || t008.sourceReadEventId !== contract?.sourceReadEventId || !resolvedExternalValue(t008.confirmedBy) || !resolvedExternalTime(t008.confirmedAt) || !resolvedExternalValue(t008.basis) || !resolvedExternalValue(t008.evidenceId) || !resolvedExternalValue(t008.evidenceLocator) || scenarioContextIssues(t008.scenarioContext).length || !sameScenarioEnvelope(t008, contract)) issues.push("T008 缺少精确快照、读取事件、确认人、确认时间、依据、同轮次 C033 或证据定位");
     if (!resolvedExternalTime(contract?.deliveredAt)) issues.push("数据资产交付时间缺失、无效或仍为占位值");
     if (!["已发送", "已交付", "sent", "delivered"].includes(contract?.deliveryStatus)) issues.push("数据资产交付状态缺失或不可接收");
-    if (!resolvedExternalValue(contract?.sourceSnapshotId) || !resolvedExternalValue(contract?.source) || !resolvedExternalValue(contract?.processingModuleVersion) || !resolvedExternalTime(contract?.publishedAt) || !resolvedExternalValue(contract?.versionDescription)) issues.push("来源快照、来源说明、处理模块版本、发布时间或版本说明缺失");
+    if (!resolvedExternalValue(contract?.sourceSnapshotId) || !resolvedExternalValue(contract?.sourceReadEventId) || !resolvedExternalValue(contract?.source) || !resolvedExternalValue(contract?.processingModuleVersion) || !resolvedExternalTime(contract?.publishedAt) || !resolvedExternalValue(contract?.versionDescription)) issues.push("来源快照、真实读取事件、来源说明、处理模块版本、发布时间或版本说明缺失");
     const fingerprint = contract?.sourceFingerprint;
     if (fingerprint?.algorithm !== "SHA-256" || !/^[a-f0-9]{64}$/i.test(String(fingerprint?.value || "")) || !Number.isFinite(Number(fingerprint?.sizeBytes)) || Number(fingerprint?.sizeBytes) <= 0 || Number(contract?.t008Confirmation?.sizeBytes) !== Number(fingerprint?.sizeBytes)) issues.push("来源 SHA-256、文件字节数或 T008 快照大小证据不完整或不一致");
     const runEvidence = contract?.runEvidence;
@@ -423,8 +425,8 @@
     if (!contract?.purpose || !contract?.consumptionRestriction) issues.push("用途或消费限制缺失");
     if (contract?.mappingEligibility?.status !== "可供本体映射" || !resolvedExternalValue(contract?.mappingEligibility?.evidenceLocator)) issues.push("本体映射资格或证据定位缺失");
     if (contract?.qualitySummary?.status !== "通过" || !resolvedExternalValue(contract?.qualitySummary?.resultId) || !resolvedExternalTime(contract?.qualitySummary?.checkedAt) || !resolvedExternalValue(contract?.qualitySummary?.evidenceLocator)) issues.push("质量摘要未通过，或质量结果身份、核验时间、证据定位缺失");
-    const expectedSourceChain = [contract?.sourceSnapshotId, runEvidence?.definitionVersion, runEvidence?.runId, runEvidence?.qualityResultId, contract?.assetVersion];
-    if (contract?.lineageCheckStatus !== "通过" || !resolvedExternalValue(contract?.lineageEvidenceLocator) || contract?.sourceChain?.length !== expectedSourceChain.length || expectedSourceChain.some((item, index) => contract?.sourceChain?.[index] !== item)) issues.push("完整来源链与精确快照、处理定义、正式运行、质量结果或数据版本不一致");
+    const expectedSourceChain = [contract?.sourceSnapshotId, contract?.sourceReadEventId, runEvidence?.definitionVersion, runEvidence?.runId, runEvidence?.qualityResultId, contract?.assetVersion];
+    if (contract?.lineageCheckStatus !== "通过" || !resolvedExternalValue(contract?.lineageEvidenceLocator) || contract?.sourceChain?.length !== expectedSourceChain.length || expectedSourceChain.some((item, index) => contract?.sourceChain?.[index] !== item)) issues.push("完整来源链与精确快照、真实读取事件、处理定义、正式运行、质量结果或数据版本不一致");
     if (!resolvedExternalValue(contract?.evidenceLocator)) issues.push("数据资产版本证据定位缺失");
     if (!resolvedExternalValue(contract?.payloadFingerprint) || !contract?.payloadFingerprintValid) issues.push("交付载荷指纹缺失或与当前冻结内容不一致");
     if (!contract?.members?.length) issues.push("资产成员范围缺失");
@@ -556,7 +558,7 @@
   function defaultTerms(resource) {
     const special = {
       "OBJ-FINANCING-ENTITY": { synonyms: ["融资单位", "融资主体单位"], abbreviation: "", discouraged: "公司", discouragedReason: "集团范围内的融资主体不一定都是公司法人" },
-      "MET-WAVG-COST": { synonyms: ["综合融资成本", "平均融资利率"], abbreviation: "", discouraged: "平均利率", discouragedReason: "容易被误解为借据利率的简单平均" },
+      "MET-WAVG-FINANCING-COST": { synonyms: ["综合融资成本", "平均融资利率"], abbreviation: "", discouraged: "平均利率", discouragedReason: "容易被误解为借据利率的简单平均" },
       "ACTION-FINANCING-OPTIMIZATION": { synonyms: ["融资优化行动"], abbreviation: "", discouraged: "自动优化融资", discouragedReason: "行动必须经人工确认后才进入后续处理" }
     }[resource?.id] || {};
     return { preferredName: resource?.name || "", synonyms: special.synonyms || [], abbreviation: special.abbreviation || "", discouraged: special.discouraged || "", discouragedReason: special.discouragedReason || "" };
@@ -1034,14 +1036,19 @@
     };
   }
 
-  function completeDraft(sourceDataContract) {
+  function completeDraft(sourceDataContract, baseVersion = null) {
     const scenarioContext = scenarioContextOf(sourceDataContract);
+    const createdAt = fullNowText();
+    const sourceContractFingerprint = snapshotFingerprint(sourceDataContract);
     const draft = {
-      id: "draft-financing-core", ontologyStableId: "ONT-GROUP-FINANCING-OPTIMIZATION", name: "集团融资成本与债务结构优化本体", definition: "以融资主体、融资明细、融资机构和融资负责人组织融资事实、判断与行动。",
-      draftName: "初始 Draft", scenario: "S001 集团融资成本与债务结构优化", status: "Draft", createdAt: "08-11 09:20", updatedAt: "08-11 10:48", basedOn: null, basedOnVersionId: null,
+      id: makeId("draft"), ontologyStableId: "ONT-GROUP-FINANCING-OPTIMIZATION", name: "集团融资成本与债务结构优化本体", definition: "以融资主体、融资明细、融资机构和融资负责人组织融资事实、判断与行动。",
+      draftName: baseVersion ? `${baseVersion.semanticVersion} 数据合同修订 Draft` : "融资语义 Draft", scenario: scenarioDisplayLabel(scenarioContext), status: "Draft", createdAt, updatedAt: createdAt, basedOn: baseVersion?.semanticVersion || null, basedOnVersionId: baseVersion?.id || null,
       scenarioContext,
       sourceDeliveryId: sourceDataContract?.deliveryId || null,
-      draftRevision: 1,
+      sourceAssetVersion: sourceDataContract?.assetVersion || null,
+      sourceContractFingerprint,
+      sourceDeliverySnapshot: clone(sourceDataContract),
+      draftRevision: baseVersion ? Number(baseVersion.draftRevision || 1) + 1 : 1,
       replacesDraftId: null,
       sourceDataContract: clone(sourceDataContract),
       objects: OBJECT_BLUEPRINTS.map(item => blueprintObject(item, true, sourceDataContract)), links: clone(LINK_BLUEPRINTS), metrics: clone(METRICS), rules: clone(RULES), actions: clone(ACTIONS),
@@ -1057,6 +1064,20 @@
     [...draft.links, ...draft.metrics, ...draft.rules, ...draft.actions].forEach(resource => { resource.terms = clone(defaultTerms(resource)); });
     ensureDraftSemanticTracking(draft);
     return draft;
+  }
+
+  function latestS001PublishedVersion(context) {
+    return state.publishedVersions
+      .filter(version => version.ontologyStableId === "ONT-GROUP-FINANCING-OPTIMIZATION" && sameScenarioDefinition(version, context))
+      .sort((left, right) => {
+        const leftNumber = Number(String(left.semanticVersion || "").match(/\d+/)?.[0] || 0);
+        const rightNumber = Number(String(right.semanticVersion || "").match(/\d+/)?.[0] || 0);
+        return rightNumber - leftNumber || String(right.publishedAt || "").localeCompare(String(left.publishedAt || ""), "zh-CN");
+      })[0] || null;
+  }
+
+  function draftHasSemanticContent(draft) {
+    return !!draft && [draft.objects, draft.links, draft.metrics, draft.rules, draft.actions].some(collection => Array.isArray(collection) && collection.length > 0);
   }
 
   function emptyDraft(name = "未命名本体", ontologyStableId = "", definition = "", scenario = "") {
@@ -1075,7 +1096,7 @@
     return {
       drafts: [], activeDraftId: null, publishedVersions: [], selectedVersionId: null,
       updatesByVersion: {}, bindingsByVersion: {}, recordsByVersion: {},
-      externalDataAssets: {}, externalRefreshRequests: {}, externalQualityFacts: {}, externalConsumerCompatibility: {}, externalDeliveryIssues: [],
+      externalDataAssets: {}, externalRefreshRequests: {}, refreshRequestReceipts: {}, refreshRequestFingerprints: {}, externalQualityFacts: {}, externalConsumerCompatibility: {}, externalDeliveryIssues: [],
       dataAssetDeliveryReceipts: {}, dataAssetDeliveryFingerprints: {}, scenarioContexts: { S001: clone(DEFAULT_SCENARIO) }, activeScenarioId: "S001", scenarioHistory: [],
       scenarioContextReceipts: {}, pendingScenarioReset: null, scenarioActivationIntent: null,
       storageMigration: { status: "clean", checkedAt: fullNowText(), reason: "未发现需要迁移的旧状态" },
@@ -1303,6 +1324,8 @@
       const baseline = defaultState();
       saved.externalDataAssets = saved.externalDataAssets || {};
       saved.externalRefreshRequests = saved.externalRefreshRequests || {};
+      saved.refreshRequestReceipts = saved.refreshRequestReceipts || {};
+      saved.refreshRequestFingerprints = saved.refreshRequestFingerprints || {};
       saved.externalQualityFacts = saved.externalQualityFacts || {};
       saved.externalConsumerCompatibility = saved.externalConsumerCompatibility || {};
       saved.externalDeliveryIssues = saved.externalDeliveryIssues || [];
@@ -3326,6 +3349,7 @@
       sourceModule: payload?.sourceModule || "待确认",
       contractCode: payload?.contractCode || "待确认",
       deliveryId: payload?.deliveryId || null,
+      requestId: payload?.requestId || null,
       deliverySeriesId: payload?.deliverySeriesId || null,
       attemptNumber: Number.isInteger(payload?.attemptNumber) ? payload.attemptNumber : null,
       assetId: payload?.assetId || null,
@@ -3353,10 +3377,19 @@
       semanticVersion: payload.semanticVersion || null,
       dataAssetId: payload.dataAssetId || payload.assetId || null,
       dataVersion: payload.dataVersion || payload.assetVersion || null,
+      assetVersionId: payload.assetVersionId || payload.dataVersion || payload.assetVersion || null,
+      dataAssetDeliveryId: payload.dataAssetDeliveryId || payload.deliveryId || null,
       asOf: payload.asOf || null,
+      t008Confirmation: clone(payload.t008Confirmation || null),
       memberIds: clone(payload.memberIds || []),
+      members: clone(payload.members || []),
+      memberContracts: clone(payload.memberContracts || []),
       relationIds: clone(payload.relationIds || []),
+      relationships: clone(payload.relationships || []),
+      relationshipContracts: clone(payload.relationshipContracts || []),
+      coverage: clone(payload.coverage || null),
       qualityStatus: payload.qualityStatus || null,
+      quality: clone(payload.quality || null),
       trigger: payload.trigger || null,
       retryOf: payload.retryOf || null,
       evidenceLocator: payload.evidenceLocator || null,
@@ -3365,12 +3398,14 @@
       refreshDiscoveryResponseId: payload.refreshDiscoveryResponseId || payload.c032ResponseId || null,
       refreshDiscoveryResponseVersion: payload.refreshDiscoveryResponseVersion || payload.c032ResponseVersion || null,
       refreshDiscoveryFingerprint: payload.refreshDiscoveryFingerprint || payload.c032Fingerprint || null,
+      refreshDiscoveryFormedAt: payload.refreshDiscoveryFormedAt || payload.c032FormedAt || null,
       refreshDiscoveryReadAt: payload.refreshDiscoveryReadAt || payload.c032ReadAt || null,
       refreshTargetId: payload.refreshTargetId || payload.targetBindingId || null,
       refreshTargetBindingVersion: payload.refreshTargetBindingVersion || payload.targetBindingVersion || null,
       refreshTargetEvidenceLocator: payload.refreshTargetEvidenceLocator || payload.targetEvidenceLocator || null,
       refreshTargetFingerprint: payload.refreshTargetFingerprint || payload.targetFingerprint || null,
       sourceMappingVersionId: payload.sourceMappingVersionId || payload.sourceMappingVersion || null,
+      mappingVersion: payload.mappingVersion || payload.sourceMappingVersionId || payload.sourceMappingVersion || null,
       targetSemanticVersionId: payload.targetSemanticVersionId || payload.t017VersionId || payload.publishedSemanticVersionId || null,
       changeHints: clone(payload.changeHints || [])
     };
@@ -3385,6 +3420,7 @@
     const discoveredTarget = discovery?.candidates?.find(candidate => candidate.refreshTargetId === request?.refreshTargetId && String(candidate.bindingVersion) === String(request?.refreshTargetBindingVersion)) || null;
     const currentTarget = request?.refreshTargetId && request?.refreshTargetBindingVersion ? findRefreshTarget(request.refreshTargetId, request.refreshTargetBindingVersion) : null;
     const targetAssessment = currentTarget && version ? refreshTargetAssessment(version, currentTarget, request?.dataAssetId || null) : null;
+    const delivery = request?.dataAssetDeliveryId ? state.dataAssetDeliveryReceipts?.[request.dataAssetDeliveryId] || null : null;
     if (state.pendingScenarioReset) issues.push("场景定向重置尚未取得平台公共层返回的新 C033，当前不接收刷新请求");
     if (request?.sourceModule !== "数据工程" || request?.contractCode !== "C028") issues.push("来源模块或合同编号不符合刷新请求合同");
     const contextIssues = scenarioContextIssues(request?.scenarioContext);
@@ -3397,6 +3433,7 @@
     if (!discovery || discovery.sourceModule !== "本体管理" || discovery.contractCode !== "C032") issues.push("刷新请求缺少本体管理 C032 发现响应引用");
     if (discovery && (discovery.readPurpose !== "提交前重读" || latestSubmitRead?.responseId !== discovery.responseId)) issues.push("C032 不是当前数据资产最新一次提交前重读结果，发现引用已过期");
     if (discovery && (request?.refreshDiscoveryResponseVersion !== discovery.responseVersion || request?.refreshDiscoveryFingerprint !== discovery.responseFingerprint || snapshotFingerprint({ ...discovery, responseFingerprint: undefined }) !== discovery.responseFingerprint)) issues.push("C032 响应版本、指纹缺失或内容已变化");
+    if (!resolvedExternalTime(request?.refreshDiscoveryFormedAt) || (discovery && request.refreshDiscoveryFormedAt !== discovery.formedAt)) issues.push("刷新请求缺少 C032 形成时间，或形成时间与发现响应不一致");
     if (!resolvedExternalTime(request?.refreshDiscoveryReadAt) || (discovery && request.refreshDiscoveryReadAt !== discovery.readAt)) issues.push("刷新请求缺少提交前重新读取的 C032 时间，或读取时间与发现响应不一致");
     if (discovery && resolvedExternalTime(request?.requestedAt) && Date.parse(String(request.requestedAt).replace(" ", "T")) < Date.parse(String(discovery.readAt).replace(" ", "T"))) issues.push("刷新请求形成时间早于 C032 提交前重读时间");
     if (discovery && discovery.queryDataAssetId !== request?.dataAssetId) issues.push("C032 发现响应查询的数据资产与本次刷新请求不一致");
@@ -3406,10 +3443,18 @@
     if (targetAssessment && !targetAssessment.allowSubmit) issues.push(`提交前重新读取发现目标失败：${targetAssessment.reason}`);
     if (discoveredTarget && (discoveredTarget.semanticVersionId !== request?.semanticVersionId || discoveredTarget.semanticVersion !== request?.semanticVersion || discoveredTarget.sourceMappingVersionId !== request?.sourceMappingVersionId || discoveredTarget.semanticVersionId !== request?.targetSemanticVersionId)) issues.push("C028 引用的精确 Published 版本或来源映射版本与 C032/T054 不一致");
     if (!request?.dataVersion || !request?.asOf || !asset) issues.push("候选数据版本未通过 C003 只读交付或数据截至时间缺失");
+    if (request?.assetVersionId !== request?.dataVersion) issues.push("精确 T007 标识与候选数据版本不一致");
+    if (!delivery || delivery.status !== "accepted" || delivery.deliveryId !== request?.dataAssetDeliveryId || delivery.assetId !== request?.dataAssetId || delivery.assetVersion !== request?.dataVersion || !sameScenarioEnvelope(delivery, request)) issues.push("刷新请求没有引用同轮次、同资产、同精确版本的已接收 C003 交付");
     if (asset && dataAssetDeliveryIssues(asset).length) issues.push("候选数据资产合同不完整或不可消费");
+    if (asset && snapshotFingerprint(request?.t008Confirmation) !== snapshotFingerprint(asset.t008Confirmation)) issues.push("刷新请求携带的 T008 与精确数据资产交付不一致");
     if (asset && (request.memberIds.length !== asset.members.length || request.memberIds.some(id => !asset.members.some(member => member.id === id)))) issues.push("刷新请求的成员范围与精确数据资产版本不一致");
+    if (asset && snapshotFingerprint(request.memberContracts) !== snapshotFingerprint(asset.members)) issues.push("刷新请求的成员字段合同与精确数据资产版本不一致");
     if (asset && (request.relationIds.length !== asset.relations.length || request.relationIds.some(id => !asset.relations.some(relation => relation.id === id)))) issues.push("刷新请求的关系范围与精确数据资产版本不一致");
+    if (asset && snapshotFingerprint(request.relationshipContracts) !== snapshotFingerprint(asset.relations)) issues.push("刷新请求的关系端点合同与精确数据资产版本不一致");
+    if (discoveredTarget && snapshotFingerprint(request.coverage) !== snapshotFingerprint({ members: discoveredTarget.memberCoverage, relationships: discoveredTarget.relationCoverage })) issues.push("刷新请求的成员与关系覆盖结果与 C032 发现包不一致");
     if (request?.qualityStatus !== "通过") issues.push("候选数据质量状态不允许进入本体匹配检查");
+    if (asset && (request?.quality?.status !== asset.qualitySummary?.status || request?.quality?.resultId !== asset.qualitySummary?.resultId || request?.quality?.evidenceLocator !== asset.qualitySummary?.evidenceLocator)) issues.push("刷新请求的质量结果与精确数据资产版本不一致");
+    if (!resolvedExternalValue(request?.mappingVersion) || request.mappingVersion !== request.sourceMappingVersionId) issues.push("刷新请求的映射版本与来源映射版本不一致");
     if (version && adoptedDataVersionIds(version).has(request.dataVersion)) issues.push("该数据版本已经正式使用过，不能作为新的待更新数据");
     if (!request?.hasCurrentFormalSnapshot) issues.push("刷新请求必须明确携带当前正式版本快照；没有正式组合时也必须显式传入空值");
     if (version && request?.hasCurrentFormalSnapshot && snapshotFingerprint(request.currentFormalSnapshot) !== snapshotFingerprint(currentFormalSnapshot(version))) issues.push("刷新请求携带的当前正式版本快照已变化");
@@ -3434,6 +3479,44 @@
     return update;
   }
 
+  function receiptForRefreshRequest(request, statusValue, reason = null, update = null) {
+    const receivedAt = fullNowText();
+    return {
+      sourceModule: "本体管理",
+      contractCode: "C028",
+      requestId: request?.requestId || null,
+      status: statusValue,
+      receivedAt,
+      reason,
+      scenarioContext: clone(request?.scenarioContext || currentScenarioContext()),
+      semanticVersionId: request?.semanticVersionId || null,
+      semanticVersion: request?.semanticVersion || null,
+      dataAssetId: request?.dataAssetId || null,
+      dataVersion: request?.dataVersion || null,
+      asOf: request?.asOf || null,
+      targetUpdateId: update?.id || null,
+      targetPhase: update?.phase || null,
+      requestEvidenceLocator: request?.evidenceLocator || null,
+      evidenceLocator: request?.requestId ? `本体管理 / C028 接收回执 / ${request.requestId}` : null,
+      requestFingerprint: request ? snapshotFingerprint(request) : null,
+      originalRequest: request ? clone(request) : null
+    };
+  }
+
+  function refreshRequestStatus(requestId) {
+    const stableId = String(requestId || "").trim();
+    const receipt = stableId ? state.refreshRequestReceipts?.[stableId] || null : null;
+    return {
+      sourceModule: "本体管理",
+      contractCode: "C028",
+      requestId: stableId || null,
+      readStatus: !stableId ? "invalid" : receipt ? "found" : "unknown",
+      observedAt: fullNowText(),
+      receipt: clone(receipt),
+      reason: !stableId ? "请提供稳定刷新请求标识" : receipt ? null : "未找到该刷新请求的持久化接收或拒绝回执"
+    };
+  }
+
   function normalizeQualityFact(payload) {
     if (!payload || typeof payload !== "object") return null;
     return { sourceModule: payload.sourceModule || null, contractCode: payload.contractCode || null, factId: payload.factId || null, semanticVersionId: payload.semanticVersionId || null, semanticVersion: payload.semanticVersion || null, dataVersion: payload.dataVersion || null, status: payload.status || null, detectedAt: payload.detectedAt || null, impactScope: payload.impactScope || null, reason: payload.reason || null, recoverySuggestion: payload.recoverySuggestion || null, evidenceLocator: payload.evidenceLocator || null };
@@ -3453,14 +3536,65 @@
 
   function normalizeConsumerCompatibility(payload) {
     if (!payload || typeof payload !== "object") return null;
-    return { sourceModule: payload.sourceModule || null, contractCode: payload.contractCode || null, configId: payload.configId || null, configVersion: payload.configVersion || null, consumer: payload.consumer || "智能问数", semanticVersionId: payload.semanticVersionId || null, semanticVersion: payload.semanticVersion || null, dataVersion: payload.dataVersion || null, status: payload.status || null, checkedAt: payload.checkedAt || null, reason: payload.reason || null, evidenceLocator: payload.evidenceLocator || null };
+    const ontologyBinding = clone(payload.publishedOntologyBinding || null);
+    const whitelist = clone(payload.resourceWhitelist || null);
+    const effectiveTime = clone(payload.effectiveTime || null);
+    return {
+      sourceModule: payload.sourceModule || null,
+      contractCode: payload.contractCode || null,
+      configId: payload.configId || null,
+      configVersion: payload.configVersion || null,
+      consumer: payload.consumer || "智能问数",
+      promptVersion: payload.promptVersion || null,
+      contentFingerprint: payload.contentFingerprint || null,
+      skillVersions: clone(Array.isArray(payload.skillVersions) ? payload.skillVersions : []),
+      toolVersions: clone(Array.isArray(payload.toolVersions) ? payload.toolVersions : []),
+      whitelistVersion: payload.whitelistVersion || whitelist?.version || null,
+      allowedResourceIds: clone(Array.isArray(payload.allowedResourceIds) ? payload.allowedResourceIds : Array.isArray(whitelist?.resourceIds) ? whitelist.resourceIds : []),
+      resourceWhitelist: whitelist,
+      publishedOntologyBinding: ontologyBinding,
+      semanticVersionId: payload.semanticVersionId || ontologyBinding?.semanticVersionId || null,
+      semanticVersion: payload.semanticVersion || ontologyBinding?.semanticVersion || null,
+      dataVersion: payload.dataVersion || ontologyBinding?.dataVersion || null,
+      asOf: payload.asOf || ontologyBinding?.asOf || null,
+      t019EvidenceCode: payload.t019EvidenceCode || ontologyBinding?.t019EvidenceCode || null,
+      resourceContractFingerprint: payload.resourceContractFingerprint || ontologyBinding?.resourceContractFingerprint || null,
+      scenarioContext: scenarioContextOf(payload.scenarioContext || payload, { scenarioId: null, scenarioVersion: null, scenarioRunId: null, scenarioName: null, formedAt: null, status: null }),
+      effectiveFrom: payload.effectiveFrom || effectiveTime?.from || null,
+      effectiveTo: payload.effectiveTo || effectiveTime?.to || null,
+      effectiveTime,
+      status: payload.status || null,
+      checkedAt: payload.checkedAt || null,
+      reason: payload.reason || null,
+      configFingerprint: payload.configFingerprint || null,
+      runtimeContextFingerprint: payload.runtimeContextFingerprint || null,
+      evidenceLocator: payload.evidenceLocator || null
+    };
   }
 
   function consumerCompatibilityIssues(item) {
     const version = declaredPublishedVersion(item); const binding = version && historicalBindingFor(version); const issues = [];
     if (item?.sourceModule !== "智能问数" || item?.contractCode !== "C009" || item?.consumer !== "智能问数") issues.push("来源模块、消费方或合同编号不符合智能问数兼容状态合同");
-    if (!resolvedExternalValue(item?.configId) || !resolvedExternalValue(item?.configVersion) || !resolvedExternalTime(item?.checkedAt) || !resolvedExternalValue(item?.evidenceLocator)) issues.push("配置身份、配置版本、检查时间或证据定位缺失、无效或仍为占位值");
-    if (!version || binding?.dataVersion !== item?.dataVersion) issues.push("兼容状态未锁定精确正式双版本");
+    if (!resolvedExternalValue(item?.configId) || !resolvedExternalValue(item?.configVersion) || !resolvedExternalValue(item?.promptVersion) || !resolvedExternalValue(item?.configFingerprint) || !resolvedExternalTime(item?.checkedAt) || !resolvedExternalValue(item?.evidenceLocator)) issues.push("配置身份、配置版本、Prompt 版本、配置指纹、检查时间或证据定位缺失、无效或仍为占位值");
+    const skillKeys = (item?.skillVersions || []).map(skill => `${skill?.id || ""}@${skill?.version || ""}`);
+    if (!skillKeys.length || skillKeys.some(key => !resolvedExternalValue(key.split("@")[0]) || !resolvedExternalValue(key.split("@")[1])) || new Set(skillKeys).size !== skillKeys.length) issues.push("Skill 版本集合缺失、含占位值或存在重复身份");
+    const whitelistIds = Array.isArray(item?.resourceWhitelist?.resourceIds) ? item.resourceWhitelist.resourceIds : [];
+    if (!resolvedExternalValue(item?.whitelistVersion) || item.whitelistVersion !== item?.resourceWhitelist?.version || !whitelistIds.length || new Set(whitelistIds).size !== whitelistIds.length || snapshotFingerprint([...item.allowedResourceIds].sort()) !== snapshotFingerprint([...whitelistIds].sort())) issues.push("资源白名单版本、稳定身份集合或内外层快照不一致");
+    const publishedIds = new Set(version ? publishedResources(version).map(resource => resource.id) : []);
+    if (version && whitelistIds.some(id => !publishedIds.has(id))) issues.push("资源白名单包含不属于目标 Published 版本的稳定身份");
+    const ontologyBinding = item?.publishedOntologyBinding;
+    if (!ontologyBinding || ontologyBinding.ontologyStableId !== version?.ontologyStableId || ontologyBinding.semanticVersionId !== item?.semanticVersionId || ontologyBinding.semanticVersion !== item?.semanticVersion || ontologyBinding.dataVersion !== item?.dataVersion || ontologyBinding.asOf !== item?.asOf || ontologyBinding.t019EvidenceCode !== item?.t019EvidenceCode || ontologyBinding.resourceContractFingerprint !== item?.resourceContractFingerprint) issues.push("Published 本体绑定内外层身份、精确双版本、时点或证据不一致");
+    if (!version || binding?.dataVersion !== item?.dataVersion || binding?.asOf !== item?.asOf) issues.push("兼容状态未锁定精确正式双版本及数据截至时间");
+    const adoptionRecord = version && binding ? successfulT019RecordForBinding(version, binding) : null;
+    if (!resolvedExternalValue(item?.t019EvidenceCode) || adoptionRecord?.evidenceCode !== item.t019EvidenceCode) issues.push("兼容状态没有回指同一权威组合的 T019 采用证据");
+    const contextIssues = scenarioContextIssues(item?.scenarioContext);
+    if (contextIssues.length || !sameScenarioEnvelope(item, currentScenarioContext()) || !sameScenarioEnvelope(item, version || {})) issues.push("兼容状态缺少与当前权威组合一致的完整场景上下文");
+    if (!resolvedExternalTime(item?.effectiveFrom) || item?.effectiveTime?.from !== item?.effectiveFrom || (item?.effectiveTo && (!resolvedExternalTime(item.effectiveTo) || item?.effectiveTime?.to !== item.effectiveTo))) issues.push("配置生效时间包络缺失、无效或内外层不一致");
+    const checkedAt = Date.parse(String(item?.checkedAt || "").replace(" ", "T"));
+    const effectiveFrom = Date.parse(String(item?.effectiveFrom || "").replace(" ", "T"));
+    const effectiveTo = item?.effectiveTo ? Date.parse(String(item.effectiveTo).replace(" ", "T")) : null;
+    if (Number.isFinite(checkedAt) && Number.isFinite(effectiveFrom) && checkedAt < effectiveFrom) issues.push("兼容判定时间早于配置生效时间");
+    if (Number.isFinite(checkedAt) && Number.isFinite(effectiveTo) && checkedAt >= effectiveTo) issues.push("兼容判定使用了已失效配置");
     if (!["compatible", "incompatible", "revalidate"].includes(item?.status)) issues.push("兼容状态必须为兼容、需迁移或需重验");
     if (item?.status !== "compatible" && !item?.reason) issues.push("非兼容状态必须提供业务可读原因");
     return issues;
@@ -3849,12 +3983,14 @@
   }
 
   function receiptForDelivery(contract, statusValue, reason, draft = null, replacedDraft = null) {
+    const receivedAt = fullNowText();
+    const contractFingerprint = contract ? snapshotFingerprint(contract) : null;
     return {
       sourceModule: "本体管理",
       contractCode: "C003",
       deliveryId: contract?.deliveryId || null,
       status: statusValue,
-      receivedAt: fullNowText(),
+      receivedAt,
       reason: reason || null,
       scenarioContext: clone(contract?.scenarioContext || currentScenarioContext()),
       targetDraftId: draft?.id || null,
@@ -3867,6 +4003,18 @@
       t008AsOf: contract?.asOf || null,
       evidenceLocator: contract?.evidenceLocator || null,
       contractSchemaVersion: contract?.contractSchemaVersion || null,
+      sourceContractFingerprint: contractFingerprint,
+      sourceDataContract: statusValue === "accepted" ? clone(contract) : null,
+      immutableReceiptSnapshot: statusValue === "accepted" ? {
+        snapshotId: `C003-RECEIPT-${contract?.deliveryId || "UNKNOWN"}`,
+        formedAt: receivedAt,
+        deliveryId: contract?.deliveryId || null,
+        assetId: contract?.assetId || null,
+        assetVersion: contract?.assetVersion || null,
+        draftId: draft?.id || null,
+        draftRevision: draft?.draftRevision || null,
+        contractFingerprint
+      } : null,
       previousDraftId: replacedDraft?.id || null,
       previousAssetVersion: replacedDraft?.sourceDataContract?.assetVersion || null,
       replacement: replacedDraft && draft ? { previousDraftId: replacedDraft.id, newDraftId: draft.id, previousAssetVersion: replacedDraft.sourceDataContract?.assetVersion || null, newAssetVersion: contract?.assetVersion || null, relation: "替代" } : null
@@ -3876,25 +4024,64 @@
   function dataAssetDeliveryTargetDraft(contract) {
     const context = scenarioContextOf(contract);
     const openDrafts = state.drafts.filter(draft => !draft.publishedVersionId && sameScenarioEnvelope(draft, context));
-    return openDrafts.find(item => item.id === state.activeDraftId)
-      || openDrafts.find(item => item.ontologyStableId === "ONT-GROUP-FINANCING-OPTIMIZATION")
-      || openDrafts.sort((left, right) => Number(right.draftRevision || 1) - Number(left.draftRevision || 1))[0]
+    const compatibleEmptyDraft = draft => !draftHasSemanticContent(draft) && (!draft.ontologyStableId || draft.ontologyStableId === "ONT-GROUP-FINANCING-OPTIMIZATION");
+    return openDrafts.find(item => item.ontologyStableId === "ONT-GROUP-FINANCING-OPTIMIZATION")
+      || openDrafts.find(item => item.id === state.activeDraftId && compatibleEmptyDraft(item))
+      || openDrafts.find(compatibleEmptyDraft)
       || null;
   }
 
   function applyDataAssetDelivery(contract, draft = dataAssetDeliveryTargetDraft(contract)) {
-    if (!draft) return { draft: null, replacedDraft: null };
-    draft.draftRevision = Math.max(1, Number(draft.draftRevision || 1));
-    draft.receivedDataAssetDelivery = {
-      deliveryId: contract.deliveryId,
-      assetId: contract.assetId,
-      assetVersion: contract.assetVersion,
-      asOf: contract.asOf,
-      scenarioContext: clone(contract.scenarioContext),
-      evidenceLocator: contract.evidenceLocator,
-      receivedAt: fullNowText()
-    };
-    return { draft, replacedDraft: null };
+    let targetDraft = draft;
+    let created = false;
+    if (!targetDraft) {
+      targetDraft = completeDraft(contract, latestS001PublishedVersion(contract));
+      state.drafts.unshift(targetDraft);
+      state.activeDraftId = targetDraft.id;
+      created = true;
+    } else {
+      const semanticContentExists = draftHasSemanticContent(targetDraft);
+      const targetContractFingerprint = targetDraft.sourceContractFingerprint || (targetDraft.sourceDataContract ? snapshotFingerprint(targetDraft.sourceDataContract) : null);
+      const sameAcceptedSource = targetDraft.sourceDeliveryId === contract.deliveryId
+        && targetContractFingerprint === snapshotFingerprint(contract);
+      if (semanticContentExists && !sameAcceptedSource) {
+        return { draft: null, replacedDraft: null, created: false, error: "当前目标 Draft 已包含用户建模内容；数据资产交付不能静默覆盖或更换其来源合同" };
+      }
+      if (!semanticContentExists) {
+        const populated = completeDraft(contract, latestS001PublishedVersion(contract));
+        targetDraft.ontologyStableId = populated.ontologyStableId;
+        targetDraft.name = populated.name;
+        targetDraft.definition = populated.definition;
+        targetDraft.draftName = populated.draftName;
+        targetDraft.basedOn = populated.basedOn;
+        targetDraft.basedOnVersionId = populated.basedOnVersionId;
+        targetDraft.draftRevision = populated.draftRevision;
+        targetDraft.objects = populated.objects;
+        targetDraft.links = populated.links;
+        targetDraft.metrics = populated.metrics;
+        targetDraft.rules = populated.rules;
+        targetDraft.actions = populated.actions;
+        targetDraft.positions = populated.positions;
+        targetDraft.canvasView = populated.canvasView;
+        targetDraft.release = populated.release;
+        targetDraft.resourceSemanticFingerprints = populated.resourceSemanticFingerprints;
+        targetDraft.resourceSemanticFingerprintVersion = populated.resourceSemanticFingerprintVersion;
+      }
+      targetDraft.draftRevision = Math.max(1, Number(targetDraft.draftRevision || 1));
+    }
+    targetDraft.sourceDeliveryId = contract.deliveryId;
+    targetDraft.sourceAssetVersion = contract.assetVersion;
+    targetDraft.sourceDataContract = clone(contract);
+    targetDraft.sourceDeliverySnapshot = clone(contract);
+    targetDraft.sourceContractFingerprint = snapshotFingerprint(contract);
+    targetDraft.receivedDataAssetDelivery = clone(contract);
+    targetDraft.receivedDataAssetDelivery.receivedAt = fullNowText();
+    targetDraft.receivedDataAssetDelivery.receiptSnapshotId = `C003-RECEIPT-${contract.deliveryId}`;
+    targetDraft.receivedDataAssetDelivery.contractFingerprint = snapshotFingerprint(contract);
+    targetDraft.receivedDataAssetDelivery.draftRevision = targetDraft.draftRevision;
+    resetDraftValidation(targetDraft);
+    touchDraft(targetDraft);
+    return { draft: targetDraft, replacedDraft: null, created };
   }
 
   function dataAssetDeliveryLookup(deliveryId) {
@@ -3977,30 +4164,68 @@
         state.dataAssetDeliveryFingerprints[contract.deliveryId] = snapshotFingerprint(contract);
         rememberExternalDeliveryIssue("C003", contract, receipt.reason); return clone(receipt);
       }
-      const targetDraft = dataAssetDeliveryTargetDraft(contract);
-      if (!targetDraft) {
-        const receipt = receiptForDelivery(contract, "rejected", "当前场景轮次没有可接收该数据资产的未发布 Draft；请先创建或恢复目标 Draft 后以新的交付尝试标识重发");
+      const applied = applyDataAssetDelivery(contract, dataAssetDeliveryTargetDraft(contract));
+      if (applied.error) {
+        const receipt = receiptForDelivery(contract, "rejected", applied.error);
         state.dataAssetDeliveryReceipts[contract.deliveryId] = receipt;
-        state.dataAssetDeliveryFingerprints[contract.deliveryId] = snapshotFingerprint(contract);
-        rememberExternalDeliveryIssue("C003", contract, receipt.reason);
+        state.dataAssetDeliveryFingerprints[contract.deliveryId] = incomingFingerprint;
+        rememberExternalDeliveryIssue("C003", contract, applied.error);
         return clone(receipt);
       }
       state.externalDataAssets = state.externalDataAssets || {}; state.externalDataAssets[key] = clone(contract);
-      const applied = applyDataAssetDelivery(contract, targetDraft);
       const receipt = receiptForDelivery(contract, "accepted", null, applied.draft, applied.replacedDraft);
       state.dataAssetDeliveryReceipts[contract.deliveryId] = receipt;
       state.dataAssetDeliveryFingerprints[contract.deliveryId] = incomingFingerprint;
       persist(); render(); return clone(receipt);
     },
     deliverRefreshRequest(payload) {
-      const request = normalizeRefreshRequest(payload); const issues = refreshRequestIssues(request);
-      if (issues.length) { rememberExternalDeliveryIssue("C028", request, issues.join("；")); return false; }
+      synchronizeStateFromStorage();
+      const request = normalizeRefreshRequest(payload);
+      const incomingFingerprint = request ? snapshotFingerprint(request) : null;
+      const storedReceipt = request?.requestId ? state.refreshRequestReceipts?.[request.requestId] || null : null;
+      const storedFingerprint = request?.requestId ? state.refreshRequestFingerprints?.[request.requestId] || null : null;
+      if (storedReceipt && storedFingerprint === incomingFingerprint) return clone(storedReceipt);
+      if (storedReceipt) {
+        const reason = "同一刷新请求标识的内容不可被改写；原始接收或拒绝回执保持不变";
+        rememberExternalDeliveryIssue("C028", request, reason);
+        return receiptForRefreshRequest(request, "rejected", reason);
+      }
+      const issues = refreshRequestIssues(request);
+      if (issues.length) {
+        const receipt = receiptForRefreshRequest(request, "rejected", issues.join("；"));
+        if (request?.requestId) {
+          state.refreshRequestReceipts[request.requestId] = clone(receipt);
+          state.refreshRequestFingerprints[request.requestId] = incomingFingerprint;
+        }
+        rememberExternalDeliveryIssue("C028", request, receipt.reason);
+        return clone(receipt);
+      }
       const existing = state.externalRefreshRequests?.[request.requestId];
-      if (existing && snapshotFingerprint(existing) !== snapshotFingerprint(request)) { rememberExternalDeliveryIssue("C028", request, "同一刷新请求标识的已接收内容不可被改写"); return false; }
-      if (existing) return true;
+      if (existing && snapshotFingerprint(existing) !== incomingFingerprint) {
+        const reason = "同一刷新请求标识的已接收内容不可被改写";
+        rememberExternalDeliveryIssue("C028", request, reason);
+        return receiptForRefreshRequest(request, "rejected", reason);
+      }
+      if (existing) {
+        const update = Object.values(state.updatesByVersion || {}).find(item => item?.requestId === request.requestId) || null;
+        const receipt = receiptForRefreshRequest(request, "accepted", null, update);
+        state.refreshRequestReceipts[request.requestId] = clone(receipt);
+        state.refreshRequestFingerprints[request.requestId] = incomingFingerprint;
+        persist({ refreshProjection: false }); render(); return clone(receipt);
+      }
       const update = receiveExternalRefreshRequest(request);
-      if (!update) { rememberExternalDeliveryIssue("C028", request, "当前精确语义版本已有尚未完成的待更新数据；新请求不能覆盖现有候选"); return false; }
-      persist(); render(); return true;
+      if (!update) {
+        const reason = "当前精确语义版本已有尚未完成的待更新数据；新请求不能覆盖现有候选";
+        const receipt = receiptForRefreshRequest(request, "rejected", reason);
+        state.refreshRequestReceipts[request.requestId] = clone(receipt);
+        state.refreshRequestFingerprints[request.requestId] = incomingFingerprint;
+        rememberExternalDeliveryIssue("C028", request, reason);
+        return clone(receipt);
+      }
+      const receipt = receiptForRefreshRequest(request, "accepted", null, update);
+      state.refreshRequestReceipts[request.requestId] = clone(receipt);
+      state.refreshRequestFingerprints[request.requestId] = incomingFingerprint;
+      persist(); render(); return clone(receipt);
     },
     deliverQualityFact(payload) {
       const fact = normalizeQualityFact(payload); const issues = qualityFactIssues(fact);
@@ -4021,6 +4246,7 @@
       persist(); render(); return true;
     },
     deliverConsumerCompatibility(payload) {
+      synchronizeStateFromStorage();
       const item = normalizeConsumerCompatibility(payload); const issues = consumerCompatibilityIssues(item);
       if (issues.length) { rememberExternalDeliveryIssue("C009", item, issues.join("；")); return false; }
       const key = `${item.configId}|${item.configVersion}|${item.semanticVersionId}|${item.dataVersion}`;
@@ -4045,6 +4271,22 @@
     dataAssetDeliveryStatus(deliveryId) {
       synchronizeStateFromStorage();
       return clone(dataAssetDeliveryLookup(deliveryId));
+    },
+    refreshRequestStatus(requestId) {
+      synchronizeStateFromStorage();
+      return clone(refreshRequestStatus(requestId));
+    },
+    consumerCompatibilityRecords(query = {}) {
+      synchronizeStateFromStorage();
+      const records = Object.values(state.externalConsumerCompatibility || {}).filter(item => {
+        if (query.configId && item.configId !== query.configId) return false;
+        if (query.configVersion && item.configVersion !== query.configVersion) return false;
+        if (query.semanticVersionId && item.semanticVersionId !== query.semanticVersionId) return false;
+        if (query.dataVersion && item.dataVersion !== query.dataVersion) return false;
+        if (query.scenarioRunId && item.scenarioContext?.scenarioRunId !== query.scenarioRunId) return false;
+        return true;
+      });
+      return clone({ sourceModule: "本体管理", contractCode: "C009", readOnly: true, readAt: fullNowText(), records });
     },
     discoverRefreshTargets(query) { return clone(discoverRefreshTargets(query || {})); },
     resolvePublishedEvidence(request) { return clone(resolveHistoricalSemanticEvidence(request)); },
@@ -4097,7 +4339,7 @@
             sourceAssetVersion: version.dataContract?.assetVersion || historicalBinding?.dataVersion || null
           };
         }),
-        inputs: { c003: Object.values(state.externalDataAssets || {}).filter(item => sameScenarioEnvelope(item, context)), c028: Object.values(state.externalRefreshRequests || {}).filter(item => sameScenarioEnvelope(item, context)), c017: Object.values(state.externalQualityFacts || {}).filter(versionInCurrentContext), c009: Object.values(state.externalConsumerCompatibility || {}).filter(versionInCurrentContext), c008Requirements: Object.values(state.externalValidationRequirements || {}).filter(item => sameScenarioEnvelope(item, context)), c008References: currentValidationReferences },
+        inputs: { c003: Object.values(state.externalDataAssets || {}).filter(item => sameScenarioEnvelope(item, context)), c028: Object.values(state.externalRefreshRequests || {}).filter(item => sameScenarioEnvelope(item, context)), c028Receipts: Object.values(state.refreshRequestReceipts || {}).filter(item => sameScenarioEnvelope(item, context)), c017: Object.values(state.externalQualityFacts || {}).filter(versionInCurrentContext), c009: Object.values(state.externalConsumerCompatibility || {}).filter(versionInCurrentContext), c008Requirements: Object.values(state.externalValidationRequirements || {}).filter(item => sameScenarioEnvelope(item, context)), c008References: currentValidationReferences },
         outputs: {
           publishedContexts: currentVersions.map(version => ({ versionId: version.id, c004ToC007: publishedDiscoveryPackage(version), c008: authoritativeBindingPackage(version), t054: refreshTargetForVersionSnapshot(version) })),
           validationRetryRequests: Object.values(state.validationRetryRequests || {}).filter(item => sameScenarioEnvelope(item, context)), authoritativeC008Projection: authoritativeC008Projection(), dataAssetDeliveryReceipts: Object.values(state.dataAssetDeliveryReceipts || {}).map(clone)
@@ -4214,6 +4456,8 @@
       if (operation === "publishedContext") return handoffResponse(payload.requestId, operation, true, ontologyReviewBridge.publishedContext(payload.payload?.versionId));
       if (operation === "candidateContext") return handoffResponse(payload.requestId, operation, true, ontologyReviewBridge.candidateContext());
       if (operation === "dataAssetDeliveryStatus") return handoffResponse(payload.requestId, operation, true, ontologyReviewBridge.dataAssetDeliveryStatus(payload.payload?.deliveryId));
+      if (operation === "refreshRequestStatus") return handoffResponse(payload.requestId, operation, true, ontologyReviewBridge.refreshRequestStatus(payload.payload?.refreshRequestId || payload.payload?.requestId));
+      if (operation === "consumerCompatibilityRecords") return handoffResponse(payload.requestId, operation, true, ontologyReviewBridge.consumerCompatibilityRecords(payload.payload || {}));
       if (operation === "repairAuthoritativeC008Projection") return handoffResponse(payload.requestId, operation, true, ontologyReviewBridge.repairAuthoritativeC008Projection());
       if (operation === "resolvePublishedEvidence") return handoffResponse(payload.requestId, operation, true, ontologyReviewBridge.resolvePublishedEvidence(payload.payload || {}));
       const mutations = {
