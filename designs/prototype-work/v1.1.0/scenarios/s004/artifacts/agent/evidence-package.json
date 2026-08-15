@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "ofw.contract.C022.s004.v1",
+  "contractId": "C022",
+  "evidencePackageId": "EVP-S004-20260815-0001",
+  "evidencePackageVersion": "1.0.0",
+  "owner": "M06",
+  "consumer": "M05",
+  "lockedAt": "2026-08-15T12:55:00.000Z",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "identity": {
+    "financialCompanyId": "FC-DEMO-001",
+    "borrowerId": "BORR-CN-USCC-91440300093677087R",
+    "applicationId": "APP-S004-20260815-0001",
+    "reportId": "RPT-S004-20260815-0001",
+    "reportNumber": "S004-PLR-2026-0001"
+  },
+  "lockedResources": [
+    {
+      "resourceId": "C008-S004-AUTHORITATIVE-FACTS-001",
+      "owner": "M01",
+      "version": "1.0.0",
+      "ref": "artifacts/ontology/c008-authoritative-facts.json"
+    },
+    {
+      "resourceId": "C017-S004-20260815-0001",
+      "owner": "M02",
+      "version": "1.0.0",
+      "ref": "artifacts/data/c017-confidence-summary.json"
+    },
+    {
+      "resourceId": "S004-DQ-v1.0.0",
+      "owner": "M02",
+      "version": "1.0.0",
+      "ref": "artifacts/data/data-quality.json"
+    },
+    {
+      "resourceId": "RDEF-S004-LOAN-PREFLIGHT-001",
+      "owner": "M06",
+      "version": "1.0.0",
+      "ref": "artifacts/report/report-definition.json"
+    }
+  ],
+  "allowedEvidence": {
+    "officialPublic": [
+      "DOC-CGN-AR-2023",
+      "DOC-CGN-AR-2024",
+      "DOC-CGN-AR-2025"
+    ],
+    "syntheticDemo": [
+      "SIM_MEMBER_REGISTRY",
+      "SIM_LOAN_APPLICATION",
+      "SIM_INTERNAL_CREDIT",
+      "SIM_LOAN_LEDGER",
+      "SIM_CREDIT_BUREAU",
+      "SIM_INTERNAL_RATING",
+      "SIM_PURPOSE_CONTRACT",
+      "SIM_REPAYMENT_PLAN",
+      "SIM_SITE_SURVEY"
+    ],
+    "deterministicRuns": [
+      "MTR-S004-20260815-0001",
+      "RULERUN-S004-20260815-0001"
+    ]
+  },
+  "generationPolicy": {
+    "directFileRead": false,
+    "directWorkbookRead": false,
+    "chooseLatestData": false,
+    "recalculateMetrics": false,
+    "changePublishedPointer": false,
+    "publishReport": false,
+    "createActionRequest": false,
+    "createTodo": false,
+    "allowedOperations": [
+      "READ_LOCKED_C008_FACTS",
+      "READ_LOCKED_C017_SUMMARY",
+      "ORGANIZE_EVIDENCE_BOUND_TEXT",
+      "RETURN_STRUCTURED_DRAFT"
+    ]
+  },
+  "humanOnlyFields": [
+    "riskControllability",
+    "creditDecision",
+    "approvedAmount",
+    "finalRate",
+    "creditConditions",
+    "publicationAuthorization"
+  ],
+  "qualityWarnings": [
+    "MIXED_RESTATEMENT_SCOPE",
+    "INTERMEDIATE_ROUNDING_DIFFERENCE"
+  ]
+}

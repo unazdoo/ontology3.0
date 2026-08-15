@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "evidenceType": "S004-post-fix-publication-verification",
+  "releaseId": "REL-S004-PUBLICATION-V1.0.1-001",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "formedAt": "2026-08-15T14:10:21.000Z",
+  "sourcePointerPromotionPre": {
+    "phaseAlias": "CP-S004-PRE-20260815140408000",
+    "checkpointId": "CP-S004-20260815140408000-195f33db9b29",
+    "manifestSha256": "e7f5ae6a1a6d454c029e723fb4588b20d0dcd0ab30f55e3adf664b3749ead8b6"
+  },
+  "code": {
+    "treeSha256": "534345f341dbc8995818bf8d4a4a269612f11d093749c2a161c316c463fc6a90",
+    "dataJsSha256": "9e37c764d855a086951496886eb3f7451470546de9904b8d44defbee0d3ebce9",
+    "artifactIndexSha256": "c94e9e2d28ca0316ac04894f95138131f97103e0176be2938aeead182814cefa",
+    "moduleExportIndexSha256": "8085a30fc3e636a587bee108d962fdbecf3816c2bf0b3b5e7af887fed7b4c7a5"
+  },
+  "currentPublication": {
+    "pointerRef": "designs/prototype-work/v1.1.0/scenarios/s004/artifacts/report/current-publication-pointer.json",
+    "pointerSha256": "8e00ac36088d9b3e7394f8841836981f00a6a908b81030e149ca5d170cdacdd8",
+    "publicationId": "PUB-S004-20260815-0002",
+    "contentVersion": "1.0.1",
+    "manifestRef": "designs/prototype-work/v1.1.0/scenarios/s004/artifacts/report/publication-manifest-v1.0.1.json",
+    "manifestSha256": "ff0aeb6c8e6f0f802d65c407dfbbbe0abeaf4a1cb99e490a6a6423328b26535d",
+    "htmlRef": "designs/prototype-work/v1.1.0/scenarios/s004/artifacts/report/RPT-S004-CGNPC-20260815-v1.0.1.html",
+    "htmlSha256": "9de23b7130cf7b8a66b207eb9c9576e8199ab8238a292e91765dc58a33cb1dd9",
+    "pdfRef": "designs/prototype-work/v1.1.0/scenarios/s004/artifacts/report/RPT-S004-CGNPC-20260815-v1.0.1.pdf",
+    "pdfSha256": "f51d732bf271aa3e3220486ae35f91f6c9edd4bfefc5c46fa54fd4bc07bf2ea8",
+    "sameSourceOutputRef": "designs/prototype-work/v1.1.0/scenarios/s004/artifacts/report/same-source-output-v1.0.1.json",
+    "sameSourceOutputSha256": "615dacdb8821a4be520d2ae2451210c6e4167ea0d8881d19c476ff48627b00ac"
+  },
+  "m06OwnerExport": {
+    "ref": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M06-publication-v1.0.1.json",
+    "sha256": "22d0ba7ca46f32b247269bc32346cbc093e9a1e434a61a862986a73effb43f22",
+    "moduleVersion": "1.1.0-s004.2"
+  },
+  "browserVerification": {
+    "ref": "designs/prototype-work/v1.1.0/scenarios/s004/evidence/browser/browser-verification.json",
+    "sha256": "654e1a0efbe790a57c422724133b2c6479e6918d7b5ae10e1244caef6cc78e43",
+    "status": "PASS"
+  },
+  "preservedPreviousPublication": {
+    "manifestRef": "designs/prototype-work/v1.1.0/scenarios/s004/artifacts/report/publication-manifest.json",
+    "manifestSha256": "35ed65c7cfa737cad4d186ddfdb8d80b828370acca68fda6f6b02b3ce0665adf",
+    "htmlRef": "designs/prototype-work/v1.1.0/scenarios/s004/artifacts/report/RPT-S004-CGNPC-20260815-v1.0.html",
+    "htmlSha256": "607481865ce0c2c1f50dffebd62340b9562907b4090d469cd3e2f14674f9f602",
+    "pdfRef": "designs/prototype-work/v1.1.0/scenarios/s004/artifacts/report/RPT-S004-CGNPC-20260815-v1.0.pdf",
+    "pdfSha256": "1869e120993a8d054f800bc2130361a7b7a10f3f8a81b9b5563cfa098ca2a16b",
+    "m06ExportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M06.json",
+    "m06ExportSha256": "ed3a303e0fc0a3ec6895cbe735dc9572cabf43dae963304a44743341ec6c7d5d"
+  },
+  "sideEffectPolicy": {
+    "allowHistoricalActionRequestReplay": false,
+    "allowHistoricalNotificationReplay": false,
+    "allowHistoricalApprovalReplay": false,
+    "allowHistoricalTodoReplay": false,
+    "allowExternalDispatch": false
+  },
+  "status": "verified"
+}

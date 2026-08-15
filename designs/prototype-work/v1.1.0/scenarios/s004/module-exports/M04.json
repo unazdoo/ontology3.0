@@ -1,0 +1,128 @@
+{
+  "schemaVersion": "ofw.s004.module-export.v1",
+  "moduleId": "M04",
+  "owner": "决策中心",
+  "moduleVersion": "1.1.0-s004.1",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "checkpointStates": {
+    "CP00": {
+      "moduleId": "M04",
+      "exportId": "M04-S004-CP00-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "conditional-boundary-configured",
+      "applicability": "conditional-no-action",
+      "actionRequestCount": 0,
+      "notificationCount": 0,
+      "approvalCount": 0,
+      "todoCount": 0,
+      "resourceRefs": [],
+      "evidenceRefs": [
+        "artifacts/ontology/published-resources.json#actionTypes"
+      ]
+    },
+    "CP10": {
+      "moduleId": "M04",
+      "exportId": "M04-S004-CP10-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "conditional-no-action",
+      "applicability": "conditional-no-action",
+      "actionRequestCount": 0,
+      "notificationCount": 0,
+      "approvalCount": 0,
+      "todoCount": 0,
+      "resourceRefs": [],
+      "evidenceRefs": []
+    },
+    "CP20": {
+      "moduleId": "M04",
+      "exportId": "M04-S004-CP20-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "conditional-no-action",
+      "applicability": "conditional-no-action",
+      "actionRequestCount": 0,
+      "notificationCount": 0,
+      "approvalCount": 0,
+      "todoCount": 0,
+      "resourceRefs": [
+        "artifacts/ontology/published-resources.json#actionTypes"
+      ],
+      "evidenceRefs": []
+    },
+    "CP30": {
+      "moduleId": "M04",
+      "exportId": "M04-S004-CP30-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "conditional-no-action",
+      "applicability": "conditional-no-action",
+      "actionRequestCount": 0,
+      "notificationCount": 0,
+      "approvalCount": 0,
+      "todoCount": 0,
+      "resourceRefs": [],
+      "evidenceRefs": [
+        "module-exports/M03.json#checkpointStates.CP30"
+      ]
+    },
+    "CP40": {
+      "moduleId": "M04",
+      "exportId": "M04-S004-CP40-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "not-applicable-no-action",
+      "applicability": "not-applicable-no-action",
+      "notApplicableReason": "S004_NO_USER_SUBMITTED_ACTION_REQUEST",
+      "actionRequestCount": 0,
+      "notificationCount": 0,
+      "approvalCount": 0,
+      "todoCount": 0,
+      "externalSideEffectCount": 0,
+      "resourceRefs": [],
+      "evidenceRefs": [
+        "artifacts/report/human-confirmation.json#automationBoundary"
+      ]
+    },
+    "CP50": {
+      "moduleId": "M04",
+      "exportId": "M04-S004-CP50-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "not-applicable-no-action",
+      "applicability": "not-applicable-no-action",
+      "notApplicableReason": "S004_HUMAN_REPORT_CONFIRMATION_IS_NOT_AN_ACTION_REQUEST",
+      "actionRequestCount": 0,
+      "notificationCount": 0,
+      "approvalCount": 0,
+      "todoCount": 0,
+      "externalSideEffectCount": 0,
+      "resourceRefs": [],
+      "evidenceRefs": [
+        "artifacts/report/human-confirmation.json"
+      ]
+    },
+    "CP60": {
+      "moduleId": "M04",
+      "exportId": "M04-S004-CP60-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "not-applicable-no-action-verified",
+      "applicability": "not-applicable-no-action",
+      "notApplicableReason": "S004_NO_USER_SUBMITTED_ACTION_REQUEST",
+      "actionRequestCount": 0,
+      "notificationCount": 0,
+      "approvalCount": 0,
+      "todoCount": 0,
+      "externalSideEffectCount": 0,
+      "resourceRefs": [],
+      "evidenceRefs": [
+        "artifacts/report/deterministic-verification.json",
+        "fixtures/s004-demo.json"
+      ]
+    }
+  },
+  "restoreMode": "isolated-clone",
+  "historyOverwriteAllowed": false,
+  "regressionSideEffectPolicy": "DISABLED"
+}

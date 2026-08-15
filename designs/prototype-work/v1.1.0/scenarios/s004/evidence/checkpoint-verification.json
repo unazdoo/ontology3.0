@@ -1,0 +1,574 @@
+{
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "baselineVersion": "1.0.3",
+  "code": {
+    "bytes": 160431,
+    "files": 18,
+    "gitCommit": "f3c80ba5e5e70929fd0628c798c4878048924bbd",
+    "gitTreeState": "dirty",
+    "treeSha256": "a98291481e6d15c7d6652d61bc44571a7300207f76ac2cb00546bd41848e95d5"
+  },
+  "evidenceType": "S004-C034-checkpoint-verification",
+  "executableEvidence": {
+    "baselineVerification": "node designs/scenario-checkpoints/baselines/v1.0.3/verify-baseline.mjs",
+    "foundationTest": "node --test designs/prototype-work/v1.1.0/foundation/ofw-scenario-foundation.test.cjs",
+    "scenarioTest": "node --test designs/prototype-work/v1.1.0/scenarios/s004/tests/checkpoint-contract.test.mjs"
+  },
+  "generatedAt": "2026-08-15T13:19:18.600Z",
+  "lockedArtifacts": {
+    "dataPackage": {
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/artifacts/data/S004_贷前调查合成演示资料包.xlsx",
+      "sha256": "7734bf4339bc8c8bc8eb46176ad8ea0faf38cb901f084414c81ae2049c221978"
+    },
+    "reportHtml": {
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/artifacts/report/RPT-S004-CGNPC-20260815-v1.0.html",
+      "sha256": "607481865ce0c2c1f50dffebd62340b9562907b4090d469cd3e2f14674f9f602"
+    },
+    "reportPdf": {
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/artifacts/report/RPT-S004-CGNPC-20260815-v1.0.pdf",
+      "sha256": "1869e120993a8d054f800bc2130361a7b7a10f3f8a81b9b5563cfa098ca2a16b"
+    }
+  },
+  "phases": [
+    {
+      "checkpointNode": "initial-configured",
+      "createdAt": "2026-08-15T13:19:18.000Z",
+      "modules": [
+        {
+          "exportId": "M01-S004-CP00-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M01.json#checkpointStates.CP00",
+          "exportSha256": "02775b5269b970fc2ef8677366a36b28551c80c2d1a0499f1901aa41722fa3de",
+          "moduleId": "M01",
+          "phaseAlias": "CP-S004-00",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M02-S004-CP00-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M02.json#checkpointStates.CP00",
+          "exportSha256": "104ddc5ffee6e4b93773abd99bb3ebbbdbe1eb0dcfedd63b01c80f7fe5e8f93f",
+          "moduleId": "M02",
+          "phaseAlias": "CP-S004-00",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M03-S004-CP00-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M03.json#checkpointStates.CP00",
+          "exportSha256": "289c93753ca0fd7d3342d07f47c661e526ffb27f7f2d06a82fb1dc58f3bb77a7",
+          "moduleId": "M03",
+          "phaseAlias": "CP-S004-00",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M04-S004-CP00-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M04.json#checkpointStates.CP00",
+          "exportSha256": "0dbeb9e8994a55f5a1efde1927f600e54e27a8dea6cf0bccf836c63e9af2d386",
+          "moduleId": "M04",
+          "phaseAlias": "CP-S004-00",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M05-S004-CP00-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M05.json#checkpointStates.CP00",
+          "exportSha256": "0dcb3df3ea6611e86021ddf776c3a7663e1d1512672592cd10ffc0d9eb0a1a0f",
+          "moduleId": "M05",
+          "phaseAlias": "CP-S004-00",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M06-S004-CP00-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M06.json#checkpointStates.CP00",
+          "exportSha256": "ed3a303e0fc0a3ec6895cbe735dc9572cabf43dae963304a44743341ec6c7d5d",
+          "moduleId": "M06",
+          "phaseAlias": "CP-S004-00",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        }
+      ],
+      "phaseAlias": "CP-S004-00",
+      "restorePreflight": {
+        "overwritesHistory": false,
+        "requiresEmptyIsolatedNamespace": true,
+        "requiresNewScenarioRunId": true,
+        "status": "verified"
+      },
+      "sideEffectPolicy": {
+        "allowExternalDispatch": false,
+        "allowHistoricalActionRequestReplay": false,
+        "allowHistoricalApprovalReplay": false,
+        "allowHistoricalNotificationReplay": false,
+        "allowHistoricalTodoReplay": false
+      }
+    },
+    {
+      "checkpointNode": "data-connected",
+      "createdAt": "2026-08-15T13:19:18.100Z",
+      "modules": [
+        {
+          "exportId": "M01-S004-CP10-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M01.json#checkpointStates.CP10",
+          "exportSha256": "02775b5269b970fc2ef8677366a36b28551c80c2d1a0499f1901aa41722fa3de",
+          "moduleId": "M01",
+          "phaseAlias": "CP-S004-10",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M02-S004-CP10-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M02.json#checkpointStates.CP10",
+          "exportSha256": "104ddc5ffee6e4b93773abd99bb3ebbbdbe1eb0dcfedd63b01c80f7fe5e8f93f",
+          "moduleId": "M02",
+          "phaseAlias": "CP-S004-10",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M03-S004-CP10-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M03.json#checkpointStates.CP10",
+          "exportSha256": "289c93753ca0fd7d3342d07f47c661e526ffb27f7f2d06a82fb1dc58f3bb77a7",
+          "moduleId": "M03",
+          "phaseAlias": "CP-S004-10",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M04-S004-CP10-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M04.json#checkpointStates.CP10",
+          "exportSha256": "0dbeb9e8994a55f5a1efde1927f600e54e27a8dea6cf0bccf836c63e9af2d386",
+          "moduleId": "M04",
+          "phaseAlias": "CP-S004-10",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M05-S004-CP10-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M05.json#checkpointStates.CP10",
+          "exportSha256": "0dcb3df3ea6611e86021ddf776c3a7663e1d1512672592cd10ffc0d9eb0a1a0f",
+          "moduleId": "M05",
+          "phaseAlias": "CP-S004-10",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M06-S004-CP10-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M06.json#checkpointStates.CP10",
+          "exportSha256": "ed3a303e0fc0a3ec6895cbe735dc9572cabf43dae963304a44743341ec6c7d5d",
+          "moduleId": "M06",
+          "phaseAlias": "CP-S004-10",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        }
+      ],
+      "phaseAlias": "CP-S004-10",
+      "restorePreflight": {
+        "overwritesHistory": false,
+        "requiresEmptyIsolatedNamespace": true,
+        "requiresNewScenarioRunId": true,
+        "status": "verified"
+      },
+      "sideEffectPolicy": {
+        "allowExternalDispatch": false,
+        "allowHistoricalActionRequestReplay": false,
+        "allowHistoricalApprovalReplay": false,
+        "allowHistoricalNotificationReplay": false,
+        "allowHistoricalTodoReplay": false
+      }
+    },
+    {
+      "checkpointNode": "published-switched",
+      "createdAt": "2026-08-15T13:19:18.200Z",
+      "modules": [
+        {
+          "exportId": "M01-S004-CP20-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M01.json#checkpointStates.CP20",
+          "exportSha256": "02775b5269b970fc2ef8677366a36b28551c80c2d1a0499f1901aa41722fa3de",
+          "moduleId": "M01",
+          "phaseAlias": "CP-S004-20",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M02-S004-CP20-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M02.json#checkpointStates.CP20",
+          "exportSha256": "104ddc5ffee6e4b93773abd99bb3ebbbdbe1eb0dcfedd63b01c80f7fe5e8f93f",
+          "moduleId": "M02",
+          "phaseAlias": "CP-S004-20",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M03-S004-CP20-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M03.json#checkpointStates.CP20",
+          "exportSha256": "289c93753ca0fd7d3342d07f47c661e526ffb27f7f2d06a82fb1dc58f3bb77a7",
+          "moduleId": "M03",
+          "phaseAlias": "CP-S004-20",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M04-S004-CP20-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M04.json#checkpointStates.CP20",
+          "exportSha256": "0dbeb9e8994a55f5a1efde1927f600e54e27a8dea6cf0bccf836c63e9af2d386",
+          "moduleId": "M04",
+          "phaseAlias": "CP-S004-20",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M05-S004-CP20-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M05.json#checkpointStates.CP20",
+          "exportSha256": "0dcb3df3ea6611e86021ddf776c3a7663e1d1512672592cd10ffc0d9eb0a1a0f",
+          "moduleId": "M05",
+          "phaseAlias": "CP-S004-20",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M06-S004-CP20-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M06.json#checkpointStates.CP20",
+          "exportSha256": "ed3a303e0fc0a3ec6895cbe735dc9572cabf43dae963304a44743341ec6c7d5d",
+          "moduleId": "M06",
+          "phaseAlias": "CP-S004-20",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        }
+      ],
+      "phaseAlias": "CP-S004-20",
+      "restorePreflight": {
+        "overwritesHistory": false,
+        "requiresEmptyIsolatedNamespace": true,
+        "requiresNewScenarioRunId": true,
+        "status": "verified"
+      },
+      "sideEffectPolicy": {
+        "allowExternalDispatch": false,
+        "allowHistoricalActionRequestReplay": false,
+        "allowHistoricalApprovalReplay": false,
+        "allowHistoricalNotificationReplay": false,
+        "allowHistoricalTodoReplay": false
+      }
+    },
+    {
+      "checkpointNode": "query-integrated",
+      "createdAt": "2026-08-15T13:19:18.300Z",
+      "modules": [
+        {
+          "exportId": "M01-S004-CP30-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M01.json#checkpointStates.CP30",
+          "exportSha256": "02775b5269b970fc2ef8677366a36b28551c80c2d1a0499f1901aa41722fa3de",
+          "moduleId": "M01",
+          "phaseAlias": "CP-S004-30",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M02-S004-CP30-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M02.json#checkpointStates.CP30",
+          "exportSha256": "104ddc5ffee6e4b93773abd99bb3ebbbdbe1eb0dcfedd63b01c80f7fe5e8f93f",
+          "moduleId": "M02",
+          "phaseAlias": "CP-S004-30",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M03-S004-CP30-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M03.json#checkpointStates.CP30",
+          "exportSha256": "289c93753ca0fd7d3342d07f47c661e526ffb27f7f2d06a82fb1dc58f3bb77a7",
+          "moduleId": "M03",
+          "phaseAlias": "CP-S004-30",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M04-S004-CP30-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M04.json#checkpointStates.CP30",
+          "exportSha256": "0dbeb9e8994a55f5a1efde1927f600e54e27a8dea6cf0bccf836c63e9af2d386",
+          "moduleId": "M04",
+          "phaseAlias": "CP-S004-30",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M05-S004-CP30-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M05.json#checkpointStates.CP30",
+          "exportSha256": "0dcb3df3ea6611e86021ddf776c3a7663e1d1512672592cd10ffc0d9eb0a1a0f",
+          "moduleId": "M05",
+          "phaseAlias": "CP-S004-30",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M06-S004-CP30-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M06.json#checkpointStates.CP30",
+          "exportSha256": "ed3a303e0fc0a3ec6895cbe735dc9572cabf43dae963304a44743341ec6c7d5d",
+          "moduleId": "M06",
+          "phaseAlias": "CP-S004-30",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        }
+      ],
+      "phaseAlias": "CP-S004-30",
+      "restorePreflight": {
+        "overwritesHistory": false,
+        "requiresEmptyIsolatedNamespace": true,
+        "requiresNewScenarioRunId": true,
+        "status": "verified"
+      },
+      "sideEffectPolicy": {
+        "allowExternalDispatch": false,
+        "allowHistoricalActionRequestReplay": false,
+        "allowHistoricalApprovalReplay": false,
+        "allowHistoricalNotificationReplay": false,
+        "allowHistoricalTodoReplay": false
+      }
+    },
+    {
+      "checkpointNode": "decision-chain-completed",
+      "createdAt": "2026-08-15T13:19:18.400Z",
+      "modules": [
+        {
+          "exportId": "M01-S004-CP40-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M01.json#checkpointStates.CP40",
+          "exportSha256": "02775b5269b970fc2ef8677366a36b28551c80c2d1a0499f1901aa41722fa3de",
+          "moduleId": "M01",
+          "phaseAlias": "CP-S004-40",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M02-S004-CP40-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M02.json#checkpointStates.CP40",
+          "exportSha256": "104ddc5ffee6e4b93773abd99bb3ebbbdbe1eb0dcfedd63b01c80f7fe5e8f93f",
+          "moduleId": "M02",
+          "phaseAlias": "CP-S004-40",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M03-S004-CP40-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M03.json#checkpointStates.CP40",
+          "exportSha256": "289c93753ca0fd7d3342d07f47c661e526ffb27f7f2d06a82fb1dc58f3bb77a7",
+          "moduleId": "M03",
+          "phaseAlias": "CP-S004-40",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M04-S004-CP40-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M04.json#checkpointStates.CP40",
+          "exportSha256": "0dbeb9e8994a55f5a1efde1927f600e54e27a8dea6cf0bccf836c63e9af2d386",
+          "moduleId": "M04",
+          "phaseAlias": "CP-S004-40",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M05-S004-CP40-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M05.json#checkpointStates.CP40",
+          "exportSha256": "0dcb3df3ea6611e86021ddf776c3a7663e1d1512672592cd10ffc0d9eb0a1a0f",
+          "moduleId": "M05",
+          "phaseAlias": "CP-S004-40",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M06-S004-CP40-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M06.json#checkpointStates.CP40",
+          "exportSha256": "ed3a303e0fc0a3ec6895cbe735dc9572cabf43dae963304a44743341ec6c7d5d",
+          "moduleId": "M06",
+          "phaseAlias": "CP-S004-40",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        }
+      ],
+      "phaseAlias": "CP-S004-40",
+      "restorePreflight": {
+        "overwritesHistory": false,
+        "requiresEmptyIsolatedNamespace": true,
+        "requiresNewScenarioRunId": true,
+        "status": "verified"
+      },
+      "sideEffectPolicy": {
+        "allowExternalDispatch": false,
+        "allowHistoricalActionRequestReplay": false,
+        "allowHistoricalApprovalReplay": false,
+        "allowHistoricalNotificationReplay": false,
+        "allowHistoricalTodoReplay": false
+      }
+    },
+    {
+      "checkpointNode": "agent-report-dashboard-completed",
+      "createdAt": "2026-08-15T13:19:18.500Z",
+      "modules": [
+        {
+          "exportId": "M01-S004-CP50-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M01.json#checkpointStates.CP50",
+          "exportSha256": "02775b5269b970fc2ef8677366a36b28551c80c2d1a0499f1901aa41722fa3de",
+          "moduleId": "M01",
+          "phaseAlias": "CP-S004-50",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M02-S004-CP50-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M02.json#checkpointStates.CP50",
+          "exportSha256": "104ddc5ffee6e4b93773abd99bb3ebbbdbe1eb0dcfedd63b01c80f7fe5e8f93f",
+          "moduleId": "M02",
+          "phaseAlias": "CP-S004-50",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M03-S004-CP50-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M03.json#checkpointStates.CP50",
+          "exportSha256": "289c93753ca0fd7d3342d07f47c661e526ffb27f7f2d06a82fb1dc58f3bb77a7",
+          "moduleId": "M03",
+          "phaseAlias": "CP-S004-50",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M04-S004-CP50-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M04.json#checkpointStates.CP50",
+          "exportSha256": "0dbeb9e8994a55f5a1efde1927f600e54e27a8dea6cf0bccf836c63e9af2d386",
+          "moduleId": "M04",
+          "phaseAlias": "CP-S004-50",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M05-S004-CP50-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M05.json#checkpointStates.CP50",
+          "exportSha256": "0dcb3df3ea6611e86021ddf776c3a7663e1d1512672592cd10ffc0d9eb0a1a0f",
+          "moduleId": "M05",
+          "phaseAlias": "CP-S004-50",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M06-S004-CP50-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M06.json#checkpointStates.CP50",
+          "exportSha256": "ed3a303e0fc0a3ec6895cbe735dc9572cabf43dae963304a44743341ec6c7d5d",
+          "moduleId": "M06",
+          "phaseAlias": "CP-S004-50",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        }
+      ],
+      "phaseAlias": "CP-S004-50",
+      "restorePreflight": {
+        "overwritesHistory": false,
+        "requiresEmptyIsolatedNamespace": true,
+        "requiresNewScenarioRunId": true,
+        "status": "verified"
+      },
+      "sideEffectPolicy": {
+        "allowExternalDispatch": false,
+        "allowHistoricalActionRequestReplay": false,
+        "allowHistoricalApprovalReplay": false,
+        "allowHistoricalNotificationReplay": false,
+        "allowHistoricalTodoReplay": false
+      }
+    },
+    {
+      "checkpointNode": "e2e-integrated",
+      "createdAt": "2026-08-15T13:19:18.600Z",
+      "modules": [
+        {
+          "exportId": "M01-S004-CP60-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M01.json#checkpointStates.CP60",
+          "exportSha256": "02775b5269b970fc2ef8677366a36b28551c80c2d1a0499f1901aa41722fa3de",
+          "moduleId": "M01",
+          "phaseAlias": "CP-S004-60",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M02-S004-CP60-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M02.json#checkpointStates.CP60",
+          "exportSha256": "104ddc5ffee6e4b93773abd99bb3ebbbdbe1eb0dcfedd63b01c80f7fe5e8f93f",
+          "moduleId": "M02",
+          "phaseAlias": "CP-S004-60",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M03-S004-CP60-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M03.json#checkpointStates.CP60",
+          "exportSha256": "289c93753ca0fd7d3342d07f47c661e526ffb27f7f2d06a82fb1dc58f3bb77a7",
+          "moduleId": "M03",
+          "phaseAlias": "CP-S004-60",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M04-S004-CP60-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M04.json#checkpointStates.CP60",
+          "exportSha256": "0dbeb9e8994a55f5a1efde1927f600e54e27a8dea6cf0bccf836c63e9af2d386",
+          "moduleId": "M04",
+          "phaseAlias": "CP-S004-60",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M05-S004-CP60-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M05.json#checkpointStates.CP60",
+          "exportSha256": "0dcb3df3ea6611e86021ddf776c3a7663e1d1512672592cd10ffc0d9eb0a1a0f",
+          "moduleId": "M05",
+          "phaseAlias": "CP-S004-60",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        },
+        {
+          "exportId": "M06-S004-CP60-EXPORT",
+          "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M06.json#checkpointStates.CP60",
+          "exportSha256": "ed3a303e0fc0a3ec6895cbe735dc9572cabf43dae963304a44743341ec6c7d5d",
+          "moduleId": "M06",
+          "phaseAlias": "CP-S004-60",
+          "restoreMode": "isolated-clone",
+          "validationStatus": "verified"
+        }
+      ],
+      "phaseAlias": "CP-S004-60",
+      "restorePreflight": {
+        "overwritesHistory": false,
+        "requiresEmptyIsolatedNamespace": true,
+        "requiresNewScenarioRunId": true,
+        "status": "verified"
+      },
+      "sideEffectPolicy": {
+        "allowExternalDispatch": false,
+        "allowHistoricalActionRequestReplay": false,
+        "allowHistoricalApprovalReplay": false,
+        "allowHistoricalNotificationReplay": false,
+        "allowHistoricalTodoReplay": false
+      }
+    }
+  ],
+  "regressionPolicy": {
+    "blockedAdapters": [
+      "ActionRequest.submit",
+      "Notification.dispatch",
+      "Approval.submit",
+      "Todo.create",
+      "ExternalDispatch.send",
+      "Report.publish"
+    ],
+    "expectedExternalCallCount": 0,
+    "externalCapabilitiesDefault": "disabled",
+    "mode": "drill"
+  },
+  "scenarioContext": {
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "scenarioId": "S004",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "scenarioVersion": "S004-v1",
+    "status": "active"
+  },
+  "schemaVersion": 1,
+  "status": "verified-by-repeatable-tests"
+}

@@ -1,0 +1,77 @@
+{
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "baselineVersion": "1.0.3",
+  "evidenceIndexId": "EVIDX-S004-20260815-0001",
+  "generatedAt": "2026-08-15T14:55:00.000Z",
+  "items": [
+    {
+      "evidenceType": "checkpoint-plan",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/evidence/checkpoint-plan.json",
+      "sha256": "1bfc92b89fc3f469cd8624c02335e99d34f59bb728bfaee1ad3233c2e94523bc"
+    },
+    {
+      "evidenceType": "checkpoint-verification",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/evidence/checkpoint-verification.json",
+      "sha256": "32aa616ea90b9124a4f5f791c405230e5983e923770800edaf4de1a2827825cb"
+    },
+    {
+      "evidenceType": "historical-view",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/evidence/historical-view.json",
+      "sha256": "3ebefced229a46ba78a77ac4ff276192c23485620847a2d12f5a3f2cc097b95c"
+    },
+    {
+      "evidenceType": "clone-restore",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/evidence/clone-restore.json",
+      "sha256": "a481536ed810c319fa311a009d5b0dab48d25cd15d3fa78066b361bb78015b14"
+    },
+    {
+      "evidenceType": "isolated-regression",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/evidence/isolated-regression.json",
+      "sha256": "130349f5551d94888b2c7b95b427223c8cfe93011dffd1dd6ce9fe442eed4ba3"
+    },
+    {
+      "evidenceType": "checkpoint-catalog",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/checkpoints/index.json",
+      "sha256": "e651abab45b7629bae03683d003280fc00d241835efd9b530f0bd0d654a09990"
+    },
+    {
+      "evidenceType": "pre-risk-change",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/evidence/PRE-S004-20260815133128000-pdf-cover-header.json",
+      "sha256": "ec72895fe4cddf6a80dcadab2f94437f68046d099c2495bf31a52374251b9d30"
+    },
+    {
+      "evidenceType": "pointer-promotion-pre-risk-change",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/evidence/PRE-S004-20260815140408000-pointer-promotion.json",
+      "sha256": "57504d707e43e55fcf1a4e6b1786b17cf1e26ffb4e8d7a8f001cd5a4c2a0d99a"
+    },
+    {
+      "evidenceType": "post-fix-publication-v1.0.1",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/evidence/post-fix-publication-v1.0.1.json",
+      "sha256": "f1c404563d2dc08ec234d2447829aadeb46f9f07d882fd8ffd77aab057f350c6"
+    },
+    {
+      "evidenceType": "publication-pointer-history-v1.0.1",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/evidence/publication-pointer-history/PTR-S004-PUBLICATION-CURRENT-001-v1.0.1.json",
+      "sha256": "8e00ac36088d9b3e7394f8841836981f00a6a908b81030e149ca5d170cdacdd8"
+    },
+    {
+      "evidenceType": "final-delivery-ready",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/evidence/final-delivery-ready-20260815145500000.json",
+      "sha256": "0e6dbacf3973f1f5c8336fcfc8d9a0905410075142f095120b8b5d4845c5f217"
+    }
+  ],
+  "ownerBoundary": "平台公共层拥有目录、清单和恢复编排；M01—M06保留模块状态与证据Owner",
+  "scenarioContext": {
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "scenarioId": "S004",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "scenarioVersion": "S004-v1",
+    "status": "active"
+  },
+  "schemaVersion": "ofw.s004.evidence-index.v1",
+  "truthBoundary": {
+    "browserStorageRole": "discardable-current-projection",
+    "formalCheckpointTruth": "C034 manifests plus Owner exports plus detached SHA-256",
+    "historyOverwriteAllowed": false
+  }
+}

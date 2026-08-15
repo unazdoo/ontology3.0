@@ -1,0 +1,106 @@
+{
+  "evidenceType": "C034-clone-restore",
+  "moduleReceipts": [
+    {
+      "moduleId": "M01",
+      "restoreMode": "isolated-clone",
+      "sourceExportId": "M01-S004-CP60-EXPORT",
+      "sourceExportSha256": "02775b5269b970fc2ef8677366a36b28551c80c2d1a0499f1901aa41722fa3de",
+      "status": "verified-by-repeatable-test",
+      "targetScenarioRunId": "S004-RUN-20260815131918800-646566676869"
+    },
+    {
+      "moduleId": "M02",
+      "restoreMode": "isolated-clone",
+      "sourceExportId": "M02-S004-CP60-EXPORT",
+      "sourceExportSha256": "104ddc5ffee6e4b93773abd99bb3ebbbdbe1eb0dcfedd63b01c80f7fe5e8f93f",
+      "status": "verified-by-repeatable-test",
+      "targetScenarioRunId": "S004-RUN-20260815131918800-646566676869"
+    },
+    {
+      "moduleId": "M03",
+      "restoreMode": "isolated-clone",
+      "sourceExportId": "M03-S004-CP60-EXPORT",
+      "sourceExportSha256": "289c93753ca0fd7d3342d07f47c661e526ffb27f7f2d06a82fb1dc58f3bb77a7",
+      "status": "verified-by-repeatable-test",
+      "targetScenarioRunId": "S004-RUN-20260815131918800-646566676869"
+    },
+    {
+      "moduleId": "M04",
+      "restoreMode": "isolated-clone",
+      "sourceExportId": "M04-S004-CP60-EXPORT",
+      "sourceExportSha256": "0dbeb9e8994a55f5a1efde1927f600e54e27a8dea6cf0bccf836c63e9af2d386",
+      "status": "verified-by-repeatable-test",
+      "targetScenarioRunId": "S004-RUN-20260815131918800-646566676869"
+    },
+    {
+      "moduleId": "M05",
+      "restoreMode": "isolated-clone",
+      "sourceExportId": "M05-S004-CP60-EXPORT",
+      "sourceExportSha256": "0dcb3df3ea6611e86021ddf776c3a7663e1d1512672592cd10ffc0d9eb0a1a0f",
+      "status": "verified-by-repeatable-test",
+      "targetScenarioRunId": "S004-RUN-20260815131918800-646566676869"
+    },
+    {
+      "moduleId": "M06",
+      "restoreMode": "isolated-clone",
+      "sourceExportId": "M06-S004-CP60-EXPORT",
+      "sourceExportSha256": "ed3a303e0fc0a3ec6895cbe735dc9572cabf43dae963304a44743341ec6c7d5d",
+      "status": "verified-by-repeatable-test",
+      "targetScenarioRunId": "S004-RUN-20260815131918800-646566676869"
+    }
+  ],
+  "moduleRestoreRefs": {
+    "M01": {
+      "exportId": "M01-S004-CP60-EXPORT",
+      "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M01.json#checkpointStates.CP60",
+      "exportSha256": "02775b5269b970fc2ef8677366a36b28551c80c2d1a0499f1901aa41722fa3de"
+    },
+    "M02": {
+      "exportId": "M02-S004-CP60-EXPORT",
+      "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M02.json#checkpointStates.CP60",
+      "exportSha256": "104ddc5ffee6e4b93773abd99bb3ebbbdbe1eb0dcfedd63b01c80f7fe5e8f93f"
+    },
+    "M03": {
+      "exportId": "M03-S004-CP60-EXPORT",
+      "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M03.json#checkpointStates.CP60",
+      "exportSha256": "289c93753ca0fd7d3342d07f47c661e526ffb27f7f2d06a82fb1dc58f3bb77a7"
+    },
+    "M04": {
+      "exportId": "M04-S004-CP60-EXPORT",
+      "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M04.json#checkpointStates.CP60",
+      "exportSha256": "0dbeb9e8994a55f5a1efde1927f600e54e27a8dea6cf0bccf836c63e9af2d386"
+    },
+    "M05": {
+      "exportId": "M05-S004-CP60-EXPORT",
+      "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M05.json#checkpointStates.CP60",
+      "exportSha256": "0dcb3df3ea6611e86021ddf776c3a7663e1d1512672592cd10ffc0d9eb0a1a0f"
+    },
+    "M06": {
+      "exportId": "M06-S004-CP60-EXPORT",
+      "exportRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M06.json#checkpointStates.CP60",
+      "exportSha256": "ed3a303e0fc0a3ec6895cbe735dc9572cabf43dae963304a44743341ec6c7d5d"
+    }
+  },
+  "operationId": "OP-S004-20260815131918800-646566676869",
+  "overwritesHistory": false,
+  "requiresEmptyIsolatedNamespace": true,
+  "restoredContext": {
+    "formedAt": "2026-08-15T13:19:18.800Z",
+    "scenarioId": "S004",
+    "scenarioRunId": "S004-RUN-20260815131918800-646566676869",
+    "scenarioVersion": "S004-v1",
+    "status": "restored"
+  },
+  "schemaVersion": 1,
+  "sideEffectPolicy": {
+    "allowExternalDispatch": false,
+    "allowHistoricalActionRequestReplay": false,
+    "allowHistoricalApprovalReplay": false,
+    "allowHistoricalNotificationReplay": false,
+    "allowHistoricalTodoReplay": false
+  },
+  "sourceCheckpointId": "CP-S004-20260815131918600-07b5e14d6110",
+  "sourceScenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+  "status": "verified"
+}

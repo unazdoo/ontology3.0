@@ -1,0 +1,445 @@
+(function () {
+  "use strict";
+
+  const modules = Object.freeze([
+    Object.freeze({
+      id: "M02",
+      key: "data",
+      name: "数据工程",
+      short: "数据",
+      icon: "database",
+      color: "blue",
+      route: "#module/data",
+      mode: "active",
+      description: "登记公开年报与缺口演示资料，完成质量门并发布贷前调查数据资产。",
+      steps: ["configure", "registerSources", "qualityGate", "publishAsset"]
+    }),
+    Object.freeze({
+      id: "M01",
+      key: "ontology",
+      name: "本体管理",
+      short: "本体",
+      icon: "network",
+      color: "violet",
+      route: "#module/ontology",
+      mode: "active",
+      description: "将借款人、申请、财务事实与授信语义绑定到 Published 本体。",
+      steps: ["mapOntology", "publishSemantics"]
+    }),
+    Object.freeze({
+      id: "M03",
+      key: "query",
+      name: "智能问数",
+      short: "问数",
+      icon: "sparkles",
+      color: "cyan",
+      route: "#module/query",
+      mode: "not-applicable",
+      description: "当前资料未证明需要独立交互问数，一期明确不纳入。",
+      steps: ["queryBoundary"]
+    }),
+    Object.freeze({
+      id: "M04",
+      key: "decision",
+      name: "决策中心",
+      short: "决策",
+      icon: "target",
+      color: "orange",
+      route: "#module/decision",
+      mode: "conditional",
+      description: "只有用户提交标准 Action Request 后，才承接提醒、人工确认与待办。",
+      steps: ["decisionBoundary"]
+    }),
+    Object.freeze({
+      id: "M05",
+      key: "agent",
+      name: "Agent 应用",
+      short: "Agent",
+      icon: "bot",
+      color: "teal",
+      route: "#module/agent",
+      mode: "active",
+      description: "基于固定证据包生成结构化草稿，并在正式发布后提供只读伴读。",
+      steps: ["generateDraft", "companionRun"]
+    }),
+    Object.freeze({
+      id: "M06",
+      key: "report",
+      name: "报告中心",
+      short: "报告",
+      icon: "file",
+      color: "green",
+      route: "#module/report",
+      mode: "active",
+      description: "拥有报告定义、证据包、复核、核验及同源 HTML/PDF 正式产物。",
+      steps: ["freezeEvidence", "bindAnchors", "verifyFacts", "humanReview", "publishReport"]
+    })
+  ]);
+
+  const workflow = Object.freeze([
+    Object.freeze({
+      id: "configure",
+      order: 1,
+      moduleId: "M02",
+      title: "确认场景配置",
+      action: "锁定初始配置",
+      summary: "固定财务公司、集团成员借款人、申请编号、报告编号、数据时点、币种与单位。",
+      prerequisite: null,
+      checkpointNode: "initial-configured"
+    }),
+    Object.freeze({
+      id: "registerSources",
+      order: 2,
+      moduleId: "M02",
+      title: "登记权威来源",
+      action: "登记来源与快照",
+      summary: "年报已有事实标记 official-public，仅对贷款申请、内部授信、征信等缺口登记 synthetic-demo。",
+      prerequisite: "configure"
+    }),
+    Object.freeze({
+      id: "qualityGate",
+      order: 3,
+      moduleId: "M02",
+      title: "通过数据质量门",
+      action: "运行质量检查",
+      summary: "核对主体身份、申请编号、期间、截至时间、币种、单位、缺失、冲突和过期状态。",
+      prerequisite: "registerSources",
+      checkpointNode: "data-connected"
+    }),
+    Object.freeze({
+      id: "publishAsset",
+      order: 4,
+      moduleId: "M02",
+      title: "发布调查数据资产",
+      action: "发布数据资产",
+      summary: "形成带来源标签、质量摘要和稳定键的不可变数据资产版本。",
+      prerequisite: "qualityGate"
+    }),
+    Object.freeze({
+      id: "mapOntology",
+      order: 5,
+      moduleId: "M01",
+      title: "完成语义映射",
+      action: "应用对象与指标映射",
+      summary: "绑定借款人、贷款申请、财务报表、股权、融资、征信和调查资料。",
+      prerequisite: "publishAsset"
+    }),
+    Object.freeze({
+      id: "publishSemantics",
+      order: 6,
+      moduleId: "M01",
+      title: "切换 Published 语义",
+      action: "发布并采用语义版本",
+      summary: "发布对象、关系、Metric 与确定性 Rule，并建立 T019/C008 权威消费指针。",
+      prerequisite: "mapOntology",
+      checkpointNode: "published-switched"
+    }),
+    Object.freeze({
+      id: "queryBoundary",
+      order: 7,
+      moduleId: "M03",
+      title: "确认问数不适用",
+      action: "查看边界依据",
+      summary: "当前正式报告流程不需要独立问数运行；该状态明确记录为 NOT_APPLICABLE。",
+      prerequisite: "publishSemantics",
+      initialStatus: "not_applicable",
+      checkpointNode: "query-integrated"
+    }),
+    Object.freeze({
+      id: "decisionBoundary",
+      order: 8,
+      moduleId: "M04",
+      title: "确认决策链条件门",
+      action: "查看条件门",
+      summary: "没有用户提交的标准 Action Request，不形成提醒、审批或待办。",
+      prerequisite: "queryBoundary",
+      initialStatus: "not_applicable",
+      checkpointNode: "decision-chain-completed"
+    }),
+    Object.freeze({
+      id: "freezeEvidence",
+      order: 9,
+      moduleId: "M06",
+      title: "冻结报告证据包",
+      action: "固定证据包",
+      summary: "按申请、借款人、数据时点与 Published 版本固定报告可消费事实。",
+      prerequisite: "decisionBoundary"
+    }),
+    Object.freeze({
+      id: "generateDraft",
+      order: 10,
+      moduleId: "M05",
+      title: "生成结构化草稿",
+      action: "运行报告 Agent",
+      summary: "Agent 只基于固定证据包组织六部分文字，不重新计算正式指标。",
+      prerequisite: "freezeEvidence"
+    }),
+    Object.freeze({
+      id: "bindAnchors",
+      order: 11,
+      moduleId: "M06",
+      title: "绑定事实与稳定锚点",
+      action: "绑定章节事实",
+      summary: "将章节、内容项、事实、语义资源、证据来源和核验要求逐项绑定。",
+      prerequisite: "generateDraft"
+    }),
+    Object.freeze({
+      id: "verifyFacts",
+      order: 12,
+      moduleId: "M06",
+      title: "执行确定性核验",
+      action: "执行核验",
+      summary: "由确定性程序核验金额、期间、单位、指标引用、证据定位和 HTML/PDF 同源性。",
+      prerequisite: "bindAnchors"
+    }),
+    Object.freeze({
+      id: "humanReview",
+      order: 13,
+      moduleId: "M06",
+      title: "人工复核授信结论",
+      action: "进入人工复核",
+      summary: "调查意见、风险判断和最终授信结论必须由授权人员明确确认。",
+      prerequisite: "verifyFacts"
+    }),
+    Object.freeze({
+      id: "publishReport",
+      order: 14,
+      moduleId: "M06",
+      title: "发布同源 HTML/PDF",
+      action: "发布正式报告",
+      summary: "HTML 与 PDF 共享报告编号、内容版本、证据链、稳定锚点和发布状态。",
+      prerequisite: "humanReview",
+      checkpointNode: "agent-report-dashboard-completed"
+    }),
+    Object.freeze({
+      id: "companionRun",
+      order: 15,
+      moduleId: "M05",
+      title: "启动报告伴读",
+      action: "打开只读伴读",
+      summary: "伴读仅解释已发布内容和固定证据，不发布报告、不执行行动、不修改本体。",
+      prerequisite: "publishReport",
+      checkpointNode: "e2e-integrated"
+    })
+  ]);
+
+  const sourceGroups = Object.freeze([
+    Object.freeze({
+      id: "SRC-OFFICIAL-ANNUAL-REPORTS",
+      name: "经审计年度报告",
+      tag: "official-public",
+      kind: "公开权威资料",
+      status: "可登记",
+      coverage: "主体、股权、经营、财务、公开融资担保、受限资产",
+      note: "年报已有事实直接复用，不重复设置上传型模拟数据。"
+    }),
+    Object.freeze({
+      id: "SRC-SYNTHETIC-LOAN-APPLICATION",
+      name: "贷款申请及内部授信资料",
+      tag: "synthetic-demo",
+      kind: "缺口演示资料",
+      status: "待运行登记",
+      coverage: "贷款申请、内部授信与用信、现有流贷、还款计划",
+      note: "仅用于演示缺口，必须与公开事实分层。"
+    }),
+    Object.freeze({
+      id: "SRC-SYNTHETIC-RISK-MATERIALS",
+      name: "征信、评级与现场调查资料",
+      tag: "synthetic-demo",
+      kind: "缺口演示资料",
+      status: "待运行登记",
+      coverage: "征信摘要、内部评级、用途合同、现场调查记录",
+      note: "人工调查意见不得由系统自行推断。"
+    })
+  ]);
+
+  const dataQualityChecks = Object.freeze([
+    Object.freeze({ id: "DQ-IDENTITY", name: "主体身份一致性", detail: "统一社会信用代码、集团成员关系和借款人稳定标识一致" }),
+    Object.freeze({ id: "DQ-APPLICATION", name: "申请编号完整性", detail: "贷款申请、报告与证据包均绑定同一申请编号" }),
+    Object.freeze({ id: "DQ-PERIOD", name: "时点与期间", detail: "资产负债表时点、利润及现金流期间、调查时点明确" }),
+    Object.freeze({ id: "DQ-CURRENCY", name: "币种与单位", detail: "人民币、万元口径显式记录，原币事实保留原始单位" }),
+    Object.freeze({ id: "DQ-CONFLICT", name: "缺失与冲突", detail: "缺失、冲突、过期和不可核验状态不被默认填零" })
+  ]);
+
+  const ontology = Object.freeze({
+    objects: Object.freeze([
+      "财务公司",
+      "集团成员借款人",
+      "贷款申请",
+      "财务报表",
+      "融资记录",
+      "授信额度",
+      "征信摘要",
+      "调查资料",
+      "贷前调查报告"
+    ]),
+    relations: Object.freeze([
+      "借款人属于集团",
+      "贷款申请由借款人提交",
+      "财务报表描述借款人",
+      "融资记录关联借款人",
+      "报告评估贷款申请",
+      "报告引用证据包"
+    ]),
+    metrics: Object.freeze([
+      "资产负债率",
+      "流动比率",
+      "速动比率",
+      "经营现金流覆盖",
+      "资金需求测算",
+      "现有授信使用率"
+    ]),
+    rules: Object.freeze([
+      "集团成员资格校验",
+      "数据新鲜度与期间完整性校验",
+      "来源冲突与不可核验状态校验",
+      "报告事实与 Published 指针一致性校验"
+    ]),
+    prohibitedRules: Object.freeze([
+      "自动授信结论",
+      "自动风险可控判断",
+      "自动审批或自动生成待办"
+    ])
+  });
+
+  const reportDefinition = Object.freeze([
+    Object.freeze({
+      id: "SEC-01",
+      title: "一、借款人评价",
+      items: Object.freeze(["工商信息", "集团成员资格", "基本情况", "股权与治理"])
+    }),
+    Object.freeze({
+      id: "SEC-02",
+      title: "二、借款人经营情况",
+      items: Object.freeze(["经营基本情况", "主要业务", "行业与市场", "发展规划"])
+    }),
+    Object.freeze({
+      id: "SEC-03",
+      title: "三、借款人财务情况",
+      items: Object.freeze(["资产负债表分析", "利润表分析", "现金流量表分析", "财务指标", "财务评价", "资金需求分析"])
+    }),
+    Object.freeze({
+      id: "SEC-04",
+      title: "四、借款风险分析",
+      items: Object.freeze(["经营风险", "财务风险", "融资与偿债风险", "资料缺口与不可核验事项"])
+    }),
+    Object.freeze({
+      id: "SEC-05",
+      title: "五、授信结论",
+      items: Object.freeze(["贷款方案", "人工调查意见", "人工复核意见", "最终人工确认"])
+    }),
+    Object.freeze({
+      id: "SEC-06",
+      title: "六、数据来源",
+      items: Object.freeze(["公开权威资料", "合成演示资料", "Published 语义版本", "数据时点与质量说明"])
+    })
+  ]);
+
+  const stableIdentities = Object.freeze({
+    financialCompanyId: "FC-DEMO-001",
+    borrowerId: "BORR-CN-USCC-91440300093677087R",
+    memberId: "MEM-CGN-003816",
+    borrowerName: "中国广核电力股份有限公司",
+    applicationId: "APP-S004-20260815-0001",
+    reportId: "RPT-S004-20260815-0001",
+    reportNumber: "S004-PLR-2026-0001",
+    evidencePackId: "EVP-S004-20260815-0001",
+    officialDataAssetId: "DA-S004-OFFICIAL-PUBLIC-001",
+    syntheticDataAssetId: "DA-S004-SYNTHETIC-DEMO-001",
+    semanticVersionId: "T019-S004-PUBLISHED-001"
+  });
+
+  const loanPlan = Object.freeze({
+    currency: "人民币",
+    term: "一年期",
+    purpose: "流动资金",
+    guarantee: "信用贷款",
+    guaranteeEvidence: "保证、抵押、质押均记录 NOT_APPLICABLE",
+    requestedAmount: "人民币 10 亿元",
+    approvedAmount: "人民币 5 亿元",
+    annualInterestRate: "2.35%",
+    amount: "申请 10 亿元；最终额度待人工复核"
+  });
+
+  const formalOutputs = Object.freeze({
+    html: "artifacts/report/RPT-S004-CGNPC-20260815-v1.0.html",
+    pdf: "artifacts/report/RPT-S004-CGNPC-20260815-v1.0.pdf",
+    contentVersion: "1.0.0",
+    publicationStatus: "PUBLISHED_DEMO"
+  });
+
+  const agentDefinition = Object.freeze({
+    id: "AGT-S004-PRELOAN-REPORT-V1",
+    name: "贷前调查报告生成 Agent",
+    mode: "fixed-evidence-only",
+    allowedTools: Object.freeze(["读取固定证据包", "读取报告定义", "生成结构化草稿", "解释已发布报告"]),
+    deniedTools: Object.freeze(["直接读取工作簿", "自行选择最新数据", "重算正式指标", "发布报告", "修改本体", "提交 Action Request", "创建待办"])
+  });
+
+  const scenario = Object.freeze({
+    id: "S004",
+    scenarioVersion: "S004-v1",
+    name: "财务公司贷款贷前调查",
+    organization: "财务公司",
+    borrowerScope: "集团成员单位",
+    borrower: stableIdentities.borrowerName,
+    businessDate: "2026-08-15",
+    baselineVersion: "1.0.3",
+    baselineSnapshotId: "BSL-S001-V103-DE0119608E26"
+  });
+
+  const initialScenarioContext = Object.freeze({
+    scenarioId: "S004",
+    scenarioVersion: "S004-v1",
+    scenarioRunId: "S004-RUN-20260815124059209-4d35e1ed1b61",
+    formedAt: "2026-08-15T12:40:59.208Z",
+    status: "active"
+  });
+
+  const nav = Object.freeze([
+    Object.freeze({ id: "home", name: "场景首页", icon: "home", route: "#home" }),
+    Object.freeze({ id: "flow", name: "调查流程", icon: "route", route: "#flow" }),
+    Object.freeze({ id: "data", name: "数据工程", icon: "database", route: "#module/data" }),
+    Object.freeze({ id: "ontology", name: "本体管理", icon: "network", route: "#module/ontology" }),
+    Object.freeze({ id: "query", name: "智能问数", icon: "sparkles", route: "#module/query" }),
+    Object.freeze({ id: "decision", name: "决策中心", icon: "target", route: "#module/decision" }),
+    Object.freeze({ id: "agent", name: "Agent 应用", icon: "bot", route: "#module/agent" }),
+    Object.freeze({ id: "report", name: "报告中心", icon: "file", route: "#module/report" }),
+    Object.freeze({ id: "checkpoints", name: "场景快照", icon: "archive", route: "#checkpoints" }),
+    Object.freeze({ id: "evidence", name: "证据索引", icon: "link", route: "#evidence" })
+  ]);
+
+  window.S004_DATA = Object.freeze({
+    brand: Object.freeze({
+      zh: "智财问策",
+      en: "Ontology Financial World",
+      full: "智财问策（Ontology Financial World）"
+    }),
+    scenario: scenario,
+    initialScenarioContext: initialScenarioContext,
+    stableIdentities: stableIdentities,
+    loanPlan: loanPlan,
+    formalOutputs: formalOutputs,
+    modules: modules,
+    moduleById: Object.freeze(Object.fromEntries(modules.map(function (module) { return [module.id, module]; }))),
+    moduleByKey: Object.freeze(Object.fromEntries(modules.map(function (module) { return [module.key, module]; }))),
+    workflow: workflow,
+    stepById: Object.freeze(Object.fromEntries(workflow.map(function (step) { return [step.id, step]; }))),
+    sourceGroups: sourceGroups,
+    dataQualityChecks: dataQualityChecks,
+    ontology: ontology,
+    reportDefinition: reportDefinition,
+    agentDefinition: agentDefinition,
+    nav: nav,
+    checkpointNodes: Object.freeze([
+      "initial-configured",
+      "data-connected",
+      "published-switched",
+      "query-integrated",
+      "decision-chain-completed",
+      "agent-report-dashboard-completed",
+      "e2e-integrated",
+      "pre-risk-change"
+    ])
+  });
+})();

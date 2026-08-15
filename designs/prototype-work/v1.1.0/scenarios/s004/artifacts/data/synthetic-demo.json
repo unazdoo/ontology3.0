@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "ofw.s004.synthetic-demo.v1",
+  "dataAssetId": "DA-S004-SYNTHETIC-DEMO-001",
+  "dataAssetVersion": "1.0.0",
+  "owner": "M02",
+  "sourceTag": "synthetic-demo",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "financialCompany": {
+    "financialCompanyId": "FC-DEMO-001",
+    "formalBusinessRole": "财务公司",
+    "displayName": "集团财务公司（演示）"
+  },
+  "membership": {
+    "memberId": "MEM-CGN-003816",
+    "borrowerId": "BORR-CN-USCC-91440300093677087R",
+    "memberStatus": "ACTIVE",
+    "effectiveFrom": "2014-03-25",
+    "verifiedAt": "2026-08-15T12:43:00.000Z",
+    "sourceNode": "SIM_MEMBER_REGISTRY"
+  },
+  "loanApplication": {
+    "applicationId": "APP-S004-20260815-0001",
+    "applicationDate": "2026-08-15",
+    "borrowerId": "BORR-CN-USCC-91440300093677087R",
+    "financialCompanyId": "FC-DEMO-001",
+    "loanType": "WORKING_CAPITAL",
+    "currency": "CNY",
+    "requestedAmount": "100000.00",
+    "unit": "CNY_10K",
+    "termMonths": 12,
+    "rateType": "FIXED",
+    "annualInterestRate": "0.0235",
+    "guaranteeMode": "CREDIT",
+    "guarantorStatus": "NOT_APPLICABLE",
+    "collateralStatus": "NOT_APPLICABLE",
+    "purpose": "核电运营相关日常经营周转，包括核燃料、备品备件及运维服务采购",
+    "sourceNode": "SIM_LOAN_APPLICATION"
+  },
+  "internalFacility": {
+    "facilityId": "FAC-S004-DEMO-001",
+    "approvedFacility": "300000.00",
+    "usedFacility": "120000.00",
+    "availableFacility": "180000.00",
+    "currency": "CNY",
+    "unit": "CNY_10K",
+    "asOfDate": "2026-08-14",
+    "sourceNode": "SIM_INTERNAL_CREDIT"
+  },
+  "workingCapitalFunding": {
+    "existingWorkingCapitalLoans": "120000.00",
+    "otherWorkingCapitalChannels": "30000.00",
+    "currency": "CNY",
+    "unit": "CNY_10K",
+    "asOfDate": "2026-08-14",
+    "sourceNode": "SIM_LOAN_LEDGER"
+  },
+  "creditBureau": {
+    "creditSnapshotId": "CRS-S004-DEMO-001",
+    "asOfDate": "2026-08-14",
+    "currentOverdueAmount": "0.00",
+    "pastDue90PlusCount24M": 0,
+    "materialAdverseRecordCount": 0,
+    "currency": "CNY",
+    "unit": "CNY_10K",
+    "sourceNode": "SIM_CREDIT_BUREAU",
+    "interpretationBoundary": "原始记录仅供人工判断，不自动等同于低风险或同意授信"
+  },
+  "internalRating": {
+    "ratingRecordId": "RATING-S004-DEMO-001",
+    "rating": "AA+",
+    "score": 86,
+    "effectiveFrom": "2026-07-01",
+    "validUntil": "2027-06-30",
+    "sourceNode": "SIM_INTERNAL_RATING",
+    "interpretationBoundary": "评级为演示输入，不直接形成授信结论"
+  },
+  "purposeContracts": {
+    "contractSetId": "PURPOSE-S004-DEMO-001",
+    "eligibleContractAmount": "120000.00",
+    "currency": "CNY",
+    "unit": "CNY_10K",
+    "coverageRatioToApplication": "1.20",
+    "sourceNode": "SIM_PURPOSE_CONTRACT"
+  },
+  "repaymentPlan": {
+    "repaymentPlanId": "REPAY-S004-DEMO-001",
+    "principalMode": "BULLET_AT_MATURITY",
+    "interestFrequency": "QUARTERLY",
+    "primaryRepaymentSource": "核电运营收入和经营活动现金流",
+    "sourceNode": "SIM_REPAYMENT_PLAN"
+  },
+  "siteInvestigation": {
+    "investigationId": "SITE-S004-DEMO-001",
+    "investigationDate": "2026-08-12",
+    "investigatorRole": "财务公司调查岗",
+    "status": "COMPLETED",
+    "observedFacts": [
+      "借款人主体及主要经营场所与登记信息一致",
+      "申请用途资料金额覆盖申请金额",
+      "现场材料未替代年报已有财务事实"
+    ],
+    "humanOpinionStatus": "PENDING_CONFIRMATION",
+    "sourceNode": "SIM_SITE_SURVEY"
+  },
+  "sourceNodes": [
+    "SIM_MEMBER_REGISTRY",
+    "SIM_LOAN_APPLICATION",
+    "SIM_INTERNAL_CREDIT",
+    "SIM_LOAN_LEDGER",
+    "SIM_CREDIT_BUREAU",
+    "SIM_INTERNAL_RATING",
+    "SIM_PURPOSE_CONTRACT",
+    "SIM_REPAYMENT_PLAN",
+    "SIM_SITE_SURVEY"
+  ],
+  "noDuplicateFinancialUpload": true
+}

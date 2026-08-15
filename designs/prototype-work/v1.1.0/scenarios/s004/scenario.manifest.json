@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "ofw.scenario-package.v1",
+  "scenarioId": "S004",
+  "scenarioVersion": "S004-v1",
+  "name": "财务公司贷款贷前调查",
+  "status": "implementation",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "parentVersion": "1.0.3",
+  "prototypeVersion": "1.1.0",
+  "foundationVersion": "1.0.0",
+  "entry": "index.html",
+  "reviewRoute": "scenarios/s004/index.html#home",
+  "recommendedPort": 4334,
+  "businessSubject": "财务公司",
+  "borrowerScope": "集团成员单位",
+  "formalOutputs": [
+    "controlled-html",
+    "same-source-pdf"
+  ],
+  "excludedOutputs": [
+    "docx",
+    "electronic-signature",
+    "external-submission",
+    "complex-approval"
+  ],
+  "routes": [
+    "#home",
+    "#flow",
+    "#module/data",
+    "#module/ontology",
+    "#module/query",
+    "#module/decision",
+    "#module/agent",
+    "#module/report",
+    "#checkpoints",
+    "#evidence"
+  ],
+  "moduleModes": {
+    "M01": "scenario-projection",
+    "M02": "scenario-projection",
+    "M03": "not-applicable",
+    "M04": "conditional-action-request",
+    "M05": "scenario-projection",
+    "M06": "scenario-projection"
+  },
+  "resourceIndexes": {
+    "artifacts": "artifacts/index.json",
+    "moduleExports": "module-exports/index.json",
+    "checkpoints": "checkpoints/index.json",
+    "evidence": "evidence/index.json"
+  },
+  "isolation": {
+    "storage": "OFWScenarioFoundation.createNamespacedStorage",
+    "scopePrefix": "S004",
+    "requiresNewScenarioRunIdOnReset": true,
+    "formalCheckpointSource": "C034 immutable manifests",
+    "browserStorageRole": "discardable-current-projection"
+  },
+  "integration": {
+    "mergeOrder": 3,
+    "registryOwner": "v1.1.0 integration workspace",
+    "sharedShellChangesAllowedHere": false,
+    "sharedModuleChangesAllowedHere": false
+  }
+}

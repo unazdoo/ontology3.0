@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "ofw.s004.module-export.v1",
+  "moduleId": "M02",
+  "owner": "数据工程",
+  "moduleVersion": "1.1.0-s004.1",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "checkpointStates": {
+    "CP00": {
+      "moduleId": "M02",
+      "exportId": "M02-S004-CP00-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "source-plan-configured",
+      "resourceRefs": [
+        "artifacts/index.json"
+      ],
+      "evidenceRefs": []
+    },
+    "CP10": {
+      "moduleId": "M02",
+      "exportId": "M02-S004-CP10-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "data-connected",
+      "sourceCounts": {
+        "officialPublicDocuments": 3,
+        "syntheticDemoNodes": 9,
+        "duplicateSyntheticFinancialUploads": 0
+      },
+      "resourceRefs": [
+        "artifacts/data/official-public.json",
+        "artifacts/data/synthetic-demo.json"
+      ],
+      "evidenceRefs": [
+        "artifacts/data/data-quality.json"
+      ]
+    },
+    "CP20": {
+      "moduleId": "M02",
+      "exportId": "M02-S004-CP20-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "data-asset-delivered",
+      "resourceRefs": [
+        "artifacts/data/official-public.json",
+        "artifacts/data/synthetic-demo.json",
+        "artifacts/data/c017-confidence-summary.json"
+      ],
+      "evidenceRefs": [
+        "artifacts/ontology/published-resources.json"
+      ]
+    },
+    "CP30": {
+      "moduleId": "M02",
+      "exportId": "M02-S004-CP30-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "data-asset-stable",
+      "resourceRefs": [
+        "artifacts/data/c017-confidence-summary.json"
+      ],
+      "evidenceRefs": [
+        "module-exports/M03.json#checkpointStates.CP30"
+      ]
+    },
+    "CP40": {
+      "moduleId": "M02",
+      "exportId": "M02-S004-CP40-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "data-asset-stable",
+      "resourceRefs": [
+        "artifacts/data/c017-confidence-summary.json"
+      ],
+      "evidenceRefs": [
+        "module-exports/M04.json#checkpointStates.CP40"
+      ]
+    },
+    "CP50": {
+      "moduleId": "M02",
+      "exportId": "M02-S004-CP50-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "report-evidence-consumed",
+      "resourceRefs": [
+        "artifacts/data/c017-confidence-summary.json"
+      ],
+      "evidenceRefs": [
+        "artifacts/agent/evidence-package.json"
+      ]
+    },
+    "CP60": {
+      "moduleId": "M02",
+      "exportId": "M02-S004-CP60-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "e2e-verified",
+      "resourceRefs": [
+        "artifacts/data/official-public.json",
+        "artifacts/data/synthetic-demo.json",
+        "artifacts/data/data-quality.json",
+        "artifacts/data/c017-confidence-summary.json"
+      ],
+      "evidenceRefs": [
+        "artifacts/report/deterministic-verification.json",
+        "fixtures/s004-demo.json"
+      ]
+    }
+  },
+  "restoreMode": "isolated-clone",
+  "historyOverwriteAllowed": false
+}

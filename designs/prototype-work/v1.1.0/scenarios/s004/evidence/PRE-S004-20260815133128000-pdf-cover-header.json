@@ -1,0 +1,49 @@
+{
+  "changeId": "CHG-S004-PDF-COVER-HEADER-20260815-001",
+  "changeScope": [
+    {
+      "changeKind": "report-build-tool",
+      "owner": "M06",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/tools/build-report.mjs",
+      "sha256Before": "c0ae0f62380e5c5a375fb0edd2b2709b3f08dbd1701e745b1c1ec82128ec43e9"
+    },
+    {
+      "changeKind": "same-source-html",
+      "owner": "M06",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/artifacts/report/RPT-S004-CGNPC-20260815-v1.0.html",
+      "sha256Before": "607481865ce0c2c1f50dffebd62340b9562907b4090d469cd3e2f14674f9f602"
+    },
+    {
+      "changeKind": "same-source-pdf",
+      "owner": "M06",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/artifacts/report/RPT-S004-CGNPC-20260815-v1.0.pdf",
+      "sha256Before": "1869e120993a8d054f800bc2130361a7b7a10f3f8a81b9b5563cfa098ca2a16b"
+    }
+  ],
+  "evidenceType": "C034-pre-risk-change",
+  "formedAt": "2026-08-15T13:31:28.000Z",
+  "immutabilityRule": "现有 CP00—CP60 不得覆盖；修改后必须形成新报告版本或新快照",
+  "reason": "准备修正正式 PDF 封面打印页眉裁切",
+  "restorePreflight": {
+    "externalCapabilitiesDefault": "disabled",
+    "mode": "isolated-clone",
+    "overwritesHistory": false,
+    "requiresNewScenarioRunId": true,
+    "status": "verified"
+  },
+  "riskLevel": "medium",
+  "rollbackTarget": {
+    "checkpointId": "CP-S004-20260815131918600-07b5e14d6110",
+    "manifestRef": "designs/prototype-work/v1.1.0/scenarios/s004/checkpoints/CP-S004-60/manifest.json",
+    "manifestSha256": "ad443f8ee9e3a8d1be4502ef0a8a2b0fc919fcbb0e0c531ba1e25aedf79f0ef4",
+    "phaseAlias": "CP-S004-60"
+  },
+  "scenarioContext": {
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "scenarioId": "S004",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "scenarioVersion": "S004-v1",
+    "status": "active"
+  },
+  "schemaVersion": 1
+}

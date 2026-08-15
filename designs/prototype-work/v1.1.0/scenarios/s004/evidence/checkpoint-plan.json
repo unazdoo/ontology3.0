@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "planType": "S004-C034-checkpoint-plan",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioVersion": "S004-v1",
+  "buildVersion": "S004-v1-build-20260815.1",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "phases": [
+    {
+      "phaseAlias": "CP-S004-00",
+      "checkpointNode": "initial-configured",
+      "createdAt": "2026-08-15T13:19:18.000Z"
+    },
+    {
+      "phaseAlias": "CP-S004-10",
+      "checkpointNode": "data-connected",
+      "createdAt": "2026-08-15T13:19:18.100Z"
+    },
+    {
+      "phaseAlias": "CP-S004-20",
+      "checkpointNode": "published-switched",
+      "createdAt": "2026-08-15T13:19:18.200Z"
+    },
+    {
+      "phaseAlias": "CP-S004-30",
+      "checkpointNode": "query-integrated",
+      "createdAt": "2026-08-15T13:19:18.300Z"
+    },
+    {
+      "phaseAlias": "CP-S004-40",
+      "checkpointNode": "decision-chain-completed",
+      "createdAt": "2026-08-15T13:19:18.400Z"
+    },
+    {
+      "phaseAlias": "CP-S004-50",
+      "checkpointNode": "agent-report-dashboard-completed",
+      "createdAt": "2026-08-15T13:19:18.500Z"
+    },
+    {
+      "phaseAlias": "CP-S004-60",
+      "checkpointNode": "e2e-integrated",
+      "createdAt": "2026-08-15T13:19:18.600Z"
+    }
+  ],
+  "immutability": {
+    "manifestIdentity": "checkpointId + detached SHA-256",
+    "overwriteAllowed": false,
+    "browserStorageAsTruth": false
+  }
+}

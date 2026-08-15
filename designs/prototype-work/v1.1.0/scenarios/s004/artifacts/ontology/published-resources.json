@@ -1,0 +1,249 @@
+{
+  "schemaVersion": "ofw.s004.published-resources.v1",
+  "resourcePackageId": "ONTO-S004-LOAN-PREFLIGHT-001",
+  "resourcePackageVersion": "1.0.0",
+  "owner": "M01",
+  "lifecycleStatus": "Published",
+  "publishedAt": "2026-08-15T12:51:00.000Z",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "objects": [
+    {
+      "objectTypeId": "OBJ-FINANCIAL-COMPANY",
+      "name": "财务公司",
+      "stableKey": "financialCompanyId"
+    },
+    {
+      "objectTypeId": "OBJ-GROUP-MEMBER-BORROWER",
+      "name": "集团成员借款人",
+      "stableKey": "borrowerId",
+      "alternateKey": "unifiedSocialCreditCode"
+    },
+    {
+      "objectTypeId": "OBJ-LOAN-APPLICATION",
+      "name": "贷款申请",
+      "stableKey": "applicationId"
+    },
+    {
+      "objectTypeId": "OBJ-FINANCIAL-STATEMENT-FACT",
+      "name": "财务报表事实",
+      "stableKey": "factId"
+    },
+    {
+      "objectTypeId": "OBJ-CREDIT-FACILITY",
+      "name": "内部授信额度",
+      "stableKey": "facilityId"
+    },
+    {
+      "objectTypeId": "OBJ-CREDIT-BUREAU-SNAPSHOT",
+      "name": "征信摘要",
+      "stableKey": "creditSnapshotId"
+    },
+    {
+      "objectTypeId": "OBJ-SITE-INVESTIGATION",
+      "name": "现场调查",
+      "stableKey": "investigationId"
+    },
+    {
+      "objectTypeId": "OBJ-PREFLIGHT-REPORT",
+      "name": "贷前调查报告",
+      "stableKey": "reportId"
+    }
+  ],
+  "relations": [
+    {
+      "relationTypeId": "REL-MEMBER-OF-GROUP",
+      "name": "借款人属于集团",
+      "from": "OBJ-GROUP-MEMBER-BORROWER",
+      "to": "OBJ-FINANCIAL-COMPANY"
+    },
+    {
+      "relationTypeId": "REL-SUBMITS-APPLICATION",
+      "name": "借款人提交贷款申请",
+      "from": "OBJ-GROUP-MEMBER-BORROWER",
+      "to": "OBJ-LOAN-APPLICATION"
+    },
+    {
+      "relationTypeId": "REL-STATEMENT-DESCRIBES-BORROWER",
+      "name": "财务事实描述借款人",
+      "from": "OBJ-FINANCIAL-STATEMENT-FACT",
+      "to": "OBJ-GROUP-MEMBER-BORROWER"
+    },
+    {
+      "relationTypeId": "REL-REPORT-EVALUATES-APPLICATION",
+      "name": "报告评估贷款申请",
+      "from": "OBJ-PREFLIGHT-REPORT",
+      "to": "OBJ-LOAN-APPLICATION"
+    }
+  ],
+  "metrics": [
+    {
+      "metricId": "MET-DEBT-ASSET-RATIO",
+      "name": "资产负债率",
+      "formula": "totalLiabilities / totalAssets",
+      "unit": "RATIO"
+    },
+    {
+      "metricId": "MET-CURRENT-RATIO",
+      "name": "流动比率",
+      "formula": "currentAssets / currentLiabilities",
+      "unit": "TIMES"
+    },
+    {
+      "metricId": "MET-EBIT-INTEREST-COVERAGE",
+      "name": "EBIT/利息",
+      "formula": "(profitBeforeTax + interestExpense) / interestExpense",
+      "unit": "TIMES"
+    },
+    {
+      "metricId": "MET-MAIN-BUSINESS-PROFIT-MARGIN",
+      "name": "主营业务利润率",
+      "formula": "(revenue - operatingCost - taxAndSurcharges) / revenue",
+      "unit": "RATIO"
+    },
+    {
+      "metricId": "MET-RETURN-ON-TOTAL-ASSETS",
+      "name": "总资产报酬率",
+      "formula": "(profitBeforeTax + interestExpense) / average(totalAssets)",
+      "unit": "RATIO"
+    },
+    {
+      "metricId": "MET-RETURN-ON-PARENT-EQUITY",
+      "name": "净资产收益率",
+      "formula": "parentNetProfit / average(parentEquity)",
+      "unit": "RATIO"
+    },
+    {
+      "metricId": "MET-INVENTORY-TURNOVER",
+      "name": "存货周转率",
+      "formula": "operatingCost / average(inventory)",
+      "unit": "TIMES"
+    },
+    {
+      "metricId": "MET-AR-TURNOVER",
+      "name": "应收账款周转率",
+      "formula": "revenue / average(accountsReceivable)",
+      "unit": "TIMES"
+    },
+    {
+      "metricId": "MET-TOTAL-ASSET-TURNOVER",
+      "name": "总资产周转率",
+      "formula": "revenue / average(totalAssets)",
+      "unit": "TIMES"
+    },
+    {
+      "metricId": "MET-CURRENT-ASSET-TURNOVER",
+      "name": "流动资产周转率",
+      "formula": "revenue / average(currentAssets)",
+      "unit": "TIMES"
+    },
+    {
+      "metricId": "MET-TOTAL-ASSET-GROWTH",
+      "name": "总资产增长率",
+      "formula": "currentTotalAssets / restatedPriorTotalAssets - 1",
+      "unit": "RATIO"
+    },
+    {
+      "metricId": "MET-PARENT-EQUITY-GROWTH",
+      "name": "净资产增长率",
+      "formula": "currentParentEquity / restatedPriorParentEquity - 1",
+      "unit": "RATIO"
+    },
+    {
+      "metricId": "MET-NET-PROFIT-GROWTH",
+      "name": "净利润增长率",
+      "formula": "currentNetProfit / restatedPriorNetProfit - 1",
+      "unit": "RATIO"
+    },
+    {
+      "metricId": "MET-REVENUE-GROWTH",
+      "name": "销售收入增长率",
+      "formula": "currentRevenue / restatedPriorRevenue - 1",
+      "unit": "RATIO"
+    },
+    {
+      "metricId": "MET-WORKING-CAPITAL-NEED",
+      "name": "营运资金量",
+      "formula": "revenue * (1 - mainBusinessProfitMargin) * (1 + expectedRevenueGrowth) / workingCapitalTurnover",
+      "unit": "CNY_10K",
+      "calculationRuleVersion": "S004-FUNDING-V2-FULL-PRECISION",
+      "intermediateRounding": "NONE"
+    },
+    {
+      "metricId": "MET-MAX-NEW-WORKING-CAPITAL-LOAN",
+      "name": "新增流动资金贷款上限",
+      "formula": "workingCapitalNeed - cashAndBank - existingWorkingCapitalLoans - otherWorkingCapitalChannels",
+      "unit": "CNY_10K",
+      "calculationRuleVersion": "S004-FUNDING-V2-FULL-PRECISION"
+    }
+  ],
+  "rules": [
+    {
+      "ruleId": "RULE-S004-MEMBER-ACTIVE",
+      "name": "集团成员资格校验",
+      "effect": "DETERMINISTIC_GATE"
+    },
+    {
+      "ruleId": "RULE-S004-LOAN-MINIMUM-SCOPE",
+      "name": "人民币一年期流动资金信用贷款范围校验",
+      "effect": "DETERMINISTIC_GATE"
+    },
+    {
+      "ruleId": "RULE-S004-AMOUNT-WITHIN-FUNDING",
+      "name": "申请金额不超过资金需求上限",
+      "effect": "DETERMINISTIC_GATE"
+    },
+    {
+      "ruleId": "RULE-S004-AMOUNT-WITHIN-FACILITY",
+      "name": "申请金额不超过可用授信额度",
+      "effect": "DETERMINISTIC_GATE"
+    },
+    {
+      "ruleId": "RULE-S004-DEBT-RATIO-ATTENTION",
+      "name": "资产负债率关注信号",
+      "condition": "debtAssetRatio >= 0.65",
+      "effect": "ATTENTION_ONLY"
+    },
+    {
+      "ruleId": "RULE-S004-CURRENT-RATIO-ATTENTION",
+      "name": "流动比率关注信号",
+      "condition": "currentRatio < 1",
+      "effect": "ATTENTION_ONLY"
+    },
+    {
+      "ruleId": "RULE-S004-NEGATIVE-GROWTH-ATTENTION",
+      "name": "收入与净利润负增长关注信号",
+      "condition": "revenueGrowth < 0 || netProfitGrowth < 0",
+      "effect": "ATTENTION_ONLY"
+    },
+    {
+      "ruleId": "RULE-S004-EVIDENCE-SCOPE-CONSISTENCY",
+      "name": "重述口径和证据范围一致性校验",
+      "effect": "DETERMINISTIC_GATE"
+    }
+  ],
+  "actionTypes": [
+    {
+      "actionTypeId": "AT-S004-MANUAL-FOLLOW-UP",
+      "name": "提交贷前问题人工跟进请求",
+      "status": "Published",
+      "instantiatedInDemo": false,
+      "submissionBoundary": "仅用户通过受控入口显式提交"
+    }
+  ],
+  "prohibitedSemantics": [
+    "自动授信结论",
+    "自动风险可控判断",
+    "自动审批",
+    "自动创建Action Request或待办"
+  ],
+  "publishedPointers": {
+    "T019": "T019-S004-PUBLISHED-001",
+    "C008": "C008-S004-AUTHORITATIVE-FACTS-001"
+  }
+}

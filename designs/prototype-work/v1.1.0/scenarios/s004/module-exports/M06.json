@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "ofw.s004.module-export.v1",
+  "moduleId": "M06",
+  "owner": "报告中心",
+  "moduleVersion": "1.1.0-s004.1",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "checkpointStates": {
+    "CP00": {
+      "moduleId": "M06",
+      "exportId": "M06-S004-CP00-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "report-definition-configured",
+      "resourceRefs": [
+        "artifacts/report/report-definition.json"
+      ],
+      "evidenceRefs": [
+        "artifacts/index.json"
+      ]
+    },
+    "CP10": {
+      "moduleId": "M06",
+      "exportId": "M06-S004-CP10-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "waiting-for-published-facts",
+      "resourceRefs": [
+        "artifacts/report/report-definition.json"
+      ],
+      "evidenceRefs": [
+        "artifacts/data/c017-confidence-summary.json"
+      ]
+    },
+    "CP20": {
+      "moduleId": "M06",
+      "exportId": "M06-S004-CP20-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "published-facts-bound",
+      "resourceRefs": [
+        "artifacts/report/report-definition.json",
+        "artifacts/ontology/c008-authoritative-facts.json"
+      ],
+      "evidenceRefs": [
+        "artifacts/data/c017-confidence-summary.json"
+      ]
+    },
+    "CP30": {
+      "moduleId": "M06",
+      "exportId": "M06-S004-CP30-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "report-flow-without-query-run",
+      "resourceRefs": [
+        "artifacts/report/report-definition.json",
+        "artifacts/ontology/c008-authoritative-facts.json"
+      ],
+      "evidenceRefs": [
+        "module-exports/M03.json#checkpointStates.CP30"
+      ]
+    },
+    "CP40": {
+      "moduleId": "M06",
+      "exportId": "M06-S004-CP40-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "report-flow-without-action-request",
+      "resourceRefs": [
+        "artifacts/report/report-definition.json",
+        "artifacts/ontology/c008-authoritative-facts.json"
+      ],
+      "evidenceRefs": [
+        "module-exports/M04.json#checkpointStates.CP40"
+      ]
+    },
+    "CP50": {
+      "moduleId": "M06",
+      "exportId": "M06-S004-CP50-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "report-published",
+      "reportId": "RPT-S004-20260815-0001",
+      "reportNumber": "S004-PLR-2026-0001",
+      "contentVersion": "1.0.0",
+      "resourceRefs": [
+        "artifacts/agent/evidence-package.json",
+        "artifacts/agent/draft-output.json",
+        "artifacts/report/human-confirmation.json",
+        "artifacts/report/deterministic-verification.json",
+        "artifacts/report/publication-manifest.json"
+      ],
+      "evidenceRefs": [
+        "artifacts/data/data-quality.json"
+      ],
+      "formalOutputs": [
+        "RPT-S004-CGNPC-20260815-v1.0.html",
+        "RPT-S004-CGNPC-20260815-v1.0.pdf"
+      ]
+    },
+    "CP60": {
+      "moduleId": "M06",
+      "exportId": "M06-S004-CP60-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "e2e-verified",
+      "reportId": "RPT-S004-20260815-0001",
+      "reportNumber": "S004-PLR-2026-0001",
+      "contentVersion": "1.0.0",
+      "publicationStatus": "PUBLISHED_DEMO",
+      "resourceRefs": [
+        "artifacts/report/report-definition.json",
+        "artifacts/report/human-confirmation.json",
+        "artifacts/report/deterministic-verification.json",
+        "artifacts/report/publication-manifest.json"
+      ],
+      "evidenceRefs": [
+        "fixtures/s004-demo.json"
+      ],
+      "sameSourceHtmlPdf": true,
+      "inPlaceUpdateAllowed": false
+    }
+  },
+  "restoreMode": "isolated-clone",
+  "historyOverwriteAllowed": false
+}

@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "evidenceType": "C034-pre-risk-change",
+  "changeType": "publication-pointer-promotion",
+  "changeId": "CHG-S004-PUBLICATION-POINTER-20260815-001",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "formedAt": "2026-08-15T14:04:08.000Z",
+  "reason": "将当前正式报告消费指针从保留的 v1.0 提升到已形成的 v1.0.1",
+  "riskLevel": "medium",
+  "codeTreeSha256Before": "a98291481e6d15c7d6652d61bc44571a7300207f76ac2cb00546bd41848e95d5",
+  "pointerStateBefore": {
+    "explicitPointerFile": null,
+    "dataJsContentVersion": "1.0.0",
+    "dataJsHtml": "artifacts/report/RPT-S004-CGNPC-20260815-v1.0.html",
+    "dataJsPdf": "artifacts/report/RPT-S004-CGNPC-20260815-v1.0.pdf",
+    "artifactIndexPublicationManifest": "artifacts/report/publication-manifest.json",
+    "moduleIndexM06": "module-exports/M06.json",
+    "m06CurrentPublicationId": "PUB-S004-20260815-0001"
+  },
+  "targetPointerState": {
+    "contentVersion": "1.0.1",
+    "publicationId": "PUB-S004-20260815-0002",
+    "publicationManifest": "artifacts/report/publication-manifest-v1.0.1.json",
+    "html": "artifacts/report/RPT-S004-CGNPC-20260815-v1.0.1.html",
+    "pdf": "artifacts/report/RPT-S004-CGNPC-20260815-v1.0.1.pdf"
+  },
+  "sourceSnapshots": [
+    {
+      "sourceRef": "designs/prototype-work/v1.1.0/scenarios/s004/data.js",
+      "snapshotRef": "designs/prototype-work/v1.1.0/scenarios/s004/evidence/pointer-promotion-pre-20260815140408000/data.js.snapshot.txt",
+      "sha256": "ac82a29c422503dc4f8672e93fb54f56e8d5c191216551291dd0e26bb12be641"
+    },
+    {
+      "sourceRef": "designs/prototype-work/v1.1.0/scenarios/s004/artifacts/index.json",
+      "snapshotRef": "designs/prototype-work/v1.1.0/scenarios/s004/evidence/pointer-promotion-pre-20260815140408000/artifact-index.snapshot.json",
+      "sha256": "70002f2a5d706bfe269f5142843e23989eb9084c77f5b6d6dc8003dbb11d9a1b"
+    },
+    {
+      "sourceRef": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/index.json",
+      "snapshotRef": "designs/prototype-work/v1.1.0/scenarios/s004/evidence/pointer-promotion-pre-20260815140408000/module-export-index.snapshot.json",
+      "sha256": "45bcd40d295267fa32767bf11fbb45b895ac069868237f963bf3f811bb07f001"
+    }
+  ],
+  "changeScope": [
+    {
+      "owner": "S004 场景总装",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/data.js",
+      "sha256Before": "ac82a29c422503dc4f8672e93fb54f56e8d5c191216551291dd0e26bb12be641",
+      "changeKind": "current-consumption-view"
+    },
+    {
+      "owner": "M06",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/artifacts/report/current-publication-pointer.json",
+      "sha256Before": null,
+      "existsBefore": false,
+      "changeKind": "new-explicit-pointer"
+    },
+    {
+      "owner": "M06",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/M06.json",
+      "sha256Before": "ed3a303e0fc0a3ec6895cbe735dc9572cabf43dae963304a44743341ec6c7d5d",
+      "changeKind": "preserved-owner-export"
+    },
+    {
+      "owner": "M06",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/module-exports/index.json",
+      "sha256Before": "45bcd40d295267fa32767bf11fbb45b895ac069868237f963bf3f811bb07f001",
+      "changeKind": "current-owner-export-pointer"
+    },
+    {
+      "owner": "S004 场景总装",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/artifacts/index.json",
+      "sha256Before": "70002f2a5d706bfe269f5142843e23989eb9084c77f5b6d6dc8003dbb11d9a1b",
+      "changeKind": "current-artifact-pointer"
+    },
+    {
+      "owner": "M06",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/tools/build-report.mjs",
+      "sha256Before": "a4ce19826742937c4c65c3bded801ab38d52d009cfb92e4d92ef045c03bc8543",
+      "changeKind": "preserved-build-tool"
+    },
+    {
+      "owner": "M06",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/artifacts/report/publication-manifest.json",
+      "sha256Before": "35ed65c7cfa737cad4d186ddfdb8d80b828370acca68fda6f6b02b3ce0665adf",
+      "changeKind": "preserved-v1.0-publication"
+    },
+    {
+      "owner": "M06",
+      "ref": "designs/prototype-work/v1.1.0/scenarios/s004/artifacts/report/publication-manifest-v1.0.1.json",
+      "sha256Before": "ff0aeb6c8e6f0f802d65c407dfbbbe0abeaf4a1cb99e490a6a6423328b26535d",
+      "changeKind": "promotion-target-publication"
+    }
+  ],
+  "rollbackTarget": {
+    "phaseAlias": "CP-S004-60",
+    "checkpointId": "CP-S004-20260815131918600-07b5e14d6110",
+    "manifestRef": "designs/prototype-work/v1.1.0/scenarios/s004/checkpoints/CP-S004-60/manifest.json",
+    "manifestSha256": "ad443f8ee9e3a8d1be4502ef0a8a2b0fc919fcbb0e0c531ba1e25aedf79f0ef4"
+  },
+  "restorePreflight": {
+    "status": "verified",
+    "mode": "isolated-clone",
+    "requiresNewScenarioRunId": true,
+    "overwritesHistory": false,
+    "externalCapabilitiesDefault": "disabled"
+  },
+  "immutabilityRule": "保留 v1.0、旧 publication manifest、旧 M06 导出及所有既有 Checkpoint，不允许原地覆盖"
+}

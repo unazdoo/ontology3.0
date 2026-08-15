@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "ofw.s004.module-export-index.v1",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "exports": {
+    "M01": "module-exports/M01.json",
+    "M02": "module-exports/M02.json",
+    "M03": "module-exports/M03.json",
+    "M04": "module-exports/M04.json",
+    "M05": "module-exports/M05.json",
+    "M06": "module-exports/M06-publication-v1.0.1.json"
+  },
+  "phaseCodes": [
+    "CP00",
+    "CP10",
+    "CP20",
+    "CP30",
+    "CP40",
+    "CP50",
+    "CP60",
+    "POSTFIX_CP50",
+    "POSTFIX_CP60"
+  ],
+  "exportHistory": {
+    "M06": [
+      {
+        "moduleVersion": "1.1.0-s004.1",
+        "ref": "module-exports/M06.json",
+        "status": "preserved-superseded"
+      },
+      {
+        "moduleVersion": "1.1.0-s004.2",
+        "ref": "module-exports/M06-publication-v1.0.1.json",
+        "status": "current"
+      }
+    ]
+  },
+  "currentPublicationPointer": "artifacts/report/current-publication-pointer.json",
+  "restoreMode": "isolated-clone",
+  "historyOverwriteAllowed": false
+}

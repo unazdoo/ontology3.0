@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "ofw.s004.data-quality.v1",
+  "qualityRunId": "DQR-S004-20260815-0001",
+  "qualityVersion": "S004-DQ-v1.0.0",
+  "owner": "M02",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "status": "PASS_WITH_ACKNOWLEDGED_WARNINGS",
+  "checks": [
+    {
+      "checkId": "DQ-IDENTITY",
+      "status": "PASS",
+      "message": "统一社会信用代码、borrowerId、memberId、申请编号和报告编号稳定绑定"
+    },
+    {
+      "checkId": "DQ-MEMBER",
+      "status": "PASS",
+      "message": "synthetic-demo成员名册显示借款人为ACTIVE集团成员单位"
+    },
+    {
+      "checkId": "DQ-CURRENCY-UNIT",
+      "status": "PASS",
+      "message": "贷款和财务金额均显式记录CNY及CNY_10K"
+    },
+    {
+      "checkId": "DQ-SOURCE-SEPARATION",
+      "status": "PASS",
+      "message": "年报事实为official-public，贷款申请及内部资料为synthetic-demo，未重复制造财务报表"
+    },
+    {
+      "checkId": "DQ-RESTATEMENT-SCOPE",
+      "status": "WARNING_ACKNOWLEDGED",
+      "code": "MIXED_RESTATEMENT_SCOPE",
+      "severity": "HIGH",
+      "message": "2025年报因同一控制下企业合并重述2024和2023；现有输出样本混用了2024重述和2023原始口径",
+      "affectedPeriods": [
+        "2023",
+        "2024"
+      ],
+      "resolution": "2025指标仅使用AR2025当前期与AR2025重述2024比较期；2023单列AS_REPORTED并标注可比性受限，不在混合口径上计算跨期趋势",
+      "humanAcknowledgementRef": "artifacts/report/human-confirmation.json#dataScopeAcknowledgement"
+    },
+    {
+      "checkId": "DQ-FUNDING-ROUNDING",
+      "status": "WARNING_ACKNOWLEDGED",
+      "code": "INTERMEDIATE_ROUNDING_DIFFERENCE",
+      "severity": "MEDIUM",
+      "message": "历史输出使用展示值30.80%和2.2380作为中间量，结果与原始精度计算相差约221.03万元",
+      "resolution": "正式Metric锁定S004-FUNDING-V2-FULL-PRECISION，中间过程不舍入，最终金额保留两位小数",
+      "humanAcknowledgementRef": "artifacts/report/human-confirmation.json#calculationPolicyAcknowledgement"
+    },
+    {
+      "checkId": "DQ-HUMAN-DECISION",
+      "status": "PASS",
+      "message": "授信同意、最终额度和条件均来自human-input，不来自Rule或Agent"
+    }
+  ],
+  "publicationGate": {
+    "qualityEligible": true,
+    "requiresHumanAcknowledgements": true,
+    "acknowledgementsPresent": true,
+    "blockingIssueCount": 0,
+    "warningCount": 2
+  }
+}

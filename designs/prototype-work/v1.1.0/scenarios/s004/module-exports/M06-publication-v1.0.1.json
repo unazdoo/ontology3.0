@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "ofw.s004.module-export.v1",
+  "moduleId": "M06",
+  "owner": "报告中心",
+  "moduleVersion": "1.1.0-s004.2",
+  "exportReleaseId": "M06-S004-PUBLICATION-V1.0.1-EXPORT",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "supersedesExportRef": "module-exports/M06.json",
+  "preservesSupersededExport": true,
+  "currentPublicationPointerRef": "artifacts/report/current-publication-pointer.json",
+  "checkpointStates": {
+    "POSTFIX_CP50": {
+      "moduleId": "M06",
+      "exportId": "M06-S004-POSTFIX-CP50-V1.0.1-EXPORT",
+      "moduleVersion": "1.1.0-s004.2",
+      "status": "report-publication-promoted",
+      "reportId": "RPT-S004-20260815-0001",
+      "reportNumber": "S004-PLR-2026-0001",
+      "publicationId": "PUB-S004-20260815-0002",
+      "contentVersion": "1.0.1",
+      "resourceRefs": [
+        "artifacts/report/current-publication-pointer.json",
+        "artifacts/report/publication-manifest-v1.0.1.json",
+        "artifacts/report/RPT-S004-CGNPC-20260815-v1.0.1.html",
+        "artifacts/report/RPT-S004-CGNPC-20260815-v1.0.1.pdf"
+      ],
+      "evidenceRefs": [
+        "artifacts/report/same-source-output-v1.0.1.json",
+        "evidence/PRE-S004-20260815140408000-pointer-promotion.json"
+      ],
+      "formalOutputs": [
+        "RPT-S004-CGNPC-20260815-v1.0.1.html",
+        "RPT-S004-CGNPC-20260815-v1.0.1.pdf"
+      ]
+    },
+    "POSTFIX_CP60": {
+      "moduleId": "M06",
+      "exportId": "M06-S004-POSTFIX-CP60-V1.0.1-EXPORT",
+      "moduleVersion": "1.1.0-s004.2",
+      "status": "e2e-verified-current-publication",
+      "reportId": "RPT-S004-20260815-0001",
+      "reportNumber": "S004-PLR-2026-0001",
+      "publicationId": "PUB-S004-20260815-0002",
+      "contentVersion": "1.0.1",
+      "publicationStatus": "PUBLISHED_DEMO",
+      "resourceRefs": [
+        "artifacts/report/current-publication-pointer.json",
+        "artifacts/report/publication-manifest-v1.0.1.json",
+        "artifacts/report/report-data-v1.0.1.json",
+        "artifacts/report/same-source-output-v1.0.1.json"
+      ],
+      "evidenceRefs": [
+        "evidence/browser/browser-verification.json",
+        "fixtures/s004-demo.json"
+      ],
+      "sameSourceHtmlPdf": true,
+      "inPlaceUpdateAllowed": false,
+      "previousPublicationPreserved": true
+    }
+  },
+  "restoreMode": "isolated-clone",
+  "historyOverwriteAllowed": false
+}

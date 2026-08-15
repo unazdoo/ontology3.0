@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "ofw.s004.demo-fixture.v1",
+  "fixtureId": "FIX-S004-CGNPC-20260815-001",
+  "fixtureVersion": "1.0.0",
+  "purpose": "S004财务公司贷款贷前调查完整演示与固定验收",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "stableIdentity": {
+    "financialCompanyId": "FC-DEMO-001",
+    "borrowerId": "BORR-CN-USCC-91440300093677087R",
+    "memberId": "MEM-CGN-003816",
+    "applicationId": "APP-S004-20260815-0001",
+    "reportId": "RPT-S004-20260815-0001",
+    "reportNumber": "S004-PLR-2026-0001"
+  },
+  "applicationExpectation": {
+    "requestedAmount": "100000.00",
+    "approvedAmount": "50000.00",
+    "currency": "CNY",
+    "unit": "CNY_10K",
+    "termMonths": 12,
+    "rateType": "FIXED",
+    "annualInterestRate": "0.0235",
+    "loanType": "WORKING_CAPITAL",
+    "guaranteeMode": "CREDIT",
+    "guarantorStatus": "NOT_APPLICABLE",
+    "collateralStatus": "NOT_APPLICABLE"
+  },
+  "deterministicExpectations": {
+    "debtAssetRatio": "0.6515135071199685",
+    "currentRatio": "0.6614302764366692",
+    "interestCoverage": "4.874157894541738",
+    "mainBusinessProfitMargin": "0.3080159601442385",
+    "returnOnTotalAssets": "0.04790161614111294",
+    "returnOnParentEquity": "0.07757253988365662",
+    "inventoryTurnover": "2.407130699655670",
+    "accountsReceivableTurnover": "8.843408712839369",
+    "totalAssetTurnover": "0.1549272064118306",
+    "currentAssetTurnover": "1.005247531714792",
+    "workingCapitalNeed": "2340351.7498342284",
+    "maximumNewWorkingCapitalLoan": "107679.6698342284",
+    "requestedAmountWithinFunding": true,
+    "requestedAmountWithinFacility": true,
+    "calculationRuleVersion": "S004-FUNDING-V2-FULL-PRECISION"
+  },
+  "humanDecisionExpectation": {
+    "sourceTag": "human-confirmed",
+    "decision": "APPROVE_WITH_CONDITIONS",
+    "riskControllability": "CONDITIONALLY_CONTROLLABLE",
+    "conditionsCount": 4,
+    "agentGenerated": false,
+    "ruleGenerated": false
+  },
+  "moduleExpectations": {
+    "M01": "Published本体、Metric、Rule与C008",
+    "M02": "official-public、synthetic-demo、质量与C017",
+    "M03": "CP30明确not-applicable且结果数为0",
+    "M04": "CP40明确no-action且Action Request/通知/待办均为0",
+    "M05": "固定证据包上的结构化草稿与只读伴读",
+    "M06": "报告定义、人工确认、确定性核验及HTML/PDF发布所有权"
+  },
+  "checkpointExpectations": [
+    {
+      "phase": "CP00",
+      "node": "initial-configured"
+    },
+    {
+      "phase": "CP10",
+      "node": "data-connected"
+    },
+    {
+      "phase": "CP20",
+      "node": "published-switched"
+    },
+    {
+      "phase": "CP30",
+      "node": "query-integrated"
+    },
+    {
+      "phase": "CP40",
+      "node": "decision-chain-completed"
+    },
+    {
+      "phase": "CP50",
+      "node": "agent-report-dashboard-completed"
+    },
+    {
+      "phase": "CP60",
+      "node": "e2e-integrated"
+    }
+  ],
+  "formalOutputs": {
+    "html": "RPT-S004-CGNPC-20260815-v1.0.html",
+    "pdf": "RPT-S004-CGNPC-20260815-v1.0.pdf",
+    "sameSource": true,
+    "docxExpected": false
+  },
+  "negativeAssertions": [
+    "Agent不得直接读取年报或工作簿",
+    "Agent不得重新计算正式Metric",
+    "Agent和Rule不得生成授信决定或风险可控结论",
+    "未提交Action Request时M04不得形成审批、通知或待办",
+    "2023原始口径不得与2024重述口径静默合并计算趋势",
+    "历史报告不得被恢复或升版流程原地覆盖"
+  ],
+  "artifactIndexRef": "artifacts/index.json"
+}

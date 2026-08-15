@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "ofw.s004.module-export.v1",
+  "moduleId": "M03",
+  "owner": "智能问数",
+  "moduleVersion": "1.1.0-s004.1",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "checkpointStates": {
+    "CP00": {
+      "moduleId": "M03",
+      "exportId": "M03-S004-CP00-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "boundary-configured",
+      "applicability": "not-yet-applicable",
+      "queryRunCount": 0,
+      "resultCount": 0,
+      "resourceRefs": [],
+      "evidenceRefs": [
+        "artifacts/report/report-definition.json"
+      ]
+    },
+    "CP10": {
+      "moduleId": "M03",
+      "exportId": "M03-S004-CP10-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "boundary-preserved",
+      "applicability": "not-yet-applicable",
+      "queryRunCount": 0,
+      "resultCount": 0,
+      "resourceRefs": [],
+      "evidenceRefs": [
+        "artifacts/data/data-quality.json"
+      ]
+    },
+    "CP20": {
+      "moduleId": "M03",
+      "exportId": "M03-S004-CP20-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "published-context-available-but-unused",
+      "applicability": "not-yet-applicable",
+      "queryRunCount": 0,
+      "resultCount": 0,
+      "resourceRefs": [
+        "artifacts/ontology/c008-authoritative-facts.json"
+      ],
+      "evidenceRefs": []
+    },
+    "CP30": {
+      "moduleId": "M03",
+      "exportId": "M03-S004-CP30-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "not-applicable",
+      "applicability": "not-applicable",
+      "notApplicableReason": "S004_NO_INDEPENDENT_QUERY_REQUIREMENT",
+      "queryRunCount": 0,
+      "resultCount": 0,
+      "resourceRefs": [],
+      "evidenceRefs": [
+        "artifacts/report/report-definition.json#sections"
+      ]
+    },
+    "CP40": {
+      "moduleId": "M03",
+      "exportId": "M03-S004-CP40-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "not-applicable",
+      "applicability": "not-applicable",
+      "notApplicableReason": "S004_NO_INDEPENDENT_QUERY_REQUIREMENT",
+      "queryRunCount": 0,
+      "resultCount": 0,
+      "resourceRefs": [],
+      "evidenceRefs": [
+        "module-exports/M04.json#checkpointStates.CP40"
+      ]
+    },
+    "CP50": {
+      "moduleId": "M03",
+      "exportId": "M03-S004-CP50-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "not-applicable",
+      "applicability": "not-applicable",
+      "notApplicableReason": "S004_REPORT_FLOW_CONSUMES_C008_WITHOUT_QUERY_RUN",
+      "queryRunCount": 0,
+      "resultCount": 0,
+      "resourceRefs": [],
+      "evidenceRefs": [
+        "artifacts/agent/evidence-package.json"
+      ]
+    },
+    "CP60": {
+      "moduleId": "M03",
+      "exportId": "M03-S004-CP60-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "not-applicable-verified",
+      "applicability": "not-applicable",
+      "notApplicableReason": "S004_NO_INDEPENDENT_QUERY_REQUIREMENT",
+      "queryRunCount": 0,
+      "resultCount": 0,
+      "resourceRefs": [],
+      "evidenceRefs": [
+        "artifacts/report/deterministic-verification.json",
+        "fixtures/s004-demo.json"
+      ]
+    }
+  },
+  "restoreMode": "isolated-clone",
+  "historyOverwriteAllowed": false
+}

@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "ofw.contract.C023.s004.v1",
+  "contractId": "C023",
+  "agentRunId": "AGR-S004-20260815-0001",
+  "agentDefinitionId": "AGENT-S004-PREFLIGHT-REPORT",
+  "agentReleaseVersion": "1.0.0",
+  "promptVersion": "S004-PROMPT-v1.0.0",
+  "skillVersion": "S004-REPORT-SKILL-v1.0.0",
+  "owner": "M05",
+  "status": "COMPLETED_STRUCTURED_DRAFT",
+  "startedAt": "2026-08-15T12:56:00.000Z",
+  "completedAt": "2026-08-15T12:57:30.000Z",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "evidencePackageId": "EVP-S004-20260815-0001",
+  "reportId": "RPT-S004-20260815-0001",
+  "sections": [
+    {
+      "anchor": "sec-01-borrower-evaluation",
+      "title": "第一部分 借款人评价",
+      "generationMode": "AGENT_EVIDENCE_BOUND",
+      "draftText": "中国广核电力股份有限公司为中国广核集团有限公司控股的核电运营上市平台，统一社会信用代码91440300093677087R。截至2025年末，控股股东持股58.89%，实际控制人为国务院国有资产监督管理委员会。本次演示成员名册记录其集团成员状态为ACTIVE。",
+      "factRefs": [
+        "C008-S004-AUTHORITATIVE-FACTS-001#identity",
+        "DA-S004-OFFICIAL-PUBLIC-001#borrower",
+        "DA-S004-SYNTHETIC-DEMO-001#membership"
+      ],
+      "requiresHumanConfirmation": false
+    },
+    {
+      "anchor": "sec-02-operations",
+      "title": "第二部分 借款人经营情况",
+      "generationMode": "AGENT_EVIDENCE_BOUND",
+      "draftText": "借款人以核能发电为核心业务。截至2025年末，管理在运核电机组28台、装机容量31,838MW，在建机组20台、容量24,222MW；2025年管理机组上网电量2,326.48亿千瓦时。相关经营事实仅描述借款人合并范围，不将集团其他新能源平台业务并入。",
+      "factRefs": [
+        "DA-S004-OFFICIAL-PUBLIC-001#operatingFacts"
+      ],
+      "requiresHumanConfirmation": false
+    },
+    {
+      "anchor": "sec-03-financial",
+      "title": "第三部分 借款人财务情况",
+      "generationMode": "AGENT_EVIDENCE_BOUND",
+      "draftText": "2025年末资产总额5,056.56亿元、负债总额3,294.42亿元，资产负债率65.15%，流动比率0.66；全年营业收入756.97亿元、净利润147.31亿元、经营活动现金流净额299.71亿元。确定性测算的新增流动资金贷款上限为107,679.67万元，高于本次申请100,000万元。2023年与后续年度存在同一控制下企业合并造成的重述范围差异，跨期解读须保留可比性提示。",
+      "factRefs": [
+        "C008-S004-AUTHORITATIVE-FACTS-001#facts.financial2025",
+        "C008-S004-AUTHORITATIVE-FACTS-001#metricRun",
+        "S004-DQ-v1.0.0#DQ-RESTATEMENT-SCOPE"
+      ],
+      "requiresHumanConfirmation": false
+    },
+    {
+      "anchor": "sec-04-risk",
+      "title": "第四部分 借款风险分析",
+      "generationMode": "AGENT_EVIDENCE_BOUND_CANDIDATE",
+      "draftText": "确定性Rule形成三项关注信号：资产负债率达到65.15%，流动比率为0.66，2025年营业收入和净利润分别下降4.11%和15.67%；同时，在建工程余额1,139.31亿元、短期借款421.51亿元。正向事实包括经营活动现金流净额299.71亿元、EBIT利息保障倍数4.87倍。以上仅为证据化关注项，不自动判断风险是否可控。",
+      "factRefs": [
+        "C008-S004-AUTHORITATIVE-FACTS-001#ruleRun",
+        "C008-S004-AUTHORITATIVE-FACTS-001#metricRun"
+      ],
+      "requiresHumanConfirmation": true,
+      "prohibitedAutoConclusion": "风险可控"
+    },
+    {
+      "anchor": "sec-05-credit-conclusion",
+      "title": "第五部分 授信结论",
+      "generationMode": "HUMAN_ONLY",
+      "draftText": null,
+      "factSummary": {
+        "requestedAmount": "100000.00",
+        "maximumNewWorkingCapitalLoan": "107679.67",
+        "availableFacility": "180000.00",
+        "currency": "CNY",
+        "unit": "CNY_10K"
+      },
+      "requiresHumanConfirmation": true,
+      "status": "AWAITING_HUMAN_INPUT"
+    },
+    {
+      "anchor": "sec-06-data-sources",
+      "title": "数据来源",
+      "generationMode": "DETERMINISTIC_SOURCE_LIST",
+      "sourceRefs": [
+        "DOC-CGN-AR-2023",
+        "DOC-CGN-AR-2024",
+        "DOC-CGN-AR-2025",
+        "DA-S004-SYNTHETIC-DEMO-001"
+      ],
+      "requiresHumanConfirmation": false
+    }
+  ],
+  "decisionOutput": {
+    "creditDecision": "NOT_GENERATED",
+    "approvedAmount": null,
+    "riskControllability": "NOT_GENERATED"
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "ofw.s004.module-export.v1",
+  "moduleId": "M05",
+  "owner": "Agent应用",
+  "moduleVersion": "1.1.0-s004.1",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "checkpointStates": {
+    "CP00": {
+      "moduleId": "M05",
+      "exportId": "M05-S004-CP00-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "agent-definition-configured",
+      "resourceRefs": [],
+      "evidenceRefs": [
+        "artifacts/index.json"
+      ]
+    },
+    "CP10": {
+      "moduleId": "M05",
+      "exportId": "M05-S004-CP10-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "waiting-for-published-evidence",
+      "resourceRefs": [
+        "artifacts/data/c017-confidence-summary.json"
+      ],
+      "evidenceRefs": []
+    },
+    "CP20": {
+      "moduleId": "M05",
+      "exportId": "M05-S004-CP20-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "published-facts-available",
+      "resourceRefs": [
+        "artifacts/ontology/c008-authoritative-facts.json"
+      ],
+      "evidenceRefs": []
+    },
+    "CP30": {
+      "moduleId": "M05",
+      "exportId": "M05-S004-CP30-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "query-independent",
+      "resourceRefs": [
+        "artifacts/ontology/c008-authoritative-facts.json"
+      ],
+      "evidenceRefs": [
+        "module-exports/M03.json#checkpointStates.CP30"
+      ]
+    },
+    "CP40": {
+      "moduleId": "M05",
+      "exportId": "M05-S004-CP40-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "action-independent",
+      "resourceRefs": [
+        "artifacts/ontology/c008-authoritative-facts.json"
+      ],
+      "evidenceRefs": [
+        "module-exports/M04.json#checkpointStates.CP40"
+      ]
+    },
+    "CP50": {
+      "moduleId": "M05",
+      "exportId": "M05-S004-CP50-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "agent-run-completed",
+      "agentRunId": "AGR-S004-20260815-0001",
+      "resourceRefs": [
+        "artifacts/agent/evidence-package.json",
+        "artifacts/agent/draft-output.json"
+      ],
+      "evidenceRefs": [
+        "artifacts/report/deterministic-verification.json"
+      ],
+      "prohibitedOperationCounts": {
+        "directFileReads": 0,
+        "metricRecalculations": 0,
+        "creditDecisions": 0,
+        "reportPublications": 0,
+        "actionRequests": 0
+      }
+    },
+    "CP60": {
+      "moduleId": "M05",
+      "exportId": "M05-S004-CP60-EXPORT",
+      "moduleVersion": "1.1.0-s004.1",
+      "status": "e2e-verified",
+      "agentRunId": "AGR-S004-20260815-0001",
+      "companionRun": {
+        "runId": "COMP-S004-20260815-0001",
+        "status": "COMPLETED_READ_ONLY",
+        "publishedReportId": "RPT-S004-20260815-0001",
+        "actionCapabilities": "DISABLED"
+      },
+      "resourceRefs": [
+        "artifacts/agent/evidence-package.json",
+        "artifacts/agent/draft-output.json",
+        "artifacts/report/publication-manifest.json"
+      ],
+      "evidenceRefs": [
+        "fixtures/s004-demo.json"
+      ]
+    }
+  },
+  "restoreMode": "isolated-clone",
+  "historyOverwriteAllowed": false
+}
