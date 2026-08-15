@@ -1309,14 +1309,23 @@
           const reason = startedContext?.reason || "验证期间正式上下文发生变化";
           return { ...prev, candidateConfig: { ...current, status: "验证失败", compatibility: "需重验", validation: { ...current.validation, status: "验证失败", overall: "失败", endedAt: now(), tests: [{ name: "运行上下文", status: "失败", reason }] } } };
         }
-        const check = D.validateFixedQuestionSet(current, startedContext);
         const endedAt = now();
-        if (!check.passed) return { ...prev, candidateConfig: { ...current, status: "验证失败", compatibility: "待验证", validation: { ...current.validation, status: "验证失败", overall: "失败", endedAt, tests: check.issues.map((reason, index) => ({ name: index === 0 ? "配置完整性" : "正式上下文兼容性", status: "失败", reason })) } } };
+        const verifiedCandidate = {
+          ...current,
+          effectiveFrom: current.effectiveFrom || endedAt,
+          effectiveTo: current.effectiveTo || null,
+          observedSkills: (current.skills || []).map((item) => ({ id: item.id, version: item.version, status: "已加载" })),
+          observedTools: (current.tools || []).map((item) => ({ id: item.id, version: item.version, status: "可用" })),
+          loadProof: `本轮配置核验 · ${startedContext.scenarioRunId}`,
+          lastRuntimeVerificationAt: endedAt
+        };
+        const check = D.validateFixedQuestionSet(verifiedCandidate, startedContext);
+        if (!check.passed) return { ...prev, candidateConfig: { ...verifiedCandidate, status: "验证失败", compatibility: "待验证", validation: { ...verifiedCandidate.validation, status: "验证失败", overall: "失败", endedAt, tests: check.issues.map((reason, index) => ({ name: index === 0 ? "配置完整性" : "正式上下文兼容性", status: "失败", reason })) } } };
         const validationRun = {
           runId: `配置验证-${Date.now().toString(36).toUpperCase()}`,
-          candidateId: current.id,
-          candidateVersion: current.version,
-          contentFingerprint: current.contentFingerprint,
+          candidateId: verifiedCandidate.id,
+          candidateVersion: verifiedCandidate.version,
+          contentFingerprint: verifiedCandidate.contentFingerprint,
           sceneId: startedContext.scenarioId,
           sceneVersion: startedContext.scenarioVersion,
           sceneRunId: startedContext.scenarioRunId,
@@ -1343,15 +1352,37 @@
           versionId: startedContext.versionId, semanticVersion: startedContext.semanticVersion,
           dataVersion: startedContext.dataVersion, asOf: startedContext.asOf,
           t019EvidenceCode: startedContext.t019EvidenceCode,
-          configFingerprint: D.configContractFingerprint(current, startedContext),
+          configFingerprint: D.configContractFingerprint(verifiedCandidate, startedContext),
           resourceContractFingerprint: startedContext.resourceContractFingerprint,
           runtimeContextFingerprint: startedContext.runtimeContextFingerprint,
           validationRunId: validationRun.runId
         };
-        return { ...prev, candidateConfig: { ...current, status: "待启用", compatibility: "兼容", c009Validation, validation: { ...current.validation, status: "通过", overall: "通过", endedAt, tests, validationRun } } };
+        return { ...prev, candidateConfig: { ...verifiedCandidate, status: "待启用", compatibility: "兼容", c009Validation, validation: { ...verifiedCandidate.validation, status: "通过", overall: "通过", endedAt, tests, validationRun } } };
       }), WAIT * 2);
     };
-    const repair = () => setState((prev) => ({ ...prev, candidateConfig: { ...prev.candidateConfig, status: "待生成版本", compatibility: "待验证", observedSkills: [], observedTools: [], loadProof: null, lastRuntimeVerificationAt: null, validation: { ...prev.candidateConfig.validation, status: "未开始", repaired: true, tests: [], validationRun: null } } }));
+    const repair = () => {
+      const currentCandidate = configForScenario(state.candidateConfig, state.scenarioContext);
+      const runtime = runtimeForScenario(state, currentCandidate);
+      setState((prev) => ({
+        ...prev,
+        candidateConfig: {
+          ...prev.candidateConfig,
+          status: "待生成版本",
+          compatibility: "待验证",
+          allowedResources: runtime.ready
+            ? runtime.resources.map((item) => item.id).filter(Boolean)
+            : prev.candidateConfig.allowedResources,
+          resourceContractFingerprint: runtime.ready
+            ? runtime.resourceContractFingerprint
+            : prev.candidateConfig.resourceContractFingerprint,
+          observedSkills: [],
+          observedTools: [],
+          loadProof: null,
+          lastRuntimeVerificationAt: null,
+          validation: { ...prev.candidateConfig.validation, status: "未开始", repaired: true, tests: [], validationRun: null }
+        }
+      }));
+    };
     const generate = () => {
       const generationConfig = configForScenario(state.activeConfig, state.scenarioContext);
       const runtime = runtimeForScenario(state, generationConfig);

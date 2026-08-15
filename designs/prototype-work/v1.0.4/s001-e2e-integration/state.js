@@ -1153,7 +1153,7 @@
           recovery: "按原提交标识核对接收结果；未确认原请求不存在前不要重复提交。"
         });
 
-    const confirmed = activeMatched.filter((item) => item.request?.decision?.type === "confirm");
+    const confirmed = matched.filter((item) => item.request?.decision?.type === "confirm");
     const confirmComplete = Boolean(actions.complete && confirmed.length >= 1);
     const confirm = confirmComplete
       ? stepRecord("confirm", {
@@ -1168,7 +1168,7 @@
           recovery: "在决策中心逐条确认；确认前不创建负责人待办。"
         });
 
-    const formedTasks = activeMatched.filter((item) => item.request?.status === "confirmed" && item.task);
+    const formedTasks = matched.filter((item) => item.request?.status === "confirmed" && item.task);
     const todoComplete = Boolean(confirm.complete && formedTasks.length >= 1);
     const todo = todoComplete
       ? stepRecord("todo", {
