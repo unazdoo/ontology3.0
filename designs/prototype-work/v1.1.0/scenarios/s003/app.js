@@ -54,17 +54,29 @@
     return `<button class="${classes}" type="button" data-action="${attr(action)}" ${config.disabled ? "disabled" : ""}>${config.icon ? icon(config.icon, "sm") : ""}<span>${esc(label)}</span></button>`;
   }
 
+  function displayContext() {
+    const st = state();
+    return st.historicalView?.context
+      || st.historicalView?.checkpoint?.scenarioContext
+      || st.activeRun?.scenarioContext
+      || st.context
+      || {};
+  }
+
   function runLabel() {
-    const current = state().activeRun || state().context;
-    const runId = current?.runId || current?.scenarioRunId || current?.scenarioContext?.scenarioRunId;
+    const context = displayContext();
+    const runId = context.scenarioRunId || state().activeRun?.runId;
     return runId ? DATA.shortId(runId) : "待形成运行";
+  }
+
+  function activeModule() {
+    return DATA.MODULES.find(function (item) { return item.id === state().activeModuleId; }) || DATA.MODULES.find(function (item) { return item.id === "M06"; });
   }
 
   function moduleNav() {
     const st = state();
-    const active = "M06";
     const items = [
-      { id: "home", name: "首页", icon: "home", href: "../../ontology3-homepage-review/方案A-经典复刻版.html", note: "统一平台首页" },
+      { id: "home", name: "首页", icon: "home", view: "overview", note: "S003 场景首页" },
       ...DATA.MODULES
     ];
     return `<aside class="global-nav ${st.navCollapsed ? "is-collapsed" : ""} ${st.mobileNavOpen ? "is-mobile-open" : ""}">
@@ -76,10 +88,13 @@
       <div class="nav-context"><span>当前场景</span><strong>${esc(DATA.BRAND.scene)}</strong><small>独立运行空间 · v1.1.0</small></div>
       <nav class="primary-nav" aria-label="平台一级导航">
         ${items.map(function (item) {
-          const isActive = item.id === active;
-          return `<a class="nav-item ${isActive ? "active" : ""} ${item.id === "home" ? "home-item" : ""}" href="${attr(item.href)}" title="${attr(item.name)}">
+          const isActive = item.id === st.activeModuleId;
+          if (item.id === "home") {
+            return `<button class="nav-item home-item" type="button" data-action="view-overview" title="${attr(item.note)}">${icon(item.icon)}<span>${esc(item.name)}</span></button>`;
+          }
+          return `<button class="nav-item ${isActive ? "active" : ""}" type="button" data-module-id="${attr(item.id)}" title="${attr(`${item.name} · ${item.note}`)}">
             ${icon(item.icon)}<span>${esc(item.name)}</span>${isActive ? '<i class="nav-state active-dot"></i>' : ""}
-          </a>`;
+          </button>`;
         }).join("")}
       </nav>
       <div class="nav-foot">
@@ -92,6 +107,8 @@
 
   function topbar() {
     const st = state();
+    const context = displayContext();
+    const module = activeModule();
     const runStatus = st.runStatus === "succeeded" ? statusChip("运行成功", "success") : st.runStatus === "running" ? statusChip("重评中", "info") : st.runStatus === "failed" ? statusChip("运行失败", "danger") : statusChip("待运行", "neutral");
     const configStatus = st.configStatus === "published" ? statusChip(`模型 ${st.publishedModel?.packageVersion || "—"} 已发布`, "success") : st.configStatus === "validated" ? statusChip("配置已校验", "warning") : statusChip("配置 Draft", "warning");
     const historical = st.historicalView;
@@ -99,12 +116,12 @@
       <div class="topbar-left">
         <button class="mobile-menu-button" type="button" data-action="toggle-mobile-nav" aria-label="打开导航">${icon("menu")}</button>
         <button class="back-button" type="button" data-action="go-back" title="返回上一级">${icon("back", "sm")}</button>
-        <div class="breadcrumb"><span>报告中心</span><b>/</b><strong>S003 债务风险监测</strong></div>
+        <div class="breadcrumb"><span>${esc(`${module?.id || "M06"} ${module?.name || "报告中心"}`)}</span><b>/</b><strong>S003 债务风险监测</strong></div>
       </div>
       <div class="topbar-context">
         <span class="context-label">${historical ? "历史快照只读" : "当前运行"}</span>
         <strong>${esc(runLabel())}</strong>
-        <small>${esc(st.context?.scenarioVersion || "S003-v1")} · ${esc(bundle()?.fixture?.assessmentAt || "2025-12-31")}</small>
+        <small>${esc(context.scenarioVersion || "S003-v1")} · ${esc(bundle()?.fixture?.assessmentAt || "2025-12-31")}</small>
       </div>
       <div class="topbar-actions">
         ${configStatus}${runStatus}
@@ -118,10 +135,32 @@
   function scenarioTabs() {
     const st = state();
     return `<div class="scene-tabs" role="tablist" aria-label="S003 场景工作台视图">
-      ${DATA.VIEWS.map(function (view) {
+      ${DATA.VIEWS.filter(function (view) { return view.inTabs !== false; }).map(function (view) {
         return `<button type="button" role="tab" aria-selected="${st.currentView === view.id}" class="scene-tab ${st.currentView === view.id ? "active" : ""}" data-view="${view.id}">${icon(view.icon, "sm")}<span>${esc(view.label)}</span></button>`;
       }).join("")}
     </div>`;
+  }
+
+  function identityRail() {
+    const st = state();
+    const b = bundle();
+    const context = displayContext();
+    const baseline = b?.manifest?.baseline || {};
+    const dataAsset = b?.formalDataAsset || {};
+    const input = st.factorInputSnapshot || b?.humanInputSnapshot || {};
+    const pointer = b?.publishedPointer || {};
+    const assessmentAt = st.activeRun?.assessmentAt || b?.fixture?.assessmentAt || b?.dataContract?.assessmentAt;
+    return `<section class="identity-rail" aria-label="S003 持续场景身份">
+      <div><span>scenarioId</span><strong>${esc(context.scenarioId || "S003")}</strong></div>
+      <div><span>scenarioVersion</span><strong>${esc(context.scenarioVersion || "S003-v1")}</strong></div>
+      <div class="identity-run"><span>scenarioRunId</span><strong title="${attr(context.scenarioRunId || "")}">${esc(context.scenarioRunId || "待形成")}</strong></div>
+      <div><span>baselineVersion</span><strong>${esc(baseline.baselineVersion || "1.0.3")}</strong></div>
+      <div class="identity-baseline"><span>baselineSnapshotId</span><strong title="${attr(baseline.baselineSnapshotId || "")}">${esc(DATA.shortId(baseline.baselineSnapshotId || "—", 18, 6))}</strong></div>
+      <div><span>Published 模型</span><strong title="${attr(pointer.pointerId || "")}">${esc(st.publishedModel?.packageVersion || "—")}</strong></div>
+      <div class="identity-input"><span>Published 输入</span><strong title="${attr(input.snapshotId || "")}">${esc(DATA.shortId(input.snapshotId || "—", 17, 6))}</strong></div>
+      <div class="identity-asset"><span>数据资产</span><strong title="${attr(dataAsset.dataAssetId || "")}">${esc(DATA.shortId(dataAsset.dataAssetId || "—", 20, 6))}</strong></div>
+      <div><span>assessmentAt</span><strong>${esc(assessmentAt || "—")}</strong></div>
+    </section>`;
   }
 
   function pageHeader(title, eyebrow, description, actions) {
@@ -143,7 +182,7 @@
 
   function renderShell(content) {
     const st = state();
-    return `<div class="platform-shell ${st.navCollapsed ? "nav-collapsed" : ""}">${moduleNav()}<section class="shell-main">${topbar()}<main class="route-stage"><div class="scene-frame">${scenarioTabs()}${infoStrip()}${content}</div></main></section></div>`;
+    return `<div class="platform-shell ${st.navCollapsed ? "nav-collapsed" : ""}">${moduleNav()}<section class="shell-main">${topbar()}<main class="route-stage"><div class="scene-frame">${scenarioTabs()}${identityRail()}${infoStrip()}${content}</div></main></section></div>`;
   }
 
   function renderBoot() {
@@ -173,6 +212,25 @@
         return `<div class="risk-row"><div class="risk-row-label">${riskBadge(key, true)}<strong>${count}</strong><span>家</span></div><div class="risk-track"><i class="${meta.className}" style="width:${width}%"></i></div><small>${esc(meta.description)}</small></div>`;
       }).join("")}
     </div>`;
+  }
+
+  function publishedRiskRangeLabel(tier) {
+    if (!tier) return "—";
+    if (tier.maxExclusive == null) return `≥ ${DATA.formatScore(tier.minInclusive)}`;
+    return `${DATA.formatScore(tier.minInclusive)} ≤ 分值 < ${DATA.formatScore(tier.maxExclusive)}`;
+  }
+
+  function renderPublishedThresholds() {
+    const tiers = state().publishedModel?.riskTiers || [];
+    return `<div class="published-thresholds" aria-label="当前 Published 风险分档">
+      ${tiers.map(function (tier) { return `<div class="threshold-item ${DATA.RISK_META[tier.tierId]?.className || "risk-unknown"}">${riskBadge(tier.tierId, true)}<strong>${esc(publishedRiskRangeLabel(tier))}</strong></div>`; }).join("")}
+    </div>`;
+  }
+
+  function renderOverviewEnterpriseTable() {
+    const list = topRiskRows(10);
+    if (!list.length) return `<div class="empty-state compact">${icon("info", "sm")}<span>当前没有可展示的企业评分结果。</span></div>`;
+    return `<div class="data-table-wrap"><table class="data-table overview-enterprise-table"><thead><tr><th>企业</th><th>产业 / 类别</th><th class="num">原始分</th><th class="num">调节合计</th><th class="num">综合分</th><th>风险等级</th><th>报告</th></tr></thead><tbody>${list.map(function (record) { return `<tr><td><button class="company-link" type="button" data-action="open-report" data-enterprise-id="${attr(record.enterpriseId)}"><strong>${esc(record.enterpriseName)}</strong><small>${esc(record.enterpriseId)}</small></button></td><td><strong class="cell-primary">${esc(record.sector || "—")}</strong><small class="cell-secondary">${esc(record.category || "—")}</small></td><td class="num mono">${record.rawScore == null ? "—" : DATA.formatScore(record.rawScore)}</td><td class="num mono ${Number(record.factorSum) < 0 ? "negative" : ""}">${record.factorSum == null ? "—" : `${Number(record.factorSum) > 0 ? "+" : ""}${Number(record.factorSum).toFixed(2)}`}</td><td class="num"><strong class="score-cell">${DATA.formatScore(record.finalScore)}</strong></td><td>${riskBadge(record.riskTier, true)}</td><td><button class="table-action" type="button" data-action="open-report" data-enterprise-id="${attr(record.enterpriseId)}">${icon("file", "sm")}查看</button></td></tr>`; }).join("")}</tbody></table></div>`;
   }
 
   function sectorSummary() {
@@ -222,6 +280,33 @@
     }).join("")}</div>`;
   }
 
+  function resourceRow(label, resourceId, version, status, owner, detail) {
+    return `<div class="resource-row"><div><strong>${esc(label)}</strong><small>${esc(owner || "平台场景包")}</small></div><code title="${attr(resourceId || "")}">${esc(resourceId || "—")}</code><span>${esc(version || "—")}</span>${statusChip(status || "已形成", status === "不可消费" ? "warning" : "success")}<small class="resource-detail">${esc(detail || "")}</small></div>`;
+  }
+
+  function renderDataQuality() {
+    const b = bundle();
+    const contract = b?.dataContract || {};
+    const source = b?.sourceAsset || {};
+    const pipeline = b?.pipelineRun || {};
+    const formal = b?.formalDataAsset || {};
+    const input = b?.humanInputSnapshot || {};
+    const quality = b?.qualityResult || {};
+    const members = source.logicalMembers || [];
+    return `${pageHeader("数据与人工输入质量", "M02 · 场景适配视图", "在 S003 场景壳内查看数据来源、两个逻辑成员、人工输入和质量结果；本视图不执行评分、不维护模型参数。", `${button("填写企业因子", "view-factor-entry", { primary: true, icon: "edit" })}${button("查看运行", "view-runs", { ghost: true, icon: "refresh" })}`)}
+      <div class="module-owner-strip"><span class="module-owner-icon">${icon("database", "sm")}</span><div><strong>Owner：${esc(contract.moduleOwner || "数据工程")}</strong><small>业务输入 Owner：${esc(contract.businessInputOwner || "财务公司")} · C031 数据契约 · ${esc(contract.contractVersion || "1.1.0")}</small></div>${statusChip(quality.status === "passed" ? "质量通过" : "待核", quality.status === "passed" ? "success" : "warning")}</div>
+      <section class="module-stage-grid"><article class="panel"><div class="panel-heading"><div><span class="eyebrow">输入上下文</span><h3>权威数据夹具与评估口径</h3></div>${statusChip("仅正式候选可消费", "info")}</div><div class="member-cards">${members.map(function (member) { return `<article class="member-card"><span class="member-icon">${icon(member.name === "调节因子" ? "sliders" : "table", "sm")}</span><strong>${esc(member.name)}</strong><small>${esc(member.range)} · ${member.rowCount} 家 · ${member.fieldCount} 字段</small></article>`; }).join("")}</div><dl class="contract-facts"><div><dt>评估时点</dt><dd>${esc(contract.assessmentAt || "2025-12-31")}</dd></div><div><dt>币种 / 金额单位</dt><dd>${esc(contract.currency || "CNY")} / ${esc(contract.amountUnit || "元")}</dd></div><div><dt>当前期列</dt><dd><code>${esc(contract.currentPeriodColumn || "I")}</code></dd></div><div><dt>上期列</dt><dd><code>${esc(contract.priorPeriodColumn || "AA")}</code></dd></div><div><dt>来源文件</dt><dd title="${attr(source.fileName || "")}">${esc(source.fileName || "企业债务风险评估模版_S003兼容版.xlsx")}</dd></div><div><dt>正式候选</dt><dd title="${attr(formal.dataAssetId || "")}">${esc(formal.dataAssetId || "—")}</dd></div></dl></article><article class="panel"><div class="panel-heading"><div><span class="eyebrow">M02 资源链</span><h3>从来源到正式候选</h3></div><span class="panel-note">不得在此计算评分</span></div><div class="resource-list">${resourceRow("来源工作簿", source.sourceId, "1.0.0", "已验证", "M02 数据工程", `sha256 ${String(source.sourceSha256 || "").slice(0, 12)}…`)}${resourceRow("人工输入快照", input.snapshotId, input.snapshotVersion, input.status === "published-input" ? "已发布" : input.status, "M02 数据工程", `${input.enterpriseCount || 21} 家 · ${input.factorCount || 6} 项 · 无复核人`)}${resourceRow("管道运行", pipeline.pipelineRunId, "1.0.0", pipeline.status === "succeeded" ? "运行成功" : pipeline.status, "M02 数据工程", `输入 ${pipeline.inputSourceId || "—"}`)}${resourceRow("正式候选数据资产", formal.dataAssetId, formal.dataAssetVersion, formal.status === "quality-passed-candidate" ? "候选已形成" : formal.status, "M02 数据工程", `${formal.enterpriseCount || 21} 家 · 仅作为后续 Published 输入`)}${resourceRow("兼容性夹具", contract.forbiddenCompatibilityAsset?.sha256, "—", "不可消费", "M02 数据工程", "仅权威夹具，不得原地提升")}</div></article></section>
+      <section class="module-stage-grid lower"><article class="panel"><div class="panel-heading"><div><span class="eyebrow">质量职责</span><h3>通过项与排除项</h3></div>${statusChip("M02 边界", "success")}</div><div class="quality-columns"><div><strong>本次已校验</strong><ul>${(quality.checks || []).slice(0, 8).map(function (check) { return `<li><span class="quality-dot"></span><span>${esc(check.evidence || check.checkId || "质量检查")}</span></li>`; }).join("")}</ul></div><div><strong>明确不归 M02</strong><ul>${(contract.qualityDoesNotOwn || quality.explicitlyExcludedChecks || []).map(function (item) { return `<li><span class="quality-dot muted"></span><span>${esc(item)}</span></li>`; }).join("")}</ul></div></div></article><article class="panel"><div class="panel-heading"><div><span class="eyebrow">下一步</span><h3>进入场景内消费链</h3></div></div><div class="handoff-mini"><div><span class="handoff-index">01</span><div><strong>企业因子填报</strong><small>在线编辑并形成新的人工输入快照</small></div></div><div><span class="handoff-index">02</span><div><strong>Published 模型</strong><small>由 M01 校验并切换权威指针</small></div></div><div><span class="handoff-index">03</span><div><strong>快速重评 / 报告</strong><small>沿用当前场景运行身份链路</small></div></div></div></article></section>`;
+  }
+
+  function renderAgentBoundary() {
+    const position = bundle()?.agentPosition || {};
+    return `${pageHeader("Agent 能力边界", "M05 · 场景适配视图", "一期不建设 S003 专属 Agent；本视图把允许复用与明确禁止的动作放在同一场景上下文中，避免用户误以为 Agent 参与评分或业务写入。", button("返回场景总览", "view-overview", { primary: true, icon: "back" }))}
+      <div class="module-owner-strip"><span class="module-owner-icon">${icon("bot", "sm")}</span><div><strong>Owner：${esc(position.moduleOwner || "Agent 应用")}</strong><small>状态：${esc(position.status || "verified-not-required-for-phase-1")} · 当前场景保留平台公共能力边界</small></div>${statusChip(position.dedicatedAgent ? "已配置专属 Agent" : "一期无专属 Agent", position.dedicatedAgent ? "warning" : "success")}</div>
+      <section class="agent-boundary-grid"><article class="panel"><div class="panel-heading"><div><span class="eyebrow">M05 运行定位</span><h3>Agent 不进入评分闭环</h3></div>${statusChip("边界已锁定", "success")}</div><div class="agent-status-card"><span class="agent-status-icon">${icon("shield", "lg")}</span><div><strong>${position.dedicatedAgent ? "当前存在专属 Agent" : "当前不存在 S003 专属 Agent"}</strong><p>${esc(position.reason || "S003 一期为确定性评估、报告和通用决策闭环，不需要 Agent 参与评分或业务写入。")}</p></div></div><dl class="contract-facts"><div><dt>评分输入</dt><dd>Published 本体 / C035 结果</dd></div><div><dt>报告输入</dt><dd>正式运行证据与 Published 事实</dd></div><div><dt>决策入口</dt><dd>人工确认后 Action Request</dd></div><div><dt>Agent 写入</dt><dd>禁止</dd></div></dl></article><article class="panel"><div class="panel-heading"><div><span class="eyebrow">允许复用</span><h3>仅作为伴读边界</h3></div></div><ul class="boundary-list allowed">${(position.allowedReuse || []).map(function (item) { return `<li><span>${icon("check", "sm")}</span><div><strong>${esc(item)}</strong><small>后续如显式进入，仍必须消费当前 Published 结果</small></div></li>`; }).join("") || `<li><span>${icon("check", "sm")}</span><div><strong>平台现有报告伴读入口</strong><small>一期不在本场景启动</small></div></li>`}</ul></article><article class="panel"><div class="panel-heading"><div><span class="eyebrow">禁止越界</span><h3>四项强制阻断</h3></div>${statusChip("不可绕过", "danger")}</div><ul class="boundary-list forbidden">${(position.forbidden || ["重算 C035 结果", "修改模型配置", "自动创建 Action Request", "替代人工确认"]).map(function (item) { return `<li><span>${icon("close", "sm")}</span><div><strong>${esc(item)}</strong><small>由 M01/M04 或人工确认流程负责</small></div></li>`; }).join("")}</ul></article></section>
+      <section class="panel handoff-chain-panel"><div class="panel-heading"><div><span class="eyebrow">统一场景链路</span><h3>Agent 位于链路之外</h3></div><small>所有节点仍在 S003 壳内可追溯</small></div><div class="handoff-chain"><div class="handoff-node"><span>M02</span><strong>数据与输入</strong><small>质量通过</small></div><b>→</b><div class="handoff-node"><span>M01</span><strong>Published 模型</strong><small>${esc(state().publishedModel?.packageVersion || "1.0.1")}</small></div><b>→</b><div class="handoff-node"><span>C035</span><strong>权威评估</strong><small>${esc(DATA.shortId(state().activeRun?.runId || "待运行"))}</small></div><b>→</b><div class="handoff-node"><span>M06</span><strong>报告 / 工作台</strong><small>当前消费</small></div></div></section>`;
+  }
+
   function renderOverview() {
     const st = state();
     const b = bundle();
@@ -235,8 +320,9 @@
       <section class="hero-band"><div><span class="hero-kicker">${esc(DATA.BRAND.scene)}</span><h2>集团债务风险<br><em>可解释、可追溯</em>地监测</h2><p>当前评估时点 <strong>${esc(b?.fixture?.assessmentAt || "2025-12-31")}</strong>，覆盖 <strong>${total}</strong> 家企业；所有结论携带场景身份、模型版本与数据资产引用。</p><div class="hero-meta"><span>${icon("shield", "sm")}父基线 v1.0.3</span><span>${icon("database", "sm")}财务数据 + 调节因子</span><span>${icon("lock", "sm")}运行隔离</span></div></div><div class="hero-score"><span>本轮成功运行</span><strong>${st.activeRun ? esc(DATA.shortId(st.activeRun.runId)) : "—"}</strong><small>${st.activeRun ? `${DATA.formatDateTime(st.activeRun.evaluatedAt)} · ${st.activeRun.modelVersion}` : "等待 M01 评估结果"}</small></div></section>
       ${!st.activeRun ? `<div class="callout warning">${icon("alert", "sm")}<div><strong>当前尚无可消费的 Published 风险事实</strong><p>工作台已完成场景数据与配置装载；待 M01 评分引擎返回权威评估结果后，企业评分、报告和问数将自动可用。</p></div></div>` : ""}
       <section class="kpi-grid">${kpiCard("企业总数", total, "财务数据成员已接入", "blue", "building")}${kpiCard("黄 / 红 / 黑", `${counts.YELLOW} / ${counts.RED} / ${counts.BLACK}`, st.activeRun ? "需关注企业" : "待 M01 评估", "risk", "alert")}${kpiCard("集团平均评分", avg == null ? "—" : DATA.formatScore(avg), st.activeRun ? "基于当前成功运行" : "不在前端自行计算", "violet", "chart")}${kpiCard("数据质量", quality?.status === "passed" ? "通过" : "待核", quality?.qualityResultId || "M02 质量结果", "green", "shield")}</section>
-      <section class="overview-grid"><article class="panel risk-panel"><div class="panel-heading"><div><span class="eyebrow">风险分布</span><h3>四档风险分布</h3></div><span class="panel-note">${st.activeRun ? `共 ${scored.length} 家已评分` : "等待权威结果"}</span></div>${renderRiskDistribution(counts, total)}</article><article class="panel sector-panel"><div class="panel-heading"><div><span class="eyebrow">产业板块</span><h3>板块监测</h3></div><button class="link-button" type="button" data-action="view-enterprises">查看全部 ${icon("chevronRight", "sm")}</button></div><div class="sector-grid">${sectorSummary()}</div></article></section>
-      <section class="overview-grid lower"><article class="panel"><div class="panel-heading"><div><span class="eyebrow">重点企业</span><h3>需要优先关注</h3></div><button class="link-button" type="button" data-action="view-enterprises">进入明细 ${icon("chevronRight", "sm")}</button></div>${renderRiskRows(topRiskRows(5), { empty: "当前没有风险评分明细。" })}</article><article class="panel"><div class="panel-heading"><div><span class="eyebrow">运行链路</span><h3>场景工作台进度</h3></div><button class="link-button" type="button" data-action="view-checkpoints">查看快照 ${icon("chevronRight", "sm")}</button></div>${processRail()}<div class="mini-contracts"><span>数据资产 <b>${esc(b?.formalDataAsset?.dataAssetId || "S003-T007-FORMAL-CANDIDATE")}</b></span><span>人工输入 <b>${esc(st.factorInputSnapshot?.snapshotId || "S003-T053-INPUT-20251231-v1")}</b></span></div></article></section>`;
+      <section class="overview-grid"><article class="panel risk-panel"><div class="panel-heading"><div><span class="eyebrow">风险分布</span><h3>四档风险分布</h3></div><span class="panel-note">${st.activeRun ? `共 ${scored.length} 家已评分` : "等待权威结果"}</span></div>${renderPublishedThresholds()}${renderRiskDistribution(counts, total)}</article><article class="panel sector-panel"><div class="panel-heading"><div><span class="eyebrow">产业板块</span><h3>板块监测</h3></div><button class="link-button" type="button" data-action="view-enterprises">查看全部 ${icon("chevronRight", "sm")}</button></div><div class="sector-grid">${sectorSummary()}</div></article></section>
+      <section class="overview-grid lower"><article class="panel"><div class="panel-heading"><div><span class="eyebrow">重点企业</span><h3>需要优先关注</h3></div><button class="link-button" type="button" data-action="view-enterprises">进入明细 ${icon("chevronRight", "sm")}</button></div>${renderRiskRows(topRiskRows(5), { empty: "当前没有风险评分明细。" })}</article><article class="panel"><div class="panel-heading"><div><span class="eyebrow">运行链路</span><h3>场景工作台进度</h3></div><button class="link-button" type="button" data-action="view-checkpoints">查看快照 ${icon("chevronRight", "sm")}</button></div>${processRail()}<div class="mini-contracts"><span>数据资产 <b>${esc(b?.formalDataAsset?.dataAssetId || "S003-T007-FORMAL-CANDIDATE")}</b></span><span>人工输入 <b>${esc(st.factorInputSnapshot?.snapshotId || "S003-T053-INPUT-20251231-v1")}</b></span></div></article></section>
+      <section class="panel table-panel overview-enterprise-panel"><div class="panel-heading"><div><span class="eyebrow">企业评分明细</span><h3>风险优先的前 10 家企业</h3></div><button class="link-button" type="button" data-action="view-enterprises">筛选、排序与查看全部 ${icon("chevronRight", "sm")}</button></div>${renderOverviewEnterpriseTable()}<footer class="table-footer"><span>${icon("shield", "sm")}所有评分、分档和报告均来自当前 Published 模型与正式运行证据。</span><strong>${esc(st.activeRun?.runId || "待形成运行")}</strong></footer></section>`;
   }
 
   function enterpriseRows() {
@@ -303,7 +389,7 @@
       const value = values[factorName] ?? null;
       const meta = factorStateMeta(enterprise, factorName, value);
       const disabled = meta.code === "NOT_APPLICABLE" || Boolean(state().historicalView);
-      return `<label class="factor-field ${disabled ? "is-disabled" : ""}"><span class="factor-label"><strong>${esc(factorName)}</strong>${statusChip(meta.label, meta.tone)}</span><span class="factor-control"><select data-factor-name="${attr(factorName)}" data-enterprise-id="${attr(enterprise.enterpriseId)}" ${disabled ? "disabled" : ""}><option value="__MISSING__" ${value == null || value === "" ? "selected" : ""}>${meta.code === "NOT_APPLICABLE" ? "不适用（环保企业）" : "未填报（按 0 档）"}</option>${choices.map(function (choice) { return `<option value="${attr(choice)}" ${choice === value ? "selected" : ""}>${esc(choice)}</option>`; }).join("")}</select>${icon("chevronDown", "sm")}</span><small><code>${esc(meta.code)}</code>${meta.code === "NOT_APPLICABLE" ? " 与缺失不同，不参与因子计算" : meta.code === "DEFAULTED_ZERO" ? " 适用但未填，按用户确认口径使用 0 档" : " 由财务公司人工填报"}</small></label>`;
+      return `<label class="factor-field ${disabled ? "is-disabled" : ""}"><span class="factor-label"><strong>${esc(factorName)}</strong>${statusChip(meta.label, meta.tone)}</span><span class="factor-control"><select data-factor-name="${attr(factorName)}" data-enterprise-id="${attr(enterprise.enterpriseId)}" ${disabled ? "disabled" : ""}><option value="__MISSING__" ${value == null || value === "" ? "selected" : ""}>${meta.code === "NOT_APPLICABLE" ? "不适用（环保 / 在建企业）" : "未填报（按 0 档）"}</option>${choices.map(function (choice) { return `<option value="${attr(choice)}" ${choice === value ? "selected" : ""}>${esc(choice)}</option>`; }).join("")}</select>${icon("chevronDown", "sm")}</span><small><code>${esc(meta.code)}</code>${meta.code === "NOT_APPLICABLE" ? " 与缺失不同，不参与因子计算" : meta.code === "DEFAULTED_ZERO" ? " 适用但未填，按用户确认口径使用 0 档" : " 由财务公司人工填报"}</small></label>`;
     }).join("")}</div>`;
   }
 
@@ -351,7 +437,7 @@
     return `<div class="config-description"><div>${icon("sliders", "sm")}<span><strong>调节因子系数</strong>一期固定六项因子及分档，只允许调整已确认分档系数。</span></div><span>禁止新增 / 删除因子和分档</span></div><div class="factor-config-grid">${factors.map(function (factor, factorIndex) { return `<article class="factor-config-card"><header><span class="factor-number">F${String(factorIndex + 1).padStart(2, "0")}</span><div><strong>${esc(factor.name)}</strong><small>适用：${esc((factor.applicableCategories || []).join("、"))}</small></div>${icon("lock", "sm")}</header><div class="factor-tier-list">${factor.tiers.map(function (tier) { return `<label><span><strong>${esc(tier.label)}</strong><small>${esc(tier.tierId)}</small></span><span class="number-input coefficient"><input type="number" min="-1" max="1" step="0.01" data-factor-id="${attr(factor.factorId)}" data-tier-id="${attr(tier.tierId)}" value="${attr(tier.coefficient)}" ${state().historicalView ? "disabled" : ""}/><em>${Number(tier.coefficient) > 0 ? "加分" : Number(tier.coefficient) < 0 ? "减分" : "中性"}</em></span></label>`; }).join("")}</div></article>`; }).join("")}</div>`;
   }
 
-  function riskRangeLabel(tier, tiers, index) {
+  function configRiskRangeLabel(tier, tiers, index) {
     const min = Number(tier.minInclusive);
     const max = index === 0 ? null : Number(tiers[index - 1].minInclusive);
     return max == null ? `≥ ${min}` : `≥ ${min} 且 < ${max}`;
@@ -359,7 +445,7 @@
 
   function renderRiskTierConfig() {
     const tiers = state().configDraft.riskTiers || [];
-    return `<div class="config-description"><div>${icon("alert", "sm")}<span><strong>风险分档阈值</strong>固定绿、黄、红、黑四档，只允许调整连续阈值。</span></div><span>黑灯下限固定为 0</span></div><div class="risk-tier-config">${tiers.map(function (tier, index) { const meta = DATA.RISK_META[tier.tierId] || DATA.RISK_META.UNKNOWN; return `<article class="risk-tier-card ${meta.className}"><div class="risk-tier-title"><span class="risk-dot"></span><div><strong>${esc(tier.name)}</strong><small>${esc(tier.tierId)}</small></div>${icon("lock", "sm")}</div><label><span>分数下限（含）</span><div class="number-input threshold"><input type="number" min="0" max="100" step="1" data-risk-tier-id="${attr(tier.tierId)}" value="${attr(tier.minInclusive)}" ${tier.tierId === "BLACK" || state().historicalView ? "disabled" : ""}/><em>分</em></div></label><p>当前范围：<strong>${esc(riskRangeLabel(tier, tiers, index))}</strong></p></article>`; }).join("")}</div>`;
+    return `<div class="config-description"><div>${icon("alert", "sm")}<span><strong>风险分档阈值</strong>固定绿、黄、红、黑四档，只允许调整连续阈值。</span></div><span>黑灯下限固定为 0</span></div><div class="risk-tier-config">${tiers.map(function (tier, index) { const meta = DATA.RISK_META[tier.tierId] || DATA.RISK_META.UNKNOWN; return `<article class="risk-tier-card ${meta.className}"><div class="risk-tier-title"><span class="risk-dot"></span><div><strong>${esc(tier.name)}</strong><small>${esc(tier.tierId)}</small></div>${icon("lock", "sm")}</div><label><span>分数下限（含）</span><div class="number-input threshold"><input type="number" min="0" max="100" step="1" data-risk-tier-id="${attr(tier.tierId)}" value="${attr(tier.minInclusive)}" ${tier.tierId === "BLACK" || state().historicalView ? "disabled" : ""}/><em>分</em></div></label><p>当前范围：<strong>${esc(configRiskRangeLabel(tier, tiers, index))}</strong></p></article>`; }).join("")}</div>`;
   }
 
   function renderConfigBody() {
@@ -453,14 +539,14 @@
 
   function renderDecisionHistory() {
     if (!state().decisions.length) return `<div class="empty-state compact">${icon("clock", "sm")}<span>尚无人工确认的 Action Request 投影。</span></div>`;
-    return `<div class="decision-history">${state().decisions.map(function (item) { return `<article><span class="decision-icon">${icon("check", "sm")}</span><div><strong>${esc(item.enterpriseName)} · ${esc(actionTypeLabel(item.actionTypeId))}</strong><small>${esc(item.actionRequestId)} · 负责人 ${esc(item.owner)}</small></div>${statusChip("待通用中心接收", "warning")}<a href="../../decision-center-prototype/index.html" target="_self">打开决策中心 ${icon("external", "sm")}</a></article>`; }).join("")}</div>`;
+    return `<div class="decision-history">${state().decisions.map(function (item) { return `<article><span class="decision-icon">${icon("check", "sm")}</span><div><strong>${esc(item.enterpriseName)} · ${esc(actionTypeLabel(item.actionTypeId))}</strong><small>${esc(item.actionRequestId)} · ${esc(item.todo?.todoId || item.todoId || "待办待接收")} · 负责人 ${esc(item.owner)}</small></div>${statusChip(item.todo?.status === "pending" ? "负责人待办待处理" : "待通用中心接收", "warning")}<button class="link-button" type="button" data-action="open-report" data-enterprise-id="${attr(item.enterpriseId)}">查看来源报告 ${icon("chevronRight", "sm")}</button></article>`; }).join("")}</div>`;
   }
 
   function renderQueryDecision() {
     const st = state();
-    return `${pageHeader("只读问数与通用决策入口", "M03 + M04 · 复用平台公共能力", "问数只消费 Published 风险事实；处置候选必须由人员确认后，才形成进入通用决策中心的 Action Request。", `<a class="btn btn-ghost" href="../../decision-center-prototype/index.html">${icon("external", "sm")}<span>打开通用决策中心</span></a>`)}
-      <section class="query-decision-grid"><article class="panel query-panel"><div class="panel-heading"><div><span class="eyebrow">M03 · 智能问数</span><h3>标准快问</h3></div>${statusChip("只读", "info")}</div><div class="query-layout"><div class="query-list">${bundle().queryCatalog.queries.map(function (query) { return `<button class="query-option ${st.queryId === query.queryId ? "active" : ""}" type="button" data-action="run-query" data-query-id="${attr(query.queryId)}"><span>${icon("message", "sm")}</span><div><strong>${esc(query.question)}</strong><small>${esc(query.queryId)} · ${esc(query.resultShape)}</small></div>${icon("chevronRight", "sm")}</button>`; }).join("")}</div><div class="query-result">${renderQueryAnswer(st.queryAnswer)}</div></div></article><article class="panel decision-panel"><div class="panel-heading"><div><span class="eyebrow">M04 · 通用决策</span><h3>处置候选与人工确认</h3></div>${statusChip("不自动派发", "warning")}</div><div class="callout compact warning">${icon("alert", "sm")}<div><strong>负责人待办必须经过人工确认</strong><p>一期不开发多用户、经办、审批权限和多级审批；本页只复用通用 Action Request 入口。</p></div></div>${renderDecisionCandidates()}<div class="decision-boundary"><span>${icon("shield", "sm")}历史查看、克隆恢复与隔离回归均禁止重放历史 Action Request、通知、审批和待办。</span></div></article></section>
-      <section class="panel"><div class="panel-heading"><div><span class="eyebrow">已确认事项</span><h3>负责人待办交接投影</h3></div><small>正式状态以决策中心 M04 回执为准</small></div>${renderDecisionHistory()}</section>`;
+    return `${pageHeader("只读问数与通用决策入口", "M03 + M04 · 场景内兼容视图", "问数只消费 Published 风险事实；处置候选必须由人员确认后，才形成进入通用决策中心的 Action Request。", `${button("查看负责人待办", "view-decision-todos", { primary: true, icon: "target" })}${button("查看快照", "view-checkpoints", { ghost: true, icon: "layers" })}`)}
+      <section class="query-decision-grid"><article class="panel query-panel" id="m03-query"><div class="panel-heading"><div><span class="eyebrow">M03 · 智能问数</span><h3>标准快问</h3></div>${statusChip("只读", "info")}</div><div class="query-layout"><div class="query-list">${bundle().queryCatalog.queries.map(function (query) { return `<button class="query-option ${st.queryId === query.queryId ? "active" : ""}" type="button" data-action="run-query" data-query-id="${attr(query.queryId)}"><span>${icon("message", "sm")}</span><div><strong>${esc(query.question)}</strong><small>${esc(query.queryId)} · ${esc(query.resultShape)}</small></div>${icon("chevronRight", "sm")}</button>`; }).join("")}</div><div class="query-result">${renderQueryAnswer(st.queryAnswer)}</div></div></article><article class="panel decision-panel" id="m04-decision"><div class="panel-heading"><div><span class="eyebrow">M04 · 通用决策</span><h3>处置候选与人工确认</h3></div>${statusChip("不自动派发", "warning")}</div><div class="callout compact warning">${icon("alert", "sm")}<div><strong>负责人待办必须经过人工确认</strong><p>一期不开发多用户、经办、审批权限和多级审批；本视图在 S003 场景壳内复用通用 Action Request 合同。</p></div></div>${renderDecisionCandidates()}<div class="decision-boundary"><span>${icon("shield", "sm")}历史查看、克隆恢复与隔离回归均禁止重放历史 Action Request、通知、审批和待办。</span></div></article></section>
+      <section class="panel" id="m04-todos"><div class="panel-heading"><div><span class="eyebrow">M04 · 已确认事项</span><h3>负责人待办交接投影</h3></div><small>正式状态以通用决策中心 M04 回执为准</small></div>${renderDecisionHistory()}</section>`;
   }
 
   function checkpointLabel(code) {
@@ -471,7 +557,8 @@
       CP04: ["问数联调完成", "锁定 M03 查询目录与 Published 事实消费证据"],
       CP05: ["决策链完成", "锁定处置候选、人工确认与通用待办交接"],
       CP06: ["报告 / 驾驶舱完成", "锁定 21 份报告、工作台与打印证据"],
-      CP07: ["端到端联调完成", "锁定全链路版本、测试与证据包"]
+      CP07: ["端到端联调完成", "锁定全链路版本、测试与证据包"],
+      CP08: ["统一场景壳完成", "锁定 M01—M06 内部适配视图、身份带和连续操作证据"]
     }[code] || [code, "场景快照"];
   }
 
@@ -488,9 +575,10 @@
   function renderCheckpoints() {
     const st = state();
     const historical = st.historicalView;
+    const context = displayContext();
     return `${pageHeader("场景快照与恢复", "C034 · 公共 Checkpoint 能力", "正式快照锁定基线、场景身份、模块版本、数据、Published 指针、结果、报告、决策、测试与证据；浏览器状态不是真源。", historical ? button("退出历史只读", "exit-historical", { primary: true, icon: "back" }) : "")}
       ${historical ? `<div class="historical-banner">${icon("lock", "sm")}<div><strong>${esc(historical.code)} 历史快照只读模式</strong><p>保留原 scenarioRunId ${esc(DATA.shortId(historical.context?.scenarioRunId || historical.checkpoint?.scenarioContext?.scenarioRunId))}；禁止编辑、重评和副作用重放。</p></div>${button("返回当前运行", "exit-historical", { ghost: true, icon: "back" })}</div>` : ""}
-      <section class="checkpoint-layout"><article class="panel checkpoint-panel"><div class="panel-heading"><div><span class="eyebrow">CP01—CP07</span><h3>不可变节点</h3></div><span class="panel-note">${bundle().checkpoints.filter(function (item) { return item.manifest; }).length} / 7 已形成</span></div>${renderCheckpointTimeline()}</article><aside class="checkpoint-aside"><article class="panel context-card"><span class="context-card-icon">${icon("layers", "lg")}</span><span class="eyebrow">当前场景身份</span><h3>${esc(st.context?.scenarioId)} · ${esc(st.context?.scenarioVersion)}</h3><code>${esc(st.context?.scenarioRunId)}</code><dl><div><dt>父基线</dt><dd>${esc(bundle().manifest.baseline.baselineVersion)}</dd></div><div><dt>基线快照</dt><dd title="${attr(bundle().manifest.baseline.baselineSnapshotId)}">${esc(DATA.shortId(bundle().manifest.baseline.baselineSnapshotId, 19, 6))}</dd></div><div><dt>状态</dt><dd>${esc(st.context?.status)}</dd></div><div><dt>命名空间</dt><dd>独立隔离</dd></div></dl></article><article class="panel snapshot-rules"><div class="panel-heading"><div><span class="eyebrow">恢复语义</span><h3>三种操作严格分离</h3></div></div><ul><li><strong>历史查看</strong><span>原 scenarioRunId，只读展示当时状态与证据。</span></li><li><strong>克隆恢复</strong><span>创建新 scenarioRunId，不覆盖历史。</span></li><li><strong>隔离回归</strong><span>演练模式，禁用外发与历史副作用重放。</span></li></ul></article><div class="callout compact info">${icon("info", "sm")}<div><strong>可丢弃投影提示</strong><p>${esc(st.projectionNotice)}</p></div></div></aside></section>`;
+      <section class="checkpoint-layout"><article class="panel checkpoint-panel"><div class="panel-heading"><div><span class="eyebrow">CP01—CP08</span><h3>不可变节点</h3></div><span class="panel-note">${bundle().checkpoints.filter(function (item) { return item.manifest; }).length} / 8 已形成</span></div>${renderCheckpointTimeline()}</article><aside class="checkpoint-aside"><article class="panel context-card"><span class="context-card-icon">${icon("layers", "lg")}</span><span class="eyebrow">${historical ? "历史快照身份" : "当前场景身份"}</span><h3>${esc(context.scenarioId)} · ${esc(context.scenarioVersion)}</h3><code>${esc(context.scenarioRunId)}</code><dl><div><dt>父基线</dt><dd>${esc(bundle().manifest.baseline.baselineVersion)}</dd></div><div><dt>基线快照</dt><dd title="${attr(bundle().manifest.baseline.baselineSnapshotId)}">${esc(DATA.shortId(bundle().manifest.baseline.baselineSnapshotId, 19, 6))}</dd></div><div><dt>状态</dt><dd>${esc(context.status)}</dd></div><div><dt>命名空间</dt><dd>独立隔离</dd></div></dl></article><article class="panel snapshot-rules"><div class="panel-heading"><div><span class="eyebrow">恢复语义</span><h3>三种操作严格分离</h3></div></div><ul><li><strong>历史查看</strong><span>原 scenarioRunId，只读展示当时状态与证据。</span></li><li><strong>克隆恢复</strong><span>创建新 scenarioRunId，不覆盖历史。</span></li><li><strong>隔离回归</strong><span>演练模式，禁用外发与历史副作用重放。</span></li></ul></article><div class="callout compact info">${icon("info", "sm")}<div><strong>可丢弃投影提示</strong><p>${esc(st.projectionNotice)}</p></div></div></aside></section>`;
   }
 
   function metricValue(value) {
@@ -530,10 +618,11 @@
 
   function reportIdentity(record) {
     const run = state().activeRun;
+    const context = displayContext();
     const formal = formalReportFor(record.enterpriseId);
-    const reportId = formal?.manifest?.reportId || `S003-RPT-${run?.runId || state().context.scenarioRunId}-${record.enterpriseId}`;
+    const reportId = formal?.manifest?.reportId || `S003-RPT-${run?.runId || context.scenarioRunId}-${record.enterpriseId}`;
     const lifecycle = formal ? "正式不可变制品" : "当前运行即时报告投影";
-    return `<dl class="report-identity"><div><dt>scenarioId</dt><dd>${esc(state().context.scenarioId)}</dd></div><div><dt>scenarioVersion</dt><dd>${esc(state().context.scenarioVersion)}</dd></div><div><dt>scenarioRunId</dt><dd>${esc(state().context.scenarioRunId)}</dd></div><div><dt>prototypeVersion</dt><dd>1.1.0</dd></div><div><dt>enterpriseId</dt><dd>${esc(record.enterpriseId)}</dd></div><div><dt>assessmentAt</dt><dd>${esc(record.assessmentAt)}</dd></div><div><dt>modelVersion</dt><dd>${esc(run?.modelVersion || state().publishedModel?.packageVersion)}</dd></div><div><dt>reportId</dt><dd>${esc(reportId)}</dd></div><div><dt>content / artifact</dt><dd>${esc(formal?.manifest?.contentVersion || "待形成")} / ${esc(formal?.manifest?.artifactVersion || "工作台投影")}</dd></div><div><dt>生命周期</dt><dd>${esc(lifecycle)}</dd></div></dl>`;
+    return `<dl class="report-identity"><div><dt>scenarioId</dt><dd>${esc(context.scenarioId)}</dd></div><div><dt>scenarioVersion</dt><dd>${esc(context.scenarioVersion)}</dd></div><div><dt>scenarioRunId</dt><dd>${esc(context.scenarioRunId)}</dd></div><div><dt>prototypeVersion</dt><dd>1.1.0</dd></div><div><dt>enterpriseId</dt><dd>${esc(record.enterpriseId)}</dd></div><div><dt>assessmentAt</dt><dd>${esc(record.assessmentAt)}</dd></div><div><dt>modelVersion</dt><dd>${esc(run?.modelVersion || state().publishedModel?.packageVersion)}</dd></div><div><dt>reportId</dt><dd>${esc(reportId)}</dd></div><div><dt>content / artifact</dt><dd>${esc(formal?.manifest?.contentVersion || "待形成")} / ${esc(formal?.manifest?.artifactVersion || "工作台投影")}</dd></div><div><dt>生命周期</dt><dd>${esc(lifecycle)}</dd></div></dl>`;
   }
 
   function formalReportFor(enterpriseId) {
@@ -550,12 +639,13 @@
   function renderReport() {
     const record = selectedRecord();
     const enterprise = selectedEnterprise();
+    const context = displayContext();
     if (!record) {
       return `${pageHeader("企业债务风险诊断报告", "M06 · 报告穿透", "报告只能由成功运行结果生成，不在页面端补算风险分。", button("返回企业明细", "view-enterprises", { ghost: true, icon: "back" }))}<div class="empty-state report-empty">${icon("file", "lg")}<strong>${esc(enterprise?.name || "企业")} 尚无可用报告</strong><span>请先完成 Published 模型与输入快照，并取得 M01 全量成功评估结果。</span>${button("前往运行与报告", "view-runs", { primary: true, icon: "refresh" })}</div>`;
     }
     const meta = DATA.RISK_META[record.riskTier] || DATA.RISK_META.UNKNOWN;
     const candidate = STORE.candidateFor(record.enterpriseId);
-    const decision = state().decisions.find(function (item) { return item.scenarioRunId === state().context.scenarioRunId && item.enterpriseId === record.enterpriseId; });
+    const decision = state().decisions.find(function (item) { return item.scenarioRunId === context.scenarioRunId && item.enterpriseId === record.enterpriseId; });
     const formal = formalReportFor(record.enterpriseId);
     const lowest = record.lowestMetrics || [];
     return `<div class="report-toolbar">${button("返回企业明细", "view-enterprises", { ghost: true, icon: "back" })}<div>${formal?.artifact ? `<button class="btn btn-ghost" type="button" data-action="open-formal-report">${icon("external", "sm")}<span>打开正式制品</span></button>` : ""}<button class="btn btn-ghost" type="button" data-action="copy-report-link">${icon("copy", "sm")}<span>复制深链</span></button>${button("打印 / 导出 PDF", "print-now", { primary: true, icon: "print" })}</div></div><article class="report-page ${meta.className}">
@@ -568,18 +658,20 @@
       <section class="report-section"><div class="report-section-number">04</div><div class="report-section-body"><span class="eyebrow">重点风险</span><h2>关键风险指标与证据</h2>${lowest.length ? `<div class="report-risk-cards">${lowest.slice(0, 3).map(function (metric, index) { return `<article><span>0${index + 1}</span><div><strong>${esc(metric.name || metric.metricName || "风险指标")}</strong><p>得分 ${DATA.formatScore(metric.score)}${metric.note ? ` · ${esc(metric.note)}` : ""}</p></div></article>`; }).join("")}</div>` : `<div class="empty-state compact">${icon("info", "sm")}<span>M01 尚未返回最低三项指标明细。</span></div>`}<div class="evidence-row"><div><span>数据资产</span><strong>${esc(state().activeRun?.dataAssetId || "—")}</strong></div><div><span>人工输入</span><strong>${esc(state().activeRun?.inputSnapshotId || "—")}</strong></div><div><span>质量结果</span><strong>${esc(bundle().qualityResult?.qualityResultId || "—")}</strong></div></div></div></section>
       <section class="report-section"><div class="report-section-number">05</div><div class="report-section-body"><span class="eyebrow">风险处置</span><h2>处置候选与人工确认状态</h2>${candidate ? `<div class="report-action-card"><span class="report-action-icon">${icon("target", "lg")}</span><div><strong>${esc(actionTypeLabel(candidate.actionTypeId))}</strong><p>${esc(candidate.actionTypeId)} · 该候选不会自动创建 Action Request 或负责人待办。</p></div>${decision ? statusChip("已人工确认", "success") : `<button class="btn btn-primary" type="button" data-action="open-decision" data-candidate-id="${attr(candidate.candidateId)}">${icon("target", "sm")}人工确认</button>`}</div>` : `<div class="callout compact success">${icon("check", "sm")}<div><strong>当前未生成处置候选</strong><p>仍应按集团债务风险管理要求保持常态监测。</p></div></div>`}</div></section>
       <section class="report-section identity-section"><div class="report-section-number">06</div><div class="report-section-body"><span class="eyebrow">版本与追溯</span><h2>报告身份、来源和默认语义</h2>${reportIdentity(record)}<div class="default-semantics"><span><b>HISTORY_INSUFFICIENT_DEFAULT_A</b>盈利历史不足按 A（100 分）</span><span><b>DEFAULTED_ZERO</b>适用但缺失因子按 0 档</span><span><b>NOT_APPLICABLE</b>业务不适用，不等同于缺失</span><span><b>UNDER_CONSTRUCTION_60</b>在建企业原始分固定为 60</span></div></div></section>
-      <footer class="report-footer"><span>本报告由 S003 场景工作台基于 M01 C035 权威评估结果生成。</span><span>${esc(state().context.scenarioRunId)}</span></footer>
+      <footer class="report-footer"><span>本报告由 S003 场景工作台基于 M01 C035 权威评估结果生成。</span><span>${esc(context.scenarioRunId)}</span></footer>
     </article>`;
   }
 
   function renderCurrentView() {
     const view = state().currentView;
+    if (view === "data-quality") return renderDataQuality();
     if (view === "enterprises") return renderEnterprises();
     if (view === "factor-entry") return renderFactorEntry();
     if (view === "configuration") return renderConfiguration();
     if (view === "runs") return renderRuns();
     if (view === "query-decision") return renderQueryDecision();
     if (view === "checkpoints") return renderCheckpoints();
+    if (view === "agent-boundary") return renderAgentBoundary();
     if (view === "report") return renderReport();
     return renderOverview();
   }
@@ -624,16 +716,22 @@
     window.setTimeout(function () { item.remove(); }, 3600);
   }
 
-  function setHash(view, enterpriseId, replace) {
-    const next = view === "report" ? `#report/${encodeURIComponent(enterpriseId)}` : `#${view}`;
+  function setHash(view, enterpriseId, replace, anchor) {
+    const next = view === "report" ? `#report/${encodeURIComponent(enterpriseId)}` : `#${view}${anchor ? `/${anchor}` : ""}`;
     if (replace) history.replaceState({ s003: true }, "", next);
     else history.pushState({ s003: true }, "", next);
   }
 
   function navigate(view, enterpriseId, options) {
-    STORE.setView(view, enterpriseId);
-    setHash(view, enterpriseId, options?.replace);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const config = options || {};
+    if (state().historicalView && view !== "checkpoints") STORE.exitHistoricalView();
+    STORE.setView(view, enterpriseId, config.moduleId, config.anchor);
+    setHash(view, enterpriseId, config.replace, config.anchor);
+    window.requestAnimationFrame(function () {
+      const target = config.anchor ? document.getElementById(config.anchor) : null;
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      else window.scrollTo({ top: 0, behavior: "smooth" });
+    });
   }
 
   async function quickRerun() {
@@ -710,10 +808,12 @@
       if (state().currentView === "report") return navigate("enterprises");
       return navigate("overview");
     }
+    if (action === "view-overview") return navigate("overview", null, { moduleId: "M06" });
     if (action === "view-enterprises") return navigate("enterprises");
     if (action === "view-factor-entry") return navigate("factor-entry");
     if (action === "view-runs") return navigate("runs");
     if (action === "view-checkpoints") return navigate("checkpoints");
+    if (action === "view-decision-todos") return navigate("query-decision", null, { moduleId: "M04", anchor: "m04-todos" });
     if (action === "open-report") return openReport(target.dataset.enterpriseId);
     if (action === "select-factor-enterprise") return STORE.selectEnterprise(target.dataset.enterpriseId);
     if (action === "save-factor-draft") return toast("Draft 已保存为当前场景的可丢弃工作投影；未触发重评。", "info");
@@ -743,7 +843,10 @@
     if (action === "quick-rerun") return quickRerun();
     if (action === "run-query") { STORE.runQuery(target.dataset.queryId); return; }
     if (action === "open-decision") {
-      try { STORE.openDecision(target.dataset.candidateId || target.dataset.enterpriseId); } catch (error) { toast(error.message, "danger"); }
+      try {
+        navigate("query-decision", null, { moduleId: "M04", anchor: "m04-decision", replace: true });
+        STORE.openDecision(target.dataset.candidateId || target.dataset.enterpriseId);
+      } catch (error) { toast(error.message, "danger"); }
       return;
     }
     if (action === "close-decision") return STORE.closeDecision();
@@ -776,6 +879,12 @@
   }
 
   app.addEventListener("click", function (event) {
+    const moduleTarget = event.target.closest("[data-module-id]");
+    if (moduleTarget) {
+      const module = DATA.MODULES.find(function (item) { return item.id === moduleTarget.dataset.moduleId; });
+      if (module) navigate(module.view, null, { moduleId: module.id, anchor: module.anchor || null });
+      return;
+    }
     const viewTarget = event.target.closest("[data-view]");
     if (viewTarget) {
       navigate(viewTarget.dataset.view);
@@ -816,7 +925,15 @@
   window.addEventListener("popstate", function () {
     const raw = window.location.hash.replace(/^#/, "");
     if (raw.startsWith("report/")) STORE.setView("report", decodeURIComponent(raw.split("?")[0].slice(7)));
-    else STORE.setView(DATA.VIEWS.some(function (item) { return item.id === raw; }) ? raw : "overview");
+    else {
+      const [requestedView, requestedAnchor] = raw.split("/");
+      const view = DATA.VIEWS.some(function (item) { return item.id === requestedView; }) ? requestedView : "overview";
+      const anchor = ["m03-query", "m04-decision", "m04-todos"].includes(requestedAnchor) ? requestedAnchor : null;
+      const moduleId = anchor?.startsWith("m04-") ? "M04" : undefined;
+      if (state().historicalView && view !== "checkpoints") STORE.exitHistoricalView();
+      STORE.setView(view, null, moduleId, anchor);
+      if (anchor) window.requestAnimationFrame(function () { document.getElementById(anchor)?.scrollIntoView({ block: "start" }); });
+    }
   });
 
   window.addEventListener("keydown", function (event) {

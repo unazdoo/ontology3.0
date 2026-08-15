@@ -8,7 +8,9 @@
     publishedPointer: "./resources/m01/published-pointer.v1.json",
     c035Results: "./resources/m01/c035-risk-results.v1.json",
     publishedFacts: "./resources/m01/published-risk-facts.v1.json",
-    dataContract: "./resources/m02/data-contract.v1.json",
+    dataContract: "./resources/m02/data-contract.v1.1.json",
+    sourceAsset: "./resources/m02/source-asset.v1.json",
+    pipelineRun: "./resources/m02/pipeline-run.v1.json",
     formalDataAsset: "./resources/m02/formal-candidate-data-asset.v1.json",
     humanInputSnapshot: "./resources/m02/human-input-snapshot.v1.json",
     qualityResult: "./resources/m02/quality-result.v1.json",
@@ -29,26 +31,29 @@
     ["CP04", "./checkpoints/CP04-query-integrated.json"],
     ["CP05", "./checkpoints/CP05-decision-chain-completed.json"],
     ["CP06", "./checkpoints/CP06-agent-report-dashboard-completed.json"],
-    ["CP07", "./checkpoints/CP07-e2e-integrated.json"]
+    ["CP07", "./checkpoints/CP07-e2e-integrated.json"],
+    ["CP08", "./checkpoints/CP08-unified-scene-shell-completed.json"]
   ]);
 
   const MODULES = Object.freeze([
-    { id: "M02", name: "数据工程", icon: "database", href: "../../data-engineering-prototype-review/review-v3/方案B2.html", note: "数据、人工输入与质量" },
-    { id: "M01", name: "本体管理", icon: "network", href: "../../ontology-management-review/canvas-first/index.html", note: "模型包与 Published 生命周期" },
-    { id: "M03", name: "智能问数", icon: "sparkles", href: "../../intelligent-query-prototype/review-next/conversation-workspace/index.html", note: "只读消费 Published 事实" },
-    { id: "M04", name: "决策中心", icon: "target", href: "../../decision-center-prototype/index.html", note: "通用 Action Request 与待办" },
-    { id: "M05", name: "Agent 应用", icon: "bot", href: "../../agent-application/Agent应用.html", note: "一期无 S003 专属 Agent" },
-    { id: "M06", name: "报告中心", icon: "file", href: "../../report-center/review-lifecycle/index.html", note: "工作台、报告与穿透", active: true }
+    { id: "M02", name: "数据工程", icon: "database", view: "data-quality", note: "数据、人工输入与质量" },
+    { id: "M01", name: "本体管理", icon: "network", view: "configuration", note: "模型包与 Published 生命周期" },
+    { id: "M03", name: "智能问数", icon: "sparkles", view: "query-decision", anchor: "m03-query", note: "只读消费 Published 事实" },
+    { id: "M04", name: "决策中心", icon: "target", view: "query-decision", anchor: "m04-decision", note: "通用 Action Request 与待办" },
+    { id: "M05", name: "Agent 应用", icon: "bot", view: "agent-boundary", note: "一期无 S003 专属 Agent" },
+    { id: "M06", name: "报告中心", icon: "file", view: "overview", note: "工作台、报告与穿透" }
   ]);
 
   const VIEWS = Object.freeze([
+    { id: "data-quality", label: "数据与质量", short: "数据", icon: "database", inTabs: false },
     { id: "overview", label: "风险总览", short: "总览", icon: "chart" },
     { id: "enterprises", label: "企业明细", short: "企业", icon: "building" },
     { id: "factor-entry", label: "企业因子填报", short: "填报", icon: "edit" },
     { id: "configuration", label: "风险模型配置", short: "配置", icon: "sliders" },
     { id: "runs", label: "运行与报告", short: "运行", icon: "refresh" },
     { id: "query-decision", label: "问数与决策", short: "决策", icon: "message" },
-    { id: "checkpoints", label: "场景快照", short: "快照", icon: "layers" }
+    { id: "checkpoints", label: "场景快照", short: "快照", icon: "layers" },
+    { id: "agent-boundary", label: "Agent 能力边界", short: "Agent", icon: "bot", inTabs: false }
   ]);
 
   const RISK_META = Object.freeze({

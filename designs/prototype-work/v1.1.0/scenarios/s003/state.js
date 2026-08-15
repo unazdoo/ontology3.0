@@ -11,6 +11,8 @@
     fatalError: null,
     context: null,
     currentView: "overview",
+    activeModuleId: "M06",
+    currentAnchor: null,
     selectedEnterpriseId: null,
     navCollapsed: false,
     mobileNavOpen: false,
@@ -213,8 +215,26 @@
     if (raw.startsWith("report/")) {
       return { view: "report", enterpriseId: decodeURIComponent(raw.split("?")[0].slice(7)) };
     }
-    const view = DATA.VIEWS.some(function (item) { return item.id === raw; }) ? raw : "overview";
-    return { view };
+    const [requestedView, requestedAnchor] = raw.split("/");
+    const view = DATA.VIEWS.some(function (item) { return item.id === requestedView; }) ? requestedView : "overview";
+    const anchor = ["m03-query", "m04-decision", "m04-todos"].includes(requestedAnchor) ? requestedAnchor : null;
+    const moduleId = anchor?.startsWith("m04-") ? "M04" : moduleForView(view);
+    return { view, anchor, moduleId };
+  }
+
+  function moduleForView(view) {
+    return {
+      "data-quality": "M02",
+      "factor-entry": "M02",
+      configuration: "M01",
+      "query-decision": "M03",
+      "agent-boundary": "M05",
+      overview: "M06",
+      enterprises: "M06",
+      runs: "M06",
+      checkpoints: "M06",
+      report: "M06"
+    }[view] || "M06";
   }
 
   async function bootstrap() {
@@ -236,6 +256,8 @@
         ready: true,
         context,
         currentView: route.view,
+        activeModuleId: route.moduleId || moduleForView(route.view),
+        currentAnchor: route.anchor || null,
         selectedEnterpriseId: route.enterpriseId || bundle.fixture.enterprises[0]?.enterpriseId || null,
         factorInputs,
         factorInputSnapshot: clone(bundle.humanInputSnapshot),
@@ -484,9 +506,11 @@
     }
   }
 
-  function setView(view, enterpriseId) {
+  function setView(view, enterpriseId, moduleId, anchor) {
     const next = view === "report" || DATA.VIEWS.some(function (item) { return item.id === view; }) ? view : "overview";
-    set({ currentView: next, selectedEnterpriseId: enterpriseId || state.selectedEnterpriseId, mobileNavOpen: false });
+    const requestedModule = DATA.MODULES.some(function (item) { return item.id === moduleId; }) ? moduleId : moduleForView(next);
+    const requestedAnchor = ["m03-query", "m04-decision", "m04-todos"].includes(anchor) ? anchor : null;
+    set({ currentView: next, activeModuleId: requestedModule, currentAnchor: requestedAnchor, selectedEnterpriseId: enterpriseId || state.selectedEnterpriseId, mobileNavOpen: false });
   }
 
   function selectEnterprise(enterpriseId) {
