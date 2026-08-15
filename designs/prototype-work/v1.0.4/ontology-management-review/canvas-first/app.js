@@ -22,6 +22,7 @@
   const ALLOWED_LINK_DIRECTIONS = ["双向导航", "仅正向导航", "仅反向导航"];
   const S001_REQUIRED_MEMBER_IDS = Object.freeze(["FIN-MEMBER-SUBJECT", "FIN-MEMBER-DETAIL", "FIN-MEMBER-INSTITUTION", "FIN-MEMBER-OWNER"]);
   const S001_REQUIRED_RELATION_IDS = Object.freeze(["FIN-REL-DETAIL-SUBJECT", "FIN-REL-DETAIL-INSTITUTION", "FIN-REL-SUBJECT-OWNER"]);
+  const S001_AUTHORITATIVE_FACT_SNAPSHOT = window.S001_AUTHORITATIVE_FACT_SNAPSHOT || null;
 
   const OBJECT_BLUEPRINTS = [
     {
@@ -3649,6 +3650,108 @@
     };
   }
 
+  function authoritativeFactPackageFor(version, binding, update, adoptionRecord) {
+    const snapshot = S001_AUTHORITATIVE_FACT_SNAPSHOT;
+    const buildPackage = window.buildS001AuthoritativeFactPackage;
+    const sourceContract = update?.sourceDataContract || null;
+    const t018 = update?.eligibility || null;
+    const t018Record = versionRecord(version, "T018", binding?.dataVersion);
+    const versionContract = versionDataContract(version);
+    if (!snapshot || typeof buildPackage !== "function" || !version || !binding || !sourceContract || !t018 || !t018Record || !adoptionRecord) return null;
+
+    const requiredMetricIds = new Set(METRICS.map(item => item.id));
+    const requiredRuleIds = new Set(RULES.map(item => item.id));
+    const requiredActionIds = new Set(ACTIONS.map(item => item.id));
+    const publishedMetricIds = new Set((version.metrics || []).map(item => item.id));
+    const publishedRuleIds = new Set((version.rules || []).map(item => item.id));
+    const publishedActionIds = new Set((version.actions || []).map(item => item.id));
+    const sourceMemberIds = new Set((sourceContract.members || []).map(item => item.id));
+    const sourceRelationIds = new Set((sourceContract.relations || []).map(item => item.id));
+    const versionMemberIds = new Set((versionContract?.members || []).map(item => item.id));
+    const versionRelationIds = new Set((versionContract?.relations || []).map(item => item.id));
+    const sourceFingerprint = sourceContract.sourceFingerprint || null;
+    const t008 = sourceContract.t008Confirmation || null;
+    const resourcesReady = requiredMetricIds.size === publishedMetricIds.size
+      && requiredRuleIds.size === publishedRuleIds.size
+      && requiredActionIds.size === publishedActionIds.size
+      && [...requiredMetricIds].every(id => publishedMetricIds.has(id))
+      && [...requiredRuleIds].every(id => publishedRuleIds.has(id))
+      && [...requiredActionIds].every(id => publishedActionIds.has(id))
+      && [...version.rules, ...version.actions].every(resource => !["recommended", "unknown"].includes(resource.businessBasis));
+    const coverageReady = S001_REQUIRED_MEMBER_IDS.every(id => sourceMemberIds.has(id) && versionMemberIds.has(id))
+      && sourceMemberIds.size === S001_REQUIRED_MEMBER_IDS.length
+      && versionMemberIds.size === S001_REQUIRED_MEMBER_IDS.length
+      && S001_REQUIRED_RELATION_IDS.every(id => sourceRelationIds.has(id) && versionRelationIds.has(id))
+      && sourceRelationIds.size === S001_REQUIRED_RELATION_IDS.length
+      && versionRelationIds.size === S001_REQUIRED_RELATION_IDS.length;
+    const sourceReady = sourceContract.sourceModule === "数据工程"
+      && sourceContract.contractCode === "C003"
+      && sourceContract.assetId === versionContract?.assetId
+      && sourceContract.assetVersion === binding.dataVersion
+      && sourceContract.assetVersion === update.dataVersion
+      && sourceContract.asOf === snapshot.asOf
+      && sourceContract.asOf === binding.asOf
+      && sourceFingerprint?.algorithm === "SHA-256"
+      && sourceFingerprint.value === snapshot.source.sha256
+      && Number(sourceFingerprint.sizeBytes) === snapshot.source.sizeBytes
+      && !!sourceContract.qualitySummary?.status
+      && sourceContract.publicationState === "已发布"
+      && sourceContract.mappingEligibility?.status === "可供本体映射";
+    const t008Ready = t008?.snapshotId === sourceContract.sourceSnapshotId
+      && t008?.asOf === snapshot.asOf
+      && t008?.sourceReadEventId === sourceContract.sourceReadEventId
+      && Number(t008?.sizeBytes) === snapshot.source.sizeBytes
+      && resolvedExternalValue(t008?.confirmedBy)
+      && resolvedExternalTime(t008?.confirmedAt)
+      && resolvedExternalValue(t008?.basis)
+      && resolvedExternalValue(t008?.evidenceId)
+      && resolvedExternalValue(t008?.evidenceLocator)
+      && sameScenarioEnvelope(t008, sourceContract);
+    const t018Ready = t018.status === "eligible"
+      && t018.semanticVersionId === version.id
+      && t018.semanticVersion === version.semanticVersion
+      && t018.dataVersion === binding.dataVersion
+      && resolvedExternalValue(t018.evidenceLocator)
+      && t018Record.evidenceCode === t018.evidenceLocator
+      && sameScenarioEnvelope(t018, version)
+      && sameScenarioEnvelope(update, version);
+    const t019Ready = adoptionRecord.id === binding.adoptionRecordId
+      && adoptionRecord.evidenceCode === binding.adoptionEvidenceLocator
+      && adoptionRecord.semanticVersion === version.semanticVersion
+      && adoptionRecord.dataVersion === binding.dataVersion
+      && sameScenarioEnvelope(adoptionRecord, version)
+      && sameScenarioEnvelope(binding, version);
+    const identityReady = snapshot.sceneId === scenarioContextOf(version).scenarioId
+      && version.ontologyStableId === "ONT-GROUP-FINANCING-OPTIMIZATION"
+      && isCurrentFormalVersion(version)
+      && binding.semanticVersion === version.semanticVersion
+      && binding.dataVersion === update.dataVersion
+      && binding.asOf === snapshot.asOf;
+    if (!resourcesReady || !coverageReady || !sourceReady || !t008Ready || !t018Ready || !t019Ready || !identityReady) return null;
+
+    const factPackage = buildPackage({
+      scenarioContext: scenarioContextOf(version),
+      version: clone(version),
+      binding: clone(binding),
+      adoptionRecord: clone(adoptionRecord),
+      t018: clone(t018),
+      sourceContract: clone(sourceContract)
+    });
+    const factPackageReady = factPackage?.factPackageStatus === "available"
+      && factPackage.sceneId === snapshot.sceneId
+      && factPackage.authorityBindingId === adoptionRecord.id
+      && factPackage.semanticVersionId === version.id
+      && factPackage.semanticVersion === version.semanticVersion
+      && factPackage.dataAssetVersionId === binding.dataVersion
+      && factPackage.dataVersion === binding.dataVersion
+      && factPackage.consumableVersionId === t018.evidenceLocator
+      && factPackage.asOf === snapshot.asOf
+      && Array.isArray(factPackage.contentFacts) && factPackage.contentFacts.length > 0
+      && Array.isArray(factPackage.anchors) && factPackage.anchors.length > 0
+      && Array.isArray(factPackage.contentItems) && factPackage.contentItems.length > 0;
+    return factPackageReady ? factPackage : null;
+  }
+
   function authoritativeBindingPackage(version) {
     if (!version) return null;
     const binding = historicalBindingFor(version); const update = updateFor(version); const currentFormal = isCurrentFormalVersion(version);
@@ -3717,6 +3820,19 @@
         if (![parsed.publishedSemanticVersionId, parsed.publishedSemanticVersion, parsed.consumableDataVersion, parsed.dataAsOf, parsed.switchedAt, parsed.evidenceLocator].every(resolvedExternalValue)) return "可用状态投影缺少精确双版本、时点或 T019 证据";
         if (!parsed.current || parsed.current.semanticVersionId !== parsed.publishedSemanticVersionId || parsed.current.semanticVersion !== parsed.publishedSemanticVersion || parsed.current.dataVersion !== parsed.consumableDataVersion || parsed.current.asOf !== parsed.dataAsOf || parsed.current.switchedAt !== parsed.switchedAt) return "可用状态投影的当前组合与外层精确双版本不一致";
         if (!resolvedExternalValue(parsed.current?.t019?.recordId) || parsed.current?.t019?.evidenceId !== parsed.evidenceLocator) return "可用状态投影缺少与当前组合一致的 T019 记录和证据";
+        const factPackage = parsed.current?.authoritativeFactPackage || null;
+        if (factPackage && (factPackage.factPackageStatus !== "available"
+          || factPackage.sceneId !== nestedContext.scenarioId
+          || factPackage.authorityBindingId !== parsed.current.t019.recordId
+          || factPackage.semanticVersionId !== parsed.current.semanticVersionId
+          || factPackage.semanticVersion !== parsed.current.semanticVersion
+          || factPackage.dataAssetVersionId !== parsed.current.dataVersion
+          || factPackage.dataVersion !== parsed.current.dataVersion
+          || factPackage.asOf !== parsed.current.asOf
+          || !resolvedExternalValue(factPackage.consumableVersionId)
+          || !factPackage.contentFacts?.length
+          || !factPackage.anchors?.length
+          || !factPackage.contentItems?.length)) return "可用状态投影中的权威事实包与当前 T019、精确双版本或事实清单不一致";
         const validation = parsed.validationReference;
         if (validation?.sourceModule !== "智能问数" || validation?.contractCode !== "C008" || validation?.decisionRef !== "D064" || validation?.semanticVersionId !== parsed.publishedSemanticVersionId || validation?.semanticVersion !== parsed.publishedSemanticVersion || validation?.dataVersion !== parsed.consumableDataVersion || !sameScenarioEnvelope(validation, nestedContext) || !resolvedExternalValue(validation?.runId) || !resolvedExternalValue(validation?.evidenceLocator)) return "可用状态投影缺少同场景、同双版本的候选固定题验证引用";
       }
@@ -3782,6 +3898,9 @@
     const current = resetPending || !scenarioReady ? null : candidates.find(version => isCurrentFormalVersion(version)) || null;
     const binding = current ? historicalBindingFor(current) : null;
     const packageValue = current ? authoritativeBindingPackage(current) : null;
+    const authoritativeFactPackage = current && binding && packageValue?.consumable && packageValue.adoptionRecord
+      ? authoritativeFactPackageFor(current, binding, updateFor(current), packageValue.adoptionRecord)
+      : null;
     const projectionFault = state.c008ProjectionFault || null;
     const readStatus = projectionReadFailure || projectionFault || resetPending || !scenarioReady || migration.status === "failed" || migration.status === "blocked"
       ? "failed"
@@ -3843,7 +3962,8 @@
         dataVersion: binding.dataVersion,
         asOf: binding.asOf,
         switchedAt: binding.switchedAt,
-        t019: packageValue?.adoptionRecord ? { recordId: packageValue.adoptionRecord.id, evidenceId: packageValue.adoptionRecord.evidenceCode } : null
+        t019: packageValue?.adoptionRecord ? { recordId: packageValue.adoptionRecord.id, evidenceId: packageValue.adoptionRecord.evidenceCode } : null,
+        authoritativeFactPackage: readStatus === "available" && authoritativeFactPackage ? clone(authoritativeFactPackage) : null
       } : null,
       evidenceLocator: exposeBinding ? packageValue?.adoptionRecord?.evidenceCode || null : null
     };
