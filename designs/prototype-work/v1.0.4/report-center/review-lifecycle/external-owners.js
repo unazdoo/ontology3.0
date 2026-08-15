@@ -23,6 +23,30 @@
   const C017_REPORT_PROJECTION_STORAGE_KEY = "ontology3.c017.report-center.projection.v1";
   const PLATFORM_SCENARIO_CONTEXT_KEY = "ontology3.platform.scenario-runtime.v1";
   const C033_HANDOFF_CONTEXT_KEY = "ontology3.0-s001-handoff-v1:scenario-context";
+  const ACTIVE_SCENARIO_STATUSES = new Set(["active", "ready", "available", "有效", "启用", "进行中", "已启用", "可用"]);
+
+  const normalizeStatus = (value) => String(value == null ? "" : value).trim().toLowerCase();
+  const scenarioContextFrom = (source = {}) => {
+    const value = source?.scenarioContext || source?.context || source || {};
+    return {
+      scenarioId: value.scenarioId || null,
+      scenarioVersion: value.scenarioVersion || null,
+      scenarioRunId: value.scenarioRunId || null,
+      formedAt: value.formedAt || value.contextFormedAt || null,
+      status: value.status || value.contextStatus || null,
+    };
+  };
+  const scenarioReady = (context) => Boolean(
+    context?.scenarioId && context?.scenarioVersion && context?.scenarioRunId && context?.formedAt
+    && ACTIVE_SCENARIO_STATUSES.has(normalizeStatus(context.status)),
+  );
+  const sameScenario = (left, right) => {
+    const normalizedLeft = scenarioContextFrom(left);
+    const normalizedRight = scenarioContextFrom(right);
+    return scenarioReady(normalizedLeft) && scenarioReady(normalizedRight)
+      && ["scenarioId", "scenarioVersion", "scenarioRunId", "formedAt", "status"]
+        .every((field) => normalizedLeft[field] === normalizedRight[field]);
+  };
 
   const readOwnerStore = (key, fallback) => {
     try {
@@ -57,22 +81,6 @@
       }
     };
 
-    const scenarioContextFrom = (source = {}) => {
-      const value = source.scenarioContext || source.context || source;
-      return {
-        scenarioId: value.scenarioId || null,
-        scenarioVersion: value.scenarioVersion || null,
-        scenarioRunId: value.scenarioRunId || null,
-        formedAt: value.formedAt || value.contextFormedAt || null,
-        status: value.status || value.contextStatus || null,
-      };
-    };
-
-    const scenarioReady = (context) => Boolean(
-      context?.scenarioId && context?.scenarioVersion && context?.scenarioRunId && context?.formedAt
-      && ["active", "ready", "available", "有效", "启用", "进行中", "已启用", "可用"].includes(context.status),
-    );
-    const sameScenario = (left, right) => ["scenarioId", "scenarioVersion", "scenarioRunId", "formedAt", "status"].every((field) => left?.[field] === right?.[field]);
     const missing = (record, fields) => fields.filter((field) => record?.[field] == null || record[field] === "");
     const currentScenarioContext = () => {
       const params = new URLSearchParams(window.location.search);
@@ -96,6 +104,9 @@
       binding: null,
       trust: null,
       bindingSummary: null,
+      factPackage: null,
+      factPackageStatus: "unavailable",
+      factPackageReason: reason,
       previousTrustedCombination: clone(c008?.previousTrustedCombination || null),
       candidate: clone(c008?.candidate || null),
       dataPreviousVersion: null,
@@ -202,6 +213,40 @@
         hardQualityFailure: currentSummary.hardQualityFailure === true,
         fiveDimensions: clone(projection.fiveDimensions || []),
       };
+      const factPackageCandidate = clone(
+        current.authoritativeFactPackage
+        || current.factPackage
+        || c008.authoritativeFactPackage
+        || c008.factPackage
+        || null,
+      );
+      const factPackageRequired = [
+        "packageId", "packageVersion", "schemaVersion", "factInventoryVersion", "factPackageStatus",
+        "sceneId", "authorityBindingId", "semanticVersionId", "semanticVersion", "dataAssetVersionId",
+        "dataVersion", "consumableVersionId", "asOf",
+      ];
+      const factPackageMissing = factPackageCandidate ? missing(factPackageCandidate, factPackageRequired) : ["权威事实包"];
+      const factPackageIdentityMatches = Boolean(factPackageCandidate)
+        && factPackageCandidate.factPackageStatus === "available"
+        && factPackageCandidate.sceneId === platformScenario.scenarioId
+        && factPackageCandidate.authorityBindingId === binding.bindingId
+        && factPackageCandidate.semanticVersionId === binding.semanticVersionId
+        && factPackageCandidate.semanticVersion === binding.semanticVersion
+        && factPackageCandidate.dataAssetVersionId === binding.dataAssetVersionId
+        && factPackageCandidate.dataVersion === binding.dataVersion
+        && factPackageCandidate.consumableVersionId === binding.consumableVersionId
+        && factPackageCandidate.asOf === binding.asOf
+        && Array.isArray(factPackageCandidate.contentFacts) && factPackageCandidate.contentFacts.length > 0
+        && Array.isArray(factPackageCandidate.anchors) && factPackageCandidate.anchors.length > 0
+        && Array.isArray(factPackageCandidate.contentItems) && factPackageCandidate.contentItems.length > 0;
+      const factPackageStatus = factPackageIdentityMatches
+        ? "ready"
+        : factPackageCandidate ? "invalid" : "missing";
+      const factPackageReason = factPackageIdentityMatches
+        ? null
+        : factPackageCandidate
+          ? `C008 权威事实包字段不完整或与 T019/C017 精确身份不一致：${factPackageMissing.join("、") || "身份或内容集合"}`
+          : "C008 当前 T019 尚未提供可定位的精确结构化事实包。";
       return {
         owner: "本体管理 / 数据工程",
         schemaVersion: 1,
@@ -213,6 +258,9 @@
         binding,
         trust,
         bindingSummary,
+        factPackage: factPackageIdentityMatches ? factPackageCandidate : null,
+        factPackageStatus,
+        factPackageReason,
         previousTrustedCombination: clone(c008.previousTrustedCombination || null),
         candidate: clone(c008.candidate || projection.candidate || null),
         dataPreviousVersion: clone(projection.previousTrusted || null),
@@ -254,22 +302,8 @@
       };
       const c033 = readOwnerStore(C033_HANDOFF_CONTEXT_KEY, {}) || {};
       const legacy = readOwnerStore(PLATFORM_SCENARIO_CONTEXT_KEY, {}) || {};
-      const normalize = (source = {}) => {
-        const value = source.scenarioContext || source.context || source;
-        return {
-          scenarioId: value.scenarioId || null,
-          scenarioVersion: value.scenarioVersion || null,
-          scenarioRunId: value.scenarioRunId || null,
-          formedAt: value.formedAt || value.contextFormedAt || null,
-          status: value.status || value.contextStatus || null,
-        };
-      };
-      const ready = (value) => Boolean(value.scenarioId && value.scenarioVersion && value.scenarioRunId && value.formedAt
-        && ["active", "ready", "available", "有效", "启用", "进行中", "已启用", "可用"].includes(value.status));
-      return [normalize(fromUrl), normalize(c033), normalize(legacy)].find(ready) || normalize(fromUrl);
+      return [scenarioContextFrom(fromUrl), scenarioContextFrom(c033), scenarioContextFrom(legacy)].find(scenarioReady) || scenarioContextFrom(fromUrl);
     };
-    const sameScenario = (left, right) => Boolean(left && right
-      && ["scenarioId", "scenarioVersion", "scenarioRunId"].every((field) => left[field] && left[field] === right[field]));
     const requestIdentity = (request = {}) => ({
       scenarioContext: request.scenarioContext || request.c024?.reportContext?.scenarioContext || null,
       reportNo: request.reportNumber || request.c024?.reportContext?.reportNumber || request.c024?.reportContext?.reportId || null,
@@ -282,6 +316,8 @@
       dataVersion: request.dataVersion || request.c024?.reportContext?.semanticBinding?.dataVersion || null,
       consumableVersionId: request.consumableVersionId || request.c024?.reportContext?.semanticBinding?.consumableVersionId || null,
       asOf: request.dataAsOf || request.c024?.reportContext?.semanticBinding?.asOf || null,
+      anchorSnapshotId: request.anchorSnapshotId || request.c024?.reportContext?.anchorSnapshotId || null,
+      anchorSnapshotVersion: request.anchorSnapshotVersion || request.c024?.reportContext?.anchorSnapshotVersion || null,
       anchor: request.anchor || request.c024?.selectedAnchor || request.c024?.reportContext?.selectedAnchor || null,
     });
     const generationIdentity = (request = {}) => {
@@ -362,17 +398,22 @@
     const identityMatchesRun = (identity, run) => {
       if (!run) return true;
       const snapshot = run.snapshot || {};
-      return sameScenario(identity.scenarioContext, run.scenarioContext || snapshot)
-        && (!identity.reportNo || identity.reportNo === snapshot.reportNumber)
-        && (!identity.contentVersion || identity.contentVersion === snapshot.contentVersion)
-        && (!identity.evidencePackId || identity.evidencePackId === snapshot.evidencePackageId)
-        && (!identity.evidencePackVersion || identity.evidencePackVersion === snapshot.evidencePackageVersion)
-        && (!identity.semanticVersionId || identity.semanticVersionId === snapshot.semanticVersionId)
-        && (!identity.semanticVersion || identity.semanticVersion === (snapshot.ontologyVersion || snapshot.semanticVersion))
-        && (!identity.dataAssetVersionId || identity.dataAssetVersionId === snapshot.dataAssetVersionId)
-        && (!identity.dataVersion || identity.dataVersion === snapshot.dataVersion)
-        && (!snapshot.consumableVersionId || identity.consumableVersionId === snapshot.consumableVersionId)
-        && (!identity.asOf || identity.asOf === (snapshot.dataAsOf || snapshot.asOf));
+      const actual = {
+        reportNo: snapshot.reportNumber || null,
+        contentVersion: snapshot.contentVersion || null,
+        evidencePackId: snapshot.evidencePackageId || null,
+        evidencePackVersion: snapshot.evidencePackageVersion || null,
+        semanticVersionId: snapshot.semanticVersionId || null,
+        semanticVersion: snapshot.ontologyVersion || snapshot.semanticVersion || null,
+        dataAssetVersionId: snapshot.dataAssetVersionId || null,
+        dataVersion: snapshot.dataVersion || null,
+        consumableVersionId: snapshot.consumableVersionId || null,
+        asOf: snapshot.dataAsOf || snapshot.asOf || null,
+        anchor: snapshot.anchor || null,
+      };
+      return sameScenario(identity.scenarioContext, run.scenarioContext || snapshot.scenarioContext || snapshot)
+        && ["reportNo", "contentVersion", "evidencePackId", "evidencePackVersion", "semanticVersionId", "semanticVersion", "dataAssetVersionId", "dataVersion", "consumableVersionId", "asOf", "anchor"]
+          .every((field) => identity[field] && actual[field] && identity[field] === actual[field]);
     };
     const statusLabel = (request, run) => {
       if (run?.result && ["complete", "partial"].includes(run.status)) return "已完成";
@@ -395,6 +436,8 @@
         scenarioId: identity.scenarioContext?.scenarioId || null,
         scenarioVersion: identity.scenarioContext?.scenarioVersion || null,
         scenarioRunId: identity.scenarioContext?.scenarioRunId || null,
+        scenarioFormedAt: identity.scenarioContext?.formedAt || null,
+        scenarioStatus: identity.scenarioContext?.status || null,
         reportId: identity.reportNo,
         contentVersion: identity.contentVersion,
         evidencePackId: identity.evidencePackId,
@@ -408,6 +451,8 @@
         selectedAnchor: identity.anchor,
         verificationRunId: request.c024?.verificationRunId || request.c024?.reportContext?.verificationReference?.runId || null,
         comparisonRecordId: request.c024?.reportContext?.comparisonReference?.recordId || null,
+        anchorSnapshotId: identity.anchorSnapshotId,
+        anchorSnapshotVersion: identity.anchorSnapshotVersion,
       };
     };
     const readRecord = (key) => {
@@ -434,7 +479,7 @@
         };
       }
       const identity = requestIdentity(request);
-      const requiredIdentity = ["reportNo", "contentVersion", "evidencePackId", "evidencePackVersion", "semanticVersionId", "semanticVersion", "dataAssetVersionId", "dataVersion", "consumableVersionId", "asOf", "anchor"];
+      const requiredIdentity = ["reportNo", "contentVersion", "evidencePackId", "evidencePackVersion", "semanticVersionId", "semanticVersion", "dataAssetVersionId", "dataVersion", "consumableVersionId", "asOf", "anchorSnapshotId", "anchorSnapshotVersion", "anchor"];
       if (!sameScenario(identity.scenarioContext, current) || requiredIdentity.some((field) => !identity[field])) {
         return { owner: "Agent 应用", requestId: request.id, status: "已拒绝", failure: "C025 固定报告、证据包、C033 或精确双版本身份不完整或错配", readAt: nowText() };
       }
@@ -445,6 +490,21 @@
       }
       const session = (model.sessions || []).find((item) => item.id === (run?.sessionId || request.sessionId)) || null;
       const result = run?.result || null;
+      const resultScenario = result?.scenarioContext || null;
+      const resultIdentityMatches = !result || (sameScenario(identity.scenarioContext, resultScenario)
+        && identity.reportNo === (result.reportNumber || request.reportNumber)
+        && identity.contentVersion === (result.contentVersion || request.contentVersion)
+        && identity.evidencePackId === result.evidencePackageId
+        && identity.evidencePackVersion === (result.evidencePackageVersion || run?.snapshot?.evidencePackageVersion)
+        && identity.semanticVersionId === (result.semanticVersionId || run?.snapshot?.semanticVersionId)
+        && identity.semanticVersion === (result.semanticVersion || run?.snapshot?.ontologyVersion)
+        && identity.dataAssetVersionId === (result.dataAssetVersionId || run?.snapshot?.dataAssetVersionId)
+        && identity.dataVersion === result.dataVersion
+        && identity.consumableVersionId === (result.consumableVersionId || run?.snapshot?.consumableVersionId)
+        && identity.asOf === (result.dataAsOf || run?.snapshot?.dataAsOf));
+      if (!resultIdentityMatches) {
+        return { owner: "Agent 应用", requestId: request.id, runId: run?.id || null, status: "已拒绝", failure: "C025 Result 与 C024 报告、证据包、C033 或精确双版本错配", readAt: nowText() };
+      }
       const fixedContextRef = fixedContextFor(request, run);
       return {
         owner: "Agent 应用",

@@ -22,7 +22,6 @@
     historyReadCountByReport: new Map(),
     decisionNavigation: null,
   };
-  const runtimeFactPackages = new Map();
   let runtimePersistenceError = null;
   let previousRoutePath = null;
 
@@ -60,7 +59,11 @@
   }
 
   function sameScenarioContext(left, right) {
-    return Boolean(left && right && ["scenarioId", "scenarioVersion", "scenarioRunId"].every((field) => left[field] && left[field] === right[field]));
+    const normalizedLeft = normalizeScenarioContext(left || {});
+    const normalizedRight = normalizeScenarioContext(right || {});
+    return scenarioContextReady(normalizedLeft) && scenarioContextReady(normalizedRight)
+      && ["scenarioId", "scenarioVersion", "scenarioRunId", "formedAt", "status"]
+        .every((field) => normalizedLeft[field] === normalizedRight[field]);
   }
 
   function scenarioContextSnapshot() {
@@ -73,11 +76,11 @@
   }
 
   function currentPublishedReports() {
-    return (state.publishedReports || []).filter(resourceInCurrentScenario);
+    return (state.publishedReports || []).filter((report) => report?.currentProjection !== false && resourceInCurrentScenario(report));
   }
 
   function currentActionRequests() {
-    return (state.actionRequests || []).filter(resourceInCurrentScenario);
+    return (state.actionRequests || []).filter((request) => request?.currentProjection !== false && resourceInCurrentScenario(request));
   }
 
   function freshVerification() {
@@ -194,6 +197,8 @@
 
   function newReportRecord() {
     return {
+      currentProjection: true,
+      projectionStatus: "current",
       scenarioContext: null,
       aggregateId: null,
       stage: "idle",
@@ -316,6 +321,7 @@
       factPackageStatus: factPackage.factPackageStatus || factPackage.status || "unavailable",
       semanticVersionId: factPackage.semanticVersionId || null,
       semanticVersion: factPackage.semanticVersion || null,
+      authorityBindingId: factPackage.authorityBindingId || null,
       dataAssetVersionId: factPackage.dataAssetVersionId || null,
       dataVersion: factPackage.dataVersion || null,
       consumableVersionId: factPackage.consumableVersionId || null,
@@ -327,8 +333,7 @@
   function resolveExactFactPackage(reference) {
     if (!reference?.dataVersion) return null;
     const candidate = DATA.reportEvidence.factPackages?.[reference.dataVersion]
-      || runtimeFactPackages.get(reference.dataVersion)
-      || materializeS001FactPackage(currentAuthority());
+      || factPackageForBinding(reference);
     const exact = candidate
       && (!reference.packageId || candidate.packageId === reference.packageId)
       && (!reference.semanticVersionId || candidate.semanticVersionId === reference.semanticVersionId)
@@ -763,7 +768,31 @@
     }
   }
 
-  let state = loadState();
+  function isolateLoadedStateToCurrentScenario(sourceState) {
+    const active = activeScenarioContext();
+    const loadedReport = sourceState?.report;
+    if (!loadedReport || loadedReport.stage === "idle") return sourceState;
+    if (scenarioContextReady(active) && sameScenarioContext(loadedReport.scenarioContext, active)) return sourceState;
+    const archivedAt = nowText();
+    const archivedReport = {
+      ...clone(loadedReport),
+      currentProjection: false,
+      projectionStatus: "history",
+      archivedAt,
+      archivedReason: "加载时发现报告所属 C033 与当前场景工作投影不一致；原记录保持历史只读，未恢复为当前成功状态。",
+    };
+    if (["published", "withdrawn"].includes(archivedReport.stage) && archivedReport.reportNo) {
+      sourceState.publishedReports = (sourceState.publishedReports || []).filter((item) => item.reportNo !== archivedReport.reportNo);
+      sourceState.publishedReports.unshift(archivedReport);
+    }
+    sourceState.report = newReportRecord();
+    sourceState.assistant = newState().assistant;
+    sourceState.regenerationRequest = null;
+    sourceState.ui = { ...newState().ui };
+    return sourceState;
+  }
+
+  let state = isolateLoadedStateToCurrentScenario(loadState());
 
   function normalizeReport(report) {
     const normalized = { ...newReportRecord(), ...(report || {}) };
@@ -936,6 +965,9 @@
       binding: null,
       trust: null,
       bindingSummary: null,
+      factPackage: null,
+      factPackageStatus: "missing",
+      factPackageReason: "统一权威投影未提供精确结构化事实包。",
       reason: "统一 C008 权威投影不可定位。",
       recoveryAdvice: "由本体管理形成统一投影后重新读取。",
       exchangeKey: C008_PROJECTION_STORAGE_KEY,
@@ -1052,8 +1084,8 @@
 
   function bindingIdentityMatches(left, right) {
     if (!left || !right) return false;
-    return ["bindingId", "semanticVersionId", "dataAssetVersionId", "dataVersion", "consumableVersionId"]
-      .every((field) => left[field] === right[field]);
+    return ["bindingId", "semanticVersionId", "semanticVersion", "dataAssetVersionId", "dataVersion", "consumableVersionId", "asOf"]
+      .every((field) => left[field] && right[field] && left[field] === right[field]);
   }
 
   function generationGateOutcome(projection, expectedBinding = null) {
@@ -1090,7 +1122,7 @@
       return { allowed: false, reason: "当前已发布语义与数据版本不兼容。", factPackage };
     }
     if (!factPackageIsAvailable(factPackage)) {
-      return { allowed: false, reason: "当前精确权威组合的结构化事实包不可定位；不会改用其他版本事实。", factPackage };
+      return { allowed: false, reason: projection.factPackageReason || "当前精确权威组合的结构化事实包不可定位；不会改用其他版本事实。", factPackage };
     }
     return { allowed: true, reason: null, factPackage };
   }
@@ -1188,160 +1220,23 @@
   }
 
   function factPackageForBinding(binding) {
-    if (!binding?.dataVersion) return null;
-    const factPackage = DATA.reportEvidence.factPackages?.[binding.dataVersion]
-      || runtimeFactPackages.get(binding.dataVersion)
-      || materializeS001FactPackage(binding);
+    if (!binding?.bindingId || !binding?.semanticVersionId || !binding?.semanticVersion || !binding?.dataAssetVersionId
+      || !binding?.dataVersion || !binding?.consumableVersionId || !binding?.asOf) return null;
+    const projection = runtimeExternalViews.trust || OWNERS.trust?.peekCurrent?.() || null;
+    if (!projection || projection.readStatus !== "ready" || projection.factPackageStatus !== "ready"
+      || !sameScenarioContext(projection.scenarioContext, activeScenarioContext())) return null;
+    const factPackage = projection.factPackage;
     if (!factPackage) return null;
-    const identityMatches = factPackage.semanticVersionId === binding.semanticVersionId
+    const identityMatches = factPackage.factPackageStatus === "available"
+      && factPackage.sceneId === activeScenarioContext().scenarioId
+      && factPackage.authorityBindingId === binding.bindingId
+      && factPackage.semanticVersionId === binding.semanticVersionId
+      && factPackage.semanticVersion === binding.semanticVersion
       && factPackage.dataVersion === binding.dataVersion
       && factPackage.dataAssetVersionId === binding.dataAssetVersionId
-      && factPackage.consumableVersionId === binding.consumableVersionId;
-    return identityMatches ? factPackage : null;
-  }
-
-  function materializeS001FactPackage(binding) {
-    const scenario = activeScenarioContext();
-    const trust = currentTrust();
-    if (!binding?.bindingId || !binding?.semanticVersionId || !binding?.semanticVersion || !binding?.dataAssetVersionId
-      || !binding?.dataVersion || !binding?.consumableVersionId || !binding?.asOf || !scenarioContextReady(scenario)
-      || scenario.scenarioId !== "S001" || binding.readiness !== "可消费" || binding.compatibility !== "兼容"
-      || trust?.dataVersion !== binding.dataVersion || trust?.hardQualityFailure || trust?.readiness !== "可消费") return null;
-    const template = DATA.reportEvidence.factPackages?.["2026.08.09-01"];
-    if (!template || template.factPackageStatus !== "available") return null;
-    const safeVersion = String(binding.dataVersion).replace(/[^A-Za-z0-9_-]/g, "-");
-    const metricResultVersion = `METRIC-${safeVersion}-01`;
-    const ruleResultVersion = `RULE-${safeVersion}-01`;
-    const trendMonthMap = new Map([
-      ["2026-03", "2025-07"],
-      ["2026-04", "2025-08"],
-      ["2026-05", "2025-09"],
-      ["2026-06", "2025-10"],
-      ["2026-07", "2025-11"],
-      ["2026-08", "2025-12"],
-    ]);
-    const versionBinding = {
-      bindingId: binding.bindingId,
-      publishedSemanticVersion: binding.semanticVersion,
-      semanticVersionId: binding.semanticVersionId,
-      dataAssetVersionId: binding.dataAssetVersionId,
-      consumableVersionId: binding.consumableVersionId,
-      dataVersion: binding.dataVersion,
-      resultVersion: `${metricResultVersion} / ${ruleResultVersion}`,
-      resultVersions: { metric: metricResultVersion, rule: ruleResultVersion },
-      asOf: binding.asOf,
-      previousTrustedCombination: clone(binding.previousTrustedCombination || null),
-    };
-    const retargetEvidence = (items = []) => items.map((item) => String(item).startsWith("C017-") ? (trust.id || item) : item);
-    const retargetTrendIdentity = (value) => {
-      if (typeof value !== "string") return value;
-      let next = value
-        .replaceAll("2026-03 至 2026-08", "2025-07 至 2025-12")
-        .replaceAll("2025-09 至 2026-08", "2025-07 至 2025-12");
-      trendMonthMap.forEach((targetMonth, sourceMonth) => {
-        if (next === sourceMonth || next.includes(`FACT-COST-TREND-${sourceMonth}`) || next.includes(`chart-cost-${sourceMonth}`) || next.startsWith(`${sourceMonth} `)) {
-          next = next.replaceAll(sourceMonth, targetMonth);
-        }
-      });
-      return next;
-    };
-    const retargetRecord = (record) => {
-      const next = clone(record);
-      ["id", "factId", "intendedFactId", "sourceFactId", "anchorId", "primaryAnchorId", "htmlAnchorId", "pdfAnchorId", "label", "value", "displayValue", "renderedValue", "timeRange"].forEach((field) => {
-        if (field in next) next[field] = retargetTrendIdentity(next[field]);
-      });
-      if (Array.isArray(next.factRefs)) next.factRefs = next.factRefs.map(retargetTrendIdentity);
-      if (Array.isArray(next.intendedFactRefs)) next.intendedFactRefs = next.intendedFactRefs.map(retargetTrendIdentity);
-      if (Array.isArray(next.anchorIds)) next.anchorIds = next.anchorIds.map(retargetTrendIdentity);
-      if (next.dimension?.month) next.dimension = { ...next.dimension, month: retargetTrendIdentity(next.dimension.month) };
-      if (next.id === "FACT-AS-OF" || next.id === "FACT-DATA-AS-OF-DISCLOSURE") next.value = binding.asOf;
-      if (next.id === "FACT-PUBLISHED-SEMANTIC-VERSION") next.value = binding.semanticVersion;
-      if (next.id === "FACT-DATA-VERSION") next.value = binding.dataVersion;
-      if (next.id === "FACT-DATA-QUALITY-STATUS") next.value = trust.publishedQuality;
-      if (next.id === "FACT-DATA-FRESHNESS") next.value = trust.freshness;
-      if (next.id === "FACT-DATA-READINESS") next.value = trust.readiness;
-      if (/Metric/.test(next.kind || "")) next.resultVersion = metricResultVersion;
-      if (/Rule/.test(next.kind || "")) next.resultVersion = ruleResultVersion;
-      if (next.id === "FACT-SUGGESTION-BASIS") {
-        next.resultVersion = ruleResultVersion;
-        next.basis = (next.basis || []).map((item) => ({ ...item, resultVersion: ruleResultVersion }));
-      }
-      if (Array.isArray(next.evidence)) next.evidence = retargetEvidence(next.evidence).map(retargetTrendIdentity);
-      if (Array.isArray(next.evidenceRefs)) next.evidenceRefs = retargetEvidence(next.evidenceRefs).map(retargetTrendIdentity);
-      if (["FACT-AS-OF", "FACT-DATA-AS-OF-DISCLOSURE"].includes(next.id)) next.evidence = [binding.dataVersion, trust.id].filter(Boolean);
-      if (next.id === "FACT-PUBLISHED-SEMANTIC-VERSION") next.evidence = [binding.semanticVersionId, binding.bindingId].filter(Boolean);
-      if (next.id === "FACT-DATA-VERSION") next.evidence = [binding.dataVersion, binding.bindingId, trust.id].filter(Boolean);
-      if (next.semanticSnapshot) next.semanticSnapshot = { ...next.semanticSnapshot, semanticVersionId: binding.semanticVersionId, publishedSemanticVersion: binding.semanticVersion, semanticVersion: binding.semanticVersion };
-      if (next.trustSnapshot) next.trustSnapshot = { ...next.trustSnapshot, dataVersion: binding.dataVersion, asOf: binding.asOf, qualityStatus: trust.publishedQuality, freshnessStatus: trust.freshness, consumptionReadiness: trust.readiness };
-      if (next.ruleSnapshot) next.ruleSnapshot = { ...next.ruleSnapshot, publishedSemanticVersion: binding.semanticVersion, resultVersion: ruleResultVersion };
-      if (next.displayValue != null && next.id?.startsWith("FACT-")) next.displayValue = typeof next.value === "number"
-        ? next.unit === "%" ? `${next.value}%` : next.unit ? `${next.value} ${next.unit}` : next.value
-        : next.value;
-      return next;
-    };
-    const retargetedContentFacts = (template.contentFacts || []).map(retargetRecord);
-    const retargetedFactsById = new Map(retargetedContentFacts.map((fact) => [fact.id, fact]));
-    const retargetPresentationRecord = (record) => {
-      const next = retargetRecord(record);
-      const refs = next.factRefs || (next.factId ? [next.factId] : []);
-      const fact = refs.length === 1 ? retargetedFactsById.get(refs[0]) : null;
-      const isSimpleOccurrence = fact && next.claimType !== "narrative" && next.presentationType !== "paragraph";
-      if (isSimpleOccurrence) {
-        const displayValue = typeof fact.value === "number"
-          ? fact.unit === "%" ? `${fact.value}%` : fact.unit ? `${fact.value} ${fact.unit}` : fact.value
-          : fact.value;
-        if ("displayValue" in next) next.displayValue = displayValue;
-        if ("renderedValue" in next) next.renderedValue = displayValue;
-        if ("displayUnit" in next) next.displayUnit = fact.unit || null;
-        if ("evidenceRefs" in next) next.evidenceRefs = clone(fact.evidence || next.evidenceRefs || []);
-        if ("semanticSnapshot" in next) next.semanticSnapshot = clone(fact.semanticSnapshot || next.semanticSnapshot || null);
-        if ("trustSnapshot" in next) next.trustSnapshot = clone(fact.trustSnapshot || next.trustSnapshot || null);
-        if ("ruleSnapshot" in next) next.ruleSnapshot = clone(fact.ruleSnapshot || next.ruleSnapshot || null);
-        if ("canonicalFactKey" in next) next.canonicalFactKey = fact.canonicalFactKey || next.canonicalFactKey || null;
-      }
-      return next;
-    };
-    const pack = {
-      ...clone(template),
-      packageId: `RFP-S001-${safeVersion}`,
-      packageVersion: "1.0",
-      sceneId: scenario.scenarioId,
-      scenarioContext: clone(scenario),
-      authorityBindingId: binding.bindingId,
-      semanticVersionId: binding.semanticVersionId,
-      semanticVersion: binding.semanticVersion,
-      dataAssetVersionId: binding.dataAssetVersionId,
-      dataVersion: binding.dataVersion,
-      consumableVersionId: binding.consumableVersionId,
-      asOf: binding.asOf,
-      quality: trust.publishedQuality,
-      freshness: trust.freshness,
-      readiness: trust.readiness,
-      resultVersions: { metric: metricResultVersion, rule: ruleResultVersion },
-      authoritativeBinding: versionBinding,
-      contentFacts: retargetedContentFacts,
-      anchors: (template.anchors || []).map(retargetPresentationRecord),
-      contentItems: (template.contentItems || []).map(retargetPresentationRecord),
-      trend: (template.trend || []).map((point) => ({ ...clone(point), month: retargetTrendIdentity(point.month) })),
-      renderManifest: {
-        ...clone(template.renderManifest),
-        authoritativeBinding: versionBinding,
-        items: (template.renderManifest?.items || []).map(retargetPresentationRecord),
-      },
-      generatedNarrativeContract: clone(template.generatedNarrativeContract),
-      actionTypes: DATA.actionTypes.map((item) => item.id === "AT-FIN-OPT-001"
-        ? { ...clone(item), publishedSemanticVersion: binding.semanticVersion, status: "Published" }
-        : clone(item)),
-      units: Object.fromEntries(Object.entries(template.units || {}).map(([name, unit]) => [name, {
-        ...clone(unit),
-        rule: { ...clone(unit.rule), publishedSemanticVersion: binding.semanticVersion, resultVersion: ruleResultVersion },
-      }])),
-      owners: { ...clone(template.owners), authoritativeBinding: "本体管理", dataTrust: "数据工程", contentFacts: "报告中心" },
-      materializedAt: nowText(),
-      materializationBasis: "同一 C033 轮次的 C008/T019、C017 双摘要与 S001 已确认报告事实合同",
-    };
-    runtimeFactPackages.set(binding.dataVersion, pack);
-    return pack;
+      && factPackage.consumableVersionId === binding.consumableVersionId
+      && factPackage.asOf === binding.asOf;
+    return identityMatches ? clone(factPackage) : null;
   }
 
   function currentFactPackage() {
@@ -3892,9 +3787,13 @@
     const semantic = candidate?.reportContext?.semanticBinding || {};
     const reportId = candidate?.reportContext?.reportNumber || candidate?.reportContext?.reportId || null;
     const contentVersion = candidate?.reportContext?.contentVersion || null;
+    const anchorSnapshotId = candidate?.reportContext?.anchorSnapshotId || null;
+    const anchorSnapshotVersion = candidate?.reportContext?.anchorSnapshotVersion || null;
+    const selectedAnchor = candidate?.reportContext?.selectedAnchor || candidate?.selectedAnchor || null;
     if (!candidate?.requestId || !scenarioContextReady(context) || !sameScenarioContext(context, activeScenarioContext())
       || !reportId || !contentVersion || !evidence.id || !evidence.version
-      || !semantic.semanticVersionId || !semantic.semanticVersion || !semantic.dataAssetVersionId || !semantic.dataVersion || !semantic.consumableVersionId || !semantic.asOf) {
+      || !semantic.semanticVersionId || !semantic.semanticVersion || !semantic.dataAssetVersionId || !semantic.dataVersion || !semantic.consumableVersionId || !semantic.asOf
+      || !anchorSnapshotId || !anchorSnapshotVersion || anchorSnapshotVersion !== contentVersion || !selectedAnchor) {
       return false;
     }
     const compactFact = (fact = {}) => ({
@@ -3989,13 +3888,13 @@
     const requests = (Array.isArray(existing) ? existing : Array.isArray(existing?.requests) ? existing.requests : [])
       .filter(Boolean)
       .map(compactCandidate);
-    const identity = [reportId, contentVersion, evidence.id, evidence.version, semantic.semanticVersionId, semantic.semanticVersion, semantic.dataAssetVersionId, semantic.dataVersion, semantic.consumableVersionId, semantic.asOf];
+    const identity = [reportId, contentVersion, evidence.id, evidence.version, semantic.semanticVersionId, semantic.semanticVersion, semantic.dataAssetVersionId, semantic.dataVersion, semantic.consumableVersionId, semantic.asOf, anchorSnapshotId, anchorSnapshotVersion, selectedAnchor, candidate.reportContext?.contextIntent || "report-qa-fixed", candidate.question || null];
     const conflict = requests.find((item) => {
       if (item?.requestId !== candidate.requestId) return false;
       const itemContext = item.reportContext || {};
       const itemEvidence = itemContext.evidencePack || {};
       const itemSemantic = itemContext.semanticBinding || {};
-      const itemIdentity = [itemContext.reportNumber || itemContext.reportId || null, itemContext.contentVersion || null, itemEvidence.id || null, itemEvidence.version || null, itemSemantic.semanticVersionId || null, itemSemantic.semanticVersion || null, itemSemantic.dataAssetVersionId || null, itemSemantic.dataVersion || null, itemSemantic.consumableVersionId || null, itemSemantic.asOf || null];
+      const itemIdentity = [itemContext.reportNumber || itemContext.reportId || null, itemContext.contentVersion || null, itemEvidence.id || null, itemEvidence.version || null, itemSemantic.semanticVersionId || null, itemSemantic.semanticVersion || null, itemSemantic.dataAssetVersionId || null, itemSemantic.dataVersion || null, itemSemantic.consumableVersionId || null, itemSemantic.asOf || null, itemContext.anchorSnapshotId || null, itemContext.anchorSnapshotVersion || null, itemContext.selectedAnchor || item.selectedAnchor || null, itemContext.contextIntent || "report-qa-fixed", item.question || null];
       return !sameScenarioContext(normalizeScenarioContext(itemContext.scenarioContext || {}), context)
         || identity.some((value, index) => value !== itemIdentity[index]);
     });
@@ -4259,11 +4158,16 @@
       resetRuntimeExternalViews();
       const context = activeScenarioContext();
       if (!scenarioContextReady(context)) return toast("无法定向重置", "当前 C033 场景运行上下文不可定位；未清除任何报告、核验、比较或外部记录。", "danger");
-      const preservedPublished = clone(state.publishedReports || []);
-      const preservedWithdrawn = clone(state.withdrawnReports || []);
-      const preservedRelations = clone(state.replacementRelations || []);
-      const preservedExports = clone(state.exportTasks || []);
-      const preservedActions = clone(state.actionRequests || []);
+      const archivedAt = nowText();
+      const archiveCurrent = (item, reason) => resourceInCurrentScenario(item)
+        ? { ...clone(item), currentProjection: false, projectionStatus: "history", archivedAt, archivedReason: reason }
+        : clone(item);
+      const archiveReason = "报告中心已重置当前场景工作投影；正式产物和证据保持历史只读，不作为重置后的当前成功结果。";
+      const preservedPublished = (state.publishedReports || []).map((item) => archiveCurrent(item, archiveReason));
+      const preservedWithdrawn = (state.withdrawnReports || []).map((item) => archiveCurrent(item, archiveReason));
+      const preservedRelations = (state.replacementRelations || []).map((item) => archiveCurrent(item, archiveReason));
+      const preservedExports = (state.exportTasks || []).map((item) => archiveCurrent(item, archiveReason));
+      const preservedActions = (state.actionRequests || []).map((item) => archiveCurrent(item, "报告中心已重置当前场景工作投影；Action Request 仅保留历史引用，决策状态仍以决策中心为准。"));
       state = newState();
       state.publishedReports = preservedPublished;
       state.withdrawnReports = preservedWithdrawn;
@@ -4273,7 +4177,7 @@
       saveState();
       window.location.hash = "/lifecycle";
       renderApp();
-      return toast("当前工作区已重置", "未发布草稿和临时界面状态已清除；正式报告、历史核验/比较、导出记录及其他模块权威记录保持不变。", "success");
+      return toast("当前工作区已重置", "当前成功投影已归零；原正式报告、核验、比较、导出和外部引用仅保留为历史，不会预置到新工作状态。", "success");
     }
     if (action === "close-modal") { state.ui.modal = null; return commit(); }
     if (action === "close-drawer") { state.ui.drawer = null; return commit(); }
