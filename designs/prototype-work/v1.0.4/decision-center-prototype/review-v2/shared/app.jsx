@@ -42,9 +42,16 @@ function sameScenarioContext(left, right) {
   return Boolean(left && right && ["scenarioId", "scenarioVersion", "scenarioRunId"].every((key) => left[key] && left[key] === right[key]));
 }
 
-function c011RuleFingerprint(rule) {
-  if (!rule) return "not-applicable";
-  return [rule.id, rule.version, rule.evaluatedAt, rule.branch, rule.hitEvidence].map((value) => String(value || "")).join("|");
+const C011_CONTRACT_FINGERPRINT_VERSION = "c011-v2:";
+
+function c011CanonicalValue(value) {
+  if (Array.isArray(value)) return value.map(c011CanonicalValue);
+  if (value && typeof value === "object") return Object.keys(value).sort().reduce((result, key) => {
+    if (typeof value[key] !== "undefined") result[key] = c011CanonicalValue(value[key]);
+    return result;
+  }, {});
+  if (typeof value === "number" && !Number.isFinite(value)) return String(value);
+  return typeof value === "undefined" ? null : value;
 }
 
 function c011IdempotencyKey(payload) {
@@ -56,24 +63,165 @@ function c011IdempotencyKey(payload) {
 function c011ContractFingerprint(payload) {
   const context = normalizedScenarioContext(payload?.scenarioContext || payload);
   const evidence = payload?.evidence || {};
-  const actionType = payload?.actionType || {};
-  const metric = payload?.metric || {};
-  return JSON.stringify({
-    scenarioId: context.scenarioId,
-    scenarioVersion: context.scenarioVersion,
-    scenarioRunId: context.scenarioRunId,
+  const actionType = payload?.actionType && typeof payload.actionType === "object" ? payload.actionType : {};
+  const rule = payload?.rule || null;
+  const metric = payload?.metric || payload?.metricEvidence || {};
+  const semanticVersion = evidence.semanticVersion || payload?.semanticVersion || null;
+  const dataVersion = evidence.dataVersion || payload?.dataVersion || null;
+  const subjectId = payload?.subjectId || payload?.singleBusinessSubjectId || null;
+  const subjectName = payload?.subjectName || payload?.singleBusinessSubjectName || payload?.singleBusinessSubject || payload?.unit || null;
+  const banks = Array.isArray(payload?.banks) ? payload.banks : [];
+  const loans = Array.isArray(payload?.loans) ? payload.loans : [];
+  const snapshot = {
+    scenarioContext: {
+      scenarioId: context.scenarioId,
+      scenarioVersion: context.scenarioVersion,
+      scenarioRunId: context.scenarioRunId,
+      formedAt: context.formedAt,
+      status: context.status,
+      source: context.source,
+    },
     requestId: payload?.id || payload?.requestId || null,
-    subjectId: payload?.subjectId || payload?.singleBusinessSubjectId || null,
-    actionTypeId: actionType.id || payload?.actionTypeId || null,
-    actionTypeVersion: actionType.version || payload?.actionTypeVersion || null,
-    rule: c011RuleFingerprint(payload?.rule || null),
-    metricId: metric.id || null,
-    metricValue: metric.value || null,
-    snapshotId: evidence.snapshotId || null,
-    cutoff: evidence.cutoff || null,
-    semanticVersion: evidence.semanticVersion || payload?.semanticVersion || null,
-    dataVersion: evidence.dataVersion || payload?.dataVersion || null,
-  });
+    scenario: payload?.scenario || payload?.scenarioName || "集团融资成本与债务结构优化",
+    source: {
+      type: payload?.sourceType || null,
+      typeLabel: payload?.sourceTypeLabel || null,
+      ref: payload?.sourceRef || payload?.sourceId || "来源记录",
+      record: payload?.sourceRecord || null,
+      scene: payload?.sourceScene || null,
+      requester: payload?.requester || SOURCE_META[payload?.sourceType]?.label || "获准来源",
+      initiator: payload?.initiator || null,
+      requesterId: payload?.initiatorId || null,
+      requestTime: payload?.requestTime || payload?.createdAt || null,
+    },
+    subject: {
+      id: subjectId,
+      name: subjectName,
+      objectType: payload?.subjectObjectType || payload?.singleBusinessSubjectObjectType || null,
+    },
+    actionType: {
+      id: actionType.id || payload?.actionTypeId || null,
+      name: actionType.name || (typeof payload?.actionType === "string" ? payload.actionType : null),
+      version: actionType.version || payload?.actionTypeVersion || null,
+      status: actionType.status || null,
+      publishedSemanticVersion: actionType.publishedSemanticVersion || payload?.actionTypePublishedSemanticVersion || semanticVersion,
+    },
+    rule: rule ? {
+      id: rule.id || payload?.ruleId || null,
+      code: rule.code || payload?.ruleCode || null,
+      name: rule.name || payload?.ruleName || null,
+      version: rule.version || payload?.ruleVersion || null,
+      publishedSemanticVersion: rule.publishedSemanticVersion || payload?.rulePublishedSemanticVersion || semanticVersion,
+      evaluationId: rule.evaluationId || payload?.ruleEvaluationId || null,
+      evaluatedAt: rule.evaluatedAt || payload?.ruleEvaluatedAt || null,
+      resultVersion: rule.resultVersion || payload?.ruleResultVersion || null,
+      branch: rule.branch || payload?.ruleBranch || null,
+      hitEvidence: rule.hitEvidence || null,
+      evidence: payload?.ruleEvidence || null,
+    } : null,
+    metric: {
+      id: metric.id || payload?.metricId || null,
+      name: metric.name || null,
+      value: metric.value ?? null,
+      unit: metric.unit || null,
+      explanation: metric.explanation || metric.triggerExplanation || null,
+      evaluatedAt: metric.evaluatedAt || null,
+      scope: metric.scope || null,
+      snapshot: payload?.metricSnapshot || null,
+      resultVersion: metric.resultVersion || payload?.metricResultVersion || null,
+      evidenceRefs: metric.evidenceRefs || payload?.metricEvidenceRefs || null,
+    },
+    assignment: {
+      owner: payload?.owner || "集团资金管理岗",
+      recommendation: payload?.recommendation || `核实${subjectName || "当前主体"}的融资异常并形成受控优化方案`,
+      recommendedDirection: payload?.recommendedDirection || null,
+    },
+    targets: {
+      banks,
+      loans,
+      loanCount: Number.isFinite(Number(payload?.loanCount)) ? Number(payload.loanCount) : loans.length,
+      preferredInstitutions: payload?.preferredInstitutions || null,
+      candidateLoans: payload?.candidateLoans || null,
+    },
+    evidence: {
+      snapshotId: evidence.snapshotId || payload?.fixedResultId || null,
+      cutoff: evidence.cutoff || payload?.asOf || null,
+      semanticVersion,
+      declaredSemanticVersion: payload?.semanticVersion || null,
+      semanticVersionId: evidence.semanticVersionId || payload?.semanticVersionId || null,
+      dataVersion,
+      declaredDataVersion: payload?.dataVersion || null,
+      dataAssetVersionId: evidence.dataAssetVersionId || payload?.dataAssetVersionId || null,
+      quality: evidence.quality || null,
+      freshness: evidence.freshness || null,
+      evidenceIds: evidence.evidenceIds || payload?.evidenceIds || null,
+      ruleEvidenceId: evidence.ruleEvidenceId || payload?.ruleEvidenceId || null,
+      t019EvidenceCode: evidence.t019EvidenceCode || payload?.t019EvidenceCode || null,
+      bindingId: payload?.bindingId || null,
+      consumableVersionId: payload?.consumableVersionId || null,
+      trustSnapshot: payload?.currentTrustSnapshot || null,
+      trustReadAt: payload?.currentTrustReadAt || null,
+      fingerprint: payload?.evidenceFingerprint || null,
+      allowUncertainResult: payload?.allowUncertainResult ?? null,
+    },
+    navigation: {
+      returnRoute: payload?.returnRoute || null,
+      filter: payload?.filter || null,
+      returnPosition: payload?.returnPosition || null,
+    },
+  };
+  return `${C011_CONTRACT_FINGERPRINT_VERSION}${JSON.stringify(c011CanonicalValue(snapshot))}`;
+}
+
+function storedC011ContractFingerprint(request) {
+  const stored = request?.contractFingerprint;
+  return typeof stored === "string" && stored.startsWith(C011_CONTRACT_FINGERPRINT_VERSION)
+    ? stored
+    : c011ContractFingerprint(request);
+}
+
+function findC011RequestByStableId(data, requestId) {
+  const currentRequest = (data?.requests || []).find((item) => item?.id === requestId);
+  if (currentRequest) {
+    const task = (data?.tasks || []).find((item) => item?.requestId === requestId) || null;
+    return { request: currentRequest, task, historical: false, archivedAt: null, archiveScenarioContext: null };
+  }
+  const history = Array.isArray(data?.auditHistory) ? data.auditHistory : [];
+  for (let index = history.length - 1; index >= 0; index -= 1) {
+    const archive = history[index] || {};
+    const requests = Array.isArray(archive.records?.requests) ? archive.records.requests : [];
+    const request = requests.find((item) => item?.id === requestId);
+    if (request) {
+      const tasks = Array.isArray(archive.records?.tasks) ? archive.records.tasks : [];
+      const task = tasks.find((item) => item?.requestId === requestId) || null;
+      return { request, task, historical: true, archivedAt: archive.archivedAt || null, archiveScenarioContext: archive.scenarioContext || null };
+    }
+  }
+  return null;
+}
+
+function c011StableReferences(match) {
+  if (!match?.request) return { requestRef: null, reminderRef: null, taskRef: null, traceRef: null };
+  return {
+    requestRef: match.request.id,
+    reminderRef: match.request.reminderId || null,
+    taskRef: match.request.taskId || match.task?.id || null,
+    traceRef: match.request.traceId || null,
+  };
+}
+
+function reconcileC011StableIdentity(data, payload) {
+  const requestId = payload?.id || payload?.requestId || "未提供";
+  const fingerprint = c011ContractFingerprint(payload);
+  const match = findC011RequestByStableId(data, requestId);
+  if (!match) return { outcome: "new", requestId, fingerprint, match: null, references: c011StableReferences(null) };
+  return {
+    outcome: storedC011ContractFingerprint(match.request) === fingerprint ? "duplicate" : "conflict",
+    requestId,
+    fingerprint,
+    match,
+    references: c011StableReferences(match),
+  };
 }
 
 function validateC011Payload(payload, currentContext) {
@@ -2561,22 +2709,31 @@ function DecisionApp() {
     let next = { ...current, requests: [...current.requests], receipts: [...(current.receipts || [])], activity: [...current.activity] };
     let mutated = false;
     payloads.forEach((payload) => {
-      const validation = validateC011Payload(payload, current.scenarioContext);
-      const requestId = payload?.id || payload?.requestId || "未提供";
-      const now = formatNow();
-      const receiptBase = { receiptId: `ARR-${Date.now().toString().slice(-8)}-${String(next.receipts.length + 1).padStart(2, "0")}`, requestId, receivedAt: now, scenarioContext: validation.context, idempotencyKey: c011IdempotencyKey(payload), contractFingerprint: c011ContractFingerprint(payload) };
-      const sameId = next.requests.find((item) => item.id === requestId);
-      const fingerprint = c011ContractFingerprint(payload);
-      if (sameId && sameId.contractFingerprint !== fingerprint) {
-        result.conflicts += 1;
-        mutated = true;
-        next.receipts.unshift({ ...receiptBase, outcome: "conflict", status: "标识冲突", reason: "同一行动申请标识的场景轮次、主体、行动类型、规则条件或精确版本不同，原记录未覆盖", requestRef: sameId.id, reminderRef: sameId.reminderId || null, taskRef: sameId.taskId || null, traceRef: sameId.traceId || null });
-        next = addActivity(next, "行动申请标识冲突", `${requestId} · 原记录保持不变`, now, { requestId });
+      const identity = reconcileC011StableIdentity(next, payload);
+      if (identity.outcome === "duplicate") {
+        result.duplicates += 1;
+        result.returned.push({ outcome: "duplicate", ...identity.references, historical: identity.match.historical, archivedAt: identity.match.archivedAt });
         return;
       }
-      if (sameId) {
-        result.duplicates += 1;
-        result.returned.push({ requestRef: sameId.id, reminderRef: sameId.reminderId || null, taskRef: sameId.taskId || null, traceRef: sameId.traceId || null });
+      const validation = validateC011Payload(payload, current.scenarioContext);
+      const requestId = identity.requestId;
+      const now = formatNow();
+      const receiptBase = { receiptId: `ARR-${Date.now().toString().slice(-8)}-${String(next.receipts.length + 1).padStart(2, "0")}`, requestId, receivedAt: now, scenarioContext: validation.context, idempotencyKey: c011IdempotencyKey(payload), contractFingerprint: identity.fingerprint };
+      if (identity.outcome === "conflict") {
+        result.conflicts += 1;
+        result.returned.push({ outcome: "conflict", ...identity.references, historical: identity.match.historical, archivedAt: identity.match.archivedAt });
+        mutated = true;
+        next.receipts.unshift({
+          ...receiptBase,
+          outcome: "conflict",
+          status: "标识冲突",
+          reason: "同一行动申请标识的场景上下文、来源、主体、行动类型、规则条件、指标或证据载荷不同，原记录未覆盖",
+          ...identity.references,
+          originalHistorical: identity.match.historical,
+          originalArchivedAt: identity.match.archivedAt,
+          originalScenarioContext: identity.match.request.scenarioContext || identity.match.archiveScenarioContext,
+        });
+        next = addActivity(next, "行动申请标识冲突", `${requestId} · 原记录保持不变${identity.match.historical ? "（历史审计）" : ""}`, now, { requestId, ...identity.references });
         return;
       }
       if (!validation.ok) {
