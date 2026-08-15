@@ -12,6 +12,7 @@
   ]);
   const C017_PROJECTION_STORAGE_KEY = "ontology3.c017.intelligent-query.projection.v1";
   const C011_INBOX_STORAGE_KEY = "ontology3.decision-center.c011.inbox.v1";
+  const SCENARIO_RESET_REQUEST_KEY = `${HANDOFF_CHANNEL}:scenario-reset-request`;
   const IDENTITY_COUNTER_STORAGE_KEY = "ontology3.iq.review.identity-counter.v1";
   const ACTIVE_ONTOLOGY_ID = "ONT-GROUP-FINANCING-OPTIMIZATION";
   const ACTIVE_DATA_ASSET_ID = "FIN-ASSET";
@@ -148,11 +149,18 @@
     "RULE-SHORT-DEBT": "RULE-SHORT-TERM-DEBT-CONCENTRATION"
   });
 
-  function migrateConfigResourceIds(config) {
+  function migrateConfigResourceIds(config, defaults = null) {
     if (!config) return config;
+    const fallback = defaults || {};
     return {
+      ...clone(fallback),
       ...config,
-      allowedResources: [...new Set((config.allowedResources || []).map((id) => RESOURCE_ID_ALIASES[id] || id))]
+      skills: clone(config.skills || fallback.skills || []),
+      tools: clone(config.tools || fallback.tools || []),
+      deterministicCapabilities: clone(config.deterministicCapabilities || fallback.deterministicCapabilities || []),
+      allowedResources: [...new Set((config.allowedResources || fallback.allowedResources || []).map((id) => RESOURCE_ID_ALIASES[id] || id))],
+      effectiveFrom: config.effectiveFrom || fallback.effectiveFrom || null,
+      effectiveTo: config.effectiveTo || fallback.effectiveTo || null
     };
   }
 
@@ -192,6 +200,8 @@
     bindingVersionId: null,
     semanticVersion: null,
     contentFingerprint: "CFG-FINANCING-BASELINE",
+    effectiveFrom: null,
+    effectiveTo: null,
     validationRef: null,
     compatibilityOwner: "智能问数",
     owner: "智能问数",
@@ -581,6 +591,8 @@
       savedViews: clone(SAVED_VIEWS),
       pins: clone(PINS),
       actionRequests: [],
+      historicalActionRequests: [],
+      handledScenarioResetRequestIds: [],
       candidateConsumptionValidation: { status: "未开始", attempts: [], activeRun: null },
       draftQuestion: "",
       preferredDisplay: { mode: "text", chart: "recommended", reducedMotion: false },
@@ -668,9 +680,9 @@
     try {
       const parsed = JSON.parse(localStorage.getItem(storageKey));
       if (!parsed || parsed.schemaVersion !== STATE_SCHEMA_VERSION) return createInitialState();
-      parsed.activeConfig = migrateConfigResourceIds(parsed.activeConfig);
-      parsed.candidateConfig = migrateConfigResourceIds(parsed.candidateConfig);
-      parsed.enabledConfigs = (parsed.enabledConfigs || []).map(migrateConfigResourceIds);
+      parsed.activeConfig = migrateConfigResourceIds(parsed.activeConfig, ACTIVE_CONFIG);
+      parsed.candidateConfig = migrateConfigResourceIds(parsed.candidateConfig, CANDIDATE_CONFIG);
+      parsed.enabledConfigs = (parsed.enabledConfigs || []).map((config) => migrateConfigResourceIds(config, ACTIVE_CONFIG));
       const normalizeChart = (chart) => ({ bar: "horizontal-bar", stacked: "stacked-bar" }[chart] || chart || "recommended");
       const recoverInterruptedDelivery = (run) => run?.deliveryStatus === "提交中" ? {
         ...run,
@@ -756,7 +768,38 @@
     }
   }
 
-  function resetState(storageKey, currentState = null) {
+  function readScenarioResetRequest() {
+    const stored = readStoredJson(SCENARIO_RESET_REQUEST_KEY, "场景定向重置请求");
+    if (!stored.ok) return null;
+    const request = stored.value;
+    const scenario = request?.scenarioContext;
+    if (request?.operation !== "resetScenarioProjection" || !request?.requestId || !scenario?.scenarioId || !scenario?.scenarioVersion || !scenario?.scenarioRunId) return null;
+    return request;
+  }
+
+  function invalidateActionRequestInbox(scenarioContext, resetRequest, invalidatedAt) {
+    if (!scenarioContext?.id || !scenarioContext?.version || !scenarioContext?.runId) return false;
+    const envelope = {
+      contractCode: "C011",
+      sourceModule: "智能问数",
+      status: "reset",
+      scenarioContext: {
+        scenarioId: scenarioContext.id,
+        scenarioVersion: scenarioContext.version,
+        scenarioRunId: scenarioContext.runId,
+        formedAt: scenarioContext.formedAt || invalidatedAt,
+        status: "reset",
+        source: scenarioContext.source || "C008 权威投影"
+      },
+      formedAt: invalidatedAt,
+      resetRequestId: resetRequest?.requestId || `IQ-RESET-${scenarioContext.runId}`,
+      requests: []
+    };
+    localStorage.setItem(C011_INBOX_STORAGE_KEY, JSON.stringify(envelope));
+    return true;
+  }
+
+  function resetState(storageKey, currentState = null, resetRequest = null) {
     const previous = currentState || (() => {
       try { return JSON.parse(localStorage.getItem(storageKey)); } catch (_) { return null; }
     })();
@@ -782,6 +825,10 @@
       ...(previous?.historicalActionRequests || []),
       ...(previous?.actionRequests || []).map((request) => ({ ...request, historical: true }))
     ];
+    next.handledScenarioResetRequestIds = [...new Set([
+      ...(previous?.handledScenarioResetRequestIds || []),
+      resetRequest?.requestId
+    ].filter(Boolean))].slice(-20);
     next.resetHistory = [
       {
         resetAt,
@@ -811,6 +858,7 @@
       awaitingNewRun: true,
       previousRunId: currentScenario?.runId || null
     };
+    invalidateActionRequestInbox(currentScenario, resetRequest, resetAt);
     localStorage.setItem(storageKey, JSON.stringify(next));
     return next;
   }
@@ -934,6 +982,98 @@
       hash = Math.imul(hash, 16777619);
     }
     return (hash >>> 0).toString(36).toUpperCase().padStart(7, "0");
+  }
+
+  function versionSet(items) {
+    return (items || [])
+      .map((item) => ({ id: item?.id || null, version: item?.version || null }))
+      .filter((item) => item.id && item.version)
+      .sort((left, right) => left.id.localeCompare(right.id));
+  }
+
+  function configContractSnapshot(config, runtimeContext = null) {
+    const resourceIds = [...new Set(config?.allowedResources || [])].sort();
+    return {
+      configId: config?.id || null,
+      configVersion: config?.version || null,
+      promptVersion: config?.promptVersion || null,
+      contentFingerprint: config?.contentFingerprint || null,
+      skillVersions: versionSet(config?.skills),
+      toolVersions: versionSet(config?.tools),
+      resourceWhitelist: {
+        version: config?.whitelistVersion || null,
+        resourceIds
+      },
+      publishedOntologyBinding: {
+        ontologyStableId: runtimeContext?.ontologyId || ACTIVE_ONTOLOGY_ID,
+        semanticVersionId: runtimeContext?.versionId || config?.bindingVersionId || null,
+        semanticVersion: runtimeContext?.semanticVersion || config?.semanticVersion || null,
+        dataVersion: runtimeContext?.dataVersion || null,
+        asOf: runtimeContext?.asOf || null,
+        t019EvidenceCode: runtimeContext?.t019EvidenceCode || null,
+        resourceContractFingerprint: runtimeContext?.resourceContractFingerprint || config?.resourceContractFingerprint || null
+      },
+      scenarioContext: {
+        scenarioId: runtimeContext?.scenarioId || config?.sceneId || null,
+        scenarioVersion: runtimeContext?.scenarioVersion || config?.sceneVersion || null,
+        scenarioRunId: runtimeContext?.scenarioRunId || config?.sceneRunId || null,
+        formedAt: runtimeContext?.scenarioFormedAt || null,
+        status: runtimeContext?.scenarioStatus || runtimeContext?.scenarioReferenceStatus || config?.sceneVersionStatus || null
+      },
+      effectiveTime: {
+        from: config?.effectiveFrom || null,
+        to: config?.effectiveTo || null
+      }
+    };
+  }
+
+  function configContractFingerprint(config, runtimeContext = null) {
+    return `C009-CFG-${stableDigest(configContractSnapshot(config, runtimeContext))}`;
+  }
+
+  function buildC009CompatibilityRecord(config, runtimeContext, checkedAt, evidenceLocator = null) {
+    const snapshot = configContractSnapshot(config, runtimeContext);
+    const binding = snapshot.publishedOntologyBinding;
+    const scenario = snapshot.scenarioContext;
+    const complete = Boolean(
+      snapshot.configId && snapshot.configVersion && snapshot.promptVersion && snapshot.contentFingerprint &&
+      snapshot.skillVersions.length && snapshot.toolVersions.length && snapshot.resourceWhitelist.version && snapshot.resourceWhitelist.resourceIds.length &&
+      binding.semanticVersionId && binding.semanticVersion && binding.dataVersion && binding.asOf && binding.t019EvidenceCode && binding.resourceContractFingerprint &&
+      scenario.scenarioId && scenario.scenarioVersion && scenario.scenarioRunId && scenario.formedAt && scenario.status &&
+      snapshot.effectiveTime.from && checkedAt
+    );
+    if (!complete) return null;
+    const fingerprint = configContractFingerprint(config, runtimeContext);
+    return {
+      sourceModule: "智能问数",
+      contractCode: "C009",
+      consumer: "智能问数",
+      configId: snapshot.configId,
+      configVersion: snapshot.configVersion,
+      promptVersion: snapshot.promptVersion,
+      skillVersions: clone(snapshot.skillVersions),
+      toolVersions: clone(snapshot.toolVersions),
+      whitelistVersion: snapshot.resourceWhitelist.version,
+      allowedResourceIds: clone(snapshot.resourceWhitelist.resourceIds),
+      resourceWhitelist: clone(snapshot.resourceWhitelist),
+      publishedOntologyBinding: clone(binding),
+      semanticVersionId: binding.semanticVersionId,
+      semanticVersion: binding.semanticVersion,
+      dataVersion: binding.dataVersion,
+      asOf: binding.asOf,
+      t019EvidenceCode: binding.t019EvidenceCode,
+      resourceContractFingerprint: binding.resourceContractFingerprint,
+      scenarioContext: clone(scenario),
+      effectiveFrom: snapshot.effectiveTime.from,
+      effectiveTo: snapshot.effectiveTime.to,
+      effectiveTime: clone(snapshot.effectiveTime),
+      status: "compatible",
+      checkedAt,
+      reason: null,
+      configFingerprint: fingerprint,
+      runtimeContextFingerprint: runtimeContext?.runtimeContextFingerprint || runtimeContextFingerprint(runtimeContext),
+      evidenceLocator: evidenceLocator || `智能问数/${snapshot.configId}/${fingerprint}`
+    };
   }
 
   function resourceContractFingerprint(resources) {
@@ -1797,6 +1937,8 @@
       scenarioId: value("scenarioId"),
       scenarioVersion: value("scenarioVersion"),
       scenarioRunId: value("scenarioRunId"),
+      scenarioFormedAt: value("scenarioFormedAt"),
+      scenarioStatus: value("scenarioStatus") || value("scenarioReferenceStatus"),
       projectionId: value("projectionId")
     };
   }
@@ -1812,7 +1954,8 @@
     const complete = (identity) => Boolean(
       identity?.versionId && identity.semanticVersion && identity.dataVersion && identity.asOf &&
       identity.t019EvidenceCode && identity.resourceContractFingerprint &&
-      identity.scenarioId && identity.scenarioVersion && identity.scenarioRunId && identity.projectionId
+      identity.scenarioId && identity.scenarioVersion && identity.scenarioRunId &&
+      identity.scenarioFormedAt && identity.scenarioStatus && identity.projectionId
     );
     return complete(leftIdentity) && complete(rightIdentity) && JSON.stringify(leftIdentity) === JSON.stringify(rightIdentity);
   }
@@ -1848,6 +1991,8 @@
       scenarioId: context.scenarioId || null,
       scenarioVersion: context.scenarioVersion || null,
       scenarioRunId: context.scenarioRunId || null,
+      scenarioFormedAt: context.scenarioFormedAt || null,
+      scenarioStatus: context.scenarioStatus || context.scenarioReferenceStatus || null,
       scenarioName: context.scenarioName || null,
       scenarioReferenceStatus: context.scenarioReferenceStatus || null
     };
@@ -1862,6 +2007,8 @@
       scenarioId: context.scenarioId || scenarioContext?.id || config?.sceneId || null,
       scenarioVersion: context.scenarioVersion || scenarioContext?.version || config?.sceneVersion || null,
       scenarioRunId: context.scenarioRunId || scenarioContext?.runId || config?.sceneRunId || null,
+      scenarioFormedAt: context.scenarioFormedAt || scenarioContext?.formedAt || null,
+      scenarioStatus: context.scenarioStatus || scenarioContext?.status || config?.sceneVersionStatus || null,
       scenarioName: scenarioContext?.name || config?.scene || null,
       scenarioReferenceStatus: scenarioContext?.status || config?.sceneVersionStatus || "场景版本待读取"
     };
@@ -1958,7 +2105,7 @@
       validation.sceneId === runtimeContext.scenarioId && validation.sceneVersion === runtimeContext.scenarioVersion && validation.sceneRunId === runtimeContext.scenarioRunId &&
       validation.dataVersion === runtimeContext.dataVersion && validation.asOf === runtimeContext.asOf &&
       validation.t019EvidenceCode === runtimeContext.t019EvidenceCode &&
-      validation.configFingerprint === config.contentFingerprint &&
+      validation.configFingerprint === configContractFingerprint(config, runtimeContext) &&
       validation.resourceContractFingerprint === runtimeContext.resourceContractFingerprint &&
       runtimeContextMatches(validation.runtimeContextFingerprint, runtimeContext)
     );
@@ -2014,7 +2161,7 @@
         validation.sceneId === ontologyContext.scenarioId && validation.sceneVersion === ontologyContext.scenarioVersion && validation.sceneRunId === ontologyContext.scenarioRunId &&
         validation.dataVersion === ontologyContext.dataVersion && validation.asOf === ontologyContext.asOf &&
         validation.t019EvidenceCode === ontologyContext.t019EvidenceCode &&
-        validation.configFingerprint === config.contentFingerprint &&
+        validation.configFingerprint === configContractFingerprint(config, ontologyContext) &&
         validation.resourceContractFingerprint === ontologyContext.resourceContractFingerprint &&
         runtimeContextMatches(validation.runtimeContextFingerprint, ontologyContext)
       );
@@ -2035,6 +2182,8 @@
   function configCompleteness(config) {
     const required = ["version", "promptVersion", "whitelistVersion", "bindingVersionId", "semanticVersion", "contentFingerprint", "resourceContractFingerprint", "sceneId", "sceneVersion", "sceneRunId"];
     const missing = required.filter((key) => !config?.[key]);
+    if (!(config?.skills || []).length || config.skills.some((item) => !item?.id || !item?.version)) missing.push("Skill 版本集合");
+    if (!(config?.allowedResources || []).length || new Set(config.allowedResources).size !== config.allowedResources.length) missing.push("资源白名单稳定身份集合");
     const capabilityProof = runtimeCapabilityProof(config);
     if (!capabilityProof.passed) missing.push(...capabilityProof.issues);
     return { complete: missing.length === 0, missing };
@@ -2202,34 +2351,56 @@
       });
     });
 
-    if (result?.actionContext) {
-      const action = result.actionContext;
+    const actionContexts = [result?.actionContext, ...(result?.actionContexts || [])].filter(Boolean);
+    const actionTargetIds = actionContexts.map((action) => action.singleTargetStableId).filter(Boolean);
+    if (new Set(actionTargetIds).size !== actionTargetIds.length) issues.push("多条行动上下文存在重复的单一业务主体");
+    if (result?.id === "rule-explain") {
+      const expectedTargets = ["UNIT-553", "UNIT-465", "UNIT-561"];
+      if (actionContexts.length !== expectedTargets.length || expectedTargets.some((id) => !actionTargetIds.includes(id))) issues.push("三家单位规则结果必须分别形成三条单一主体行动上下文");
+    }
+    actionContexts.forEach((action, actionIndex) => {
+      const actionLabel = actionContexts.length > 1 ? `第 ${actionIndex + 1} 条行动上下文` : "行动上下文";
       const actionResourceIds = [action.actionTypeId, ...(action.ruleMetricResourceIds || [])].filter(Boolean);
       actionResourceIds.forEach((id) => {
-        if (!resultResourceIds.has(id) || !resources.has(id) || !allowed.has(id)) issues.push(`行动上下文引用了结果资源范围之外的资源 ${id}`);
+        if (!resultResourceIds.has(id) || !resources.has(id) || !allowed.has(id)) issues.push(`${actionLabel}引用了结果资源范围之外的资源 ${id}`);
       });
       stableIdsIn(JSON.stringify(action)).forEach((id) => {
-        if (!resultResourceIds.has(id)) issues.push(`行动上下文出现结果资源范围之外的稳定资源身份 ${id}`);
+        if (!resultResourceIds.has(id)) issues.push(`${actionLabel}出现结果资源范围之外的稳定资源身份 ${id}`);
       });
       formalNumbers(JSON.stringify(action)).forEach((number) => {
-        if (!trustedNumbers.has(number)) issues.push(`行动上下文出现固定结果之外的正式数值 ${number}`);
+        if (!trustedNumbers.has(number)) issues.push(`${actionLabel}出现固定结果之外的正式数值 ${number}`);
       });
-      const trustedBusinessIdentities = new Set(allEvidence.flatMap((fact) => factScalars(fact).flatMap((value) => String(value).match(/\b(?:UNIT|INST|LOAN|OWNER)-[A-Za-z0-9-]+\b/g) || [])));
+      const trustedBusinessIdentities = new Set([
+        ...allEvidence.flatMap((fact) => factScalars(fact).flatMap((value) => String(value).match(/\b(?:UNIT|INST|LOAN|OWNER)-[A-Za-z0-9-]+\b/g) || [])),
+        ...allEvidence.map((fact) => String(fact.object || "").match(/^单位\s*(\d+)$/)?.[1]).filter(Boolean).map((code) => `UNIT-${code}`)
+      ]);
       const actionBusinessIdentities = JSON.stringify(action).match(/\b(?:UNIT|INST|LOAN|OWNER)-[A-Za-z0-9-]+\b/g) || [];
       actionBusinessIdentities.forEach((id) => {
-        if (!trustedBusinessIdentities.has(id)) issues.push(`行动上下文出现固定结果之外的业务对象身份 ${id}`);
+        if (!trustedBusinessIdentities.has(id)) issues.push(`${actionLabel}出现固定结果之外的业务对象身份 ${id}`);
       });
-      const actionEvidenceIds = [action.targetEvidenceId, ...(action.institutionEvidenceIds || []), ...(action.loanEvidenceIds || []), action.ownerEvidenceId].filter(Boolean);
-      if (actionEvidenceIds.some((id) => !evidenceIds.has(id))) issues.push("行动上下文引用了本轮固定结果之外的证据");
+      const actionEvidenceIds = [action.targetEvidenceId, action.ruleEvidenceId, ...(action.institutionEvidenceIds || []), ...(action.loanEvidenceIds || []), action.ownerEvidenceId].filter(Boolean);
+      if (actionEvidenceIds.some((id) => !evidenceIds.has(id))) issues.push(`${actionLabel}引用了本轮固定结果之外的证据`);
       const targetFact = factByItemId.get(action.targetResultItemId);
-      if (!targetFact || targetFact.resourceId !== "OBJ-FINANCING-ENTITY" || targetFact.exact !== action.singleTargetStableId || targetFact.evidenceId !== action.targetEvidenceId) issues.push("行动目标稳定身份未绑定本轮固定对象结果与证据");
+      const targetLabel = action.singleTargetStableId ? `单位${action.singleTargetStableId.replace(/^UNIT-/, "")}` : null;
+      if (!action.singleTargetStableId || !targetLabel || !result.scope?.includes(targetLabel) || action.targetLabel && action.targetLabel !== targetLabel) issues.push(`${actionLabel}的单一业务主体不属于本轮固定对象范围`);
+      const actionType = resources.get(action.actionTypeId);
+      if (actionType?.type !== "Action Type") issues.push(`${actionLabel}未引用当前已发布 Action Type`);
+      if (action.sourceKind === "rule") {
+        const ruleId = (action.ruleMetricResourceIds || []).find((id) => resources.get(id)?.type === "Rule") || null;
+        const metricIds = (action.ruleMetricResourceIds || []).filter((id) => resources.get(id)?.type === "Metric");
+        const ruleFact = factByItemId.get(action.ruleResultItemId);
+        if (!ruleId || metricIds.length !== 1) issues.push(`${actionLabel}必须引用一个 Rule 和一个 Metric`);
+        if (!ruleFact || ruleFact !== targetFact || ruleFact.resourceId !== ruleId || ruleFact.object !== targetLabel || !/命中/.test(String(ruleFact.status || "")) || ruleFact.evidenceId !== action.ruleEvidenceId || action.targetEvidenceId !== action.ruleEvidenceId) issues.push(`${actionLabel}的目标、Rule 命中和逐项证据绑定不一致`);
+        return;
+      }
+      if (!targetFact || targetFact.resourceId !== "OBJ-FINANCING-ENTITY" || targetFact.exact !== action.singleTargetStableId || targetFact.evidenceId !== action.targetEvidenceId) issues.push(`${actionLabel}的目标稳定身份未绑定本轮固定对象结果与证据`);
       const bindings = Array.isArray(action.institutionBindings) ? action.institutionBindings : [];
       const boundInstitutionIds = bindings.map((binding) => binding.institutionStableId);
       const boundInstitutionEvidenceIds = bindings.map((binding) => binding.institutionEvidenceId);
       const boundLoanIds = bindings.flatMap((binding) => binding.loanStableIds || []);
       const boundLoanEvidenceIds = bindings.map((binding) => binding.loanEvidenceId);
-      if (!bindings.length || new Set(boundInstitutionIds).size !== bindings.length || new Set(boundLoanIds).size !== boundLoanIds.length) issues.push("行动上下文的机构与借据显式绑定缺失或重复");
-      if (JSON.stringify(boundInstitutionIds) !== JSON.stringify(action.institutionStableIds || []) || JSON.stringify(boundInstitutionEvidenceIds) !== JSON.stringify(action.institutionEvidenceIds || []) || JSON.stringify(boundLoanIds) !== JSON.stringify(action.loanStableIds || []) || JSON.stringify(boundLoanEvidenceIds) !== JSON.stringify(action.loanEvidenceIds || [])) issues.push("行动上下文的汇总身份或证据清单与逐机构绑定不一致");
+      if (!bindings.length || new Set(boundInstitutionIds).size !== bindings.length || new Set(boundLoanIds).size !== boundLoanIds.length) issues.push(`${actionLabel}的机构与借据显式绑定缺失或重复`);
+      if (JSON.stringify(boundInstitutionIds) !== JSON.stringify(action.institutionStableIds || []) || JSON.stringify(boundInstitutionEvidenceIds) !== JSON.stringify(action.institutionEvidenceIds || []) || JSON.stringify(boundLoanIds) !== JSON.stringify(action.loanStableIds || []) || JSON.stringify(boundLoanEvidenceIds) !== JSON.stringify(action.loanEvidenceIds || [])) issues.push(`${actionLabel}的汇总身份或证据清单与逐机构绑定不一致`);
       bindings.forEach((binding) => {
         const institutionFact = factByItemId.get(binding.institutionResultItemId);
         const loanFact = factByItemId.get(binding.loanResultItemId);
@@ -2241,9 +2412,8 @@
       });
       const owner = action.ownerBinding || null;
       const ownerFact = owner ? factByItemId.get(owner.ownerResultItemId) : null;
-      const targetLabel = action.singleTargetStableId ? `单位${action.singleTargetStableId.replace(/^UNIT-/, "")}` : null;
-      if (!owner || owner.ownerStableId !== action.ownerStableId || owner.ownerEvidenceId !== action.ownerEvidenceId || owner.targetStableId !== action.singleTargetStableId || owner.relationResourceId !== "LINK-ENTITY-OWNER" || !ownerFact || ownerFact.resourceId !== owner.relationResourceId || ownerFact.evidenceId !== owner.ownerEvidenceId || ownerFact.object !== targetLabel || !factSupportsValue(ownerFact, owner.ownerStableId)) issues.push("行动上下文的主体、负责人和关系证据绑定不一致");
-    }
+      if (!owner || owner.ownerStableId !== action.ownerStableId || owner.ownerEvidenceId !== action.ownerEvidenceId || owner.targetStableId !== action.singleTargetStableId || owner.relationResourceId !== "LINK-ENTITY-OWNER" || !ownerFact || ownerFact.resourceId !== owner.relationResourceId || ownerFact.evidenceId !== owner.ownerEvidenceId || ownerFact.object !== targetLabel || !factSupportsValue(ownerFact, owner.ownerStableId)) issues.push(`${actionLabel}的主体、负责人和关系证据绑定不一致`);
+    });
     const identity = result?.contextIdentity || {};
     if (identity.versionId !== context?.versionId || identity.semanticVersion !== context?.semanticVersion || identity.dataVersion !== context?.dataVersion || identity.asOf !== context?.asOf || identity.scenarioId !== context?.scenarioId || identity.scenarioVersion !== context?.scenarioVersion || identity.scenarioRunId !== context?.scenarioRunId) issues.push("结果身份与本轮固定上下文不一致");
     return { passed: issues.length === 0, issues: [...new Set(issues)] };
@@ -2258,7 +2428,7 @@
       const gate = validateRunContext(context, { ...config, status: "已启用", compatibility: "兼容", c009Validation: {
         owner: "智能问数", status: "通过", sceneId: context.scenarioId, sceneVersion: context.scenarioVersion, sceneRunId: context.scenarioRunId, versionId: context.versionId, semanticVersion: context.semanticVersion,
         dataVersion: context.dataVersion, asOf: context.asOf, t019EvidenceCode: context.t019EvidenceCode,
-        configFingerprint: config.contentFingerprint, resourceContractFingerprint: context.resourceContractFingerprint,
+        configFingerprint: configContractFingerprint(config, context), resourceContractFingerprint: context.resourceContractFingerprint,
         runtimeContextFingerprint: context.runtimeContextFingerprint
       } }, template);
       const result = gate.passed ? materializeResult(question.id, context, runId, { unitCodes: referencedUnitCodes(question.question), originalQuestion: question.question }) : null;
@@ -2645,8 +2815,8 @@
       scenarioId: request?.scenarioId,
       scenarioVersion: request?.scenarioVersion,
       scenarioRunId: request?.scenarioRunId,
-      formedAt: run?.context?.projectionFormedAt || run?.context?.readAt || request?.createdAt,
-      status: run?.context?.ready === true ? "active" : (run?.context?.scenarioReferenceStatus || "unknown"),
+      formedAt: run?.context?.scenarioFormedAt || null,
+      status: run?.context?.scenarioStatus || run?.context?.scenarioReferenceStatus || "unknown",
       source: "C008 权威投影"
     };
     return {
@@ -2716,16 +2886,16 @@
       scenarioId: runtimeContext?.scenarioId,
       scenarioVersion: runtimeContext?.scenarioVersion,
       scenarioRunId: runtimeContext?.scenarioRunId,
-      formedAt: runtimeContext?.projectionFormedAt || runtimeContext?.readAt || nowText(),
-      status: runtimeContext?.ready === true ? "active" : (runtimeContext?.scenarioReferenceStatus || "unknown"),
+      formedAt: runtimeContext?.scenarioFormedAt || null,
+      status: runtimeContext?.scenarioStatus || runtimeContext?.scenarioReferenceStatus || "unknown",
       source: "C008 权威投影"
     };
-    if (!scenarioContext.scenarioId || !scenarioContext.scenarioVersion || !scenarioContext.scenarioRunId) return { published: false, reason: "C033 场景上下文不完整" };
+    if (!scenarioContext.scenarioId || !scenarioContext.scenarioVersion || !scenarioContext.scenarioRunId || !scenarioContext.formedAt || !scenarioContext.status) return { published: false, reason: "C033 场景上下文不完整" };
     const payloads = (requests || []).filter((item) => item?.c011Payload && item.scenarioId === scenarioContext.scenarioId && item.scenarioVersion === scenarioContext.scenarioVersion && item.scenarioRunId === scenarioContext.scenarioRunId).map((item) => ({
       ...clone(item.c011Payload),
       scenarioContext: clone(scenarioContext)
     }));
-    localStorage.setItem(C011_INBOX_STORAGE_KEY, JSON.stringify({ contractCode: "C011", sourceModule: "智能问数", scenarioContext, formedAt: nowText(), requests: payloads }));
+    localStorage.setItem(C011_INBOX_STORAGE_KEY, JSON.stringify({ contractCode: "C011", sourceModule: "智能问数", status: "active", scenarioContext, formedAt: nowText(), requests: payloads }));
     return { published: true, count: payloads.length };
   }
 
@@ -2849,13 +3019,14 @@
 
   Object.freeze(RESOURCES);
   window.IQDomain = {
-    C008_PROJECTION_STORAGE_KEY, C008_SCHEMA_VERSION, HANDOFF_CHANNEL, HANDOFF_REQUEST_STORAGE_KEY, LEGACY_ONTOLOGY_STORAGE_KEYS, C017_PROJECTION_STORAGE_KEY, C011_INBOX_STORAGE_KEY, IDENTITY_COUNTER_STORAGE_KEY, ACTIVE_ONTOLOGY_ID, ONTOLOGY_ENTRY, DATA_ENGINEERING_ENTRY,
+    C008_PROJECTION_STORAGE_KEY, C008_SCHEMA_VERSION, HANDOFF_CHANNEL, HANDOFF_REQUEST_STORAGE_KEY, LEGACY_ONTOLOGY_STORAGE_KEYS, C017_PROJECTION_STORAGE_KEY, C011_INBOX_STORAGE_KEY, SCENARIO_RESET_REQUEST_KEY, IDENTITY_COUNTER_STORAGE_KEY, ACTIVE_ONTOLOGY_ID, ONTOLOGY_ENTRY, DATA_ENGINEERING_ENTRY,
     STATE_SCHEMA_VERSION, LINK_CANONICAL_ENDPOINTS, LINK_DIRECTION_WHITELIST, QUERY_LINK_PATHS,
     RESOURCES, resourceById, SKILLS, TOOLS, PLATFORM_CAPABILITIES, ACTIVE_CONFIG, CANDIDATE_CONFIG,
     RECOMMENDED_QUESTIONS, CANDIDATE_VALIDATION_QUESTIONS, RESULT_TEMPLATES, HISTORY, SAVED_VIEWS, PINS,
-    clone, nowText, nextStableId, createInitialState, loadState, saveState, resetState,
+    clone, nowText, nextStableId, createInitialState, loadState, saveState, resetState, readScenarioResetRequest,
     readStoredJson, readAuthoritativeProjection, legacyProjectionDiagnostics, requestPublishedContext, readPublishedContextResponse, readPublishedOntologyContext, readCandidateConsumptionContext, readOntologyBindingContext, readDataTrustContext, readRuntimeContext, readOntologyContext,
     projectRuntimeContext, attachScenarioContext, projectRuntimeContextForScenario, runtimeContextFingerprint, runtimeContextMatches, resourceContractFingerprint, publishedContractProblems,
+    configContractSnapshot, configContractFingerprint, buildC009CompatibilityRecord,
     bindConfigSnapshot, deriveConfigRuntimeState, runtimeCapabilityProof, isLinkDirectionAllowed, validateRunContext, configCompleteness,
     validateCandidateConfig, validateFixedQuestionSet, verifyFixedResult, isConfigCompatible, matchApplicableAgents,
     recommendationEligibility, recommendableQuestions, materializeResult, validateCandidateFixedQuestionSet,

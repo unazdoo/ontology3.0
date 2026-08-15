@@ -10,6 +10,7 @@
     "ontology-management-product-state-v1",
     "ontology3-canvas-first-review-v16",
     "ontology3-canvas-first-review-v17",
+    "ontology3-c008-authoritative-projection-v1",
     "ontology3.data-engineering.workspace.v5-handoff",
     "ontology3.intelligent-query.workspace.v1",
     "ontology3.iq.review.conversation.v1",
@@ -406,6 +407,44 @@
     return value ? value.trim() : null;
   }
 
+  function canonicalScenarioContext(record) {
+    if (!record || typeof record !== "object") return null;
+    const candidates = [
+      record.context,
+      record.scenarioContext,
+      record.contextIdentity,
+      record.requestContext,
+      record.fixedContextRef,
+      record.c011Payload?.scenarioContext,
+      record.payload?.scenarioContext,
+      record.snapshot?.requestContext,
+      record
+    ].filter((value) => value && typeof value === "object");
+    let partial = null;
+    for (const source of candidates) {
+      const context = {
+        scenarioId: source.scenarioId || source.sceneId || source.id || null,
+        scenarioVersion: source.scenarioVersion || source.sceneVersion || source.version || null,
+        scenarioRunId: source.scenarioRunId || source.sceneRunId || source.runId || null,
+        formedAt: source.scenarioFormedAt || source.formedAt || null,
+        status: source.scenarioStatus || source.scenarioReferenceStatus || source.status || null
+      };
+      if (!context.scenarioId || !context.scenarioVersion || !context.scenarioRunId) continue;
+      if (context.formedAt && context.status) return context;
+      partial ||= context;
+    }
+    return partial;
+  }
+
+  function sameCurrentScenarioContext(record, expectedContext) {
+    const actual = canonicalScenarioContext(record);
+    return Boolean(actual && expectedContext && SCENARIO_CONTEXT_FIELDS.every((field) => String(actual[field] ?? "") === String(expectedContext[field] ?? "")));
+  }
+
+  function isCurrentProjectionRecord(record, expectedContext) {
+    return Boolean(record && record.past !== true && record.currentProjection !== false && sameCurrentScenarioContext(record, expectedContext));
+  }
+
   function sourceScopeMeta(moduleId, scenarioId, raw, options = {}) {
     if (!raw) {
       return {
@@ -544,26 +583,31 @@
     };
   }
 
-  function scopeQueryState(raw, scenarioId) {
+  function scopeQueryState(raw, scenarioId, expectedContext) {
     if (!raw) return { value: null, meta: sourceScopeMeta("query", scenarioId, raw) };
-    const liveRuns = recordScopeCounts(raw.liveRuns, scenarioId);
-    const historyRuns = recordScopeCounts(raw.historyRuns, scenarioId);
-    const runs = recordScopeCounts(raw.runs, scenarioId);
-    const matchedRuns = [...liveRuns.matched, ...historyRuns.matched, ...runs.matched];
+    const currentLiveRuns = list(raw.liveRuns).filter((run) => isCurrentProjectionRecord(run, expectedContext));
+    const currentRuns = list(raw.runs).filter((run) => isCurrentProjectionRecord(run, expectedContext));
+    const matchedRuns = [...currentLiveRuns, ...currentRuns];
     const matchedRunIds = new Set(matchedRuns.map((run) => run.id).filter(Boolean));
-    const requests = recordScopeCounts(raw.actionRequests, scenarioId, (request) => canonicalScenarioId(request) || (matchedRunIds.has(request?.runId) ? scenarioId : null));
-    const matchedRecords = matchedRuns.length + requests.matched.length;
-    const unscopedRecords = liveRuns.unscoped.length + historyRuns.unscoped.length + runs.unscoped.length + requests.unscoped.length;
-    const mismatchedRecords = liveRuns.mismatched.length + historyRuns.mismatched.length + runs.mismatched.length + requests.mismatched.length;
-    const rootScenarioId = raw.scenarioContext?.id || raw.currentScenario || null;
-    const scoped = rootScenarioId === scenarioId || matchedRecords > 0;
+    const currentRequests = list(raw.actionRequests).filter((request) =>
+      isCurrentProjectionRecord(request, expectedContext) && matchedRunIds.has(request?.runId)
+    );
+    const allRuns = [...list(raw.liveRuns), ...list(raw.historyRuns), ...list(raw.runs)];
+    const allRequests = list(raw.actionRequests);
+    const excludedHistoricalRecords = allRuns.filter((record) => record?.past === true || record?.currentProjection === false).length;
+    const matchedRecords = matchedRuns.length + currentRequests.length;
+    const unscopedRecords = [...allRuns, ...allRequests].filter((record) => !canonicalScenarioContext(record)).length;
+    const mismatchedRecords = Math.max(0, allRuns.length + allRequests.length - matchedRecords - unscopedRecords);
+    const rootScenarioId = canonicalScenarioId(raw.scenarioContext) || raw.currentScenario || null;
+    const exactRoot = sameCurrentScenarioContext(raw.scenarioContext, expectedContext);
+    const scoped = exactRoot || matchedRecords > 0;
     return {
       value: scoped ? {
         ...raw,
-        liveRuns: liveRuns.matched,
-        historyRuns: historyRuns.matched,
-        runs: runs.matched,
-        actionRequests: requests.matched
+        liveRuns: currentLiveRuns,
+        historyRuns: [],
+        runs: currentRuns,
+        actionRequests: currentRequests
       } : null,
       meta: sourceScopeMeta("query", scenarioId, raw, {
         rootScenarioId,
@@ -571,7 +615,9 @@
         totalRecords: matchedRecords + unscopedRecords + mismatchedRecords,
         matchedRecords,
         unscopedRecords,
-        mismatchedRecords
+        mismatchedRecords,
+        excludedHistoricalRecords,
+        reason: scoped ? "仅纳入与平台当前完整 C033 一致且未归档的智能问数记录。" : undefined
       })
     };
   }
@@ -669,7 +715,7 @@
   function scopeSources(rawSources, scenarioId, expectedContext) {
     const data = scopeDataState(rawSources.data, scenarioId, expectedContext);
     const ontology = scopeOntologyState(rawSources.ontology, scenarioId);
-    const query = scopeQueryState(rawSources.query, scenarioId);
+    const query = scopeQueryState(rawSources.query, scenarioId, expectedContext);
     const decision = scopeDecisionState(rawSources.decision, scenarioId);
     const agent = scopeAgentState(rawSources.agent, scenarioId);
     const agentOwner = scopeAgentOwnerState(rawSources.agentOwner, scenarioId);
@@ -952,12 +998,14 @@
     return { steps: { mapping, ontologyPublish }, binding: exactBinding ? binding : null, observedBinding: binding };
   }
 
-  function queryProjection(queryState, ontologyResult) {
+  function queryProjection(queryState, ontologyResult, expectedContext) {
     const runs = [
       ...list(queryState?.liveRuns),
       ...list(queryState?.historyRuns),
       ...list(queryState?.runs)
-    ].filter((run, index, items) => run?.id && items.findIndex((item) => item?.id === run.id) === index);
+    ].filter((run, index, items) =>
+      run?.id && isCurrentProjectionRecord(run, expectedContext) && items.findIndex((item) => item?.id === run.id) === index
+    );
     const successful = runs.filter((run) => run?.status === "成功" && run?.result && run?.context);
     const running = runs.find((run) => run?.status === "处理中") || null;
     const failed = runs.find((run) => ["失败", "阻断"].includes(run?.status)) || null;
@@ -1045,7 +1093,10 @@
           recovery: "核对三家单位的规则指标、触发分支和行动上下文，并核对单位553的优先协商银行。"
         });
 
-    return { steps: { query, rules }, successfulRuns: successful, matchedRuns: matched, actionRequests: list(queryState?.actionRequests) };
+    const actionRequests = list(queryState?.actionRequests).filter((request) =>
+      isCurrentProjectionRecord(request, expectedContext) && successful.some((run) => run.id === request?.runId)
+    );
+    return { steps: { query, rules }, successfulRuns: successful, matchedRuns: matched, actionRequests };
   }
 
   function decisionProjection(decisionState, queryResult) {
@@ -1329,7 +1380,7 @@
 
     const dataResult = dataProjection(sources.data);
     const ontologyResult = ontologyProjection(sources.ontology, dataResult);
-    const queryResult = queryProjection(sources.query, ontologyResult);
+    const queryResult = queryProjection(sources.query, ontologyResult, scenarioContextFor(scenarioId));
     const decisionResult = decisionProjection(sources.decision, queryResult);
     const reportResult = reportProjection(sources.report, decisionResult);
     const agentResult = agentProjection(sources.agent, sources.agentOwner, reportResult);

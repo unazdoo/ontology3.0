@@ -19,6 +19,9 @@
   let ontologyBridgeFrame = null;
   let ontologyBridgeReady = null;
   let ontologyContractReplay = null;
+  let ontologyContractReplayKey = null;
+  let deliveredOntologyContractKey = null;
+  let ontologyContractReplayTimer = null;
 
   const IQ_STATE_KEY = "ontology3.iq.review.conversation.v1";
   const C008_PROJECTION_KEY = "ontology3-c008-authoritative-projection-v1";
@@ -305,32 +308,35 @@
     const queryState = readStoredObject(IQ_STATE_KEY);
     const config = queryState?.activeConfig;
     const validation = config?.c009Validation;
+    const envelope = validation?.contractEnvelope;
     const scenario = activeScenarioContext();
-    const sameScenario = validation?.sceneId === scenario?.scenarioId
-      && validation?.sceneVersion === scenario?.scenarioVersion
-      && validation?.sceneRunId === scenario?.scenarioRunId;
-    if (config?.status !== "已启用" || config?.compatibility !== "兼容" || validation?.status !== "通过" || !sameScenario) return null;
-    return {
-      sourceModule: "智能问数",
-      contractCode: "C009",
-      configId: config.id,
-      configVersion: config.version,
-      consumer: "智能问数",
-      semanticVersionId: validation.versionId,
-      semanticVersion: validation.semanticVersion,
-      dataVersion: validation.dataVersion,
-      status: "compatible",
-      checkedAt: validation.checkedAt,
-      reason: null,
-      evidenceLocator: `智能问数/${config.id}/${validation.configFingerprint || config.contentFingerprint || "兼容核验"}`
-    };
+    const envelopeScenario = envelope?.scenarioContext;
+    const binding = envelope?.publishedOntologyBinding;
+    const sameScenario = envelopeScenario?.scenarioId === scenario?.scenarioId
+      && envelopeScenario?.scenarioVersion === scenario?.scenarioVersion
+      && envelopeScenario?.scenarioRunId === scenario?.scenarioRunId;
+    const complete = Boolean(
+      envelope?.sourceModule === "智能问数" && envelope.contractCode === "C009" && envelope.consumer === "智能问数" &&
+      envelope.configId === config?.id && envelope.configVersion === config?.version && envelope.promptVersion === config?.promptVersion &&
+      Array.isArray(envelope.skillVersions) && envelope.skillVersions.length &&
+      Array.isArray(envelope.toolVersions) && envelope.toolVersions.length &&
+      envelope.resourceWhitelist?.version === config?.whitelistVersion && Array.isArray(envelope.resourceWhitelist?.resourceIds) && envelope.resourceWhitelist.resourceIds.length &&
+      binding?.semanticVersionId === validation?.versionId && binding?.semanticVersion === validation?.semanticVersion && binding?.dataVersion === validation?.dataVersion &&
+      envelope.effectiveTime?.from && envelope.checkedAt && envelope.evidenceLocator && envelope.configFingerprint === validation?.configFingerprint &&
+      sameScenario
+    );
+    if (config?.status !== "已启用" || config?.compatibility !== "兼容" || validation?.status !== "通过" || !complete) return null;
+    return envelope;
   }
 
   async function reconcileOntologyContracts() {
-    if (ontologyContractReplay) return ontologyContractReplay;
-    ontologyContractReplay = (async () => {
-      const c009 = currentC009Record();
-      if (!c009) return false;
+    const c009 = currentC009Record();
+    if (!c009) return false;
+    const replayKey = `${activeScenario().id}:${stableDigest(c009)}`;
+    if (deliveredOntologyContractKey === replayKey) return false;
+    if (ontologyContractReplay && ontologyContractReplayKey === replayKey) return ontologyContractReplay;
+    ontologyContractReplayKey = replayKey;
+    const replay = (async () => {
       const c009RequestId = `C009-${activeScenario().id}-${stableDigest(c009)}`;
       const compatibility = await requestOntologyBridge("deliverConsumerCompatibility", c009, c009RequestId);
       if (!compatibility?.ok) throw new Error(compatibility?.error || "智能问数兼容状态未被本体管理接收");
@@ -359,13 +365,29 @@
       if (!publishedContext?.ok || !publishedContext?.result) throw new Error(publishedContext?.error || "已发布语义资源未返回");
       localStorage.setItem(`${HANDOFF_CHANNEL}:response:${requestId}`, JSON.stringify(publishedContext));
       document.documentElement.dataset.ontologyContracts = "ready";
+      deliveredOntologyContractKey = replayKey;
       return true;
     })().catch((error) => {
       document.documentElement.dataset.ontologyContracts = "blocked";
       document.documentElement.dataset.ontologyContractReason = error?.message || "合同重放未完成";
       return false;
     });
-    return ontologyContractReplay;
+    ontologyContractReplay = replay;
+    replay.then(() => {
+      if (ontologyContractReplayKey !== replayKey) return;
+      ontologyContractReplay = null;
+      ontologyContractReplayKey = null;
+    });
+    return replay;
+  }
+
+  function scheduleOntologyContractReconcile() {
+    window.clearTimeout(ontologyContractReplayTimer);
+    ontologyContractReplayTimer = window.setTimeout(() => {
+      reconcileOntologyContracts().then((updated) => {
+        if (updated) refreshSourceState(false);
+      });
+    }, 120);
   }
 
   function scenarioWorkspaceMarkup() {
@@ -1187,6 +1209,7 @@
     if (!STORE.MODULE_STORAGE_KEYS?.includes(event.key)) return;
     window.clearTimeout(storageRefreshTimer);
     storageRefreshTimer = window.setTimeout(() => refreshSourceState(false), 120);
+    if (event.key === IQ_STATE_KEY || event.key === C008_PROJECTION_KEY) scheduleOntologyContractReconcile();
   });
   window.addEventListener("s001:state", () => {
     if (suppressHomeDomainStateRender && parseRoute().type === "home") return;
@@ -1205,8 +1228,6 @@
   if (!window.location.hash) history.replaceState({ s001Shell: true, scenarioId: activeScenario().id, s001Depth: 0 }, "", "#home");
   else if (!history.state?.s001Shell) history.replaceState({ ...(history.state || {}), s001Shell: true, scenarioId: activeScenario().id, s001Depth: 0 }, "", window.location.href);
   STORE.refreshProjection?.();
-  reconcileOntologyContracts().then((updated) => {
-    if (updated) refreshSourceState(false);
-  });
+  scheduleOntologyContractReconcile();
   render();
 })();

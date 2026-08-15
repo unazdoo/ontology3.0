@@ -71,7 +71,15 @@
     version: config?.version || null,
     promptVersion: config?.promptVersion || null,
     whitelistVersion: config?.whitelistVersion || null,
+    skillVersions: (config?.skills || []).map((item) => ({ id: item.id, version: item.version })).sort((left, right) => left.id.localeCompare(right.id)),
+    toolVersions: (config?.tools || []).map((item) => ({ id: item.id, version: item.version })).sort((left, right) => left.id.localeCompare(right.id)),
+    allowedResources: [...new Set(config?.allowedResources || [])].sort(),
     contentFingerprint: config?.contentFingerprint || null,
+    effectiveFrom: config?.effectiveFrom || null,
+    effectiveTo: config?.effectiveTo || null,
+    bindingVersionId: config?.bindingVersionId || null,
+    semanticVersion: config?.semanticVersion || null,
+    resourceContractFingerprint: config?.resourceContractFingerprint || null,
     sceneId: config?.sceneId || null,
     sceneVersion: config?.sceneVersion || null,
     sceneRunId: config?.sceneRunId || null,
@@ -1237,10 +1245,11 @@
         const verifiedAt = now();
         const loadedConfig = {
           ...currentConfig,
+          effectiveFrom: currentConfig.effectiveFrom || verifiedAt,
+          effectiveTo: currentConfig.effectiveTo || null,
           bindingVersionId: startedContext.versionId,
           semanticVersion: startedContext.semanticVersion,
           resourceContractFingerprint: startedContext.resourceContractFingerprint,
-          allowedResources: startedContext.resources.map((item) => item.id).filter(Boolean),
           observedSkills: (currentConfig.skills || []).map((item) => ({ id: item.id, version: item.version, status: "已加载" })),
           observedTools: (currentConfig.tools || []).map((item) => ({ id: item.id, version: item.version, status: "可用" })),
           loadProof: `本轮配置核验 · ${startedContext.scenarioRunId}`,
@@ -1248,6 +1257,8 @@
         };
         const check = D.validateFixedQuestionSet(loadedConfig, startedContext);
         if (!check.passed) { const message = check.issues[0] || "固定问题验证失败"; setActiveValidation("失败"); setActiveValidationMessage(message); notify(message, "danger"); return; }
+        const c009Record = D.buildC009CompatibilityRecord(loadedConfig, startedContext, verifiedAt);
+        if (!c009Record) { const message = "C009 配置合同缺少有效期、完整 C033 或精确 Published 绑定"; setActiveValidation("失败"); setActiveValidationMessage(message); notify(message, "danger"); return; }
         setState((prev) => {
           const validated = {
             ...loadedConfig,
@@ -1268,10 +1279,11 @@
               versionId: startedContext.versionId, semanticVersion: startedContext.semanticVersion,
               dataVersion: startedContext.dataVersion, asOf: startedContext.asOf,
               t019EvidenceCode: startedContext.t019EvidenceCode,
-              configFingerprint: prev.activeConfig.contentFingerprint,
+              configFingerprint: c009Record.configFingerprint,
               resourceContractFingerprint: startedContext.resourceContractFingerprint,
               runtimeContextFingerprint: startedContext.runtimeContextFingerprint,
-              questionResults: check.questions
+              questionResults: check.questions,
+              contractEnvelope: c009Record
             }
           };
           return { ...prev, activeConfig: validated, enabledConfigs: (prev.enabledConfigs || []).map((item) => item.id === validated.id ? clone(validated) : item) };
@@ -1331,7 +1343,7 @@
           versionId: startedContext.versionId, semanticVersion: startedContext.semanticVersion,
           dataVersion: startedContext.dataVersion, asOf: startedContext.asOf,
           t019EvidenceCode: startedContext.t019EvidenceCode,
-          configFingerprint: current.contentFingerprint,
+          configFingerprint: D.configContractFingerprint(current, startedContext),
           resourceContractFingerprint: startedContext.resourceContractFingerprint,
           runtimeContextFingerprint: startedContext.runtimeContextFingerprint,
           validationRunId: validationRun.runId
@@ -1365,8 +1377,27 @@
         notify("候选未启用，现有配置继续服务", "danger");
         return;
       }
+      const enabledAt = now();
+      const activationSnapshot = { ...clone(current), status: "已启用", compatibility: "兼容", enabledAt, effectiveFrom: current.effectiveFrom || enabledAt, effectiveTo: current.effectiveTo || null };
+      const c009Record = D.buildC009CompatibilityRecord(activationSnapshot, runtime, enabledAt);
+      if (!c009Record) {
+        notify("候选缺少完整 C009 有效期、场景或 Published 绑定，未启用", "danger");
+        return;
+      }
       setState((prev) => {
-        const activated = { ...clone(configForScenario(prev.candidateConfig, prev.scenarioContext)), status: "已启用", compatibility: "兼容", enabledAt: now(), previousActiveVersion: prev.activeConfig.version, validationRef: prev.candidateConfig.validation.validationRun.runId };
+        const activated = {
+          ...activationSnapshot,
+          previousActiveVersion: prev.activeConfig.version,
+          validationRef: prev.candidateConfig.validation.validationRun.runId,
+          c009Validation: {
+            ...clone(activationSnapshot.c009Validation || {}),
+            owner: "智能问数",
+            status: "通过",
+            checkedAt: enabledAt,
+            configFingerprint: c009Record.configFingerprint,
+            contractEnvelope: c009Record
+          }
+        };
         const enabledConfigs = [activated];
         return { ...prev, activeConfig: activated, enabledConfigs, serial: prev.serial + 1, candidateConfig: configForScenario(D.bindConfigSnapshot(D.CANDIDATE_CONFIG, runtime, false), prev.scenarioContext) };
       });
@@ -1744,24 +1775,47 @@
     const [resetOpen, setResetOpen] = React.useState(false);
     const [dataOpen, setDataOpen] = React.useState(false);
     const [upstreamRevision, setUpstreamRevision] = React.useState(0);
+    const appStateRef = React.useRef(state);
     const scrollPositions = React.useRef({});
     const previousPage = React.useRef(route.page);
     React.useEffect(() => D.saveState(VARIANT.storageKey, state), [state]);
+    React.useEffect(() => { appStateRef.current = state; }, [state]);
     React.useEffect(() => {
-      if (!(state.actionRequests || []).length) return;
       D.publishActionRequestInbox(state.actionRequests, runtimeForScenario(state));
     }, [state.actionRequests, state.scenarioContext?.id, state.scenarioContext?.version, state.scenarioContext?.runId]);
     React.useEffect(() => { if (!location.hash) go("ask"); const handler = () => setRoute(routeState()); addEventListener("hashchange", handler); return () => removeEventListener("hashchange", handler); }, []);
     React.useEffect(() => {
       const refresh = () => setUpstreamRevision((value) => value + 1);
       const visible = () => { if (document.visibilityState === "visible") refresh(); };
+      const applyScenarioReset = (request) => {
+        const scenario = request?.scenarioContext;
+        const current = appStateRef.current;
+        const active = current?.scenarioContext;
+        const alreadyHandled = (current?.handledScenarioResetRequestIds || []).includes(request?.requestId);
+        const exactCurrent = Boolean(
+          scenario?.scenarioId === active?.id && scenario?.scenarioVersion === active?.version && scenario?.scenarioRunId === active?.runId
+        );
+        if (!request?.requestId || alreadyHandled || !exactCurrent) return;
+        invalidateAsync();
+        const next = D.resetState(VARIANT.storageKey, current, request);
+        appStateRef.current = next;
+        setState(next);
+        setEvidence(null);
+        setContextRun(null);
+        setModal(null);
+        setResetOpen(false);
+        setDataOpen(false);
+        go("ask");
+      };
       const storage = (event) => {
+        if (event.key === D.SCENARIO_RESET_REQUEST_KEY) applyScenarioReset(D.readScenarioResetRequest());
         if (!event.key || [D.C008_PROJECTION_STORAGE_KEY, D.C017_PROJECTION_STORAGE_KEY, ...(D.LEGACY_ONTOLOGY_STORAGE_KEYS || [])].includes(event.key) || event.key.startsWith(`${D.HANDOFF_CHANNEL}:response:`)) refresh();
       };
       addEventListener("focus", refresh);
       addEventListener("pageshow", refresh);
       addEventListener("storage", storage);
       document.addEventListener("visibilitychange", visible);
+      applyScenarioReset(D.readScenarioResetRequest());
       return () => {
         removeEventListener("focus", refresh);
         removeEventListener("pageshow", refresh);
