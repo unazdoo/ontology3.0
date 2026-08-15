@@ -1,0 +1,98 @@
+{
+  "changeId": "CHG-S004-BASELINE-COMPAT-20260815-001",
+  "changeScope": [
+    {
+      "changeKind": "scenario-loader",
+      "owner": "S004场景总装",
+      "ref": "prototype-work/v1.1.0/scenarios/s004/index.html",
+      "sha256Before": "a7ef812156c6ef50a6bc5467ed28f93e41b10ca6c780c12852b7c8e98390f1bc"
+    },
+    {
+      "changeKind": "legacy-independent-shell",
+      "owner": "S004场景总装",
+      "ref": "prototype-work/v1.1.0/scenarios/s004/app.js",
+      "sha256Before": "7e17f6ca9cd63d8a334df3ac97ecf51fdef7ef1615a0b2ba92877c01d61ed118"
+    },
+    {
+      "changeKind": "legacy-global-styles",
+      "owner": "S004场景总装",
+      "ref": "prototype-work/v1.1.0/scenarios/s004/styles.css",
+      "sha256Before": "55c2a1a6a9070166c55705a9480a85109db14cd651ffaed73002b56273d45d02"
+    },
+    {
+      "changeKind": "scenario-data",
+      "owner": "S004场景总装",
+      "ref": "prototype-work/v1.1.0/scenarios/s004/data.js",
+      "sha256Before": "9e37c764d855a086951496886eb3f7451470546de9904b8d44defbee0d3ebce9"
+    },
+    {
+      "changeKind": "scenario-state",
+      "owner": "S004场景总装",
+      "ref": "prototype-work/v1.1.0/scenarios/s004/state.js",
+      "sha256Before": "5dcf51105614ae9d3381817321e4d365b04df706988e5444d7c350b3b5a30b4b"
+    },
+    {
+      "changeKind": "report-definition",
+      "owner": "M06",
+      "ref": "prototype-work/v1.1.0/scenarios/s004/artifacts/report/report-definition.json",
+      "sha256Before": "9f7a1efed264fbf8f0af65e6d7f8803e06715ef1b2f4f18d5b6152aa442cb0d3"
+    },
+    {
+      "changeKind": "report-builder",
+      "owner": "M06",
+      "ref": "prototype-work/v1.1.0/scenarios/s004/tools/build-report.mjs",
+      "sha256Before": "a4ce19826742937c4c65c3bded801ab38d52d009cfb92e4d92ef045c03bc8543"
+    },
+    {
+      "changeKind": "C008",
+      "owner": "M01",
+      "ref": "prototype-work/v1.1.0/scenarios/s004/artifacts/ontology/c008-authoritative-facts.json",
+      "sha256Before": "dcb0a8dde9bdfc2b972e2140288347fe2d1a23f88e7d010d15ed97024d9bddce"
+    },
+    {
+      "changeKind": "fixed-evidence-package",
+      "owner": "M06",
+      "ref": "prototype-work/v1.1.0/scenarios/s004/artifacts/agent/evidence-package.json",
+      "sha256Before": "ce054250998203803c2ac2291b4f9385ad85eaf2ef61dd42fc132603b4fecdef"
+    },
+    {
+      "changeKind": "published-html",
+      "owner": "M06",
+      "ref": "prototype-work/v1.1.0/scenarios/s004/artifacts/report/RPT-S004-CGNPC-20260815-v1.0.1.html",
+      "sha256Before": "9de23b7130cf7b8a66b207eb9c9576e8199ab8238a292e91765dc58a33cb1dd9"
+    },
+    {
+      "changeKind": "published-pdf",
+      "owner": "M06",
+      "ref": "prototype-work/v1.1.0/scenarios/s004/artifacts/report/RPT-S004-CGNPC-20260815-v1.0.1.pdf",
+      "sha256Before": "f51d732bf271aa3e3220486ae35f91f6c9edd4bfefc5c46fa54fd4bc07bf2ea8"
+    }
+  ],
+  "evidenceType": "C034-pre-risk-change",
+  "formedAt": "2026-08-15T15:00:00.000Z",
+  "immutabilityRule": "现有 S004-v1、v1.0/v1.0.1 报告、发布指针与所有既有 Checkpoint 不得覆盖；重构必须形成 S004-v2、新 scenarioRunId、新报告版本和新快照链",
+  "reason": "在直接复用 S001 v1.0.3 实际公共壳、修复 Published/C008 消费边界并按权威输出样例重建正式报告之前建立不可变保护点",
+  "restorePreflight": {
+    "externalCapabilitiesDefault": "disabled",
+    "mode": "isolated-clone",
+    "overwritesHistory": false,
+    "requiresNewScenarioRunId": true,
+    "requiresNewScenarioVersion": true,
+    "status": "verified"
+  },
+  "riskLevel": "high",
+  "rollbackTarget": {
+    "checkpointId": "CP-S004-20260815145500000-95ba973809e9",
+    "manifestRef": "prototype-work/v1.1.0/scenarios/s004/checkpoints/CP-S004-DELIVERY-20260815145500000/manifest.json",
+    "manifestSha256": "56d3ebd3b54e5aba86a068d497aa79294d882fbf058dac7f991c6595bcc25109",
+    "phaseAlias": "CP-S004-DELIVERY-20260815145500000"
+  },
+  "scenarioContext": {
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "scenarioId": "S004",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "scenarioVersion": "S004-v1",
+    "status": "active"
+  },
+  "schemaVersion": 1
+}

@@ -144,10 +144,24 @@
       "sourceScenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
       "status": "locked",
       "supersedesCheckpointId": "CP-S004-20260815141021100-739d91662b85"
+    },
+    {
+      "checkpointId": "CP-S004-20260815150000000-4a60e36c5f75",
+      "checkpointNode": "pre-risk-change",
+      "createdAt": "2026-08-15T15:00:00.000Z",
+      "immutable": true,
+      "manifestRef": "designs/prototype-work/v1.1.0/scenarios/s004/checkpoints/CP-S004-PRE-20260815150000000-BASELINE-COMPAT/manifest.json",
+      "manifestSha256": "be103cb38b7d2ecf0f4c08d8e1fbcd6f2eacf5d68304c7d6e02ee2253449a9db",
+      "note": "S004 v1 独立壳与简化报告重构为 v1.0.3 受限适配之前的不可变保护点",
+      "phaseAlias": "CP-S004-PRE-20260815150000000-BASELINE-COMPAT",
+      "riskLevel": "high",
+      "rollbackTargetCheckpointId": "CP-S004-20260815145500000-95ba973809e9",
+      "sourceScenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+      "status": "locked"
     }
   ],
   "contract": "C034",
-  "generatedAt": "2026-08-15T14:55:00.000Z",
+  "generatedAt": "2026-08-15T15:00:00.000Z",
   "immutableCheckpointRule": "每个 manifestId + detached SHA-256 不得原地覆盖",
   "operationEvidence": {
     "cloneRestore": {
