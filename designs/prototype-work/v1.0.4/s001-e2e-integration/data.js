@@ -15,7 +15,7 @@
       name: "本体管理",
       short: "本体",
       icon: "network",
-      source: "../ontology-management-review/canvas-first/index.html",
+      source: "../ontology-management-review/canvas-first/index.html?v=20260815-11",
       description: "维护融资对象、指标、规则与行动类型，形成可消费版本。",
       steps: ["mapping", "ontologyPublish"],
       color: "violet"
