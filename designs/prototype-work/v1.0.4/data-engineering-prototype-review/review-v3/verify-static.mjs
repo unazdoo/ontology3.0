@@ -662,6 +662,9 @@ assert(/setTimeout\(\(\)=>finish\(null\),2400\)/.test(functionSource("ensureOnto
 const discoverySource = functionSource("discoverOntologyBindings", "deliverDataAssetToOntology") || functionSource("discoverOntologyBindings", "submitOntologyRefresh");
 const c028Source = functionSource("submitOntologyRefresh", "queryRefreshRequest");
 const exactC028Source = functionSource("exactC028Received", "c029MatchesAttempt");
+const c028ReceiptSource = functionSource("exactC028Receipt", "c028ReceiptEvidence");
+const c028EvidenceSource = functionSource("c028ReceiptEvidence", "handoffC028Receipt");
+const handoffC028ReceiptSource = functionSource("handoffC028Receipt", "c029MatchesAttempt");
 assert(
   discoverySource.includes('"discoverRefreshTargets"') && discoverySource.includes('"publishedContext"') &&
   /ontologyHandoffSnapshot|handoffSnapshot/.test(discoverySource),
@@ -683,13 +686,36 @@ assert(
 );
 assert(
   c028Source.includes('"deliverRefreshRequest"') &&
-  /accepted/.test(c028Source) &&
-  /deliveryIssues/.test(c028Source) &&
+  c028Source.includes('"refreshRequestStatus"') &&
+  /authority\.status==="accepted"/.test(c028Source) &&
+  /authority\.status==="pending"/.test(c028Source) &&
+  /authority\.status==="rejected"/.test(c028Source) &&
   /结果未知/.test(c028Source),
-  "C028 只能取得 accepted；拒绝原因须读取 handoffSnapshot.deliveryIssues，超时须标为结果未知"
+  "C028 必须按权威状态读取区分 accepted、pending、rejected 与结果未知"
 );
 assert(
-  app.includes("function exactC028Received") && /exactC028Received\(received,payload\)/.test(c028Source) &&
+  app.includes("function exactC028Received") && app.includes("function exactC028Receipt") && app.includes("function c028ReceiptEvidence") &&
+  /c028ReceiptEvidence\(\{mutation,statusRead:statusResponse\.ok\?statusResponse\.result:null,handoff,payload\}\)/.test(c028Source) &&
+  /mutation\.respondedAt/.test(c028Source) && /dataAssetDeliveryId:delivery\.deliveryId/.test(c028Source),
+  "C028 必须联合核对持久化接收请求、同请求权威回执和本体管理响应时间"
+);
+assert(
+  /receipt\.status/.test(c028ReceiptSource) && /exactC028Received\(receipt\.originalRequest,payload\)/.test(c028ReceiptSource) &&
+  /inputs\?\.c028Receipts/.test(handoffC028ReceiptSource) && /item\.requestId===requestId/.test(handoffC028ReceiptSource) &&
+  /item\.requestId===payload\?\.requestId/.test(c028EvidenceSource) && /status:"pending"/.test(c028EvidenceSource) && /status:"rejected"/.test(c028EvidenceSource),
+  "C028 权威回执必须按同一 requestId 和原始请求区分受理、等待与拒绝，不能借用其他请求的 deliveryIssues"
+);
+assert(
+  /queryRefreshRequest/.test(app) && /\["request-created","request-accepted","unknown","eligible","failed"\]/.test(app) &&
+  /ontologyBridgeRequest\("refreshRequestStatus",\{requestId:attempt\.requestId\}\)/.test(app),
+  "C028 后续重读必须允许从本地失败投影恢复，并重新读取 M01 持久化回执"
+);
+assert(
+  /normalizeOntologyCandidate\(ontologyBindingForCanvas\(\)\)/.test(app),
+  "目标绑定选择反馈必须使用规范化名称，不能显示 undefined"
+);
+assert(
+  app.includes("function exactC028Received") &&
   /mutation\.respondedAt/.test(c028Source) && /dataAssetDeliveryId:delivery\.deliveryId/.test(c028Source),
   "C028 必须核对交接快照中的完整精确请求，并使用本体管理响应时间及 C003 交付引用"
 );
