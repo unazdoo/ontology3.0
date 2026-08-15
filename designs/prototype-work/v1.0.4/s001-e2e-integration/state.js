@@ -13,6 +13,7 @@
     "ontology3.intelligent-query.workspace.v1",
     "ontology3.iq.review.conversation.v1",
     "ontology3.c017.intelligent-query.projection.v1",
+    "ontology3.c017.decision-center.projection.v1",
     "ontology3.iq.review.identity-counter.v1",
     "ontology3-decision-center-state-v1",
     "ontology3-decision-center-review-v2-portfolio-state-v6",
@@ -80,6 +81,10 @@
     if (/\u6210\u529f|\u5b8c\u6210|\u5c31\u7eea|\u91c7\u7528/.test(context.status)) return null;
     if (/(?:\u505c\u7528|\u672a\u77e5|\u65e0\u6548|\u5df2\u7ed3\u675f|inactive|unknown|disabled)/i.test(context.status)) return null;
     return context;
+  }
+
+  function sameScenarioContext(left, right) {
+    return Boolean(left && right && SCENARIO_CONTEXT_FIELDS.every((field) => String(left[field] ?? "") === String(right[field] ?? "")));
   }
 
   function enabledScenarios() {
@@ -608,12 +613,23 @@
     };
     if (!dataState) return { steps: empty, assetVersion: null, run: null, asOf: null };
 
-    const uploaded = list(dataState.uploadedSnapshots).map((item) => item?.snapshot || item).filter(Boolean);
-    const uploadEvidence = [...uploaded].reverse().find((snapshot) =>
-      (snapshot.snapshotId || snapshot.fileName) && snapshot.hash && snapshot.asOf === dataState.asOfDate
-    ) || null;
+    const uploadedEntries = list(dataState.uploadedSnapshots).filter(Boolean);
+    const uploaded = uploadedEntries.map((item) => item?.snapshot || item).filter(Boolean);
+    const rootContext = dataState.scenarioContext || null;
+    const uploadEntry = [...uploadedEntries].reverse().find((entry) => {
+      const snapshot = entry?.snapshot || entry;
+      const snapshotContext = snapshot?.scenarioContext || entry?.registeredInScenario || null;
+      return (snapshot?.snapshotId || snapshot?.fileName) && snapshot?.hash && snapshot?.asOf === dataState.asOfDate && sameScenarioContext(snapshotContext, rootContext);
+    }) || null;
+    const uploadEvidence = uploadEntry?.snapshot || uploadEntry || null;
+    const t008 = dataState.t008Confirmation || uploadEvidence?.t008Confirmation || null;
+    const t008Complete = Boolean(
+      t008?.snapshotId === uploadEvidence?.snapshotId && t008?.asOf === dataState.asOfDate &&
+      t008?.confirmedBy && t008?.confirmedAt && !Number.isNaN(Date.parse(String(t008.confirmedAt).replace(" ", "T"))) &&
+      t008?.basis && t008?.evidenceId && t008?.evidenceLocator && sameScenarioContext(t008?.scenarioContext, rootContext)
+    );
     const confirmed = Boolean(
-      dataState.snapshotConfirmed && dataState.asOfDate && !/待确认|未知/.test(dataState.asOfDate) && uploadEvidence
+      dataState.snapshotConfirmed && dataState.asOfDate && !/待确认|未知/.test(dataState.asOfDate) && uploadEvidence && t008Complete
     );
     const upload = confirmed
       ? stepRecord("upload", {
@@ -622,12 +638,12 @@
           sourceRecordId: uploadEvidence?.snapshotId || uploadEvidence?.fileName || `快照 · ${dataState.asOfDate}`,
           detail: `融资快照已确认，数据截至 ${dataState.asOfDate}。`,
           at: uploadEvidence?.acquiredAt || null,
-          evidence: { asOf: dataState.asOfDate, snapshot: uploadEvidence || null }
+          evidence: { asOf: dataState.asOfDate, snapshot: uploadEvidence || null, t008EvidenceId: t008.evidenceId, scenarioRunId: rootContext?.scenarioRunId || null }
         })
       : stepRecord("upload", {
           status: uploaded.length ? "observed" : "pending",
           sourceKey: SOURCE_KEYS.data,
-          detail: uploaded.length ? "已发现上传记录，但数据截至时间尚未确认。" : "请在数据工程登记融资工作簿并确认数据截至时间。",
+          detail: uploaded.length ? "已发现上传记录，但未取得与当前场景轮次一致的快照读取和数据截至确认证据。" : "请在数据工程登记融资工作簿并确认数据截至时间。",
           recovery: "进入数据资源，登记工作簿并确认数据截至时间。"
         });
 
@@ -640,11 +656,13 @@
       const executionOk = run?.executionStatus === "成功" || ["待发布", "已发布 · 待刷新", "成功", "成功 · 无数据变化"].some((value) => String(run?.status || "").includes(value));
       const qualityOk = /通过|有警告 · 已说明/.test(String(run?.quality || "")) && Boolean(run?.qualityId);
       const sameAsOf = confirmed && run?.asOf === dataState.asOfDate;
+      const sameRound = sameScenarioContext(run?.scenarioContext, rootContext) && sameScenarioContext(run?.t008Confirmation?.scenarioContext, rootContext);
+      const sameT008 = run?.t008Confirmation?.evidenceId === t008?.evidenceId && run?.t008Confirmation?.snapshotId === uploadEvidence?.snapshotId;
       const hasExactUploadedInput = list(run?.inputs).some((input) => {
         const sameVersion = input?.version === uploadEvidence?.snapshotId || input?.version === uploadEvidence?.fileName || input?.snapshot === uploadEvidence?.fileName;
-        return sameVersion && input?.fingerprint === uploadEvidence?.hash && input?.asOf === uploadEvidence?.asOf;
+        return sameVersion && input?.fingerprint === uploadEvidence?.hash && input?.asOf === uploadEvidence?.asOf && input?.sourceReadEventId === uploadEvidence?.readEventId && sameScenarioContext(input?.scenarioContext, rootContext);
       });
-      return executionOk && qualityOk && sameAsOf && hasExactUploadedInput;
+      return executionOk && qualityOk && sameAsOf && sameRound && sameT008 && hasExactUploadedInput;
     })() ? activeRun : null;
     let pipeline;
     if (dataState.runStatus === "running" || activeRun?.executionStatus === "运行中") {
@@ -689,7 +707,9 @@
       : null;
     const assetComplete = Boolean(
       pipeline.complete && assetVersion?.id && assetVersion?.evidenceIntegrity === "完整" &&
-      assetVersion?.dataQualification !== "不合格" && assetVersion?.asOf === successfulRun?.asOf
+      assetVersion?.dataQualification !== "不合格" && assetVersion?.asOf === successfulRun?.asOf &&
+      assetVersion?.sourceSnapshotId === uploadEvidence?.snapshotId && assetVersion?.sourceReadEventId === uploadEvidence?.readEventId &&
+      assetVersion?.t008Confirmation?.evidenceId === t008?.evidenceId && sameScenarioContext(assetVersion?.scenarioContext, rootContext) && sameScenarioContext(assetVersion?.t008Confirmation?.scenarioContext, rootContext)
     );
     const dataPublish = assetComplete
       ? stepRecord("dataPublish", {
@@ -1390,6 +1410,7 @@
     ];
     persist(false);
     MODULE_STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
+    localStorage.removeItem(`${HANDOFF_CHANNEL}:request`);
     Object.keys(localStorage)
       .filter((key) => key.startsWith("ontology3.0-s001-handoff-v1:response:"))
       .forEach((key) => localStorage.removeItem(key));

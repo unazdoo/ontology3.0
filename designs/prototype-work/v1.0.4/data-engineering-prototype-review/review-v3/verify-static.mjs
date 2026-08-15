@@ -80,7 +80,14 @@ assert(
   manifest.invariants.ontologyHandoff?.operations?.join(",") === "deliverScenarioContext,deliverDataAsset,discoverRefreshTargets,publishedContext,deliverRefreshRequest,handoffSnapshot",
   "manifest 与本体管理联调通道或操作集合不一致"
 );
-assert(/稳定 deliveryId/.test(manifest.invariants.handoffContracts?.C003 || "") && /handoffSnapshot/.test(manifest.invariants.handoffContracts?.C003 || ""), "manifest 缺少 C003 稳定交付身份或真实回执来源");
+assert(
+  /稳定 deliveryId/.test(manifest.invariants.handoffContracts?.C003 || "") &&
+  /attemptNumber=1/.test(manifest.invariants.handoffContracts?.C003 || "") &&
+  /同一 deliveryId 幂等重放/.test(manifest.invariants.handoffContracts?.C003 || "") &&
+  /拒绝后重新受理身份待总控裁决/.test(manifest.invariants.handoffContracts?.C003 || "") &&
+  /handoffSnapshot/.test(manifest.invariants.handoffContracts?.C003 || ""),
+  "manifest 缺少 C003 首次交付、同标识幂等、拒绝后待裁决或真实回执边界"
+);
 assert(/分别读取/.test(manifest.invariants.handoffContracts?.C032 || "") && /漂移即阻断/.test(manifest.invariants.handoffContracts?.C032 || ""), "manifest 缺少 C032 双读与漂移阻断合同");
 assert(/currentFormalSnapshot/.test(manifest.invariants.handoffContracts?.C028 || "") && /完整 C033/.test(manifest.invariants.handoffContracts?.C028 || ""), "manifest 缺少 C028 正式组合快照或完整场景上下文");
 const resetBehavior = String(manifest.invariants.resetBehavior || "");
@@ -436,12 +443,13 @@ assert(
   "缺少从平台接收、解析、验证并统一门禁 C033 的实现"
 );
 assert(app.includes("receiveScenarioContextFromUrl()"), "应用启动时必须真实接收平台深链中的 C033，不能只定义未调用的解析函数");
+const scenarioUrlSource = functionSource("receiveScenarioContextFromUrl", "c003ScenarioContractState");
 assert(
   app.includes('const SCENARIO_CONTEXT_KEY = `${HANDOFF_CHANNEL}:scenario-context`') &&
   app.includes("function readPlatformScenarioContextFromSharedState") &&
-  /readPlatformScenarioContextFromSharedState\(\);\s*\n\s*render\(\)/.test(app) &&
-  /event\.key===SCENARIO_CONTEXT_KEY/.test(app),
-  "M02 必须从平台公共层共享状态读取当前完整 C033，并在刷新或共享状态变化后重新读取"
+  /shared=readPlatformScenarioContextFromSharedState\(\)/.test(scenarioUrlSource) &&
+  /event\.key===SCENARIO_CONTEXT_KEY\)\{readPlatformScenarioContextFromSharedState\(\);render\(\);\}/.test(app),
+  "M02 必须在统一入口和共享状态变化时重新读取平台公共层完整 C033"
 );
 const scenarioContextSource = [
   functionSource("parseScenarioContextCandidate", "validateScenarioContext"),
@@ -546,12 +554,10 @@ assert(
   "C003 门禁不得信任跨页面保存的本地已接收状态；每个页面会话都必须重读 M01 持久化证据"
 );
 assert(
-  app.includes("function c003DeliveryAttemptId") &&
-  app.includes("-A${String(attemptNumber).padStart(2,\"0\")}") &&
-  /retryOf:attempt\.retryOf\|\|null/.test(c003PayloadSource) &&
-  /previousDeliveryId:attempt\.retryOf\|\|null/.test(c003PayloadSource) &&
+  /function c003DeliveryAttemptId\(version\) \{ return c003DeliverySeriesId\(version\); \}/.test(app) &&
+  /attemptNumber:1,retryOf:null,previousDeliveryId:null/.test(c003PayloadSource) &&
   /record\.events\.push/.test(c003Source),
-  "C003 拒绝恢复必须使用新交付尝试标识、回指原尝试并保留不可变状态事件"
+  "C003 必须固定首次交付身份、明确空重试引用并保留不可变状态事件"
 );
 assert(
   /objectId/.test(c003PayloadSource) && /sourceFingerprint/.test(c003PayloadSource) && /payloadFingerprint/.test(c003PayloadSource) && /resultId:version\.qualityId/.test(c003PayloadSource),
@@ -568,16 +574,17 @@ assert(
 assert(
   app.includes("function c003AttemptNumberFromId") &&
   /deliverySeriesId!==`C003-\$\{payload\?\.assetVersion/.test(c003PayloadSource) &&
-  /previousAttempt>=declaredAttempt/.test(c003PayloadSource) &&
+  /declaredAttempt!==1\|\|attemptNumber!==1\|\|payload\?\.retryOf\|\|payload\?\.previousDeliveryId/.test(c003PayloadSource) &&
   /canonicalC003Text\(record\.payload\)!==canonicalC003Text\(payload\)/.test(c003Source),
-  "C003 尝试标识、重试引用或同标识完整载荷不可变校验不完整"
+  "C003 首次标识、禁用未裁决重试引用或同标识完整载荷不可变校验不完整"
 );
 assert(
   /verificationHistory\.push/.test(c003Source) &&
   /historicalAcceptedClaim/.test(c003Source) &&
   app.includes("幂等合同重放原交付标识") &&
-  app.includes("部分已接收证据但联合证据冲突"),
-  "C003 必须保留每次联合核验证据，并区分新尝试、同标识幂等重放与部分证据冲突"
+  app.includes("存在部分回执证据但联合核对未通过") &&
+  app.includes("拒绝后重新受理的新尝试身份尚待总控裁决"),
+  "C003 必须保留每次联合核验证据，并区分同标识幂等、部分证据冲突与拒绝后待裁决"
 );
 assert(
   app.includes("function c033RootReceiptIssues") &&
@@ -606,21 +613,22 @@ assert(
 assert(
   /if\(scenarioContract\.contractConflict\)\{await verifyC003DeliveryRecord/.test(c003RetrySource) &&
   /未生成新的交付尝试/.test(c003RetrySource) &&
-  /firstAttemptMustBePreserved/.test(c003RetrySource) &&
-  /attemptNumber>=2&&!explicitRejected/.test(c003RetrySource) &&
-  /不会生成 A\$\{String\(attemptNumber\+1\)\.padStart\(2,\"0\"\)\}/.test(c003RetrySource) &&
-  /if\(!explicitRejected\)/.test(c003RetrySource) &&
-  /rejectionIssues\.length/.test(c003RetrySource),
-  "历史误标必须保留原尝试形成 A02；A02 跨轮冲突或无完整正式拒绝回执时必须禁止盲目生成 A03"
+  /if\(explicitRejected\)/.test(c003RetrySource) &&
+  /拒绝后重新受理的新尝试身份尚待总控裁决/.test(c003RetrySource) &&
+  /if\(payloadInvalid\)/.test(c003RetrySource) &&
+  /if\(hasM01DeliveryEvidence\)/.test(c003RetrySource) &&
+  /sendC003DeliveryRecord\(version,previous\)/.test(c003RetrySource) &&
+  !/c003DeliveryRecord\(/.test(c003RetrySource),
+  "C003 恢复必须只允许原 deliveryId 幂等重放；拒绝、载荷冲突、部分回执或跨轮次时不得生成新尝试"
 );
 assert(
   app.includes("function c003DeliveryEvidencePanel") &&
   app.includes("重新读取 M01 接收或拒绝证据") &&
-  app.includes("按证据恢复 C003 交付") &&
+  app.includes("按原标识恢复核对") &&
   app.includes("合同冲突，需要总控裁决") &&
   app.includes("平台当前工作轮次") &&
   app.includes("T007 / 正式运行生产轮次") &&
-  app.includes("不会自动生成 A03") &&
+  app.includes("拒绝后新尝试待总控裁决") &&
   app.includes("发送成功、postMessage 返回或页面提示均不能单独证明 M01 已接收"),
   "资产页或刷新节点缺少平台/生产双 C033、合同冲突、可核验 C003 标识及恢复边界"
 );

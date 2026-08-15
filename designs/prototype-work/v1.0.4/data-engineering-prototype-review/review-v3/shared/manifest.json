@@ -66,7 +66,7 @@
       "operations": ["deliverScenarioContext", "deliverDataAsset", "discoverRefreshTargets", "publishedContext", "deliverRefreshRequest", "handoffSnapshot"]
     },
     "handoffContracts": {
-      "C003": "稳定 deliveryId，且交付尝试不可变；只读展示平台当前 C033 与 T007/正式运行生产 C033，并将同轮平台完整 C033 原样转交 M01 后发送资产、T008、质量、来源、四成员三关系与证据；跨轮次时标记合同冲突并禁止重发；仅以 handoffSnapshot 中同标识已接收合同、完整回执、同轮 C033 根回执，以及目标 Draft 对本次 deliveryId、精确 T007 和修订号的绑定证据确认接收；历史误标保留原尝试并形成 A02，A02 无完整正式拒绝回执时只允许重读、不盲生 A03",
+      "C003": "稳定 deliveryId，首次交付使用 attemptNumber=1、retryOf=null、previousDeliveryId=null，且冻结载荷不可变；只读展示平台当前 C033 与 T007/正式运行生产 C033，并将同轮平台完整 C033 原样转交 M01 后发送资产、T008、质量、来源、四成员三关系与证据；跨轮次时标记合同冲突并禁止重发；仅以 handoffSnapshot 中同标识已接收合同、完整回执、同轮 C033 根回执，以及目标 Draft 对本次 deliveryId、精确 T007 和修订号的绑定证据确认接收；无 M01 接收证据时只允许同一 deliveryId 幂等重放，拒绝、部分回执或载荷冲突时只允许重读，拒绝后重新受理身份待总控裁决",
       "C032": "目标发现和提交刷新前分别读取；核对形成时间、读取时间及交接快照；绑定、目标、语义、映射或覆盖漂移即阻断",
       "C028": "最新 C032 身份、C003 稳定交付引用、精确数据版本、T008、成员、关系、质量、完整 C033 和 currentFormalSnapshot；按完整请求和本体响应时间核对接收"
     },
