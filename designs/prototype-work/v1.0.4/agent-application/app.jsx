@@ -63,6 +63,12 @@ function compactDate() {
 const C022_INBOX_KEY = "ontology3.agent-application.c022-inbox.v1";
 const C024_INBOX_KEY = "ontology3.agent-application.c024-inbox.v1";
 const REPORT_OWNER_RECORD_KEY = "ontology3.agent-application.owner-records.v1";
+const PLATFORM_SCENARIO_CONTEXT_KEY = "ontology3.platform.scenario-runtime.v1";
+const C033_HANDOFF_CONTEXT_KEY = "ontology3.0-s001-handoff-v1:scenario-context";
+const C011_INBOX_KEY = "ontology3.decision-center.c011.inbox.v1";
+const C019_PROJECTION_KEY = "ontology3.decision-center.c019.projection.v1";
+const SCENARIO_CONTEXT_FIELDS = ["scenarioId", "scenarioVersion", "scenarioRunId", "formedAt", "status"];
+const ACTIVE_SCENARIO_STATUSES = new Set(["active", "ready", "available", "有效", "启用", "进行中", "已启用", "可用"]);
 
 function currentProjection(item) {
   return item?.currentProjection !== false && item?.projectionStatus !== "history";
@@ -88,13 +94,150 @@ function safeJson(value, fallback) {
   }
 }
 
+function normalizeScenarioContext(source = {}) {
+  const value = source?.scenarioContext || source?.context || source || {};
+  return {
+    scenarioId: value.scenarioId || null,
+    scenarioVersion: value.scenarioVersion || null,
+    scenarioRunId: value.scenarioRunId || null,
+    formedAt: value.formedAt || value.contextFormedAt || value.scenarioFormedAt || null,
+    status: value.status || value.contextStatus || value.scenarioStatus || null
+  };
+}
+
+function scenarioContextReady(context) {
+  const normalized = normalizeScenarioContext(context);
+  return Boolean(
+    SCENARIO_CONTEXT_FIELDS.every((field) => normalized[field])
+    && ACTIVE_SCENARIO_STATUSES.has(normalizeStatus(normalized.status))
+  );
+}
+
+function sameScenarioContext(left, right) {
+  const normalizedLeft = normalizeScenarioContext(left);
+  const normalizedRight = normalizeScenarioContext(right);
+  return scenarioContextReady(normalizedLeft)
+    && scenarioContextReady(normalizedRight)
+    && SCENARIO_CONTEXT_FIELDS.every((field) => normalizedLeft[field] === normalizedRight[field]);
+}
+
+function readActiveScenarioContext() {
+  const params = new URLSearchParams(window.location.search);
+  const fromUrl = normalizeScenarioContext({
+    scenarioId: params.get("scenarioId"),
+    scenarioVersion: params.get("scenarioVersion"),
+    scenarioRunId: params.get("scenarioRunId"),
+    formedAt: params.get("formedAt") || params.get("scenarioFormedAt") || params.get("scenarioContextFormedAt"),
+    status: params.get("status") || params.get("scenarioStatus") || params.get("contextStatus")
+  });
+  const handoff = normalizeScenarioContext(safeJson(localStorage.getItem(C033_HANDOFF_CONTEXT_KEY), {}));
+  const platform = normalizeScenarioContext(safeJson(localStorage.getItem(PLATFORM_SCENARIO_CONTEXT_KEY), {}));
+  let parentContext = null;
+  try {
+    parentContext = normalizeScenarioContext(window.parent !== window ? window.parent.S001_STORE?.getScenario?.() : {});
+  } catch (_) {}
+  return [fromUrl, handoff, platform, parentContext].find(scenarioContextReady) || fromUrl;
+}
+
+function scenarioIdentityContext(identity = {}) {
+  return normalizeScenarioContext({
+    scenarioId: identity.scenarioId,
+    scenarioVersion: identity.scenarioVersion,
+    scenarioRunId: identity.scenarioRunId,
+    formedAt: identity.scenarioFormedAt,
+    status: identity.scenarioStatus
+  });
+}
+
+function stableHash(value) {
+  let hash = 2166136261;
+  const source = String(value || "");
+  for (let index = 0; index < source.length; index += 1) {
+    hash ^= source.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0).toString(36).toUpperCase();
+}
+
+function canonicalValue(value) {
+  if (Array.isArray(value)) return value.map(canonicalValue);
+  if (value && typeof value === "object") return Object.keys(value).sort().reduce((result, key) => {
+    if (typeof value[key] !== "undefined") result[key] = canonicalValue(value[key]);
+    return result;
+  }, {});
+  if (typeof value === "number" && !Number.isFinite(value)) return String(value);
+  return typeof value === "undefined" ? null : value;
+}
+
+function c011PayloadFingerprint(payload) {
+  return JSON.stringify(canonicalValue(payload));
+}
+
+function mergeC011Request(payload) {
+  const context = normalizeScenarioContext(payload?.scenarioContext);
+  if (!scenarioContextReady(context)) return { status: "invalid", reason: "行动申请缺少完整可用的 C033 场景运行上下文。" };
+  const existingEnvelope = safeJson(localStorage.getItem(C011_INBOX_KEY), null);
+  if (existingEnvelope && existingEnvelope.contractCode !== "C011") return { status: "invalid", reason: "决策中心待接收区存在非 C011 内容，未覆盖原记录。" };
+  const envelopeContext = normalizeScenarioContext(existingEnvelope?.scenarioContext || {});
+  if (existingEnvelope && scenarioContextReady(envelopeContext) && !sameScenarioContext(envelopeContext, context)) {
+    return { status: "context_mismatch", reason: "决策中心待接收区属于其他场景轮次，未覆盖或迁移原请求。" };
+  }
+  const requests = Array.isArray(existingEnvelope?.requests) ? existingEnvelope.requests : [];
+  const existing = requests.find((item) => (item?.id || item?.requestId) === payload.id);
+  if (existing) {
+    return c011PayloadFingerprint(existing) === c011PayloadFingerprint(payload)
+      ? { status: "duplicate", request: existing }
+      : { status: "conflict", reason: "同一行动申请稳定标识已对应不同载荷，原请求保持不变。" };
+  }
+  const envelope = {
+    ...(existingEnvelope || {}),
+    contractCode: "C011",
+    schemaVersion: Math.max(Number(existingEnvelope?.schemaVersion) || 0, 1),
+    owner: existingEnvelope?.owner || "决策中心",
+    providers: [...new Set([...(existingEnvelope?.providers || []), "Agent 应用"])],
+    scenarioContext: context,
+    formedAt: existingEnvelope?.formedAt || nowText(),
+    updatedAt: nowText(),
+    requests: [...requests, payload]
+  };
+  try {
+    localStorage.setItem(C011_INBOX_KEY, JSON.stringify(envelope));
+    window.dispatchEvent(new CustomEvent("ontology3:decision-center:c011-updated", { detail: { requestId: payload.id, scenarioContext: context } }));
+    return { status: "submitted", request: payload };
+  } catch (error) {
+    return { status: "write_failed", reason: "行动申请未能写入决策中心待接收区，请释放浏览器存储空间后重试。" };
+  }
+}
+
+function readC019Receipt(requestId, scenarioContext) {
+  const projection = safeJson(localStorage.getItem(C019_PROJECTION_KEY), null);
+  if (!projection) return { status: "waiting", reason: "决策中心尚未形成接收回执。" };
+  if (projection.contractCode !== "C019") return { status: "invalid", reason: "当前决策投影不是 C019，只读回执未采用。" };
+  if (!sameScenarioContext(projection.scenarioContext, scenarioContext)) return { status: "context_mismatch", reason: "C019 属于其他场景轮次，未用于当前行动申请。" };
+  const record = (projection.records || []).find((item) => {
+    const reference = item?.requestRef;
+    return reference?.targetId === requestId || reference === requestId;
+  });
+  if (!record?.requestRef) return { status: "waiting", reason: "决策中心尚未接收该稳定行动申请。" };
+  return {
+    status: "received",
+    receivedAt: projection.summaryAsOf || nowText(),
+    requestRef: record.requestRef,
+    reminderRef: record.reminderRef || null,
+    taskRef: record.taskRef || null,
+    traceRef: record.traceRef || null
+  };
+}
+
 function readC022Candidates() {
   const direct = safeJson(localStorage.getItem(C022_INBOX_KEY), []);
   const items = Array.isArray(direct) ? direct : Array.isArray(direct?.requests) ? direct.requests : [];
-  return items.filter((item) => item?.requestId && item.archived !== true).sort((left, right) => String(left.submittedAt || "").localeCompare(String(right.submittedAt || "")));
+  return items.filter((item) => item?.requestId && item.archived !== true)
+    .sort((left, right) => String(left.submittedAt || "").localeCompare(String(right.submittedAt || "")));
 }
 
 function c022Identity(candidate = {}) {
+  candidate = candidate || {};
   const context = candidate.reportContext || {};
   const scenario = context.scenarioContext || {};
   const evidence = context.evidencePack || {};
@@ -400,7 +543,7 @@ function compactReportCopilotResultForStorage(result = null) {
 
 function compactRunIdentityForStorage(snapshot = {}) {
   const keys = [
-    "agentId", "agentName", "agentRelease", "scenarioBinding", "requestContext", "scenarioId", "scenarioVersion", "scenarioRunId",
+    "agentId", "agentName", "agentRelease", "scenarioBinding", "requestContext", "scenarioId", "scenarioVersion", "scenarioRunId", "scenarioFormedAt", "scenarioStatus", "scenarioContext",
     "scenario", "objectScope", "expectedOutput", "inputContract", "outputContract", "evidenceId", "evidencePackageId",
     "evidencePackageVersion", "evidenceName", "dataVersion", "dataAssetVersionId", "consumableVersionId", "dataAsOf",
     "ontology", "ontologyScope", "ontologyVersion", "semanticVersionId", "quality", "freshness", "evidenceStatus", "evidenceAuthority", "evidenceFormedAt",
@@ -441,7 +584,19 @@ function compactHistoricalReportRunForStorage(run = {}) {
     reportNumber: run.result.reportNumber || null,
     contentVersion: run.result.contentVersion || null,
     evidencePackageId: run.result.evidencePackageId || null,
+    evidencePackageVersion: run.result.evidencePackageVersion || null,
+    semanticVersionId: run.result.semanticVersionId || null,
+    semanticVersion: run.result.semanticVersion || null,
+    dataAssetVersionId: run.result.dataAssetVersionId || null,
     dataVersion: run.result.dataVersion || null,
+    consumableVersionId: run.result.consumableVersionId || null,
+    dataAsOf: run.result.dataAsOf || null,
+    scenarioContext: deepClone(run.result.scenarioContext || null),
+    scenarioId: run.result.scenarioId || null,
+    scenarioVersion: run.result.scenarioVersion || null,
+    scenarioRunId: run.result.scenarioRunId || null,
+    scenarioFormedAt: run.result.scenarioFormedAt || run.result.scenarioContext?.formedAt || null,
+    scenarioStatus: run.result.scenarioStatus || run.result.scenarioContext?.status || null,
     sourceDraftId: run.result.sourceDraftId || null,
     sections: deepClone(run.result.sections || []),
     currentComparison: deepClone(run.result.currentComparison || null),
@@ -501,6 +656,14 @@ function compactArchivedRunForStorage(run = {}) {
       reportNumber: run.result.reportNumber || null,
       contentVersion: run.result.contentVersion || null,
       evidencePackageId: run.result.evidencePackageId || null,
+      evidencePackageVersion: run.result.evidencePackageVersion || null,
+      semanticVersionId: run.result.semanticVersionId || null,
+      semanticVersion: run.result.semanticVersion || null,
+      dataAssetVersionId: run.result.dataAssetVersionId || null,
+      dataVersion: run.result.dataVersion || null,
+      consumableVersionId: run.result.consumableVersionId || null,
+      dataAsOf: run.result.dataAsOf || null,
+      scenarioContext: deepClone(run.result.scenarioContext || null),
       sourceDraftId: run.result.sourceDraftId || null,
       persistedAsReference: true
     } : null,
@@ -585,6 +748,9 @@ function compactModelForStorage(model) {
     scenarioId: session.scenarioId || null,
     scenarioVersion: session.scenarioVersion || null,
     scenarioRunId: session.scenarioRunId || null,
+    scenarioFormedAt: session.scenarioFormedAt || session.scenarioContext?.formedAt || null,
+    scenarioStatus: session.scenarioStatus || session.scenarioContext?.status || null,
+    scenarioContext: deepClone(session.scenarioContext || null),
     anchor: session.anchor || null,
     latestRunId: session.latestRunId || null,
     latestResultId: session.latestResultId || null,
@@ -689,8 +855,30 @@ function hydratePersistedModel(model) {
   return hydrated;
 }
 
+function scopeModelToActiveScenario(model) {
+  const scoped = deepClone(model);
+  const activeScenarioContext = readActiveScenarioContext();
+  const archivedAt = nowText();
+  const archive = (item) => ({
+    ...item,
+    currentProjection: false,
+    projectionStatus: "history",
+    archivedAt: item.archivedAt || archivedAt,
+    archivedReason: item.archivedReason || "记录不属于当前完整 C033 场景运行上下文，已保留为只读历史。"
+  });
+  const outsideActiveScenario = (item) => !scenarioContextReady(activeScenarioContext)
+    || !sameScenarioContext(item?.scenarioContext || item?.snapshot?.scenarioContext || item?.snapshot || item, activeScenarioContext);
+  scoped.currentScenarioContext = scenarioContextReady(activeScenarioContext) ? deepClone(activeScenarioContext) : null;
+  scoped.evidencePackages = (scoped.evidencePackages || []).map((item) => reportEvidence(item) && currentProjection(item) && outsideActiveScenario(item) ? archive(item) : item);
+  scoped.inboundRequests = (scoped.inboundRequests || []).map((item) => ["report-draft", "report-copilot"].includes(item?.type) && currentProjection(item) && outsideActiveScenario(item) ? archive(item) : item);
+  scoped.runs = (scoped.runs || []).map((item) => reportRun(item) && currentProjection(item) && outsideActiveScenario(item) ? archive(item) : item);
+  scoped.sessions = (scoped.sessions || []).map((item) => currentProjection(item) && outsideActiveScenario(item) ? { ...archive(item), status: "stale", staleAt: item.staleAt || archivedAt, staleReason: item.staleReason || "当前 C033 已变化；旧会话不能创建或重试新运行。", resultReturnStatus: "历史结果保持只读" } : item);
+  return scoped;
+}
+
 function c022Issues(candidate, activeScenarioContext = null) {
   const identity = c022Identity(candidate);
+  const candidateScenarioContext = scenarioIdentityContext(identity);
   const required = {
     requestId: identity.requestId,
     scenarioId: identity.scenarioId,
@@ -721,9 +909,10 @@ function c022Issues(candidate, activeScenarioContext = null) {
   if (!Array.isArray(candidate?.reportEvidence?.contentFacts) || !candidate.reportEvidence.contentFacts.length) issues.push("缺少固定事实项");
   if (!Array.isArray(candidate?.reportEvidence?.contentItems) || !candidate.reportEvidence.contentItems.length) issues.push("缺少源内容项合同");
   if (!Array.isArray(candidate?.reportEvidence?.anchors) || !candidate.reportEvidence.anchors.length) issues.push("缺少锚点清单");
-  if (identity.scenarioStatus && !["active", "ready", "有效", "启用", "进行中"].includes(normalizeStatus(identity.scenarioStatus))) issues.push(`场景状态“${identity.scenarioStatus}”不可用于当前工作投影`);
+  if (!scenarioContextReady(candidateScenarioContext)) issues.push("请求未提供完整、已启用的 C033 场景运行上下文");
   if (candidate.evidencePackId && identity.evidencePackageId && candidate.evidencePackId !== identity.evidencePackageId) issues.push("请求外层证据包标识与固定上下文不一致");
-  if (activeScenarioContext && ["scenarioId", "scenarioVersion", "scenarioRunId"].some((field) => activeScenarioContext[field] && activeScenarioContext[field] !== identity[field])) issues.push("场景标识、版本或轮次与当前工作投影不一致");
+  if (!scenarioContextReady(activeScenarioContext)) issues.push("当前平台 C033 场景运行上下文缺失、未知或未启用");
+  else if (!sameScenarioContext(candidateScenarioContext, activeScenarioContext)) issues.push("场景标识、版本、轮次、形成时间或状态与当前平台 C033 不一致");
   const trust = candidate?.reportContext?.trustAtGeneration || {};
   if (/hard|失败|不可消费|blocked/.test(normalizeStatus(trust.status || trust.quality || trust.publishedQuality || trust.readiness))) issues.push("生成时数据可信度不允许形成新的正式草稿");
   return [...new Set(issues)];
@@ -890,6 +1079,7 @@ function c024Fingerprint(candidate) {
 function c024Issues(candidate, activeScenarioContext = null) {
   const context = candidate?.reportContext || {};
   const identity = c024Identity(candidate);
+  const candidateScenarioContext = scenarioIdentityContext(identity);
   const required = {
     requestId: candidate?.requestId,
     scenarioId: identity.scenarioId,
@@ -916,7 +1106,7 @@ function c024Issues(candidate, activeScenarioContext = null) {
     requestId: "请求标识", scenarioId: "场景标识", scenarioVersion: "场景版本", scenarioRunId: "场景轮次", scenarioFormedAt: "场景上下文形成时间", scenarioStatus: "场景状态", reportNumber: "报告编号", contentVersion: "内容版本", evidencePackageId: "证据包标识", evidencePackageVersion: "证据包版本", semanticVersionId: "语义版本标识", semanticVersion: "精确语义版本", dataAssetVersionId: "数据资产版本标识", dataVersion: "精确数据版本", consumableVersionId: "可消费版本标识", dataAsOf: "数据截至时间", anchorSnapshotId: "锚点快照标识", anchorSnapshotVersion: "锚点快照版本", selectedAnchor: "稳定锚点", question: "问题"
   };
   const issues = Object.entries(required).filter(([, value]) => value == null || String(value).trim() === "").map(([key]) => `缺少${labels[key]}`);
-  if (identity.scenarioStatus && !["active", "ready", "有效", "启用", "进行中"].includes(normalizeStatus(identity.scenarioStatus))) issues.push(`场景状态“${identity.scenarioStatus}”不可用于当前工作投影`);
+  if (!scenarioContextReady(candidateScenarioContext)) issues.push("请求未提供完整、已启用的 C033 场景运行上下文");
   if (identity.anchorSnapshotVersion && identity.contentVersion && identity.anchorSnapshotVersion !== identity.contentVersion) issues.push("锚点快照版本与报告内容版本不一致");
   if (candidate?.evidencePackId && identity.evidencePackageId && candidate.evidencePackId !== identity.evidencePackageId) issues.push("请求外层证据包标识与固定上下文不一致");
   if (candidate?.reportContentVersion && identity.contentVersion && candidate.reportContentVersion !== identity.contentVersion) issues.push("请求外层内容版本与固定上下文不一致");
@@ -925,7 +1115,8 @@ function c024Issues(candidate, activeScenarioContext = null) {
   [["reportId", "reportNumber", "报告编号"], ["contentVersion", "contentVersion", "内容版本"], ["evidencePackId", "evidencePackageId", "证据包标识"], ["evidencePackVersion", "evidencePackageVersion", "证据包版本"], ["semanticVersionId", "semanticVersionId", "语义版本标识"], ["semanticVersion", "semanticVersion", "语义版本"], ["dataAssetVersionId", "dataAssetVersionId", "数据资产版本标识"], ["dataVersion", "dataVersion", "数据版本"]].forEach(([fixedKey, identityKey, label]) => {
     if (fixed[fixedKey] && identity[identityKey] && fixed[fixedKey] !== identity[identityKey]) issues.push(`${label}与来源固定引用不一致`);
   });
-  if (activeScenarioContext && ["scenarioId", "scenarioVersion", "scenarioRunId"].some((field) => activeScenarioContext[field] !== identity[field])) issues.push("场景标识、版本或轮次与当前工作投影不一致");
+  if (!scenarioContextReady(activeScenarioContext)) issues.push("当前平台 C033 场景运行上下文缺失、未知或未启用");
+  else if (!sameScenarioContext(candidateScenarioContext, activeScenarioContext)) issues.push("场景标识、版本、轮次、形成时间或状态与当前平台 C033 不一致");
   return [...new Set(issues)];
 }
 
@@ -1268,7 +1459,7 @@ function scenarioReferenceLabel(scenarioId, scenarioLabel) {
 
 function requestContextsMatch(left, right) {
   if (!left || !right) return false;
-  return ["id", "version", "sourceOwner", "scenarioId", "scenarioVersion", "scenarioRunId", "requestedAt", "objectScope", "expectedOutput"].every((field) => left[field] === right[field]);
+  return ["id", "version", "sourceOwner", "scenarioId", "scenarioVersion", "scenarioRunId", "scenarioFormedAt", "scenarioStatus", "requestedAt", "objectScope", "expectedOutput"].every((field) => left[field] === right[field]);
 }
 
 function requestContextIssue(release, evidence, request = null, requireInboundRequest = true) {
@@ -1848,9 +2039,9 @@ function routePath(screen, id = null, version = null) {
 function loadState() {
   try {
     const saved = localStorage.getItem(window.AGENT_WORKSPACE_CONFIG.storageKey);
-    if (!saved) return deepClone(window.AGENT_APP_INITIAL_STATE);
+    if (!saved) return scopeModelToActiveScenario(window.AGENT_APP_INITIAL_STATE);
     const parsed = JSON.parse(saved);
-    if (parsed.schemaVersion === window.AGENT_APP_INITIAL_STATE.schemaVersion) return hydratePersistedModel(parsed);
+    if (parsed.schemaVersion === window.AGENT_APP_INITIAL_STATE.schemaVersion) return scopeModelToActiveScenario(hydratePersistedModel(parsed));
     if (parsed.schemaVersion === 22 && window.AGENT_APP_INITIAL_STATE.schemaVersion === 23) {
       const migrated = deepClone(parsed);
       const reportDraftAgent = deepClone(window.AGENT_APP_INITIAL_STATE.agents.find((agent) => agent.id === "report-draft"));
@@ -1858,11 +2049,11 @@ function loadState() {
       migrated.agents = [...migrated.agents.filter((agent) => agent.id !== "report-draft"), reportDraftAgent];
       migrated.drafts = migrated.drafts.filter((draft) => draft.id !== "draft-report-generation");
       migrated.c022Rejections = migrated.c022Rejections || [];
-      return hydratePersistedModel(migrated);
+      return scopeModelToActiveScenario(hydratePersistedModel(migrated));
     }
-    return deepClone(window.AGENT_APP_INITIAL_STATE);
+    return scopeModelToActiveScenario(window.AGENT_APP_INITIAL_STATE);
   } catch (error) {
-    return deepClone(window.AGENT_APP_INITIAL_STATE);
+    return scopeModelToActiveScenario(window.AGENT_APP_INITIAL_STATE);
   }
 }
 
@@ -1966,6 +2157,101 @@ function actionRequestEligibility(run, currentCredibility = run?.snapshot?.credi
   return { allowed: true, reason: null, actionType, targets: actionType.targets, evidenceRefs };
 }
 
+function buildAgentActionRequest(run, eligibility, target, reason, currentCredibility) {
+  const scenarioContext = normalizeScenarioContext(run?.scenarioContext || run?.snapshot?.scenarioContext || run?.snapshot || {});
+  const actionType = eligibility.actionType;
+  const evidenceItems = run.snapshot.evidenceItems || [];
+  const metricItem = evidenceItems.find((item) => (actionType.metricRefs || []).includes(item.id));
+  const ruleItem = evidenceItems.find((item) => (actionType.ruleRefs || []).includes(item.id));
+  const stableSeed = [
+    ...SCENARIO_CONTEXT_FIELDS.map((field) => scenarioContext[field]),
+    run.id,
+    run.result.id,
+    actionType.resourceId,
+    actionType.version,
+    target.id
+  ].join("|");
+  const requestId = `AR-AG-${stableHash(stableSeed)}`;
+  return {
+    id: requestId,
+    requestId,
+    scenario: run.snapshot.scenario || "S001 · 集团融资成本与债务结构优化",
+    scenarioName: "集团融资成本与债务结构优化",
+    scenarioContext: deepClone(scenarioContext),
+    sourceType: "agent",
+    sourceTypeLabel: "Agent 应用",
+    sourceRef: run.result.id,
+    sourceRecord: {
+      agentId: run.snapshot.agentId,
+      agentRelease: run.snapshot.agentRelease,
+      runId: run.id,
+      resultId: run.result.id
+    },
+    sourceScene: run.snapshot.scenario || scenarioContext.scenarioId,
+    requester: "Agent 应用",
+    initiator: "当前账号",
+    requestTime: run.result.generatedAt || run.finishedAt || run.createdAt,
+    subjectId: target.id,
+    subjectName: target.name,
+    subjectObjectType: "融资主体",
+    actionType: {
+      id: actionType.resourceId,
+      name: actionType.name,
+      version: actionType.version,
+      status: "已发布",
+      publishedSemanticVersion: run.snapshot.ontologyVersion
+    },
+    rule: ruleItem ? {
+      id: ruleItem.id,
+      name: ruleItem.name,
+      version: run.snapshot.ontologyVersion,
+      publishedSemanticVersion: run.snapshot.ontologyVersion,
+      evaluationId: `${run.snapshot.evidenceId}:${ruleItem.id}`,
+      evaluatedAt: run.snapshot.evidenceFormedAt || run.result.generatedAt,
+      resultVersion: run.snapshot.evidencePackageVersion || run.snapshot.dataVersion,
+      branch: "命中",
+      hitEvidence: ruleItem.value
+    } : null,
+    ruleApplicability: ruleItem ? "作为 Agent 来源证据" : "不适用",
+    metric: {
+      id: metricItem?.id || actionType.metricRefs?.[0] || null,
+      name: metricItem?.name || "行动申请指标证据",
+      value: metricItem?.value || null,
+      unit: metricItem?.unit || null,
+      explanation: metricItem?.source || "固定 Agent 运行证据",
+      evaluatedAt: run.snapshot.evidenceFormedAt || run.result.generatedAt,
+      scope: metricItem?.object || target.name,
+      resultVersion: run.snapshot.evidencePackageVersion || run.snapshot.dataVersion,
+      evidenceRefs: [...(actionType.metricRefs || [])]
+    },
+    owner: "集团资金管理岗",
+    recommendation: reason || `核实${target.name}的融资成本与期限结构，并评估优化安排。`,
+    recommendedDirection: actionType.purpose || actionType.name,
+    banks: [],
+    loans: [],
+    loanCount: 0,
+    evidence: {
+      snapshotId: run.result.id,
+      cutoff: run.snapshot.dataAsOf,
+      semanticVersion: run.snapshot.ontologyVersion,
+      semanticVersionId: run.snapshot.semanticVersionId || null,
+      dataVersion: run.snapshot.dataVersion,
+      dataAssetVersionId: run.snapshot.dataAssetVersionId || null,
+      quality: run.snapshot.quality,
+      freshness: run.snapshot.freshness,
+      evidenceIds: [...eligibility.evidenceRefs],
+      ruleEvidenceId: ruleItem?.id || null,
+      bindingId: run.bindingId || null,
+      consumableVersionId: run.snapshot.consumableVersionId || null,
+      trustSnapshot: deepClone(currentCredibility?.currentStateSummary || null),
+      trustReadAt: currentCredibility?.currentStateSummary?.observedAt || run.result.generatedAt
+    },
+    returnRoute: `${window.location.pathname}#/runs/${encodeURIComponent(run.id)}`,
+    filter: null,
+    returnPosition: null
+  };
+}
+
 function contractLabel(type) {
   const labels = { prompt: "Prompt", skill: "Skill", tool: "Tool" };
   return labels[type] || type;
@@ -2017,6 +2303,27 @@ function App() {
     }
   }, [model]);
 
+  useEffect(() => {
+    const reconcileReceipts = () => {
+      setModel((current) => {
+        let next = current;
+        (current.handoffs || []).filter((handoff) => handoff.status !== "received" && handoff.actionRequestId).forEach((handoff) => {
+          const receipt = readC019Receipt(handoff.actionRequestId, handoff.scenarioContext);
+          if (receipt.status === "received") next = applyActionReceipt(next, handoff.id, receipt);
+        });
+        return next;
+      });
+    };
+    const storageHandler = (event) => { if (event.key === C019_PROJECTION_KEY) reconcileReceipts(); };
+    window.addEventListener("storage", storageHandler);
+    window.addEventListener("ontology3:decision-center:c019-updated", reconcileReceipts);
+    reconcileReceipts();
+    return () => {
+      window.removeEventListener("storage", storageHandler);
+      window.removeEventListener("ontology3:decision-center:c019-updated", reconcileReceipts);
+    };
+  }, []);
+
   function retryPersistModel() {
     try {
       persistAgentModel(model);
@@ -2054,10 +2361,6 @@ function App() {
       };
     });
   }, [route.screen, route.id]);
-
-  useEffect(() => {
-    if (window.lucide) window.lucide.createIcons();
-  });
 
   const runStateKey = model.runs.map((run) => `${run.id}:${run.status}`).join("|");
   useEffect(() => {
@@ -2165,22 +2468,25 @@ function App() {
       return;
     }
     const identity = c022Identity(candidate);
+    const activeScenarioContext = readActiveScenarioContext();
+    const issues = c022Issues(candidate, activeScenarioContext);
+    if (issues.length) {
+      setModel((current) => ({
+        ...current,
+        c022Rejections: [{ id: `C022-REJECT-${Date.now()}`, sourceRequestId: candidate.requestId, receivedAt, issues, recovery: "由报告中心按当前完整 C033 场景轮次修复缺失或错配字段后，以完整 C022 重新交接；Agent 不补齐身份、不改选版本。", identity }, ...(current.c022Rejections || [])]
+      }));
+      toast("报告生成请求已拒绝", `${issues.join("；")}。请由报告中心修复后重新提交。`, "danger");
+      return;
+    }
     const existingRequest = model.inboundRequests.find((request) => request.sourceRequestId === candidate.requestId);
     if (existingRequest) {
       if (existingRequest.c022Fingerprint === c022Fingerprint(candidate)) toast("该生成请求已接收", `请求 ${existingRequest.id} 已存在，未重复创建当前资源。`, "success");
       else toast("同一请求标识发生冲突", "已接收记录保持不变；请报告中心使用新的请求标识和完整固定上下文重新提交。", "danger");
       return;
     }
-    const issues = c022Issues(candidate);
-    if (issues.length) {
-      setModel((current) => ({
-        ...current,
-        c022Rejections: [{ id: `C022-REJECT-${Date.now()}`, sourceRequestId: candidate.requestId, receivedAt, issues, recovery: "由报告中心按同一 C033 场景轮次修复缺失或错配字段后，以完整 C022 重新交接；Agent 不补齐身份、不改选版本。", identity }, ...(current.c022Rejections || [])]
-      }));
-      toast("报告生成请求已拒绝", `${issues.join("；")}。请由报告中心修复后重新提交。`, "danger");
-      return;
-    }
     const evidence = evidenceFromC022(candidate, receivedAt);
+    evidence.scenarioContext = deepClone(activeScenarioContext);
+    evidence.requestContext = { ...evidence.requestContext, scenarioFormedAt: activeScenarioContext.formedAt, scenarioStatus: activeScenarioContext.status };
     const request = {
       id: identity.requestId,
       sourceRequestId: identity.requestId,
@@ -2217,11 +2523,11 @@ function App() {
     setModel((current) => {
       const archive = (item, reason) => ({ ...item, currentProjection: false, projectionStatus: "history", archivedAt: receivedAt, archivedReason: reason });
       const activeGeneration = current.inboundRequests.find((item) => currentProjection(item) && item.type === "report-draft");
-      const contextChanged = Boolean(activeGeneration && (activeGeneration.scenarioContext?.scenarioId !== identity.scenarioId || activeGeneration.scenarioContext?.scenarioVersion !== identity.scenarioVersion || activeGeneration.scenarioContext?.scenarioRunId !== identity.scenarioRunId || activeGeneration.reportAggregateId !== identity.aggregateId));
+      const contextChanged = Boolean(activeGeneration && (!sameScenarioContext(activeGeneration.scenarioContext, activeScenarioContext) || activeGeneration.reportAggregateId !== identity.aggregateId));
       const historyReason = `报告中心提交了新的场景轮次或报告生成根（新请求：${request.id}）；旧请求、运行和结果保持只读。`;
       return {
         ...current,
-        currentScenarioContext: deepClone(evidence.scenarioContext),
+        currentScenarioContext: deepClone(activeScenarioContext),
         evidencePackages: [evidence, ...current.evidencePackages.map((item) => contextChanged && item.kind === "report-generation" && currentProjection(item) ? archive(item, historyReason) : item).filter((item) => item.id !== evidence.id)],
         inboundRequests: [request, ...current.inboundRequests.map((item) => contextChanged && item.type === "report-draft" && currentProjection(item) ? archive(item, historyReason) : item)],
         runs: current.runs.map((item) => contextChanged && item.snapshot?.agentId === "report-draft" && currentProjection(item) ? archive(item, historyReason) : item)
@@ -2255,6 +2561,16 @@ function App() {
       return;
     }
     const identity = c024Identity(candidate);
+    const activeScenarioContext = readActiveScenarioContext();
+    const issues = c024Issues(candidate, activeScenarioContext);
+    if (issues.length) {
+      setModel((current) => ({
+        ...current,
+        c024Rejections: [{ id: `C024-REJECT-${Date.now()}`, sourceRequestId: candidate.requestId, receivedAt, issues, recovery: "由报告中心按当前完整 C033 场景轮次修复缺失或错配字段后，以完整 C024 重新交接；旧会话和历史记录不迁移。", identity }, ...(current.c024Rejections || [])]
+      }));
+      toast("报告交接已拒绝", `${issues.join("；")}。请由报告中心修复后重新提交，Agent 不会静默补齐或改选版本。`, "danger");
+      return;
+    }
     const existingRequest = model.inboundRequests.find((request) => request.sourceRequestId === candidate.requestId);
     if (existingRequest) {
       if (existingRequest.c024Fingerprint === c024Fingerprint(candidate)) {
@@ -2264,11 +2580,8 @@ function App() {
       }
       return;
     }
-    const issues = c024Issues(candidate);
     const activeRequests = model.inboundRequests.filter(currentProjection);
-    const sameReportIdentity = activeRequests.find((request) => request.scenarioContext?.scenarioId === identity.scenarioId
-      && request.scenarioContext?.scenarioVersion === identity.scenarioVersion
-      && request.scenarioContext?.scenarioRunId === identity.scenarioRunId
+    const sameReportIdentity = activeRequests.find((request) => sameScenarioContext(request.scenarioContext, activeScenarioContext)
       && request.reportNumber === identity.reportNumber
       && request.contentVersion === identity.contentVersion);
     if (sameReportIdentity && ["evidencePackageId", "evidencePackageVersion", "semanticVersionId", "semanticVersion", "dataAssetVersionId", "dataVersion", "dataAsOf", "anchor"].some((field) => {
@@ -2284,6 +2597,8 @@ function App() {
       return;
     }
     const evidence = evidenceFromC024(candidate, receivedAt);
+    evidence.scenarioContext = deepClone(activeScenarioContext);
+    evidence.requestContext = { ...evidence.requestContext, scenarioFormedAt: activeScenarioContext.formedAt, scenarioStatus: activeScenarioContext.status };
     const request = {
       id: candidate.requestId,
       sourceRequestId: candidate.requestId,
@@ -2323,9 +2638,7 @@ function App() {
       const archive = (item, reason) => ({ ...item, currentProjection: false, projectionStatus: "history", archivedAt: archiveAt, archivedReason: reason });
       const currentRequest = current.inboundRequests.find(currentProjection);
       const contextChanged = Boolean(currentRequest && (
-        currentRequest.scenarioContext?.scenarioId !== identity.scenarioId
-        || currentRequest.scenarioContext?.scenarioVersion !== identity.scenarioVersion
-        || currentRequest.scenarioContext?.scenarioRunId !== identity.scenarioRunId
+        !sameScenarioContext(currentRequest.scenarioContext, activeScenarioContext)
         || currentRequest.reportNumber !== identity.reportNumber
         || currentRequest.contentVersion !== identity.contentVersion
       ));
@@ -2344,7 +2657,7 @@ function App() {
         : current.sessions;
       return {
         ...current,
-        currentScenarioContext: deepClone(evidence.scenarioContext),
+        currentScenarioContext: deepClone(activeScenarioContext),
         evidencePackages: [evidence, ...evidencePackages.filter((item) => item.id !== evidence.id)],
         inboundRequests: [request, ...inboundRequests],
         runs,
@@ -2830,18 +3143,36 @@ function App() {
   function makeRunSnapshot(agent, release, evidence, request = null) {
     const prompt = getPrompt(release.prompt.id, release.prompt.version, model.resourceReleases?.prompts || []);
     const requestContext = evidence.requestContext;
+    const suppliedScenarioContext = normalizeScenarioContext(request?.scenarioContext || evidence.scenarioContext || requestContext || {});
+    const activeScenarioContext = readActiveScenarioContext();
+    const scenarioContext = scenarioContextReady(suppliedScenarioContext)
+      ? suppliedScenarioContext
+      : scenarioContextReady(activeScenarioContext) && (!requestContext?.scenarioId || requestContext.scenarioId === activeScenarioContext.scenarioId)
+        ? activeScenarioContext
+        : suppliedScenarioContext;
+    const fixedRequestContext = {
+      ...requestContext,
+      scenarioId: scenarioContext.scenarioId || requestContext?.scenarioId || null,
+      scenarioVersion: scenarioContext.scenarioVersion || requestContext?.scenarioVersion || null,
+      scenarioRunId: scenarioContext.scenarioRunId || requestContext?.scenarioRunId || null,
+      scenarioFormedAt: scenarioContext.formedAt || requestContext?.scenarioFormedAt || null,
+      scenarioStatus: scenarioContext.status || requestContext?.scenarioStatus || null
+    };
     return {
       agentId: agent.id,
       agentName: agent.name,
       agentRelease: release.version,
       scenarioBinding: deepClone(release.scenarioBinding),
-      requestContext: deepClone(requestContext),
-      scenarioId: requestContext.scenarioId,
-      scenarioVersion: requestContext.scenarioVersion,
-      scenarioRunId: requestContext.scenarioRunId,
-      scenario: requestContext.scenarioLabel,
-      objectScope: requestContext.objectScope,
-      expectedOutput: requestContext.expectedOutput,
+      requestContext: deepClone(fixedRequestContext),
+      scenarioId: fixedRequestContext.scenarioId,
+      scenarioVersion: fixedRequestContext.scenarioVersion,
+      scenarioRunId: fixedRequestContext.scenarioRunId,
+      scenarioFormedAt: scenarioContext.formedAt,
+      scenarioStatus: scenarioContext.status,
+      scenarioContext: deepClone(scenarioContext),
+      scenario: fixedRequestContext.scenarioLabel,
+      objectScope: fixedRequestContext.objectScope,
+      expectedOutput: fixedRequestContext.expectedOutput,
       prompt: deepClone(release.prompt),
       promptBinding: { id: release.prompt.id, version: release.prompt.version, name: prompt.resource?.name || release.prompt.id },
       skills: deepClone(release.skills),
@@ -2901,6 +3232,7 @@ function App() {
     const retrySource = relation.retryOf ? model.runs.find((item) => item.id === relation.retryOf) : null;
     const requestId = form.requestId || relation.snapshot?.requestId || null;
     const request = model.inboundRequests.find((item) => item.id === requestId);
+    const activeScenarioContext = readActiveScenarioContext();
     if (!agent || !release || !evidence) {
       toast("无法创建运行", "Agent Release 或固定证据上下文不完整。", "danger");
       return;
@@ -2944,9 +3276,7 @@ function App() {
         && request.dataAsOf === evidence.dataAsOf
         && request.anchor === evidence.report.anchor;
       const requestMatchesSnapshot = !relation.snapshot || (relation.snapshot.requestId === request.id
-        && relation.snapshot.scenarioId === request.scenarioContext?.scenarioId
-        && relation.snapshot.scenarioVersion === request.scenarioContext?.scenarioVersion
-        && relation.snapshot.scenarioRunId === request.scenarioContext?.scenarioRunId
+        && sameScenarioContext(relation.snapshot.scenarioContext || relation.snapshot, request.scenarioContext)
         && relation.snapshot.reportNumber === request.reportNumber
         && relation.snapshot.contentVersion === request.contentVersion
         && relation.snapshot.evidencePackageId === request.evidencePackageId
@@ -2956,7 +3286,7 @@ function App() {
         && relation.snapshot.anchor === request.anchor
         && relation.snapshot.question === request.question
         && requestContextsMatch(relation.snapshot.requestContext, request.requestContext));
-      const identityIssues = c024Issues(request.c024, model.currentScenarioContext);
+      const identityIssues = c024Issues(request.c024, activeScenarioContext);
       if (request.agentId !== agent.id || request.evidenceId !== evidence.id || !reportIdentityMatches || !requestMatchesSnapshot || identityIssues.length) {
         toast("报告上下文不一致", `${identityIssues.join("；") || "报告、内容、证据、场景轮次、语义或数据身份已经变化"}；请由报告中心提交新的完整 C024，Agent 不会静默改选。`, "danger");
         return;
@@ -2992,9 +3322,7 @@ function App() {
         && request.consumableVersionId === evidence.consumableVersionId
         && request.dataAsOf === evidence.dataAsOf;
       const requestMatchesSnapshot = !relation.snapshot || (relation.snapshot.requestId === request.id
-        && relation.snapshot.scenarioId === request.scenarioContext?.scenarioId
-        && relation.snapshot.scenarioVersion === request.scenarioContext?.scenarioVersion
-        && relation.snapshot.scenarioRunId === request.scenarioContext?.scenarioRunId
+        && sameScenarioContext(relation.snapshot.scenarioContext || relation.snapshot, request.scenarioContext)
         && relation.snapshot.reportAggregateId === request.reportAggregateId
         && relation.snapshot.evidencePackageId === request.evidencePackageId
         && relation.snapshot.evidencePackageVersion === request.evidencePackageVersion
@@ -3002,7 +3330,7 @@ function App() {
         && relation.snapshot.dataAssetVersionId === request.dataAssetVersionId
         && relation.snapshot.consumableVersionId === request.consumableVersionId
         && requestContextsMatch(relation.snapshot.requestContext, request.requestContext));
-      const identityIssues = c022Issues(resolveC022Reference(request.c022 || request), model.currentScenarioContext);
+      const identityIssues = c022Issues(resolveC022Reference(request.c022 || request), activeScenarioContext);
       if (request.agentId !== agent.id || request.evidenceId !== evidence.id || !identityMatches || !requestMatchesSnapshot || identityIssues.length) {
         toast("报告生成上下文不一致", `${identityIssues.join("；") || "报告根、证据、场景轮次、语义或数据身份已经变化"}；请由报告中心提交新的完整 C022，Agent 不会静默改选。`, "danger");
         return;
@@ -3037,7 +3365,7 @@ function App() {
       source: request ? "报告中心请求" : "Agent 应用",
       currentProjection: true,
       projectionStatus: "current",
-      scenarioContext: request ? deepClone(request.scenarioContext) : deepClone(evidence.scenarioContext || null),
+      scenarioContext: deepClone(snapshot.scenarioContext || request?.scenarioContext || evidence.scenarioContext || null),
       requestId: request?.id || null,
       question: snapshot.question,
       failureMode: runGate.mode,
@@ -3072,6 +3400,8 @@ function App() {
       scenarioId: snapshot.scenarioId,
       scenarioVersion: snapshot.scenarioVersion,
       scenarioRunId: snapshot.scenarioRunId,
+      scenarioFormedAt: snapshot.scenarioFormedAt,
+      scenarioStatus: snapshot.scenarioStatus,
       reportNumber: snapshot.reportNumber,
       contentVersion: snapshot.contentVersion,
       reportVersion: snapshot.reportVersion,
@@ -3188,6 +3518,8 @@ function App() {
       scenarioId: run.snapshot.scenarioId,
       scenarioVersion: run.snapshot.scenarioVersion,
       scenarioRunId: run.snapshot.scenarioRunId,
+      scenarioFormedAt: run.snapshot.scenarioFormedAt,
+      scenarioStatus: run.snapshot.scenarioStatus,
       reportAggregateId: run.snapshot.reportAggregateId,
       evidencePackageId: run.snapshot.evidencePackageId,
       evidencePackageVersion: run.snapshot.evidencePackageVersion,
@@ -3284,6 +3616,8 @@ function App() {
       scenarioId: run.snapshot.scenarioId,
       scenarioVersion: run.snapshot.scenarioVersion,
       scenarioRunId: run.snapshot.scenarioRunId,
+      scenarioFormedAt: run.snapshot.scenarioFormedAt,
+      scenarioStatus: run.snapshot.scenarioStatus,
       reportNumber: run.snapshot.reportNumber,
       contentVersion: run.snapshot.contentVersion,
       evidencePackageId: run.snapshot.evidencePackageId,
@@ -3292,6 +3626,8 @@ function App() {
       semanticVersion: run.snapshot.ontologyVersion,
       dataAssetVersionId: run.snapshot.dataAssetVersionId,
       dataVersion: run.snapshot.dataVersion,
+      consumableVersionId: run.snapshot.consumableVersionId,
+      dataAsOf: run.snapshot.dataAsOf,
       destination: isReport ? "报告中心可按运行与结果标识只读引用" : freshnessUnknown ? "保留在 Agent 应用；取得明确新鲜度后须创建新运行，旧结果不可确认或发起行动申请" : "保留在 Agent 应用；可人工确认或发起行动申请",
       currentComparison: comparisonRecord
     };
@@ -3301,6 +3637,18 @@ function App() {
     setModel((current) => {
       const source = current.runs.find((run) => run.id === runId);
       if (!source || source.status !== "running") return current;
+      const activeScenarioContext = readActiveScenarioContext();
+      const currentRequest = current.inboundRequests.find((request) => request.id === source.requestId);
+      const fixedContextIssues = source.snapshot.agentId === "report-copilot"
+        ? c024Issues(resolveC024Reference(currentRequest?.c024 || { requestId: currentRequest?.id }), activeScenarioContext)
+        : source.snapshot.agentId === "report-draft"
+          ? c022Issues(resolveC022Reference(currentRequest?.c022 || currentRequest || {}), activeScenarioContext)
+          : [];
+      if (["report-copilot", "report-draft"].includes(source.snapshot.agentId)) {
+        if (!currentProjection(source) || !currentProjection(currentRequest)) fixedContextIssues.push("当前报告请求或运行已退出工作投影");
+        if (!sameScenarioContext(source.scenarioContext || source.snapshot.scenarioContext || source.snapshot, activeScenarioContext)) fixedContextIssues.push("Run 固定的 C033 与当前平台场景上下文不一致");
+        if (!sameScenarioContext(source.scenarioContext || source.snapshot.scenarioContext || source.snapshot, currentRequest?.scenarioContext)) fixedContextIssues.push("Run 与来源请求的 C033 不一致");
+      }
       const evidence = {
         id: source.snapshot.evidenceId,
         status: source.snapshot.evidenceStatus || "ready",
@@ -3308,7 +3656,7 @@ function App() {
         quality: source.snapshot.quality,
         freshness: source.snapshot.freshness
       };
-      const hardBlock = source.failureMode === "quality" || source.failureMode === "permission" || source.failureMode === "missing" || source.failureMode === "version" || evidence.status !== "ready";
+      const hardBlock = source.failureMode === "quality" || source.failureMode === "permission" || source.failureMode === "missing" || source.failureMode === "version" || evidence.status !== "ready" || fixedContextIssues.length > 0;
       const failed = source.failureMode === "tool";
       const partial = source.failureMode === "partial";
       const resultNumber = current.sequence.result + (!hardBlock && !failed ? 1 : 0);
@@ -3320,7 +3668,7 @@ function App() {
         tool: "受控工具调用超时，未取得可验证输出。",
         partial: "部分工具返回受限，只形成已验证范围内的结果。"
       };
-      const error = source.gateReason || (evidence.status !== "ready" ? evidence.quality : reasons[source.failureMode] || null);
+      const error = fixedContextIssues.length ? `固定身份复核失败：${[...new Set(fixedContextIssues)].join("；")}` : source.gateReason || (evidence.status !== "ready" ? evidence.quality : reasons[source.failureMode] || null);
       const status = failed ? "failed" : hardBlock ? "blocked" : partial ? "partial" : "complete";
       const result = !hardBlock && !failed ? buildFormalResult(source, evidence, resultNumber) : null;
       const finishedAt = nowText();
@@ -3503,12 +3851,20 @@ function App() {
       return;
     }
     run = source;
+    const activeScenarioContext = readActiveScenarioContext();
+    if (!sameScenarioContext(run.scenarioContext || run.snapshot.scenarioContext || run.snapshot, activeScenarioContext)) {
+      const block = "来源运行的 C033 与当前平台场景上下文不一致；未写入 C011。请在当前场景轮次创建新的 Agent Run。";
+      setActionSubmitBlock(block);
+      toast("最终提交已阻断", block, "danger");
+      return;
+    }
     const requestKey = `${run.id}:${run.result.id}:${eligibility.actionType.resourceId}@${eligibility.actionType.version}:${target.id}`;
     const existing = model.handoffs.find((item) => item.idempotencyKey === requestKey);
     if (existing) {
       setActionReason("");
       setModal({ type: "handoff", handoffId: existing.id });
-      toast("请求已存在", "同一来源、Action Type 与主体不重复提交。", "success");
+      refreshActionReceipt(existing.id, true);
+      toast("请求已存在", "同一来源、行动类型与主体不重复提交；已重新读取决策中心回执。", "success");
       return;
     }
     if (actionSubmitLocksRef.current.has(requestKey)) {
@@ -3517,14 +3873,33 @@ function App() {
     }
     actionSubmitLocksRef.current.add(requestKey);
     const number = model.sequence.handoff + 1;
+    const c011Payload = buildAgentActionRequest(run, eligibility, target, actionReason.trim(), currentCredibility);
+    const writeResult = mergeC011Request(c011Payload);
+    if (!["submitted", "duplicate"].includes(writeResult.status)) {
+      actionSubmitLocksRef.current.delete(requestKey);
+      const block = `${writeResult.reason || "C011 写入未完成。"} 未创建本地移交记录，也未改写来源结果。`;
+      setActionSubmitBlock(block);
+      toast("行动申请未提交", block, "danger");
+      return;
+    }
+    const receipt = readC019Receipt(c011Payload.id, activeScenarioContext);
+    const handoffId = `AH-AG-${stableHash(requestKey)}`;
     const handoff = {
-      id: `AR-${compactDate()}-${String(number).padStart(3, "0")}`,
-      actionRequestId: null,
-      decisionCenterUrl: null,
+      id: handoffId,
+      actionRequestId: c011Payload.id,
+      decisionCenterUrl: receipt.status === "received" ? receipt.requestRef?.stableDetailEntry || null : null,
       idempotencyKey: requestKey, runId: run.id, resultId: run.result.id,
+      scenarioContext: deepClone(activeScenarioContext),
       actionType: eligibility.actionType.name, actionTypeId: eligibility.actionType.resourceId, actionTypeVersion: eligibility.actionType.version,
       targets: [deepClone(target)], target: `${target.name}（${target.id}）`, targetId: target.id,
-      status: "submitting", submittedAt: nowText(), receivedAt: null, reason: actionReason,
+      status: receipt.status === "received" ? "received" : "submitted", submittedAt: nowText(), receivedAt: receipt.status === "received" ? receipt.receivedAt : null, reason: actionReason,
+      receiptStatus: receipt.status,
+      receiptReason: receipt.reason || null,
+      requestRef: receipt.requestRef || null,
+      reminderRef: receipt.reminderRef || null,
+      taskRef: receipt.taskRef || null,
+      traceRef: receipt.traceRef || null,
+      c011Fingerprint: c011PayloadFingerprint(c011Payload),
       evidenceRefs: [...eligibility.evidenceRefs], ontologyVersion: run.snapshot.ontologyVersion,
       dataVersion: run.snapshot.dataVersion, dataAsOf: run.snapshot.dataAsOf, quality: run.snapshot.quality, freshness: run.snapshot.freshness,
       currentSummaryId: currentCredibility?.currentStateSummary?.id || null,
@@ -3537,29 +3912,57 @@ function App() {
         ...current,
         sequence: { ...current.sequence, handoff: number },
         handoffs: [handoff, ...current.handoffs],
-        runs: current.runs.map((item) => item.id === run.id && item.result?.id === run.result.id ? { ...item, result: { ...item.result, actionHandoffIds: [handoff.id], actionRequestStatus: "submitting" } } : item)
+        runs: current.runs.map((item) => item.id === run.id && item.result?.id === run.result.id ? { ...item, result: { ...item.result, actionHandoffIds: [handoff.id], actionRequestId: c011Payload.id, actionRequestIds: receipt.status === "received" ? [c011Payload.id] : [], actionRequestStatus: receipt.status === "received" ? "received" : "submitted" } } : item)
       };
     });
+    actionSubmitLocksRef.current.delete(requestKey);
     setActionReason("");
     setActionSubmitBlock(null);
     setModal({ type: "handoff", handoffId: handoff.id });
-    toast("行动申请提交中", "正在移交一条单主体、单次来源申请；不会创建待办或代替人工确认。", "success");
-    window.setTimeout(() => {
-      const receivedAt = nowText();
-      setModel((current) => {
-        const pending = current.handoffs.find((item) => item.id === handoff.id && item.status === "submitting");
-        if (!pending) return current;
-        return {
-          ...current,
-          handoffs: current.handoffs.map((item) => item.id === handoff.id ? { ...item, status: "received", receivedAt, actionRequestId: `DC-REQUEST-${item.targetId}`, decisionCenterUrl: `decision-center#/requests/DC-REQUEST-${item.targetId}` } : item),
-          runs: current.runs.map((item) => item.id === run.id && item.result?.id === run.result.id ? { ...item, result: { ...item.result, actionRequestIds: [`DC-REQUEST-${target.id}`], actionRequestStatus: "received" } } : item)
-        };
-      });
-      window.setTimeout(() => {
-        actionSubmitLocksRef.current.delete(requestKey);
-        toast("决策中心已接收请求", "Agent 应用只保留移交回执；后续状态由决策中心维护。", "success");
-      }, 0);
-    }, 1100);
+    toast(receipt.status === "received" ? "已读取决策中心接收回执" : "行动申请已提交", receipt.status === "received" ? "C019 已返回稳定详情入口；后续人工确认与待办状态仍由决策中心维护。" : "C011 已写入待接收区，当前等待决策中心接收；不会预先创建提醒或待办。", "success");
+  }
+
+  function applyActionReceipt(current, handoffId, receipt) {
+    const handoff = current.handoffs.find((item) => item.id === handoffId);
+    if (!handoff || receipt.status !== "received") return current;
+    return {
+      ...current,
+      handoffs: current.handoffs.map((item) => item.id === handoffId ? {
+        ...item,
+        status: "received",
+        receiptStatus: "received",
+        receiptReason: null,
+        receivedAt: receipt.receivedAt,
+        decisionCenterUrl: receipt.requestRef?.stableDetailEntry || null,
+        requestRef: receipt.requestRef,
+        reminderRef: receipt.reminderRef,
+        taskRef: receipt.taskRef,
+        traceRef: receipt.traceRef
+      } : item),
+      runs: current.runs.map((item) => item.id === handoff.runId && item.result?.id === handoff.resultId ? {
+        ...item,
+        result: { ...item.result, actionRequestId: handoff.actionRequestId, actionRequestIds: [handoff.actionRequestId], actionRequestStatus: "received" }
+      } : item)
+    };
+  }
+
+  function refreshActionReceipt(handoffId, quiet = false) {
+    const handoff = model.handoffs.find((item) => item.id === handoffId);
+    if (!handoff) {
+      if (!quiet) toast("无法读取回执", "本地移交记录无法定位。", "danger");
+      return;
+    }
+    const receipt = readC019Receipt(handoff.actionRequestId, handoff.scenarioContext);
+    if (receipt.status !== "received") {
+      setModel((current) => ({
+        ...current,
+        handoffs: current.handoffs.map((item) => item.id === handoffId ? { ...item, receiptStatus: receipt.status, receiptReason: receipt.reason || null } : item)
+      }));
+      if (!quiet) toast("决策中心尚未返回接收回执", `${receipt.reason || "请在决策中心接收行动申请后重新读取。"} 当前仍保持“等待接收”。`, "danger");
+      return;
+    }
+    setModel((current) => applyActionReceipt(current, handoffId, receipt));
+    if (!quiet) toast("已读取决策中心接收回执", "C019 已返回稳定行动申请详情入口；Agent 应用不维护后续决策状态。", "success");
   }
 
   function acceptReportCenterComparison(run, comparisonRecord) {
@@ -4287,7 +4690,7 @@ function App() {
           <CredibilitySummary credibility={currentCredibility} title="操作时可信度"></CredibilitySummary>
           {currentProjection(run) ? <Button icon="refresh-cw" onClick={() => refreshCredibility(run.snapshot.evidenceId)}>重新读取当前状态</Button> : null}
           <section className="panel"><div className="panel-head"><h2>结果信息</h2></div><div className="panel-body"><KeyValueList rows={[{ label: "Result 标识", value: <span className="mono">{result.id}</span> }, { label: "结果 Owner", value: result.owner }, { label: "后续落位", value: result.destination }, { label: "生成时间", value: result.generatedAt }, { label: "运行时新鲜度", value: result.freshness }, { label: "当前可信度", value: changed ? (confirmationGate.allowed ? "已变化，仍允许受限使用" : "已变化，当前受限") : "与运行时摘要一致" }, { label: "确认状态", value: readOnly ? `上下文陈旧（原状态：${confirmationLabel}）` : confirmationLabel }, ...(currentComparison ? [{ label: "当前比较", value: comparisonStale ? "比较已陈旧" : currentComparison.label }, { label: "比较 Owner", value: currentComparison.owner }, { label: "比较记录", value: currentComparison.id }, { label: "绑定摘要", value: `${currentComparison.currentSummaryId} · ${currentComparison.currentSummaryVersion}` }, { label: "比较时间", value: currentComparison.comparedAt }] : []), ...(readOnly ? [{ label: "陈旧时间", value: result.staleAt || session?.staleAt }, { label: "陈旧原因", value: result.staleReason || session?.staleReason }] : [])]}></KeyValueList>{comparisonStale ? <Notice kind="warning" title="当前比较记录已陈旧">C017 当前状态摘要已变化；保留报告中心原比较记录，不由 Agent 重新计算。需要新比较时由报告中心提供新记录。</Notice> : null}</div></section>
-          {isDraftResult ? <Notice kind="info" title="报告草稿边界">源草稿归 Agent 应用；报告中心读取后形成独立复核副本，并独立负责核验、确认与正式发布。</Notice> : handoff ? <Notice kind={handoff.status === "received" ? "success" : "info"} title={handoff.status === "received" ? "行动申请已移交" : "行动申请提交中"}>来源结果状态已锁定；Agent 应用不维护决策中心后续确认、提醒或待办。</Notice> : run.status === "partial" ? <Notice kind="warning" title="仅保留已验证范围">部分结果不能发起行动申请；修复受限工具后创建新运行。</Notice> : result.type === "Report Copilot Result" ? <Notice kind="info" title="报告中心引用边界">报告中心只保存运行与结果标识并回读权威状态；不维护运行状态副本，不自动修改或发布报告。</Notice> : !confirmationGate.allowed ? <Notice kind="danger" title="当前结果受限">{confirmationGate.reason} {confirmationGate.recovery}</Notice> : !action.allowed ? <Notice kind="warning" title="行动申请受限">{action.reason}</Notice> : <Notice kind="info" title="AI 洞察落位">结果保留在 Agent 应用，不自动进入报告中心；行动只能通过标准申请移交决策中心。</Notice>}
+          {isDraftResult ? <Notice kind="info" title="报告草稿边界">源草稿归 Agent 应用；报告中心读取后形成独立复核副本，并独立负责核验、确认与正式发布。</Notice> : handoff ? <Notice kind={handoff.status === "received" ? "success" : "info"} title={handoff.status === "received" ? "行动申请已移交" : "行动申请等待决策中心接收"}>来源结果状态已锁定；C011 已提交，但只有读取到 C019 回执后才显示“已接收”。Agent 应用不维护后续确认、提醒或待办。</Notice> : run.status === "partial" ? <Notice kind="warning" title="仅保留已验证范围">部分结果不能发起行动申请；修复受限工具后创建新运行。</Notice> : result.type === "Report Copilot Result" ? <Notice kind="info" title="报告中心引用边界">报告中心只保存运行与结果标识并回读权威状态；不维护运行状态副本，不自动修改或发布报告。</Notice> : !confirmationGate.allowed ? <Notice kind="danger" title="当前结果受限">{confirmationGate.reason} {confirmationGate.recovery}</Notice> : !action.allowed ? <Notice kind="warning" title="行动申请受限">{action.reason}</Notice> : <Notice kind="info" title="AI 洞察落位">结果保留在 Agent 应用，不自动进入报告中心；行动只能通过标准申请移交决策中心。</Notice>}
         </aside>
       </div>
     );
@@ -4308,7 +4711,7 @@ function App() {
     const toolBindings = run.snapshot.toolBindings || (run.snapshot.tools || []).map((id) => ({ id, name: id, version: "快照未记录" }));
     const promptBinding = run.snapshot.promptBinding || { ...run.snapshot.prompt, name: run.snapshot.prompt?.id || "快照未记录" };
     const skillBindings = run.snapshot.skillBindings || (run.snapshot.skills || []).map((binding) => ({ ...binding, name: binding.id }));
-    return <div className="detail-grid"><section className="panel"><div className="panel-head"><h2>版本追溯</h2></div><div className="panel-body"><KeyValueList rows={[{ label: "请求上下文", value: run.snapshot.requestContext ? `${run.snapshot.requestContext.id} · ${run.snapshot.requestContext.version}` : "缺失" }, { label: "场景身份", value: `${run.snapshot.scenarioId || "缺失"} / ${run.snapshot.scenarioVersion || "缺失"} / ${run.snapshot.scenarioRunId || "缺失"}` }, { label: "报告编号 / 内容版本", value: run.snapshot.reportNumber ? `${run.snapshot.reportNumber} / ${run.snapshot.contentVersion}` : "不适用" }, { label: "证据包 / 版本", value: `${run.snapshot.evidencePackageId || run.snapshot.evidenceId} / ${run.snapshot.evidencePackageVersion || "缺失"}` }, { label: "语义标识 / 版本", value: `${run.snapshot.semanticVersionId || "缺失"} / ${run.snapshot.ontologyVersion || "缺失"}` }, { label: "数据资产标识 / 版本", value: `${run.snapshot.dataAssetVersionId || "缺失"} / ${run.snapshot.dataVersion || "缺失"}` }, { label: "场景绑定版本", value: run.snapshot.scenarioBinding ? `${run.snapshot.scenarioBinding.id} · ${run.snapshot.scenarioBinding.version}` : "缺失" }, { label: "目标对象范围", value: run.snapshot.objectScope }, { label: "期望输出合同", value: run.snapshot.expectedOutput || run.snapshot.outputContract }, { label: "Agent Release", value: `${run.snapshot.agentName} · ${run.snapshot.agentRelease}` }, { label: "Prompt", value: `${promptBinding.name} · ${promptBinding.version}` }, { label: "Skill", value: skillBindings.map((binding) => `${binding.name || binding.id} ${binding.version}`).join("；") }, { label: "工具", value: toolBindings.map((binding) => `${binding.name || binding.id} ${binding.version || "快照未记录"}`).join("；") }, { label: "本体绑定", value: run.snapshot.ontology }, { label: "重试来源", value: run.retryOf || "无" }, { label: "替代运行", value: run.replacesRun || "无" }, { label: "编排 Run", value: run.orchestrationRunId || "未关联" }, { label: "Step Run", value: run.stepRunId || "未关联" }]}></KeyValueList></div></section><div className="stack">{session ? <><CredibilitySummary credibility={runCurrentCredibility(run)} title="报告伴读当前可信度"></CredibilitySummary><section className="panel"><div className="panel-head"><div><h2>报告伴读会话</h2><p>Agent 应用权威状态</p></div><StatusBadge status={currentProjection(session) ? session.status : "history"} label={currentProjection(session) && session.status === "active" ? "活跃" : !currentProjection(session) ? "历史" : null}></StatusBadge></div><div className="panel-body"><KeyValueList rows={[{ label: "Session", value: <span className="mono">{session.id}</span> }, { label: "Context Binding", value: <span className="mono">{session.bindingId}</span> }, { label: "场景身份", value: `${session.scenarioId} / ${session.scenarioVersion} / ${session.scenarioRunId}` }, { label: "请求上下文", value: session.requestContext ? `${session.requestContext.id} · ${session.requestContext.version}` : "缺失" }, { label: "报告编号 / 内容版本", value: `${session.reportNumber} / ${session.contentVersion}` }, { label: "证据包 / 版本", value: `${session.evidencePackageId} / ${session.evidencePackageVersion}` }, { label: "语义标识 / 版本", value: `${session.semanticVersionId} / ${session.ontologyVersion}` }, { label: "数据标识 / 版本", value: `${session.dataAssetVersionId} / ${session.dataVersion}` }, { label: "稳定锚点", value: session.anchor }]}></KeyValueList>{currentProjection(session) && session.status === "active" ? <Button icon="inbox" onClick={() => { const candidates = readC024Candidates(); setC024Candidates(candidates); setC024SelectedId(candidates[0]?.requestId || null); setModal({ type: "c024-receive" }); }}>读取报告交接</Button> : <Notice kind="warning" title="旧会话只读">{session.staleReason || session.archivedReason}</Notice>}</div></section><section className="panel"><div className="panel-head"><div><h2>报告运行关联</h2><p>外部状态只读引用</p></div></div><div className="panel-body"><KeyValueList rows={[{ label: "确定性核验结果", value: session.verificationSummary }, { label: "核验运行标识", value: session.verificationRunRef || "报告中心未提供" }, { label: "当前比较记录", value: session.currentComparisonRef || "报告中心尚未提供" }, { label: "当前问答 Run", value: <span className="mono">{session.latestRunId}</span> }, { label: "本次问答 Run", value: <span className="mono">{run.id}</span> }, { label: "最新 Result", value: session.latestResultId ? <span className="mono">{session.latestResultId}</span> : "尚未形成" }, { label: "结果返回", value: session.resultReturnStatus || "等待运行结果" }, { label: "返回时间", value: session.resultReturnedAt || "尚未返回" }, { label: "重新生成状态", value: `${session.regenerationStatus}（入口在报告中心）` }, { label: "重新生成引用", value: session.regenerationRef || "尚无外部引用" }]}></KeyValueList></div></section></> : null}{handoff ? <section className="panel"><div className="panel-head"><h2>Action 移交</h2><StatusBadge status={handoff.status}></StatusBadge></div><div className="panel-body"><KeyValueList rows={[{ label: "请求标识", value: <span className="mono">{handoff.id}</span> }, { label: "Action Type", value: `${handoff.actionType} · ${handoff.actionTypeVersion}` }, { label: "接收结果", value: handoff.status === "received" ? "决策中心已接收" : "正在提交" }, { label: "后续状态", value: "由决策中心维护，Agent 应用不复制" }]}></KeyValueList></div></section> : null}<Notice kind="info" title="历史快照不变">新 Agent Release、Prompt、Skill、工具或证据版本不会静默改写本次运行。</Notice></div></div>;
+    return <div className="detail-grid"><section className="panel"><div className="panel-head"><h2>版本追溯</h2></div><div className="panel-body"><KeyValueList rows={[{ label: "请求上下文", value: run.snapshot.requestContext ? `${run.snapshot.requestContext.id} · ${run.snapshot.requestContext.version}` : "缺失" }, { label: "场景身份", value: `${run.snapshot.scenarioId || "缺失"} / ${run.snapshot.scenarioVersion || "缺失"} / ${run.snapshot.scenarioRunId || "缺失"}` }, { label: "报告编号 / 内容版本", value: run.snapshot.reportNumber ? `${run.snapshot.reportNumber} / ${run.snapshot.contentVersion}` : "不适用" }, { label: "证据包 / 版本", value: `${run.snapshot.evidencePackageId || run.snapshot.evidenceId} / ${run.snapshot.evidencePackageVersion || "缺失"}` }, { label: "语义标识 / 版本", value: `${run.snapshot.semanticVersionId || "缺失"} / ${run.snapshot.ontologyVersion || "缺失"}` }, { label: "数据资产标识 / 版本", value: `${run.snapshot.dataAssetVersionId || "缺失"} / ${run.snapshot.dataVersion || "缺失"}` }, { label: "场景绑定版本", value: run.snapshot.scenarioBinding ? `${run.snapshot.scenarioBinding.id} · ${run.snapshot.scenarioBinding.version}` : "缺失" }, { label: "目标对象范围", value: run.snapshot.objectScope }, { label: "期望输出合同", value: run.snapshot.expectedOutput || run.snapshot.outputContract }, { label: "Agent Release", value: `${run.snapshot.agentName} · ${run.snapshot.agentRelease}` }, { label: "Prompt", value: `${promptBinding.name} · ${promptBinding.version}` }, { label: "Skill", value: skillBindings.map((binding) => `${binding.name || binding.id} ${binding.version}`).join("；") }, { label: "工具", value: toolBindings.map((binding) => `${binding.name || binding.id} ${binding.version || "快照未记录"}`).join("；") }, { label: "本体绑定", value: run.snapshot.ontology }, { label: "重试来源", value: run.retryOf || "无" }, { label: "替代运行", value: run.replacesRun || "无" }, { label: "编排 Run", value: run.orchestrationRunId || "未关联" }, { label: "Step Run", value: run.stepRunId || "未关联" }]}></KeyValueList></div></section><div className="stack">{session ? <><CredibilitySummary credibility={runCurrentCredibility(run)} title="报告伴读当前可信度"></CredibilitySummary><section className="panel"><div className="panel-head"><div><h2>报告伴读会话</h2><p>Agent 应用权威状态</p></div><StatusBadge status={currentProjection(session) ? session.status : "history"} label={currentProjection(session) && session.status === "active" ? "活跃" : !currentProjection(session) ? "历史" : null}></StatusBadge></div><div className="panel-body"><KeyValueList rows={[{ label: "Session", value: <span className="mono">{session.id}</span> }, { label: "Context Binding", value: <span className="mono">{session.bindingId}</span> }, { label: "场景身份", value: `${session.scenarioId} / ${session.scenarioVersion} / ${session.scenarioRunId}` }, { label: "请求上下文", value: session.requestContext ? `${session.requestContext.id} · ${session.requestContext.version}` : "缺失" }, { label: "报告编号 / 内容版本", value: `${session.reportNumber} / ${session.contentVersion}` }, { label: "证据包 / 版本", value: `${session.evidencePackageId} / ${session.evidencePackageVersion}` }, { label: "语义标识 / 版本", value: `${session.semanticVersionId} / ${session.ontologyVersion}` }, { label: "数据标识 / 版本", value: `${session.dataAssetVersionId} / ${session.dataVersion}` }, { label: "稳定锚点", value: session.anchor }]}></KeyValueList>{currentProjection(session) && session.status === "active" ? <Button icon="inbox" onClick={() => { const candidates = readC024Candidates(); setC024Candidates(candidates); setC024SelectedId(candidates[0]?.requestId || null); setModal({ type: "c024-receive" }); }}>读取报告交接</Button> : <Notice kind="warning" title="旧会话只读">{session.staleReason || session.archivedReason}</Notice>}</div></section><section className="panel"><div className="panel-head"><div><h2>报告运行关联</h2><p>外部状态只读引用</p></div></div><div className="panel-body"><KeyValueList rows={[{ label: "确定性核验结果", value: session.verificationSummary }, { label: "核验运行标识", value: session.verificationRunRef || "报告中心未提供" }, { label: "当前比较记录", value: session.currentComparisonRef || "报告中心尚未提供" }, { label: "当前问答 Run", value: <span className="mono">{session.latestRunId}</span> }, { label: "本次问答 Run", value: <span className="mono">{run.id}</span> }, { label: "最新 Result", value: session.latestResultId ? <span className="mono">{session.latestResultId}</span> : "尚未形成" }, { label: "结果返回", value: session.resultReturnStatus || "等待运行结果" }, { label: "返回时间", value: session.resultReturnedAt || "尚未返回" }, { label: "重新生成状态", value: `${session.regenerationStatus}（入口在报告中心）` }, { label: "重新生成引用", value: session.regenerationRef || "尚无外部引用" }]}></KeyValueList></div></section></> : null}{handoff ? <section className="panel"><div className="panel-head"><h2>Action 移交</h2><StatusBadge status={handoff.status}></StatusBadge></div><div className="panel-body"><KeyValueList rows={[{ label: "请求标识", value: <span className="mono">{handoff.id}</span> }, { label: "Action Type", value: `${handoff.actionType} · ${handoff.actionTypeVersion}` }, { label: "接收结果", value: handoff.status === "received" ? "决策中心已接收" : "等待决策中心接收" }, { label: "后续状态", value: "由决策中心维护，Agent 应用不复制" }]}></KeyValueList></div></section> : null}<Notice kind="info" title="历史快照不变">新 Agent Release、Prompt、Skill、工具或证据版本不会静默改写本次运行。</Notice></div></div>;
   }
 
   function EvidenceWorkspace() {
@@ -4405,9 +4808,9 @@ function App() {
     if (modal.type === "c022-receive") {
       const candidate = selectedC022Candidate();
       const identity = c022Identity(candidate);
-      const issues = candidate ? c022Issues(candidate) : [];
+      const issues = candidate ? c022Issues(candidate, readActiveScenarioContext()) : [];
       const latestRejection = model.c022Rejections?.[0];
-      return <Modal title="接收报告生成请求" subtitle="只读取报告中心提交的 C022；接收成功不代表 Run、Result 或源草稿已经形成。" onClose={() => setModal(null)} actions={<><Button onClick={() => setModal(null)}>关闭</Button><Button icon="refresh-cw" onClick={refreshC022Inbox}>重新读取</Button><Button icon="inbox" kind="primary" disabled={!candidate || issues.length > 0} title={issues.length ? issues.join("；") : null} onClick={() => receiveC022(candidate)}>接收请求</Button></>}>
+      return <Modal title="接收报告生成请求" subtitle="只读取报告中心提交的 C022；未通过身份校验的记录会登记拒绝原因，但不会创建当前资源。" onClose={() => setModal(null)} actions={<><Button onClick={() => setModal(null)}>关闭</Button><Button icon="refresh-cw" onClick={refreshC022Inbox}>重新读取</Button><Button icon="inbox" kind="primary" disabled={!candidate} title={issues.length ? issues.join("；") : null} onClick={() => receiveC022(candidate)}>{issues.length ? "拒绝并记录" : "接收请求"}</Button></>}>
         {!c022Candidates.length ? <EmptyState icon="inbox" title="尚未收到报告生成请求" description="报告中心提交包含完整 C033、报告根、报告定义、模板槽位、证据包和精确双版本身份的 C022 后，可在此重新读取。"></EmptyState> : <div className="stack">
           <div className="form-field"><label>来源记录</label><select value={candidate?.requestId || ""} onChange={(event) => setC022SelectedId(event.target.value)}>{c022Candidates.map((item) => <option key={item.requestId} value={item.requestId}>{item.requestId} · {item.submittedAt || "来源未提供时间"}</option>)}</select></div>
           {issues.length ? <Notice kind="danger" title="当前请求不能接收">{issues.join("；")}。请由报告中心按同一场景轮次修复后重新提交；Agent 不补齐身份、不改选版本。</Notice> : <Notice kind="success" title="固定身份校验通过">接收后只形成待处理 Request 和固定证据投影；用户点击“开始生成报告草稿”后才创建独立 C023 Run。</Notice>}
@@ -4419,9 +4822,9 @@ function App() {
     if (modal.type === "c024-receive") {
       const candidate = selectedC024Candidate();
       const identity = c024Identity(candidate);
-      const issues = candidate ? c024Issues(candidate) : [];
+      const issues = candidate ? c024Issues(candidate, readActiveScenarioContext()) : [];
       const latestRejection = model.c024Rejections?.[0];
-      return <Modal title="接收报告伴读请求" subtitle="只读取报告中心提交的 C024；未通过身份校验的记录不会创建当前资源。" onClose={() => setModal(null)} actions={<><Button onClick={() => setModal(null)}>关闭</Button><Button icon="refresh-cw" onClick={refreshC024Inbox}>重新读取</Button><Button icon="inbox" kind="primary" disabled={!candidate || issues.length > 0} title={issues.length ? issues.join("；") : null} onClick={() => receiveC024(candidate)}>接收交接</Button></>}>
+      return <Modal title="接收报告伴读请求" subtitle="只读取报告中心提交的 C024；未通过身份校验的记录会登记拒绝原因，但不会创建当前资源。" onClose={() => setModal(null)} actions={<><Button onClick={() => setModal(null)}>关闭</Button><Button icon="refresh-cw" onClick={refreshC024Inbox}>重新读取</Button><Button icon="inbox" kind="primary" disabled={!candidate} title={issues.length ? issues.join("；") : null} onClick={() => receiveC024(candidate)}>{issues.length ? "拒绝并记录" : "接收交接"}</Button></>}>
         {!c024Candidates.length ? <EmptyState icon="inbox" title="尚未收到报告交接" description="报告中心提交包含完整 C033 场景身份、报告内容版本、证据包和精确语义/数据版本的 C024 后，可在此重新读取。"></EmptyState> : <div className="stack">
           <div className="form-field"><label>来源记录</label><select value={candidate?.requestId || ""} onChange={(event) => setC024SelectedId(event.target.value)}>{c024Candidates.map((item) => <option key={item.requestId} value={item.requestId}>{item.requestId} · {item.receivedAt || "来源未提供时间"}</option>)}</select></div>
           {issues.length ? <Notice kind="danger" title="当前交接不能接收">{issues.join("；")}。请由报告中心按同一场景轮次修复后重新提交；Agent 不补齐身份、不改选版本。</Notice> : <Notice kind="success" title="固定身份校验通过">接收后仅创建当前 Request 和固定证据投影；开始处理时才创建 Context Binding、Session 与 Run，完成后才形成 C025 Result。</Notice>}
@@ -4449,7 +4852,9 @@ function App() {
       const handoff = model.handoffs.find((item) => item.id === (modal.handoffId || modal.handoff?.id));
       if (!handoff) return null;
       const received = handoff.status === "received";
-      return <Modal title="行动申请移交回执" subtitle={handoff.id} size="small" onClose={() => setModal(null)} actions={<Button kind="primary" onClick={() => setModal(null)}>关闭</Button>}><Notice kind={received ? "success" : "info"} title={received ? "决策中心已接收申请" : "行动申请提交中"}>{received ? "本模块只保留移交标识、决策中心返回的行动申请标识与来源证据，不维护后续人工确认、提醒或待办状态。" : "正在移交固定行动类型、目标主体和来源证据；同一来源不会重复提交。"}</Notice><KeyValueList rows={[{ label: "移交标识", value: handoff.id }, { label: "行动申请标识", value: handoff.actionRequestId || "等待决策中心返回" }, { label: "状态", value: <StatusBadge status={handoff.status}></StatusBadge> }, { label: "行动类型", value: `${handoff.actionType} · ${handoff.actionTypeVersion}` }, { label: "稳定标识", value: handoff.actionTypeId }, { label: "目标对象", value: handoff.target }, { label: "来源运行", value: handoff.runId }, { label: "来源结果", value: handoff.resultId }, { label: "证据引用", value: handoff.evidenceRefs.join("；") }, { label: "已发布语义", value: displayBusinessTerm(handoff.ontologyVersion) }, { label: "数据版本 / 截至", value: `${handoff.dataVersion} / ${handoff.dataAsOf}` }, { label: "质量 / 新鲜度", value: `${handoff.quality} / ${handoff.freshness}` }, { label: "提交时间", value: handoff.submittedAt }, { label: "接收时间", value: handoff.receivedAt || "等待接收" }, { label: "决策中心入口", value: handoff.decisionCenterUrl || "等待接收后返回" }, { label: "申请说明", value: handoff.reason }]}></KeyValueList></Modal>;
+      const receiptAction = received ? null : <Button icon="refresh-cw" onClick={() => refreshActionReceipt(handoff.id)}>重新读取回执</Button>;
+      const decisionEntry = handoff.decisionCenterUrl ? <a href={handoff.decisionCenterUrl}>查看详情</a> : "等待 C019 返回";
+      return <Modal title="行动申请移交回执" subtitle={handoff.id} size="small" onClose={() => setModal(null)} actions={<>{receiptAction}<Button kind="primary" onClick={() => setModal(null)}>关闭</Button></>}><Notice kind={received ? "success" : "info"} title={received ? "决策中心已接收申请" : "行动申请等待决策中心接收"}>{received ? "本模块只保留 C019 返回的稳定详情入口与来源证据，不维护后续人工确认、提醒或待办状态。" : `C011 已写入决策中心待接收区；${handoff.receiptReason || "尚未读取到 C019 接收回执"}。`}</Notice><KeyValueList rows={[{ label: "移交标识", value: handoff.id }, { label: "行动申请标识", value: handoff.actionRequestId }, { label: "状态", value: <StatusBadge status={handoff.status}></StatusBadge> }, { label: "行动类型", value: `${handoff.actionType} · ${handoff.actionTypeVersion}` }, { label: "稳定标识", value: handoff.actionTypeId }, { label: "目标对象", value: handoff.target }, { label: "来源运行", value: handoff.runId }, { label: "来源结果", value: handoff.resultId }, { label: "场景身份", value: `${handoff.scenarioContext?.scenarioId || "缺失"} / ${handoff.scenarioContext?.scenarioVersion || "缺失"} / ${handoff.scenarioContext?.scenarioRunId || "缺失"}` }, { label: "证据引用", value: handoff.evidenceRefs.join("；") }, { label: "已发布语义", value: displayBusinessTerm(handoff.ontologyVersion) }, { label: "数据版本 / 截至", value: `${handoff.dataVersion} / ${handoff.dataAsOf}` }, { label: "质量 / 新鲜度", value: `${handoff.quality} / ${handoff.freshness}` }, { label: "提交时间", value: handoff.submittedAt }, { label: "接收时间", value: handoff.receivedAt || "等待接收" }, { label: "决策中心入口", value: decisionEntry }, { label: "申请说明", value: handoff.reason }]}></KeyValueList></Modal>;
     }
     if (modal.type === "report-comparison") {
       const run = model.runs.find((item) => item.id === modal.runId);

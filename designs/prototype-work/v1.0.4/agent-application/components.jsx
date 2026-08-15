@@ -15,7 +15,27 @@ function agentDisplayText(value) {
 }
 
 function Icon({ name, size = 17, className = "" }) {
-  return <i data-lucide={name} className={`icon ${className}`} style={{ width: size, height: size }} aria-hidden="true"></i>;
+  const iconKey = String(name || "").split("-").filter(Boolean).map((part) => `${part.charAt(0).toUpperCase()}${part.slice(1)}`).join("");
+  const iconNode = window.lucide?.icons?.[iconKey];
+  if (!Array.isArray(iconNode)) return <span className={`icon ${className}`.trim()} style={{ width: size, height: size }} aria-hidden="true"></span>;
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={`icon ${className}`.trim()}
+      style={{ width: size, height: size }}
+      aria-hidden="true"
+    >
+      {iconNode.map(([tag, attributes], index) => React.createElement(tag, { ...attributes, key: `${name}-${index}` }))}
+    </svg>
+  );
 }
 
 function Button({ children, icon, kind = "", className = "", onClick, disabled = false, title, type = "button", draggable = false, onDragStart, onDragEnd }) {
@@ -52,6 +72,7 @@ function StatusBadge({ status, label }) {
     waiting: "info",
     running: "info",
     submitting: "info",
+    submitted: "info",
     validating: "info",
     queued: "info",
     draft: "warning",
@@ -94,6 +115,7 @@ function StatusBadge({ status, label }) {
     waiting: "等待",
     running: "运行中",
     submitting: "提交中",
+    submitted: "等待接收",
     validating: "验证中",
     queued: "等待",
     draft: "配置草稿",
@@ -453,10 +475,6 @@ function AgentUseGate({ gates = [], title = "Agent 用途门", highlightId = nul
 }
 
 function AppShell({ route, title, counts, onNavigate, onReset, children }) {
-  useEffect(() => {
-    if (window.lucide) window.lucide.createIcons();
-  });
-
   const detailRoots = {
     "agent-detail": "agents",
     "draft-config": "agents",
