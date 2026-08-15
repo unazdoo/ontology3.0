@@ -15,6 +15,7 @@ const app = fs.readFileSync(path.join(here, "shared/app.js"), "utf8");
 const css = fs.readFileSync(path.join(here, "shared/app.css"), "utf8");
 const build = fs.readFileSync(path.join(here, "build-standalone.mjs"), "utf8");
 const shell = fs.readFileSync(path.join(here, manifest.entries[0].source), "utf8");
+const integrationState = fs.readFileSync(path.join(here, "../../s001-e2e-integration/state.js"), "utf8");
 const errors = [];
 const assert = (ok, message) => { if (!ok) errors.push(message); };
 const unique = values => new Set(values).size === values.length;
@@ -82,14 +83,16 @@ assert(
 );
 assert(
   /稳定 deliveryId/.test(manifest.invariants.handoffContracts?.C003 || "") &&
-  /attemptNumber=1/.test(manifest.invariants.handoffContracts?.C003 || "") &&
+  /首次交付/.test(manifest.invariants.handoffContracts?.C003 || "") &&
+  !/attemptNumber|retryOf|previousDeliveryId/.test(manifest.invariants.handoffContracts?.C003 || "") &&
   /同一 deliveryId 幂等重放/.test(manifest.invariants.handoffContracts?.C003 || "") &&
   /拒绝后重新受理身份待总控裁决/.test(manifest.invariants.handoffContracts?.C003 || "") &&
   /handoffSnapshot/.test(manifest.invariants.handoffContracts?.C003 || ""),
   "manifest 缺少 C003 首次交付、同标识幂等、拒绝后待裁决或真实回执边界"
 );
 assert(/分别读取/.test(manifest.invariants.handoffContracts?.C032 || "") && /漂移即阻断/.test(manifest.invariants.handoffContracts?.C032 || ""), "manifest 缺少 C032 双读与漂移阻断合同");
-assert(/currentFormalSnapshot/.test(manifest.invariants.handoffContracts?.C028 || "") && /完整 C033/.test(manifest.invariants.handoffContracts?.C028 || ""), "manifest 缺少 C028 正式组合快照或完整场景上下文");
+assert(/currentFormalSnapshot/.test(manifest.invariants.handoffContracts?.C028 || "") && /完整 C033/.test(manifest.invariants.handoffContracts?.C028 || "") && /覆盖/.test(manifest.invariants.handoffContracts?.C028 || "") && /形成时间/.test(manifest.invariants.handoffContracts?.C028 || ""), "manifest 缺少 C028 正式组合快照、完整场景、覆盖或发现形成时间");
+assert(/完整证据包/.test(manifest.invariants.handoffContracts?.C017 || "") && /本页面会话/.test(manifest.invariants.handoffContracts?.C017 || "") && /保持阻断/.test(manifest.invariants.handoffContracts?.C017 || ""), "manifest 缺少 C017 本会话重读与失败关闭边界");
 const resetBehavior = String(manifest.invariants.resetBehavior || "");
 assert(
   /(?:不得|不再|不由|不自行|禁止)[^；。]{0,32}(?:生成|创建|分配)[^；。]{0,20}scenarioRunId|scenarioRunId[^；。]{0,20}(?:不得|不再|不由|不自行|禁止)[^；。]{0,32}(?:生成|创建|分配)/i.test(resetBehavior) &&
@@ -100,6 +103,7 @@ assert(
 assert(manifest.invariants.s001TargetAssetState === "未发布结构合同", "S001 四成员三关系只能作为未发布目标合同存在");
 assert(manifest.invariants.s001TargetAssetMemberCount === 4 && manifest.invariants.s001TargetAssetRelationshipCount === 3, "S001 未发布目标合同必须保留四成员三关系结构");
 assert(fixtures.includes('FIELD-FINANCING-DETAIL-RATE-TYPE') && fixtures.includes('FIELD-FINANCING-DETAIL-TERM-TYPE'), "S001 融资明细合同缺少 R02/R03 必需的利率形式或期限种类字段");
+assert(fixtures.includes('FIELD-FINANCING-DETAIL-CURRENCY') && fixtures.includes('FIELD-FINANCING-DETAIL-GUARANTEE-TYPE'), "S001 融资明细合同缺少外币及信用融资占比所需的币种或担保方式字段");
 assert(manifest.invariants.refreshResultDoesNotImplyT019 === true, "manifest 必须声明刷新结果不自动等于 T019 采用");
 assert(build.includes("当前构建只能更新唯一评审原型"), "构建脚本缺少 B2-only 保护");
 assert(data.sourceGroups.map(x => x.key).join(",") === "手工工作簿,共享文件夹,SAP,司库系统,数据中台", "来源目录分组不完整");
@@ -217,7 +221,7 @@ assert(financeAsset?.versionRoles?.candidate?.versionId === null && financeAsset
 assert(financeAsset?.versionRoles?.previousTrusted?.versionId === null && financeAsset?.versionRoles?.previousTrusted?.status === "尚无上一权威历史", "无上一权威历史时不得回填当前版本或名称相似版本");
 assert(financeAsset?.reusePolicy?.allowed === true && /精确版本/.test(financeAsset.reusePolicy.selectionMode) && /禁止同一数据资产/.test(financeAsset.reusePolicy.cycleProtection), "已发布资产复用缺少精确版本、成员范围或防循环合同");
 
-assert(financeSource.contentFindings?.map(item => item.observedCount).join(",") === "212,212,1868", "S001 真实允许缺失事实不完整");
+assert(financeSource.contentFindings?.map(item => item.observedCount).join(",") === "0,212,212,1868", "S001 币种与真实允许缺失事实不完整");
 assert(financeSource.contentFindings.every(item => item.checkedCount === 5218 && item.forbiddenInterpretation), "S001 空值披露缺少检查总量或禁止解释");
 
 assert(app.includes("function sourceWizardModal") && app.includes("function newPipelineModal"), "缺少新建数据源或新建管道流程");
@@ -400,7 +404,8 @@ assert(
 assert(
   /snapshotReadEvents\.push\(/.test(uploadRegistrationSource) &&
   /readStartedAt/.test(uploadRegistrationSource) && /readCompletedAt/.test(uploadRegistrationSource) &&
-  /duplicate:Boolean\(existing\)/.test(uploadRegistrationSource),
+  /duplicate:Boolean\(existing\)/.test(uploadRegistrationSource) &&
+  /currentSnapshotReadEvents\[sourceId\]=readEvent\.eventId/.test(uploadRegistrationSource),
   "相同内容复用快照身份时也必须保留本轮真实读取事件、时间、指纹和 C033"
 );
 assert(
@@ -418,8 +423,17 @@ assert(
   /t008Confirmation\s*=\s*null/.test(uploadRegistrationSource) &&
   /confirmedBy/.test(t008ConfirmationSource) &&
   /confirmedAt/.test(t008ConfirmationSource) &&
-  /basis/.test(t008ConfirmationSource),
+  /basis/.test(t008ConfirmationSource) &&
+  /sourceReadEventId:readEvent\.eventId/.test(t008ConfirmationSource) &&
+  /currentReadEventForSnapshot/.test(t008ConfirmationSource),
   "T008 必须在上传登记后独立确认并记录确认人、确认时间和依据，上传动作不得顺带确认"
+);
+assert(
+  /currentSnapshotReadEvents/.test(initialFlowSource) &&
+  /currentSnapshotReadEvents\?\.\[sourceId\]/.test(functionSource("currentReadEventForSnapshot", "currentT008ForSnapshot")) &&
+  /confirmation\.sourceReadEventId===readEvent\.eventId/.test(functionSource("currentT008ForSnapshot", "syncFlowData")) &&
+  /flow\.currentSnapshotReadEvents=\{\}/.test(functionSource("resetScenarioRun", "applyPendingScenarioResetRequest")),
+  "稳定 T002 的当前轮投影必须绑定最新真实读取事件；重置只清空当前映射并保留读取历史"
 );
 const sourceWizardCompleteSource = actionSource("source-wizard-complete", "upload-snapshot");
 assert(
@@ -448,7 +462,7 @@ assert(
   app.includes('const SCENARIO_CONTEXT_KEY = `${HANDOFF_CHANNEL}:scenario-context`') &&
   app.includes("function readPlatformScenarioContextFromSharedState") &&
   /shared=readPlatformScenarioContextFromSharedState\(\)/.test(scenarioUrlSource) &&
-  /event\.key===SCENARIO_CONTEXT_KEY\)\{readPlatformScenarioContextFromSharedState\(\);render\(\);\}/.test(app),
+  /event\.key===SCENARIO_CONTEXT_KEY\)\{const shared=readPlatformScenarioContextFromSharedState\(\);if\(shared\.okay\)receiveScenarioContext\(shared\.context,"平台公共层共享状态变化"\);render\(\);\}/.test(app),
   "M02 必须在统一入口和共享状态变化时重新读取平台公共层完整 C033"
 );
 const scenarioContextSource = [
@@ -638,6 +652,7 @@ assert(/setTimeout\(\(\)=>finish\(null\),2400\)/.test(functionSource("ensureOnto
 
 const discoverySource = functionSource("discoverOntologyBindings", "deliverDataAssetToOntology") || functionSource("discoverOntologyBindings", "submitOntologyRefresh");
 const c028Source = functionSource("submitOntologyRefresh", "queryRefreshRequest");
+const exactC028Source = functionSource("exactC028Received", "c029MatchesAttempt");
 assert(
   discoverySource.includes('"discoverRefreshTargets"') && discoverySource.includes('"publishedContext"') &&
   /ontologyHandoffSnapshot|handoffSnapshot/.test(discoverySource),
@@ -670,13 +685,34 @@ assert(
   "C028 必须核对交接快照中的完整精确请求，并使用本体管理响应时间及 C003 交付引用"
 );
 assert(
+  ["dataAssetDeliveryId","t008Confirmation","members","memberContracts","relationships","relationshipContracts","coverage","quality","refreshDiscoveryFormedAt"].every(field=>exactC028Source.includes(`received.${field}`)) &&
+  /sameRecord\(received\.t008Confirmation,payload\.t008Confirmation\)/.test(exactC028Source) &&
+  /sameRecord\(received\.coverage,payload\.coverage\)/.test(exactC028Source),
+  "C028 精确回执必须完整核对 C003 引用、T008、成员、关系、覆盖、质量详情和发现形成时间"
+);
+assert(
   app.includes("function c029MatchesAttempt") && app.includes("function t018MatchesAttempt") && app.includes("function t019MatchesAttempt") &&
   ["sourceMappingVersionId","refreshTarget","bindingVersion","basedOnMatchResult","candidateKey","adoptionEvidenceLocator"].every(field=>app.includes(field)),
   "C029、T018 和 T019 必须按同一请求、T054 绑定、映射版本、候选键与采用证据闭合关联"
 );
 assert(!/function\s+(?:formC029|deriveC029|formT018|deriveT018|adoptT019|deriveT019)\b/.test(app), "数据工程不得本地推断或生成 C029、T018、T019");
 
-const resetSource = functionSource("resetScenarioRun", "nowText");
+const c017Source = functionSource("c017ProjectionForVersion", "c017ProjectionEnvelope");
+const queryRefreshSource = functionSource("queryRefreshRequest", "finishFailedCandidate");
+assert(
+  /allowConsumption=Boolean\(isAuthority&&qualityAllowed&&!hardFailure&&evidenceComplete\)/.test(c017Source) &&
+  /sessionAuthorityVerified/.test(c017Source) && /T019_RUNTIME_VERIFICATION_ID/.test(c017Source) &&
+  /readToken/.test(c017Source) && /currentFormalSnapshot/.test(c017Source),
+  "C017 allowConsumption 必须同时要求证据完整、无硬质量失败和本页面会话 T019/currentFormal 重读令牌"
+);
+assert(
+  /t019SessionObservations\.delete\(version\.id\)/.test(queryRefreshSource) &&
+  /t019SessionObservations\.set\(version\.id/.test(queryRefreshSource) &&
+  /publishedContext 当前页面会话重读/.test(queryRefreshSource),
+  "C017 在每次查询前必须撤销旧会话放行，只有本次真实读取闭合后才能形成新令牌"
+);
+
+const resetSource = functionSource("resetScenarioRun", "applyPendingScenarioResetRequest");
 const resetActionSource = actionSource("confirm-reset-flow", "resource-shelf");
 const currentProjectionDeclaration = initialFlowSource.match(/\b(currentSnapshotSelections|currentRunContext|activeRunContext|activeScenarioContext)\s*:/);
 const currentProjectionField = currentProjectionDeclaration?.[1] || "";
@@ -732,13 +768,24 @@ assert(
 );
 assert(/sameScenarioContext\(run\.scenarioContext,scenarioGate\.context\)/.test(functionSource("publishAsset", "currentT019Snapshot")), "T007 发布必须核对完整五字段 C033，不能只比较 scenarioRunId");
 assert(
-  !/localStorage\.(?:removeItem|clear)\s*\(/.test(app) &&
+  !/localStorage\.(?:removeItem|clear)\s*\(/.test(resetSource) &&
   (app.match(/\bconst\s+FLOW_KEY\s*=/g) || []).length === 1 &&
   !/\b(?:let|var)\s+FLOW_KEY\s*=/.test(app) &&
   !/\bFLOW_KEY\s*=(?!=)/.test(app.slice(app.indexOf("const FLOW_KEY") + "const FLOW_KEY".length)) &&
   !/localStorage\.|FLOW_KEY/.test(resetSource),
   "定向重置不得删除、清空、替换或按 scenarioRunId 轮换 localStorage；历史必须保存在同一工作区记录中"
 );
+const integrationResetStart = integrationState.indexOf("function resetCurrentScenario");
+const integrationResetEnd = integrationState.indexOf("function ", integrationResetStart + "function resetCurrentScenario".length);
+const integrationResetSource = integrationResetStart >= 0 ? integrationState.slice(integrationResetStart, integrationResetEnd > integrationResetStart ? integrationResetEnd : integrationState.length) : "";
+assert(
+  /resetScenarioProjection/.test(integrationResetSource) &&
+  /SCENARIO_RESET_REQUEST_KEY/.test(integrationResetSource) &&
+  !/localStorage\.(?:removeItem|clear)\s*\(/.test(integrationResetSource) &&
+  !/sessionStorage\.(?:removeItem|clear)\s*\(/.test(integrationResetSource),
+  "平台定向重置只能发布重置请求和新 C033，不得删除任何模块、交换或会话历史键"
+);
+assert(!app.includes("c003DeliveryEvidencePanelLegacy") && !app.includes("按证据恢复 C003 交付"), "C003 旧面板和旧恢复按钮不得与唯一合同面板重复出现");
 
 const outputPath = path.join(here, "方案B2.html");
 assert(fs.existsSync(outputPath), "缺少方案B2.html");

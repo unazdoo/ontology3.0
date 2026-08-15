@@ -38,6 +38,7 @@ window.DE_DATA = {
         statusWhenUnmatched: "已登记 · 结构未核验 · 阻断正式运行"
       },
       contentFindings: [
+        { field: "借据币种", checkedCount: 5218, observedCount: 0, finding: "来源字段已纳入正式成员合同；不得以人民币余额字段反推币种", forbiddenInterpretation: "不得把折合人民币余额误作原币币种为 CNY" },
         { field: "利率形式", checkedCount: 5218, observedCount: 212, finding: "允许缺失 · 必须在质量摘要中披露", forbiddenInterpretation: "不得补为固定利率、浮动利率或 0" },
         { field: "期限种类", checkedCount: 5218, observedCount: 212, finding: "允许缺失 · 必须在质量摘要中披露", forbiddenInterpretation: "不得补为短期、中期、长期或 0" },
         { field: "担保方式", checkedCount: 5218, observedCount: 1868, finding: "允许缺失 · 必须在质量摘要中披露", forbiddenInterpretation: "不得补为信用、无担保或否" }
@@ -361,9 +362,11 @@ window.DE_DATA = {
             { fieldId: "FIELD-FINANCING-DETAIL-ENTITY-CODE", name: "单位编码", type: "文本标识", nullable: false, role: "外键", description: "引用融资主体参考" },
             { fieldId: "FIELD-FINANCING-DETAIL-INSTITUTION-CODE", name: "机构编码", type: "文本标识", nullable: false, role: "外键", description: "引用金融机构参考" },
             { fieldId: "FIELD-FINANCING-DETAIL-CNY-BALANCE", name: "借据余额（折合人民币）", type: "十进制数", nullable: false, role: "事实字段", description: "人民币元" },
+            { fieldId: "FIELD-FINANCING-DETAIL-CURRENCY", name: "借据币种", type: "枚举", nullable: false, role: "分类字段", description: "保留来源币种，用于区分人民币与外币融资" },
             { fieldId: "FIELD-FINANCING-DETAIL-INTEREST-RATE", name: "当前利率", type: "十进制数", nullable: false, role: "事实字段", description: "融资当前利率" },
             { fieldId: "FIELD-FINANCING-DETAIL-RATE-TYPE", name: "利率形式", type: "枚举", nullable: false, role: "分类字段", description: "固定利率或浮动利率" },
             { fieldId: "FIELD-FINANCING-DETAIL-TERM-TYPE", name: "期限种类", type: "枚举", nullable: false, role: "分类字段", description: "短期或中长期" },
+            { fieldId: "FIELD-FINANCING-DETAIL-GUARANTEE-TYPE", name: "担保方式", type: "枚举", nullable: true, role: "分类字段", description: "保留来源担保方式；空值披露为未知，不补写为信用融资" },
             { fieldId: "FIELD-FINANCING-DETAIL-AS-OF-DATE", name: "数据截至时间", type: "日期", nullable: false, role: "版本字段", description: "与该数据资产版本的数据截至时间一致" }
           ]
         },

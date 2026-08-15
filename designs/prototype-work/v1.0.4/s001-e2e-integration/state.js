@@ -4,6 +4,7 @@
   const STORAGE_KEY = "ontology.financial-world.s001.integration.v2";
   const HANDOFF_CHANNEL = "ontology3.0-s001-handoff-v1";
   const SCENARIO_CONTEXT_KEY = `${HANDOFF_CHANNEL}:scenario-context`;
+  const SCENARIO_RESET_REQUEST_KEY = `${HANDOFF_CHANNEL}:scenario-reset-request`;
   const SCENARIO_CONTEXT_FIELDS = ["scenarioId", "scenarioVersion", "scenarioRunId", "formedAt", "status"];
   const MODULE_STORAGE_KEYS = [
     "ontology-management-product-state-v1",
@@ -341,7 +342,9 @@
     const unscopedRecords = Number(options.unscopedRecords || 0);
     const mismatchedRecords = Number(options.mismatchedRecords || 0);
     const totalRecords = Number(options.totalRecords ?? matchedRecords + unscopedRecords + mismatchedRecords);
-    const scoped = options.scoped === true || rootScenarioId === scenarioId || matchedRecords > 0;
+    const scoped = Object.prototype.hasOwnProperty.call(options, "scoped")
+      ? options.scoped === true
+      : rootScenarioId === scenarioId || matchedRecords > 0;
     const status = scoped ? "scoped" : rootScenarioId && rootScenarioId !== scenarioId || mismatchedRecords > 0 ? "mismatch" : "unscoped";
     const reason = status === "scoped"
       ? options.reason || "仅纳入场景身份与当前工作区一致的模块记录。"
@@ -388,6 +391,28 @@
         unscopedRecords: counts.unscoped.length,
         mismatchedRecords: counts.mismatched.length,
         reason: scoped ? "模块工作区根状态已固定到当前场景。" : undefined
+      })
+    };
+  }
+
+  function scopeDataState(raw, scenarioId, expectedContext) {
+    if (!raw) return { value: null, meta: sourceScopeMeta("data", scenarioId, raw) };
+    const rootScenarioId = canonicalScenarioId(raw);
+    const records = [raw.uploadedSnapshots, raw.runs, raw.assetVersions].flatMap((items) => list(items));
+    const counts = recordScopeCounts(records, scenarioId);
+    const exactRound = sameScenarioContext(raw.scenarioContext, expectedContext);
+    return {
+      value: exactRound ? raw : null,
+      meta: sourceScopeMeta("data", scenarioId, raw, {
+        rootScenarioId,
+        scoped: exactRound,
+        totalRecords: records.length,
+        matchedRecords: exactRound ? counts.matched.length : 0,
+        unscopedRecords: counts.unscoped.length,
+        mismatchedRecords: exactRound ? counts.mismatched.length : Math.max(1, records.length),
+        reason: exactRound
+          ? "数据工程工作区根状态与平台当前完整 C033 一致。"
+          : "数据工程工作区属于同一场景的其他工作轮次，未进入当前首页摘要和链路进度。"
       })
     };
   }
@@ -558,8 +583,8 @@
     };
   }
 
-  function scopeSources(rawSources, scenarioId) {
-    const data = scopeRootState("data", rawSources.data, scenarioId, [rawSources.data?.uploadedSnapshots, rawSources.data?.runs, rawSources.data?.assetVersions]);
+  function scopeSources(rawSources, scenarioId, expectedContext) {
+    const data = scopeDataState(rawSources.data, scenarioId, expectedContext);
     const ontology = scopeOntologyState(rawSources.ontology, scenarioId);
     const query = scopeQueryState(rawSources.query, scenarioId);
     const decision = scopeDecisionState(rawSources.decision, scenarioId);
@@ -1209,7 +1234,7 @@
       agentOwner: readJson(SOURCE_KEYS.agentOwner),
       report: readNewestJson(SOURCE_KEYS.report, `${SOURCE_KEYS.report}.active-tab`)
     };
-    const scoped = scopeSources(rawSources, scenarioId);
+    const scoped = scopeSources(rawSources, scenarioId, scenarioContextFor(scenarioId));
     const sources = scoped.sources;
 
     const dataResult = dataProjection(sources.data);
@@ -1409,14 +1434,15 @@
       }
     ];
     persist(false);
-    MODULE_STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
-    localStorage.removeItem(`${HANDOFF_CHANNEL}:request`);
-    Object.keys(localStorage)
-      .filter((key) => key.startsWith("ontology3.0-s001-handoff-v1:response:"))
-      .forEach((key) => localStorage.removeItem(key));
-    sessionStorage.removeItem("ontology3-decision-center-view-v2-portfolio");
-    localStorage.removeItem("ontology3-decision-center-review-v2-portfolio-state-v6");
-    localStorage.removeItem("ontology.financial-world.s001.integration.v1");
+    const resetRequest = {
+      sourceModule: "平台公共层",
+      operation: "resetScenarioProjection",
+      requestId: `RESET-${previousContext.scenarioRunId}-${Date.now()}`,
+      requestedAt: archivedAt,
+      scenarioContext: { ...previousContext },
+      preserveHistory: true
+    };
+    localStorage.setItem(SCENARIO_RESET_REQUEST_KEY, JSON.stringify(resetRequest));
     const nextScenario = createScenarioState(scenarioId, { previousFormedAt: archivedAt });
     nextScenario.scenarioRunHistory = previousScenario.scenarioRunHistory.map((record) => ({ ...record }));
     state.scenarios[scenarioId] = nextScenario;
@@ -1441,6 +1467,7 @@
     STORAGE_KEY,
     HANDOFF_CHANNEL,
     SCENARIO_CONTEXT_KEY,
+    SCENARIO_RESET_REQUEST_KEY,
     MODULE_STORAGE_KEYS,
     get: compatibleStateView,
     getRoot: () => state,
