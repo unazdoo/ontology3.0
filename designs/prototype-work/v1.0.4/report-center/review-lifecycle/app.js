@@ -369,7 +369,7 @@
     const staticCandidate = DATA.reportEvidence.factPackages?.[reference.dataVersion] || null;
     const currentCandidate = factPackageForBinding(normalizedReference);
     const candidates = [staticCandidate, currentCandidate].filter((candidate, index, all) => candidate
-      && all.findIndex((item) => item === candidate || (item.packageId && item.packageId === candidate.packageId)) === index);
+      && all.findIndex((item) => item === candidate || (item?.packageId && item.packageId === candidate.packageId)) === index);
     const exact = candidates.find((candidate) => factPackageIdentityMatches(candidate, normalizedReference));
     if (exact) return clone(exact);
     return {

@@ -330,6 +330,7 @@ assert.match(appSource, /function factPackageIdentityMatches/);
 assert.match(appSource, /\["semanticVersion", expected\.semanticVersion, candidate\.semanticVersion\]/);
 assert.match(appSource, /\["asOf", expected\.asOf, candidate\.asOf\]/);
 assert.match(appSource, /const candidates = \[staticCandidate, currentCandidate\]/);
+assert.match(appSource, /item\?\.packageId && item\.packageId === candidate\.packageId/);
 assert.match(appSource, /\[\.\.\.references\]\.reverse\(\)\.find/);
 assert.match(appSource, /retryOfRunId: external\.retryOfRunId \|\| retryOf \|\| null/);
 assert.match(appSource, /reference\.completedAt = reference\.completedAt \|\|/);
