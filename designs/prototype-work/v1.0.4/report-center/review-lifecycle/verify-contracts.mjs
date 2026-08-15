@@ -6,6 +6,82 @@ import { fileURLToPath } from "node:url";
 const root = fileURLToPath(new URL(".", import.meta.url));
 const ownersSource = fs.readFileSync(`${root}/external-owners.js`, "utf8");
 const appSource = fs.readFileSync(`${root}/app.js`, "utf8");
+const dataSource = fs.readFileSync(`${root}/data.js`, "utf8");
+
+const dataContext = vm.createContext({ window: {}, console });
+vm.runInContext(dataSource, dataContext, { filename: "data.js" });
+const reportEvidenceInventory = dataContext.window.RC_DATA.reportEvidence;
+assert.equal(reportEvidenceInventory.facts.length, 60, "报告中心 canonical facts 必须为 60 条");
+assert.equal(reportEvidenceInventory.anchors.length, 77, "报告中心 canonical anchors 必须为 77 条");
+assert.equal(reportEvidenceInventory.contentItems.length, 85, "报告中心 canonical content items 必须为 85 条");
+assert.equal(reportEvidenceInventory.renderManifest.items.length, 85, "报告中心 renderManifest 必须覆盖 85 条 content items");
+
+const overlayStart = appSource.indexOf("function reportFactPackageFor");
+const overlayEnd = appSource.indexOf("function factPackageForReport");
+assert.ok(overlayStart >= 0 && overlayEnd > overlayStart, "报告事实叠加 helper 必须存在");
+const overlayFunctionSource = appSource.slice(overlayStart, overlayEnd);
+const overlayBinding = {
+  bindingId: "T019-S001-001",
+  semanticVersionId: "PUB-S001-001",
+  semanticVersion: "1.0.1",
+  dataAssetVersionId: "FIN-ASSET-20251231-v03",
+  dataVersion: "FIN-ASSET-20251231-v03",
+  consumableVersionId: "T018-S001-001",
+  asOf: "2025-12-31",
+  readiness: "可消费",
+};
+const overlayTrust = {
+  id: "C017-CURRENT-S001-001",
+  version: "1.0",
+  formedAt: "2026-08-15 20:00:00",
+  publishedQuality: "有提示",
+  publishedQualityDetails: "担保方式存在未知值",
+  freshness: "当前",
+  readiness: "可消费",
+};
+const overlayReport = { bindingSnapshot: overlayBinding, evidencePacks: [] };
+const overlaySourcePackage = {
+  packageId: "AFP-SR-S001-M06-001-T019-S001-001",
+  packageVersion: "1.0",
+  schemaVersion: "1.0",
+  factInventoryVersion: "S001-FINANCE-FACTS-1.0",
+  factPackageStatus: "available",
+  sceneId: "S001",
+  authorityBindingId: overlayBinding.bindingId,
+  semanticVersionId: overlayBinding.semanticVersionId,
+  semanticVersion: overlayBinding.semanticVersion,
+  dataAssetVersionId: overlayBinding.dataAssetVersionId,
+  dataVersion: overlayBinding.dataVersion,
+  consumableVersionId: overlayBinding.consumableVersionId,
+  asOf: overlayBinding.asOf,
+  contentFacts: [{ id: "FACT-GROUP-COST", value: 2.35, unit: "%", evidence: ["M01-EVIDENCE"] }],
+  anchors: [{ id: "ontology-group-cost", factId: "FACT-GROUP-COST", factRefs: ["FACT-GROUP-COST"], evidence: ["M01-EVIDENCE"] }],
+  contentItems: [{ contentItemId: "ONT-CONTENT-001", anchorId: "ontology-group-cost", factRefs: ["FACT-GROUP-COST"], evidenceRefs: ["M01-EVIDENCE"], requiresEvidence: true }],
+  renderManifest: { manifestId: "M01-MANIFEST", version: "1.0", items: [] },
+};
+const overlayReportFactPackageFor = new Function(
+  "DATA", "clone", "bindingFor", "evidencePackFor", "factPackageForBinding", "currentTrust", "readingReport", "formatNumber",
+  `${overlayFunctionSource}\nreturn reportFactPackageFor;`,
+)(
+  dataContext.window.RC_DATA,
+  (value) => (value == null ? value : JSON.parse(JSON.stringify(value))),
+  () => overlayBinding,
+  () => null,
+  () => null,
+  () => overlayTrust,
+  () => overlayReport,
+  (value) => String(value),
+);
+const overlayPackage = overlayReportFactPackageFor(overlayReport, overlaySourcePackage);
+assert.equal(overlayPackage.contentFacts.length, 60, "叠加后的报告事实库存必须为 60 条");
+assert.equal(overlayPackage.anchors.length, 77, "叠加后的报告锚点库存必须为 77 条");
+assert.equal(overlayPackage.contentItems.length, 85, "叠加后的报告内容项库存必须为 85 条");
+assert.equal(overlayPackage.renderManifest.items.length, 85, "叠加后的 renderManifest 必须为 85 条");
+assert.equal(overlayPackage.contentFacts.find((fact) => fact.id === "FACT-GROUP-COST").value, 2.35, "M01 事实值应覆盖报告静态值");
+assert.equal(overlayPackage.contentFacts.find((fact) => fact.id === "FACT-DATA-VERSION").value, overlayBinding.dataVersion, "数据版本应按报告绑定动态回填");
+assert.equal(overlayPackage.contentFacts.find((fact) => fact.id === "FACT-DATA-QUALITY-STATUS").value, overlayTrust.publishedQuality, "C017 质量应按报告固定摘要动态回填");
+const unavailableOverlayPackage = overlayReportFactPackageFor(overlayReport, null);
+assert.notEqual(unavailableOverlayPackage.factPackageStatus, "available", "缺少 C008 精确事实包时不得以报告静态库存冒充可消费事实包");
 
 class MemoryStorage {
   constructor(entries = {}) {
@@ -337,6 +413,16 @@ assert.match(appSource, /reference\.completedAt = reference\.completedAt \|\|/);
 assert.match(appSource, /\["scenarioId", "scenarioVersion", "scenarioRunId", "formedAt", "status"\]/);
 assert.match(appSource, /anchorSnapshotVersion !== contentVersion/);
 assert.match(appSource, /currentProjection: false, projectionStatus: "history"/);
+const reportFactOverlaySource = appSource.slice(appSource.indexOf("function reportFactPackageFor"), appSource.indexOf("function factPackageForReport"));
+assert.match(reportFactOverlaySource, /canonicalEvidence\.facts/);
+assert.match(reportFactOverlaySource, /canonicalEvidence\.anchors/);
+assert.match(reportFactOverlaySource, /canonicalEvidence\.contentItems/);
+assert.match(reportFactOverlaySource, /FACT-DATA-QUALITY-STATUS/);
+assert.match(reportFactOverlaySource, /FACT-DATA-FRESHNESS/);
+assert.match(reportFactOverlaySource, /FACT-DATA-READINESS/);
+assert.match(reportFactOverlaySource, /sourceItemByFact/);
+assert.match(appSource, /const generatedById = new Map\(\(generatedContent\?\.contentFacts \|\| \[\]\)/);
+assert.match(appSource, /reportFactPackageFor\(report, evidencePack\.authoritativeFactPackage\)/);
 const factResolverSource = appSource.slice(appSource.indexOf("function factPackageForBinding"), appSource.indexOf("function currentFactPackage"));
 assert.match(factResolverSource, /projection\.factPackageStatus !== "ready"/);
 assert.doesNotMatch(factResolverSource, /DATA\.reportEvidence\.factPackages/);

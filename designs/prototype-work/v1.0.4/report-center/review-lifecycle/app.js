@@ -475,7 +475,7 @@
       const factPackage = pack.authoritativeFactPackage;
       return factPackage && factPackageIdentityMatches(factPackage, reference);
     });
-    return matchingPack?.authoritativeFactPackage || resolveExactFactPackage(reference);
+    return reportFactPackageFor(report, matchingPack?.authoritativeFactPackage || resolveExactFactPackage(reference));
   }
 
   function hydrateContentSnapshot(snapshot, report) {
@@ -1301,10 +1301,242 @@
     return report?.evidencePacks?.find((item) => item.id === report.evidencePackId) || null;
   }
 
+  function reportFactPackageFor(report = readingReport(), authoritativeFactPackage = null) {
+    const evidencePack = evidencePackFor(report);
+    const sourcePackage = authoritativeFactPackage || evidencePack?.authoritativeFactPackage || factPackageForBinding(bindingFor(report));
+    const canonicalEvidence = DATA.reportEvidence || {};
+    const canonicalFacts = Array.isArray(canonicalEvidence.facts) ? canonicalEvidence.facts : [];
+    const canonicalAnchors = Array.isArray(canonicalEvidence.anchors) ? canonicalEvidence.anchors : [];
+    const canonicalItems = Array.isArray(canonicalEvidence.contentItems) ? canonicalEvidence.contentItems : [];
+    if (!sourcePackage && !canonicalFacts.length) return null;
+
+    const binding = bindingFor(report);
+    const trust = evidencePack?.dataTrustAtGeneration || report?.trustAtGeneration || currentTrust() || {};
+    const definitionRef = evidencePack?.reportDefinition || {};
+    const templateRef = evidencePack?.template || {};
+    const definition = DATA.definitions?.find((item) => item.id === definitionRef.id)
+      || DATA.definitions?.[0]
+      || definitionRef;
+    const template = DATA.templates?.find((item) => item.id === templateRef.id)
+      || DATA.templates?.[0]
+      || templateRef;
+    const quality = trust.publishedQuality || trust.qualityStatus || trust.quality || binding.quality || "未取得";
+    const freshness = trust.freshness || trust.freshnessStatus || binding.freshness || "未取得";
+    const readiness = trust.readiness || trust.consumptionReadiness || binding.readiness || binding.consumption || "未取得";
+    const dataVersion = binding.dataVersion || sourcePackage?.dataVersion || null;
+    const dataAsOf = binding.asOf || sourcePackage?.asOf || null;
+    const semanticVersion = binding.semanticVersion || sourcePackage?.semanticVersion || null;
+    const semanticVersionId = binding.semanticVersionId || sourcePackage?.semanticVersionId || null;
+    const dataAssetVersionId = binding.dataAssetVersionId || sourcePackage?.dataAssetVersionId || null;
+    const consumableVersionId = binding.consumableVersionId || sourcePackage?.consumableVersionId || null;
+    const sourceFacts = Array.isArray(sourcePackage?.contentFacts) ? sourcePackage.contentFacts : [];
+    const sourceAnchors = Array.isArray(sourcePackage?.anchors) ? sourcePackage.anchors : [];
+    const sourceItems = Array.isArray(sourcePackage?.contentItems) ? sourcePackage.contentItems : [];
+    const sourceFactById = new Map(sourceFacts.map((fact) => [fact.id || fact.factId, fact]));
+    const sourceAnchorById = new Map(sourceAnchors.map((anchor) => [anchor.id, anchor]));
+    const sourceAnchorByFact = new Map(sourceAnchors.flatMap((anchor) => (anchor.factId ? [[anchor.factId, anchor]] : [])));
+    const sourceItemById = new Map(sourceItems.map((item) => [item.contentItemId, item]));
+    const sourceItemByAnchor = new Map(sourceItems.filter((item) => item.anchorId).map((item) => [item.anchorId, item]));
+    const sourceItemByFact = new Map(sourceItems.flatMap((item) => (item.factRefs || []).map((factId) => [factId, item])));
+    const dynamicValues = new Map([
+      ["FACT-AS-OF", dataAsOf],
+      ["FACT-REPORT-DEFINITION-VERSION", definition.version || definitionRef.version || null],
+      ["FACT-REPORT-TEMPLATE-VERSION", template.version || templateRef.version || null],
+      ["FACT-PUBLISHED-SEMANTIC-VERSION", semanticVersion],
+      ["FACT-DATA-VERSION", dataVersion],
+      ["FACT-DATA-AS-OF-DISCLOSURE", dataAsOf],
+      ["FACT-DATA-QUALITY-STATUS", quality],
+      ["FACT-DATA-FRESHNESS", freshness],
+      ["FACT-DATA-READINESS", readiness],
+      ["FACT-QUALITY-LIMITATION", trust.publishedQualityDetails || trust.qualityDetails || null],
+    ]);
+    const dynamicEvidence = new Map([
+      ["FACT-REPORT-DEFINITION-VERSION", [definition.id || definitionRef.id]],
+      ["FACT-REPORT-TEMPLATE-VERSION", [template.id || templateRef.id]],
+      ["FACT-PUBLISHED-SEMANTIC-VERSION", [semanticVersionId, binding.bindingId]],
+      ["FACT-DATA-VERSION", [dataAssetVersionId, dataVersion, binding.bindingId]],
+      ["FACT-DATA-AS-OF-DISCLOSURE", [dataAssetVersionId, dataVersion]],
+      ["FACT-DATA-QUALITY-STATUS", [trust.id, trust.currentStatusSummaryId, trust.dataAssetVersionId]],
+      ["FACT-DATA-FRESHNESS", [trust.id, dataVersion]],
+      ["FACT-DATA-READINESS", [consumableVersionId, dataVersion]],
+    ]);
+    const facts = canonicalFacts.map((declared) => {
+      const source = sourceFactById.get(declared.id);
+      const value = dynamicValues.has(declared.id) && dynamicValues.get(declared.id) != null
+        ? dynamicValues.get(declared.id)
+        : (source?.value ?? declared.value);
+      const unit = source?.unit ?? declared.unit ?? null;
+      const evidence = [...new Set([
+        ...(declared.evidence || []),
+        ...(source?.evidence || []),
+        ...(dynamicEvidence.get(declared.id) || []),
+      ].filter(Boolean))];
+      const semanticSnapshot = {
+        ...(declared.semanticSnapshot || {}),
+        ...(source?.semanticSnapshot || {}),
+        semanticVersionId,
+        semanticVersion,
+        publishedVersion: semanticVersion,
+      };
+      const trustSnapshot = {
+        ...(declared.trustSnapshot || {}),
+        ...(source?.trustSnapshot || {}),
+        dataVersion,
+        asOf: dataAsOf,
+        qualityStatus: quality,
+        freshnessStatus: freshness,
+        consumptionReadiness: readiness,
+        limitations: [...new Set([...(declared.trustSnapshot?.limitations || []), ...(source?.trustSnapshot?.limitations || [])])],
+      };
+      const result = {
+        ...clone(declared),
+        ...(source ? clone(source) : {}),
+        id: declared.id,
+        label: source?.label || declared.label || declared.id,
+        value,
+        unit,
+        evidence,
+        sectionId: declared.sectionId,
+        location: declared.location,
+        primaryAnchorId: declared.primaryAnchorId,
+        anchorIds: clone(declared.anchorIds || source?.anchorIds || []),
+        locations: clone(declared.locations || source?.locations || []),
+        applicableChecks: clone(declared.applicableChecks || source?.applicableChecks || []),
+        semanticSnapshot,
+        trustSnapshot,
+        semanticVersionId,
+        semanticVersion,
+        dataAssetVersionId,
+        dataVersion,
+        consumableVersionId,
+        asOf: dataAsOf,
+        displayValue: value,
+        normalizedValue: value,
+      };
+      if (dynamicValues.get(declared.id) == null && source?.displayValue != null) result.displayValue = source.displayValue;
+      if (dynamicValues.get(declared.id) == null && source?.normalizedValue != null) result.normalizedValue = source.normalizedValue;
+      return result;
+    });
+    const factById = new Map(facts.map((fact) => [fact.id, fact]));
+    const anchors = canonicalAnchors.map((declared) => {
+      const source = sourceAnchorById.get(declared.id) || sourceAnchorByFact.get(declared.factId || declared.factRefs?.[0]);
+      const factRefs = clone(declared.factRefs || (declared.factId ? [declared.factId] : []));
+      const relatedFacts = factRefs.map((factId) => factById.get(factId)).filter(Boolean);
+      const evidence = [...new Set([
+        ...(declared.evidence || []),
+        ...(source?.evidence || []),
+        ...relatedFacts.flatMap((fact) => fact.evidence || []),
+      ].filter(Boolean))];
+      const requiresEvidence = declared.requiresEvidence !== false;
+      return {
+        ...clone(declared),
+        id: declared.id,
+        factRefs,
+        factId: declared.factId || factRefs[0] || null,
+        evidence,
+        evidenceRefs: [...new Set([...(declared.evidenceRefs || []), ...(source?.evidenceRefs || []), ...evidence])],
+        bindingStatus: requiresEvidence ? (relatedFacts.length === factRefs.length && evidence.length ? "bound" : "missing") : "not-required",
+        renderedValue: source?.renderedValue ?? declared.renderedValue ?? relatedFacts[0]?.displayValue ?? declared.label,
+        displayValue: source?.displayValue ?? declared.displayValue ?? relatedFacts[0]?.displayValue ?? declared.label,
+        semanticSnapshot: relatedFacts[0]?.semanticSnapshot || source?.semanticSnapshot || declared.semanticSnapshot || null,
+        trustSnapshot: relatedFacts[0]?.trustSnapshot || source?.trustSnapshot || declared.trustSnapshot || null,
+        ruleSnapshot: relatedFacts[0]?.ruleSnapshot || source?.ruleSnapshot || declared.ruleSnapshot || null,
+      };
+    });
+    const anchorsById = new Map(anchors.map((anchor) => [anchor.id, anchor]));
+    const items = canonicalItems.map((declared) => {
+      const source = sourceItemById.get(declared.contentItemId)
+        || sourceItemByAnchor.get(declared.anchorId)
+        || sourceItemByFact.get((declared.factRefs || [])[0]);
+      const factRefs = clone(declared.factRefs || source?.factRefs || []);
+      const evidenceRefs = [...new Set([
+        ...(declared.evidenceRefs || []),
+        ...(source?.evidenceRefs || []),
+        ...factRefs.flatMap((factId) => factById.get(factId)?.evidence || []),
+      ].filter(Boolean))];
+      const requiresEvidence = declared.requiresEvidence !== false;
+      const anchor = declared.anchorId ? anchorsById.get(declared.anchorId) : null;
+      return {
+        ...clone(declared),
+        contentItemId: declared.contentItemId,
+        sourceItemId: source?.sourceItemId || declared.sourceItemId || null,
+        parentId: source?.parentId || declared.parentId || null,
+        anchorId: declared.anchorId || source?.anchorId || null,
+        factRefs,
+        intendedFactRefs: [],
+        evidenceRefs,
+        bindingStatus: requiresEvidence ? (factRefs.length && evidenceRefs.length ? "bound" : "missing") : "not-required",
+        requiresEvidence,
+        renderedValue: source?.renderedValue ?? declared.renderedValue ?? anchor?.renderedValue ?? null,
+        displayValue: source?.displayValue ?? declared.displayValue ?? anchor?.displayValue ?? null,
+        semanticSnapshot: anchor?.semanticSnapshot || source?.semanticSnapshot || declared.semanticSnapshot || null,
+        trustSnapshot: anchor?.trustSnapshot || source?.trustSnapshot || declared.trustSnapshot || null,
+        ruleSnapshot: anchor?.ruleSnapshot || source?.ruleSnapshot || declared.ruleSnapshot || null,
+      };
+    });
+    const sourceManifest = sourcePackage?.renderManifest || {};
+    const renderManifest = {
+      ...clone(canonicalEvidence.renderManifest || sourceManifest),
+      ...clone(sourceManifest),
+      manifestId: canonicalEvidence.renderManifest?.manifestId || sourceManifest.manifestId || null,
+      version: canonicalEvidence.renderManifest?.version || sourceManifest.version || null,
+      authoritativeBinding: {
+        ...(sourceManifest.authoritativeBinding || {}),
+        ...(canonicalEvidence.renderManifest?.authoritativeBinding || {}),
+        bindingId: binding.bindingId || sourceManifest.authoritativeBinding?.bindingId || null,
+        semanticVersionId,
+        semanticVersion,
+        dataAssetVersionId,
+        dataVersion,
+        consumableVersionId,
+        asOf: dataAsOf,
+      },
+      items,
+    };
+    const packageValue = {
+      ...clone(sourcePackage || {}),
+      packageId: sourcePackage?.packageId || `RC-FACT-PACKAGE-${report?.evidencePackId || dataVersion || "UNRESOLVED"}`,
+      packageVersion: sourcePackage?.packageVersion || canonicalEvidence.version || null,
+      schemaVersion: sourcePackage?.schemaVersion || canonicalEvidence.schemaVersion || null,
+      factInventoryVersion: sourcePackage?.factInventoryVersion || canonicalEvidence.factInventoryVersion || null,
+      factPackageStatus: sourcePackage ? (sourcePackage.factPackageStatus || sourcePackage.status || "unavailable") : "unavailable",
+      authorityBindingId: binding.bindingId || sourcePackage?.authorityBindingId || null,
+      bindingId: binding.bindingId || sourcePackage?.bindingId || null,
+      semanticVersionId,
+      semanticVersion,
+      dataAssetVersionId,
+      dataVersion,
+      consumableVersionId,
+      asOf: dataAsOf,
+      contentFacts: facts,
+      anchors,
+      contentItems: items,
+      renderManifest,
+      generatedNarrativeContract: clone(canonicalEvidence.generatedNarrativeContract || sourcePackage?.generatedNarrativeContract || null),
+      authoritativeBinding: {
+        ...(sourcePackage?.authoritativeBinding || {}),
+        bindingId: binding.bindingId || sourcePackage?.authoritativeBinding?.bindingId || null,
+        semanticVersionId,
+        semanticVersion,
+        dataAssetVersionId,
+        dataVersion,
+        consumableVersionId,
+        asOf: dataAsOf,
+      },
+      groupMetrics: clone(sourcePackage?.groupMetrics || DATA.groupMetrics || null),
+      units: clone(sourcePackage?.units || DATA.units || {}),
+      comparisons: clone(sourcePackage?.comparisons || DATA.comparisons || {}),
+      structures: clone(sourcePackage?.structures || DATA.structures || null),
+      institutions: clone(sourcePackage?.institutions || DATA.institutions || []),
+      trend: clone(sourcePackage?.trend?.length ? sourcePackage.trend : DATA.trend || []),
+    };
+    return packageValue;
+  }
+
   function factPackageForReport(report = readingReport()) {
     const evidencePack = evidencePackFor(report);
-    if (report?.evidencePackId) return evidencePack?.authoritativeFactPackage || null;
-    return factPackageForBinding(bindingFor(report));
+    if (report?.evidencePackId) return reportFactPackageFor(report, evidencePack?.authoritativeFactPackage || null);
+    return reportFactPackageFor(report, factPackageForBinding(bindingFor(report)));
   }
 
   function currentFactsAreUsable() {
@@ -1463,9 +1695,23 @@
     const factPackage = factPackageForReport(report);
     if (!factPackageIsAvailable(factPackage)) return null;
     const authoritativeFacts = clone(factPackage.contentFacts || []);
-    const contentFacts = generatedContent?.contentFacts?.length
-      ? clone(generatedContent.contentFacts)
-      : authoritativeFacts.map((fact) => ({
+    const generatedById = new Map((generatedContent?.contentFacts || []).map((fact) => [fact.sourceFactId || fact.intendedFactId || fact.factId, fact]));
+    const contentFacts = authoritativeFacts.map((fact) => {
+      const generated = generatedById.get(fact.id);
+      if (generated) {
+        return {
+          ...clone(generated),
+          sourceFactId: generated.sourceFactId || fact.id,
+          factId: fact.id,
+          intendedFactId: generated.intendedFactId || fact.id,
+          authoritativeValue: clone(fact.value),
+          unit: generated.unit ?? fact.unit ?? null,
+          semanticSnapshot: generated.semanticSnapshot || clone(fact.semanticSnapshot || null),
+          trustSnapshot: generated.trustSnapshot || clone(fact.trustSnapshot || null),
+          bindingStatus: generated.bindingStatus || "bound",
+        };
+      }
+      return {
         contentFactId: `GCF-MIGRATED-${fact.id}`,
         sourceFactId: fact.id,
         factId: fact.id,
@@ -1480,7 +1726,8 @@
         evidenceRefs: clone(fact.evidence || []),
         anchorIds: clone(fact.anchorIds || []),
         bindingStatus: "bound",
-      }));
+      };
+    });
     return {
       snapshotId: makeId("CNT"),
       revisionNumber: generatedContent?.contentRevision || report.revisionNumber,
@@ -1551,8 +1798,12 @@
     const providedManifest = factPackage.renderManifest || { manifestId: null, version: null, items: factPackage.contentItems || [] };
     const sourceByContentId = new Map((sourceItems || []).filter((item) => item.contentItemId).map((item) => [item.contentItemId, item]));
     const sourceByAnchor = new Map((sourceItems || []).filter((item) => item.anchorId).map((item) => [item.anchorId, item]));
+    const sourceByFact = new Map((sourceItems || []).flatMap((item) => (item.factRefs || []).map((factId) => [factId, item])));
     const renderItems = (providedManifest.items || factPackage.contentItems || []).map((declared) => {
-      const source = sourceByContentId.get(declared.contentItemId) || sourceByAnchor.get(declared.anchorId) || null;
+      const source = sourceByContentId.get(declared.contentItemId)
+        || sourceByAnchor.get(declared.anchorId)
+        || sourceByFact.get((declared.factRefs || [])[0])
+        || null;
       const bindingMissing = source?.bindingStatus === "missing" || declared.bindingStatus === "missing";
       const requiresEvidence = declared.requiresEvidence !== false;
       const factRefs = bindingMissing ? [] : clone(source?.factRefs?.length ? source.factRefs : declared.factRefs || []);
@@ -2875,7 +3126,7 @@
     const requestRef = a.requestRef;
     const external = requestRef ? OWNERS.agent.getQA(requestRef.runId || requestRef.requestId) : null;
     const ownerQuestion = external?.payload?.question || null;
-    const messages = external?.status === "已完成" ? `<div class="message user"><p>${esc(ownerQuestion || "问题正文由 Agent 应用维护")}</p></div><div class="message assistant"><p>${esc(external.answer)}</p><div class="message-meta"><span>报告快照 · ${esc(binding.asOf)}</span><button class="citation-link" type="button" data-action="jump-anchor" data-anchor="${external.anchor}">定位证据</button><button class="citation-link" type="button" data-action="open-anchor-evidence" data-anchor="${external.anchor}">打开证据</button></div></div>` : requestRef ? `<div class="notice warning">${icon("refresh-cw")}<div><strong>正在从 Agent 应用读取问题与答案</strong><span>报告中心仅保留请求、Run、Result 和上下文标识，不保存消息正文。</span></div></div>` : "";
+    const messages = external?.status === "已完成" ? `<div class="message user"><p>${esc(ownerQuestion || "问题正文由 Agent 应用维护")}</p></div><div class="message assistant"><p>${esc(external.answer)}</p><div class="message-meta"><span>报告快照 · ${esc(binding.asOf)}</span><button class="citation-link" type="button" data-action="jump-anchor" data-anchor="${external.anchor}">定位证据</button><button class="citation-link" type="button" data-action="open-anchor-evidence" data-anchor="${external.anchor}">打开证据</button></div></div>` : requestRef ? `<div class="notice warning">${icon("refresh-cw")}<div><strong>正在从 Agent 应用读取问题与答案</strong><span>请求 ${esc(requestRef.requestId || "不可定位")} · ${external?.failure ? `读取原因：${esc(external.failure)}` : "报告中心仅保留请求、Run、Result 和上下文标识，不保存消息正文。"}</span></div></div>` : "";
     return `
       <div class="assistant-content">
         <div class="context-box"><span>当前上下文</span><strong>${esc(a.selectedAnchor)} · 证据包 ${esc(report.evidencePackId)}</strong><small>普通问答仅含报告固定内容、锚点、证据包和生成时 C017 版本绑定摘要；不自动加入后续 T049/C027，不包含工作簿、T002、T007 成员明细或当前业务数据查询权。</small></div>
@@ -3735,7 +3986,7 @@
     const draftId = makeId("DRAFT");
     const draftVersion = `0.${revisionNumber}`;
     const snapshot = createContentSnapshot({ ...report, revisionNumber }, external.generatedContent);
-    const contentContractSnapshot = buildContentContract(external.sourceItems, evidencePack.authoritativeFactPackage, draftId);
+    const contentContractSnapshot = buildContentContract(external.sourceItems, reportFactPackageFor(report, evidencePack.authoritativeFactPackage), draftId);
     reference.runId = external.runId;
     reference.resultId = resultId;
     reference.sourceDraftId = sourceDraftId;
@@ -4862,7 +5113,7 @@
       const external = OWNERS.agent.getQA(ref.requestId || ref.runId);
       syncAgentReference(ref, external);
       commit();
-      toast(external?.status === "已完成" ? "Agent 结果已重新读取" : external ? "Agent 请求状态已重新读取" : "Agent 记录不可定位", external?.status === "已完成" ? "答案仅在当前页面显示，报告中心未保存消息或运行状态副本。" : external ? `当前状态：${external.status}。` : "保留请求与外部标识，等待 Agent 应用恢复权威记录。", external ? "success" : "danger");
+      toast(external?.status === "已完成" ? "Agent 结果已重新读取" : external ? "Agent 请求状态已重新读取" : "Agent 记录不可定位", external?.status === "已完成" ? "答案仅在当前页面显示，报告中心未保存消息或运行状态副本。" : external ? `当前状态：${external.status}${external.failure ? `；原因：${external.failure}` : ""}。` : "保留请求与外部标识，等待 Agent 应用恢复权威记录。", external ? "success" : "danger");
       return;
     }
     if (action === "set-verification-scope") { verificationForWrite(readingReport()).scope = element.dataset.scope; return commit(); }
