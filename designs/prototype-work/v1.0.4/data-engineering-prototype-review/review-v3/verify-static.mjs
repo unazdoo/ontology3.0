@@ -706,7 +706,7 @@ assert(
   "C028 权威回执必须按同一 requestId 和原始请求区分受理、等待与拒绝，不能借用其他请求的 deliveryIssues"
 );
 assert(
-  /queryRefreshRequest/.test(app) && /\["request-created","request-accepted","unknown","eligible","failed"\]/.test(app) &&
+  /queryRefreshRequest/.test(app) && /\["request-created","request-accepted","unknown","eligible","failed","adopted"\]/.test(app) &&
   /ontologyBridgeRequest\("refreshRequestStatus",\{requestId:attempt\.requestId\}\)/.test(app),
   "C028 后续重读必须允许从本地失败投影恢复，并重新读取 M01 持久化回执"
 );
@@ -772,8 +772,13 @@ assert(
 assert(
   /t019SessionObservations\.delete\(version\.id\)/.test(queryRefreshSource) &&
   /t019SessionObservations\.set\(version\.id/.test(queryRefreshSource) &&
+  /"adopted"/.test(queryRefreshSource) &&
   /publishedContext 当前页面会话重读/.test(queryRefreshSource),
-  "C017 在每次查询前必须撤销旧会话放行，只有本次真实读取闭合后才能形成新令牌"
+  "C017 在每次查询前必须撤销旧会话放行，已采用版本也必须支持本会话真实重读，只有闭合后才能形成新令牌"
+);
+assert(
+  app.includes('button("重新读取本体正式采用状态","query-refresh"'),
+  "已正式采用状态必须保留本会话 T019/currentFormal 重新读取入口"
 );
 
 const resetSource = functionSource("resetScenarioRun", "applyPendingScenarioResetRequest");
