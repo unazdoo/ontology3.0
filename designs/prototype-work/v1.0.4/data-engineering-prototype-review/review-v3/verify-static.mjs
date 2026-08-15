@@ -732,13 +732,42 @@ assert(
 );
 assert(!/function\s+(?:formC029|deriveC029|formT018|deriveT018|adoptT019|deriveT019)\b/.test(app), "数据工程不得本地推断或生成 C029、T018、T019");
 
-const c017Source = functionSource("c017ProjectionForVersion", "c017ProjectionEnvelope");
+const c017DimensionsSource = functionSource("c017FiveDimensions", "c017ProjectionForVersion");
+const c017Source = functionSource("c017ProjectionForVersion", "c017ReportProjection");
+const c017ReportSource = functionSource("c017ReportProjection", "c017ProjectionEnvelope");
+const c017EnvelopeSource = functionSource("c017ProjectionEnvelope", "writeProjectionStore");
+const c017StoreSource = functionSource("syncC017ProjectionStores", "readC017Projection");
 const queryRefreshSource = functionSource("queryRefreshRequest", "finishFailedCandidate");
 assert(
-  /allowConsumption=Boolean\(isAuthority&&qualityAllowed&&!hardFailure&&evidenceComplete\)/.test(c017Source) &&
+  /allowConsumption=Boolean\(isAuthority&&qualityAllowed&&!hardFailure&&evidenceComplete&&t008Verified&&t018Verified&&currentFormalVerified\)/.test(c017Source) &&
   /sessionAuthorityVerified/.test(c017Source) && /T019_RUNTIME_VERIFICATION_ID/.test(c017Source) &&
   /readToken/.test(c017Source) && /currentFormalSnapshot/.test(c017Source),
-  "C017 allowConsumption 必须同时要求证据完整、无硬质量失败和本页面会话 T019/currentFormal 重读令牌"
+  "C017 allowConsumption 必须同时要求完整 C033、精确 T007/T008、T018、T019/currentFormal、证据完整且无硬质量失败"
+);
+assert(
+  ["version-location","content-access","evidence-integrity","replay-capability","replay-verification"].every(id=>c017DimensionsSource.includes(`id:\"${id}\"`)) &&
+  ["versionBindingSummary","currentStateSummary","fiveDimensions","t018EvidenceId","t019EvidenceId","authorityAlignment"].every(field=>c017Source.includes(field)),
+  "C017 必须输出版本绑定摘要、当前状态摘要、五维状态及精确 T018/T019 对齐元数据"
+);
+assert(
+  app.includes('const C017_REPORT_PROJECTION_KEY = "ontology3.c017.report-center.projection.v1"') &&
+  /consumer==="报告中心"/.test(c017EnvelopeSource) && /projectionId:C017_REPORT_PROJECTION_KEY/.test(c017EnvelopeSource) &&
+  /consumer,scenarioContext,formedAt,readStatus/.test(c017EnvelopeSource) && /permissions:/.test(c017EnvelopeSource) &&
+  /只提供数据版本、时点、质量、新鲜度、五维状态与证据定位/.test(c017EnvelopeSource) &&
+  /writeProjectionStore\(C017_REPORT_PROJECTION_KEY,c017ProjectionEnvelope\("报告中心"\)\)/.test(c017StoreSource),
+  "数据工程必须发布 consumer=报告中心 的独立 C017 只读投影，且明确不包含业务明细"
+);
+assert(
+  /item\.allowConsumption&&item\.authorityAlignment\?\.complete/.test(c017ReportSource) &&
+  /item\.t008\?\.evidenceId/.test(c017ReportSource) && /item\.refresh\?\.t018EvidenceId/.test(c017ReportSource) &&
+  /item\.t019Observation\?\.evidenceId/.test(c017ReportSource) && /item\.t019Observation\?\.currentFormalSnapshot/.test(c017ReportSource) &&
+  /readStatus:!gate\.okay\?"context_missing":!reportProjections\.length\?"empty":ready\?"ready":"unavailable"/.test(c017EnvelopeSource),
+  "报告中心 C017 正向必须精确闭合；C033、T007/T008、T018、T019/currentFormal 缺失或错配必须保持阻断"
+);
+assert(
+  manifest.invariants.c017ProjectionStores?.["报告中心"] === "ontology3.c017.report-center.projection.v1" &&
+  /报告中心/.test(manifest.invariants.handoffContracts?.C017 || "") && /不含业务明细/.test(manifest.invariants.handoffContracts?.C017 || ""),
+  "manifest 必须登记报告中心 C017 投影键、只读边界与禁止业务明细"
 );
 assert(
   /t019SessionObservations\.delete\(version\.id\)/.test(queryRefreshSource) &&

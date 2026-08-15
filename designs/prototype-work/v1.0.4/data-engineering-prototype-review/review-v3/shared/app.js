@@ -13,6 +13,7 @@
   const T019_RUNTIME_VERIFICATION_ID = `T019-RUNTIME-${Date.now()}-${Math.random().toString(16).slice(2,10)}`;
   const C017_IQ_PROJECTION_KEY = "ontology3.c017.intelligent-query.projection.v1";
   const C017_DECISION_PROJECTION_KEY = "ontology3.c017.decision-center.projection.v1";
+  const C017_REPORT_PROJECTION_KEY = "ontology3.c017.report-center.projection.v1";
   const SCENARIO_CONTEXT_FIELDS = ["scenarioId","scenarioVersion","scenarioRunId","formedAt","status"];
   const VERIFIED_FINANCE_SHA256 = "83232e2dda913e63d2faa1e45aab824270f4ab5bcb96849a44ab8a03f93db12d";
   const VERIFIED_FINANCE_SIZE = 807264;
@@ -710,6 +711,16 @@
   function versionHardQualityFailure(version,current) {
     return Boolean(version?.hardQualityFailure===true||current?.hardQualityFailure===true||version?.postPublishQuality?.status==="硬质量失败");
   }
+  function c017FiveDimensions(version,current,evidenceComplete) {
+    const dimensions=current?.dimensions||{};
+    return [
+      {id:"version-location",name:"版本定位",status:dimensions.versionLocation||"未知",reason:evidenceComplete?`精确 T006 ${version.targetAssetId}、T007 ${version.id} 与 T008 ${version.asOf} 可定位。`:`精确 T006/T007/T008 或其证据尚不完整，不能放行。`},
+      {id:"content-access",name:"内容访问",status:dimensions.contentAccess||version.contentAccess||"未知",reason:version.contentAccess==="可访问"?"获准消费者只能按稳定证据入口读取；C017 不提供工作簿、源字段或业务明细。":"当前版本内容访问条件未满足。"},
+      {id:"evidence-integrity",name:"证据完整",status:dimensions.evidenceIntegrity||version.evidenceIntegrity||"未知",reason:evidenceComplete?"版本、时点、质量、成员关系、刷新和正式采用证据完整。":"至少一类版本、时点、质量、刷新或采用证据缺失。"},
+      {id:"replay-capability",name:"重放能力",status:dimensions.replayCapability||"未执行",reason:"一期仅登记当前数据侧重放状态；未执行不解释为一致或失败。"},
+      {id:"replay-verification",name:"重放核验",status:dimensions.replayVerification||"未执行",reason:"尚未形成真实重放一致性结论，不影响固定证据查看，但不得据此宣称已复算。"}
+    ];
+  }
   function c017ProjectionForVersion(version) {
     const run=versionRun(version),binding=version?.bindingTrustSummary,current=versionTrustState(version);
     if(!version||!run||!binding||!current||!sameScenarioContext(version.scenarioContext,run.scenarioContext))return null;
@@ -717,10 +728,14 @@
     const memberEvidence=(version.members||[]).map(member=>member.stableId).filter(Boolean),relationshipEvidence=(version.relationships||[]).map(relation=>relation.stableId).filter(Boolean),freshnessEvidenceId=trustEvidenceId("FRESHNESS",version.id);
     const evidenceIds=[version.id,confirmation.evidenceId,version.sourceSnapshotId,version.qualityId,...memberEvidence,...relationshipEvidence,attempt?.requestId,attempt?.resultId,attempt?.t018EvidenceId,version.t019EvidenceId].filter(Boolean);
     const evidenceComplete=Boolean(confirmation.snapshotId&&confirmation.asOf&&confirmation.confirmedBy&&confirmation.confirmedAt&&confirmation.basis&&confirmation.evidenceId&&confirmation.sourceReadEventId&&version.sourceSnapshotId&&version.qualityId&&memberEvidence.length===version.members.length&&relationshipEvidence.length===version.relationships.length&&version.evidenceIntegrity==="完整"&&attempt?.requestId&&attempt?.resultId&&attempt?.t018EvidenceId&&version.t019EvidenceId);
-    const historicalAuthorityClaim=Boolean(authority?.id===version.id&&version.t019Status==="已采用"&&version.t019EvidenceId),sessionObservation=t019SessionObservations.get(version.id)||null;
-    const sessionAuthorityVerified=Boolean(sessionObservation&&sessionObservation.runtimeVerificationId===T019_RUNTIME_VERIFICATION_ID&&sessionObservation.dataVersion===version.id&&sessionObservation.t019EvidenceId===version.t019EvidenceId&&sameScenarioContext(sessionObservation.scenarioContext,version.scenarioContext));
-    const isAuthority=Boolean(historicalAuthorityClaim&&sessionAuthorityVerified),qualityAllowed=qualityAllowsConsumption(version.quality),allowConsumption=Boolean(isAuthority&&qualityAllowed&&!hardFailure&&evidenceComplete);
-    const discovery=attempt?.publishedContext?.discovery||null,t019Observation=sessionAuthorityVerified?{recordId:sessionObservation.recordId||null,evidenceId:version.t019EvidenceId,observedAt:sessionObservation.readAt,readToken:sessionObservation.readToken,readSource:sessionObservation.source,runtimeVerificationId:sessionObservation.runtimeVerificationId,semanticVersionId:discovery?.versionId||attempt?.targetT017||"",semanticVersion:discovery?.semanticVersion||attempt?.c032Candidate?.semanticVersion||"",dataVersion:version.id,asOf:version.asOf,currentFormalSnapshot:copy(sessionObservation.currentFormalSnapshot),scenarioContext:copy(parseScenarioContextCandidate(version.scenarioContext))}:null;
+    const discovery=attempt?.publishedContext?.discovery||null,historicalAuthorityClaim=Boolean(authority?.id===version.id&&version.t019Status==="已采用"&&version.t019EvidenceId),sessionObservation=t019SessionObservations.get(version.id)||null,formalSnapshot=sessionObservation?.currentFormalSnapshot||null;
+    const t008Verified=Boolean(confirmation.snapshotId===version.sourceSnapshotId&&confirmation.asOf===version.asOf&&confirmation.evidenceId===version.t008Confirmation?.evidenceId&&sameScenarioContext(confirmation.scenarioContext,version.scenarioContext)&&sameScenarioContext(confirmation.sourceReadScenarioContext,version.scenarioContext));
+    const t018Verified=Boolean(attempt?.t018Status==="可消费候选"&&attempt.t018EvidenceId&&attempt.assetVersionId===version.id&&attempt.targetT017&&(formalSnapshot?.versionId||attempt.targetT017)===attempt.targetT017);
+    const currentFormalVerified=Boolean(formalSnapshot&&formalSnapshot.versionId===attempt?.targetT017&&formalSnapshot.dataVersion===version.id&&formalSnapshot.asOf===version.asOf&&formalSnapshot.adoptionEvidenceLocator===version.t019EvidenceId&&formalSnapshot.adoptionRecordId===sessionObservation?.recordId&&sameScenarioContext(formalSnapshot.scenarioContext,version.scenarioContext));
+    const sessionAuthorityVerified=Boolean(sessionObservation&&sessionObservation.runtimeVerificationId===T019_RUNTIME_VERIFICATION_ID&&sessionObservation.dataVersion===version.id&&sessionObservation.t019EvidenceId===version.t019EvidenceId&&sameScenarioContext(sessionObservation.scenarioContext,version.scenarioContext)&&currentFormalVerified);
+    const isAuthority=Boolean(historicalAuthorityClaim&&sessionAuthorityVerified),qualityAllowed=qualityAllowsConsumption(version.quality),allowConsumption=Boolean(isAuthority&&qualityAllowed&&!hardFailure&&evidenceComplete&&t008Verified&&t018Verified&&currentFormalVerified);
+    const authorityBlockers=[...(!t008Verified?["T008 与当前精确 T007 或当前 C033 不一致"]:[]),...(!t018Verified?["T018 候选资格与精确 T007/T017 不一致或不可定位"]:[]),...(!currentFormalVerified?["T019/currentFormal 与精确 T007、T017、T008 或当前 C033 不一致"]:[]),...(!evidenceComplete?["可信度证据包不完整"]:[]),...(hardFailure?["已登记事后硬质量失败"]:[])];
+    const fiveDimensions=c017FiveDimensions(version,current,evidenceComplete),t019Observation=sessionAuthorityVerified?{recordId:sessionObservation.recordId||null,evidenceId:version.t019EvidenceId,observedAt:sessionObservation.readAt,readToken:sessionObservation.readToken,readSource:sessionObservation.source,runtimeVerificationId:sessionObservation.runtimeVerificationId,semanticVersionId:discovery?.versionId||attempt?.targetT017||"",semanticVersion:discovery?.semanticVersion||attempt?.c032Candidate?.semanticVersion||"",dataVersion:version.id,asOf:version.asOf,currentFormalSnapshot:copy(formalSnapshot),scenarioContext:copy(parseScenarioContextCandidate(version.scenarioContext))}:null;
     const refreshStatus=!attempt?"尚未提交":attempt.t019Status==="已采用"?"本体侧已正式采用":attempt.resultStatus==="失败"?"本体处理失败":attempt.requestStatus==="结果未知"?"结果未知":attempt.t018Status==="可消费候选"?"本体处理通过，待正式采用":attempt.requestStatus||"处理中";
     const refreshPhase=!attempt?"未开始":attempt.t019Status==="已采用"?"正式采用":attempt.resultStatus==="失败"?"本体处理失败":attempt.t018Status==="可消费候选"?"候选资格":attempt.requestStatus==="已受理"?"本体处理中":"请求提交";
     const qualityWarnings=/警告/.test(version.quality)?[{status:"警告",reason:run.qualityWarningReason||"发布前质量警告已由操作者说明",scopeSummary:"本次正式检查记录所列范围",recovery:"按质量结果中的说明持续观察",evidenceId:version.qualityId}]:[];
@@ -737,22 +752,33 @@
       contextId:trustEvidenceId("C017-CONTEXT",version.id),contextVersion:current.version,formedAt:current.formedAt,scenarioContext:copy(parseScenarioContextCandidate(version.scenarioContext)),
       assetId:version.targetAssetId,t006Id:version.targetAssetId,dataVersion:version.id,asOf:version.asOf,asOfSource:`用户明确确认：${confirmation.basis||"依据不可定位"}`,asOfPrecision:"日",timezone:"不适用（日期型）",t008EvidenceId:confirmation.evidenceId,publishedAt:version.publishedAt,lastSuccessfulAt:run.executionEndedAt||version.publishedAt,
       t008:{value:version.asOf,source:`用户明确确认：${confirmation.basis||"依据不可定位"}`,precision:"日",timezone:"不适用（日期型）",evidenceId:confirmation.evidenceId},
-      versionBindingSummary:{id:binding.id,version:binding.version,formedAt:binding.formedAt},currentStateSummary:currentSummary,
+      versionBindingSummary:{id:binding.id,version:binding.version,formedAt:binding.formedAt,assetId:version.targetAssetId,dataVersion:version.id,asOf:version.asOf,qualityStatus:binding.quality,evidenceRefs:copy(binding.evidenceRefs||[])},currentStateSummary:currentSummary,
       dataEligibility,allowConsumption,consumptionStatus:allowConsumption?"可消费":hardFailure?"不可消费 · 硬质量失败":historicalAuthorityClaim?"不可消费 · 待本会话重读或证据不完整":"不可消费 · 未被正式采用",
       quality:{status:qualityStatus,evidenceId:version.qualityId,hardFailure,warnings:qualityWarnings},
       freshness:{label:`截至 ${version.asOf}`,status:"截至时间已确认",basis:"S001 当前未配置业务陈旧阈值；只允许按已确认的数据截至时间回答，不宣称为今日最新。",evidenceId:freshnessEvidenceId},
       candidate:candidate?{dataVersion:candidate.id,asOf:candidate.asOf,status:candidate.consumptionStatus||"不可消费",phase:candidate.refreshStatus||"候选",reason:candidate.id===authority?.id?"当前版本已正式采用":"候选尚未被本体管理正式采用",recovery:candidate.id===authority?.id?"无需恢复":"完成质量、刷新与正式采用后由下游重新读取",evidenceId:candidate.currentTrustSummaries?.at(-1)?.id||candidate.id}:null,
       previousTrusted:previous?{dataVersion:previous.id,asOf:previous.asOf,status:"数据侧上一合格版本",consumable:previous.id===authority?.id,evidenceId:previous.bindingTrustSummary?.id||previous.id}:null,
-      refresh:attempt?{requestId:attempt.requestId||"尚未提交",resultId:attempt.resultId||"尚未返回",status:refreshStatus,time:attempt.resultAt||attempt.acceptedAt||attempt.createdAt||version.publishedAt,phase:refreshPhase,failureReason:attempt.failureReason||"无",recovery:attempt.recovery||"等待本体管理返回真实结果",t018Eligibility:attempt.t018Status||"尚未形成",evidenceId:attempt.resultId||attempt.requestId}:null,
-      t019Observation,evidence:{complete:evidenceComplete,ids:[...new Set(evidenceIds)],categories:{version:true,source:Boolean(version.sourceSnapshotId),quality:Boolean(version.qualityId),members:memberEvidence.length===version.members.length,relationships:relationshipEvidence.length===version.relationships.length,refresh:Boolean(attempt)}},
+      refresh:attempt?{requestId:attempt.requestId||"尚未提交",resultId:attempt.resultId||"尚未返回",status:refreshStatus,time:attempt.resultAt||attempt.acceptedAt||attempt.createdAt||version.publishedAt,phase:refreshPhase,failureReason:attempt.failureReason||"无",recovery:attempt.recovery||"等待本体管理返回真实结果",t018Eligibility:attempt.t018Status||"尚未形成",t018EvidenceId:attempt.t018EvidenceId||null,t019EvidenceId:version.t019EvidenceId||null,evidenceId:attempt.resultId||attempt.requestId}:null,
+      t019Observation,authorityAlignment:{complete:authorityBlockers.length===0,t007Version:version.id,t008EvidenceId:confirmation.evidenceId||null,t018EvidenceId:attempt?.t018EvidenceId||null,t019EvidenceId:version.t019EvidenceId||null,semanticVersionId:attempt?.targetT017||null,currentFormalObservedAt:sessionObservation?.readAt||null,blockers:authorityBlockers},fiveDimensions,
+      evidence:{complete:evidenceComplete,ids:[...new Set(evidenceIds)],categories:{version:true,source:Boolean(version.sourceSnapshotId),quality:Boolean(version.qualityId),members:memberEvidence.length===version.members.length,relationships:relationshipEvidence.length===version.relationships.length,refresh:Boolean(attempt)}},
       consistency:evidenceComplete?"数据侧一致":"无法判断"
     };
+  }
+  function c017ReportProjection(item) {
+    if(!item)return null;
+    const ready=Boolean(item.allowConsumption&&item.authorityAlignment?.complete&&item.t008?.evidenceId&&item.refresh?.t018EvidenceId&&item.t019Observation?.evidenceId&&item.t019Observation?.currentFormalSnapshot);
+    const blockers=[...(item.authorityAlignment?.blockers||[]),...(!item.t008?.evidenceId?["T008 证据不可定位"]:[]),...(!item.refresh?.t018EvidenceId?["T018 证据不可定位"]:[]),...(!item.t019Observation?.evidenceId||!item.t019Observation?.currentFormalSnapshot?["T019/currentFormal 只读观察不可定位"]:[])];
+    return {...copy(item),allowConsumption:ready,consumptionStatus:ready?"可消费":"不可消费 · 报告生成门阻断",reportReadiness:{ready,status:ready?"ready":"blocked",reason:ready?null:[...new Set(blockers)].join("；")||item.currentStateSummary?.reason||"当前权威组合不可验证",recovery:ready?"无需恢复":"重新读取同一场景轮次的精确 T007/T008、T018、T019/currentFormal 和 C017 当前状态；不得改用本地缓存或上一版本"}};
   }
   function c017ProjectionEnvelope(consumer) {
     const gate=scenarioContextGate(),scenarioContext=gate.okay?copy(gate.context):null,projections=gate.okay?flow.assetVersions.filter(version=>sameScenarioContext(version.scenarioContext,gate.context)).map(c017ProjectionForVersion).filter(Boolean):[];
     const formedAt=projections.map(item=>item.currentStateSummary?.formedAt).filter(Boolean).sort().at(-1)||scenarioContext?.formedAt||null,projectionVersion=`v1.${projections.reduce((sum,item)=>sum+Number(String(item.currentStateSummary?.version||"v1.0").split(".").at(-1)||0),0)}`;
     if(consumer==="决策中心"){
       return {schemaVersion:1,projectionId:C017_DECISION_PROJECTION_KEY,projectionVersion,contractCode:"C017",sourceModule:"数据工程",consumer,scenarioContext,formedAt,readStatus:gate.okay?(projections.length?"ready":"empty"):"context_missing",reason:gate.okay?(projections.length?null:"当前场景轮次尚无已发布数据资产版本"):gate.problems.join("；"),projections:projections.map(item=>{const base={currentStateSummary:item.currentStateSummary,qualityStatus:item.currentStateSummary.qualityStatus,hardQualityFailure:item.currentStateSummary.hardQualityFailure,detectedAt:item.currentStateSummary.detectedAt,impactScope:item.currentStateSummary.impactScope,businessFieldCategories:item.currentStateSummary.businessFieldCategories,reason:item.currentStateSummary.reason,recovery:item.currentStateSummary.recovery,evidenceLocator:item.currentStateSummary.evidenceLocator};return {dataVersion:item.dataVersion,scenarioContext:copy(item.scenarioContext),currentStateSummary:copy(item.currentStateSummary),...base,gates:{request_receipt:copy(base),confirmation_submit:copy(base),task_formation:copy(base)}};})};
+    }
+    if(consumer==="报告中心"){
+      const reportProjections=projections.map(c017ReportProjection).filter(Boolean),ready=reportProjections.some(item=>item.allowConsumption),reason=!gate.okay?gate.problems.join("；"):!reportProjections.length?"当前场景轮次尚无已发布数据资产版本":ready?null:reportProjections.flatMap(item=>item.reportReadiness?.reason?[item.reportReadiness.reason]:[]).filter(Boolean).join("；")||"当前没有同时匹配完整 C033、精确 T007/T008、T018、T019/currentFormal 的可信度双摘要";
+      return {schemaVersion:1,projectionId:C017_REPORT_PROJECTION_KEY,projectionVersion,contractCode:"C017",sourceModule:"数据工程",consumer,scenarioContext,formedAt,readStatus:!gate.okay?"context_missing":!reportProjections.length?"empty":ready?"ready":"unavailable",reason,permissions:"只提供数据版本、时点、质量、新鲜度、五维状态与证据定位；不包含工作簿、源字段、业务明细、Metric 公式或 Rule 阈值。",projections:reportProjections};
     }
     return {schemaVersion:1,projectionId:C017_IQ_PROJECTION_KEY,projectionVersion,contractCode:"C017",sourceModule:"数据工程",consumer:"智能问数",scenarioContext,formedAt,readStatus:gate.okay?(projections.length?"ready":"empty"):"context_missing",reason:gate.okay?(projections.length?null:"当前场景轮次尚无已发布数据资产版本"):gate.problems.join("；"),projections};
   }
@@ -762,9 +788,10 @@
   function syncC017ProjectionStores() {
     writeProjectionStore(C017_IQ_PROJECTION_KEY,c017ProjectionEnvelope("智能问数"));
     writeProjectionStore(C017_DECISION_PROJECTION_KEY,c017ProjectionEnvelope("决策中心"));
+    writeProjectionStore(C017_REPORT_PROJECTION_KEY,c017ProjectionEnvelope("报告中心"));
   }
   function readC017Projection(query={}) {
-    const consumer=query.consumer==="决策中心"?"决策中心":"智能问数",envelope=c017ProjectionEnvelope(consumer),requestedContext=parseScenarioContextCandidate(query.scenarioContext),currentContext=parseScenarioContextCandidate(envelope.scenarioContext);
+    const consumer=query.consumer==="决策中心"?"决策中心":query.consumer==="报告中心"?"报告中心":"智能问数",envelope=c017ProjectionEnvelope(consumer),requestedContext=parseScenarioContextCandidate(query.scenarioContext),currentContext=parseScenarioContextCandidate(envelope.scenarioContext);
     if(requestedContext&&!sameScenarioContext(requestedContext,currentContext))return {...envelope,readStatus:"context_mismatch",reason:"请求的场景、场景版本或运行轮次与当前数据工程投影不一致",projections:[],readAt:nowText()};
     const projections=query.dataVersion?envelope.projections.filter(item=>item.dataVersion===query.dataVersion):envelope.projections;
     return {...envelope,readStatus:envelope.readStatus==="ready"&&!projections.length?"not_found":envelope.readStatus,reason:envelope.readStatus==="ready"&&!projections.length?"未找到请求的精确数据资产版本":envelope.reason,projections:copy(projections),readAt:nowText()};
