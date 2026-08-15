@@ -135,6 +135,7 @@
     const activeScenarioId = defaultScenarioId();
     return {
       schemaVersion: 3,
+      revision: 0,
       activeScenarioId,
       navCollapsed: false,
       scenarios: Object.fromEntries(enabledScenarios().map((scenario) => [scenario.id, createScenarioState(scenario.id)]))
@@ -166,9 +167,17 @@
     };
   }
 
-  function loadNavigationState() {
+  function readStoredNavigationState() {
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      return saved && typeof saved === "object" ? saved : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function loadNavigationState(saved = readStoredNavigationState()) {
+    try {
       if (!saved || ![2, 3].includes(saved.schemaVersion)) {
         const initial = createInitialState();
         initial.navCollapsed = localStorage.getItem("ontology3-home-sidebar") === "collapsed";
@@ -194,6 +203,7 @@
       const requestedActive = allowedIds.has(saved.activeScenarioId) ? saved.activeScenarioId : initial.activeScenarioId;
       return {
         schemaVersion: 3,
+        revision: Math.max(0, Math.trunc(Number(saved.revision) || 0)),
         activeScenarioId: requestedActive,
         navCollapsed: typeof saved.navCollapsed === "boolean"
           ? saved.navCollapsed
@@ -213,6 +223,63 @@
   let state = loadNavigationState();
   const projectionByScenario = new Map();
 
+  function scenarioContextTime(context) {
+    const normalized = context && typeof context === "object" ? Date.parse(context.formedAt || "") : Number.NaN;
+    return Number.isFinite(normalized) ? normalized : Number.NEGATIVE_INFINITY;
+  }
+
+  function newestScenarioContext(...candidates) {
+    return candidates.filter(Boolean).reduce((newest, candidate) => {
+      if (!newest) return candidate;
+      const candidateTime = scenarioContextTime(candidate);
+      const newestTime = scenarioContextTime(newest);
+      if (candidateTime > newestTime) return candidate;
+      if (candidateTime < newestTime) return newest;
+      return sameScenarioContext(candidate, newest) ? newest : newest;
+    }, null);
+  }
+
+  function readSharedScenarioContext(scenarioId) {
+    try {
+      const value = JSON.parse(localStorage.getItem(SCENARIO_CONTEXT_KEY));
+      const definition = scenarioDefinition(scenarioId);
+      const normalized = definition ? normalizedScenarioContext(value, definition) : null;
+      return normalized?.scenarioId === scenarioId ? normalized : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function refreshStateFromStorage() {
+    const saved = readStoredNavigationState();
+    if (!saved || ![2, 3].includes(saved.schemaVersion)) return false;
+    const storedRevision = Math.max(0, Math.trunc(Number(saved.revision) || 0));
+    const localRevision = Math.max(0, Math.trunc(Number(state.revision) || 0));
+    const storedContexts = saved.schemaVersion === 3 ? saved.scenarios || {} : {};
+    const hasNewerContext = enabledScenarios().some((scenario) => {
+      const storedContext = normalizedScenarioContext(storedContexts[scenario.id]?.scenarioContext, scenario);
+      return scenarioContextTime(storedContext) > scenarioContextTime(state.scenarios?.[scenario.id]?.scenarioContext);
+    });
+    if (storedRevision <= localRevision && !hasNewerContext) return false;
+    const previousState = state;
+    const hydrated = loadNavigationState(saved);
+    enabledScenarios().forEach((scenario) => {
+      const localContext = normalizedScenarioContext(previousState.scenarios?.[scenario.id]?.scenarioContext, scenario);
+      const storedContext = normalizedScenarioContext(hydrated.scenarios?.[scenario.id]?.scenarioContext, scenario);
+      const sharedContext = readSharedScenarioContext(scenario.id);
+      const authoritative = newestScenarioContext(localContext, storedContext, sharedContext);
+      const localIsNewer = scenarioContextTime(localContext) > scenarioContextTime(storedContext);
+      if (localIsNewer && previousState.scenarios?.[scenario.id]) {
+        hydrated.scenarios[scenario.id] = { ...previousState.scenarios[scenario.id] };
+      }
+      if (authoritative && hydrated.scenarios?.[scenario.id]) hydrated.scenarios[scenario.id].scenarioContext = { ...authoritative };
+    });
+    hydrated.revision = Math.max(localRevision, storedRevision);
+    state = hydrated;
+    projectionByScenario.clear();
+    return true;
+  }
+
   function activeScenarioState() {
     return state.scenarios[state.activeScenarioId] || state.scenarios[defaultScenarioId()];
   }
@@ -221,6 +288,7 @@
     return {
       ...activeScenarioState(),
       schemaVersion: state.schemaVersion,
+      revision: state.revision,
       activeScenarioId: state.activeScenarioId,
       navCollapsed: state.navCollapsed,
       scenarios: state.scenarios
@@ -251,8 +319,14 @@
   }
 
   function publishScenarioContext(scenarioId = state.activeScenarioId, notify = true) {
-    const scenarioContext = scenarioContextFor(scenarioId);
+    refreshStateFromStorage();
+    const localContext = scenarioContextFor(scenarioId);
+    const sharedContext = readSharedScenarioContext(scenarioId);
+    const scenarioContext = newestScenarioContext(localContext, sharedContext);
     if (!scenarioContext) return null;
+    if (!sameScenarioContext(localContext, scenarioContext) && state.scenarios[scenarioId]) {
+      state.scenarios[scenarioId].scenarioContext = { ...scenarioContext };
+    }
     const serialized = JSON.stringify(scenarioContext);
     try {
       if (localStorage.getItem(SCENARIO_CONTEXT_KEY) !== serialized) localStorage.setItem(SCENARIO_CONTEXT_KEY, serialized);
@@ -266,6 +340,15 @@
   }
 
   function persist(notify = true) {
+    const saved = readStoredNavigationState();
+    const storedRevision = Math.max(0, Math.trunc(Number(saved?.revision) || 0));
+    enabledScenarios().forEach((scenario) => {
+      const localContext = normalizedScenarioContext(state.scenarios?.[scenario.id]?.scenarioContext, scenario);
+      const sharedContext = readSharedScenarioContext(scenario.id);
+      const authoritative = newestScenarioContext(localContext, sharedContext);
+      if (authoritative && state.scenarios?.[scenario.id]) state.scenarios[scenario.id].scenarioContext = { ...authoritative };
+    });
+    state.revision = Math.max(Math.max(0, Math.trunc(Number(state.revision) || 0)), storedRevision) + 1;
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
     if (notify) window.dispatchEvent(new CustomEvent("s001:state", { detail: compatibleStateView() }));
     return state;
@@ -1332,6 +1415,8 @@
   }
 
   function refreshProjection(notify = true, scenarioId = state.activeScenarioId) {
+    refreshStateFromStorage();
+    scenarioId = state.scenarios[scenarioId] ? scenarioId : state.activeScenarioId;
     publishScenarioContext(scenarioId, false);
     const currentProjection = buildProjection(scenarioId);
     projectionByScenario.set(scenarioId, currentProjection);

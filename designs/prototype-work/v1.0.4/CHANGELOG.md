@@ -29,3 +29,4 @@
 - 静态回归：唯一 B2 构建、`verify-static.mjs`、`shared/app.js`/集成 `state.js` 语法检查及 `git diff --check` 全部通过。
 - 浏览器回归补正：重置后同内容读取复用稳定 T002 时，平台首页改按 `currentSnapshotSelections`、`currentSnapshotReadEvents` 和当前轮 T008/C033 形成上传完成投影，不再要求改写 T002 首次登记轮次。
 - 画布轮次隔离：普通已发布画布只投影当前完整 C033 的运行，历史运行继续通过显式生产证据/运行详情查看，不再把上一轮待刷新候选误作本轮候选而阻断新运行。
+- 多页签 C033 防回滚：平台集成状态增加单调修订号；重新投影前吸收最新持久状态，同场景共享根按 `formedAt` 只前进不后退，旧页签只能跟随新 `scenarioRunId`，不能覆盖新轮次。

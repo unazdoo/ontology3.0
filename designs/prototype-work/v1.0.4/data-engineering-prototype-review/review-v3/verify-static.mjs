@@ -33,6 +33,15 @@ const functionSource = (name, nextName) => {
   const end = namedEnd > start ? namedEnd : fallbackEnd;
   return app.slice(start, end);
 };
+const integrationFunctionSource = (name, nextName) => {
+  const start = integrationState.indexOf(`function ${name}`);
+  if (start < 0) return "";
+  const namedEnd = nextName ? integrationState.indexOf(`function ${nextName}`, start + 1) : -1;
+  const nextDeclarationOffset = integrationState.slice(start + 1).search(/\n\s*(?:async\s+)?function\s+[A-Za-z_$][\w$]*\s*\(/);
+  const fallbackEnd = nextDeclarationOffset >= 0 ? start + 1 + nextDeclarationOffset : integrationState.length;
+  const end = namedEnd > start ? namedEnd : fallbackEnd;
+  return integrationState.slice(start, end);
+};
 const actionSource = (name, nextName) => {
   const markers = [`if(action==="${name}")`, `if (action === "${name}")`, `if (action==="${name}")`];
   const start = markers.map(marker => app.indexOf(marker)).find(index => index >= 0) ?? -1;
@@ -799,6 +808,26 @@ assert(
   /sourceReadEventId === currentReadEvent\?\.eventId/.test(integrationDataProjectionSource) &&
   /sourceReadScenarioContext/.test(integrationDataProjectionSource),
   "平台 M02 投影必须以稳定 T002、当前轮最新读取事件及其 C033/T008 为准，不能要求改写 T002 首次登记轮次"
+);
+const integrationRefreshProjectionSource = integrationFunctionSource("refreshProjection", "getProjection");
+const integrationPublishContextSource = integrationFunctionSource("publishScenarioContext", "readScenarioContext");
+const integrationPersistSource = integrationFunctionSource("persist", "readJson");
+assert(
+  /refreshStateFromStorage\(\)/.test(integrationRefreshProjectionSource) &&
+  integrationRefreshProjectionSource.indexOf("refreshStateFromStorage()") < integrationRefreshProjectionSource.indexOf("publishScenarioContext("),
+  "平台重新投影前必须先吸收 STORAGE_KEY 最新状态，旧页签不得用陈旧内存重新发布 C033"
+);
+assert(
+  /newestScenarioContext\(localContext, sharedContext\)/.test(integrationPublishContextSource) &&
+  /scenarioContextTime\(candidate\)/.test(integrationFunctionSource("newestScenarioContext", "readSharedScenarioContext")) &&
+  /state\.scenarios\[scenarioId\]\.scenarioContext\s*=/.test(integrationPublishContextSource),
+  "平台发布 C033 必须按 formedAt 采用同场景最新根，并让旧页签跟随而不是覆盖新 scenarioRunId"
+);
+assert(
+  /state\.revision\s*=\s*Math\.max/.test(integrationPersistSource) &&
+  /storedRevision/.test(integrationPersistSource) &&
+  /revision:\s*0/.test(integrationState),
+  "平台集成状态必须维护跨页签单调 revision，不能让旧页签以较小版本覆盖新状态"
 );
 assert(!app.includes("c003DeliveryEvidencePanelLegacy") && !app.includes("按证据恢复 C003 交付"), "C003 旧面板和旧恢复按钮不得与唯一合同面板重复出现");
 
