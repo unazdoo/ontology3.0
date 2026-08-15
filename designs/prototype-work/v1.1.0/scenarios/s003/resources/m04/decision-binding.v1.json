@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "ofw.s003.m04.decision-binding.v1",
+  "moduleId": "M04",
+  "moduleOwner": "决策中心",
+  "bindingId": "S003-M04-GENERIC-DECISION-BINDING",
+  "bindingVersion": "1.0.0",
+  "uiMode": "reuse-generic-decision-center-no-dedicated-page",
+  "entry": "Action Request",
+  "requiresHumanConfirmation": true,
+  "todoTarget": "负责人待办",
+  "multiLevelApproval": false,
+  "multiUserPermissionModel": false,
+  "automaticCreation": false,
+  "candidateRules": [
+    {"when": "YELLOW", "actionTypeId": "S003_RISK_FOLLOW_UP"},
+    {"when": "RED", "actionTypeId": "S003_SPECIAL_DISPOSAL"},
+    {"when": "BLACK", "actionTypeId": "S003_EMERGENCY_RESPONSE"},
+    {"when": "重大诉讼或当月资金余缺预警", "actionTypeId": "S003_FACTOR_EMERGENCY"}
+  ],
+  "idempotencyKey": ["scenarioRunId", "enterpriseId", "actionTypeId", "assessmentAt", "resultVersion"],
+  "historicalReplayAllowed": false,
+  "contracts": ["C011", "C019", "C033", "C035"]
+}
