@@ -641,17 +641,24 @@
     const uploadedEntries = list(dataState.uploadedSnapshots).filter(Boolean);
     const uploaded = uploadedEntries.map((item) => item?.snapshot || item).filter(Boolean);
     const rootContext = dataState.scenarioContext || null;
-    const uploadEntry = [...uploadedEntries].reverse().find((entry) => {
-      const snapshot = entry?.snapshot || entry;
-      const snapshotContext = snapshot?.scenarioContext || entry?.registeredInScenario || null;
-      return (snapshot?.snapshotId || snapshot?.fileName) && snapshot?.hash && snapshot?.asOf === dataState.asOfDate && sameScenarioContext(snapshotContext, rootContext);
-    }) || null;
-    const uploadEvidence = uploadEntry?.snapshot || uploadEntry || null;
+    const selectedSnapshotId = dataState.currentSnapshotSelections?.["finance-workbook"] || null;
+    const selectedReadEventId = dataState.currentSnapshotReadEvents?.["finance-workbook"] || null;
+    const uploadEntry = selectedSnapshotId
+      ? [...uploadedEntries].reverse().find((entry) => (entry?.snapshot || entry)?.snapshotId === selectedSnapshotId) || null
+      : null;
+    const stableSnapshot = uploadEntry?.snapshot || uploadEntry || null;
+    const currentReadEvent = selectedReadEventId
+      ? list(dataState.snapshotReadEvents).find((event) => event?.eventId === selectedReadEventId && event?.snapshotId === selectedSnapshotId && event?.sourceId === "finance-workbook" && sameScenarioContext(event?.scenarioContext, rootContext)) || null
+      : null;
+    const uploadEvidence = stableSnapshot && currentReadEvent
+      ? { ...stableSnapshot, fileName: currentReadEvent.fileName || stableSnapshot.fileName, acquiredAt: currentReadEvent.readCompletedAt || stableSnapshot.acquiredAt, readStartedAt: currentReadEvent.readStartedAt, readCompletedAt: currentReadEvent.readCompletedAt, readDurationMs: currentReadEvent.readDurationMs, readEventId: currentReadEvent.eventId, scenarioContext: { ...currentReadEvent.scenarioContext }, asOf: dataState.asOfDate }
+      : null;
     const t008 = dataState.t008Confirmation || uploadEvidence?.t008Confirmation || null;
     const t008Complete = Boolean(
       t008?.snapshotId === uploadEvidence?.snapshotId && t008?.asOf === dataState.asOfDate &&
       t008?.confirmedBy && t008?.confirmedAt && !Number.isNaN(Date.parse(String(t008.confirmedAt).replace(" ", "T"))) &&
-      t008?.basis && t008?.evidenceId && t008?.evidenceLocator && sameScenarioContext(t008?.scenarioContext, rootContext)
+      t008?.basis && t008?.evidenceId && t008?.evidenceLocator && t008?.sourceReadEventId === currentReadEvent?.eventId &&
+      sameScenarioContext(t008?.scenarioContext, rootContext) && sameScenarioContext(t008?.sourceReadScenarioContext, rootContext)
     );
     const confirmed = Boolean(
       dataState.snapshotConfirmed && dataState.asOfDate && !/待确认|未知/.test(dataState.asOfDate) && uploadEvidence && t008Complete
@@ -663,7 +670,7 @@
           sourceRecordId: uploadEvidence?.snapshotId || uploadEvidence?.fileName || `快照 · ${dataState.asOfDate}`,
           detail: `融资快照已确认，数据截至 ${dataState.asOfDate}。`,
           at: uploadEvidence?.acquiredAt || null,
-          evidence: { asOf: dataState.asOfDate, snapshot: uploadEvidence || null, t008EvidenceId: t008.evidenceId, scenarioRunId: rootContext?.scenarioRunId || null }
+          evidence: { asOf: dataState.asOfDate, snapshot: uploadEvidence || null, readEventId: currentReadEvent.eventId, t008EvidenceId: t008.evidenceId, scenarioRunId: rootContext?.scenarioRunId || null }
         })
       : stepRecord("upload", {
           status: uploaded.length ? "observed" : "pending",

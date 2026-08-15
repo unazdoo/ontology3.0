@@ -784,7 +784,7 @@
     }
     const requestedRun=ui.canvas.historyContext?.runId||route().params.get("run");
     if(requestedRun){const exact=flow.runs.find(r=>r.id===requestedRun);return exact?.definitionVersion===ui.canvas.definitionLabel?exact:null;}
-    return flow.runs.find(r=>r.definitionVersion===ui.canvas.definitionLabel)||null;
+    return flow.runs.find(r=>r.definitionVersion===ui.canvas.definitionLabel&&sameScenarioContext(r.scenarioContext,flow.scenarioContext))||null;
   }
   function runStatusForCanvas() {
     const run=runForCanvas();

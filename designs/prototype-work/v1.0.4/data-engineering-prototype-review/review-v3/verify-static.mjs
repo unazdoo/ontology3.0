@@ -766,6 +766,10 @@ assert(
   /t008Confirmation,inputs/.test(formalRunSource),
   "关联重试必须同时核对原运行与 T008 确认的完整 C033，跨轮次不得复用旧输入证据"
 );
+assert(
+  /r=>r\.definitionVersion===ui\.canvas\.definitionLabel&&sameScenarioContext\(r\.scenarioContext,flow\.scenarioContext\)/.test(functionSource("runForCanvas", "runStatusForCanvas")),
+  "普通已发布画布只能投影当前 C033 轮次的运行；历史运行必须通过显式历史上下文查看，不能阻断新轮次运行"
+);
 assert(/sameScenarioContext\(run\.scenarioContext,scenarioGate\.context\)/.test(functionSource("publishAsset", "currentT019Snapshot")), "T007 发布必须核对完整五字段 C033，不能只比较 scenarioRunId");
 assert(
   !/localStorage\.(?:removeItem|clear)\s*\(/.test(resetSource) &&
@@ -784,6 +788,17 @@ assert(
   !/localStorage\.(?:removeItem|clear)\s*\(/.test(integrationResetSource) &&
   !/sessionStorage\.(?:removeItem|clear)\s*\(/.test(integrationResetSource),
   "平台定向重置只能发布重置请求和新 C033，不得删除任何模块、交换或会话历史键"
+);
+const integrationDataProjectionStart = integrationState.indexOf("function dataProjection");
+const integrationDataProjectionEnd = integrationState.indexOf("function ", integrationDataProjectionStart + "function dataProjection".length);
+const integrationDataProjectionSource = integrationDataProjectionStart >= 0 ? integrationState.slice(integrationDataProjectionStart, integrationDataProjectionEnd > integrationDataProjectionStart ? integrationDataProjectionEnd : integrationState.length) : "";
+assert(
+  /currentSnapshotSelections/.test(integrationDataProjectionSource) &&
+  /currentSnapshotReadEvents/.test(integrationDataProjectionSource) &&
+  /snapshotReadEvents/.test(integrationDataProjectionSource) &&
+  /sourceReadEventId === currentReadEvent\?\.eventId/.test(integrationDataProjectionSource) &&
+  /sourceReadScenarioContext/.test(integrationDataProjectionSource),
+  "平台 M02 投影必须以稳定 T002、当前轮最新读取事件及其 C033/T008 为准，不能要求改写 T002 首次登记轮次"
 );
 assert(!app.includes("c003DeliveryEvidencePanelLegacy") && !app.includes("按证据恢复 C003 交付"), "C003 旧面板和旧恢复按钮不得与唯一合同面板重复出现");
 
