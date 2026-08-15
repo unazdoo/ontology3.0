@@ -304,6 +304,21 @@
     });
   }
 
+  async function getOntologyReviewOwner() {
+    const frame = await ensureOntologyBridgeFrame();
+    const deadline = Date.now() + 5000;
+    while (Date.now() < deadline) {
+      const owner = frame?.contentWindow?.ontologyReview;
+      if (owner && typeof owner.candidateContext === "function" && typeof owner.deliverValidationRequirement === "function" && typeof owner.deliverValidationReference === "function") return owner;
+      await new Promise(resolve => window.setTimeout(resolve, 80));
+    }
+    throw new Error("本体合同桥接收入口尚未就绪");
+  }
+
+  window.S001_ONTOLOGY_OWNER_BRIDGE = Object.freeze({
+    getOwner: getOntologyReviewOwner
+  });
+
   function currentC009Record() {
     const queryState = readStoredObject(IQ_STATE_KEY);
     const config = queryState?.activeConfig;

@@ -2375,7 +2375,7 @@
       targetLabel: target.label,
       sourceType: source.type,
       targetType: target.type,
-      compatible: source.exists && target.exists && source.type === target.type
+      compatible: source.exists && target.exists && compatibleTypes(source.type, target.type)
     };
   }
   function assetFieldsFor(draft, object, member) {

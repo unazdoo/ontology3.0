@@ -1447,7 +1447,7 @@
       const epoch = beginAsync();
       deliveryInFlight.current.add(run.id);
       updateDeliveryState(run.id, { deliveryStatus: "提交中", deliveryError: null });
-      const ontologyWindow = window.open(D.ONTOLOGY_ENTRY, "ontology-management-review");
+      let ontologyWindow = null;
       const finishFailure = (message) => {
         deliveryInFlight.current.delete(run.id);
         if (!asyncIsCurrent(epoch)) {
@@ -1527,7 +1527,25 @@
         if (attempt >= 24) { finishFailure("本体管理接收入口尚未就绪"); return; }
         window.setTimeout(() => waitForOwner(attempt + 1), 120);
       };
-      window.setTimeout(() => waitForOwner(), 80);
+      const openStandaloneOwner = () => {
+        ontologyWindow = window.open(D.ONTOLOGY_ENTRY, "ontology-management-review");
+        window.setTimeout(() => waitForOwner(), 80);
+      };
+      let integrationOwnerBridge = null;
+      try {
+        integrationOwnerBridge = window.parent !== window ? window.parent.S001_ONTOLOGY_OWNER_BRIDGE : null;
+      } catch (_) {
+        integrationOwnerBridge = null;
+      }
+      if (integrationOwnerBridge && typeof integrationOwnerBridge.getOwner === "function") {
+        Promise.resolve(integrationOwnerBridge.getOwner()).then((owner) => {
+          if (!asyncIsCurrent(epoch)) { cancelDelivery(run.id); return; }
+          if (!owner || typeof owner.candidateContext !== "function") throw new Error("本体管理接收入口尚未就绪");
+          submitToOwner(owner, owner.candidateContext());
+        }).catch((error) => finishFailure(error?.message || "本体管理接收入口尚未就绪"));
+      } else {
+        openStandaloneOwner();
+      }
     };
     const deliveryNotice = (run) => {
       if (!run?.deliveryStatus) return null;
