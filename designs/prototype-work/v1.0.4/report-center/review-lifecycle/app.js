@@ -31,12 +31,16 @@
 
   function normalizeScenarioContext(source = {}) {
     const value = source?.scenarioContext || source?.context || source || {};
+    const rawStatus = value.status || value.contextStatus || null;
+    const normalizedStatus = ["active", "ready", "available", "有效", "启用", "进行中", "已启用", "可用"].includes(String(rawStatus || "").trim().toLowerCase())
+      ? "active"
+      : rawStatus;
     return {
       scenarioId: value.scenarioId || null,
       scenarioVersion: value.scenarioVersion || null,
       scenarioRunId: value.scenarioRunId || null,
       formedAt: value.formedAt || value.contextFormedAt || null,
-      status: value.status || value.contextStatus || null,
+      status: normalizedStatus,
     };
   }
 
@@ -321,6 +325,7 @@
       factPackageStatus: factPackage.factPackageStatus || factPackage.status || "unavailable",
       semanticVersionId: factPackage.semanticVersionId || null,
       semanticVersion: factPackage.semanticVersion || null,
+      bindingId: factPackage.bindingId || factPackage.authorityBindingId || null,
       authorityBindingId: factPackage.authorityBindingId || null,
       dataAssetVersionId: factPackage.dataAssetVersionId || null,
       dataVersion: factPackage.dataVersion || null,
@@ -330,16 +335,43 @@
     };
   }
 
+  function factPackageIdentityMatches(candidate, reference) {
+    if (!candidate || !reference?.dataVersion) return false;
+    const expected = {
+      ...reference,
+      bindingId: reference.bindingId || reference.authorityBindingId || null,
+      authorityBindingId: reference.authorityBindingId || reference.bindingId || null,
+    };
+    const candidateBindingId = candidate.authorityBindingId || candidate.bindingId || null;
+    const required = [
+      ["packageId", expected.packageId, candidate.packageId],
+      ["bindingId", expected.bindingId || expected.authorityBindingId, candidateBindingId],
+      ["semanticVersionId", expected.semanticVersionId, candidate.semanticVersionId],
+      ["semanticVersion", expected.semanticVersion, candidate.semanticVersion],
+      ["dataAssetVersionId", expected.dataAssetVersionId, candidate.dataAssetVersionId],
+      ["dataVersion", expected.dataVersion, candidate.dataVersion],
+      ["consumableVersionId", expected.consumableVersionId, candidate.consumableVersionId],
+      ["asOf", expected.asOf, candidate.asOf],
+      ["packageVersion", expected.packageVersion, candidate.packageVersion],
+      ["schemaVersion", expected.schemaVersion, candidate.schemaVersion],
+      ["factInventoryVersion", expected.factInventoryVersion, candidate.factInventoryVersion],
+    ];
+    return required.every(([, expectedValue, actualValue]) => expectedValue == null || expectedValue === actualValue);
+  }
+
   function resolveExactFactPackage(reference) {
     if (!reference?.dataVersion) return null;
-    const candidate = DATA.reportEvidence.factPackages?.[reference.dataVersion]
-      || factPackageForBinding(reference);
-    const exact = candidate
-      && (!reference.packageId || candidate.packageId === reference.packageId)
-      && (!reference.semanticVersionId || candidate.semanticVersionId === reference.semanticVersionId)
-      && (!reference.dataAssetVersionId || candidate.dataAssetVersionId === reference.dataAssetVersionId)
-      && (!reference.consumableVersionId || candidate.consumableVersionId === reference.consumableVersionId);
-    if (exact) return clone(candidate);
+    const normalizedReference = {
+      ...reference,
+      bindingId: reference.bindingId || reference.authorityBindingId || null,
+      authorityBindingId: reference.authorityBindingId || reference.bindingId || null,
+    };
+    const staticCandidate = DATA.reportEvidence.factPackages?.[reference.dataVersion] || null;
+    const currentCandidate = factPackageForBinding(normalizedReference);
+    const candidates = [staticCandidate, currentCandidate].filter((candidate, index, all) => candidate
+      && all.findIndex((item) => item === candidate || (item.packageId && item.packageId === candidate.packageId)) === index);
+    const exact = candidates.find((candidate) => factPackageIdentityMatches(candidate, normalizedReference));
+    if (exact) return clone(exact);
     return {
       ...clone(reference),
       status: "unavailable",
@@ -403,7 +435,17 @@
       snapshotId: snapshot.snapshotId || null,
       revisionNumber: snapshot.revisionNumber || null,
       factPackageId: snapshot.factPackageId || null,
+      packageVersion: snapshot.packageVersion || null,
+      schemaVersion: snapshot.schemaVersion || null,
+      factInventoryVersion: snapshot.factInventoryVersion || null,
+      authorityBindingId: snapshot.authorityBindingId || snapshot.bindingId || null,
+      bindingId: snapshot.bindingId || snapshot.authorityBindingId || null,
+      semanticVersionId: snapshot.semanticVersionId || null,
+      semanticVersion: snapshot.semanticVersion || null,
+      dataAssetVersionId: snapshot.dataAssetVersionId || null,
       dataVersion: snapshot.dataVersion || null,
+      consumableVersionId: snapshot.consumableVersionId || null,
+      asOf: snapshot.asOf || null,
       contentFacts: keepPayload ? (snapshot.contentFacts || []).map(compactGeneratedContentFact) : [],
       bindingGaps: clone(snapshot.bindingGaps || []),
       narratives: keepPayload ? clone(snapshot.narratives || []) : [],
@@ -414,18 +456,26 @@
   }
 
   function factPackageForStoredSnapshot(snapshot, report) {
+    const bindingSnapshot = report?.bindingSnapshot || {};
+    const reference = {
+      packageId: snapshot?.factPackageId || null,
+      packageVersion: snapshot?.packageVersion || null,
+      schemaVersion: snapshot?.schemaVersion || null,
+      factInventoryVersion: snapshot?.factInventoryVersion || null,
+      authorityBindingId: snapshot?.authorityBindingId || snapshot?.bindingId || bindingSnapshot.authorityBindingId || bindingSnapshot.bindingId || null,
+      bindingId: snapshot?.bindingId || snapshot?.authorityBindingId || bindingSnapshot.bindingId || bindingSnapshot.authorityBindingId || null,
+      semanticVersionId: snapshot?.semanticVersionId || bindingSnapshot.semanticVersionId || null,
+      semanticVersion: snapshot?.semanticVersion || bindingSnapshot.semanticVersion || null,
+      dataAssetVersionId: snapshot?.dataAssetVersionId || bindingSnapshot.dataAssetVersionId || null,
+      dataVersion: snapshot?.dataVersion || bindingSnapshot.dataVersion || null,
+      consumableVersionId: snapshot?.consumableVersionId || bindingSnapshot.consumableVersionId || null,
+      asOf: snapshot?.asOf || bindingSnapshot.asOf || null,
+    };
     const matchingPack = (report?.evidencePacks || []).find((pack) => {
       const factPackage = pack.authoritativeFactPackage;
-      return factPackage && factPackage.dataVersion === snapshot?.dataVersion
-        && (!snapshot?.factPackageId || factPackage.packageId === snapshot.factPackageId);
+      return factPackage && factPackageIdentityMatches(factPackage, reference);
     });
-    return matchingPack?.authoritativeFactPackage || resolveExactFactPackage({
-      packageId: snapshot?.factPackageId || null,
-      dataVersion: snapshot?.dataVersion || null,
-      semanticVersionId: report?.bindingSnapshot?.semanticVersionId || null,
-      dataAssetVersionId: report?.bindingSnapshot?.dataAssetVersionId || null,
-      consumableVersionId: report?.bindingSnapshot?.consumableVersionId || null,
-    });
+    return matchingPack?.authoritativeFactPackage || resolveExactFactPackage(reference);
   }
 
   function hydrateContentSnapshot(snapshot, report) {
@@ -1331,6 +1381,7 @@
   }
 
   function clone(value) {
+    if (typeof value === "undefined") return undefined;
     return JSON.parse(JSON.stringify(value));
   }
 
@@ -1434,7 +1485,17 @@
       snapshotId: makeId("CNT"),
       revisionNumber: generatedContent?.contentRevision || report.revisionNumber,
       factPackageId: factPackage.packageId,
+      packageVersion: factPackage.packageVersion || null,
+      schemaVersion: factPackage.schemaVersion || null,
+      factInventoryVersion: factPackage.factInventoryVersion || null,
+      authorityBindingId: factPackage.authorityBindingId || factPackage.bindingId || null,
+      bindingId: factPackage.bindingId || factPackage.authorityBindingId || null,
+      semanticVersionId: factPackage.semanticVersionId || null,
+      semanticVersion: factPackage.semanticVersion || null,
+      dataAssetVersionId: factPackage.dataAssetVersionId || null,
       dataVersion: factPackage.dataVersion,
+      consumableVersionId: factPackage.consumableVersionId || null,
+      asOf: factPackage.asOf || null,
       contentFacts,
       authoritativeFacts,
       bindingGaps: clone(generatedContent?.bindingGaps || []),
@@ -1636,9 +1697,10 @@
   }
 
   function latestGenerationReference(report = state.report) {
-    return report.agentGenerationRefs.find((item) => report.generationRunId && item.runId === report.generationRunId)
-      || report.agentGenerationRefs.find((item) => report.requestId && item.requestId === report.requestId)
-      || report.agentGenerationRefs.at(-1)
+    const references = Array.isArray(report.agentGenerationRefs) ? report.agentGenerationRefs : [];
+    return references.find((item) => report.generationRunId && item.runId === report.generationRunId)
+      || [...references].reverse().find((item) => report.requestId && item.requestId === report.requestId)
+      || references.at(-1)
       || null;
   }
 
@@ -2609,18 +2671,40 @@
     if (snapshotBindingGap(context.snapshot, unit.factId) || contentFact?.bindingStatus === "missing") return outcome("unverifiable", "RULE_BINDING_MISSING", "Rule 相关内容缺少完整条件或命中证据绑定。", "不能确认该结论或建议的适用边界。", "退回并生成新内容版本，补齐 Rule 条件引用。", "Agent 生成结果：Agent 应用；T049：报告中心");
     const rule = fact?.ruleSnapshot;
     const basis = fact?.basis || fact?.basisFactRefs || [];
-    const requiredSuggestionRefs = ["RULE-FIN-R01", "RULE-FIN-R02", "RULE-FIN-R03", "AT-FIN-OPT-001"];
     const factEvidence = fact?.evidence || [];
     const contentEvidence = contentFact?.evidenceRefs || [];
     const semanticResources = context.evidencePack?.semanticResourceIds || [];
-    const publishedActionType = (context.factPackage?.actionTypes || DATA.actionTypes).find((item) => item.id === "AT-FIN-OPT-001"
-      && item.status === "Published"
-      && item.definitionVersion
-      && item.publishedSemanticVersion === context.binding.semanticVersion);
+    const factPackageResources = [
+      ...(context.factPackage?.semanticResources || []),
+      ...(context.factPackage?.rules || []),
+      ...(context.factPackage?.actionTypes || [])
+    ];
+    const resourceById = new Map([
+      ...DATA.semanticResources,
+      ...DATA.rules,
+      ...DATA.actionTypes,
+      ...factPackageResources
+    ].filter((item) => item && item.id).map((item) => [item.id, item]));
+    const suggestionRuleIds = [...new Set([
+      ...factEvidence.filter((ref) => String(ref).startsWith("RULE-")),
+      ...contentEvidence.filter((ref) => String(ref).startsWith("RULE-")),
+      ...semanticResources.filter((ref) => String(ref).startsWith("RULE-"))
+    ])].filter((ref) => !String(ref).includes("EVAL-"));
+    const suggestionActionIds = [...new Set([
+      ...factEvidence.filter((ref) => String(ref).startsWith("ACTION-")),
+      ...contentEvidence.filter((ref) => String(ref).startsWith("ACTION-")),
+      ...semanticResources.filter((ref) => String(ref).startsWith("ACTION-"))
+    ])];
+    const publishedActionType = suggestionActionIds.map((id) => resourceById.get(id)).find((item) => item
+      && (item.type === "Action Type" || item.kind === "Action Type")
+      && (item.status == null || item.status === "Published")
+      && (!item.definitionVersion || item.definitionVersion)
+      && (!item.publishedSemanticVersion || item.publishedSemanticVersion === context.binding.semanticVersion));
     const isSuggestionFact = String(fact?.kind || "").includes("建议");
-    if (isSuggestionFact && (!publishedActionType || !requiredSuggestionRefs.every((ref) => factEvidence.includes(ref)
+    const requiredSuggestionRefs = [...suggestionRuleIds, ...suggestionActionIds];
+    if (isSuggestionFact && (suggestionRuleIds.length < 3 || suggestionActionIds.length < 1 || !publishedActionType || !requiredSuggestionRefs.every((ref) => factEvidence.includes(ref)
       && contentEvidence.includes(ref)
-      && semanticResources.includes(ref)))) return outcome("unverifiable", "SUGGESTION_SOURCE_INCOMPLETE", "建议内容未同时绑定 R01、R02、R03 与当前 Published Action Type。", "不能确认建议适用主体、Rule 条件或受控行动类型。", "退回并在新内容版本中补齐四类稳定引用；不得根据文本推断。", "Published Rule 与 Action Type：本体管理；Agent 结构化结果：Agent 应用；核验：报告中心");
+      && semanticResources.includes(ref)))) return outcome("unverifiable", "SUGGESTION_SOURCE_INCOMPLETE", "建议内容未同时绑定当前 Published Rule 与 Action Type。", "不能确认建议适用主体、Rule 条件或受控行动类型。", "退回并在新内容版本中补齐稳定引用；不得根据文本推断。", "Published Rule 与 Action Type：本体管理；Agent 结构化结果：Agent 应用；核验：报告中心");
     if (unit.factId === "FACT-SUGGESTION-SCOPE") {
       const scopeMatches = contentFact
         && comparisonValueEqual(contentFact.value, fact.value)
@@ -2634,7 +2718,7 @@
       const expectedBasis = Array.isArray(basis) ? basis : [];
       const actualBasis = Array.isArray(contentFact?.basis) ? contentFact.basis : [];
       const fields = ["scope", "ruleId", "ruleVersion", "evaluationRecordId", "resultVersion", "direction"];
-      const expectedRuleIds = ["RULE-FIN-R01", "RULE-FIN-R02", "RULE-FIN-R03"];
+      const expectedRuleIds = suggestionRuleIds.slice(0, 3);
       const basisComplete = expectedBasis.length === expectedRuleIds.length
         && actualBasis.length === expectedRuleIds.length
         && expectedRuleIds.every((ruleId) => {
@@ -3425,7 +3509,14 @@
       semanticBinding: clone(currentBinding),
       dataTrustAtGeneration: clone(bindingTrustAtRequest),
       permission: { id: "PERM-REPORT-CONTEXT", version: "1.0", status: "allowed", scope: "报告绑定证据范围" },
-      semanticResourceIds: [...DATA.semanticResources.map((item) => item.id), ...Object.values(DATA.metrics).map((item) => item.id), ...DATA.rules.map((item) => item.id), ...DATA.actionTypes.map((item) => item.id)],
+      semanticResourceIds: [...new Set([
+        ...DATA.semanticResources.map((item) => item.id),
+        ...Object.values(DATA.metrics).map((item) => item.id),
+        ...DATA.rules.map((item) => item.id),
+        ...DATA.actionTypes.map((item) => item.id),
+        ...(authoritativeFactPackage?.semanticResources || []).map((item) => typeof item === "string" ? item : item?.id),
+        ...(authoritativeFactPackage?.contentFacts || []).map((item) => item?.semanticSnapshot?.resourceId)
+      ].filter(Boolean))],
       agentReference: { release: "融资报告生成助手 3.1.0", skill: "融资经营分析生成 1.0" },
       reportEvidenceSchemaVersion: DATA.reportEvidence.schemaVersion,
       factInventoryVersion: authoritativeFactPackage.factInventoryVersion,
@@ -3561,7 +3652,7 @@
     const reference = {
       requestId: external.requestId || report.requestId,
       runId: external.runId || null,
-      retryOfRunId: external.retryOfRunId,
+      retryOfRunId: external.retryOfRunId || retryOf || null,
       evidencePackId: report.evidencePackId,
       evidencePackVersion: evidencePack.version,
       semanticVersionId: evidencePack.semanticBinding.semanticVersionId,
@@ -3597,8 +3688,9 @@
       const externalStatus = external?.status || "等待 Agent 应用接收";
       if (external?.runId) {
         reference.runId = external.runId;
-        report.generationRunId = external.runId;
       }
+      report.generationRunId = reference.runId || null;
+      reference.retryOfRunId = reference.retryOfRunId || external?.retryOfRunId || null;
       report.progress = external?.status === "运行中" ? 72 : 56;
       report.activeOperation = null;
       commit();
@@ -3606,6 +3698,12 @@
     }
     if (["失败", "已拒绝"].includes(external.status)) {
       reference.runId = external.runId || reference.runId || null;
+      report.generationRunId = reference.runId || null;
+      reference.retryOfRunId = reference.retryOfRunId || external.retryOfRunId || null;
+      reference.status = reference.status || external.status;
+      reference.failure = reference.failure || external.failure || "Agent 应用未形成可接收源草稿";
+      reference.completedAt = reference.completedAt || external.completedAt || nowText();
+      reference.readAt = reference.readAt || external.readAt || nowText();
       report.stage = "generation_failed";
       report.progress = 86;
       report.activeOperation = null;
@@ -3613,6 +3711,15 @@
       return toast("报告内容生成失败", `${external.failure || "Agent 应用未形成可接收源草稿"}；证据包已保留。`, "danger");
     }
     if (!external || external.status !== "已完成" || !external.resultId || !external.sourceDraftId || !external.sourceItems?.length || !external.generatedContent?.contentFacts?.length) {
+      reference.status = reference.status || "失败";
+      reference.failure = reference.failure || external?.failure || "Agent 未返回完整结构化内容项清单。";
+      reference.completedAt = reference.completedAt || external?.completedAt || nowText();
+      reference.readAt = reference.readAt || external?.readAt || nowText();
+      if (external?.runId) {
+        reference.runId = external.runId;
+      }
+      report.generationRunId = reference.runId || null;
+      reference.retryOfRunId = reference.retryOfRunId || external?.retryOfRunId || null;
       report.stage = "generation_failed";
       report.progress = 86;
       report.activeOperation = null;
@@ -3632,6 +3739,10 @@
     reference.runId = external.runId;
     reference.resultId = resultId;
     reference.sourceDraftId = sourceDraftId;
+    reference.retryOfRunId = reference.retryOfRunId || external.retryOfRunId || null;
+    reference.status = external.status || "已完成";
+    reference.completedAt = reference.completedAt || external.completedAt || nowText();
+    reference.readAt = reference.readAt || external.readAt || nowText();
     report.generationRunId = external.runId;
     report.generationResultId = resultId;
     report.contentVersions.push({
@@ -4675,7 +4786,8 @@
       return beginGeneration(state.report.generationMode || "standard", Boolean(block.isRevision), block.requestId || state.report.requestId, { reuseAggregate: true });
     }
     if (action === "retry-generation") {
-      return startAgentGeneration(Boolean(state.report.revisionNumber), state.report.revisionNumber, state.report.generationRunId || null);
+      const latestReference = latestGenerationReference(state.report);
+      return startAgentGeneration(Boolean(state.report.revisionNumber), state.report.revisionNumber, latestReference?.runId || state.report.generationRunId || null);
     }
     if (action === "reread-generation") return completeAgentGeneration();
     if (action === "open-trace") { state.ui.drawer = { type: "trace" }; return commit(); }

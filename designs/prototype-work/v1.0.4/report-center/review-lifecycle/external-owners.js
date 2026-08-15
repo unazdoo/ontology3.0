@@ -28,12 +28,14 @@
   const normalizeStatus = (value) => String(value == null ? "" : value).trim().toLowerCase();
   const scenarioContextFrom = (source = {}) => {
     const value = source?.scenarioContext || source?.context || source || {};
+    const rawStatus = value.status || value.contextStatus || null;
+    const normalizedStatus = ACTIVE_SCENARIO_STATUSES.has(normalizeStatus(rawStatus)) ? "active" : rawStatus;
     return {
       scenarioId: value.scenarioId || null,
       scenarioVersion: value.scenarioVersion || null,
       scenarioRunId: value.scenarioRunId || null,
       formedAt: value.formedAt || value.contextFormedAt || null,
-      status: value.status || value.contextStatus || null,
+      status: normalizedStatus,
     };
   };
   const scenarioReady = (context) => Boolean(
@@ -336,12 +338,21 @@
         dataVersion: semantic.dataVersion || null,
         consumableVersionId: semantic.consumableVersionId || null,
         asOf: semantic.asOf || null,
+        retryOfRunId: request.retryOfRunId || context.retryOfRunId || null,
+        attemptId: request.attemptId || context.attemptId || null,
       };
     };
+    const generationAttemptKey = (value = {}) => value.attemptId
+      || value.reportContext?.attemptId
+      || value.retryOfRunId
+      || value.retryOf
+      || "initial";
     const compactHistoricalGenerationRequest = (request = {}) => {
       const identity = generationIdentity(request);
       return {
         requestId: identity.requestId,
+        retryOfRunId: identity.retryOfRunId || null,
+        attemptId: identity.attemptId || null,
         submittedAt: request.submittedAt || null,
         archived: true,
         persistedAsReference: true,
@@ -361,13 +372,20 @@
             consumableVersionId: identity.consumableVersionId,
             asOf: identity.asOf,
           },
+          retryOfRunId: identity.retryOfRunId || null,
+          attemptId: identity.attemptId || null,
         },
       };
     };
-    const generationRequest = (key) => {
+    const generationRequest = (key, attemptKey = null) => {
       const inbox = parseC022Inbox();
       const requests = Array.isArray(inbox) ? inbox : Array.isArray(inbox?.requests) ? inbox.requests : [];
-      return requests.find((item) => item?.requestId === key || item?.reportContext?.reportRequestId === key) || null;
+      const candidates = requests.filter((item) => item?.requestId === key || item?.reportContext?.reportRequestId === key);
+      const active = candidates.filter((item) => !item.archived);
+      if (attemptKey) {
+        return [...active, ...candidates.filter((item) => item.archived)].reverse().find((item) => generationAttemptKey(item) === attemptKey) || null;
+      }
+      return [...active, ...candidates.filter((item) => item.archived)].reverse()[0] || null;
     };
     const generationRunIdentity = (run = {}) => {
       const snapshot = run.snapshot || run.fixedContextRef || run.context || {};
@@ -390,11 +408,15 @@
         dataVersion: snapshot.dataVersion || null,
         consumableVersionId: snapshot.consumableVersionId || null,
         asOf: snapshot.dataAsOf || snapshot.asOf || null,
+        retryOfRunId: run.retryOf || snapshot.retryOfRunId || null,
+        attemptId: run.attemptId || snapshot.attemptId || null,
       };
     };
     const generationIdentityMatches = (expected, actual) => sameScenario(expected.scenarioContext, actual.scenarioContext)
       && ["requestId", "aggregateId", "evidencePackId", "evidencePackVersion", "semanticVersionId", "semanticVersion", "dataAssetVersionId", "dataVersion", "consumableVersionId", "asOf"]
-        .every((field) => expected[field] && actual[field] && expected[field] === actual[field]);
+        .every((field) => expected[field] && actual[field] && expected[field] === actual[field])
+      && (expected.retryOfRunId || null) === (actual.retryOfRunId || null)
+      && (expected.attemptId || null) === (actual.attemptId || null);
     const identityMatchesRun = (identity, run) => {
       if (!run) return true;
       const snapshot = run.snapshot || {};
@@ -544,12 +566,13 @@
       const inbox = parseC022Inbox();
       const requests = (Array.isArray(inbox) ? inbox : Array.isArray(inbox?.requests) ? inbox.requests : []).filter(Boolean);
       const conflict = requests.find((item) => item?.requestId === identity.requestId
+        && generationAttemptKey(item) === generationAttemptKey(payload)
         && !generationIdentityMatches(identity, generationIdentity(item)));
       if (conflict) {
         return { owner: "Agent 应用", requestId: identity.requestId, status: "已拒绝", failure: "同一 C022 请求标识已绑定其他场景轮次或精确版本" };
       }
       const next = requests
-        .filter((item) => item?.requestId !== identity.requestId)
+        .filter((item) => !(item?.requestId === identity.requestId && generationAttemptKey(item) === generationAttemptKey(payload)))
         .map(compactHistoricalGenerationRequest);
       next.push(clone(payload));
       const persisted = writeOwnerStore(C022_INBOX_KEY, {
@@ -567,6 +590,8 @@
       return {
         owner: "Agent 应用",
         requestId: identity.requestId,
+        retryOfRunId: identity.retryOfRunId || null,
+        attemptId: identity.attemptId || null,
         status: "等待 Agent 应用接收",
         submittedAt: nowText(),
         runId: null,
@@ -579,9 +604,10 @@
       const requests = Array.isArray(inbox) ? inbox : Array.isArray(inbox?.requests) ? inbox.requests : [];
       const model = parseModel();
       const allRuns = Array.isArray(model?.runs) ? model.runs : [];
-      const run = allRuns.find((item) => item.id === key || item.requestId === key || item.result?.id === key)
-        || allRuns.find((item) => requests.some((request) => request?.requestId === item.requestId && (request.requestId === key || item.id === key)));
-      const request = generationRequest(run?.requestId || key)
+      const exactRun = allRuns.find((item) => item.id === key || item.result?.id === key) || null;
+      const run = exactRun || [...allRuns].reverse().find((item) => item.requestId === key) || null;
+      const request = generationRequest(run?.requestId || key, run ? generationAttemptKey(run) : null)
+        || generationRequest(run?.requestId || key)
         || requests.find((item) => item?.requestId === run?.requestId || item?.requestId === key);
       if (!request) return null;
       const expected = generationIdentity(request);
@@ -591,7 +617,7 @@
       }
       const actual = generationRunIdentity(run);
       if (!generationIdentityMatches(expected, actual)) {
-        return { owner: "Agent 应用", requestId: expected.requestId, runId: run.id || null, status: "已拒绝", failure: "C023 Run 与 C022 场景轮次、报告根、证据包或精确双版本错配", readAt: nowText() };
+        return { owner: "Agent 应用", requestId: expected.requestId, runId: run.id || null, retryOfRunId: actual.retryOfRunId || null, attemptId: actual.attemptId || null, status: "已拒绝", failure: "C023 Run 与 C022 场景轮次、报告根、证据包、精确双版本或重试身份错配", readAt: nowText() };
       }
       const result = run.result || null;
       const status = run.status === "failed" ? "失败"
@@ -602,6 +628,8 @@
         owner: "Agent 应用",
         requestId: expected.requestId,
         runId: run.id || null,
+        retryOfRunId: actual.retryOfRunId || expected.retryOfRunId || null,
+        attemptId: actual.attemptId || expected.attemptId || null,
         runVersion: run.snapshot?.agentRelease || run.version || null,
         resultId: result?.id || null,
         resultVersion: result?.version || null,

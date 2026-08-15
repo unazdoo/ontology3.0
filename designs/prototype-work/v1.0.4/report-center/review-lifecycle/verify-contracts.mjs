@@ -266,6 +266,52 @@ function buildAgentModel(binding, overrides = {}) {
 
 {
   const { c008, c017, binding } = buildProjection();
+  const { owners, storage } = createOwners({ [keys.c008]: JSON.stringify(c008), [keys.c017]: JSON.stringify(c017) });
+  const basePayload = {
+    requestId: "C022-S001-001",
+    reportContext: {
+      scenarioContext: scenario,
+      reportAggregateId: "AGG-S001-001",
+      evidencePack: { id: "EP-S001-001", version: "1.0" },
+      semanticBinding: binding,
+    },
+  };
+  assert.equal(owners.agent.submitGeneration(basePayload).status, "等待 Agent 应用接收");
+  const retry = owners.agent.submitGeneration({ ...basePayload, retryOfRunId: "RUN-OLD" });
+  assert.equal(retry.status, "等待 Agent 应用接收");
+  assert.equal(retry.retryOfRunId, "RUN-OLD");
+  const inbox = JSON.parse(storage.getItem("ontology3.agent-application.c022-inbox.v1"));
+  assert.equal(inbox.requests.length, 2);
+  assert.equal(inbox.requests[0].archived, true);
+  assert.equal(inbox.requests[1].retryOfRunId, "RUN-OLD");
+  const fixedSnapshot = {
+    scenarioContext: scenario,
+    reportRequestId: basePayload.requestId,
+    reportAggregateId: "AGG-S001-001",
+    evidencePackageId: "EP-S001-001",
+    evidencePackageVersion: "1.0",
+    semanticVersionId: binding.semanticVersionId,
+    ontologyVersion: binding.semanticVersion,
+    dataAssetVersionId: binding.dataAssetVersionId,
+    dataVersion: binding.dataVersion,
+    consumableVersionId: binding.consumableVersionId,
+    dataAsOf: binding.asOf,
+  };
+  storage.setItem(keys.agent, JSON.stringify({
+    inboundRequests: [],
+    runs: [
+      { id: "RUN-OLD", requestId: basePayload.requestId, retryOf: null, status: "failed", snapshot: fixedSnapshot, error: "首次失败" },
+      { id: "RUN-NEW", requestId: basePayload.requestId, retryOf: "RUN-OLD", status: "complete", snapshot: fixedSnapshot, result: { id: "RES-NEW", version: "1.0" } },
+    ],
+  }));
+  const latest = owners.agent.getGeneration(basePayload.requestId);
+  assert.equal(latest.status, "已完成");
+  assert.equal(latest.runId, "RUN-NEW");
+  assert.equal(latest.retryOfRunId, "RUN-OLD");
+}
+
+{
+  const { c008, c017, binding } = buildProjection();
   const mismatchedScenario = { ...scenario, formedAt: "2026-08-15 20:00:01" };
   const model = buildAgentModel(binding, { run: { scenarioContext: mismatchedScenario } });
   const { owners } = createOwners({
@@ -277,12 +323,24 @@ function buildAgentModel(binding, overrides = {}) {
 }
 
 assert.doesNotMatch(appSource, /materializeS001FactPackage|runtimeFactPackages/);
+assert.match(appSource, /if \(typeof value === "undefined"\) return undefined;/);
+assert.match(appSource, /bindingId: factPackage\.bindingId \|\| factPackage\.authorityBindingId \|\| null/);
+assert.match(appSource, /bindingId: reference\.bindingId \|\| reference\.authorityBindingId \|\| null/);
+assert.match(appSource, /function factPackageIdentityMatches/);
+assert.match(appSource, /\["semanticVersion", expected\.semanticVersion, candidate\.semanticVersion\]/);
+assert.match(appSource, /\["asOf", expected\.asOf, candidate\.asOf\]/);
+assert.match(appSource, /const candidates = \[staticCandidate, currentCandidate\]/);
+assert.match(appSource, /\[\.\.\.references\]\.reverse\(\)\.find/);
+assert.match(appSource, /retryOfRunId: external\.retryOfRunId \|\| retryOf \|\| null/);
+assert.match(appSource, /reference\.completedAt = reference\.completedAt \|\|/);
 assert.match(appSource, /\["scenarioId", "scenarioVersion", "scenarioRunId", "formedAt", "status"\]/);
 assert.match(appSource, /anchorSnapshotVersion !== contentVersion/);
 assert.match(appSource, /currentProjection: false, projectionStatus: "history"/);
 const factResolverSource = appSource.slice(appSource.indexOf("function factPackageForBinding"), appSource.indexOf("function currentFactPackage"));
 assert.match(factResolverSource, /projection\.factPackageStatus !== "ready"/);
 assert.doesNotMatch(factResolverSource, /DATA\.reportEvidence\.factPackages/);
+assert.match(ownersSource, /generationAttemptKey/);
+assert.match(ownersSource, /retryOfRunId: actual\.retryOfRunId \|\| expected\.retryOfRunId \|\| null/);
 const generationSource = appSource.slice(appSource.indexOf("function beginGeneration"), appSource.indexOf("function completeEvidencePhase"));
 assert.ok(generationSource.indexOf("readGenerationTrustGate") < generationSource.indexOf("report.requestId = requestId"), "generation gate must run before request identity is created");
 const comparisonSource = appSource.slice(appSource.indexOf('if (action === "start-current-comparison")'), appSource.indexOf('if (action === "close-comparison")'));
