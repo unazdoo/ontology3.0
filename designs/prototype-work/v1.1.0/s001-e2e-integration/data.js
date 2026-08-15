@@ -131,16 +131,16 @@
       id: "confirm",
       module: "decision",
       title: "人工确认行动",
-      action: "确认并创建待办",
-      summary: "确认负责人、优先银行与行动建议；确认前不创建待办。",
+      action: "确认 1 笔代表性行动",
+      summary: "选择一笔确认负责人、优先银行与行动建议；其余事项继续留在待决策队列。",
       prerequisite: "actions"
     },
     {
       id: "todo",
       module: "decision",
       title: "负责人待办形成",
-      action: "查看负责人待办",
-      summary: "确认后形成 3 条负责人待办，并保留来源回链。",
+      action: "追踪待办",
+      summary: "代表性确认后形成 1 条负责人待办，并保留来源回链；未确认事项不形成待办。",
       prerequisite: "confirm",
       automatic: true
     },

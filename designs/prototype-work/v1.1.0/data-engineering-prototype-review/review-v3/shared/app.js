@@ -921,6 +921,34 @@
   };
 
   function icon(name) { return `<span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24">${icons[name] || icons.info}</svg></span>`; }
+  function localizeUiText(value) {
+    return String(value == null ? "" : value)
+      .replaceAll("行动请求", "行动申请")
+      .replaceAll("Action Request", "行动申请")
+      .replaceAll("目标 Draft", "目标草稿")
+      .replaceAll("Draft 绑定", "草稿绑定")
+      .replace(/\bPublished\b/g, "已发布")
+      .replace(/\bDraft\b/g, "草稿")
+      .replace(/\bOwner\b/g, "责任人");
+  }
+  function localizeMainInterface(container) {
+    if (!container) return;
+    const walker=document.createTreeWalker(container,NodeFilter.SHOW_TEXT),nodes=[];
+    while(walker.nextNode())nodes.push(walker.currentNode);
+    nodes.forEach(node=>{
+      const parent=node.parentElement;
+      if(!parent||parent.closest("script,style,code,pre,.mono,[data-preserve-technical]"))return;
+      const localized=localizeUiText(node.nodeValue);
+      if(localized!==node.nodeValue)node.nodeValue=localized;
+    });
+    container.querySelectorAll("[title],[aria-label],[placeholder],input:not(.mono):not([data-preserve-technical]),textarea:not(.mono):not([data-preserve-technical])").forEach(control=>{
+      ["title","aria-label","placeholder"].forEach(attribute=>{
+        if(!control.hasAttribute?.(attribute))return;
+        control.setAttribute(attribute,localizeUiText(control.getAttribute(attribute)));
+      });
+      if("value" in control&&control.value)control.value=localizeUiText(control.value);
+    });
+  }
   function esc(value) { return String(value == null ? "" : value).replace(/[&<>\"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'\"':"&quot;"}[c])); }
   function badge(text, tone) { return `<span class="badge ${tone || "neutral"}">${esc(text)}</span>`; }
   function button(label, action, kind, iconName, disabled, attrs) { return `<button class="btn ${kind || ""}" data-action="${action}" ${disabled ? "disabled" : ""} ${attrs || ""}>${iconName ? icon(iconName) : ""}<span>${esc(label)}</span></button>`; }
@@ -968,9 +996,9 @@
     const latest=flow.runs[0];
     const workspaceStatus=latest?`${latest.id} · ${latest.status}`:flow.definitionPublished?`${flow.definitionVersion} · 等待运行`:"尚无正式运行";
     return `<div class="app-shell">
-      <aside class="platform-rail" aria-label="平台模块栏"><span class="platform-logo" title="Ontology 3.0">${icon("workflow")}</span><a class="platform-button active" href="#/resources" title="数据工程">${icon("database")}</a><span class="platform-spacer"></span><button class="platform-button" data-action="reset-flow" title="重置工作区状态">${icon("refresh")}</button></aside>
+      <aside class="platform-rail" aria-label="平台模块栏"><span class="platform-logo" title="智财问策">${icon("workflow")}</span><a class="platform-button active" href="#/resources" title="数据工程">${icon("database")}</a><span class="platform-spacer"></span><button class="platform-button" data-action="reset-flow" title="重置工作区状态">${icon("refresh")}</button></aside>
       <nav class="product-nav" aria-label="数据工程导航"><div class="product-nav-head"><span>${icon("workflow")}</span><div><strong>数据工程</strong><small>来源 · 处理 · 质量 · 发布 · 刷新</small></div></div><div class="product-nav-list"><span class="product-nav-label">工作区</span><a class="product-nav-item ${isSection("resources") ? "active" : ""}" href="#/resources">${icon("database")}<span>数据资源</span></a><a class="product-nav-item ${isSection("pipelines") ? "active" : ""}" href="#/pipelines?tab=definitions">${icon("workflow")}<span>数据管道</span></a></div><div class="product-nav-foot"><strong>最近运行</strong><span>${esc(workspaceStatus)}</span><span>${flow.consumptionStatus==="ready"?"融资数据已可消费":"消费状态未就绪"}</span></div></nav>
-      <section class="app-workspace"><header class="topbar"><div class="breadcrumb"><span>Ontology 3.0</span>${icon("chevron")}<span>数据工程</span>${icon("chevron")}<strong>${esc(currentPageLabel())}</strong></div><div class="account"><span>数</span><div><strong>数据工程账号</strong><small>单账号工作区</small></div></div></header><main class="main ${canvas ? "canvas-main" : ""}">${content}</main></section>
+      <section class="app-workspace"><header class="topbar"><div class="breadcrumb"><span>智财问策</span>${icon("chevron")}<span>数据工程</span>${icon("chevron")}<strong>${esc(currentPageLabel())}</strong></div></header><main class="main ${canvas ? "canvas-main" : ""}">${content}</main></section>
       ${ui.modal ? renderModal() : ""}${ui.toast ? `<div class="toast" role="status">${esc(ui.toast)}</div>` : ""}
     </div>`;
   }
@@ -2445,6 +2473,7 @@
     else if(r.parts[0]==="pipelines") html=pipelinesPage();
     else html=notFound();
     root.innerHTML=html;
+    localizeMainInterface(root);
     restoreCanvasViewport();
     requestAnimationFrame(syncTableScrollbars);
   }

@@ -1,5 +1,19 @@
 const { useEffect } = React;
 
+function agentDisplayText(value) {
+  if (typeof value !== "string") return value;
+  return value
+    .replaceAll("Action Request", "行动申请")
+    .replaceAll("Action 请求", "行动申请")
+    .replaceAll("行动请求", "行动申请")
+    .replaceAll("Published", "已发布")
+    .replaceAll("Draft", "草稿")
+    .replaceAll("Owner", "责任人")
+    .replaceAll("Action Type", "行动类型")
+    .replace(/([\u3400-\u9fff])\s+(已发布|草稿|责任人)/g, "$1$2")
+    .replace(/(已发布|草稿|责任人)\s+([\u3400-\u9fff])/g, "$1$2");
+}
+
 function Icon({ name, size = 17, className = "" }) {
   return <i data-lucide={name} className={`icon ${className}`} style={{ width: size, height: size }} aria-hidden="true"></i>;
 }
@@ -188,8 +202,8 @@ function KeyValueList({ rows, compact = false }) {
     <div className={`key-value-list ${compact ? "compact" : ""}`}>
       {rows.map((row, index) => (
         <div className="key-value-row" key={`${row.label}-${index}`}>
-          <span>{row.label}</span>
-          <div>{row.value ?? "未提供"}</div>
+          <span>{agentDisplayText(row.label)}</span>
+          <div>{agentDisplayText(row.value ?? "未提供")}</div>
         </div>
       ))}
     </div>
@@ -302,7 +316,7 @@ function CredibilitySummary({ credibility, title = "可信度摘要" }) {
                 { label: "精确数据版本", value: binding?.t007 },
                 { label: "数据截至时间", value: binding?.t008 },
                 { label: "时点来源", value: binding?.t008Source },
-                { label: "Published 语义", value: binding?.ontology },
+                { label: "已发布语义", value: binding?.ontology },
                 { label: "权威关系", value: binding?.binding }
               ]}></KeyValueList>
               <p className="credibility-explanation">{binding?.reason || "未提供版本绑定说明。"}</p>
@@ -312,14 +326,14 @@ function CredibilitySummary({ credibility, title = "可信度摘要" }) {
               <KeyValueList compact rows={[
                 { label: "摘要标识", value: current?.id },
                 { label: "版本", value: current?.version },
-                { label: "来源 Owner", value: current?.sourceOwner || credibility?.externalAuthority?.owner },
+                { label: "来源责任人", value: current?.sourceOwner || credibility?.externalAuthority?.owner },
                 { label: "稳定来源", value: current?.sourceReference || credibility?.externalAuthority?.sourceReference },
                 { label: "观察时间", value: current?.observedAt },
                 { label: "最近读取", value: credibility?.lastReadAt },
                 { label: "质量", value: current?.quality },
                 { label: "新鲜度", value: current?.freshness },
                 { label: "事实年龄", value: current?.factAge },
-                { label: "阈值 / Owner", value: current?.freshnessThreshold || current?.freshnessThresholdOwner ? `${current?.freshnessThreshold || "未提供阈值"} / ${current?.freshnessThresholdOwner || "未提供 Owner"}` : null },
+                { label: "阈值 / 责任人", value: current?.freshnessThreshold || current?.freshnessThresholdOwner ? `${current?.freshnessThreshold || "未提供阈值"} / ${current?.freshnessThresholdOwner || "未提供责任人"}` : null },
                 { label: "适用范围", value: current?.applicableScope },
                 { label: "数据侧资格", value: current?.dataQualification },
                 { label: "刷新关系", value: current?.refresh },
@@ -438,7 +452,7 @@ function AgentUseGate({ gates = [], title = "Agent 用途门", highlightId = nul
   );
 }
 
-function AppShell({ route, title, counts, onNavigate, accountOpen, setAccountOpen, onReset, children }) {
+function AppShell({ route, title, counts, onNavigate, onReset, children }) {
   useEffect(() => {
     if (window.lucide) window.lucide.createIcons();
   });
@@ -485,17 +499,9 @@ function AppShell({ route, title, counts, onNavigate, accountOpen, setAccountOpe
           <div className="breadcrumb"><span>{window.AGENT_WORKSPACE_CONFIG.title}</span><Icon name="chevron-right" size={12}></Icon><strong>{title}</strong></div>
           <div className="topbar-actions">
             <span className="boundary-chip"><Icon name="shield-check" size={13}></Icon>报告 / 洞察 / 伴读</span>
-            <div className="account-wrap">
-              <button className="account-button" onClick={() => setAccountOpen(!accountOpen)} aria-expanded={accountOpen}>
-                <span className="account-avatar">管</span>
-                <span className="account-copy"><strong>平台管理员</strong><small>单账号工作区</small></span>
-                <Icon name="chevron-down" size={14}></Icon>
-              </button>
-              {accountOpen ? <div className="account-menu"><button className="menu-button" onClick={onReset}><Icon name="rotate-ccw"></Icon>重置状态</button></div> : null}
-            </div>
           </div>
         </header>
-        <main className="main" onClick={() => accountOpen && setAccountOpen(false)}>{children}</main>
+        <main className="main">{children}</main>
       </section>
     </div>
   );

@@ -20,7 +20,7 @@ const PORTFOLIO_EXCEPTION_META = {
   assignment_creation: { label: "交办创建异常", description: "人工确认已保存，但负责人待办未创建", icon: "ListX" },
 };
 const C017_GATE_META = {
-  request_receipt: { label: "行动请求接收前", next: "形成决策事项" },
+  request_receipt: { label: "行动申请接收前", next: "形成决策事项" },
   confirmation_submit: { label: "人工确认提交前", next: "保存人工确认" },
   task_formation: { label: "负责人待办形成前", next: "创建负责人待办" },
 };
@@ -89,11 +89,11 @@ function validateC011Payload(payload, currentContext) {
   if (!scenarioContextReady(currentContext)) problems.push("当前 C033 场景运行上下文缺失、未知或未启用");
   if (!scenarioContextReady(context)) problems.push("请求缺少完整可用的 C033 场景运行上下文");
   else if (scenarioContextReady(currentContext) && !sameScenarioContext(context, currentContext)) problems.push("请求场景、场景版本或运行轮次与当前工作投影不一致");
-  if (!requestId) problems.push("缺少 Action Request 稳定标识");
+  if (!requestId) problems.push("缺少行动申请稳定标识");
   if (!subjectId || !subjectName) problems.push("缺少单一业务主体稳定标识或名称");
   if (!Object.keys(SOURCE_META).includes(sourceType)) problems.push("请求来源不属于四类获准来源");
   if (!actionType.id || !actionType.version || actionType.status !== "已发布") problems.push("缺少已发布 Action Type 的稳定标识或精确版本");
-  if (!semanticVersion || !dataVersion) problems.push("缺少精确 Published 语义版本或精确数据版本");
+  if (!semanticVersion || !dataVersion) problems.push("缺少精确已发布语义版本或精确数据版本");
   if (sourceType === "rule") {
     const rule = payload?.rule;
     if (!rule?.id || !rule?.version || !rule?.evaluatedAt || !rule?.branch || !rule?.hitEvidence) problems.push("Rule 来源缺少完整条件引用和命中证据");
@@ -156,7 +156,7 @@ function buildC017Read(request, gate, outcome, overrides = {}) {
     impactScope: rejected ? "所引数据版本及其固定证据" : allowed ? "无硬质量失败影响" : "当前无法判定",
     businessFieldCategories: rejected ? "金融机构标识、融资归属" : allowed ? "无受影响业务字段类别" : "当前无法判定",
     reason: allowed ? "当前摘要未标记版本级或范围级硬质量失败" : rejected ? "精确 T007 已被数据工程当前摘要标记为事后硬质量失败" : readFailed ? "本次未能读取数据工程权威 C017 当前摘要" : "权威摘要返回状态未知",
-    recovery: rejected ? "来源改用恢复后的可信版本重新发起 Action Request" : allowed ? "无需恢复" : "保留当前事实，重新读取同一精确 T007 的当前摘要",
+    recovery: rejected ? "来源改用恢复后的可信版本重新发起行动申请" : allowed ? "无需恢复" : "保留当前事实，重新读取同一精确 T007 的当前摘要",
     evidenceLocator: readFailed ? "读取未完成" : "未定位",
     outcome,
     ...overrides,
@@ -187,18 +187,13 @@ function requestCanDecide(request) {
   return request?.status === "awaiting" && !request.duplicateOf && requestHasReminder(request) && request.confirmationEligibility?.allowed !== false;
 }
 
-function portfolioHandledTime(request) {
-  return request?.supplement?.time || request?.decision?.time || "";
-}
-
-function isPortfolioTodayHandled(request) {
+function isPortfolioHandled(request) {
   if (!request || request.duplicateOf) return false;
-  if (!["supplement_requested", "decision_saved", "confirmed", "create_failed", "rejected"].includes(request.status) && !request.taskCreating) return false;
-  return portfolioHandledTime(request).startsWith(dateOnly(new Date()));
+  return ["supplement_requested", "decision_saved", "confirmed", "create_failed", "rejected"].includes(request.status) || request.taskCreating;
 }
 
 function isPortfolioWorkbenchRequest(request) {
-  return ["awaiting", "submitting"].includes(request.status) || isPortfolioTodayHandled(request);
+  return ["awaiting", "submitting"].includes(request.status) || isPortfolioHandled(request);
 }
 
 function portfolioBasisChanged(request) {
@@ -237,12 +232,12 @@ function portfolioReminderLabel(request) {
 
 function portfolioDecisionLabel(request) {
   if (request?.duplicateOf) {
-    if (request?.decision?.type === "confirm") return "关联事项已确认";
+    if (request?.decision?.type === "confirm") return "关联事项已处理";
     if (request?.decision?.type === "reject") return "关联事项已拒绝";
     return "随关联事项处理";
   }
   if (request?.status === "supplement_requested") return "已请求补充信息";
-  if (request?.decision?.type === "confirm") return "已确认";
+  if (request?.decision?.type === "confirm") return "已处理";
   if (request?.decision?.type === "reject" || request?.status === "rejected") return "已拒绝";
   if (["awaiting", "submitting"].includes(request?.status)) return "未决定";
   return "不适用";
@@ -275,13 +270,13 @@ function portfolioRequestDisplayTone(request) {
 
 function portfolioDisplayText(value) {
   if (typeof value !== "string" || DC_UI_VARIANT !== "portfolio") return value;
-  return value.replaceAll("决策提醒", "决策事项").replaceAll("提醒", "决策事项");
+  return value.replaceAll("决策提醒", "决策事项").replaceAll("提醒", "决策事项").replaceAll("Action Request", "行动申请").replaceAll("行动请求", "行动申请");
 }
 
 function portfolioDecisionItemLabel(request) {
   if (request?.status === "submitting") return "提交中";
   if (request?.status === "supplement_requested") return "已请求补充信息";
-  if (request?.decision?.type === "confirm" || ["decision_saved", "confirmed", "create_failed"].includes(request?.status) || request?.taskCreating) return "已确认";
+  if (request?.decision?.type === "confirm" || ["decision_saved", "confirmed", "create_failed"].includes(request?.status) || request?.taskCreating) return "已处理";
   if (request?.decision?.type === "reject" || request?.status === "rejected") return "已拒绝";
   return "待我决策";
 }
@@ -289,7 +284,7 @@ function portfolioDecisionItemLabel(request) {
 function portfolioDecisionItemStatus(request) {
   if (request?.status === "submitting") return { status: "submitting", label: "提交中" };
   if (request?.status === "supplement_requested") return { status: "supplement_requested", label: "已请求补充信息" };
-  if (request?.decision?.type === "confirm" || ["decision_saved", "confirmed", "create_failed"].includes(request?.status) || request?.taskCreating) return { status: "confirmed", label: "已确认" };
+  if (request?.decision?.type === "confirm" || ["decision_saved", "confirmed", "create_failed"].includes(request?.status) || request?.taskCreating) return { status: "confirmed", label: "已处理" };
   if (request?.decision?.type === "reject" || request?.status === "rejected") return { status: "rejected", label: "已拒绝" };
   return { status: request?.status || "awaiting", label: "待我决策" };
 }
@@ -421,14 +416,14 @@ function expandDecisionRequests(requests) {
 
 function readC011Inbox(currentContext = null) {
   const envelope = parseJsonValue(window.localStorage.getItem(DC_C011_INBOX_KEY));
-  if (!envelope) return { status: "empty", requests: [], reason: "当前没有待接收的行动请求" };
-  if (envelope.contractCode !== "C011") return { status: "invalid", requests: [], reason: "待接收内容不是标准行动请求包" };
+  if (!envelope) return { status: "empty", requests: [], reason: "当前没有待接收的行动申请" };
+  if (envelope.contractCode !== "C011") return { status: "invalid", requests: [], reason: "待接收内容不是标准行动申请包" };
   const envelopeContext = normalizedScenarioContext(envelope.scenarioContext || envelope);
   if (currentContext && scenarioContextReady(currentContext) && !sameScenarioContext(envelopeContext, currentContext)) {
     return { status: "context_mismatch", requests: [], sourceRequests: Array.isArray(envelope.requests) ? envelope.requests.length : 0, scenarioContext: envelopeContext, reason: "上游请求包属于其他场景运行轮次，未进入当前待接收范围" };
   }
   const requests = Array.isArray(envelope.requests) ? envelope.requests : [];
-  return { status: requests.length ? "ready" : "empty", requests, scenarioContext: envelopeContext, receivedAt: envelope.formedAt || null, reason: requests.length ? "可读取" : "当前没有待接收的行动请求" };
+  return { status: requests.length ? "ready" : "empty", requests, scenarioContext: envelopeContext, receivedAt: envelope.formedAt || null, reason: requests.length ? "可读取" : "当前没有待接收的行动申请" };
 }
 
 function stableResourceId(prefix, requestId) {
@@ -491,12 +486,12 @@ function normalizeReceivedRequest(payload, context, read) {
       confirmationGateStatus: allowed ? "not_reached" : "not_reached",
       confirmationGateReason: allowed ? "等待用户提交正向人工确认时重新读取" : "请求接收安全门未通过，未到达人工确认门",
     },
-    confirmationEligibility: { allowed, requiresAcknowledgement: allowed && missingBankEvidence, reason: allowed ? (missingBankEvidence ? "行动请求已通过接收门，但本次固定证据未包含银行归因；确认时需知情说明" : "行动请求已通过接收门，可进入人工判断") : "行动请求尚未通过 C017 接收安全门" },
+    confirmationEligibility: { allowed, requiresAcknowledgement: allowed && missingBankEvidence, reason: allowed ? (missingBankEvidence ? "行动申请已通过接收门，但本次固定证据未包含银行归因；确认时需知情说明" : "行动申请已通过接收门，可进入人工判断") : "行动申请尚未通过 C017 接收安全门" },
     c017SafetyReads: [read],
     c017ReadAttempts: { request_receipt: 1, confirmation_submit: 0, task_formation: 0 },
     s001DataStructure: S001_DATA_STRUCTURE,
     sourceEvents: [],
-    supplementPolicy: { canRequest: allowed, editableUpstream: false, resolutionMode: "等待新请求或替代行动请求" },
+    supplementPolicy: { canRequest: allowed, editableUpstream: false, resolutionMode: "等待新申请或替代行动申请" },
     supplementRequests: [],
     duplicateRequests: [],
     decision: null,
@@ -606,7 +601,7 @@ function buildTaskFromDecision(request, form) {
 function DecisionRail({ onReset, onNavigate }) {
   return (
     <aside className="app-rail" aria-label="平台模块栏">
-      <div className="rail-logo" title="Ontology 3.0"><DCIcon name="Orbit" size={18} /></div>
+      <div className="rail-logo" title="智财问策"><DCIcon name="Orbit" size={18} /></div>
       <button type="button" className="active" title="决策中心" aria-label="决策中心" onClick={() => onNavigate("workbench")}><DCIcon name="Scale" size={18} /></button>
       <div className="rail-spacer"></div>
       <button type="button" onClick={onReset} title="重置状态" aria-label="重置状态"><DCIcon name="RotateCcw" size={17} /></button>
@@ -636,10 +631,6 @@ function DecisionProductNav({ route, onNavigate }) {
           </button>
         ))}
       </div>
-      <div className="product-nav-foot">
-        <span className="account-avatar">财</span>
-        <div><strong>财务运营账号</strong><small>当前账号</small></div>
-      </div>
     </nav>
   );
 }
@@ -647,11 +638,11 @@ function DecisionProductNav({ route, onNavigate }) {
 function routeTitle(route, data) {
   const [root, type, id] = route.parts;
   if (root === "overview") return ["决策中心", "决策运营概览"];
-  if (root === "operations" && type === "intake") return ["决策运营概览", "接收行动请求"];
-  if (root === "operations" && type === "requests") return ["决策运营概览", "行动请求目录"];
+  if (root === "operations" && type === "intake") return ["决策运营概览", "接收行动申请"];
+  if (root === "operations" && type === "requests") return ["决策运营概览", "行动申请目录"];
   if (root === "operations" && type === "assignment-recovery") return ["决策运营概览", "交办异常恢复"];
   if (root === "tasks") return ["决策工作台", "负责人待办"];
-  if (root === "request") return [DC_UI_VARIANT === "portfolio" ? "决策运营概览" : "决策工作台", expandDecisionRequests(data.requests).find((item) => item.id === type)?.subjectName || "行动请求"];
+  if (root === "request") return [DC_UI_VARIANT === "portfolio" ? "决策运营概览" : "决策工作台", expandDecisionRequests(data.requests).find((item) => item.id === type)?.subjectName || "行动申请"];
   if (root === "reminder") return ["决策工作台", data.requests.find((item) => item.reminderId === type)?.subjectName || (DC_UI_VARIANT === "portfolio" ? "决策事项详情" : "提醒详情")];
   if (root === "task") return ["决策工作台", data.tasks.find((item) => item.id === type)?.subjectName || "待办详情"];
   if (root === "trace") return [route.parts[1] === "request" && DC_UI_VARIANT === "portfolio" ? "决策运营概览" : "决策工作台", "全链路追溯"];
@@ -684,9 +675,8 @@ function DecisionTopbar({ route, data }) {
   const context = data.scenarioContext || {};
   return (
     <header className="app-topbar">
-      <div className="breadcrumb"><span>Ontology 3.0</span><DCIcon name="ChevronRight" size={12} /><span>{parent}</span><DCIcon name="ChevronRight" size={12} /><strong>{title}</strong></div>
+      <div className="breadcrumb"><span>智财问策</span><DCIcon name="ChevronRight" size={12} /><span>{parent}</span><DCIcon name="ChevronRight" size={12} /><strong>{title}</strong></div>
       <div className={`runtime-context-chip ${scenarioContextReady(context) ? "ready" : "blocked"}`} title={scenarioContextReady(context) ? `${context.scenarioVersion} · ${context.scenarioRunId}` : "缺少可用场景运行上下文"}><DCIcon name={scenarioContextReady(context) ? "CircleCheck" : "ShieldAlert"} size={14} /><span>{context.scenarioId || "场景未知"}</span><small>{scenarioContextReady(context) ? context.scenarioRunId : "当前写入已阻断"}</small></div>
-      <div className="top-account"><span>财</span><div><strong>财务运营账号</strong><small>单账号</small></div></div>
     </header>
   );
 }
@@ -821,7 +811,7 @@ function AISummaryPanel({ scope, requests, tasks = [], contextLabel, contextSign
         ownerCounts,
         first: compactRequest,
         task: compactTask,
-        recovery: blocked[0]?.recovery || (supplement.length ? "等待上游形成新的或替代的行动请求。" : "当前没有需要恢复的证据异常。"),
+        recovery: blocked[0]?.recovery || (supplement.length ? "等待上游形成新的或替代的行动申请。" : "当前没有需要恢复的证据异常。"),
         generatedAt,
         cutoff,
         contextLabel,
@@ -945,20 +935,20 @@ function PortfolioWorkbenchScreen({ data, onNavigate, submitDecision, updateAISu
   };
   const filteredRequests = leaderRequests.filter((item) => requestHasReminder(item)
     && matchesCommon(item)
-    && (scope === "pending" ? requestCanDecide(item) || item.status === "submitting" : isPortfolioTodayHandled(item)));
+    && (scope === "pending" ? requestCanDecide(item) || item.status === "submitting" : isPortfolioHandled(item)));
   const selected = filteredRequests.find((item) => item.id === selectedId) || filteredRequests[0] || null;
   const pendingWithinFilters = data.requests.filter((item) => requestCanDecide(item) && matchesCommon(item));
-  const todayHandled = leaderRequests.filter((item) => isPortfolioTodayHandled(item) && matchesCommon(item));
+  const handledRequests = leaderRequests.filter((item) => isPortfolioHandled(item) && matchesCommon(item));
   const handledBreakdown = {
-    confirmed: todayHandled.filter((item) => item.decision?.type === "confirm").length,
-    rejected: todayHandled.filter((item) => item.decision?.type === "reject").length,
-    supplement: todayHandled.filter((item) => item.status === "supplement_requested").length,
+    confirmed: handledRequests.filter((item) => item.decision?.type === "confirm").length,
+    rejected: handledRequests.filter((item) => item.decision?.type === "reject").length,
+    supplement: handledRequests.filter((item) => item.status === "supplement_requested").length,
   };
   const aiContextLabel = `待我决策 · ${sourceFilter === "all" ? "全部来源" : SOURCE_META[sourceFilter].label} · ${subjectFilter === "all" ? "全部主体" : subjectFilter} · ${rangeFilter === "7d" ? "近 7 日" : rangeFilter === "30d" ? "近 30 日" : "全部时间"}${search ? ` · 搜索“${search}”` : ""}`;
   const aiSignature = `${aiContextLabel}|${pendingWithinFilters.map((item) => `${item.id}:${item.status}:${item.evidence.dataVersion}`).join(",")}`;
 
   const toolbar = <div className="panel-toolbar split portfolio-filter-bar">
-    <div className="portfolio-directory-title"><span>决策事项</span><strong>{scope === "pending" ? "待我决策" : "今日已处理"}</strong><small>{filteredRequests.length} 条独立事项</small></div>
+    <div className="portfolio-directory-title"><span>决策事项</span><strong>{scope === "pending" ? "待我决策" : "已处理"}</strong><small>{filteredRequests.length} 条独立事项</small></div>
     <div className="toolbar-actions">
       <DCSearch value={search} onChange={(value) => changeContext({ search: value, selectedId: "" })} placeholder="搜索主体、指标或行动类型" />
       <DCSelect label="来源" value={sourceFilter} onChange={(value) => changeContext({ source: value, selectedId: "" })} options={[{ value: "all", label: "全部来源" }, ...Object.entries(SOURCE_META).map(([value, item]) => ({ value, label: item.label }))]} />
@@ -968,11 +958,11 @@ function PortfolioWorkbenchScreen({ data, onNavigate, submitDecision, updateAISu
   </div>;
 
   return <div className="page-shell workbench-page portfolio-leader-workbench">
-    <DCPageHeader eyebrow="决策工作台" title={scope === "pending" ? "待我决策" : "今日已处理"} description={scope === "pending" ? "聚焦需要您判断的决策事项；链路异常由决策运营概览集中处理。" : "查看今天已确认、已拒绝或已请求补充信息的决定。"} actions={<><DCButton icon="ListTodo" onClick={() => onNavigate("tasks")}>查看负责人待办</DCButton><DCButton icon="Gauge" onClick={() => onNavigate("overview")}>查看运营概览</DCButton></>} />
+    <DCPageHeader eyebrow="决策工作台" title={scope === "pending" ? "待我决策" : "已处理"} description={scope === "pending" ? "聚焦需要您判断的决策事项；链路异常由决策运营概览集中处理。" : "查看已处理、已拒绝或已请求补充信息的决定。"} actions={<><DCButton icon="ListTodo" onClick={() => onNavigate("tasks")}>追踪待办</DCButton><DCButton icon="Gauge" onClick={() => onNavigate("overview")}>查看运营概览</DCButton></>} />
     {route.query.from === "overview" ? <div className="return-context content-panel"><div><DCIcon name="CornerUpLeft" /><span>已沿用运营概览的来源与时间范围</span></div><DCButton size="sm" onClick={() => window.history.back()}>返回运营概览</DCButton></div> : null}
     <div className="portfolio-leader-metrics">
       <button type="button" className={`decision-count ${scope === "pending" ? "active" : ""}`} onClick={() => changeContext({ scope: "pending", selectedId: "" })}><span><DCIcon name="Scale" /></span><div><small>待我决策</small><strong>{pendingWithinFilters.length}</strong><em>只包含可以进入人工判断的决策事项</em></div><DCIcon name="ChevronRight" /></button>
-      <button type="button" className={`handled-count ${scope === "handled" ? "active" : ""}`} onClick={() => changeContext({ scope: "handled", selectedId: "" })}><span><DCIcon name="CheckCheck" /></span><div><small>今日已处理</small><strong>{todayHandled.length}</strong><em>{handledBreakdown.confirmed} 已确认 · {handledBreakdown.rejected} 已拒绝 · {handledBreakdown.supplement} 已请求补充信息</em></div><DCIcon name="ChevronRight" /></button>
+      <button type="button" className={`handled-count ${scope === "handled" ? "active" : ""}`} onClick={() => changeContext({ scope: "handled", selectedId: "" })}><span><DCIcon name="CheckCheck" /></span><div><small>已处理</small><strong>{handledRequests.length}</strong><em>{handledBreakdown.confirmed} 已处理 · {handledBreakdown.rejected} 已拒绝 · {handledBreakdown.supplement} 已请求补充信息</em></div><DCIcon name="ChevronRight" /></button>
     </div>
     {scope === "pending" ? <AISummaryPanel scope="workbench" requests={pendingWithinFilters} contextLabel={aiContextLabel} contextSignature={aiSignature} onNavigate={onNavigate} persisted={data.aiSummaries?.workbench} onPersist={(next) => updateAISummary("workbench", next)} /> : null}
     <PortfolioDecisionWorkspace requests={filteredRequests} tasks={data.tasks} selected={selected} scope={scope} layout={layout} dimension={portfolioDimension} toolbar={toolbar} onLayout={(next) => changeContext({ layout: next })} onDimension={(next) => changeContext({ portfolioDimension: next })} onSelect={(item) => changeContext({ selectedId: item.id })} onNavigate={onNavigate} onDecision={setDecisionMode} onClearFilters={() => changeContext({ search: "", source: "all", subject: "all", range: "all", selectedId: "" })} />
@@ -1039,13 +1029,13 @@ function LegacyWorkbenchScreen({ data, onNavigate, submitDecision, updateAISumma
     return matchesSearch && matchesSource && matchesStatus && matchesRange;
   });
   const selected = filteredRequests.find((item) => item.id === selectedId) || filteredRequests[0] || null;
-  const contextLabel = `${view === "requests" ? "行动请求" : "决策提醒"} · ${sourceFilter === "all" ? "全部来源" : SOURCE_META[sourceFilter].label} · ${statusFilter === "all" ? "全部状态" : statusFilter === "attention" ? "异常与变化" : statusFilter === "operations_attention" ? "需要关注" : statusFilter === "decided" ? "已决定" : requestStatusLabel({ status: statusFilter })} · ${rangeFilter === "7d" ? "近 7 日" : rangeFilter === "30d" ? "近 30 日" : "全部时间"}${search ? ` · 搜索“${search}”` : ""}`;
+  const contextLabel = `${view === "requests" ? "行动申请" : "决策提醒"} · ${sourceFilter === "all" ? "全部来源" : SOURCE_META[sourceFilter].label} · ${statusFilter === "all" ? "全部状态" : statusFilter === "attention" ? "异常与变化" : statusFilter === "operations_attention" ? "需要关注" : statusFilter === "decided" ? "已决定" : requestStatusLabel({ status: statusFilter })} · ${rangeFilter === "7d" ? "近 7 日" : rangeFilter === "30d" ? "近 30 日" : "全部时间"}${search ? ` · 搜索“${search}”` : ""}`;
   const signature = `${contextLabel}|${filteredRequests.map((item) => `${item.id}:${item.status}`).join(",")}`;
 
   const toolbar = <div className="panel-toolbar split">
     <DCTabs value={view} onChange={(next) => changeContext({ view: next, status: "all", selectedId: "" })} items={[
       { value: "reminders", label: "决策提醒", icon: "BellRing", count: data.requests.filter(requestHasReminder).length },
-      { value: "requests", label: "行动请求", icon: "Waypoints", count: data.requests.length + data.requests.reduce((sum, item) => sum + item.duplicateRequests.length, 0) },
+      { value: "requests", label: "行动申请", icon: "Waypoints", count: data.requests.length + data.requests.reduce((sum, item) => sum + item.duplicateRequests.length, 0) },
     ]} />
     <div className="toolbar-actions">
       <DCSearch value={search} onChange={(value) => changeContext({ search: value })} placeholder="搜索主体、请求或指标" />
@@ -1053,7 +1043,7 @@ function LegacyWorkbenchScreen({ data, onNavigate, submitDecision, updateAISumma
         { value: "all", label: "全部来源" }, { value: "rule", label: "Rule 自动命中" }, { value: "qa", label: "智能问数" }, { value: "agent", label: "Agent 应用" }, { value: "report", label: "报告中心仪表盘" },
       ]} />
       <DCSelect label="状态" value={statusFilter} onChange={(value) => changeContext({ status: value })} options={[
-        { value: "all", label: "全部状态" }, { value: "awaiting", label: "待确认" }, { value: "supplement_requested", label: "待补充信息" }, { value: "decided", label: "已决定" }, { value: "confirmed", label: "已确认" }, { value: "rejected", label: "已拒绝" }, { value: "attention", label: "异常与变化" }, { value: "operations_attention", label: "需要关注" },
+        { value: "all", label: "全部状态" }, { value: "awaiting", label: "待确认" }, { value: "supplement_requested", label: "待补充信息" }, { value: "decided", label: "已决定" }, { value: "confirmed", label: "已处理" }, { value: "rejected", label: "已拒绝" }, { value: "attention", label: "异常与变化" }, { value: "operations_attention", label: "需要关注" },
       ]} />
       <DCSelect label="请求时间" value={rangeFilter} onChange={(value) => changeContext({ range: value })} options={[{ value: "all", label: "全部时间" }, { value: "7d", label: "近 7 日" }, { value: "30d", label: "近 30 日" }]} />
       {DC_UI_VARIANT === "queue" ? <div className="layout-toggle" aria-label="展示方式"><DCIconButton icon="Rows3" label="列表展示" active={layout === "list"} onClick={() => changeContext({ layout: "list" })} /><DCIconButton icon="LayoutGrid" label="卡片展示" active={layout === "cards"} onClick={() => changeContext({ layout: "cards" })} /></div> : null}
@@ -1062,13 +1052,13 @@ function LegacyWorkbenchScreen({ data, onNavigate, submitDecision, updateAISumma
 
   return (
     <div className="page-shell workbench-page">
-      <DCPageHeader eyebrow="决策工作台" title="需要人工判断的行动" description="按业务主体核对触发原因、固定证据和建议，再决定是否交给负责人执行。" actions={<><DCButton icon="ListTodo" onClick={() => onNavigate("tasks")}>查看待办工作</DCButton><DCButton icon="Gauge" onClick={() => onNavigate("overview")}>查看运营概览</DCButton></>} />
+      <DCPageHeader eyebrow="决策工作台" title="需要人工判断的行动" description="按业务主体核对触发原因、固定证据和建议，再决定是否交给负责人执行。" actions={<><DCButton icon="ListTodo" onClick={() => onNavigate("tasks")}>追踪待办</DCButton><DCButton icon="Gauge" onClick={() => onNavigate("overview")}>查看运营概览</DCButton></>} />
       <div className="exclusive-metrics workbench-summary">
         <button type="button" onClick={() => changeContext({ view: "reminders", status: "awaiting", selectedId: "" })}><span className="summary-icon warning"><DCIcon name="Clock3" /></span><div><strong>{awaitingCount}</strong><small>待确认提醒</small></div><DCIcon name="ChevronRight" /></button>
         <button type="button" onClick={() => changeContext({ view: "reminders", status: "supplement_requested", selectedId: "" })}><span className="summary-icon blue"><DCIcon name="MessageSquarePlus" /></span><div><strong>{supplementCount}</strong><small>待补充信息</small></div><DCIcon name="ChevronRight" /></button>
         <button type="button" onClick={() => changeContext({ view: "requests", status: "attention", selectedId: "" })}><span className="summary-icon danger"><DCIcon name="ShieldAlert" /></span><div><strong>{blockedCount}</strong><small>阻断与变化</small></div><DCIcon name="ChevronRight" /></button>
-        <button type="button" onClick={() => changeContext({ view: "reminders", status: "confirmed", selectedId: "" })}><span className="summary-icon success"><DCIcon name="CircleCheck" /></span><div><strong>{confirmedCount}</strong><small>今日已确认</small></div><DCIcon name="ChevronRight" /></button>
-        <button type="button" onClick={() => changeContext({ view: "reminders", status: "rejected", selectedId: "" })}><span className="summary-icon neutral"><DCIcon name="CircleMinus" /></span><div><strong>{rejectedCount}</strong><small>今日已拒绝</small></div><DCIcon name="ChevronRight" /></button>
+        <button type="button" onClick={() => changeContext({ view: "reminders", status: "confirmed", selectedId: "" })}><span className="summary-icon success"><DCIcon name="CircleCheck" /></span><div><strong>{confirmedCount}</strong><small>已处理</small></div><DCIcon name="ChevronRight" /></button>
+        <button type="button" onClick={() => changeContext({ view: "reminders", status: "rejected", selectedId: "" })}><span className="summary-icon neutral"><DCIcon name="CircleMinus" /></span><div><strong>{rejectedCount}</strong><small>已拒绝</small></div><DCIcon name="ChevronRight" /></button>
       </div>
       <AISummaryPanel scope="workbench" requests={filteredRequests} contextLabel={contextLabel} contextSignature={signature} onNavigate={onNavigate} persisted={data.aiSummaries?.workbench} onPersist={(next) => updateAISummary("workbench", next)} />
 
@@ -1138,7 +1128,7 @@ function DecisionLifecycle({ request, compact = false }) {
   if (DC_UI_VARIANT === "portfolio" && request.duplicateOf) {
     return <div className={`decision-lifecycle ${compact ? "compact" : ""}`}>
       <span className="done"><DCIcon name={SOURCE_META[request.sourceType].icon} /><em>来源</em></span><i></i>
-      <span className="done"><DCIcon name="Waypoints" /><em>行动请求</em></span><i></i>
+      <span className="done"><DCIcon name="Waypoints" /><em>行动申请</em></span><i></i>
       <span className="done"><DCIcon name="Link2" /><em>关联既有事项</em></span><i></i>
       <span className="future"><DCIcon name="Scale" /><em>不单独决定</em></span><i></i>
       <span className="future"><DCIcon name="ListTodo" /><em>不重复建待办</em></span>
@@ -1148,7 +1138,7 @@ function DecisionLifecycle({ request, compact = false }) {
   const confirmed = ["decision_saved", "confirmed", "create_failed"].includes(request.status) || request.taskCreating;
   return <div className={`decision-lifecycle ${compact ? "compact" : ""}`}>
     <span className="done"><DCIcon name={SOURCE_META[request.sourceType].icon} /><em>来源</em></span><i></i>
-    <span className="done"><DCIcon name="Waypoints" /><em>行动请求</em></span><i></i>
+    <span className="done"><DCIcon name="Waypoints" /><em>行动申请</em></span><i></i>
     <span className={requestHasReminder(request) ? "done" : "stopped"}><DCIcon name="BellRing" /><em>{DC_UI_VARIANT === "portfolio" ? "决策事项" : "决策提醒"}</em></span><i></i>
     <span className={decided ? "done" : request.status === "awaiting" ? "current" : "stopped"}><DCIcon name="Scale" /><em>{decided ? (confirmed ? "已确认" : "已拒绝") : "人工判断"}</em></span><i></i>
     <span className={request.taskId ? "done" : confirmed ? "current" : "future"}><DCIcon name="ListTodo" /><em>{request.taskCreating ? "创建中" : "负责人待办"}</em></span>
@@ -1184,7 +1174,7 @@ function ContinuousWorkbench({ requests, selected, view, toolbar, onSelect, onNa
         <header className="continuous-title"><div><span>当前问题</span><h2>{selected.subjectName} · {selected.metric.name} {selected.metric.value}</h2><p>{selected.metric.explanation}</p></div><DCStatus status={selected.status} /></header>
         <DecisionLifecycle request={selected} />
         <div className="continuous-context-grid">
-          <section><span>为什么产生</span><strong>{selected.rule ? `${selected.rule.id} ${selected.rule.name}` : `${SOURCE_META[selected.sourceType].label}提出建议`}</strong><p>{selected.rule?.hitEvidence || "Rule 条件引用：不适用。当前依据来自已固定的来源证据。"}</p></section>
+          <section><span>为什么产生</span><strong>{selected.rule ? selected.rule.name : `${SOURCE_META[selected.sourceType].label}提出建议`}</strong><p>{selected.rule?.hitEvidence || "规则条件引用：不适用。当前依据来自已固定的来源证据。"}</p></section>
           <section><span>建议怎么处理</span><strong>{selected.recommendation}</strong><p>{selected.banks.length ? `优先银行：${selected.banks.map((item) => item.name).join("、")}` : "银行证据尚不可核对"}</p></section>
         </div>
         <div className="continuous-evidence-strip"><div><span>行动类型</span><strong>{selected.actionType.name} · {selected.actionType.version}</strong></div><div><span>负责人</span><strong>{selected.owner}</strong></div><div><span>语义 / 数据版本</span><strong>{selected.evidence.semanticVersion} / {selected.evidence.dataVersion}</strong></div><div><span>数据截至</span><strong>{selected.evidence.cutoff}</strong></div><div><span>证据状态</span><strong>{selected.evidence.freshness}</strong></div></div>
@@ -1227,7 +1217,7 @@ function PortfolioDecisionWorkspace({ requests, tasks, selected, scope, layout, 
     </div>
     <div className="portfolio-master-detail">
       <main className="portfolio-directory">
-        {!requests.length ? <DCEmpty icon={scope === "pending" ? "CircleCheckBig" : "History"} title={scope === "pending" ? "当前没有待我决策事项" : "今天还没有已处理事项"} description={scope === "pending" ? "调整筛选，或等待新的决策事项形成。" : "确认、拒绝或请求补充信息后，记录会出现在这里。"} action={<DCButton icon="RotateCcw" onClick={onClearFilters}>清除筛选</DCButton>} /> : null}
+        {!requests.length ? <DCEmpty icon={scope === "pending" ? "CircleCheckBig" : "History"} title={scope === "pending" ? "当前没有待我决策事项" : "当前没有已处理事项"} description={scope === "pending" ? "调整筛选，或等待新的决策事项形成。" : "确认、拒绝或请求补充信息后，记录会出现在这里。"} action={<DCButton icon="RotateCcw" onClick={onClearFilters}>清除筛选</DCButton>} /> : null}
         {requests.length && layout === "groups" ? <div className="portfolio-grid">{Object.entries(groups).map(([key, items]) => <section className="portfolio-group" key={key}><header><div><span>{groupLabel[dimension]}</span><h2>{key}</h2></div><strong>{items.length} 条独立记录</strong></header><div>{items.map(card)}</div></section>)}</div> : null}
         {requests.length && layout === "list" ? <div className="record-table-wrap portfolio-decision-table"><table className="record-table"><thead><tr><th>业务主体</th><th>负责人</th><th>行动类型</th><th>来源</th><th>事项状态</th><th>决定状态</th><th>待办状态</th><th>形成时间</th><th></th></tr></thead><tbody>{requests.map((item) => { const task = taskFor(item); return <tr key={item.id} className={selected?.id === item.id ? "selected" : ""} onClick={() => onSelect(item)}><td><strong>{item.subjectName}</strong><small>{item.metric.name} {item.metric.value}</small></td><td><span>{item.owner}</span><small>{item.subjectId}</small></td><td><span>{item.actionType.name}</span><small>{item.actionType.version}</small></td><td><DCSourceBadge type={item.sourceType} compact /><small className="mono">请求 {item.id}</small></td><td><DCStatus {...portfolioDecisionItemStatus(item)} compact /><small>{item.reminderId}</small></td><td><span>{portfolioDecisionLabel(item)}</span><small>{item.decision?.time || item.supplement?.time || "尚未决定"}</small></td><td>{task ? <DCStatus status={task.status} suffix={task.overdue ? " · 已逾期" : ""} compact /> : <span className="plain-chip">未形成</span>}</td><td><span className="mono table-time">{item.generatedTime}</span><small>数据截至 {item.evidence.cutoff.split(" ")[0]}</small></td><td><DCButton size="sm" icon="ArrowRight" onClick={(event) => { event.stopPropagation(); onSelect(item); onNavigate(detailTarget(item)); }}>查看详情</DCButton></td></tr>; })}</tbody></table></div> : null}
       </main>
@@ -1244,14 +1234,14 @@ function PortfolioDecisionPreview({ request, task, onNavigate, onDecision }) {
     {portfolioBasisChanged(request) ? <DCAlert tone="warning" title="依据已变化">本记录保留送达时的固定证据，不会重新进入“待我决策”。请从变更记录核对撤回、纠正或替代事实。</DCAlert> : null}
     <DecisionLifecycle request={request} compact />
     <div className="portfolio-preview-sections">
-      <section><span>为什么产生</span><strong>{request.rule ? `${request.rule.id} ${request.rule.name}` : `${SOURCE_META[request.sourceType].label}提出建议`}</strong><p>{request.rule?.hitEvidence || request.metric.explanation}</p></section>
+      <section><span>为什么产生</span><strong>{request.rule ? request.rule.name : `${SOURCE_META[request.sourceType].label}提出建议`}</strong><p>{request.rule?.hitEvidence || request.metric.explanation}</p></section>
       <section><span>推荐决策</span><strong>{guidance.direction}</strong><p>{guidance.reason}</p></section>
       <section><span>建议怎么做</span><strong>{request.recommendation}</strong><p>{request.banks.length ? `优先协商：${request.banks.slice(0, 3).map((item) => item.name).join("、")}` : "尚缺可核对的银行证据"}</p></section>
       <section><span>预期影响</span><strong>{portfolioExpectedImpact(request)}</strong><p>证据状态：{guidance.evidence}</p></section>
     </div>
-    <dl className="portfolio-preview-facts"><div><dt>负责人</dt><dd>{request.owner}</dd></div><div><dt>行动类型</dt><dd>{request.actionType.name} · {request.actionType.version}</dd></div><div><dt>事项状态</dt><dd>{portfolioReminderLabel(request)}</dd></div><div><dt>决定状态</dt><dd>{portfolioDecisionLabel(request)}</dd></div><div><dt>负责人待办</dt><dd>{task ? `${task.id} · ${PORTFOLIO_TASK_CATEGORY_META[portfolioTaskCategory(task)]?.label || DC_STATUS_META[task.status]?.label}` : "未形成"}</dd></div><div><dt>数据截至</dt><dd>{request.evidence.cutoff}</dd></div></dl>
+    <dl className="portfolio-preview-facts"><div><dt>负责人</dt><dd>{request.owner}</dd></div><div><dt>行动类型</dt><dd>{request.actionType.name} · {request.actionType.version}</dd></div><div><dt>事项状态</dt><dd>{portfolioReminderLabel(request)}</dd></div><div><dt>决定状态</dt><dd>{portfolioDecisionLabel(request)}</dd></div><div><dt>负责人待办</dt><dd>{task ? PORTFOLIO_TASK_CATEGORY_META[portfolioTaskCategory(task)]?.label || DC_STATUS_META[task.status]?.label : "未形成"}</dd></div><div><dt>数据截至</dt><dd>{request.evidence.cutoff}</dd></div></dl>
     <div className="portfolio-preview-actions">
-      <DCButton icon="Waypoints" onClick={() => onNavigate(portfolioRequestDetailTarget(request.id))}>查看原始行动请求</DCButton>
+      <DCButton icon="Waypoints" onClick={() => onNavigate(portfolioRequestDetailTarget(request.id))}>查看原始行动申请</DCButton>
       {task ? <DCButton icon="ListTodo" onClick={() => onNavigate(`task/${task.id}`)}>查看执行进展</DCButton> : null}
       <DCButton variant="primary" icon="ArrowRight" onClick={() => onNavigate(`reminder/${request.reminderId}`)}>查看详情</DCButton>
     </div>
@@ -1404,7 +1394,7 @@ function PortfolioTaskDirectory({ tasks, requestById, layout, dimension, onLayou
       <div className="portfolio-card-head">{request ? <DCSourceBadge type={request.sourceType} compact /> : <span className="plain-chip">来源不可用</span>}<DCStatus status={task.status} suffix={task.overdue ? " · 已逾期" : ""} compact /></div>
       <h3>{task.subjectName} · {task.actionType.name}</h3>
       <div className="task-portfolio-owner"><span className="avatar-small">{task.owner.slice(-2)}</span><div><strong>{task.owner}</strong><small>{task.id}</small></div></div>
-      <dl><div><dt>决策事项</dt><dd>{task.reminderId}</dd></div><div><dt>决定状态</dt><dd>已确认</dd></div><div><dt>创建时间</dt><dd>{task.createdAt}</dd></div><div><dt>到期时间</dt><dd>{task.dueDate}</dd></div><div><dt>最近进展</dt><dd>{task.progress.at(-1)?.content || task.failure?.reason || task.result?.summary || task.correction?.result || "尚无进展"}</dd></div><div><dt>涉及银行</dt><dd>{task.banks.slice(0, 2).join("、") || "不适用"}</dd></div></dl>
+      <dl><div><dt>决策事项</dt><dd>{task.reminderId}</dd></div><div><dt>决定状态</dt><dd>已处理</dd></div><div><dt>创建时间</dt><dd>{task.createdAt}</dd></div><div><dt>到期时间</dt><dd>{task.dueDate}</dd></div><div><dt>最近进展</dt><dd>{task.progress.at(-1)?.content || task.failure?.reason || task.result?.summary || task.correction?.result || "尚无进展"}</dd></div><div><dt>涉及银行</dt><dd>{task.banks.slice(0, 2).join("、") || "不适用"}</dd></div></dl>
       <footer><span>{task.subjectId}</span><DCButton size="sm" icon="ArrowRight" onClick={() => onNavigate(`task/${task.id}`)}>查看详情</DCButton></footer>
     </article>;
   };
@@ -1412,7 +1402,7 @@ function PortfolioTaskDirectory({ tasks, requestById, layout, dimension, onLayou
     <div className="portfolio-viewbar"><div><strong>负责人行动</strong><span>{tasks.length} 条独立待办</span></div><div className="portfolio-view-controls"><DCTabs value={dimension} onChange={onDimension} items={[{ value: "subject", label: "单位组合", icon: "Building2" }, { value: "owner", label: "负责人组合", icon: "Users" }, { value: "action", label: "行动组合", icon: "Target" }]} /><DCTabs value={layout} onChange={onLayout} items={[{ value: "groups", label: "组合视图", icon: "LayoutGrid" }, { value: "list", label: "列表视图", icon: "Rows3" }]} /></div></div>
     {!tasks.length ? <DCEmpty icon="ListTodo" title="当前范围没有负责人待办" description="待办只在决策中心人工确认成功后形成；可调整筛选或返回工作台处理决策事项。" action={<DCButton icon="RotateCcw" onClick={onClearFilters}>清除筛选</DCButton>} /> : null}
     {tasks.length && layout === "groups" ? <div className="portfolio-grid portfolio-task-groups">{Object.entries(groups).map(([key, items]) => <section className="portfolio-group" key={key}><header><div><span>{groupLabel[dimension]}</span><h2>{key}</h2></div><strong>{items.length} 条独立待办</strong></header><div>{items.map(card)}</div></section>)}</div> : null}
-    {tasks.length && layout === "list" ? <div className="record-table-wrap portfolio-task-table"><table className="record-table"><thead><tr><th>业务主体</th><th>负责人</th><th>行动类型</th><th>来源</th><th>决策事项</th><th>决定状态</th><th>待办状态</th><th>时间</th><th></th></tr></thead><tbody>{tasks.map((task) => { const request = requestById[task.requestId]; return <tr key={task.id}><td><strong>{task.subjectName}</strong><small>{task.subjectId}</small></td><td><span>{task.owner}</span><small>{task.id}</small></td><td><span>{task.actionType.name}</span><small>{task.actionType.version}</small></td><td>{request ? <DCSourceBadge type={request.sourceType} compact /> : <span>来源不可用</span>}<small>{task.requestId}</small></td><td><span className="plain-chip">已形成决策事项</span><small>{task.reminderId}</small></td><td><span>已确认</span><small>{task.decisionReason}</small></td><td><DCStatus status={task.status} suffix={task.overdue ? " · 已逾期" : ""} compact /></td><td><span>创建 {task.createdAt}</span><small>到期 {task.dueDate}</small></td><td><DCButton size="sm" icon="ArrowRight" onClick={() => onNavigate(`task/${task.id}`)}>查看详情</DCButton></td></tr>; })}</tbody></table></div> : null}
+    {tasks.length && layout === "list" ? <div className="record-table-wrap portfolio-task-table"><table className="record-table"><thead><tr><th>业务主体</th><th>负责人</th><th>行动类型</th><th>来源</th><th>决策事项</th><th>决定状态</th><th>待办状态</th><th>时间</th><th></th></tr></thead><tbody>{tasks.map((task) => { const request = requestById[task.requestId]; return <tr key={task.id}><td><strong>{task.subjectName}</strong><small>{task.subjectId}</small></td><td><span>{task.owner}</span><small>{task.id}</small></td><td><span>{task.actionType.name}</span><small>{task.actionType.version}</small></td><td>{request ? <DCSourceBadge type={request.sourceType} compact /> : <span>来源不可用</span>}<small>{task.requestId}</small></td><td><span className="plain-chip">已形成决策事项</span><small>{task.reminderId}</small></td><td><span>已处理</span><small>{task.decisionReason}</small></td><td><DCStatus status={task.status} suffix={task.overdue ? " · 已逾期" : ""} compact /></td><td><span>创建 {task.createdAt}</span><small>到期 {task.dueDate}</small></td><td><DCButton size="sm" icon="ArrowRight" onClick={() => onNavigate(`task/${task.id}`)}>查看详情</DCButton></td></tr>; })}</tbody></table></div> : null}
   </div>;
 }
 
@@ -1528,13 +1518,13 @@ function RequestDetailScreen({ request, onNavigate, data, retryCreateTask, retry
     <div className="page-shell detail-page">
       <DCPageHeader
         onBack={() => contextReturn?.action ? contextReturn.action() : contextReturn?.target ? onNavigate(contextReturn.target) : window.history.back()}
-        eyebrow={DC_UI_VARIANT === "portfolio" ? "行动请求" : "Action Request"}
+        eyebrow={DC_UI_VARIANT === "portfolio" ? "行动申请" : "行动申请"}
         title={`${request.subjectName} · ${request.actionType.name}`}
         description={DC_UI_VARIANT === "portfolio" ? `${SOURCE_META[request.sourceType].label}于 ${request.requestTime} 发起；这是业务链路记录，不在此进行人工决定。` : `${SOURCE_META[request.sourceType].label}于 ${request.requestTime} 发起，当前状态：${requestStatusLabel(request)}。`}
         meta={<><span className="mono">{request.id}</span><DCSourceBadge type={request.sourceType} compact />{DC_UI_VARIANT === "portfolio" ? <DCStatus status={request.status} label={portfolioRequestDisplayLabel(request)} tone={portfolioRequestDisplayTone(request)} compact /> : <DCStatus status={request.status} compact />}</>}
         actions={<><DCButton icon="Route" onClick={() => onNavigate(`trace/request/${request.id}`)}>查看追溯</DCButton>{requestHasReminder(request) ? <DCButton variant="primary" icon={DC_UI_VARIANT === "portfolio" ? "Scale" : "BellRing"} onClick={() => onNavigate(portfolioDecisionItemTarget(request.reminderId, route.query.from === "request-directory" ? "request-directory" : "request", route.query.returnTo || ""))}>{DC_UI_VARIANT === "portfolio" ? "查看决策事项" : "查看提醒"}</DCButton> : null}</>}
       />
-      {DC_UI_VARIANT === "portfolio" && route.query.from === "decision-item" ? <div className="return-context content-panel"><div><DCIcon name="CornerUpLeft" /><span>已从决策事项的“来源与追溯”进入；行动请求只读展示来源与链路状态。</span></div><DCButton size="sm" onClick={() => window.history.back()}>返回决策事项</DCButton></div> : null}
+      {DC_UI_VARIANT === "portfolio" && route.query.from === "decision-item" ? <div className="return-context content-panel"><div><DCIcon name="CornerUpLeft" /><span>已从决策事项的“来源与追溯”进入；行动申请只读展示来源与链路状态。</span></div><DCButton size="sm" onClick={() => window.history.back()}>返回决策事项</DCButton></div> : null}
 
       {DC_UI_VARIANT === "portfolio" ? <section className="content-panel request-relation-summary">
         <div><span>请求校验结果</span><strong>{requestValidationLabel}</strong><p>{portfolioDisplayText(request.requestGate?.reason || request.formation?.requestGateReason || "等待请求与证据校验。")}</p></div>
@@ -1543,13 +1533,13 @@ function RequestDetailScreen({ request, onNavigate, data, retryCreateTask, retry
       </section> : null}
 
       {request.status === "blocked" ? <DCAlert tone="danger" title="当前请求不能进入人工确认" actions={request.evidence.previousTrusted ? <DCButton size="sm" onClick={() => document.getElementById("previous-trusted")?.scrollIntoView({ behavior: "smooth" })}>查看上一可信证据</DCButton> : null}>{portfolioDisplayText(request.blockReason)} {portfolioDisplayText(request.recovery)}</DCAlert> : null}
-      {request.status === "rejected_by_gate" ? <DCAlert tone="danger" title="行动请求已被拒绝">{portfolioDisplayText(request.blockReason || "当前数据版本发生硬质量失败。") } 已保留失败回执，不形成{DC_UI_VARIANT === "portfolio" ? "决策事项" : "决策提醒"}或负责人待办。{portfolioDisplayText(request.recovery)}</DCAlert> : null}
-      {request.status === "c017_blocked" ? <DCAlert tone="warning" title="当前质量状态无法确认" actions={<DCButton size="sm" variant="primary" icon="RefreshCw" onClick={() => retryC017Receipt(request.id)}>重新读取安全状态</DCButton>}>{portfolioDisplayText(request.blockReason)} 已保留行动请求和本次阻断回执，但未形成决策事项；只有重新读取到明确允许状态后才会继续。</DCAlert> : null}
+      {request.status === "rejected_by_gate" ? <DCAlert tone="danger" title="行动申请已被拒绝">{portfolioDisplayText(request.blockReason || "当前数据版本发生硬质量失败。") } 已保留失败回执，不形成{DC_UI_VARIANT === "portfolio" ? "决策事项" : "决策提醒"}或负责人待办。{portfolioDisplayText(request.recovery)}</DCAlert> : null}
+      {request.status === "c017_blocked" ? <DCAlert tone="warning" title="当前质量状态无法确认" actions={<DCButton size="sm" variant="primary" icon="RefreshCw" onClick={() => retryC017Receipt(request.id)}>重新读取安全状态</DCButton>}>{portfolioDisplayText(request.blockReason)} 已保留行动申请和本次阻断回执，但未形成决策事项；只有重新读取到明确允许状态后才会继续。</DCAlert> : null}
       {request.status === "stale" ? <DCAlert tone="warning" title="固定证据已经陈旧">{portfolioDisplayText(request.confirmationEligibility?.reason || request.blockReason || "当前证据已超过业务时效要求。")} 可从对应{DC_UI_VARIANT === "portfolio" ? "决策事项" : "提醒"}请求补充信息，原请求保持只读。</DCAlert> : null}
       {request.status === "missing_evidence" ? <DCAlert tone="danger" title="必要证据缺失">{portfolioDisplayText(request.blockReason)} {portfolioDisplayText(request.recovery)}</DCAlert> : null}
       {request.status === "withdrawn" ? <DCAlert tone="warning" title="来源已撤回本次请求">{portfolioDisplayText(request.blockReason)} 原请求和固定证据继续保留，但不再形成可确认事项。</DCAlert> : null}
       {request.status === "replaced" ? <DCAlert tone="warning" title="原证据已被纠正" actions={<DCButton size="sm" onClick={() => onNavigate(DC_UI_VARIANT === "portfolio" ? "operations/requests?from=overview&exception=withdrawal_replacement" : "workbench?view=requests")}>查看请求目录</DCButton>}>{portfolioDisplayText(request.blockReason)} {portfolioDisplayText(request.recovery)}</DCAlert> : null}
-      {DC_UI_VARIANT === "portfolio" && request.status === "create_failed" ? <DCAlert tone="danger" title="人工确认已保存，但交办创建失败" actions={<DCButton size="sm" variant="primary" icon="Wrench" onClick={() => onNavigate(`operations/assignment-recovery/${request.id}?from=request-detail`)}>进入异常恢复</DCButton>}>原人工决定、负责人和期限均已固定；行动请求保持只读，恢复操作在决策运营概览下属处理页完成。</DCAlert> : null}
+      {DC_UI_VARIANT === "portfolio" && request.status === "create_failed" ? <DCAlert tone="danger" title="人工确认已保存，但交办创建失败" actions={<DCButton size="sm" variant="primary" icon="Wrench" onClick={() => onNavigate(`operations/assignment-recovery/${request.id}?from=request-detail`)}>进入异常恢复</DCButton>}>原人工决定、负责人和期限均已固定；行动申请保持只读，恢复操作在决策运营概览下属处理页完成。</DCAlert> : null}
       {request.evidence.availability === "部分可用" ? <DCAlert tone="warning" title="当前固定证据部分可用">缺失：{request.evidence.missingItems.join("、")}。{request.evidence.affectedScope}；是否继续由人工在{DC_UI_VARIANT === "portfolio" ? "决策事项" : "提醒"}中判断。</DCAlert> : null}
       {request.duplicateOf ? DC_UI_VARIANT === "portfolio" ? <DCAlert tone="info" title="已关联既有决策事项" actions={<><DCButton size="sm" onClick={() => onNavigate(`request/${request.duplicateOf}`)}>查看最早请求</DCButton><DCButton size="sm" variant="primary" onClick={() => onNavigate(portfolioDecisionItemTarget(request.reminderId))}>查看决策事项</DCButton></>}>{request.id} 作为独立来源记录保留，但固定证据与最早请求完全一致，不形成新的“待我决策”事项，也不重复创建负责人待办。</DCAlert> : <DCAlert tone="info" title="严格重复请求已关联到现有提醒" actions={<DCButton size="sm" onClick={() => onNavigate(`request/${request.duplicateOf}`)}>查看最早请求</DCButton>}>{request.id} 保留独立来源记录，并关联到提醒 {request.reminderId}；不会重复创建提醒或待办。</DCAlert> : null}
 
@@ -1600,7 +1590,7 @@ function RequestDetailScreen({ request, onNavigate, data, retryCreateTask, retry
           <section className="content-panel sticky-card">
             <DCSectionHeader title="证据可信度" />
             <div className="trust-list">
-              <div><span><DCIcon name="BookOpenCheck" />Published 语义版本</span><strong>{request.evidence.semanticVersion}</strong></div>
+              <div><span><DCIcon name="BookOpenCheck" />已发布语义版本</span><strong>{request.evidence.semanticVersion}</strong></div>
               <div><span><DCIcon name="Database" />数据版本</span><strong>{request.evidence.dataVersion}</strong></div>
               <div><span><DCIcon name="CalendarClock" />数据截至</span><strong>{request.evidence.cutoff}</strong></div>
               <div><span><DCIcon name="ShieldCheck" />质量</span><strong>{request.evidence.quality}</strong></div>
@@ -1625,11 +1615,11 @@ function PortfolioAssignmentRecoveryScreen({ request, onNavigate, retryCreateTas
     });
   };
   return <div className="page-shell detail-page">
-    <DCPageHeader onBack={() => window.history.back()} eyebrow="决策运营概览 · 异常恢复" title={`${request.subjectName} · 交办创建失败`} description="只恢复人工确认后的交办创建，不重新确认、不修改原决定。" actions={<DCButton icon="Waypoints" onClick={() => onNavigate(`request/${request.id}?from=request-directory`)}>查看行动请求</DCButton>} />
+    <DCPageHeader onBack={() => window.history.back()} eyebrow="决策运营概览 · 异常恢复" title={`${request.subjectName} · 交办创建失败`} description="只恢复人工确认后的交办创建，不重新确认、不修改原决定。" actions={<DCButton icon="Waypoints" onClick={() => onNavigate(`request/${request.id}?from=request-directory`)}>查看行动申请</DCButton>} />
     <DCAlert tone="danger" title="负责人待办尚未创建">人工确认已保存，当前只缺负责人待办。每次重试都会按精确数据版本重新读取 C017，不使用页面缓存放行。</DCAlert>
     <div className="two-column-detail">
       <main className="detail-main">
-        <section className="content-panel section-card"><DCSectionHeader title="已保存的人工决定" /><DCKeyValues columns={2} items={[{ label: "决策事项", value: request.reminderId }, { label: "行动请求", value: request.id }, { label: "确认理由", value: request.decision.reason }, { label: "负责人", value: request.decision.owner }, { label: "到期时间", value: request.decision.dueDate }, { label: "确认时间", value: request.decision.time }]} /></section>
+        <section className="content-panel section-card"><DCSectionHeader title="已保存的人工决定" /><DCKeyValues columns={2} items={[{ label: "决策事项", value: request.reminderId }, { label: "行动申请", value: request.id }, { label: "确认理由", value: request.decision.reason }, { label: "负责人", value: request.decision.owner }, { label: "到期时间", value: request.decision.dueDate }, { label: "确认时间", value: request.decision.time }]} /></section>
         <section className="content-panel section-card"><DCSectionHeader title="恢复范围" /><DCAlert tone="info" title="不会重复人工决定">本次仅依据已保存的负责人、期限、执行说明和固定证据创建一条负责人待办；若已存在待办，系统会打开既有记录。</DCAlert><C017SafetyReadPanel request={request} gate="task_formation" compact /></section>
       </main>
       <aside className="detail-aside"><section className="content-panel sticky-card"><DCSectionHeader title="恢复操作" /><div className="decision-checklist"><div><DCIcon name="UserRound" /><span>负责人</span><strong>{request.decision.owner}</strong></div><div><DCIcon name="CalendarClock" /><span>到期时间</span><strong>{request.decision.dueDate}</strong></div><div><DCIcon name="ShieldCheck" /><span>人工决定</span><strong>已确认并固定</strong></div></div><div className="sticky-actions"><DCButton variant="primary" icon="RefreshCw" loading={recovering} onClick={recover}>重试创建负责人待办</DCButton></div></section></aside>
@@ -1787,7 +1777,7 @@ function SupplementModal({ open, request, onClose, onSubmit }) {
     onClose();
   };
   return <DCModal open={open} onClose={() => !submitting && onClose()} title="请求补充信息" description={`${request.subjectName} · ${request.reminderId}`} icon="MessageSquarePlus" width="620px" footer={!submitting ? <><DCButton onClick={onClose}>取消</DCButton><DCButton variant="primary" icon="Send" onClick={submit}>发送补充请求</DCButton></> : null}>
-    {submitting ? <DCLoadingBlock title="正在发送补充请求" description={`发送成功后，本${DC_UI_VARIANT === "portfolio" ? "决策事项" : "提醒"}将等待上游形成新的或替代的行动请求。`} /> : <div className="supplement-panel">
+    {submitting ? <DCLoadingBlock title="正在发送补充请求" description={`发送成功后，本${DC_UI_VARIANT === "portfolio" ? "决策事项" : "提醒"}将等待上游形成新的或替代的行动申请。`} /> : <div className="supplement-panel">
       <DCAlert tone="info" title="原固定证据保持只读">这里仅记录需要补充的内容，不会在决策中心修改上游指标、Rule、贷款或银行证据。</DCAlert>
       {error ? <DCAlert tone="danger" title="补充请求尚未发送">{error} 已保留填写内容。</DCAlert> : null}
       <DCTextarea label="请求原因" value={reason} onChange={setReason} required placeholder="说明还缺少哪些事实，为什么会影响本次判断" />
@@ -1813,7 +1803,7 @@ function ReminderDetailScreen({ request, data, onNavigate, submitDecision, retry
   const directoryFallback = portfolioRequestDirectoryTarget({}, request.id);
   const directoryReturnTarget = portfolioSafeReturnTarget(route.query.returnTo, directoryFallback);
   const directReturnTarget = fromRequestDirectory ? directoryReturnTarget : route.query.from === "request" ? `request/${request.id}?from=request-directory${route.query.returnTo ? `&returnTo=${encodeURIComponent(route.query.returnTo)}` : ""}` : "workbench";
-  const contextReturn = portfolioContextReturn(route, fromRequestDirectory ? "返回行动请求目录" : route.query.from === "request" ? "返回行动请求" : "返回决策工作台", directReturnTarget);
+  const contextReturn = portfolioContextReturn(route, fromRequestDirectory ? "返回行动申请目录" : route.query.from === "request" ? "返回行动申请" : "返回决策工作台", directReturnTarget);
   const detailTitle = DC_UI_VARIANT === "portfolio"
     ? `${request.subjectName} · ${request.actionType.name}`
     : `${request.subjectName}需要判断：${request.actionType.name}`;
@@ -1825,9 +1815,9 @@ function ReminderDetailScreen({ request, data, onNavigate, submitDecision, retry
         title={detailTitle}
         description={request.metric.explanation}
         meta={<><span className="mono">{request.reminderId}</span><DCSourceBadge type={request.sourceType} compact />{DC_UI_VARIANT === "portfolio" ? <DCStatus {...portfolioDecisionItemStatus(request)} compact /> : <DCStatus status={request.status} compact />}</>}
-        actions={DC_UI_VARIANT === "portfolio" ? <><DCButton icon="Waypoints" onClick={() => onNavigate(portfolioRequestDetailTarget(request.id, route.query.returnTo || ""))}>查看原始行动请求</DCButton>{task ? <DCButton icon="ListTodo" onClick={() => onNavigate(`task/${task.id}`)}>查看执行进展</DCButton> : null}{canRequestSupplement ? <DCButton icon="MessageSquarePlus" onClick={() => setSupplementOpen(true)}>请求补充信息</DCButton> : null}{canDecide ? <DCButton icon="CircleMinus" onClick={() => setDecisionMode("reject")}>拒绝</DCButton> : null}{canDecide ? <DCButton variant="primary" icon="CircleCheckBig" onClick={() => setDecisionMode("confirm")}>确认</DCButton> : null}</> : <><DCButton icon="Route" onClick={() => onNavigate(`trace/reminder/${request.reminderId}`)}>查看追溯</DCButton>{canDecide ? <DCButton icon="CircleMinus" onClick={() => setDecisionMode("reject")}>拒绝</DCButton> : null}{canDecide ? <DCButton variant="primary" icon="CircleCheckBig" onClick={() => setDecisionMode("confirm")}>确认</DCButton> : null}</>}
+        actions={DC_UI_VARIANT === "portfolio" ? <><DCButton icon="Waypoints" onClick={() => onNavigate(portfolioRequestDetailTarget(request.id, route.query.returnTo || ""))}>查看原始行动申请</DCButton>{task ? <DCButton icon="ListTodo" onClick={() => onNavigate(`task/${task.id}`)}>查看执行进展</DCButton> : null}{canRequestSupplement ? <DCButton icon="MessageSquarePlus" onClick={() => setSupplementOpen(true)}>请求补充信息</DCButton> : null}{canDecide ? <DCButton icon="CircleMinus" onClick={() => setDecisionMode("reject")}>拒绝</DCButton> : null}{canDecide ? <DCButton variant="primary" icon="CircleCheckBig" onClick={() => setDecisionMode("confirm")}>确认</DCButton> : null}</> : <><DCButton icon="Route" onClick={() => onNavigate(`trace/reminder/${request.reminderId}`)}>查看追溯</DCButton>{canDecide ? <DCButton icon="CircleMinus" onClick={() => setDecisionMode("reject")}>拒绝</DCButton> : null}{canDecide ? <DCButton variant="primary" icon="CircleCheckBig" onClick={() => setDecisionMode("confirm")}>确认</DCButton> : null}</>}
       />
-      {DC_UI_VARIANT === "portfolio" && ["request", "request-directory"].includes(route.query.from) ? <div className="return-context content-panel"><div><DCIcon name="CornerUpLeft" /><span>{fromRequestDirectory ? "已从行动请求目录进入；事项与请求读取同一条业务链路。" : "已从原始行动请求进入；两处读取同一条业务链路。"}</span></div><DCButton size="sm" onClick={() => contextReturn?.action ? contextReturn.action() : onNavigate(directReturnTarget)}>{fromRequestDirectory ? "返回行动请求目录" : "返回行动请求"}</DCButton></div> : null}
+      {DC_UI_VARIANT === "portfolio" && ["request", "request-directory"].includes(route.query.from) ? <div className="return-context content-panel"><div><DCIcon name="CornerUpLeft" /><span>{fromRequestDirectory ? "已从行动申请目录进入；事项与申请读取同一条业务链路。" : "已从原始行动申请进入；两处读取同一条业务链路。"}</span></div><DCButton size="sm" onClick={() => contextReturn?.action ? contextReturn.action() : onNavigate(directReturnTarget)}>{fromRequestDirectory ? "返回行动申请目录" : "返回行动申请"}</DCButton></div> : null}
 
       {DC_UI_VARIANT === "portfolio" && portfolioBasisChanged(request) ? <DCAlert tone="warning" title="依据已变化">本决策事项保留送达时的固定证据，并已移出“待我决策”。来源变化不会自动形成第二次领导判断；如有替代请求，可从“来源与追溯”或变更记录继续核对。</DCAlert> : null}
       {request.status === "blocked" ? <DCAlert tone="danger" title="证据门阻断人工确认">{portfolioDisplayText(request.blockReason)} {portfolioDisplayText(request.recovery)}</DCAlert> : null}
@@ -1836,7 +1826,7 @@ function ReminderDetailScreen({ request, data, onNavigate, submitDecision, retry
       {request.evidence.availability === "部分可用" ? <DCAlert tone="warning" title="部分证据可用">{request.evidence.missingItems.join("、")}尚未补齐；{request.evidence.affectedScope}。{DC_UI_VARIANT === "portfolio" ? "本决策事项" : "本提醒"}仍可人工判断，确认时必须说明已知影响。</DCAlert> : null}
       {request.status === "replaced" ? <DCAlert tone="warning" title="证据已被上游纠正" actions={<DCButton size="sm" onClick={() => onNavigate(DC_UI_VARIANT === "portfolio" ? "operations/requests?from=overview&exception=withdrawal_replacement" : "workbench?view=requests")}>查看替代请求</DCButton>}>{portfolioDisplayText(request.blockReason)} 原证据保持只读，不能继续确认。</DCAlert> : null}
       {request.status === "create_failed" && DC_UI_VARIANT !== "portfolio" ? <DCAlert tone="danger" title="人工确认已保存，但待办创建失败" actions={<DCButton size="sm" variant="primary" icon="RefreshCw" onClick={() => retryCreateTask(request.id)}>重试创建待办</DCButton>}>负责人目录在首次创建时未返回明确结果。人工决定保持有效；修复后可直接重试。</DCAlert> : null}
-      {request.status === "supplement_requested" ? <DCAlert tone={request.sourceReadStatus === "failed" ? "danger" : "info"} title={request.sourceReadStatus === "failed" ? "读取上游状态失败" : "正在等待上游补充信息"} actions={<DCButton size="sm" variant={request.sourceReadStatus === "failed" ? "primary" : "secondary"} icon="RefreshCw" loading={request.sourceReadStatus === "loading"} onClick={() => refreshSupplement(request.id)}>{request.sourceReadStatus === "failed" ? "重试读取" : "重新读取上游状态"}</DCButton>}>{request.sourceReadStatus === "failed" ? `暂时无法读取来源更新，原${DC_UI_VARIANT === "portfolio" ? "决策事项" : "提醒"}和补充请求均已保留。` : <>{request.supplement?.reason || "已记录补充请求"}<br />收到新的或替代的行动请求后，可继续人工判断。</>}</DCAlert> : null}
+      {request.status === "supplement_requested" ? <DCAlert tone={request.sourceReadStatus === "failed" ? "danger" : "info"} title={request.sourceReadStatus === "failed" ? "读取上游状态失败" : "正在等待上游补充信息"} actions={<DCButton size="sm" variant={request.sourceReadStatus === "failed" ? "primary" : "secondary"} icon="RefreshCw" loading={request.sourceReadStatus === "loading"} onClick={() => refreshSupplement(request.id)}>{request.sourceReadStatus === "failed" ? "重试读取" : "重新读取上游状态"}</DCButton>}>{request.sourceReadStatus === "failed" ? `暂时无法读取来源更新，原${DC_UI_VARIANT === "portfolio" ? "决策事项" : "提醒"}和补充请求均已保留。` : <>{request.supplement?.reason || "已记录补充请求"}<br />收到新的或替代的行动申请后，可继续人工判断。</>}</DCAlert> : null}
       {request.taskCreating ? <DCAlert tone="info" title="正在创建负责人待办"><span className="inline-loading"><DCIcon name="LoaderCircle" className="spin" />人工决定已固定，正在形成独立待办。</span></DCAlert> : null}
       {request.status === "decision_saved" && !request.taskCreating && request.decision ? <DCAlert tone="info" title="人工确认已保存">正在准备创建 {request.decision.owner} 的独立待办，无需再次确认。</DCAlert> : null}
       {request.status === "confirmed" && request.decision ? <DCAlert tone="success" title="待办已创建" actions={<DCButton size="sm" onClick={() => request.taskId && onNavigate(`task/${request.taskId}`)}>查看待办</DCButton>}>已分派给 {request.decision.owner}，{DC_UI_VARIANT === "portfolio" ? "等待负责人确认承接" : "待负责人开始处理"}；到期时间 {request.decision.dueDate}。</DCAlert> : null}
@@ -1844,10 +1834,10 @@ function ReminderDetailScreen({ request, data, onNavigate, submitDecision, retry
 
       {DC_UI_VARIANT === "portfolio" ? <div className="reminder-hero content-panel">
         <div className="hero-fact"><span>哪个主体需要决策</span><strong>{request.subjectName} · {request.metric.name} {request.metric.value}</strong><p>{request.metric.explanation}；涉及 {request.loanCount} 笔贷款，余额 {request.balance}。</p></div>
-        <div className="hero-fact"><span>为什么产生</span><strong>{request.rule ? `${request.rule.id} ${request.rule.name}` : `${SOURCE_META[request.sourceType].label}提出建议`}</strong><p>{request.rule ? request.rule.hitEvidence : "当前来源证据未引用 Rule"}</p></div>
+        <div className="hero-fact"><span>为什么产生</span><strong>{request.rule ? request.rule.name : `${SOURCE_META[request.sourceType].label}提出建议`}</strong><p>{request.rule ? request.rule.hitEvidence : "当前来源证据未引用规则"}</p></div>
         <div className="hero-fact recommendation"><span>推荐决策</span><strong>{guidance.direction}</strong><p>{guidance.reason}</p></div>
         <div className="hero-fact"><span>建议行动与预期影响</span><strong>{request.recommendation}</strong><p>{request.banks.length ? `优先银行：${request.banks.map((item) => item.name).join("、")}。` : "当前缺少可核对的银行证据。"}{portfolioExpectedImpact(request)}</p></div>
-      </div> : <div className="reminder-hero content-panel"><div className="hero-fact"><span>发生了什么</span><strong>{request.metric.name} {request.metric.value}</strong><p>{request.metric.explanation}</p></div><div className="hero-fact"><span>为什么产生</span><strong>{request.rule ? `${request.rule.id} ${request.rule.name}` : `${SOURCE_META[request.sourceType].label}提出建议`}</strong><p>{request.rule ? request.rule.hitEvidence : "当前来源证据未引用 Rule"}</p></div><div className="hero-fact recommendation"><span>推荐决策</span><strong>{request.recommendation}</strong><p>优先银行：{request.banks.length ? request.banks.map((item) => item.name).join("、") : "待证据恢复后生成"}</p></div></div>}
+      </div> : <div className="reminder-hero content-panel"><div className="hero-fact"><span>发生了什么</span><strong>{request.metric.name} {request.metric.value}</strong><p>{request.metric.explanation}</p></div><div className="hero-fact"><span>为什么产生</span><strong>{request.rule ? request.rule.name : `${SOURCE_META[request.sourceType].label}提出建议`}</strong><p>{request.rule ? request.rule.hitEvidence : "当前来源证据未引用规则"}</p></div><div className="hero-fact recommendation"><span>推荐决策</span><strong>{request.recommendation}</strong><p>优先银行：{request.banks.length ? request.banks.map((item) => item.name).join("、") : "待证据恢复后生成"}</p></div></div>}
       {DC_UI_VARIANT === "portfolio" ? <section className="content-panel decision-readiness">
         <DCSectionHeader title="判断前先核对" description="先看证据是否充分、是否陈旧，再决定确认、拒绝或请求补充信息。" />
         <div className="decision-readiness-grid"><div><span>证据充分程度</span><strong>{guidance.evidence}</strong><p>{request.evidence.quality} · {request.evidence.ready}</p></div><div><span>数据截至时间</span><strong>{request.evidence.cutoff}</strong><p>{request.evidence.freshness}</p></div><div><span>建议负责人</span><strong>{request.owner}</strong><p>确认时可修改并填写原因</p></div><div><span>推荐方向</span><strong>{guidance.direction}</strong><p>{guidance.reason}</p></div></div>
@@ -1881,10 +1871,10 @@ function ReminderDetailScreen({ request, data, onNavigate, submitDecision, retry
       </div> : null}
       {tab === "evidence" ? <EvidencePanel request={request} /> : null}
       {tab === "sources" && DC_UI_VARIANT === "portfolio" ? <div className="source-trace-stack">
-        <section className="content-panel section-card"><DCSectionHeader title="来源与追溯" description="行动请求记录事项从哪里提出、建议做什么以及如何通过校验；它不是需要再次处理的任务。" /><DCKeyValues columns={3} items={[{ label: "请求来源", value: SOURCE_META[request.sourceType].label }, { label: "来源场景", value: request.scenario }, { label: "行动类型", value: `${request.actionType.name} · ${request.actionType.version}` }, { label: "原始建议", value: request.recommendation }, { label: "请求时间", value: request.requestTime, mono: true }, { label: "请求校验结果", value: request.requestGate?.status === "accepted" ? "校验通过" : request.requestGate?.status === "rejected" ? "校验未通过" : "校验中" }, { label: "Rule 引用及命中条件", value: request.rule ? `${request.rule.id} · ${request.rule.version} · ${request.rule.branch}` : "不适用" }, { label: "原始证据", value: `${request.metric.name} ${request.metric.value} · ${request.evidence.snapshotId}` }, { label: "事项形成时间", value: request.generatedTime, mono: true }]} /><div className="source-trace-actions"><DCButton icon="Waypoints" variant="primary" onClick={() => onNavigate(portfolioRequestDetailTarget(request.id, route.query.returnTo || ""))}>查看原始行动请求</DCButton><DCButton icon="Route" onClick={() => onNavigate(`trace/reminder/${request.reminderId}`)}>查看完整追溯</DCButton></div></section>
+        <section className="content-panel section-card"><DCSectionHeader title="来源与追溯" description="行动申请记录事项从哪里提出、建议做什么以及如何通过校验；它不是需要再次处理的任务。" /><DCKeyValues columns={3} items={[{ label: "请求来源", value: SOURCE_META[request.sourceType].label }, { label: "来源场景", value: request.scenario }, { label: "行动类型", value: `${request.actionType.name} · ${request.actionType.version}` }, { label: "原始建议", value: request.recommendation }, { label: "请求时间", value: request.requestTime, mono: true }, { label: "请求校验结果", value: request.requestGate?.status === "accepted" ? "校验通过" : request.requestGate?.status === "rejected" ? "校验未通过" : "校验中" }, { label: "规则引用及命中条件", value: request.rule ? `${request.rule.id} · ${request.rule.version} · ${request.rule.branch}` : "不适用" }, { label: "原始证据", value: `${request.metric.name} ${request.metric.value} · ${request.evidence.snapshotId}` }, { label: "事项形成时间", value: request.generatedTime, mono: true }]} /><div className="source-trace-actions"><DCButton icon="Waypoints" variant="primary" onClick={() => onNavigate(portfolioRequestDetailTarget(request.id, route.query.returnTo || ""))}>查看原始行动申请</DCButton><DCButton icon="Route" onClick={() => onNavigate(`trace/reminder/${request.reminderId}`)}>查看完整追溯</DCButton></div></section>
         <section className="content-panel section-card"><DCSectionHeader title="关联的来源记录" description="严格重复请求保留独立来源记录，但只关联当前决策事项，不形成新的待我决策。" count={request.duplicateRequests.length + 1} /><div className="request-chain-list"><button type="button" onClick={() => onNavigate(portfolioRequestDetailTarget(request.id, route.query.returnTo || ""))}><DCSourceBadge type={request.sourceType} /><div><strong>{request.id}</strong><span>{request.sourceRef}</span></div><span className="plain-chip">形成当前事项</span><DCIcon name="ChevronRight" /></button>{request.duplicateRequests.map((item) => <button type="button" key={item.id} onClick={() => onNavigate(portfolioRequestDetailTarget(item.id, route.query.returnTo || ""))}><DCSourceBadge type={item.sourceType} /><div><strong>{item.id}</strong><span>{item.sourceRef}</span></div><span className="plain-chip">已关联既有决策事项</span><DCIcon name="ChevronRight" /></button>)}</div></section>
       </div> : null}
-      {tab === "sources" && DC_UI_VARIANT !== "portfolio" ? <section className="content-panel section-card"><DCSectionHeader title="关联 Action Request" description="所有原请求逐条保留；严格重复只关联开放提醒，不合并业务主体或待办。" count={request.duplicateRequests.length + 1} /><div className="request-chain-list"><button type="button" onClick={() => onNavigate(`request/${request.id}`)}><DCSourceBadge type={request.sourceType} /><div><strong>{request.id}</strong><span>{request.sourceRef}</span></div><DCStatus status={request.status} compact /><DCIcon name="ChevronRight" /></button>{request.duplicateRequests.map((item) => <button type="button" key={item.id} onClick={() => onNavigate(`request/${item.id}`)}><DCSourceBadge type={item.sourceType} /><div><strong>{item.id}</strong><span>{item.sourceRef}</span></div><span className="plain-chip">{item.relation}</span><DCIcon name="ChevronRight" /></button>)}</div></section> : null}
+      {tab === "sources" && DC_UI_VARIANT !== "portfolio" ? <section className="content-panel section-card"><DCSectionHeader title="关联行动申请" description="所有原申请逐条保留；严格重复只关联开放提醒，不合并业务主体或待办。" count={request.duplicateRequests.length + 1} /><div className="request-chain-list"><button type="button" onClick={() => onNavigate(`request/${request.id}`)}><DCSourceBadge type={request.sourceType} /><div><strong>{request.id}</strong><span>{request.sourceRef}</span></div><DCStatus status={request.status} compact /><DCIcon name="ChevronRight" /></button>{request.duplicateRequests.map((item) => <button type="button" key={item.id} onClick={() => onNavigate(`request/${item.id}`)}><DCSourceBadge type={item.sourceType} /><div><strong>{item.id}</strong><span>{item.sourceRef}</span></div><span className="plain-chip">{item.relation}</span><DCIcon name="ChevronRight" /></button>)}</div></section> : null}
       {tab === "changes" ? <section className="content-panel section-card"><DCSectionHeader title="变更记录" description="撤回、纠正和替代只追加事实，不覆盖原证据和人工决定。" />{request.sourceEvents.length ? <DCTimeline items={request.sourceEvents.map((event) => ({ time: event.time, label: event.type, detail: `${portfolioDisplayText(event.reason)}${event.replacementId ? ` · 替代请求 ${event.replacementId}` : ""}`, icon: "RefreshCw", tone: "warning" }))} /> : <DCEmpty icon="History" title="没有来源变更" description="当前请求的固定证据尚未收到撤回、纠正或替代事实。" />}</section> : null}
       <DecisionModal open={Boolean(decisionMode)} request={request} mode={decisionMode || "confirm"} onClose={() => setDecisionMode(null)} onSubmit={async (mode, form, onProgress) => { const result = await submitDecision(request.id, mode, form, onProgress); if (result.ok) setDecisionMode(null); return result; }} />
       <SupplementModal open={supplementOpen} request={request} onClose={() => setSupplementOpen(false)} onSubmit={(form) => requestSupplement(request.id, form)} />
@@ -2001,7 +1991,7 @@ function TaskDetailScreen({ task, request, onNavigate, runTaskAction, refreshSou
       <DCTabs value={tab} onChange={setTab} items={[{ value: "overview", label: "执行信息", icon: "ClipboardList" }, { value: "progress", label: "进展与结果", icon: "MessagesSquare", count: task.progress.length }, { value: "basis", label: "决策依据", icon: "FileCheck2" }, { value: "history", label: "状态记录", icon: "History", count: task.history.length }]} />
       {tab === "overview" ? <div className="two-column-detail"><main className="detail-main"><section className="content-panel section-card"><DCSectionHeader title="执行说明" /><p className="task-instructions">{task.instructions}</p><DCKeyValues columns={2} items={[{ label: "确认理由", value: task.decisionReason }, { label: "优先协商银行", value: task.banks.join("、") }, { label: "创建时间", value: task.createdAt, mono: true }, { label: "到期时间", value: task.dueDate }]} /></section><section className="content-panel section-card"><DCSectionHeader title="本次协商范围" /><div className="bank-chip-list">{task.banks.map((bank, index) => <span key={bank}><em>{index + 1}</em>{bank}</span>)}</div></section>{task.result || task.correction ? <section className="content-panel section-card result-card"><DCSectionHeader title={task.correction ? "当前有效结果" : "完成结果"} /><div className="result-summary"><span><DCIcon name="BadgeCheck" /></span><div><strong>{task.correction?.result || task.result?.summary}</strong><p>{task.correction ? `纠正原因：${task.correction.reason}` : `主要协商银行：${task.result?.bank}`}</p></div></div></section> : null}</main><aside className="detail-aside"><section className="content-panel sticky-card"><DCSectionHeader title="不可修改的决策依据" /><div className="immutable-list"><div><span>业务主体</span><strong>{task.subjectName} · {task.subjectId}</strong></div><div><span>行动类型</span><strong>{task.actionType.name} · {task.actionType.version}</strong></div><div><span>Rule 条件</span><strong>{task.ruleLabel}</strong></div><div><span>指标快照</span><strong>{task.metricLabel}{DC_UI_VARIANT === "portfolio" && (task.metricSnapshotId || request?.evidence?.snapshotId) ? ` · ${task.metricSnapshotId || request.evidence.snapshotId}` : ""}</strong></div>{DC_UI_VARIANT === "portfolio" ? <div><span>语义版本</span><strong>{task.semanticVersion || request?.evidence?.semanticVersion || "引用不可用"}</strong></div> : null}<div><span>数据版本</span><strong>{task.dataVersion}</strong></div><div><span>数据截至</span><strong>{task.cutoff}</strong></div>{DC_UI_VARIANT === "portfolio" ? <div><span>来源记录</span><strong>{task.sourceRef || request?.sourceRef || "引用不可用"}</strong></div> : null}</div></section></aside></div> : null}
       {tab === "progress" ? <section className="content-panel section-card"><DCSectionHeader title="进展与结果" actions={task.status === "in_progress" ? <DCButton size="sm" icon="MessageSquarePlus" onClick={() => setAction("progress")}>记录进展</DCButton> : null} />{task.progress.length || task.result || task.correction ? <div className="progress-feed">{task.progress.map((item, index) => <article key={`${item.time}-${index}`}><span className="avatar-small">{item.author.slice(-2)}</span><div><header><strong>{item.author}</strong><time>{item.time}</time></header><p>{item.content}</p></div></article>)}{task.result ? <article className="final-result"><span><DCIcon name="CircleCheckBig" /></span><div><header><strong>完成结果</strong><time>{task.result.time}</time></header><p>{task.result.summary}</p><small>主要协商银行：{task.result.bank}</small></div></article> : null}{task.correction ? <article className="correction-result"><span><DCIcon name="RefreshCw" /></span><div><header><strong>纠正结果</strong><time>{task.correction.time}</time></header><p>{task.correction.result}</p><small>原因：{task.correction.reason}</small></div></article> : null}</div> : <DCEmpty icon="MessagesSquare" title="尚无处理进展" description="开始待办后，可逐次记录联系情况和阶段结果。" />}</section> : null}
-      {tab === "basis" ? <section className="content-panel section-card"><DCSectionHeader title="确认时固定的决策依据" /><DCKeyValues columns={3} items={[{ label: DC_UI_VARIANT === "portfolio" ? "决策事项" : "原提醒", value: task.reminderId, mono: true }, { label: DC_UI_VARIANT === "portfolio" ? "行动请求" : "Action Request", value: task.requestId, mono: true }, { label: DC_UI_VARIANT === "portfolio" ? "行动类型" : "Action Type", value: `${task.actionType.name} · ${task.actionType.version}` }, { label: "Rule 条件引用", value: task.ruleLabel }, { label: DC_UI_VARIANT === "portfolio" ? "指标快照" : "Metric 快照", value: DC_UI_VARIANT === "portfolio" && (task.metricSnapshotId || request?.evidence?.snapshotId) ? `${task.metricLabel} · ${task.metricSnapshotId || request.evidence.snapshotId}` : task.metricLabel }, ...(DC_UI_VARIANT === "portfolio" ? [{ label: "语义版本", value: task.semanticVersion || request?.evidence?.semanticVersion || "引用不可用", mono: true }] : []), { label: "数据版本", value: task.dataVersion, mono: true }, { label: "数据截至时间", value: task.cutoff }, ...(DC_UI_VARIANT === "portfolio" ? [{ label: "来源记录", value: task.sourceRef || request?.sourceRef || "引用不可用" }, { label: "来源请求时间", value: task.sourceRequestTime || request?.requestTime || "引用不可用", mono: true }] : []), { label: "人工确认理由", value: task.decisionReason }, { label: "确认后负责人", value: task.owner }]} /><div className="center-action"><DCButton icon="Route" onClick={() => onNavigate(`trace/task/${task.id}`)}>查看完整追溯</DCButton></div></section> : null}
+      {tab === "basis" ? <section className="content-panel section-card"><DCSectionHeader title="确认时固定的决策依据" /><DCKeyValues columns={3} items={[{ label: DC_UI_VARIANT === "portfolio" ? "决策事项" : "原提醒", value: task.reminderId, mono: true }, { label: "行动申请", value: task.requestId, mono: true }, { label: DC_UI_VARIANT === "portfolio" ? "行动类型" : "行动类型", value: `${task.actionType.name} · ${task.actionType.version}` }, { label: "规则条件引用", value: task.ruleLabel }, { label: DC_UI_VARIANT === "portfolio" ? "指标快照" : "指标快照", value: DC_UI_VARIANT === "portfolio" && (task.metricSnapshotId || request?.evidence?.snapshotId) ? `${task.metricLabel} · ${task.metricSnapshotId || request.evidence.snapshotId}` : task.metricLabel }, ...(DC_UI_VARIANT === "portfolio" ? [{ label: "语义版本", value: task.semanticVersion || request?.evidence?.semanticVersion || "引用不可用", mono: true }] : []), { label: "数据版本", value: task.dataVersion, mono: true }, { label: "数据截至时间", value: task.cutoff }, ...(DC_UI_VARIANT === "portfolio" ? [{ label: "来源记录", value: task.sourceRef || request?.sourceRef || "引用不可用" }, { label: "来源请求时间", value: task.sourceRequestTime || request?.requestTime || "引用不可用", mono: true }] : []), { label: "人工确认理由", value: task.decisionReason }, { label: "确认后负责人", value: task.owner }]} /><div className="center-action"><DCButton icon="Route" onClick={() => onNavigate(`trace/task/${task.id}`)}>查看完整追溯</DCButton></div></section> : null}
       {tab === "history" ? <section className="content-panel section-card"><DCSectionHeader title="状态记录" description="每次更新保留原状态、目标状态、操作内容和结果。" /><DCTimeline items={[...task.history].reverse().map((item) => ({ ...item, icon: item.label.includes("失败") ? "CircleX" : item.label.includes("纠正") ? "RefreshCw" : "CircleCheck" }))} /></section> : null}
       <TaskActionModal open={Boolean(action)} type={action} task={task} onClose={() => setAction(null)} onSubmit={(type, payload) => runTaskAction(task.id, type, payload)} />
     </div>
@@ -2068,17 +2058,17 @@ function PortfolioOperationsOverviewScreen({ data, onNavigate, updateAISummary }
 
   const inbox = readC011Inbox(data.scenarioContext);
   return <div className="page-shell overview-page portfolio-overview-page">
-    <DCPageHeader eyebrow="决策运营概览" title="决策链路与负责人行动" description="将负责人待办状态与决策链路异常分开管理；每个数量均可下钻到同一统计口径。" actions={<><DCButton icon="Inbox" onClick={() => onNavigate("operations/intake")}>接收行动请求{inbox.requests.length ? `（${inbox.requests.length}）` : ""}</DCButton><DCButton icon="ListTodo" onClick={() => onNavigate(scopedTaskRoute())}>查看负责人待办</DCButton><DCButton variant="primary" icon="Scale" onClick={() => onNavigate("workbench")}>进入待我决策</DCButton></>} />
+    <DCPageHeader eyebrow="决策运营概览" title="决策链路与负责人行动" description="将负责人待办状态与决策链路异常分开管理；每个数量均可下钻到同一统计口径。" actions={<><DCButton icon="Inbox" onClick={() => onNavigate("operations/intake")}>接收行动申请{inbox.requests.length ? `（${inbox.requests.length}）` : ""}</DCButton><DCButton icon="ListTodo" onClick={() => onNavigate(scopedTaskRoute())}>追踪待办</DCButton><DCButton variant="primary" icon="Scale" onClick={() => onNavigate("workbench")}>进入待我决策</DCButton></>} />
     <div className="ops-context-bar content-panel"><div><DCIcon name="Filter" /><strong>统计范围</strong><span>{contextLabel}</span></div><div><DCSelect label="来源" value={source} onChange={(value) => changeFilter({ source: value })} options={[{ value: "all", label: "全部来源" }, ...Object.entries(SOURCE_META).map(([value, item]) => ({ value, label: item.label }))]} /><DCSelect label="时间" value={range} onChange={(value) => changeFilter({ range: value })} options={[{ value: "7d", label: "近 7 日" }, { value: "30d", label: "近 30 日" }, { value: "all", label: "全部时间" }]} /></div></div>
 
     <section className="content-panel portfolio-task-health"><DCSectionHeader title="负责人待办状态" description="六类互斥口径；逾期按时间优先归类，不与执行进度重复计数。" /><div>{taskCategories.map((item) => <button type="button" key={item.category} className={item.count ? "has-records" : ""} onClick={() => onNavigate(scopedTaskRoute({ status: item.category }))}><span><DCIcon name={item.icon} /></span><div><small>{item.label}</small><strong>{item.count}</strong></div><DCIcon name="ChevronRight" /></button>)}</div></section>
 
     <div className="portfolio-ops-grid">
       <section className="content-panel portfolio-exceptions"><DCSectionHeader title="决策链路异常" description="请求、证据、撤回替代和交办创建异常，不计入领导待决策队列。" count={exceptionRequests.length} actions={<DCButton size="sm" onClick={() => onNavigate(requestDirectoryRoute({ exception: "exceptions" }))}>查看全部</DCButton>} /><div>{Object.entries(PORTFOLIO_EXCEPTION_META).map(([category, meta]) => <button type="button" key={category} onClick={() => onNavigate(requestDirectoryRoute({ exception: category }))}><span className={exceptionCounts[category] ? "attention" : ""}><DCIcon name={meta.icon} /></span><div><strong>{meta.label}</strong><small>{meta.description}</small></div><em>{exceptionCounts[category]}</em><DCIcon name="ChevronRight" /></button>)}</div></section>
-      <section className="content-panel source-board"><DCSectionHeader title="请求来源" description="点击后进入行动请求目录，并保留当前统计范围与返回位置。" /><div className="source-count-grid">{sourceCounts.map((item) => <button type="button" key={item.type} onClick={() => onNavigate(requestDirectoryRoute({ source: item.type }))}><DCSourceBadge type={item.type} /><strong>{item.count}</strong><small>条行动请求</small><span>查看来源记录 <DCIcon name="ArrowRight" /></span></button>)}</div></section>
+      <section className="content-panel source-board"><DCSectionHeader title="申请来源" description="点击后进入行动申请目录，并保留当前统计范围与返回位置。" /><div className="source-count-grid">{sourceCounts.map((item) => <button type="button" key={item.type} onClick={() => onNavigate(requestDirectoryRoute({ source: item.type }))}><DCSourceBadge type={item.type} /><strong>{item.count}</strong><small>条行动申请</small><span>查看来源记录 <DCIcon name="ArrowRight" /></span></button>)}</div></section>
     </div>
 
-    <section className="operations-funnel content-panel" aria-label="行动全链路"><button className="funnel-stage" onClick={() => onNavigate(requestDirectoryRoute())}><span>行动请求</span><strong>{expanded.length}</strong><small>四类来源统一进入</small></button><DCIcon name="ChevronRight" /><button className="funnel-stage" onClick={() => onNavigate(requestDirectoryRoute({ reminder: "formed" }))}><span>形成决策事项</span><strong>{counts.reminders}</strong><small>请求与证据校验通过后形成</small></button><DCIcon name="ChevronRight" /><button className="funnel-stage" onClick={() => onNavigate(requestDirectoryRoute({ decision: "handled" }))}><span>人工决定</span><strong>{counts.decisions}</strong><small>{counts.confirmed} 确认 · {counts.rejected} 拒绝</small></button><DCIcon name="ChevronRight" /><button className="funnel-stage" onClick={() => onNavigate(scopedTaskRoute())}><span>负责人待办</span><strong>{tasks.length}</strong><small>人工确认后独立形成</small></button><DCIcon name="ChevronRight" /><button className="funnel-stage" onClick={() => onNavigate(scopedTaskRoute({ status: "ended" }))}><span>执行结果</span><strong>{counts.ended}</strong><small>完成、取消或纠正</small></button></section>
+    <section className="operations-funnel content-panel" aria-label="行动全链路"><button className="funnel-stage" onClick={() => onNavigate(requestDirectoryRoute())}><span>行动申请</span><strong>{expanded.length}</strong><small>四类来源统一进入</small></button><DCIcon name="ChevronRight" /><button className="funnel-stage" onClick={() => onNavigate(requestDirectoryRoute({ reminder: "formed" }))}><span>形成决策事项</span><strong>{counts.reminders}</strong><small>申请与证据校验通过后形成</small></button><DCIcon name="ChevronRight" /><button className="funnel-stage" onClick={() => onNavigate(requestDirectoryRoute({ decision: "handled" }))}><span>人工决定</span><strong>{counts.decisions}</strong><small>{counts.confirmed} 已处理 · {counts.rejected} 已拒绝</small></button><DCIcon name="ChevronRight" /><button className="funnel-stage" onClick={() => onNavigate(scopedTaskRoute())}><span>负责人待办</span><strong>{tasks.length}</strong><small>人工确认后独立形成</small></button><DCIcon name="ChevronRight" /><button className="funnel-stage" onClick={() => onNavigate(scopedTaskRoute({ status: "ended" }))}><span>执行结果</span><strong>{counts.ended}</strong><small>完成、取消或纠正</small></button></section>
 
     <AISummaryPanel scope="overview" requests={requests} tasks={tasks} contextLabel={contextLabel} contextSignature={signature} onNavigate={onNavigate} persisted={data.aiSummaries?.operationsOverview} onPersist={(next) => updateAISummary("overview", next)} />
 
@@ -2170,11 +2160,11 @@ function PortfolioRequestDirectoryScreen({ data, onNavigate }) {
     onNavigate(portfolioDecisionItemTarget(item.reminderId, "request-directory", requestDirectoryHash(context)));
   };
   return <div className="page-shell operations-request-page">
-    <DCPageHeader onBack={() => window.history.back()} eyebrow="决策运营概览 · 下钻" title="行动请求目录" description="集中查看四类来源和链路异常；这里只处理请求与异常，不会直接确认或创建负责人待办。" actions={<><DCButton icon="RefreshCw" loading={readState === "loading"} onClick={refreshDirectory}>{readState === "error" ? "重试读取" : "重新读取"}</DCButton><DCButton icon="Gauge" onClick={() => window.history.back()}>返回运营概览</DCButton></>} />
-    {readState === "error" ? <DCAlert tone="danger" title="行动请求读取失败" actions={<DCButton size="sm" variant="primary" icon="RefreshCw" onClick={refreshDirectory}>重试读取</DCButton>}>筛选、选中记录和上一批结果均已保留；恢复连接后可继续读取。</DCAlert> : null}
+    <DCPageHeader onBack={() => window.history.back()} eyebrow="决策运营概览 · 下钻" title="行动申请目录" description="集中查看四类来源和链路异常；这里只处理申请与异常，不会直接确认或创建负责人待办。" actions={<><DCButton icon="RefreshCw" loading={readState === "loading"} onClick={refreshDirectory}>{readState === "error" ? "重试读取" : "重新读取"}</DCButton><DCButton icon="Gauge" onClick={() => window.history.back()}>返回运营概览</DCButton></>} />
+    {readState === "error" ? <DCAlert tone="danger" title="行动申请读取失败" actions={<DCButton size="sm" variant="primary" icon="RefreshCw" onClick={refreshDirectory}>重试读取</DCButton>}>筛选、选中记录和上一批结果均已保留；恢复连接后可继续读取。</DCAlert> : null}
     <section className="content-panel portfolio-request-directory">
       <div className="task-filters portfolio-request-filters"><DCSearch value={search} onChange={(value) => update({ search: value, selectedId: "" })} placeholder="搜索主体、请求或指标" /><DCSelect label="来源" value={source} onChange={(value) => update({ source: value, selectedId: "" })} options={[{ value: "all", label: "全部来源" }, ...Object.entries(SOURCE_META).map(([value, item]) => ({ value, label: item.label }))]} /><DCSelect label="时间" value={range} onChange={(value) => update({ range: value, selectedId: "" })} options={[{ value: "all", label: "全部时间" }, { value: "7d", label: "近 7 日" }, { value: "30d", label: "近 30 日" }]} /><DCSelect label="链路异常" value={exception} onChange={(value) => update({ exception: value, selectedId: "" })} options={[{ value: "all", label: "全部记录" }, { value: "exceptions", label: "全部链路异常" }, ...Object.entries(PORTFOLIO_EXCEPTION_META).map(([value, item]) => ({ value, label: item.label }))]} /><DCSelect label="决策事项" value={reminder} onChange={(value) => update({ reminder: value, selectedId: "" })} options={[{ value: "all", label: "全部" }, { value: "formed", label: "已形成或已关联" }, { value: "not_formed", label: "未形成" }]} /><DCSelect label="决定状态" value={decision} onChange={(value) => update({ decision: value, selectedId: "" })} options={[{ value: "all", label: "全部决定" }, { value: "handled", label: "已处理" }, { value: "unhandled", label: "未处理" }]} /></div>
-      <div className="portfolio-master-detail"><main className="portfolio-directory">{records.length ? <div className="record-table-wrap"><table className="record-table"><thead><tr><th>业务主体</th><th>来源</th><th>行动类型</th><th>决策事项</th><th>决定</th><th>校验 / 请求状态</th><th>请求时间</th><th></th></tr></thead><tbody>{records.map((item) => <tr key={item.id} className={selected?.id === item.id ? "selected" : ""} onClick={() => update({ selectedId: item.id })}><td><strong>{item.subjectName}</strong><small>{item.metric.name} {item.metric.value}</small></td><td><DCSourceBadge type={item.sourceType} compact /><small>{item.id}</small></td><td><span>{item.actionType.name}</span><small>{item.actionType.version}</small></td><td><span>{portfolioReminderLabel(item)}</span><small>{item.reminderId || "无关联事项"}</small></td><td><span>{portfolioDecisionLabel(item)}</span><small>{item.decision?.time || item.supplement?.time || (item.duplicateOf ? "不单独决定" : "未处理")}</small></td><td><DCStatus status={item.status} label={portfolioRequestDisplayLabel(item)} tone={portfolioRequestDisplayTone(item)} compact /></td><td><span className="mono">{item.requestTime}</span><small>截至 {item.evidence.cutoff.split(" ")[0]}</small></td><td><DCButton size="sm" icon="ArrowRight" onClick={(event) => { event.stopPropagation(); openDetail(item); }}>查看详情</DCButton></td></tr>)}</tbody></table></div> : <DCEmpty icon="Waypoints" title="当前范围没有行动请求" description="调整来源、时间、事项或异常类型后重新查看。" action={<DCButton icon="RotateCcw" onClick={() => update({ search: "", source: "all", range: "all", exception: "all", reminder: "all", decision: "all", selectedId: "" })}>清除筛选</DCButton>} />}</main><PortfolioRequestPreview request={selected} onOpenDetail={openDetail} onOpenDecisionItem={openDecisionItem} onNavigate={onNavigate} /></div>
+      <div className="portfolio-master-detail"><main className="portfolio-directory">{records.length ? <div className="record-table-wrap"><table className="record-table"><thead><tr><th>业务主体</th><th>来源</th><th>行动类型</th><th>决策事项</th><th>决定</th><th>校验 / 申请状态</th><th>申请时间</th><th></th></tr></thead><tbody>{records.map((item) => <tr key={item.id} className={selected?.id === item.id ? "selected" : ""} onClick={() => update({ selectedId: item.id })}><td><strong>{item.subjectName}</strong><small>{item.metric.name} {item.metric.value}</small></td><td><DCSourceBadge type={item.sourceType} compact /><small>{item.id}</small></td><td><span>{item.actionType.name}</span><small>{item.actionType.version}</small></td><td><span>{portfolioReminderLabel(item)}</span><small>{item.reminderId || "无关联事项"}</small></td><td><span>{portfolioDecisionLabel(item)}</span><small>{item.decision?.time || item.supplement?.time || (item.duplicateOf ? "不单独决定" : "未处理")}</small></td><td><DCStatus status={item.status} label={portfolioRequestDisplayLabel(item)} tone={portfolioRequestDisplayTone(item)} compact /></td><td><span className="mono">{item.requestTime}</span><small>截至 {item.evidence.cutoff.split(" ")[0]}</small></td><td><DCButton size="sm" icon="ArrowRight" onClick={(event) => { event.stopPropagation(); openDetail(item); }}>查看详情</DCButton></td></tr>)}</tbody></table></div> : <DCEmpty icon="Waypoints" title="当前范围没有行动申请" description="调整来源、时间、事项或异常类型后重新查看。" action={<DCButton icon="RotateCcw" onClick={() => update({ search: "", source: "all", range: "all", exception: "all", reminder: "all", decision: "all", selectedId: "" })}>清除筛选</DCButton>} />}</main><PortfolioRequestPreview request={selected} onOpenDetail={openDetail} onOpenDecisionItem={openDecisionItem} onNavigate={onNavigate} /></div>
     </section>
   </div>;
 }
@@ -2194,21 +2184,21 @@ function PortfolioActionIntakeScreen({ data, onNavigate, receiveActionRequests }
   };
   const validations = inbox.requests.map((item) => ({ item, validation: validateC011Payload(item, context) }));
   return <div className="page-shell operations-request-page">
-    <DCPageHeader onBack={() => window.history.back()} eyebrow="决策运营概览 · 请求接收" title="接收行动请求" description="按当前场景轮次、主体、行动类型、Rule 条件和精确双版本幂等接收；接收前重新读取数据安全状态。" actions={<><DCButton icon="RefreshCw" onClick={refresh}>重新读取</DCButton><DCButton icon="Gauge" onClick={() => onNavigate("overview")}>返回运营概览</DCButton></>} />
+    <DCPageHeader onBack={() => window.history.back()} eyebrow="决策运营概览 · 申请接收" title="接收行动申请" description="按当前场景轮次、主体、行动类型、规则条件和精确双版本幂等接收；接收前重新读取数据安全状态。" actions={<><DCButton icon="RefreshCw" onClick={refresh}>重新读取</DCButton><DCButton icon="Gauge" onClick={() => onNavigate("overview")}>返回运营概览</DCButton></>} />
     {!scenarioContextReady(context) ? <DCAlert tone="danger" title="当前场景运行上下文不可用">缺少或无法确认场景标识、场景版本、运行轮次和启用状态。当前不会接收请求，也不会形成决策事项。</DCAlert> : <section className="content-panel section-card"><DCSectionHeader title="当前工作轮次" description="请求、决策事项、人工决定、负责人待办和运行记录均固定在同一上下文。" /><DCKeyValues columns={3} items={[{ label: "场景", value: context.scenarioId }, { label: "场景版本", value: context.scenarioVersion }, { label: "运行轮次", value: context.scenarioRunId }, { label: "上下文状态", value: context.status }, { label: "形成时间", value: context.formedAt || "由平台当前上下文提供" }, { label: "来源", value: context.source }]} /></section>}
     {result ? <DCAlert tone={result.conflicts || result.rejected || result.blocked ? "warning" : "success"} title="本次接收结果">新增 {result.created} 条，幂等返回 {result.duplicates} 条，冲突拒绝 {result.conflicts} 条，质量硬失败拒绝 {result.rejected} 条，安全状态阻断 {result.blocked} 条。</DCAlert> : null}
     <section className="content-panel portfolio-request-directory">
       <DCSectionHeader title="待接收请求" description="来源只提交标准请求；本页不能人工确认或直接创建负责人待办。" count={inbox.requests.length} actions={inbox.requests.length ? <DCButton variant="primary" icon="Inbox" loading={receiving} disabled={!scenarioContextReady(context)} onClick={receive}>接收当前请求</DCButton> : null} />
       {inbox.status === "invalid" ? <DCAlert tone="danger" title="请求包无法识别">{inbox.reason}</DCAlert> : null}
       {inbox.status === "context_mismatch" ? <DCAlert tone="warning" title="未读取其他运行轮次的请求">{inbox.reason}。原请求包保持不变，等待上游按当前 {context.scenarioRunId} 重新提交。</DCAlert> : null}
-      {validations.length ? <div className="record-table-wrap"><table className="record-table"><thead><tr><th>请求标识</th><th>业务主体</th><th>来源</th><th>行动类型</th><th>Rule 条件</th><th>精确双版本</th><th>合同检查</th></tr></thead><tbody>{validations.map(({ item, validation }, index) => <tr key={`${item.id || item.requestId}-${c011ContractFingerprint(item)}-${index}`}><td><strong>{item.id || item.requestId || "缺失"}</strong><small>{normalizedScenarioContext(item.scenarioContext || item).scenarioRunId || "轮次缺失"}</small></td><td><span>{item.subjectName || item.singleBusinessSubjectName || "缺失"}</span><small>{item.subjectId || item.singleBusinessSubjectId || "标识缺失"}</small></td><td><DCSourceBadge type={item.sourceType} compact /></td><td><span>{item.actionType?.name || "缺失"}</span><small>{item.actionType?.id || "标识缺失"} · {item.actionType?.version || "版本缺失"}</small></td><td><span>{item.rule ? `${item.rule.id} · ${item.rule.version}` : "不适用"}</span><small>{item.rule?.branch || "非 Rule 来源不虚构条件"}</small></td><td><span>{item.evidence?.semanticVersion || item.semanticVersion || "缺失"}</span><small>{item.evidence?.dataVersion || item.dataVersion || "缺失"}</small></td><td><DCStatus status={validation.ok ? "confirmed" : "rejected_by_gate"} label={validation.ok ? "可进入安全读取" : "合同不完整"} tone={validation.ok ? "success" : "danger"} compact />{validation.problems.length ? <small>{validation.problems.join("；")}</small> : null}</td></tr>)}</tbody></table></div> : <DCEmpty icon="Inbox" title="当前没有待接收的行动请求" description="Rule、智能问数、Agent 应用或报告中心仪表盘提交同一场景轮次的标准请求后，可在这里重新读取并接收。" action={<DCButton icon="RefreshCw" onClick={refresh}>重新读取</DCButton>} />}
+      {validations.length ? <div className="record-table-wrap"><table className="record-table"><thead><tr><th>申请标识</th><th>业务主体</th><th>来源</th><th>行动类型</th><th>规则条件</th><th>精确双版本</th><th>合同检查</th></tr></thead><tbody>{validations.map(({ item, validation }, index) => <tr key={`${item.id || item.requestId}-${c011ContractFingerprint(item)}-${index}`}><td><strong>{item.id || item.requestId || "缺失"}</strong><small>{normalizedScenarioContext(item.scenarioContext || item).scenarioRunId || "轮次缺失"}</small></td><td><span>{item.subjectName || item.singleBusinessSubjectName || "缺失"}</span><small>{item.subjectId || item.singleBusinessSubjectId || "标识缺失"}</small></td><td><DCSourceBadge type={item.sourceType} compact /></td><td><span>{item.actionType?.name || "缺失"}</span><small>{item.actionType?.id || "标识缺失"} · {item.actionType?.version || "版本缺失"}</small></td><td><span>{item.rule ? `${item.rule.id} · ${item.rule.version}` : "不适用"}</span><small>{item.rule?.branch || "非规则来源不虚构条件"}</small></td><td><span>{item.evidence?.semanticVersion || item.semanticVersion || "缺失"}</span><small>{item.evidence?.dataVersion || item.dataVersion || "缺失"}</small></td><td><DCStatus status={validation.ok ? "confirmed" : "rejected_by_gate"} label={validation.ok ? "可进入安全读取" : "合同不完整"} tone={validation.ok ? "success" : "danger"} compact />{validation.problems.length ? <small>{validation.problems.join("；")}</small> : null}</td></tr>)}</tbody></table></div> : <DCEmpty icon="Inbox" title="当前没有待接收的行动申请" description="规则触发、智能问数、Agent 应用或报告中心仪表盘提交同一场景轮次的标准申请后，可在这里重新读取并接收。" action={<DCButton icon="RefreshCw" onClick={refresh}>重新读取</DCButton>} />}
     </section>
   </div>;
 }
 
 function PortfolioRequestPreview({ request, onNavigate, onOpenDetail, onOpenDecisionItem }) {
   if (!request) return <aside className="portfolio-decision-preview"><DCEmpty icon="MousePointer2" title="选择一条请求" description="当前范围没有可预览内容。" /></aside>;
-  return <aside className="portfolio-decision-preview"><header><div><span>行动请求</span><h2>{request.subjectName}</h2><p>{request.metric.name} {request.metric.value}</p></div><DCStatus status={request.status} label={portfolioRequestDisplayLabel(request)} tone={portfolioRequestDisplayTone(request)} /></header>{portfolioExceptionCategory(request) ? <DCAlert tone="warning" title={PORTFOLIO_EXCEPTION_META[portfolioExceptionCategory(request)].label}>{portfolioDisplayText(request.blockReason || request.recovery || "请查看请求详情中的异常与恢复建议。")}</DCAlert> : null}{request.duplicateOf ? <DCAlert tone="info" title="不形成新的待我决策">固定证据与最早请求一致，已关联既有决策事项，由同一人工决定继续处理。</DCAlert> : null}<DecisionLifecycle request={request} compact /><div className="portfolio-preview-sections"><section><span>从哪里提出</span><strong>{SOURCE_META[request.sourceType].label}</strong><p>{request.sourceRef}</p></section><section><span>请求与证据校验</span><strong>{request.duplicateOf ? "校验通过，严格重复" : request.requestGate?.status === "accepted" ? "校验通过" : request.requestGate?.status === "rejected" ? "校验未通过" : "校验中"}</strong><p>{portfolioDisplayText(request.requestGate?.reason || request.formation?.requestGateReason)}</p></section><section><span>决策事项</span><strong>{portfolioReminderLabel(request)}</strong><p>{requestHasReminder(request) ? `${request.reminderId} · ${portfolioDecisionLabel(request)}` : "当前未形成领导判断事项"}</p></section></div><dl className="portfolio-preview-facts"><div><dt>行动类型</dt><dd>{request.actionType.name} · {request.actionType.version}</dd></div><div><dt>建议负责人</dt><dd>{request.owner}</dd></div><div><dt>请求时间</dt><dd>{request.requestTime}</dd></div><div><dt>数据截至</dt><dd>{request.evidence.cutoff}</dd></div></dl><div className="portfolio-preview-actions"><DCButton icon="Route" onClick={() => onNavigate(`trace/request/${request.id}`)}>查看追溯</DCButton>{requestHasReminder(request) ? <DCButton icon="Scale" onClick={() => onOpenDecisionItem(request)}>查看决策事项</DCButton> : null}<DCButton variant="primary" icon="ArrowRight" onClick={() => onOpenDetail(request)}>查看详情</DCButton></div></aside>;
+  return <aside className="portfolio-decision-preview"><header><div><span>行动申请</span><h2>{request.subjectName}</h2><p>{request.metric.name} {request.metric.value}</p></div><DCStatus status={request.status} label={portfolioRequestDisplayLabel(request)} tone={portfolioRequestDisplayTone(request)} /></header>{portfolioExceptionCategory(request) ? <DCAlert tone="warning" title={PORTFOLIO_EXCEPTION_META[portfolioExceptionCategory(request)].label}>{portfolioDisplayText(request.blockReason || request.recovery || "请查看申请详情中的异常与恢复建议。")}</DCAlert> : null}{request.duplicateOf ? <DCAlert tone="info" title="不形成新的待我决策">固定证据与最早申请一致，已关联既有决策事项，由同一人工决定继续处理。</DCAlert> : null}<DecisionLifecycle request={request} compact /><div className="portfolio-preview-sections"><section><span>从哪里提出</span><strong>{SOURCE_META[request.sourceType].label}</strong><p>{request.sourceRef}</p></section><section><span>申请与证据校验</span><strong>{request.duplicateOf ? "校验通过，严格重复" : request.requestGate?.status === "accepted" ? "校验通过" : request.requestGate?.status === "rejected" ? "校验未通过" : "校验中"}</strong><p>{portfolioDisplayText(request.requestGate?.reason || request.formation?.requestGateReason)}</p></section><section><span>决策事项</span><strong>{portfolioReminderLabel(request)}</strong><p>{requestHasReminder(request) ? `${request.reminderId} · ${portfolioDecisionLabel(request)}` : "当前未形成领导判断事项"}</p></section></div><dl className="portfolio-preview-facts"><div><dt>行动类型</dt><dd>{request.actionType.name} · {request.actionType.version}</dd></div><div><dt>建议负责人</dt><dd>{request.owner}</dd></div><div><dt>申请时间</dt><dd>{request.requestTime}</dd></div><div><dt>数据截至</dt><dd>{request.evidence.cutoff}</dd></div></dl><div className="portfolio-preview-actions"><DCButton icon="Route" onClick={() => onNavigate(`trace/request/${request.id}`)}>查看追溯</DCButton>{requestHasReminder(request) ? <DCButton icon="Scale" onClick={() => onOpenDecisionItem(request)}>查看决策事项</DCButton> : null}<DCButton variant="primary" icon="ArrowRight" onClick={() => onOpenDetail(request)}>查看详情</DCButton></div></aside>;
 }
 
 function LegacyOperationsOverviewScreen({ data, onNavigate, updateAISummary }) {
@@ -2276,11 +2266,11 @@ function LegacyOperationsOverviewScreen({ data, onNavigate, updateAISummary }) {
   const scopedActivity = data.activity.filter((item) => inRange(item.time) && (source === "all" || requests.some((request) => item.detail.includes(request.subjectName)))).slice(0, 5);
   return (
     <div className="page-shell overview-page">
-      <DCPageHeader eyebrow="决策运营概览" title="行动处理运行情况" description="查看需要判断、执行中和异常状态，并下钻到同一条运行记录。" actions={<><DCButton icon="ListTodo" onClick={() => onNavigate(scopedRoute("tasks"))}>查看待办工作</DCButton><DCButton variant="primary" icon="Inbox" onClick={() => onNavigate(scopedRoute("workbench"))}>进入决策工作台</DCButton></>} />
+      <DCPageHeader eyebrow="决策运营概览" title="行动处理运行情况" description="查看需要判断、执行中和异常状态，并下钻到同一条运行记录。" actions={<><DCButton icon="ListTodo" onClick={() => onNavigate(scopedRoute("tasks"))}>追踪待办</DCButton><DCButton variant="primary" icon="Inbox" onClick={() => onNavigate(scopedRoute("workbench"))}>进入决策工作台</DCButton></>} />
       <div className="ops-context-bar content-panel"><div><DCIcon name="Filter" /><strong>统计范围</strong><span>{contextLabel}</span></div><div><DCSelect label="来源" value={source} onChange={(value) => changeFilter({ source: value })} options={[{ value: "all", label: "全部来源" }, ...Object.entries(SOURCE_META).map(([value, item]) => ({ value, label: item.label }))]} /><DCSelect label="时间" value={range} onChange={(value) => changeFilter({ range: value })} options={[{ value: "7d", label: "近 7 日" }, { value: "30d", label: "近 30 日" }, { value: "all", label: "全部时间" }]} /></div></div>
       <div className="operations-metrics">
         <button type="button" onClick={() => onNavigate(scopedRoute("workbench", { status: "awaiting" }))}><span>待确认提醒</span><strong>{counts.awaiting}</strong><small>{contextLabel}</small><DCIcon name="Clock3" /></button>
-        <button type="button" onClick={() => onNavigate(scopedRoute("workbench", { status: "decided" }))}><span>已确认 / 已拒绝</span><strong>{counts.confirmed}<em>/</em>{counts.rejected}</strong><small>{contextLabel}</small><DCIcon name="Scale" /></button>
+        <button type="button" onClick={() => onNavigate(scopedRoute("workbench", { status: "decided" }))}><span>已处理 / 已拒绝</span><strong>{counts.confirmed}<em>/</em>{counts.rejected}</strong><small>{contextLabel}</small><DCIcon name="Scale" /></button>
         <button type="button" onClick={() => onNavigate(scopedRoute("tasks", { status: "active" }))}><span>运行中待办</span><strong>{counts.activeTasks}</strong><small>待承接、待开始、处理中与纠正中</small><DCIcon name="ListTodo" /></button>
         <button type="button" onClick={() => onNavigate(scopedRoute("tasks", { status: "overdue" }))} className={counts.overdue ? "warning" : ""}><span>已逾期</span><strong>{counts.overdue}</strong><small>保留真实执行状态</small><DCIcon name="AlarmClock" /></button>
         <button type="button" onClick={() => onNavigate(scopedRoute("workbench", { view: "requests", status: "attention" }))} className={counts.blocked ? "warning" : ""}><span>决策异常</span><strong>{counts.blocked}</strong><small>请求门拒绝、证据异常、撤回、纠正或创建失败</small><DCIcon name="ShieldAlert" /></button>
@@ -2289,7 +2279,7 @@ function LegacyOperationsOverviewScreen({ data, onNavigate, updateAISummary }) {
       </div>
       <AISummaryPanel scope="overview" requests={requests} tasks={tasks} contextLabel={contextLabel} contextSignature={signature} onNavigate={onNavigate} persisted={data.aiSummaries?.operationsOverview} onPersist={(next) => updateAISummary("overview", next)} />
       <section className="operations-funnel content-panel" aria-label="行动全链路">
-        <button className="funnel-stage" onClick={() => onNavigate(scopedRoute("workbench", { view: "requests" }))}><span>行动请求</span><strong>{counts.requests}</strong><small>四类来源统一进入</small></button><DCIcon name="ChevronRight" />
+        <button className="funnel-stage" onClick={() => onNavigate(scopedRoute("workbench", { view: "requests" }))}><span>行动申请</span><strong>{counts.requests}</strong><small>四类来源统一进入</small></button><DCIcon name="ChevronRight" />
         <button className="funnel-stage" onClick={() => onNavigate(scopedRoute("workbench", { view: "reminders" }))}><span>形成提醒</span><strong>{counts.reminders}</strong><small>通过校验后形成</small></button><DCIcon name="ChevronRight" />
         <button className="funnel-stage" onClick={() => onNavigate(scopedRoute("workbench", { status: "decided" }))}><span>人工决定</span><strong>{counts.confirmed + counts.rejected}</strong><small>{counts.confirmed} 确认 · {counts.rejected} 拒绝</small></button><DCIcon name="ChevronRight" />
         <button className="funnel-stage" onClick={() => onNavigate(scopedRoute("tasks"))}><span>负责人待办</span><strong>{tasks.length}</strong><small>不同主体保持独立</small></button><DCIcon name="ChevronRight" />
@@ -2298,7 +2288,7 @@ function LegacyOperationsOverviewScreen({ data, onNavigate, updateAISummary }) {
       <div className="overview-grid">
         <section className="content-panel overview-queue"><DCSectionHeader title="需要关注" description="按待确认、失败、阻断和上游变化聚合显示。" count={attentionRequests.length} actions={<DCButton size="sm" onClick={() => onNavigate(scopedRoute("workbench", { view: "requests", status: "operations_attention" }))}>查看全部</DCButton>} /><div className="attention-list">{queue.length ? queue.map((item) => <button type="button" key={item.id} onClick={() => onNavigate(requestHasReminder(item) ? `reminder/${item.reminderId}` : `request/${item.id}`)}><span className={`attention-icon ${SOURCE_META[item.sourceType].tone}`}><DCIcon name={SOURCE_META[item.sourceType].icon} /></span><div><strong>{item.subjectName} · {item.metric.name}</strong><small>{item.metric.value} · {item.owner}</small></div><DCStatus status={item.status} compact /><DCIcon name="ChevronRight" /></button>) : <DCEmpty icon="Inbox" title="当前没有需要关注的记录" description="切换统计范围后重新查看。" />}</div></section>
         <section className="content-panel status-board"><DCSectionHeader title="待办状态" description="负责人待办的当前运行状态。" /><div className="status-count-list">{taskStates.map((item) => <button type="button" key={item.status} onClick={() => onNavigate(scopedRoute("tasks", { status: item.status }))}><DCStatus status={item.status} compact /><strong>{item.count}</strong><span>条</span></button>)}</div><div className="overdue-callout"><span><DCIcon name="AlarmClock" /></span><div><strong>{counts.overdue} 条待办已逾期</strong><small>逾期不覆盖处理中等执行事实</small></div><DCButton size="sm" onClick={() => onNavigate(scopedRoute("tasks", { status: "overdue" }))}>查看详情</DCButton></div></section>
-        <section className="content-panel source-board"><DCSectionHeader title="请求来源" description="四类来源统一形成行动请求。" /><div className="source-count-grid">{sourceCounts.map((item) => <button type="button" key={item.type} onClick={() => onNavigate(scopedRoute("workbench", { view: "requests", source: item.type }))}><DCSourceBadge type={item.type} /><strong>{item.count}</strong><small>条请求</small></button>)}</div></section>
+        <section className="content-panel source-board"><DCSectionHeader title="申请来源" description="四类来源统一形成行动申请。" /><div className="source-count-grid">{sourceCounts.map((item) => <button type="button" key={item.type} onClick={() => onNavigate(scopedRoute("workbench", { view: "requests", source: item.type }))}><DCSourceBadge type={item.type} /><strong>{item.count}</strong><small>条申请</small></button>)}</div></section>
         <section className="content-panel activity-board"><DCSectionHeader title="最近运行记录" description={contextLabel} actions={requests[0] ? <DCButton size="sm" icon="Route" onClick={() => onNavigate(`trace/request/${requests[0].id}`)}>查看追溯</DCButton> : null} />{scopedActivity.length ? <DCTimeline compact items={scopedActivity.map((item) => ({ ...item, icon: item.label.includes("失败") || item.label.includes("阻断") ? "CircleX" : "CircleCheck" }))} /> : <DCEmpty icon="History" title="当前范围暂无运行记录" description="调整来源或时间范围后重新查看。" />}</section>
         {DC_UI_VARIANT === "portfolio" ? <section className="content-panel portfolio-matrix"><DCSectionHeader title="负责人行动组合" description="组合统计不合并不同主体记录。" /><table><thead><tr><th>负责人</th><th>独立待办</th><th>处理中</th><th>逾期</th><th>失败</th><th></th></tr></thead><tbody>{owners.map((owner) => { const ownerTasks = tasks.filter((item) => item.owner === owner); return <tr key={owner}><td data-label="负责人">{owner}</td><td data-label="独立待办">{ownerTasks.length}</td><td data-label="处理中">{ownerTasks.filter((item) => item.status === "in_progress").length}</td><td data-label="逾期">{ownerTasks.filter((item) => item.overdue).length}</td><td data-label="失败">{ownerTasks.filter((item) => item.status === "execution_failed").length}</td><td><DCButton size="sm" onClick={() => onNavigate(scopedRoute("tasks", { owner }))}>查看详情</DCButton></td></tr>; })}</tbody></table></section> : null}
       </div>
@@ -2358,7 +2348,7 @@ function TraceScreen({ kind, id, data, onNavigate }) {
       : request?.status === "withdrawn" ? "来源已撤回，本次请求不再进入人工判断。"
         : request?.status === "replaced" ? "原请求已由替代请求承接，不能继续判断。"
           : request?.status === "stale" ? "证据时效已变化，需核对新证据后再判断。"
-            : request?.status === "supplement_requested" ? "已请求补充信息，等待上游形成新的或替代的行动请求。"
+            : request?.status === "supplement_requested" ? "已请求补充信息，等待上游形成新的或替代的行动申请。"
               : request?.confirmationEligibility?.reason || "尚未提交人工决定。";
   const decisionStopped = noDecisionTitle !== "等待人工判断";
   const decisionState = decision ? "done" : duplicateLinked ? "future" : request?.status === "awaiting" ? "current" : "stopped";
@@ -2367,8 +2357,8 @@ function TraceScreen({ kind, id, data, onNavigate }) {
 
   const selectedContent = {
     source: { title: "从哪里来", text: sourceDetails, fields: request ? [{ label: "来源类型", value: sourceTitle }, { label: "来源记录", value: request.sourceRef }, { label: "发起者", value: request.requester }, { label: "请求时间", value: request.requestTime }] : [] },
-    request: { title: "如何进入决策中心", text: request ? `行动请求 ${request.id} 引用已发布行动类型“${actionType.name}”${request.duplicateOf ? `，并关联最早请求 ${request.duplicateOf} 的既有${DC_UI_VARIANT === "portfolio" ? "决策事项" : "决策提醒"}，不单独决定` : ""}。` : `原行动请求：${task.requestId}`, fields: request ? [{ label: "业务主体", value: `${request.subjectName} · ${request.subjectId}` }, { label: "行动类型", value: `${actionType.name} · ${actionType.version}` }, { label: "Rule 条件引用", value: request.rule ? `${request.rule.id} · ${request.rule.version}` : "不适用" }, { label: "指标快照", value: `${request.metric.name} ${request.metric.value}` }] : [] },
-    validation: { title: "三道质量安全门如何推进或阻断", text: portfolioDisplayText(requestGateRejected || requestGateBlocked ? formation.requestGateReason : confirmationBlockedAtFormation ? formation.confirmationGateReason : "接收、人工确认提交和待办形成前均按精确数据版本重新读取 C017；页面缓存不能授权推进。"), fields: request ? [{ label: "请求接收门", value: requestGateRejected ? "已拒绝" : requestGateBlocked ? "已阻断" : "通过" }, { label: "人工确认门", value: latestC017Read(request, "confirmation_submit") ? c017OutcomeMeta(latestC017Read(request, "confirmation_submit").outcome).label : "尚未到达" }, { label: "待办形成门", value: latestC017Read(request, "task_formation") ? c017OutcomeMeta(latestC017Read(request, "task_formation").outcome).label : "尚未到达" }, { label: "Published 语义版本", value: request.evidence.semanticVersion }, { label: "精确数据版本", value: request.evidence.dataVersion }, { label: "安全读取次数", value: `${request.c017SafetyReads?.length || 0} 次` }] : [] },
+    request: { title: "如何进入决策中心", text: request ? `行动申请 ${request.id} 引用已发布行动类型“${actionType.name}”${request.duplicateOf ? `，并关联最早申请 ${request.duplicateOf} 的既有${DC_UI_VARIANT === "portfolio" ? "决策事项" : "决策提醒"}，不单独决定` : ""}。` : `原行动申请：${task.requestId}`, fields: request ? [{ label: "业务主体", value: `${request.subjectName} · ${request.subjectId}` }, { label: "行动类型", value: `${actionType.name} · ${actionType.version}` }, { label: "规则条件引用", value: request.rule ? `${request.rule.id} · ${request.rule.version}` : "不适用" }, { label: "指标快照", value: `${request.metric.name} ${request.metric.value}` }] : [] },
+    validation: { title: "三道质量安全门如何推进或阻断", text: portfolioDisplayText(requestGateRejected || requestGateBlocked ? formation.requestGateReason : confirmationBlockedAtFormation ? formation.confirmationGateReason : "接收、人工确认提交和待办形成前均按精确数据版本重新读取 C017；页面缓存不能授权推进。"), fields: request ? [{ label: "申请接收门", value: requestGateRejected ? "已拒绝" : requestGateBlocked ? "已阻断" : "通过" }, { label: "人工确认门", value: latestC017Read(request, "confirmation_submit") ? c017OutcomeMeta(latestC017Read(request, "confirmation_submit").outcome).label : "尚未到达" }, { label: "待办形成门", value: latestC017Read(request, "task_formation") ? c017OutcomeMeta(latestC017Read(request, "task_formation").outcome).label : "尚未到达" }, { label: "已发布语义版本", value: request.evidence.semanticVersion }, { label: "精确数据版本", value: request.evidence.dataVersion }, { label: "安全读取次数", value: `${request.c017SafetyReads?.length || 0} 次` }] : [] },
     reminder: { title: duplicateLinked ? `为什么关联既有${DC_UI_VARIANT === "portfolio" ? "决策事项" : "决策提醒"}` : reminderFormed ? (DC_UI_VARIANT === "portfolio" ? "为什么形成决策事项" : "为什么形成提醒") : (DC_UI_VARIANT === "portfolio" ? "为什么没有形成决策事项" : "为什么没有形成提醒"), text: duplicateLinked ? `固定证据与最早请求 ${request.duplicateOf} 完全一致，因此关联${DC_UI_VARIANT === "portfolio" ? "决策事项" : "决策提醒"} ${request.reminderId}，不重复进入${DC_UI_VARIANT === "portfolio" ? "待我决策" : "待确认提醒"}。` : reminderFormed ? (request ? (request.rule?.hitEvidence || request.metric.explanation) : task.metricLabel) : (formation.requestGateReason || "请求未通过请求门。"), fields: request ? [{ label: DC_UI_VARIANT === "portfolio" ? "决策事项标识" : "提醒标识", value: request.reminderId || "未形成" }, { label: duplicateLinked ? "关联时间" : "生成时间", value: reminderFormed ? request.generatedTime : "不适用" }, { label: "数据版本", value: request.evidence.dataVersion }, { label: "数据截至时间", value: request.evidence.cutoff }] : [] },
     decision: { title: "人工如何决定", text: decision ? `${decision.operator}已${decision.type === "confirm" ? "确认" : "拒绝"}：${decision.reason}` : noDecisionReason, fields: decision ? [{ label: "决定", value: decision.type === "confirm" ? "确认" : "拒绝" }, { label: "操作者", value: decision.operator }, { label: "负责人", value: decision.owner || "不适用" }, { label: "决定时间", value: decision.time }] : [] },
     task: { title: "由谁承接、执行到哪一步", text: traceTask ? `${traceTask.owner} · ${DC_STATUS_META[traceTask.status]?.label || "未知状态"}${traceTask.overdue ? " · 已逾期" : ""}` : decision?.type === "reject" ? "本次行动已拒绝，不创建负责人待办。" : decisionStopped ? `${noDecisionReason} 因此未创建负责人待办。` : "只有人工确认成功后才创建负责人待办。", fields: traceTask ? [{ label: "待办标识", value: traceTask.id }, { label: "负责人", value: traceTask.owner }, { label: "到期时间", value: traceTask.dueDate }, { label: "当前状态", value: `${DC_STATUS_META[traceTask.status]?.label || "未知状态"}${traceTask.overdue ? " · 已逾期" : ""}` }] : [] },
@@ -2377,8 +2367,8 @@ function TraceScreen({ kind, id, data, onNavigate }) {
 
   const traceEvents = [
     ...(request ? [
-      { time: request.requestTime, label: "来源发起行动请求", detail: `${sourceTitle} · ${request.sourceRef}` },
-      { time: formation.requestGateCheckedAt || request.generatedTime, label: requestGateRejected ? "行动请求未通过请求门" : request.duplicateOf ? `严格重复请求关联既有${DC_UI_VARIANT === "portfolio" ? "决策事项" : "决策提醒"}` : "行动请求通过请求门", detail: portfolioDisplayText(formation.requestGateReason) },
+      { time: request.requestTime, label: "来源发起行动申请", detail: `${sourceTitle} · ${request.sourceRef}` },
+      { time: formation.requestGateCheckedAt || request.generatedTime, label: requestGateRejected ? "行动申请未通过接收门" : request.duplicateOf ? `严格重复申请关联既有${DC_UI_VARIANT === "portfolio" ? "决策事项" : "决策提醒"}` : "行动申请通过接收门", detail: portfolioDisplayText(formation.requestGateReason) },
       ...(reminderFormed && !request.duplicateOf ? [{ time: request.generatedTime, label: confirmationBlockedAtFormation ? (DC_UI_VARIANT === "portfolio" ? "形成决策事项，确认门阻断" : "形成决策提醒，确认门阻断") : (DC_UI_VARIANT === "portfolio" ? "形成决策事项" : "形成决策提醒"), detail: confirmationBlockedAtFormation ? portfolioDisplayText(formation.confirmationGateReason) : `${request.subjectName} · ${request.metric.name} ${request.metric.value}` }] : []),
     ] : []),
     ...(request?.sourceEvents || []).map((event) => ({ time: event.time, label: event.type, detail: portfolioDisplayText(event.reason), tone: "warning" })),
@@ -2403,7 +2393,7 @@ function TraceScreen({ kind, id, data, onNavigate }) {
       <section className="trace-flow" aria-label="行动产生链路">
         <TraceStep state="done" icon={request ? SOURCE_META[request.sourceType].icon : "Waypoints"} subtitle="来源" title={sourceTitle} details={sourceDetails} active={selected === "source"} onClick={() => setSelected("source")} actionLabel="查看来源证据" />
         <span className="trace-connector"><DCIcon name="ChevronRight" /></span>
-        <TraceStep state={requestState} icon="Waypoints" subtitle="唯一标准入口" title="行动请求" details={request?.id || task?.requestId || "记录不可用"} active={selected === "request"} onClick={() => setSelected("request")} actionLabel="查看请求" />
+        <TraceStep state={requestState} icon="Waypoints" subtitle="唯一标准入口" title="行动申请" details={request?.id || task?.requestId || "记录不可用"} active={selected === "request"} onClick={() => setSelected("request")} actionLabel="查看申请" />
         <span className="trace-connector"><DCIcon name="ChevronRight" /></span>
         <TraceStep state={validationState} icon="ShieldCheck" subtitle="C017 三道质量安全门" title={requestGateRejected ? "请求接收门已拒绝" : requestGateBlocked ? "请求接收门已阻断" : confirmationBlockedAtFormation ? "确认门已阻断" : "已按阶段重新读取"} details={request?.evidence ? `${request.evidence.semanticVersion} / ${request.evidence.dataVersion}` : "固定在原记录"} active={selected === "validation"} onClick={() => setSelected("validation")} actionLabel="查看安全门读取" />
         <span className="trace-connector"><DCIcon name="ChevronRight" /></span>
@@ -2434,7 +2424,7 @@ function MissingScreen({ onNavigate }) {
 function ResetModal({ open, onClose, onReset }) {
   const [resetting, setResetting] = useState(false);
   const execute = () => { setResetting(true); window.setTimeout(() => { onReset(); setResetting(false); onClose(); }, 800); };
-  return <DCModal open={open} onClose={() => !resetting && onClose()} title="重置当前工作轮次" description="为当前场景形成新的运行轮次，并清空新的工作投影。" icon="RotateCcw" width="520px" footer={!resetting ? <><DCButton onClick={onClose}>取消</DCButton><DCButton variant="danger" icon="RotateCcw" onClick={execute}>确认重置</DCButton></> : null}>{resetting ? <DCLoadingBlock title="正在形成新的工作轮次" /> : <DCAlert tone="warning" title="历史证据不会删除">当前请求、决策事项、人工决定、负责人待办和活动会转为只读历史审计；新轮次从 0 开始，只有接收真实行动请求后才增长。</DCAlert>}</DCModal>;
+  return <DCModal open={open} onClose={() => !resetting && onClose()} title="重置当前工作轮次" description="为当前场景形成新的运行轮次，并清空新的工作投影。" icon="RotateCcw" width="520px" footer={!resetting ? <><DCButton onClick={onClose}>取消</DCButton><DCButton variant="danger" icon="RotateCcw" onClick={execute}>确认重置</DCButton></> : null}>{resetting ? <DCLoadingBlock title="正在形成新的工作轮次" /> : <DCAlert tone="warning" title="历史证据不会删除">当前申请、决策事项、人工决定、负责人待办和活动会转为只读历史审计；新轮次从 0 开始，只有接收真实行动申请后才增长。</DCAlert>}</DCModal>;
 }
 
 function DecisionApp() {
@@ -2580,8 +2570,8 @@ function DecisionApp() {
       if (sameId && sameId.contractFingerprint !== fingerprint) {
         result.conflicts += 1;
         mutated = true;
-        next.receipts.unshift({ ...receiptBase, outcome: "conflict", status: "标识冲突", reason: "同一 Action Request ID 的场景轮次、主体、Action Type、Rule 条件或精确版本不同，原记录未覆盖", requestRef: sameId.id, reminderRef: sameId.reminderId || null, taskRef: sameId.taskId || null, traceRef: sameId.traceId || null });
-        next = addActivity(next, "行动请求标识冲突", `${requestId} · 原记录保持不变`, now, { requestId });
+        next.receipts.unshift({ ...receiptBase, outcome: "conflict", status: "标识冲突", reason: "同一行动申请标识的场景轮次、主体、行动类型、规则条件或精确版本不同，原记录未覆盖", requestRef: sameId.id, reminderRef: sameId.reminderId || null, taskRef: sameId.taskId || null, traceRef: sameId.traceId || null });
+        next = addActivity(next, "行动申请标识冲突", `${requestId} · 原记录保持不变`, now, { requestId });
         return;
       }
       if (sameId) {
@@ -2593,7 +2583,7 @@ function DecisionApp() {
         result.invalid += 1;
         mutated = true;
         next.receipts.unshift({ ...receiptBase, outcome: "contract_rejected", status: "请求合同拒绝", reason: validation.problems.join("；"), requestRef: null, reminderRef: null, taskRef: null });
-        next = addActivity(next, "行动请求合同拒绝", `${requestId} · ${validation.problems.join("；")}`, now, { requestId });
+        next = addActivity(next, "行动申请合同拒绝", `${requestId} · ${validation.problems.join("；")}`, now, { requestId });
         return;
       }
       const shell = { ...payload, scenarioContext: validation.context, evidence: { ...(payload.evidence || {}), semanticVersion: validation.semanticVersion, dataVersion: validation.dataVersion }, c017SafetyReads: [] };
@@ -2605,7 +2595,7 @@ function DecisionApp() {
       else if (read.outcome === "rejected") result.rejected += 1;
       else result.blocked += 1;
       next.receipts.unshift({ ...receiptBase, outcome: read.outcome === "allowed" ? "accepted" : read.outcome === "rejected" ? "quality_rejected" : "quality_blocked", status: read.outcome === "allowed" ? "请求已接收" : read.outcome === "rejected" ? "请求已拒绝" : "请求已阻断", reason: read.reason, requestRef: request.id, reminderRef: request.reminderId || null, taskRef: null, traceRef: request.traceId });
-      next = addActivity(next, read.outcome === "allowed" ? "行动请求接收并形成决策事项" : read.outcome === "rejected" ? "行动请求被质量安全门拒绝" : "行动请求被质量安全门阻断", `${request.subjectName} · ${request.id}`, now, { requestId: request.id, reminderId: request.reminderId, traceId: request.traceId });
+      next = addActivity(next, read.outcome === "allowed" ? "行动申请接收并形成决策事项" : read.outcome === "rejected" ? "行动申请被质量安全门拒绝" : "行动申请被质量安全门阻断", `${request.subjectName} · ${request.id}`, now, { requestId: request.id, reminderId: request.reminderId, traceId: request.traceId });
     });
     if (mutated) {
       next.stateRevision = current.stateRevision + 1;
@@ -2722,7 +2712,7 @@ function DecisionApp() {
       const supplementRecord = { id: `INFO-${Date.now().toString().slice(-8)}`, status: "waiting_for_source", requestedAt: now, requestedBy: "财务运营账号", targetSource: SOURCE_META[request.sourceType].label, reason: form.reason, requestedItems: form.items, resolution: null, replacementRequestId: null };
       const next = { ...current, requests: current.requests.map((item) => item.id === requestId ? { ...item, status: "supplement_requested", supplement: { ...form, operator: "财务运营账号", time: now }, supplementRequests: [...(item.supplementRequests || []), supplementRecord], sourceEvents: [...item.sourceEvents, event], sourceReadStatus: "idle", sourceReadAttempts: 0 } : item) };
       commitData(addActivity(next, "请求补充信息", `${request.subjectName} · ${form.items.join("、")}`, now));
-      showToast("补充请求已记录，等待上游形成新的行动请求", "success");
+      showToast("补充请求已记录，等待上游形成新的行动申请", "success");
       resolve({ ok: true });
     }, 850);
   }), [commitData, showToast]);
@@ -2765,13 +2755,13 @@ function DecisionApp() {
           taskId: null,
         };
         const next = { ...latest, requests: [replacement, ...latest.requests.map((item) => item.id === requestId ? { ...item, status: "replaced", sourceReadStatus: "idle", sourceEvents: [...item.sourceEvents, { type: "已被替代", time: now, reason: "上游已返回补充后的固定证据", replacementId }] } : item)] };
-        commitData(addActivity(next, "收到替代行动请求", `${original.subjectName} · ${replacementId}`, now));
-        showToast("已收到替代行动请求，可继续人工判断", "success");
+        commitData(addActivity(next, "收到替代行动申请", `${original.subjectName} · ${replacementId}`, now));
+        showToast("已收到替代行动申请，可继续人工判断", "success");
         navigate(`reminder/${reminderId}`);
         return;
       }
       commitData({ ...latest, requests: latest.requests.map((item) => item.id === requestId ? { ...item, sourceReadStatus: "idle", sourceReadAttempts: (item.sourceReadAttempts || 0) + 1 } : item) });
-      showToast(`尚未收到新的行动请求，原${DC_UI_VARIANT === "portfolio" ? "决策事项" : "提醒"}和补充请求继续保留`, "info");
+      showToast(`尚未收到新的行动申请，原${DC_UI_VARIANT === "portfolio" ? "决策事项" : "提醒"}和补充请求继续保留`, "info");
     }, 900);
   }, [commitData, navigate, showToast]);
 

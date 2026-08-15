@@ -123,8 +123,8 @@
     target: "融资主体", inputs: "主体、命中规则、指标证据、关联借据、优先协商银行、负责人、数据截至时间",
     parameters: "主体、命中规则、指标证据、关联借据、优先协商银行、负责人、数据截至时间",
     prerequisite: "目标主体、规则命中、指标快照和负责人关系均可追溯。",
-    result: "形成融资优化行动请求；人工确认后由决策中心形成负责人待办。",
-    failure: "缺少目标主体、规则证据、负责人关系或同版数据证据时，不形成行动请求并返回缺失项。",
+    result: "形成融资优化行动申请；人工确认后由决策中心形成负责人待办。",
+    failure: "缺少目标主体、规则证据、负责人关系或同版数据证据时，不形成行动申请并返回缺失项。",
     defaultDue: "人工确认后 5 个工作日内完成",
     confirmation: "必须人工确认",
     definition: "针对已识别的融资成本或债务结构问题，请求发起融资优化行动。",
@@ -717,7 +717,7 @@
   }
 
   function renderLifecycleManifestTable(manifest) {
-    return `<div class="table-wrap lifecycle-manifest-table"><table><thead><tr><th>业务名称</th><th>资源类型</th><th>稳定语义身份</th><th>Published 版本</th><th>本版本变更</th><th>状态</th><th>业务有效期</th><th>替代关系</th><th>Owner</th><th>最近语义变更</th><th>证据</th></tr></thead><tbody>${manifest.map(resource => `<tr><td><b>${esc(resource.name)}</b><small>${esc(resource.applicableScenario || "待确认")}</small></td><td>${esc(resource.type)}</td><td class="mono">${esc(resource.id)}</td><td><b>${esc(resource.publishedVersionContext || resource.semanticVersion || "尚未形成")}</b><small>${resource.sourcePublishedVersion ? `基于 ${esc(resource.sourcePublishedVersion)} 修订` : "发布成功后形成"}</small></td><td>${esc(resource.changeType || "待确认")}</td><td><b>${esc(resource.publicationState || "待确认")}</b><small>${resource.publicationState === "Draft" ? "发布成功后才成为 Published" : `业务 ${esc(resource.expectedBusinessValidityState || resource.businessValidityAtPublish || "待确认")}`}</small></td><td>${esc(humanDateTime(resource.effectiveFrom))} / ${esc(resource.effectiveTo ? humanDateTime(resource.effectiveTo) : "未预设")}</td><td class="mono">${esc(resource.replacementDetail || "无")}</td><td>${esc(resource.owner || "待确认")}</td><td>${esc(resource.lastChangedAt || "待确认")}</td><td>${esc(resource.controlledEvidenceState || resource.controlledEvidenceLocator || "待确认")}</td></tr>`).join("")}</tbody></table></div>`;
+    return `<div class="table-wrap lifecycle-manifest-table"><table><thead><tr><th>业务名称</th><th>资源类型</th><th>追溯标识</th><th>已发布版本</th><th>本版本变更</th><th>状态</th><th>业务有效期</th><th>替代关系</th><th>责任人</th><th>最近语义变更</th><th>证据</th></tr></thead><tbody>${manifest.map(resource => `<tr><td><b>${esc(resource.name)}</b><small>${esc(resource.applicableScenario || "待确认")}</small></td><td>${esc(resource.type)}</td><td class="mono">${esc(resource.id)}</td><td><b>${esc(resource.publishedVersionContext || resource.semanticVersion || "尚未形成")}</b><small>${resource.sourcePublishedVersion ? `基于 ${esc(resource.sourcePublishedVersion)} 修订` : "发布成功后形成"}</small></td><td>${esc(resource.changeType || "待确认")}</td><td><b>${esc(localizeUiText(resource.publicationState || "待确认"))}</b><small>${resource.publicationState === "Draft" ? "发布成功后才成为已发布版本" : `业务 ${esc(resource.expectedBusinessValidityState || resource.businessValidityAtPublish || "待确认")}`}</small></td><td>${esc(humanDateTime(resource.effectiveFrom))} / ${esc(resource.effectiveTo ? humanDateTime(resource.effectiveTo) : "未预设")}</td><td class="mono">${esc(resource.replacementDetail || "无")}</td><td>${esc(resource.owner || "待确认")}</td><td>${esc(resource.lastChangedAt || "待确认")}</td><td>${esc(resource.controlledEvidenceState || resource.controlledEvidenceLocator || "待确认")}</td></tr>`).join("")}</tbody></table></div>`;
   }
 
   const DRAFT_PRIMARY_STATUS = {
@@ -1089,7 +1089,7 @@
   let asyncEpoch = 0;
   const ui = {
     modal: null, drawer: null, selectedNode: null, workspaceView: "semantic", semanticEdgeMode: "main", resourceFilter: "all", validationGroup: "all",
-    versionResourceView: "cards", versionResourceType: "全部", mappingSource: null, mappingProperty: null,
+    versionResourceView: "cards", versionResourceType: "全部", publishedCanvasView: "semantic", publishedCanvasZoom: .72, mappingSource: null, mappingProperty: null,
     versionResourceQuery: "",
     zoom: .72, pan: { x: 34, y: 42 }, canvasDraftId: null, drag: null, panDrag: null, objectTab: null, versionTab: null, resourceTab: null,
     updateChoice: "compatible", assetObjectId: null, assetChoice: null, assetContractVersion: null, propertyObjectId: null, propertyFieldChoice: null,
@@ -1101,7 +1101,7 @@
   function resetUiState() {
     Object.assign(ui, {
       modal: null, drawer: null, selectedNode: null, workspaceView: "semantic", semanticEdgeMode: "main", resourceFilter: "all", validationGroup: "all",
-      versionResourceView: "cards", versionResourceType: "全部", mappingSource: null, mappingProperty: null, versionResourceQuery: "",
+      versionResourceView: "cards", versionResourceType: "全部", publishedCanvasView: "semantic", publishedCanvasZoom: .72, mappingSource: null, mappingProperty: null, versionResourceQuery: "",
       zoom: .72, pan: { x: 34, y: 42 }, canvasDraftId: null, drag: null, panDrag: null, objectTab: null, versionTab: null, resourceTab: null,
       updateChoice: "compatible", assetObjectId: null, assetChoice: null, assetContractVersion: null, propertyObjectId: null, propertyFieldChoice: null,
       resourceObjectId: null, linkSourceObjectId: null, linkTargetObjectId: null, editResourceId: null, propertyForm: null,
@@ -1204,10 +1204,10 @@
         (draft.actions || []).forEach(action => {
           action.parameters = action.parameters || action.inputs || "目标对象与业务证据";
           action.prerequisite = action.prerequisite || "目标对象与规则证据可追溯";
-          action.result = action.result || "形成行动请求，人工确认后进入后续处理";
+          action.result = action.result || "形成行动申请，人工确认后进入后续处理";
           action.confirmation = action.confirmation || "必须人工确认";
           action.definition = action.definition || action.requirement || "定义允许请求的业务行动。";
-          action.failure = action.failure || "缺少必要参数或前置证据时不形成行动请求，并返回缺失项。";
+          action.failure = action.failure || "缺少必要参数或前置证据时不形成行动申请，并返回缺失项。";
           action.defaultDue = action.defaultDue || "人工确认后 5 个工作日内完成";
           action.linkIds = action.linkIds || [];
           const knownAction = ACTIONS.find(item => item.id === action.id);
@@ -1345,11 +1345,13 @@
     }
   }
 
-  function persist() {
-    state.c008ProjectionRevision = Math.max(1, Number(state.c008ProjectionRevision || 1)) + 1;
-    state.c008ProjectionFormedAt = fullNowText();
+  function persist({ refreshProjection = true } = {}) {
+    if (refreshProjection) {
+      state.c008ProjectionRevision = Math.max(1, Number(state.c008ProjectionRevision || 1)) + 1;
+      state.c008ProjectionFormedAt = fullNowText();
+    }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    writeAuthoritativeC008Projection();
+    if (refreshProjection) writeAuthoritativeC008Projection();
   }
   function synchronizeStateFromStorage() {
     const latest = loadState();
@@ -1766,6 +1768,14 @@
       revalidate: { label: "需重验", tone: "amber", detail: "资源变化后需要重新完成消费验证" }
     })[evidence.status] || { label: "待确认", tone: "amber", detail: "尚未取得该消费方的权威状态" };
   }
+  function publishedConsumptionState(version) {
+    const binding = historicalBindingFor(version);
+    if (isCurrentFormalBlocked(version)) return { label: "不可消费", tone: "red", detail: "当前正式数据存在质量阻断" };
+    if (!publishedResourceAvailable(version)) return { label: "不可消费", tone: "red", detail: `当前语义版本业务有效状态为${businessValidityStateOf(version)}` };
+    if (isCurrentFormalVersion(version) && binding) return { label: "可供消费", tone: "green", detail: "已发布范围与当前正式数据组合均可定位" };
+    if (binding) return { label: "历史引用", tone: "neutral", detail: "仅供旧结果和历史证据追溯" };
+    return { label: "待正式数据启用", tone: "neutral", detail: "发布时映射已冻结，尚未形成正式使用组合" };
+  }
   function isSuccessfulT019Record(record) {
     return record?.resourceRef === "T019" && record.formsContract === true && record.status === "成功" && !!record.evidenceCode;
   }
@@ -1935,11 +1945,47 @@
   function go(hash) { clearTransientUi(); const next = withHandoffContext(hash); if (location.hash === `#${next}`) render(); else location.hash = next; }
   function toast(message, tone = "") {
     const region = document.getElementById("toast-region");
-    const el = document.createElement("div"); el.className = `toast ${tone}`; el.innerHTML = `<b>${tone === "error" ? "未完成" : "已更新"}</b><span>${esc(message)}</span>`;
+    const el = document.createElement("div"); el.className = `toast ${tone}`; el.innerHTML = `<b>${tone === "error" ? "未完成" : "已更新"}</b><span>${esc(localizeUiText(message))}</span>`;
     region.appendChild(el); requestAnimationFrame(() => el.classList.add("show")); setTimeout(() => { el.classList.remove("show"); setTimeout(() => el.remove(), 220); }, 2600);
   }
 
-  function status(label, tone = "neutral") { return `<span class="status ${tone}"><i></i>${esc(label)}</span>`; }
+  function localizeUiText(value) {
+    return String(value ?? "")
+      .replace(/行动请求/g, "行动申请")
+      .replace(/\bPublished\b/g, "已发布")
+      .replace(/\bDraft\b/g, "草稿")
+      .replace(/\bOwner\b/g, "责任人")
+      .replace(/([\u3400-\u9fff])\s+(已发布|草稿|责任人)/g, "$1$2")
+      .replace(/(已发布|草稿|责任人)\s+([\u3400-\u9fff])/g, "$1$2");
+  }
+  function localizeMainInterface(root) {
+    if (!root) return;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(node => {
+      const parent = node.parentElement;
+      if (!parent || parent.closest("script, style, textarea, code, .mono, [data-preserve-technical]")) return;
+      const localized = localizeUiText(node.nodeValue);
+      if (localized !== node.nodeValue) node.nodeValue = localized;
+    });
+    root.querySelectorAll('input:not([type="hidden"]):not(.mono):not([data-preserve-technical]), textarea:not(.mono):not([data-preserve-technical])').forEach(control => {
+      const localized = localizeUiText(control.value);
+      if (localized !== control.value) control.value = localized;
+    });
+    root.querySelectorAll("[title], [aria-label], [placeholder]").forEach(control => {
+      ["title", "aria-label", "placeholder"].forEach(attribute => {
+        if (!control.hasAttribute(attribute)) return;
+        const localized = localizeUiText(control.getAttribute(attribute));
+        if (localized !== control.getAttribute(attribute)) control.setAttribute(attribute, localized);
+      });
+    });
+  }
+  function networkIcon(className = "") {
+    return `<svg class="network-icon ${esc(className)}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="5" r="2.5"></circle><circle cx="6" cy="18" r="2.5"></circle><circle cx="18" cy="18" r="2.5"></circle><path d="m10.7 7.2-3.4 8.6M13.3 7.2l3.4 8.6M8.5 18h7"></path></svg>`;
+  }
+
+  function status(label, tone = "neutral") { return `<span class="status ${tone}"><i></i>${esc(localizeUiText(label))}</span>`; }
   function btn(label, action, options = {}) {
     const { primary = false, danger = false, quiet = false, small = false, disabled = false } = options;
     return `<button type="button" class="btn ${primary ? "primary" : ""} ${danger ? "danger" : ""} ${quiet ? "quiet" : ""} ${small ? "small" : ""}" data-action="${esc(action)}" ${disabled ? "disabled" : ""}>${esc(label)}</button>`;
@@ -1952,16 +1998,15 @@
     const context = current === "modeling" ? (draft ? `${draft.name} · ${draft.status}` : "尚未选择本体") : (version ? `${version.name} · ${version.semanticVersion}` : versionRoute ? "未找到请求的精确版本" : "尚无已发布本体");
     return `<div class="app-shell">
       <aside class="platform-rail" aria-label="平台模块栏">
-        <button class="platform-logo" data-action="nav-modeling" title="Ontology 3.0">ON</button>
-        <button class="platform-button active" data-action="nav-modeling" title="本体管理">本</button><button class="platform-button" data-action="open-boundary" title="数据工程">数</button>
+        <button class="platform-logo" data-action="nav-modeling" title="智财问策">${networkIcon("brand-network-icon")}</button>
+        <button class="platform-button active" data-action="nav-modeling" title="本体管理" aria-label="本体管理">${networkIcon("module-network-icon")}</button><button class="platform-button" data-action="open-boundary" title="数据工程">数</button>
         <div class="platform-spacer"></div><button class="platform-button" data-action="open-help" title="帮助">?</button><button class="platform-button" data-action="open-reset" title="重置工作区状态">↺</button>
       </aside>
       <nav class="product-nav" aria-label="本体管理导航">
-        <div class="product-nav-head"><span>◇</span><div><strong>本体管理</strong><small>建模 · 映射 · 发布 · 消费</small></div></div>
-        <div class="product-nav-list"><span class="product-nav-label">产品</span><button class="product-nav-item active" data-action="nav-modeling"><span class="nav-glyph">本</span><span>本体管理</span></button></div>
+        <div class="product-nav-list"><span class="product-nav-label">产品</span><button class="product-nav-item active" data-action="nav-modeling"><span class="nav-glyph">${networkIcon("module-network-icon")}</span><span>语义资产</span></button></div>
         <div class="product-nav-foot"><strong>S001</strong><span>融资成本与债务结构优化</span><button data-action="open-s003">查看后续场景边界</button></div>
       </nav>
-      <section class="app-workspace"><header class="topbar"><div class="breadcrumb"><span>Ontology 3.0</span><i>›</i><strong>本体管理</strong>${route() !== "modeling" && route() !== "published" ? `<i>›</i><span>${esc(current === "modeling" ? "Draft" : "已发布")}</span>` : ""}</div><div class="workspace-context"><span>${esc(context)}</span></div><div class="account"><span>本</span><div><strong>本体管理账号</strong><small>单账号工作区</small></div></div></header><main class="main" data-screen-label="本体管理">${content}</main></section>
+      <section class="app-workspace"><header class="topbar"><div class="breadcrumb">${networkIcon("breadcrumb-network-icon")}<strong>本体管理</strong>${route() !== "modeling" && route() !== "published" ? `<i>›</i><span>${esc(current === "modeling" ? "草稿" : "已发布")}</span>` : ""}</div><div class="workspace-context"><span>${esc(localizeUiText(context))}</span></div></header><main class="main" data-screen-label="本体管理">${content}</main></section>
       ${renderOverlay()}
     </div>`;
   }
@@ -1974,7 +2019,7 @@
     const current = currentScenarioContext();
     const draftCount = state.drafts.filter(draft => !draft.publishedVersionId && sameScenarioEnvelope(draft, current)).length;
     const ontologyCount = new Set(state.publishedVersions.filter(version => scenarioContextOf(version).scenarioId === current.scenarioId && scenarioContextOf(version).scenarioVersion === current.scenarioVersion).map(version => version.ontologyStableId)).size;
-    return `<nav class="lifecycle-tabs" aria-label="本体生命周期"><button class="${active === "draft" ? "active" : ""}" data-action="nav-modeling" aria-current="${active === "draft" ? "page" : "false"}"><span>Draft</span><b>${draftCount}</b></button><button class="${active === "published" ? "active" : ""}" data-action="nav-published" aria-current="${active === "published" ? "page" : "false"}"><span>已发布</span><b>${ontologyCount}</b></button></nav>`;
+    return `<nav class="lifecycle-tabs" aria-label="本体生命周期"><button class="${active === "draft" ? "active" : ""}" data-action="nav-modeling" aria-current="${active === "draft" ? "page" : "false"}"><span>草稿</span><b>${draftCount}</b></button><button class="${active === "published" ? "active" : ""}" data-action="nav-published" aria-current="${active === "published" ? "page" : "false"}"><span>已发布</span><b>${ontologyCount}</b></button></nav>`;
   }
 
   function render() {
@@ -1991,6 +2036,7 @@
     };
     if (route() === "modeling/workbench" && activeDraft() && ui.canvasDraftId !== activeDraft().id) { loadDraftCanvasView(activeDraft()); ui.canvasDraftId = activeDraft().id; }
     document.getElementById("app").innerHTML = shell(`${renderHandoffNotice()}${(pages[route()] || renderModelingHome)()}`);
+    localizeMainInterface(document.getElementById("app"));
     if (route() === "modeling/workbench") requestAnimationFrame(() => { applyWorldTransform(); updateEdges(); });
     if (route() === "modeling/mapping") requestAnimationFrame(updateMappingLines);
     if (ui.modal === "addLink") requestAnimationFrame(refreshLinkEndpointCompatibility);
@@ -2004,19 +2050,19 @@
     const statusCounts = Object.keys(DRAFT_PRIMARY_STATUS).reduce((result, key) => ({ ...result, [key]: drafts.filter(draft => draftPrimaryStatus(draft) === key).length }), {});
     const visibleDrafts = ui.resourceFilter === "all" ? drafts : drafts.filter(draft => draftPrimaryStatus(draft) === ui.resourceFilter);
     const selectedStatus = DRAFT_PRIMARY_STATUS[ui.resourceFilter] || null;
-    return `<div class="page-scroll ontology-home">${pageHeader("本体管理", "创建和修订业务本体，并在发布后维护精确版本、正式数据与消费证据。", btn("创建本体", "open-create-draft", { primary: true, disabled: !scenarioReady }), "语义资产")}
+    return `<div class="page-scroll ontology-home">${pageHeader("本体建模", "创建和修订业务本体，并在发布后维护精确版本、正式数据与消费证据。", btn("创建本体", "open-create-draft", { primary: true, disabled: !scenarioReady }), "语义资产")}
       ${renderLifecycleTabs("draft")}
       ${state.pendingScenarioReset ? `<section class="result-banner warning"><span>…</span><div><b>正在等待新的场景轮次</b><p>定向重置请求 ${esc(state.pendingScenarioReset.requestId)} 已提交。平台公共层返回完整场景上下文前，不能创建当前轮次 Draft 或接收数据资产。</p></div>${status("等待平台返回", "amber")}</section>` : ""}
       ${!state.pendingScenarioReset && !scenarioReady ? `<section class="result-banner warning"><span>…</span><div><b>等待工作场景就绪</b><p>平台当前场景的稳定身份、版本和运行轮次尚未完整送达。本体建模保持空状态，不会自行补齐场景身份。</p></div>${status("不可开始", "amber")}</section>` : ""}
       <section class="workspace-intro"><div><h2>本体建模工作台</h2><p>从业务骨架开始，在对象内部选择已发布数据资产并完成映射；当前内容校验通过后才能发布。</p></div><span>${drafts.length} 个 Draft</span></section>
-      <nav class="draft-status-filters" aria-label="Draft 状态筛选"><button class="${ui.resourceFilter === "all" ? "active" : ""}" data-action="filter-drafts:all"><span>全部</span><b>${drafts.length}</b></button>${Object.entries(DRAFT_PRIMARY_STATUS).map(([key, meta]) => `<button class="${ui.resourceFilter === key ? "active" : ""}" data-action="filter-drafts:${key}"><span>${esc(meta.label)}</span><b>${statusCounts[key]}</b></button>`).join("")}</nav>
+      <nav class="draft-status-filters" aria-label="草稿状态筛选"><button class="${ui.resourceFilter === "all" ? "active" : ""}" data-action="filter-drafts:all"><span>全部</span><b>${drafts.length}</b></button>${Object.entries(DRAFT_PRIMARY_STATUS).map(([key, meta]) => `<button class="${ui.resourceFilter === key ? "active" : ""}" data-action="filter-drafts:${key}"><span>${esc(meta.label)}</span><b>${statusCounts[key]}</b></button>`).join("")}</nav>
       <section class="panel draft-catalog-panel">
         ${visibleDrafts.length ? `<div class="draft-grid">${visibleDrafts.map(draft => {
           const mapped = draft.objects.filter(obj => obj.memberId).length;
           const primary = draftPrimaryStatusMeta(draft);
           const auxiliary = draft.publishRun?.status === "processing" ? "正在发布语义版本" : draft.validation.status === "stale" ? "上次校验结果已失效" : draft.publishRun?.status === "failed" ? `上次发布失败：${draft.publishRun.reason}` : "";
-          return `<article class="draft-card"><div class="draft-card-top"><span class="draft-symbol">◇</span>${status(primary.label, primary.tone)}</div><h3>${esc(draft.name)}</h3><p>${esc(draft.definition || "尚未填写业务定义")}</p><small class="mono">${esc(draft.ontologyStableId)}</small><div class="draft-facts"><span><b>${draft.objects.length}</b> Object</span><span><b>${draft.links.length}</b> Link</span><span><b>${mapped}</b> 数据资产成员</span></div>${auxiliary ? `<div class="draft-run-note ${draft.publishRun?.status === "failed" ? "error" : ""}"><b>${esc(auxiliary)}</b>${draft.publishRun?.status === "failed" && draftPrimaryStatus(draft) === "ready" ? btn("重试发布", `retry-publish:${draft.id}`, { small: true }) : ""}</div>` : ""}<div class="draft-meta"><span>${esc(draft.draftName || "初始 Draft")}${draft.basedOn ? ` · 基于 ${esc(draft.basedOn)}` : ""}</span><span>保存于 ${esc(draft.updatedAt)}</span></div><div class="card-actions">${btn("进入工作台", `open-draft:${draft.id}`, { primary: true })}</div></article>`;
-        }).join("")}</div>` : ui.resourceFilter !== "all" ? `<div class="empty"><span>◇</span><h3>没有${esc(selectedStatus.label)}的 Draft</h3><p>其他状态的 Draft 不会出现在当前筛选中。</p>${btn("查看全部 Draft", "filter-drafts:all", { primary: true })}</div>` : `<div class="empty"><span>◇</span><h3>${scenarioReady ? "还没有本体 Draft" : "工作场景尚未就绪"}</h3><p>${scenarioReady ? "先创建一个本体，再建立 Object Type 业务骨架。" : "等待平台提供当前场景的完整运行上下文后，再开始创建本体。"}</p>${btn("创建本体", "open-create-draft", { primary: true, disabled: !scenarioReady })}</div>`}
+          return `<article class="draft-card"><div class="draft-card-top"><span class="draft-symbol">${networkIcon("module-network-icon")}</span>${status(primary.label, primary.tone)}</div><h3>${esc(draft.name)}</h3><p>${esc(draft.definition || "尚未填写业务定义")}</p><small class="mono">${esc(draft.ontologyStableId)}</small><div class="draft-facts"><span><b>${draft.objects.length}</b> Object</span><span><b>${draft.links.length}</b> Link</span><span><b>${mapped}</b> 数据资产成员</span></div>${auxiliary ? `<div class="draft-run-note ${draft.publishRun?.status === "failed" ? "error" : ""}"><b>${esc(auxiliary)}</b>${draft.publishRun?.status === "failed" && draftPrimaryStatus(draft) === "ready" ? btn("重试发布", `retry-publish:${draft.id}`, { small: true }) : ""}</div>` : ""}<div class="draft-meta"><span>${esc(draft.draftName || "初始 Draft")}${draft.basedOn ? ` · 基于 ${esc(draft.basedOn)}` : ""}</span><span>保存于 ${esc(draft.updatedAt)}</span></div><div class="card-actions">${btn("进入工作台", `open-draft:${draft.id}`, { primary: true })}</div></article>`;
+        }).join("")}</div>` : ui.resourceFilter !== "all" ? `<div class="empty"><span>${networkIcon("module-network-icon")}</span><h3>没有${esc(selectedStatus.label)}的 Draft</h3><p>其他状态的 Draft 不会出现在当前筛选中。</p>${btn("查看全部 Draft", "filter-drafts:all", { primary: true })}</div>` : `<div class="empty"><span>${networkIcon("module-network-icon")}</span><h3>${scenarioReady ? "还没有本体 Draft" : "工作场景尚未就绪"}</h3><p>${scenarioReady ? "先创建一个本体，再建立 Object Type 业务骨架。" : "等待平台提供当前场景的完整运行上下文后，再开始创建本体。"}</p>${btn("创建本体", "open-create-draft", { primary: true, disabled: !scenarioReady })}</div>`}
       </section>
       <section class="modeling-lifecycle"><div class="modeling-lifecycle-head"><h2>建模顺序</h2><p>可从当前阶段继续，也可以随时返回对象、属性、关系或映射位置修正。</p></div><div class="lifecycle-track"><span><b>1</b>创建本体 Draft</span><i></i><span><b>2</b>建立对象骨架</span><i></i><span><b>3</b>对象内选择资产成员</span><i></i><span><b>4</b>显式创建并映射属性</span><i></i><span><b>5</b>配置关系与业务逻辑</span><i></i><span><b>6</b>统一校验与发布</span></div></section>
     </div>`;
@@ -2095,7 +2141,7 @@
   }
 
   function semanticScene(draft) {
-    if (!draft.objects.length) return { nodes: [], edges: [], empty: `<div class="canvas-empty"><span>◇</span><h3>建立 Object Type 业务骨架</h3><p>一级画布只承载业务语义结构；数据字段映射在对象内部完成。</p>${btn("新增 Object", "open-add-object", { primary: true })}</div>` };
+    if (!draft.objects.length) return { nodes: [], edges: [], empty: `<div class="canvas-empty"><span>${networkIcon("module-network-icon")}</span><h3>建立 Object Type 业务骨架</h3><p>一级画布只承载业务语义结构；数据字段映射在对象内部完成。</p>${btn("新增 Object", "open-add-object", { primary: true })}</div>` };
     const nodes = [
       ...draft.objects.map(item => ({ ...item, kind: "object", subtitle: item.memberId ? `${item.properties.length} 个属性 · 已选择数据资产成员` : `${item.properties.length} 个属性 · 待选择数据资产成员` })),
       ...draft.links.map(item => ({ ...item, kind: "link", subtitle: `${objectName(draft, item.source)} → ${objectName(draft, item.target)}` })),
@@ -2244,7 +2290,7 @@
       if (!selectedMembers.size) return `<div class="inspector-empty"><span>D</span><h3>暂无数据沿袭</h3><p>对象选择已发布数据资产成员后，这里将展开对应资产、成员、字段和上游来源链。</p></div>`;
       return `<div class="inspector-head"><span>D</span><div><b>数据沿袭</b><small>来自数据工程的只读证据</small></div></div><div class="inspector-body"><section><h3>完整上游链路</h3><dl><dt>来源</dt><dd>${esc(draft.sourceDataContract?.source || "未提供")}</dd><dt>已发布资产</dt><dd>${esc(draft.sourceDataContract?.assetName || "未选择")}</dd><dt>资产版本</dt><dd>${esc(draftDataVersion(draft))}</dd><dt>已关联范围</dt><dd>${selectedMembers.size} 个资产成员 · ${draftAssetRelations(draft).length} 条资产成员关系</dd><dt>本体关系</dt><dd>${draft.links.length} 条 Link Type</dd><dt>数据截至</dt><dd>${esc(draftDataAsOf(draft))}</dd></dl></section>${ownerEndpoint ? `<section><h3>负责人关系端点</h3><dl><dt>起点</dt><dd>${esc(ownerEndpoint.sourceLabel)} · ${esc(ownerEndpoint.sourceType)}</dd><dt>终点</dt><dd>${esc(ownerEndpoint.targetLabel)} · ${esc(ownerEndpoint.targetType)}</dd><dt>匹配状态</dt><dd>${ownerEndpoint.compatible ? "两端兼容" : "端点不兼容"}</dd></dl></section>` : ""}<div class="boundary-note"><b>只读边界</b><p>本体管理可以查看资产、成员、字段和上游创建链路，但不能修改读取、处理、质量检查或数据资产发布。</p></div></div><div class="inspector-foot">${btn("查看来源详情", "open-lineage-detail", { primary: true })}</div>`;
     }
-    if (!resource) return `<div class="inspector-empty"><span>◇</span><h3>选择语义资源</h3><p>查看定义、稳定身份、生命周期、映射与依赖。</p></div>`;
+    if (!resource) return `<div class="inspector-empty"><span>${networkIcon("module-network-icon")}</span><h3>选择语义资源</h3><p>查看定义、稳定身份、生命周期、映射与依赖。</p></div>`;
     const type = TYPE_LABEL[resource.kind] || resource.kind;
     let body = "";
     if (resource.kind === "object") body = `<section><h3>对象定义</h3><p>${esc(resource.definition)}</p><dl><dt>稳定语义身份</dt><dd class="mono">${esc(resource.id)}</dd><dt>身份 Property</dt><dd>${esc(propertyName(resource, resource.identity) || "待设置")}</dd><dt>标题 Property</dt><dd>${esc(propertyName(resource, resource.title) || "待设置")}</dd><dt>数据资产成员</dt><dd>${esc(memberName(resource.memberId) || "待选择")}</dd><dt>实例预览</dt><dd>${resource.memberId ? resource.count.toLocaleString("zh-CN") : "不可用"}</dd></dl></section><section><h3>配置完整度</h3><div class="meter"><i style="width:${resource.memberId && resource.properties.length ? 100 : resource.memberId ? 55 : 28}%"></i></div><p>${resource.memberId && resource.properties.length ? "对象骨架、属性与数据资产成员已连接。" : "进入对象详情继续配置。"}</p></section>`;
@@ -2252,12 +2298,12 @@
       const endpoint = linkEndpointInfo(draft, resource);
       body = `<section><h3>关系定义</h3><p>${esc(resource.definition)}</p><dl><dt>方向</dt><dd>${esc(objectName(draft, resource.source))} → ${esc(objectName(draft, resource.target))}</dd><dt>基数</dt><dd>${esc(resource.cardinality)}</dd><dt>起点引用</dt><dd class="mono">${endpoint.sourceEndpointKind === "property" ? "Property" : "资产字段"} · ${esc(endpoint.sourceEndpointId)}</dd><dt>起点字段</dt><dd>${esc(endpoint.sourceLabel)} · ${esc(endpoint.sourceType)}</dd><dt>终点引用</dt><dd class="mono">${endpoint.targetEndpointKind === "property" ? "Property" : "资产字段"} · ${esc(endpoint.targetEndpointId)}</dd><dt>终点字段</dt><dd>${esc(endpoint.targetLabel)} · ${esc(endpoint.targetType)}</dd><dt>兼容状态</dt><dd>${endpoint.compatible ? "两端兼容" : "端点不兼容"}</dd></dl></section>`;
     }
-    if (resource.kind === "metric") body = `<section><h3>指标定义</h3><p>${esc(resource.definition)}</p><dl><dt>稳定语义身份</dt><dd class="mono">${esc(resource.id)}</dd><dt>单位</dt><dd>${esc(resource.unit)}</dd><dt>时间语义</dt><dd>${esc(resource.time || "待配置")}</dd><dt>适用范围</dt><dd>${esc(resource.scope)}</dd><dt>无数据处理</dt><dd>${esc(resource.zeroHandling || "待配置")}</dd><dt>精确依赖</dt><dd class="mono">${esc((resource.dependencyIds || []).join("、"))}</dd><dt>Owner</dt><dd>${esc(resource.owner)}</dd></dl></section>`;
+    if (resource.kind === "metric") body = `<section><h3>指标定义</h3><p>${esc(resource.definition)}</p><dl><dt>稳定语义身份</dt><dd class="mono">${esc(resource.id)}</dd><dt>单位</dt><dd>${esc(resource.unit)}</dd><dt>时间语义</dt><dd>${esc(resource.time || "待配置")}</dd><dt>适用范围</dt><dd>${esc(resource.scope)}</dd><dt>无数据处理</dt><dd>${esc(resource.zeroHandling || "待配置")}</dd><dt>精确依赖</dt><dd class="mono">${esc((resource.dependencyIds || []).join("、"))}</dd><dt>责任人</dt><dd>${esc(resource.owner)}</dd></dl></section>`;
     if (resource.kind === "rule") body = `<section><h3>规则定义</h3><p>${esc(resource.definition || "")}</p><dl><dt>规则标识</dt><dd>${esc(resource.code)}</dd><dt>适用对象</dt><dd>${esc(resource.appliesTo)}</dd><dt>判断条件</dt><dd>${esc(resource.condition || "待配置")}</dd><dt>依赖 Metric</dt><dd>${esc(resource.dependency)}</dd><dt>有效期</dt><dd>${esc(resource.validity || "待配置")}</dd><dt>测试样例</dt><dd>${esc(resource.testSample || "待配置")}</dd><dt>银行排序</dt><dd>${esc(resource.bankRanking || "待配置")}</dd><dt>证据要求</dt><dd>${esc(resource.evidence)}</dd><dt>业务口径状态</dt><dd>${resource.businessBasis === "recommended" ? "推荐基线 · 待发布确认" : resource.businessBasis === "unknown" ? "待确认 · 阻断发布" : "已配置"}</dd></dl></section>`;
     if (resource.kind === "action") body = `<section><h3>行动类型定义</h3><p>${esc(resource.definition || "")}</p><dl><dt>目标对象</dt><dd>${esc(resource.target)}</dd><dt>必要输入</dt><dd>${esc(resource.parameters || resource.inputs)}</dd><dt>前置证据</dt><dd>${esc(resource.prerequisite || "待配置")}</dd><dt>预期结果</dt><dd>${esc(resource.result || "待配置")}</dd><dt>失败表现</dt><dd>${esc(resource.failure || "待配置")}</dd><dt>默认办理期限</dt><dd>${esc(resource.defaultDue || "待配置")}</dd><dt>确认要求</dt><dd>${esc(resource.confirmation || resource.requirement)}</dd><dt>业务口径状态</dt><dd>${resource.businessBasis === "recommended" ? "推荐基线 · 待发布确认" : resource.businessBasis === "unknown" ? "待确认 · 阻断发布" : "已配置"}</dd></dl></section><div class="boundary-note"><b>运行边界</b><p>这里只定义可请求的行动类型，不创建提醒、确认或负责人待办。</p></div>`;
     ensureDraftReleaseContract(draft);
-    const lifecycle = `<section class="draft-lifecycle"><h3>生命周期与证据</h3><dl><dt>资源状态</dt><dd>Draft</dd><dt>发布状态</dt><dd>未发布</dd><dt>业务有效状态</dt><dd>尚未生效</dd><dt>稳定语义身份</dt><dd class="mono">${esc(resource.id)}</dd><dt>适用场景</dt><dd>${esc(scenarioDisplayLabel(draft))}</dd><dt>Owner</dt><dd>${esc(draft.release.owner || "待确认")}</dd><dt>业务生效时间</dt><dd>${esc(humanDateTime(draft.release.effectiveFrom))}</dd><dt>业务失效时间</dt><dd>${esc(draftReleaseEffectiveToLabel(draft))}</dd><dt>变更原因</dt><dd>${esc(draft.release.changeReason || "待确认")}</dd><dt>替代关系</dt><dd>${esc(draft.release.replacementDeclaration || "待确认")}</dd><dt>受控证据定位</dt><dd>${esc(draft.release.evidenceState || "尚未形成")}</dd><dt>最近语义变更</dt><dd>${esc(resource.lastChangedAt || "待确认")}</dd><dt>Draft 最近保存</dt><dd>${esc(draft.updatedAt || "待确认")}</dd><dt>来源版本</dt><dd>${draft.basedOn ? `基于 ${esc(draft.basedOn)} 创建` : "全新创建"}</dd></dl></section>`;
-    return `<div class="inspector-head"><span class="type-${resource.kind}">${resource.kind === "action" ? "A" : resource.kind[0].toUpperCase()}</span><div><b>${esc(resource.name)}</b><small>${esc(type)} · Draft</small></div></div><div class="inspector-body">${lifecycle}${body}</div><div class="inspector-foot">${resource.kind === "object" ? btn("查看详情", `open-object:${resource.id}`) : btn("查看详情", `open-draft-resource:${resource.id}`)}${btn("配置术语", `open-terms:${resource.id}`)}${btn("编辑配置", `edit-resource:${resource.id}`, { primary: true })}</div>`;
+    const lifecycle = `<section class="draft-lifecycle"><h3>生命周期与证据</h3><dl><dt>资源状态</dt><dd>草稿</dd><dt>发布状态</dt><dd>未发布</dd><dt>业务有效状态</dt><dd>尚未生效</dd><dt>稳定语义身份</dt><dd class="mono">${esc(resource.id)}</dd><dt>适用场景</dt><dd>${esc(scenarioDisplayLabel(draft))}</dd><dt>责任人</dt><dd>${esc(draft.release.owner || "待确认")}</dd><dt>业务生效时间</dt><dd>${esc(humanDateTime(draft.release.effectiveFrom))}</dd><dt>业务失效时间</dt><dd>${esc(draftReleaseEffectiveToLabel(draft))}</dd><dt>变更原因</dt><dd>${esc(draft.release.changeReason || "待确认")}</dd><dt>替代关系</dt><dd>${esc(draft.release.replacementDeclaration || "待确认")}</dd><dt>受控证据定位</dt><dd>${esc(draft.release.evidenceState || "尚未形成")}</dd><dt>最近语义变更</dt><dd>${esc(resource.lastChangedAt || "待确认")}</dd><dt>草稿最近保存</dt><dd>${esc(draft.updatedAt || "待确认")}</dd><dt>来源版本</dt><dd>${draft.basedOn ? `基于 ${esc(draft.basedOn)} 创建` : "全新创建"}</dd></dl></section>`;
+    return `<div class="inspector-head"><span class="type-${resource.kind}">${resource.kind === "action" ? "A" : resource.kind[0].toUpperCase()}</span><div><b>${esc(resource.name)}</b><small>${esc(type)} · 草稿</small></div></div><div class="inspector-body">${lifecycle}${body}</div><div class="inspector-foot">${resource.kind === "object" ? btn("查看详情", `open-object:${resource.id}`) : btn("查看详情", `open-draft-resource:${resource.id}`)}${btn("配置术语", `open-terms:${resource.id}`)}${btn("编辑配置", `edit-resource:${resource.id}`, { primary: true })}</div>`;
   }
 
   function objectName(draft, id) { return draft.objects.find(o => o.id === id)?.name || id; }
@@ -2593,9 +2639,9 @@
       : draftResourceList(draft).map(resource => draftResourceLifecycleProjection(draft, resource));
     return `<div class="page-scroll">${pageHeader("统一校验", "检查当前 Draft 是否满足语义发布条件；不执行数据工程管道，也不判断业务 Rule 是否命中。", `${btn("返回工作台", "go-workbench")}${btn("配置发布信息", "open-release-settings")}${btn(draft.validation.status === "processing" ? "校验中" : draft.validation.status === "stale" ? "重新校验" : "运行校验", "run-validation", { primary: true, disabled: draft.validation.status === "processing" })}`, draft.name)}
       <section class="validation-context"><div><span>当前 Draft</span><b>${esc(draft.draftName || draft.id)}</b><small class="mono">${esc(draft.id)}</small></div><div><span>校验范围</span><b>${esc(scopeSummary)}</b><small>含发布时数据映射合同</small></div><div><span>业务有效期</span><b>${esc(humanDateTime(draft.release.effectiveFrom))}</b><small>${draft.release.confirmed ? (draft.release.effectiveTo ? `失效 ${esc(humanDateTime(draft.release.effectiveTo))}` : "未预设失效时间") : "失效时间待确认"}</small></div><div><span>最近校验</span><b>${esc(draft.validation.checkedAt || "尚未校验")}</b><small>${draft.validation.status === "stale" ? `建模内容已于 ${esc(draft.validation.invalidatedAt || draft.updatedAt)} 变化` : `最近保存 ${esc(draft.updatedAt)}`}</small></div></section>
-      <section class="lifecycle-review-strip"><div><span>当前发布状态</span><b>Draft</b><small>发布成功后才成为 Published</small></div><div><span>Owner</span><b>${esc(draft.release.owner || "待确认")}</b></div><div><span>变更原因</span><b>${esc(draft.release.changeReason || "待确认")}</b></div><div><span>替代关系</span><b>${esc(draft.release.replacementDeclaration || "待确认")}</b></div><div><span>受控证据定位</span><b>${esc(draft.release.evidenceState || "待确认")}</b></div></section>
-      ${draft.validation.status === "stale" ? `<div class="result-banner warning"><span>↺</span><div><b>上次校验结果已失效</b><p>建模内容已变化；上次结果和时间仅供参考，重新校验前不能发布。</p></div>${btn("重新校验", "run-validation", { primary: true })}</div>` : draft.validation.status === "success" ? `<div class="result-banner success"><span>✓</span><div><b>本次校验通过</b><p>校验结果只说明语义版本具备发布条件，不代表数据已正式投入消费。</p></div>${btn("发布语义版本", "open-publish", { primary: true })}</div>` : draft.validation.status === "failed" ? `<div class="result-banner error"><span>!</span><div><b>${issues.length} 项问题阻断发布</b><p>返回原位置修正后，可再次运行统一校验。</p></div>${btn("重新校验", "run-validation", { primary: true })}</div>` : `<div class="result-banner neutral"><span>◇</span><div><b>${draft.validation.status === "processing" ? "正在校验语义资源" : "尚未运行校验"}</b><p>${draft.validation.status === "processing" ? "正在检查稳定身份、关系端点、映射和业务逻辑合同。" : "校验成功后才能发布不可变语义版本。"}</p></div></div>`}
-      <div class="validation-layout"><section class="panel"><div class="panel-head"><div><h2>校验范围</h2><p>点击任一范围筛选对应问题；范围状态与问题定位使用同一校验结果。</p></div>${ui.validationGroup !== "all" ? btn("查看全部", "validation-group:all", { small: true }) : ""}</div><div class="check-list">${VALIDATION_GROUPS.map((group, index) => { const groupIssues = hasResult ? issues.filter(issue => group.kinds.includes(issue.kind)) : []; const stateMarkup = draft.validation.status === "processing" ? status("处理中", "blue") : draft.validation.status === "idle" ? status("未开始") : draft.validation.status === "stale" ? status("需重验", "amber") : status(groupIssues.length ? `${groupIssues.length} 项失败` : "通过", groupIssues.length ? "red" : "green"); return `<button class="validation-check ${ui.validationGroup === group.id ? "active" : ""}" data-action="validation-group:${group.id}"><span class="check-index">${index + 1}</span><div><b>${esc(group.name)}</b><p>${esc(group.summary)}</p><small>${group.count(draft)} 项资源或合同</small></div>${stateMarkup}</button>`; }).join("")}</div></section><section class="panel"><div class="panel-head"><div><h2>${selectedGroup ? `${esc(selectedGroup.name)} · 问题定位` : "问题定位"}</h2><p>失败项可直接返回具体对象、属性、关系或映射位置。</p></div><b>${hasResult ? visibleIssues.length : "—"}</b></div>${hasResult && visibleIssues.length ? `<div class="issue-list">${visibleIssues.map(issue => `<article><span>${esc(issue.kind)}</span><div><b>${esc(issue.name)}</b><p>${esc(issue.detail)}</p></div>${btn("返回修正", issue.action, { primary: true, small: true })}</article>`).join("")}</div>` : `<div class="empty compact"><span>${draft.validation.status === "success" ? "✓" : draft.validation.status === "processing" ? "…" : "◇"}</span><h3>${draft.validation.status === "success" ? selectedGroup ? "该范围没有阻断项" : "没有阻断项" : draft.validation.status === "processing" ? "正在检查" : draft.validation.status === "stale" ? "等待重新校验" : "等待校验结果"}</h3><p>${draft.validation.status === "success" ? "可以进入语义发布。" : draft.validation.status === "stale" ? "上次结果不再作为发布依据。" : "运行校验后在这里查看问题。"}</p></div>`}</section></div>
+      <section class="lifecycle-review-strip"><div><span>当前发布状态</span><b>草稿</b><small>发布成功后才成为已发布版本</small></div><div><span>责任人</span><b>${esc(draft.release.owner || "待确认")}</b></div><div><span>变更原因</span><b>${esc(draft.release.changeReason || "待确认")}</b></div><div><span>替代关系</span><b>${esc(draft.release.replacementDeclaration || "待确认")}</b></div><div><span>受控证据定位</span><b>${esc(draft.release.evidenceState || "待确认")}</b></div></section>
+      ${draft.validation.status === "stale" ? `<div class="result-banner warning"><span>↺</span><div><b>上次校验结果已失效</b><p>建模内容已变化；上次结果和时间仅供参考，重新校验前不能发布。</p></div>${btn("重新校验", "run-validation", { primary: true })}</div>` : draft.validation.status === "success" ? `<div class="result-banner success"><span>✓</span><div><b>本次校验通过</b><p>校验结果只说明语义版本具备发布条件，不代表数据已正式投入消费。</p></div>${btn("发布语义版本", "open-publish", { primary: true })}</div>` : draft.validation.status === "failed" ? `<div class="result-banner error"><span>!</span><div><b>${issues.length} 项问题阻断发布</b><p>返回原位置修正后，可再次运行统一校验。</p></div>${btn("重新校验", "run-validation", { primary: true })}</div>` : `<div class="result-banner neutral"><span>${networkIcon("module-network-icon")}</span><div><b>${draft.validation.status === "processing" ? "正在校验语义资源" : "尚未运行校验"}</b><p>${draft.validation.status === "processing" ? "正在检查稳定身份、关系端点、映射和业务逻辑合同。" : "校验成功后才能发布不可变语义版本。"}</p></div></div>`}
+      <div class="validation-layout"><section class="panel"><div class="panel-head"><div><h2>校验范围</h2><p>点击任一范围筛选对应问题；范围状态与问题定位使用同一校验结果。</p></div>${ui.validationGroup !== "all" ? btn("查看全部", "validation-group:all", { small: true }) : ""}</div><div class="check-list">${VALIDATION_GROUPS.map((group, index) => { const groupIssues = hasResult ? issues.filter(issue => group.kinds.includes(issue.kind)) : []; const stateMarkup = draft.validation.status === "processing" ? status("处理中", "blue") : draft.validation.status === "idle" ? status("未开始") : draft.validation.status === "stale" ? status("需重验", "amber") : status(groupIssues.length ? `${groupIssues.length} 项失败` : "通过", groupIssues.length ? "red" : "green"); return `<button class="validation-check ${ui.validationGroup === group.id ? "active" : ""}" data-action="validation-group:${group.id}"><span class="check-index">${index + 1}</span><div><b>${esc(group.name)}</b><p>${esc(group.summary)}</p><small>${group.count(draft)} 项资源或合同</small></div>${stateMarkup}</button>`; }).join("")}</div></section><section class="panel"><div class="panel-head"><div><h2>${selectedGroup ? `${esc(selectedGroup.name)} · 问题定位` : "问题定位"}</h2><p>失败项可直接返回具体对象、属性、关系或映射位置。</p></div><b>${hasResult ? visibleIssues.length : "—"}</b></div>${hasResult && visibleIssues.length ? `<div class="issue-list">${visibleIssues.map(issue => `<article><span>${esc(issue.kind)}</span><div><b>${esc(issue.name)}</b><p>${esc(issue.detail)}</p></div>${btn("返回修正", issue.action, { primary: true, small: true })}</article>`).join("")}</div>` : `<div class="empty compact"><span>${draft.validation.status === "success" ? "✓" : draft.validation.status === "processing" ? "…" : networkIcon("module-network-icon")}</span><h3>${draft.validation.status === "success" ? selectedGroup ? "该范围没有阻断项" : "没有阻断项" : draft.validation.status === "processing" ? "正在检查" : draft.validation.status === "stale" ? "等待重新校验" : "等待校验结果"}</h3><p>${draft.validation.status === "success" ? "可以进入语义发布。" : draft.validation.status === "stale" ? "上次结果不再作为发布依据。" : "运行校验后在这里查看问题。"}</p></div>`}</section></div>
       <section class="panel wide"><div class="panel-head"><div><h2>资源生命周期清单</h2><p>${hasResult ? "来自当前内容的有效校验快照。" : draft.validation.status === "stale" ? "当前内容已变化；以下为待重验的当前资源投影，不沿用旧校验结论。" : "发布前逐项核对稳定身份、有效期、责任位置和证据生成条件。"}</p></div><b>${lifecycleManifest.length}</b></div>${renderLifecycleManifestTable(lifecycleManifest)}</section>
     </div>`;
   }
@@ -2607,12 +2653,12 @@
       const current = items.find(version => isCurrentFormalVersion(version)) || null;
       return { ontologyStableId, items, current, latest: items[0] };
     });
-    return `<div class="page-scroll ontology-home">${pageHeader("本体管理", "创建和修订业务本体，并在发布后维护精确版本、正式数据与消费证据。", "", "语义资产")}
+    return `<div class="page-scroll ontology-home">${pageHeader("语义资产目录", "查看已发布本体的精确版本、正式数据与消费证据。", "", "语义资产")}
       ${renderLifecycleTabs("published")}
       <section class="workspace-intro"><div><h2>已发布本体</h2><p>目录按本体聚合；进入详情后再选择精确 Published 版本查看资源、映射、消费、更新、回退和证据。</p></div><span>${groups.length} 个本体</span></section>
       ${groups.length ? `<div class="published-ontology-grid">${groups.map(group => {
         const lead = group.latest; const formal = group.current ? formalUseStateOf(group.current) : formalUseStateOf(group.latest); const mapping = publishedMappingContractAssessment(group.latest);
-        return `<article class="published-ontology-card"><header><span class="ontology-mark">◇</span><div>${status("语义已发布", "green")}${status(formal.label, formal.tone)}</div></header><h2>${esc(lead.name)}</h2><p>${esc(lead.definition)}</p><small class="mono">${esc(group.ontologyStableId)}</small><dl><div><dt>最新发布版本</dt><dd>${esc(group.latest.semanticVersion)}</dd></div><div><dt>当前正式版本</dt><dd>${group.current ? esc(group.current.semanticVersion) : "尚未启用"}</dd></div><div><dt>发布时数据映射</dt><dd class="${mapping.complete ? "positive" : "negative"}">${mapping.complete ? "已冻结" : "不完整"}</dd></div><div><dt>可追溯版本</dt><dd>${group.items.length}</dd></div></dl><footer>${btn("查看详情", `open-ontology:${group.ontologyStableId}`, { primary: true })}</footer></article>`;
+        return `<article class="published-ontology-card"><header><span class="ontology-mark">${networkIcon("module-network-icon")}</span><div>${status("语义已发布", "green")}${status(formal.label, formal.tone)}</div></header><h2>${esc(lead.name)}</h2><p>${esc(lead.definition)}</p><small class="mono">${esc(group.ontologyStableId)}</small><dl><div><dt>最新发布版本</dt><dd>${esc(group.latest.semanticVersion)}</dd></div><div><dt>当前正式版本</dt><dd>${group.current ? esc(group.current.semanticVersion) : "尚未启用"}</dd></div><div><dt>发布时数据映射</dt><dd class="${mapping.complete ? "positive" : "negative"}">${mapping.complete ? "已冻结" : "不完整"}</dd></div><div><dt>可追溯版本</dt><dd>${group.items.length}</dd></div></dl><footer>${btn("查看详情", `open-ontology:${group.ontologyStableId}`, { primary: true })}</footer></article>`;
       }).join("")}</div>` : `<section class="panel"><div class="empty"><span>V</span><h3>尚无已发布本体</h3><p>Draft 资源不会出现在这里。完成统一校验并实际发布后，才形成不可变版本。</p>${btn("前往 Draft", "nav-modeling", { primary: true })}</div></section>`}
     </div>`;
   }
@@ -2643,16 +2689,17 @@
   function renderMissingPublishedResource(version) {
     const resourceId = routeParams().get("id");
     return `<div class="page-scroll">${pageHeader("未找到此语义资源", `${version.semanticVersion} 中不存在请求的语义资源。`, btn("返回资源与模型", `open-version-tab:${version.id}:resources`, { primary: true }), "Published 资源")}
-      <section class="panel"><div class="empty"><span>◇</span><h3>无法打开指定资源</h3><p>${resourceId ? `稳定语义身份 ${esc(resourceId)} 不属于该精确版本。` : "当前链接没有包含稳定语义身份。"} 系统不会按同名资源自动迁移。</p>${btn("返回资源目录", `open-version-tab:${version.id}:resources`, { primary: true })}</div></section>
+      <section class="panel"><div class="empty"><span>${networkIcon("module-network-icon")}</span><h3>无法打开指定资源</h3><p>${resourceId ? `稳定语义身份 ${esc(resourceId)} 不属于该精确版本。` : "当前链接没有包含稳定语义身份。"} 系统不会按同名资源自动迁移。</p>${btn("返回资源目录", `open-version-tab:${version.id}:resources`, { primary: true })}</div></section>
     </div>`;
   }
 
   function renderPublishedVersion() {
     const version = selectedVersion(); if (!version) return renderMissingPublishedVersion();
     const tab = routeParams().get("tab") || "overview";
-    const tabs = [["overview", "版本概览"], ["resources", "资源与模型"], ["data", "数据与消费"], ["updates", "更新与回退"], ["records", "记录与证据"]];
+    const tabs = [["overview", "版本概览"], ["resources", "资源与模型"], ["canvas", "在画布中查看"], ["data", "数据与消费"], ["updates", "更新与回退"], ["records", "记录与证据"]];
     const publication = publicationStateOf(version); const validity = businessValidityStateOf(version); const formal = formalUseStateOf(version); const mapping = publishedMappingContractAssessment(version);
-    return `<div class="page-scroll published-version">${pageHeader(version.name, `${version.semanticVersion} · 精确 Published 语义版本`, `${btn("返回本体详情", `open-ontology:${version.ontologyStableId}`)}${handoffContext() && safeReturnTarget(handoffContext().returnTo) ? btn("返回数据工程", "return-data-engineering") : ""}${btn("创建修订 Draft", `clone-version:${version.id}`)}`, "已发布本体")}
+    const headerActions = `${btn("返回本体详情", `open-ontology:${version.ontologyStableId}`)}${handoffContext() && safeReturnTarget(handoffContext().returnTo) ? btn("返回数据工程", "return-data-engineering") : ""}${tab === "canvas" ? "" : btn("创建修订 Draft", `clone-version:${version.id}`)}`;
+    return `<div class="page-scroll published-version">${pageHeader(version.name, `${version.semanticVersion} · 精确 Published 语义版本`, headerActions, "已发布本体")}
       <div class="version-context"><div><span>精确语义版本</span><b>${esc(version.semanticVersion)}</b></div><div><span>版本稳定标识</span><b class="mono">${esc(version.id)}</b></div><div><span>发布状态</span><b>${esc(publication)}</b></div><div><span>业务有效状态</span><b>${esc(validity)}</b></div><div><span>发布时数据映射</span>${status(mapping.label, mapping.tone)}</div><div><span>正式使用状态</span>${status(formal.label, formal.tone)}</div><div><span>业务生效</span><b>${esc(humanDateTime(version.effectiveFrom))}</b></div><div><span>发布时间</span><b>${esc(version.publishedAt)}</b></div><div><span>适用场景</span><b>${esc(scenarioDisplayLabel(version))}</b></div></div>
       <nav class="tabs">${tabs.map(([key, label]) => `<button class="${tab === key ? "active" : ""}" data-action="version-tab:${key}">${esc(label)}</button>`).join("")}</nav>
       ${renderVersionTab(version, tab)}
@@ -2664,9 +2711,14 @@
     if (tab === "overview") {
       const publication = publicationStateOf(version); const validity = businessValidityStateOf(version); const mapping = publishedMappingContractAssessment(version); const formal = formalUseStateOf(version); const snapshot = version.validationSnapshot || null;
       const snapshotReady = snapshot?.status === "passed"; const passedGroups = snapshot?.groups?.filter(group => group.status === "passed").length || 0; const snapshotResourceCount = snapshot?.resourceManifest?.length || 0;
-      return `<div class="version-overview"><section class="panel"><div class="panel-head"><div><h2>版本定义</h2><p>该快照内容不可变。</p></div>${status(publication, lifecycleTone(publication))}</div><div class="panel-body"><dl class="definition-grid"><dt>业务定义</dt><dd>${esc(version.definition)}</dd><dt>本体稳定身份</dt><dd class="mono">${esc(version.ontologyStableId)}</dd><dt>版本稳定标识</dt><dd class="mono">${esc(version.id)}</dd><dt>精确语义版本</dt><dd class="mono">${esc(version.semanticVersion)}</dd><dt>Owner</dt><dd>${esc(version.owner || "待确认")}</dd><dt>发布状态</dt><dd>${esc(publication)}</dd><dt>业务有效状态</dt><dd>${esc(validity)}</dd><dt>业务生效时间</dt><dd>${esc(humanDateTime(version.effectiveFrom))}</dd><dt>业务失效时间</dt><dd>${esc(version.effectiveTo ? humanDateTime(version.effectiveTo) : "未预设失效时间")}</dd><dt>发布时数据映射</dt><dd>${esc(mapping.label)} · ${esc(mapping.detail)}</dd><dt>正式使用状态</dt><dd>${esc(formal.label)} · ${esc(formal.detail)}</dd><dt>发布时间</dt><dd>${esc(version.publishedAt)}</dd><dt>基于 Draft</dt><dd>${esc(version.sourceDraftName)}</dd><dt>变更原因</dt><dd>${esc(version.changeSummary || "待确认")}</dd><dt>替代关系</dt><dd>${esc(version.replacementDeclaration || "待确认")}</dd><dt>最近变更时间</dt><dd>${esc(version.lastChangedAt || "待确认")}</dd><dt>受控证据定位</dt><dd><span class="mono">${esc(version.publishEvidenceRef || "待确认")}</span> ${version.publishEvidenceRef ? btn("查看证据", `open-evidence:publish:${version.id}`, { small: true }) : ""}</dd><dt>数据资产版本</dt><dd class="mono">${esc(contract?.assetVersion || "未冻结")}</dd><dt>数据截至</dt><dd>${esc(contract?.asOf || "未冻结")}</dd></dl></div></section><section class="panel"><div class="panel-head"><div><h2>资源构成</h2><p>所有资源均归属于本精确版本。</p></div></div><div class="resource-counts"><span><b>${version.objects.length}</b>Object</span><span><b>${version.properties.length}</b>Property</span><span><b>${version.links.length}</b>Link</span><span><b>${version.metrics.length}</b>Metric</span><span><b>${version.rules.length}</b>Rule</span><span><b>${version.actions.length}</b>Action Type</span></div></section><section class="panel wide"><div class="panel-head"><div><h2>发布校验证据</h2><p>显示发布时冻结的校验快照；不根据当前页面内容反推历史结果。</p></div>${btn("查看证据", `open-evidence:publish:${version.id}`)}</div><div class="evidence-summary"><div><b>校验范围</b><span>${snapshotReady ? `${esc(snapshot.scopeSummary)} · ${snapshotResourceCount} 项稳定资源身份` : "历史校验快照待确认"}</span></div><div><b>分组结果</b><span>${snapshotReady ? `${passedGroups}/${snapshot.groups.length} 个校验范围通过 · ${esc(snapshot.checkedAt)}` : "未冻结分组结果，不能据此宣称完整"}</span></div><div><b>关系与映射</b><span>${snapshotReady && snapshot.mapping?.complete ? esc(snapshot.mapping.detail) : snapshot?.mapping?.detail ? esc(snapshot.mapping.detail) : "映射校验证据待确认"}</span></div></div></section></div>`;
+      return `<div class="version-overview">
+        <section class="panel"><div class="panel-head"><div><h2>版本定义</h2><p>该快照内容不可变。</p></div>${status(publication, lifecycleTone(publication))}</div><div class="panel-body"><dl class="definition-grid"><dt>业务定义</dt><dd>${esc(version.definition)}</dd><dt>本体追溯标识</dt><dd class="mono">${esc(version.ontologyStableId)}</dd><dt>版本追溯标识</dt><dd class="mono">${esc(version.id)}</dd><dt>精确语义版本</dt><dd class="mono">${esc(version.semanticVersion)}</dd><dt>责任人</dt><dd>${esc(version.owner || "待确认")}</dd><dt>发布状态</dt><dd>${esc(localizeUiText(publication))}</dd><dt>业务有效状态</dt><dd>${esc(validity)}</dd><dt>业务生效时间</dt><dd>${esc(humanDateTime(version.effectiveFrom))}</dd><dt>业务失效时间</dt><dd>${esc(version.effectiveTo ? humanDateTime(version.effectiveTo) : "未预设失效时间")}</dd><dt>发布时数据映射</dt><dd>${esc(mapping.label)} · ${esc(mapping.detail)}</dd><dt>正式使用状态</dt><dd>${esc(formal.label)} · ${esc(formal.detail)}</dd><dt>发布时间</dt><dd>${esc(version.publishedAt)}</dd><dt>基于草稿</dt><dd>${esc(localizeUiText(version.sourceDraftName))}</dd><dt>变更原因</dt><dd>${esc(version.changeSummary || "待确认")}</dd><dt>替代关系</dt><dd>${esc(version.replacementDeclaration || "待确认")}</dd><dt>最近变更时间</dt><dd>${esc(version.lastChangedAt || "待确认")}</dd><dt>受控证据定位</dt><dd><span class="mono">${esc(version.publishEvidenceRef || "待确认")}</span> ${version.publishEvidenceRef ? btn("查看证据", `open-evidence:publish:${version.id}`, { small: true }) : ""}</dd><dt>数据资产版本</dt><dd class="mono">${esc(contract?.assetVersion || "未冻结")}</dd><dt>数据截至</dt><dd>${esc(contract?.asOf || "未冻结")}</dd></dl></div></section>
+        <section class="panel"><div class="panel-head"><div><h2>资源构成</h2><p>所有资源均归属于本精确版本。</p></div></div><div class="resource-counts"><span><b>${version.objects.length}</b>Object</span><span><b>${version.properties.length}</b>Property</span><span><b>${version.links.length}</b>Link</span><span><b>${version.metrics.length}</b>Metric</span><span><b>${version.rules.length}</b>Rule</span><span><b>${version.actions.length}</b>Action Type</span></div></section>
+        <section class="panel wide"><div class="panel-head"><div><h2>发布校验证据</h2><p>显示发布时冻结的校验快照；不根据当前页面内容反推历史结果。</p></div>${btn("查看证据", `open-evidence:publish:${version.id}`)}</div><div class="evidence-summary"><div><b>校验范围</b><span>${snapshotReady ? `${esc(snapshot.scopeSummary)} · ${snapshotResourceCount} 项稳定资源身份` : "历史校验快照待确认"}</span></div><div><b>分组结果</b><span>${snapshotReady ? `${passedGroups}/${snapshot.groups.length} 个校验范围通过 · ${esc(snapshot.checkedAt)}` : "未冻结分组结果，不能据此宣称完整"}</span></div><div><b>关系与映射</b><span>${snapshotReady && snapshot.mapping?.complete ? esc(snapshot.mapping.detail) : snapshot?.mapping?.detail ? esc(snapshot.mapping.detail) : "映射校验证据待确认"}</span></div></div></section>
+      </div>`;
     }
     if (tab === "resources") return renderVersionResources(version);
+    if (tab === "canvas") return renderPublishedCanvas(version);
     if (tab === "data") return renderVersionData(version);
     if (tab === "updates") return renderVersionUpdates(version);
     return renderVersionRecords(version);
@@ -2753,6 +2805,63 @@
     return `<button class="canvas-node semantic-node ${esc(node.kind)}" data-node="${esc(node.id)}" data-action="open-published-resource:${esc(versionId)}:${esc(node.id)}" style="left:${x}px;top:${y}px"><div class="semantic-band"></div><div class="node-head"><span>${node.kind === "object" ? "O" : node.kind === "link" ? "L" : node.kind === "metric" ? "M" : node.kind === "rule" ? "R" : "A"}</span><small>${esc(TYPE_LABEL[node.kind] || node.kind)}</small></div><b>${esc(node.name)}</b><p>${esc(node.subtitle || "")}</p></button>`;
   }
 
+  function publishedLineageScene(version) {
+    const contract = versionDataContract(version);
+    if (!contract?.members?.length) return {
+      nodes: [], edges: [],
+      empty: `<div class="published-canvas-empty"><span>D</span><h3>尚未取得发布时数据映射</h3><p>当前精确版本没有可定位的数据资产成员，不能据此绘制数据沿袭。</p></div>`
+    };
+    const sourceDataContract = {
+      ...clone(contract),
+      sourceChain: ["融资业务数据", "数据读取与登记", "标准化与质量处理"]
+    };
+    const scene = lineageScene({ ...version, sourceDataContract });
+    const nodeIds = new Set(scene.nodes.map(node => node.id));
+    const relationEdges = (contract.relations || []).filter(relation => nodeIds.has(relation.sourceMemberId) && nodeIds.has(relation.targetMemberId)).map((relation, index) => ({
+      id: `published-asset-relation-${relation.id || index}`,
+      from: relation.sourceMemberId,
+      to: relation.targetMemberId,
+      label: relation.name || "资产成员关系",
+      kind: "data",
+      labelT: .38 + (index % 3) * .1
+    }));
+    const semanticLinkEdges = (version.links || []).filter(link => nodeIds.has(`target.${link.source}`) && nodeIds.has(`target.${link.target}`)).map((link, index) => ({
+      id: `published-semantic-link-${link.id || index}`,
+      from: `target.${link.source}`,
+      to: `target.${link.target}`,
+      label: link.name || "本体关系",
+      kind: "mapping",
+      labelT: .42 + (index % 3) * .08
+    }));
+    return { ...scene, edges: [...scene.edges, ...relationEdges, ...semanticLinkEdges] };
+  }
+
+  function renderPublishedLineageNode(node, versionId) {
+    const [x, y] = node.pos;
+    const dataKind = ["asset", "data", "process", "source", "member", "field"].includes(node.kind);
+    const content = `${dataKind ? `<i class="data-port left"></i><i class="data-port right"></i><div class="data-topline"></div>` : `<div class="semantic-band"></div>`}<div class="node-head"><span>${node.kind === "object" ? "O" : node.kind === "process" ? "P" : node.kind === "field" ? "F" : "D"}</span><small>${esc(dataKind ? "数据沿袭" : TYPE_LABEL[node.kind] || node.kind)}</small></div><b>${esc(node.name)}</b><p>${esc(node.subtitle || "")}</p>${dataKind ? `<em>只读</em>` : ""}`;
+    if (node.resourceId) return `<button class="canvas-node semantic-node object published-lineage-target" data-node="${esc(node.id)}" data-action="open-published-resource:${esc(versionId)}:${esc(node.resourceId)}" style="left:${x}px;top:${y}px">${content}</button>`;
+    return `<article class="canvas-node data-node published-lineage-data" data-node="${esc(node.id)}" aria-label="${esc(`${node.name}，只读数据沿袭节点`)}" style="left:${x}px;top:${y}px">${content}</article>`;
+  }
+
+  function renderPublishedCanvas(version) {
+    const contract = versionDataContract(version);
+    const lineage = ui.publishedCanvasView === "lineage";
+    const scene = lineage ? publishedLineageScene(version) : publishedSemanticScene({ ...version, positions: version.positions || POSITION_PRESET });
+    const zoom = Math.max(.5, Math.min(1, Number(ui.publishedCanvasZoom || .72)));
+    const scaledWidth = Math.ceil(WORLD.width * zoom);
+    const scaledHeight = Math.ceil(WORLD.height * zoom);
+    const nodes = scene.nodes.map(node => lineage ? renderPublishedLineageNode(node, version.id) : renderReadonlyNode(node, version.id)).join("");
+    const markers = `<defs><marker id="arrow-semantic" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z"></path></marker><marker id="arrow-data" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z"></path></marker></defs>`;
+    const summary = lineage
+      ? `${contract?.members?.length || 0} 个数据资产成员 · ${contract?.relations?.length || 0} 条成员关系 · ${version.objects.length} 个本体对象`
+      : `${version.objects.length} 个对象 · ${version.links.length} 条关系 · ${version.metrics.length + version.rules.length + version.actions.length} 项业务逻辑`;
+    const canvasBody = scene.nodes.length
+      ? `<div class="published-canvas-space" style="width:${scaledWidth}px;height:${scaledHeight}px"><div class="readonly-world published-canvas-world" style="width:${WORLD.width}px;height:${WORLD.height}px;transform:scale(${zoom})"><svg class="edge-layer" width="${WORLD.width}" height="${WORLD.height}">${markers}${scene.edges.map(edge => renderEdge(edge)).join("")}</svg>${nodes}</div></div>`
+      : scene.empty;
+    return `<section class="panel published-canvas-panel"><div class="panel-head"><div><h2>已发布本体画布</h2><p>${esc(version.semanticVersion)} 的不可变快照；可查看语义结构或发布时数据沿袭。</p></div><div class="published-canvas-switch" role="group" aria-label="画布视图"><button class="${lineage ? "" : "active"}" data-action="published-canvas-view:semantic" aria-pressed="${lineage ? "false" : "true"}">语义结构</button><button class="${lineage ? "active" : ""}" data-action="published-canvas-view:lineage" aria-pressed="${lineage ? "true" : "false"}">数据沿袭视图</button></div></div><div class="published-canvas-viewport"><div class="published-canvas-toolbar"><div>${status("只读已发布快照", "green")}<span>${lineage ? "数据资产至本体" : "本体语义结构"}</span></div><div class="published-canvas-zoom"><button data-action="published-canvas-zoom:out" aria-label="缩小画布">−</button><b>${Math.round(zoom * 100)}%</b><button data-action="published-canvas-zoom:in" aria-label="放大画布">＋</button><button data-action="published-canvas-zoom:reset">恢复比例</button></div></div><div class="published-canvas-scroll">${canvasBody}</div><div class="readonly-note published-canvas-note"><span>${esc(summary)}</span><span>${lineage ? "数据侧节点只读；本体对象可进入已发布资源详情。" : "点击语义节点查看该精确版本下的资源详情。"}</span></div></div></section>`;
+  }
+
   function renderRefreshTargetSection(version) {
     const target = latestRefreshTarget(version); const contract = versionDataContract(version); const assessment = refreshTargetAssessment(version, target, contract?.assetId || null);
     const coverage = refreshTargetCoverage(version, target);
@@ -2762,7 +2871,7 @@
       : assessment.key === "disabled"
         ? btn("查看并重新启用", `open-refresh-target:${version.id}`, { primary: true })
         : btn("查看详情", `open-refresh-target:${version.id}`, { primary: true });
-    return `<section class="panel"><div class="panel-head"><div><h2>数据刷新目标</h2><p>说明数据工程可以把哪个稳定数据资产提交到当前精确 Published 版本；不代表数据已经更新或正式启用。</p></div>${status(assessment.label, assessment.tone)}${action}</div>${target ? `<div class="panel-body"><dl class="definition-grid compact"><dt>目标名称</dt><dd>${esc(target.name)}</dd><dt>稳定目标标识</dt><dd class="mono">${esc(target.stableId)} · 绑定版本 ${esc(target.bindingVersion)}</dd><dt>精确语义版本</dt><dd>${esc(target.semanticVersion)} · <span class="mono">${esc(target.semanticVersionId)}</span></dd><dt>稳定数据资产</dt><dd class="mono">${esc(target.dataAssetId)}</dd><dt>来源映射版本</dt><dd class="mono">${esc(target.sourceMappingVersionId || "不可定位")}</dd><dt>成员覆盖</dt><dd>${coverage.actualMemberIds.length}/${coverage.expectedMemberIds.length} · <span class="mono">${esc(coverage.actualMemberIds.join("、") || "未覆盖")}</span></dd><dt>关系覆盖</dt><dd>${coverage.actualRelationIds.length}/${coverage.expectedRelationIds.length} · <span class="mono">${esc(coverage.actualRelationIds.join("、") || "未覆盖")}</span></dd><dt>是否允许提交刷新</dt><dd>${assessment.allowSubmit ? "允许；提交前必须重新读取" : `不允许；${esc(assessment.reason || "状态不可确认")}`}</dd><dt>Owner</dt><dd>${esc(target.owner || "待确认")}</dd><dt>最近核验</dt><dd>${esc(target.lastCheckedAt || "待确认")}</dd><dt>受控证据</dt><dd><span class="mono">${esc(target.evidenceLocator || "待确认")}</span>${evidenceRecord ? btn("查看证据", `open-record:${version.id}:${evidenceRecord.id}`, { small: true }) : ""}</dd></dl>${assessment.allowSubmit ? `<div class="boundary-note"><b>可供数据工程发现</b><p>数据工程提交更新前仍须重新读取当前状态，并固定本次发现响应、目标绑定版本和来源映射版本。</p></div>` : `<div class="result-banner error compact"><span>!</span><div><b>${esc(assessment.label)}</b><p>${esc(assessment.reason)} ${esc(assessment.recovery)}</p></div></div>`}</div>` : `<div class="empty compact"><span>↻</span><h3>尚未建立数据刷新目标</h3><p>发布时数据映射已经冻结，但数据工程还不能据此提交更新。建立后仍需由数据工程在提交前重新读取。</p></div>`}</section>`;
+    return `<section class="panel"><div class="panel-head"><div><h2>数据刷新目标</h2><p>说明数据工程可以把哪个稳定数据资产提交到当前精确已发布版本；不代表数据已经更新或正式启用。</p></div>${status(assessment.label, assessment.tone)}${action}</div>${target ? `<div class="panel-body"><dl class="definition-grid compact"><dt>目标名称</dt><dd>${esc(target.name)}</dd><dt>目标追溯标识</dt><dd class="mono">${esc(target.stableId)} · 绑定版本 ${esc(target.bindingVersion)}</dd><dt>精确语义版本</dt><dd>${esc(target.semanticVersion)} · <span class="mono">${esc(target.semanticVersionId)}</span></dd><dt>稳定数据资产</dt><dd class="mono">${esc(target.dataAssetId)}</dd><dt>来源映射版本</dt><dd class="mono">${esc(target.sourceMappingVersionId || "不可定位")}</dd><dt>成员覆盖</dt><dd>${coverage.actualMemberIds.length}/${coverage.expectedMemberIds.length} · <span class="mono">${esc(coverage.actualMemberIds.join("、") || "未覆盖")}</span></dd><dt>关系覆盖</dt><dd>${coverage.actualRelationIds.length}/${coverage.expectedRelationIds.length} · <span class="mono">${esc(coverage.actualRelationIds.join("、") || "未覆盖")}</span></dd><dt>是否允许提交刷新</dt><dd>${assessment.allowSubmit ? "允许；提交前必须重新读取" : `不允许；${esc(assessment.reason || "状态不可确认")}`}</dd><dt>责任人</dt><dd>${esc(target.owner || "待确认")}</dd><dt>最近核验</dt><dd>${esc(target.lastCheckedAt || "待确认")}</dd><dt>受控证据</dt><dd><span class="mono">${esc(target.evidenceLocator || "待确认")}</span>${evidenceRecord ? btn("查看证据", `open-record:${version.id}:${evidenceRecord.id}`, { small: true }) : ""}</dd></dl>${assessment.allowSubmit ? `<div class="boundary-note"><b>可供数据工程发现</b><p>数据工程提交更新前仍须重新读取当前状态，并固定本次发现响应、目标绑定版本和来源映射版本。</p></div>` : `<div class="result-banner error compact"><span>!</span><div><b>${esc(assessment.label)}</b><p>${esc(assessment.reason)} ${esc(assessment.recovery)}</p></div></div>`}</div>` : `<div class="empty compact"><span>↻</span><h3>尚未建立数据刷新目标</h3><p>发布时数据映射已经冻结，但数据工程还不能据此提交更新。建立后仍需由数据工程在提交前重新读取。</p></div>`}</section>`;
   }
 
   function renderVersionData(version) {
@@ -2773,16 +2882,26 @@
     const blocked = qualityBlocked || lifecycleBlocked;
     const contract = versionDataContract(version);
     const consumers = [
-      ["智能问数", "Object、Property、Link、Metric、Rule、Action Type", "智能问数"], ["决策中心", "Rule 结果、Action Type 与证据", "决策中心"], ["Agent 应用", "获准 Published 语义资源", "Agent 应用"], ["报告中心", "语义证据与原版本引用", "报告中心"]
+      ["智能问数", "对象、属性、关系、指标、规则与行动类型"], ["决策中心", "规则结果、行动类型与证据"], ["Agent 应用", "获准使用的已发布语义资源"], ["报告中心", "语义证据与原版本引用"]
     ];
     const assessment = versionContextAssessment(version);
     const mapping = publishedMappingContractAssessment(version);
     const formal = formalUseStateOf(version);
+    const consumption = publishedConsumptionState(version);
+    const compatibility = consumerValidationFor(version, "智能问数");
+    const compatibilityState = compatibility ? consumerStatusFor(version, "智能问数") : { label: "未归档", tone: "amber", detail: "当前运行尚未取得智能问数兼容证据归档" };
     const bindingLabel = current ? "当前正式使用版本" : binding ? "历史正式记录" : "正式数据启用状态";
     const bindingStatus = status(formal.label, formal.tone);
     const blockedReason = qualityBlocked ? qualityIncidentFor(version)?.reason || "数据质量状态发生变化" : `语义版本业务有效状态为${businessValidityStateOf(version)}`;
     const blockedAction = qualityBlocked ? btn("处理失败恢复", "version-tab:updates", { primary: true }) : btn("创建修订 Draft", `clone-version:${version.id}`, { primary: true });
-    return `<div class="data-consumption">${blocked ? `<div class="result-banner error"><span>!</span><div><b>当前正式版本已停止新的正式输出</b><p>${esc(blockedReason)}。历史证据保持可读，当前组合不得继续新绑定或产生新的正式消费结果。</p></div>${blockedAction}</div>` : ""}<section class="panel"><div class="panel-head"><div><h2>${bindingLabel}</h2><p>${current && !blocked ? "语义版本与数据版本作为一个整体对下游提供服务。" : binding ? "该组合已停止当前服务，旧报告与历史证据仍可回到这里。" : "发布时数据映射已经冻结；待更新数据需通过匹配与业务消费验证后，再由用户确认启用。"}</p></div>${bindingStatus}</div>${binding ? `<div class="binding-hero"><div><span>语义版本</span><b>${esc(binding.semanticVersion)}</b></div><i>＋</i><div><span>数据版本</span><b>${esc(binding.dataVersion)}</b></div><dl><dt>数据截至</dt><dd>${esc(binding.asOf)}</dd><dt>切换时间</dt><dd>${esc(binding.switchedAt)}</dd></dl></div>` : `<div class="empty compact"><span>D</span><h3>发布时映射已冻结，尚未启用正式数据</h3><p>${esc(mapping.detail)}。前往“更新与回退”完成待更新数据检查、业务消费验证和人工确认。</p>${btn("处理数据更新", `version-tab:updates`, { primary: true })}</div>`}</section><section class="panel"><div class="panel-head"><div><h2>获准消费范围</h2><p>正式数据状态与各消费方验证状态分别记录。</p></div></div><div class="consumer-list">${consumers.map(([name, range, key]) => { const state = consumerStatusFor(version, key); return `<article><span>${esc(name[0])}</span><div><b>${esc(name)}</b><p>${esc(range)}</p></div>${status(state.label, state.tone)}</article>`; }).join("")}</div></section><section class="panel"><div class="panel-head"><div><h2>消费上下文完整性</h2><p>稳定身份、精确版本、Published Link 和证据定位共同决定。</p></div>${status(assessment.label, assessment.tone)}</div><div class="panel-body"><dl class="definition-grid compact"><dt>资源身份</dt><dd>${version.objects.length + version.properties.length + version.links.length + version.metrics.length + version.rules.length + version.actions.length} 项稳定资源身份</dd><dt>Published Link</dt><dd>${version.links.length} 条已发布关系可导航</dd><dt>发布时数据映射</dt><dd>${esc(mapping.label)}</dd><dt>正式数据版本</dt><dd>${binding ? esc(binding.dataVersion) : "尚未启用"}</dd><dt>证据定位</dt><dd>${assessment.complete ? "精确版本证据可定位" : "尚未形成完整定位"}</dd><dt>结论说明</dt><dd>${esc(assessment.detail)}</dd></dl></div></section><section class="panel"><div class="panel-head"><div><h2>数据映射合同</h2><p>${esc(contract?.assetVersion || "未冻结")} · 截至 ${esc(contract?.asOf || "未冻结")} · 发布时冻结</p></div>${status(mapping.label, mapping.tone)}${btn("查看沿袭", `open-evidence:lineage:${version.id}`)}</div><div class="mapping-contracts">${version.objects.map(o => `<article><b>${esc(o.name)}</b><span>${esc(memberName(o.memberId, contract))}</span><small>${o.properties.length} Property · 身份 ${esc(propertyName(o, o.identity))}</small></article>`).join("")}</div><div class="mapping-contracts">${(contract?.relations || []).map(relation => `<article><b>${esc(relation.name)}</b><span>${esc(memberName(relation.sourceMemberId, contract))} → ${esc(memberName(relation.targetMemberId, contract))}</span><small class="mono">${esc(relation.id)} · ${esc(relation.cardinality)}</small></article>`).join("")}</div></section></div>`;
+    return `<div class="data-consumption">
+      ${blocked ? `<div class="result-banner error"><span>!</span><div><b>当前正式版本已停止新的正式输出</b><p>${esc(blockedReason)}。历史证据保持可读，当前组合不得继续新绑定或产生新的正式消费结果。</p></div>${blockedAction}</div>` : ""}
+      <section class="panel"><div class="panel-head"><div><h2>${bindingLabel}</h2><p>${current && !blocked ? "语义版本与数据版本作为一个整体对下游提供服务。" : binding ? "该组合已停止当前服务，旧报告与历史证据仍可回到这里。" : "发布时数据映射已经冻结；待更新数据需通过匹配与业务消费验证后，再由用户确认启用。"}</p></div>${bindingStatus}</div>${binding ? `<div class="binding-hero"><div><span>语义版本</span><b>${esc(binding.semanticVersion)}</b></div><i>＋</i><div><span>数据版本</span><b>${esc(binding.dataVersion)}</b></div><dl><dt>数据截至</dt><dd>${esc(binding.asOf)}</dd><dt>切换时间</dt><dd>${esc(binding.switchedAt)}</dd></dl></div>` : `<div class="empty compact"><span>D</span><h3>发布时映射已冻结，尚未启用正式数据</h3><p>${esc(mapping.detail)}。前往“更新与回退”完成待更新数据检查、业务消费验证和人工确认。</p>${btn("处理数据更新", `version-tab:updates`, { primary: true })}</div>`}</section>
+      <section class="panel"><div class="panel-head"><div><h2>已发布消费范围</h2><p>说明当前精确版本向各下游开放的业务范围；不代替消费方自己的兼容核验。</p></div>${status(consumption.label, consumption.tone)}</div><div class="consumer-list published-consumption-list">${consumers.map(([name, range]) => `<article><span>${esc(name[0])}</span><div><b>${esc(name)}</b><p>${esc(range)}</p></div>${status(consumption.label, consumption.tone)}</article>`).join("")}</div></section>
+      <section class="panel compatibility-evidence"><div class="panel-head"><div><h2>智能问数兼容证据</h2><p>由智能问数核对当前精确语义与数据版本后返回；本体管理仅保存只读结果。</p></div>${status(compatibilityState.label, compatibilityState.tone)}</div><div class="panel-body"><dl class="definition-grid compact"><dt>消费方</dt><dd>智能问数</dd><dt>精确使用组合</dt><dd>${binding ? `${esc(binding.semanticVersion)} ＋ ${esc(binding.dataVersion)}` : "尚未形成"}</dd><dt>兼容状态</dt><dd>${esc(compatibilityState.label)} · ${esc(compatibilityState.detail)}</dd><dt>配置版本</dt><dd>${esc(compatibility?.configVersion || "未归档")}</dd><dt>核验时间</dt><dd>${esc(compatibility?.checkedAt || "未归档")}</dd><dt>来源记录</dt><dd class="mono">${esc(compatibility?.evidenceLocator || "未归档")}</dd></dl>${compatibility ? "" : `<div class="boundary-note warning"><b>兼容证据尚未归档</b><p>当前页面不会根据链路完成数量自动补写兼容结论；取得智能问数返回的精确版本证据后，此处才会更新。</p></div>`}</div></section>
+      <section class="panel"><div class="panel-head"><div><h2>消费上下文完整性</h2><p>稳定身份、精确版本、已发布关系和证据定位共同决定。</p></div>${status(assessment.label, assessment.tone)}</div><div class="panel-body"><dl class="definition-grid compact"><dt>资源身份</dt><dd>${version.objects.length + version.properties.length + version.links.length + version.metrics.length + version.rules.length + version.actions.length} 项稳定资源身份</dd><dt>已发布关系</dt><dd>${version.links.length} 条关系可导航</dd><dt>发布时数据映射</dt><dd>${esc(mapping.label)}</dd><dt>正式数据版本</dt><dd>${binding ? esc(binding.dataVersion) : "尚未启用"}</dd><dt>证据定位</dt><dd>${assessment.complete ? "精确版本证据可定位" : "尚未形成完整定位"}</dd><dt>结论说明</dt><dd>${esc(assessment.detail)}</dd></dl></div></section>
+      <section class="panel"><div class="panel-head"><div><h2>数据映射合同</h2><p>${esc(contract?.assetVersion || "未冻结")} · 截至 ${esc(contract?.asOf || "未冻结")} · 发布时冻结</p></div>${status(mapping.label, mapping.tone)}${btn("查看沿袭", `open-evidence:lineage:${version.id}`)}</div><div class="mapping-contracts">${version.objects.map(o => `<article><b>${esc(o.name)}</b><span>${esc(memberName(o.memberId, contract))}</span><small>${o.properties.length} 个属性 · 身份 ${esc(propertyName(o, o.identity))}</small></article>`).join("")}</div><div class="mapping-contracts">${(contract?.relations || []).map(relation => `<article><b>${esc(relation.name)}</b><span>${esc(memberName(relation.sourceMemberId, contract))} → ${esc(memberName(relation.targetMemberId, contract))}</span><small class="mono">${esc(relation.id)} · ${esc(relation.cardinality)}</small></article>`).join("")}</div></section>
+    </div>`;
   }
 
   function updateFor(version) { return state.updatesByVersion[version.id] || null; }
@@ -3907,7 +4026,11 @@
       const key = `${item.configId}|${item.configVersion}|${item.semanticVersionId}|${item.dataVersion}`;
       const existing = state.externalConsumerCompatibility?.[key];
       if (existing && snapshotFingerprint(existing) !== snapshotFingerprint(item)) { rememberExternalDeliveryIssue("C009", item, "同一配置与精确双版本的兼容状态不可被原地改写；请形成新的配置版本或检查记录"); return false; }
-      state.externalConsumerCompatibility[key] = clone(item); persist(); render(); return true;
+      state.externalConsumerCompatibility[key] = clone(item);
+      // C009 is a consumer-owned compatibility record. Archiving it must not
+      // create a new revision of the C008 authority binding when that binding
+      // itself has not changed.
+      persist({ refreshProjection: false }); render(); return true;
     },
     publishedContext(versionId) {
       const version = state.publishedVersions.find(item => item.id === versionId) || null;
@@ -4224,7 +4347,7 @@
     const tab = routeParams().get("tab") || "overview";
     const tabs = [["overview", "概览"], ["structure", "定义与结构"], ["mapping", "映射与依赖"], ["lineage", "沿袭与消费"], ["history", "版本记录"]];
     return `<div class="page-scroll resource-detail">${pageHeader(resource.name, `${resource.type} · ${esc(version.semanticVersion)}`, btn("返回资源与模型", `open-version-tab:${version.id}:resources`), "Published 资源")}
-      <div class="resource-identity published"><div><span>业务名称</span><b>${esc(resource.name)}</b></div><div><span>资源类型</span><b>${esc(resource.type)}</b></div><div><span>稳定语义身份</span><b class="mono">${esc(resource.id)}</b></div><div><span>精确 Published 版本</span><b>${esc(version.semanticVersion)}</b></div><div><span>适用场景</span><b>${esc(resolvedExternalValue(resource.applicableScenario) ? resource.applicableScenario : scenarioDisplayLabel(version))}</b></div><div><span>发布状态</span><b>${esc(publicationStateOf(resource))}</b></div><div><span>业务有效状态</span><b>${esc(businessValidityStateOf(resource))}</b></div><div><span>可供新消费配置</span><b>${esc(newBindingStateOf(resource, version))}</b></div><div><span>Owner</span><b>${esc(resource.owner || "待确认")}</b></div></div>
+      <div class="resource-identity published"><div><span>业务名称</span><b>${esc(resource.name)}</b></div><div><span>资源类型</span><b>${esc(resource.type)}</b></div><div><span>追溯标识</span><b class="mono">${esc(resource.id)}</b></div><div><span>精确已发布版本</span><b>${esc(version.semanticVersion)}</b></div><div><span>适用场景</span><b>${esc(resolvedExternalValue(resource.applicableScenario) ? resource.applicableScenario : scenarioDisplayLabel(version))}</b></div><div><span>发布状态</span><b>${esc(localizeUiText(publicationStateOf(resource)))}</b></div><div><span>业务有效状态</span><b>${esc(businessValidityStateOf(resource))}</b></div><div><span>可供新消费配置</span><b>${esc(newBindingStateOf(resource, version))}</b></div><div><span>责任人</span><b>${esc(resource.owner || "待确认")}</b></div></div>
       <nav class="tabs">${tabs.map(([key, label]) => `<button class="${tab === key ? "active" : ""}" data-action="published-resource-tab:${key}">${esc(label)}</button>`).join("")}</nav>
       ${renderPublishedResourceTab(version, resource, tab)}
     </div>`;
@@ -4267,7 +4390,7 @@
     if (resource.kind === "link") facts = `<dt>正向业务名称</dt><dd>${esc(resource.name)}</dd><dt>反向业务名称</dt><dd>${esc(resource.reverseName || "未配置")}</dd><dt>关系方向</dt><dd>${esc(resource.sourceName)} → ${esc(resource.targetName)}</dd><dt>允许导航方向</dt><dd>${esc(resource.allowedDirection || "未配置")}</dd><dt>可发现范围</dt><dd>${esc(resource.discoveryScope || "待确认")}</dd><dt>适用场景</dt><dd>${esc(resource.applicableScenario || "待确认")}</dd><dt>发现状态</dt><dd>${esc(resource.discoverability || "待确认")}</dd><dt>基数</dt><dd>${esc(resource.cardinality)}</dd><dt>关系覆盖</dt><dd>${esc(resource.coverage || "等待覆盖摘要")}</dd><dt>起点引用</dt><dd class="mono">${resource.sourceEndpoint?.kind === "property" ? "Property" : "资产字段"} · ${esc(resource.sourceEndpoint?.id)}</dd><dt>起点字段</dt><dd>${esc(resource.sourceEndpointLabel || "")} · ${esc(resource.sourceEndpointType || "")}</dd><dt>终点引用</dt><dd class="mono">${resource.targetEndpoint?.kind === "property" ? "Property" : "资产字段"} · ${esc(resource.targetEndpoint?.id)}</dd><dt>终点字段</dt><dd>${esc(resource.targetEndpointLabel || "")} · ${esc(resource.targetEndpointType || "")}</dd><dt>兼容状态</dt><dd>${resource.endpointCompatible === false ? "端点不兼容" : "两端兼容"}</dd>`;
     if (resource.kind === "metric") facts = `<dt>适用 Object</dt><dd class="mono">${esc(resource.subjectObjectId || resource.sourceObjectId || "未配置")}</dd><dt>计算口径</dt><dd>${esc(resource.calculation || "按已配置依赖计算")}</dd><dt>单位</dt><dd>${esc(resource.unit)}</dd><dt>时间语义</dt><dd>${esc(resource.time)}</dd><dt>适用范围</dt><dd>${esc(resource.scope)}</dd><dt>结果状态</dt><dd>可计算、无数据、零分母、无法判断</dd><dt>零分母或无数据</dt><dd>${esc(resource.zeroHandling)}</dd><dt>精确依赖</dt><dd class="mono">${esc((resource.dependencyIds || []).join("、"))}</dd><dt>定义</dt><dd>${esc(resource.definition)}</dd>`;
     if (resource.kind === "rule") facts = `<dt>适用对象</dt><dd>${esc(resource.appliesTo)}</dd><dt>判断条件</dt><dd>${esc(resource.condition)}</dd><dt>有效期</dt><dd>${esc(resource.validity || "未配置")}</dd><dt>结果状态</dt><dd>命中、未命中、无法判断</dd><dt>命中解释</dt><dd>返回触发条件、指标值、阈值和精确证据范围</dd><dt>测试样例</dt><dd>${esc(resource.testSample || "未配置")}</dd><dt>机构排序</dt><dd>${esc(resource.bankRanking || "未配置")}</dd><dt>依赖 Metric</dt><dd>${esc(resource.dependency)}</dd><dt>证据要求</dt><dd>${esc(resource.evidence)}</dd>`;
-    if (resource.kind === "action") facts = `<dt>目标对象</dt><dd>${esc(resource.target)}</dd><dt>允许请求入口</dt><dd>获准消费者引用本精确版本 Action Type 发起标准行动请求</dd><dt>必要参数</dt><dd>${esc(resource.parameters || resource.inputs)}</dd><dt>前置证据</dt><dd>${esc(resource.prerequisite)}</dd><dt>预期结果</dt><dd>${esc(resource.result)}</dd><dt>失败表现</dt><dd>${esc(resource.failure || "未配置")}</dd><dt>默认办理期限</dt><dd>${esc(resource.defaultDue || "未配置")}</dd><dt>有效期</dt><dd>随本 Published 语义版本有效</dd><dt>确认要求</dt><dd>${esc(resource.confirmation || resource.requirement)}</dd>`;
+    if (resource.kind === "action") facts = `<dt>目标对象</dt><dd>${esc(resource.target)}</dd><dt>允许请求入口</dt><dd>获准消费者引用本精确版本 Action Type 发起标准行动申请</dd><dt>必要参数</dt><dd>${esc(resource.parameters || resource.inputs)}</dd><dt>前置证据</dt><dd>${esc(resource.prerequisite)}</dd><dt>预期结果</dt><dd>${esc(resource.result)}</dd><dt>失败表现</dt><dd>${esc(resource.failure || "未配置")}</dd><dt>默认办理期限</dt><dd>${esc(resource.defaultDue || "未配置")}</dd><dt>有效期</dt><dd>随本 Published 语义版本有效</dd><dt>确认要求</dt><dd>${esc(resource.confirmation || resource.requirement)}</dd>`;
     if (resource.businessBasis === "recommended") facts += `<dt>业务口径状态</dt><dd>推荐基线 · 等待业务确认（${esc((resource.decisionRefs || []).join("、"))}）</dd>`;
     if (resource.businessBasis === "unknown") facts += `<dt>业务口径状态</dt><dd>待确认 · 不可新绑定</dd>`;
     const terms = { ...defaultTerms(resource), ...(resource.terms || {}) };
@@ -4296,7 +4419,7 @@
         : binding
           ? `<div class="big-status waiting"><span>↺</span><b>历史正式记录</b><p>不再承接当前消费；旧报告与历史证据仍可按本版本追溯。</p></div>`
           : `<div class="big-status waiting"><span>…</span><b>待正式数据启用</b><p>发布时映射合同已经冻结，尚未完成待更新数据检查、业务消费验证和人工切换。</p></div>`;
-      return `<div class="two-col"><section class="panel"><div class="panel-head"><div><h2>业务摘要</h2><p>面向消费方的只读定义。</p></div></div><div class="panel-body"><p class="lead">${esc(resource.definition || resource.requirement || resource.evidence || "已发布语义资源。")}</p><dl class="definition-grid"><dt>业务名称</dt><dd>${esc(resource.name)}</dd><dt>稳定语义身份</dt><dd class="mono">${esc(resource.id)}</dd><dt>资源类型</dt><dd>${esc(resource.type || TYPE_LABEL[resource.kind] || "待确认")}</dd><dt>适用场景</dt><dd>${esc(resolvedExternalValue(resource.applicableScenario) ? resource.applicableScenario : scenarioDisplayLabel(version))}</dd><dt>所属 Published 版本</dt><dd>${esc(version.semanticVersion)} · <span class="mono">${esc(version.id)}</span></dd><dt>发布状态</dt><dd>${esc(publicationStateOf(resource))}</dd><dt>业务有效状态</dt><dd>${esc(businessValidityStateOf(resource))}</dd><dt>业务生效时间</dt><dd>${esc(humanDateTime(resource.effectiveFrom))}</dd><dt>业务失效时间</dt><dd>${esc(resource.effectiveTo ? humanDateTime(resource.effectiveTo) : "未预设失效时间")}</dd><dt>可供新消费配置</dt><dd>${esc(newBindingStateOf(resource, version))}</dd><dt>Owner</dt><dd>${esc(resource.owner || "待确认")}</dd><dt>本版本变更</dt><dd>${esc(resource.changeType || "待确认")} · ${esc(resource.changeReason || "待确认")}</dd><dt>替代资源</dt><dd class="mono">${esc(replacesLabel)}</dd><dt>被替代为</dt><dd class="mono">${esc(replacedByLabel)}</dd><dt>最近变更时间</dt><dd>${esc(resource.lastChangedAt || "待确认")}</dd><dt>受控证据定位</dt><dd><span class="mono">${esc(resource.controlledEvidenceLocator || "待确认")}</span> ${resource.controlledEvidenceLocator && resource.controlledEvidenceLocator !== "待确认" ? btn("查看证据", `open-evidence:resource:${version.id}:${resource.id}`, { small: true }) : ""}</dd></dl></div></section><section class="panel"><div class="panel-head"><div><h2>消费状态</h2><p>发布状态、业务有效状态、正式数据启用与消费方兼容状态分别记录。</p></div></div><div class="panel-body">${consumption}</div></section></div>`;
+      return `<div class="two-col"><section class="panel"><div class="panel-head"><div><h2>业务摘要</h2><p>面向消费方的只读定义。</p></div></div><div class="panel-body"><p class="lead">${esc(resource.definition || resource.requirement || resource.evidence || "已发布语义资源。")}</p><dl class="definition-grid"><dt>业务名称</dt><dd>${esc(resource.name)}</dd><dt>追溯标识</dt><dd class="mono">${esc(resource.id)}</dd><dt>资源类型</dt><dd>${esc(resource.type || TYPE_LABEL[resource.kind] || "待确认")}</dd><dt>适用场景</dt><dd>${esc(resolvedExternalValue(resource.applicableScenario) ? resource.applicableScenario : scenarioDisplayLabel(version))}</dd><dt>所属已发布版本</dt><dd>${esc(version.semanticVersion)} · <span class="mono">${esc(version.id)}</span></dd><dt>发布状态</dt><dd>${esc(localizeUiText(publicationStateOf(resource)))}</dd><dt>业务有效状态</dt><dd>${esc(businessValidityStateOf(resource))}</dd><dt>业务生效时间</dt><dd>${esc(humanDateTime(resource.effectiveFrom))}</dd><dt>业务失效时间</dt><dd>${esc(resource.effectiveTo ? humanDateTime(resource.effectiveTo) : "未预设失效时间")}</dd><dt>可供新消费配置</dt><dd>${esc(newBindingStateOf(resource, version))}</dd><dt>责任人</dt><dd>${esc(resource.owner || "待确认")}</dd><dt>本版本变更</dt><dd>${esc(resource.changeType || "待确认")} · ${esc(resource.changeReason || "待确认")}</dd><dt>替代资源</dt><dd class="mono">${esc(replacesLabel)}</dd><dt>被替代为</dt><dd class="mono">${esc(replacedByLabel)}</dd><dt>最近变更时间</dt><dd>${esc(resource.lastChangedAt || "待确认")}</dd><dt>受控证据定位</dt><dd><span class="mono">${esc(resource.controlledEvidenceLocator || "待确认")}</span> ${resource.controlledEvidenceLocator && resource.controlledEvidenceLocator !== "待确认" ? btn("查看证据", `open-evidence:resource:${version.id}:${resource.id}`, { small: true }) : ""}</dd></dl></div></section><section class="panel"><div class="panel-head"><div><h2>消费状态</h2><p>发布状态、业务有效状态、正式数据启用与消费方兼容状态分别记录。</p></div></div><div class="panel-body">${consumption}</div></section></div>`;
     }
     if (tab === "structure") return `<section class="panel"><div class="panel-head"><div><h2>${esc(resource.type)} 定义与结构</h2><p>显示名称不作为绑定身份；术语随本精确版本冻结。</p></div></div><div class="panel-body"><dl class="definition-grid">${publishedStructureFacts(resource, frozenMember)}</dl></div></section>`;
     if (tab === "mapping") return `<section class="panel"><div class="panel-head"><div><h2>映射与依赖</h2><p>发布时冻结的语义合同。</p></div>${status("不可变", "green")}</div><div class="dependency-map"><div><span>数据资产</span><b>${esc(contract?.assetName || "未冻结")}</b><small>${esc(contract?.assetVersion || "未冻结")} · 截至 ${esc(contract?.asOf || "未冻结")}</small></div><i>→</i><div><span>${frozenMember ? "数据资产成员" : "稳定语义依赖"}</span><b>${esc(frozenMember?.name || dependencyIds.join("、") || resource.sourceField || "无直接依赖")}</b><small>${esc(resource.id)}</small></div><i>→</i><div><span>当前资源</span><b>${esc(resource.name)}</b><small>${esc(version.semanticVersion)}</small></div></div><div class="reference-list">${references.length ? references.map(item => `<article><span class="type-${esc(item.kind)}">${item.kind === "action" ? "A" : item.kind[0].toUpperCase()}</span><div><b>${esc(item.name)}</b><small class="mono">${esc(item.id)}</small></div>${btn("查看详情", `open-published-resource:${version.id}:${item.id}`, { small: true })}</article>`).join("") : `<div class="dependency-empty">没有其他直接语义依赖</div>`}</div></section>`;
@@ -4385,7 +4508,7 @@
     if (ui.modal?.type === "revisionChoice") {
       const version = state.publishedVersions.find(item => item.id === ui.modal.versionId);
       const drafts = state.drafts.filter(draft => !draft.publishedVersionId && draft.basedOnVersionId === version?.id && sameScenarioEnvelope(draft, currentScenarioContext()));
-      return modal("已有未发布的修订 Draft", `${version?.name || "所选本体"} · ${version?.semanticVersion || ""}`, `<div class="boundary-note warning"><b>原 Published 版本不会被改写</b><p>可以继续现有修订，也可以另建一个相互独立的修订 Draft。</p></div><div class="choice-list revision-choices">${drafts.map(draft => { const primary = draftPrimaryStatusMeta(draft); return `<button data-action="continue-revision:${draft.id}"><span>◇</span><div><b>${esc(draft.draftName)}</b><p>基于 ${esc(draft.basedOn)} · 保存于 ${esc(draft.updatedAt)}</p></div>${status(primary.label, primary.tone)}</button>`; }).join("")}</div>`, `${btn("取消", "close-overlay")}${btn("另建修订 Draft", `create-revision:${version?.id}`, { primary: true })}`, true);
+      return modal("已有未发布的修订 Draft", `${version?.name || "所选本体"} · ${version?.semanticVersion || ""}`, `<div class="boundary-note warning"><b>原 Published 版本不会被改写</b><p>可以继续现有修订，也可以另建一个相互独立的修订 Draft。</p></div><div class="choice-list revision-choices">${drafts.map(draft => { const primary = draftPrimaryStatusMeta(draft); return `<button data-action="continue-revision:${draft.id}"><span>${networkIcon("module-network-icon")}</span><div><b>${esc(draft.draftName)}</b><p>基于 ${esc(draft.basedOn)} · 保存于 ${esc(draft.updatedAt)}</p></div>${status(primary.label, primary.tone)}</button>`; }).join("")}</div>`, `${btn("取消", "close-overlay")}${btn("另建修订 Draft", `create-revision:${version?.id}`, { primary: true })}`, true);
     }
     if (ui.modal?.type === "terms") {
       const ref = mutableDraftResource(activeDraft(), ui.modal.resourceId); const resource = ref?.resource; const terms = { ...defaultTerms(resource), ...(resource?.terms || {}) };
@@ -4453,7 +4576,7 @@
     }
     if (ui.modal === "addAction") {
       const draft = activeDraft(); const editing = editResource("action"); const selectedObjectId = editing?.targetObjectId || ui.resourceObjectId || draft?.objects[0]?.id || "";
-      return modal(editing ? "编辑 Action Type" : "创建 Action Type", "定义允许请求的行动；提醒、确认和待办运行记录不在此处维护。", `<div class="form-grid"><label class="form-field"><span>行动名称</span><input id="action-name" value="${esc(editing?.name || "")}" placeholder="例如：发起融资优化建议" autocomplete="off" /></label><label class="form-field"><span>目标 Object</span><select id="action-object">${objectOptions(draft, selectedObjectId)}</select></label><label class="form-field full"><span>英文业务编码</span><div class="prefixed-input"><b>ACTION-</b><input id="action-code" value="${esc(codePart(editing?.id, "ACTION"))}" placeholder="FINANCING-OPTIMIZATION" autocomplete="off" ${editing ? "readonly" : ""} /></div></label><label class="form-field full"><span>必要参数</span><textarea id="action-parameters" placeholder="例如：融资主体、规则命中、指标证据、优先协商机构">${esc(editing?.parameters || editing?.inputs || "")}</textarea></label><label class="form-field full"><span>前置证据</span><input id="action-prerequisite" value="${esc(editing?.prerequisite || "")}" placeholder="说明请求行动前必须具备的对象、规则和证据" /></label><label class="form-field full"><span>预期结果</span><input id="action-result" value="${esc(editing?.result || "")}" placeholder="例如：形成行动请求，人工确认后形成负责人待办" /></label><label class="form-field full"><span>失败表现</span><input id="action-failure" value="${esc(editing?.failure || "")}" placeholder="说明缺少参数或证据时如何失败并恢复" /></label><label class="form-field"><span>默认办理期限</span><input id="action-default-due" value="${esc(editing?.defaultDue || "人工确认后 5 个工作日内完成")}" /></label><label class="form-field"><span>确认要求</span><select id="action-confirmation"><option selected>必须人工确认</option></select></label><label class="form-field full"><span>业务定义</span><textarea id="action-definition" placeholder="说明该行动允许业务用户请求什么">${esc(editing?.definition || "")}</textarea></label><fieldset class="form-field full"><legend>依赖 Rule</legend>${dependencyChoices((draft?.rules || []).map(item => ({ ...item, kind: "rule" })), "action-rule", editing?.ruleIds || [])}</fieldset><fieldset class="form-field full"><legend>证据导航 Link（可选）</legend>${dependencyChoices((draft?.links || []).map(item => ({ ...item, kind: "link" })), "action-link", editing?.linkIds || [])}</fieldset></div>`, `${btn("取消", "close-overlay")}${btn(editing ? "保存修改" : "创建 Action Type", "confirm-add-action", { primary: true })}`, true);
+      return modal(editing ? "编辑 Action Type" : "创建 Action Type", "定义允许请求的行动；提醒、确认和待办运行记录不在此处维护。", `<div class="form-grid"><label class="form-field"><span>行动名称</span><input id="action-name" value="${esc(editing?.name || "")}" placeholder="例如：发起融资优化建议" autocomplete="off" /></label><label class="form-field"><span>目标 Object</span><select id="action-object">${objectOptions(draft, selectedObjectId)}</select></label><label class="form-field full"><span>英文业务编码</span><div class="prefixed-input"><b>ACTION-</b><input id="action-code" value="${esc(codePart(editing?.id, "ACTION"))}" placeholder="FINANCING-OPTIMIZATION" autocomplete="off" ${editing ? "readonly" : ""} /></div></label><label class="form-field full"><span>必要参数</span><textarea id="action-parameters" placeholder="例如：融资主体、规则命中、指标证据、优先协商机构">${esc(editing?.parameters || editing?.inputs || "")}</textarea></label><label class="form-field full"><span>前置证据</span><input id="action-prerequisite" value="${esc(editing?.prerequisite || "")}" placeholder="说明请求行动前必须具备的对象、规则和证据" /></label><label class="form-field full"><span>预期结果</span><input id="action-result" value="${esc(editing?.result || "")}" placeholder="例如：形成行动申请，人工确认后形成负责人待办" /></label><label class="form-field full"><span>失败表现</span><input id="action-failure" value="${esc(editing?.failure || "")}" placeholder="说明缺少参数或证据时如何失败并恢复" /></label><label class="form-field"><span>默认办理期限</span><input id="action-default-due" value="${esc(editing?.defaultDue || "人工确认后 5 个工作日内完成")}" /></label><label class="form-field"><span>确认要求</span><select id="action-confirmation"><option selected>必须人工确认</option></select></label><label class="form-field full"><span>业务定义</span><textarea id="action-definition" placeholder="说明该行动允许业务用户请求什么">${esc(editing?.definition || "")}</textarea></label><fieldset class="form-field full"><legend>依赖 Rule</legend>${dependencyChoices((draft?.rules || []).map(item => ({ ...item, kind: "rule" })), "action-rule", editing?.ruleIds || [])}</fieldset><fieldset class="form-field full"><legend>证据导航 Link（可选）</legend>${dependencyChoices((draft?.links || []).map(item => ({ ...item, kind: "link" })), "action-link", editing?.linkIds || [])}</fieldset></div>`, `${btn("取消", "close-overlay")}${btn(editing ? "保存修改" : "创建 Action Type", "confirm-add-action", { primary: true })}`, true);
     }
     if (ui.modal === "releaseSettings") {
       const draft = activeDraft(); ensureDraftReleaseContract(draft);
@@ -4549,7 +4672,7 @@
   }
 
   function draftContextChoice(draft, current) {
-    return `<button class="${current ? "current" : ""}" data-action="${current ? "close-overlay" : `switch-draft:${draft.id}`}"><span class="context-symbol">◇</span><div><b>${esc(draft.draftName || draft.name)}</b><small>${esc(draft.name)}${draft.basedOn ? ` · 基于 ${esc(draft.basedOn)}` : " · 全新创建"}</small></div><em>${current ? "正在编辑" : "切换"}</em></button>`;
+    return `<button class="${current ? "current" : ""}" data-action="${current ? "close-overlay" : `switch-draft:${draft.id}`}"><span class="context-symbol">${networkIcon("module-network-icon")}</span><div><b>${esc(draft.draftName || draft.name)}</b><small>${esc(draft.name)}${draft.basedOn ? ` · 基于 ${esc(draft.basedOn)}` : " · 全新创建"}</small></div><em>${current ? "正在编辑" : "切换"}</em></button>`;
   }
 
   function modal(title, subtitle, body, footer, wide = false) {
@@ -5230,9 +5353,19 @@
     }
     if (action.startsWith("open-version:")) { const id = action.split(":")[1]; state.selectedVersionId = id; persist(); return go(`published/version?id=${id}&tab=overview`); }
     if (action.startsWith("open-ontology:")) return go(`published/ontology?id=${encodeURIComponent(action.slice("open-ontology:".length))}`);
-    if (action.startsWith("version-tab:")) { const version = selectedVersion(); return go(`published/version?id=${version.id}&tab=${action.split(":")[1]}`); }
+    if (action.startsWith("version-tab:")) {
+      const version = selectedVersion(); const tab = action.split(":")[1];
+      if (tab === "canvas" && routeParams().get("tab") !== "canvas") { ui.publishedCanvasView = "semantic"; ui.publishedCanvasZoom = .72; }
+      return go(`published/version?id=${version.id}&tab=${tab}`);
+    }
     if (action.startsWith("open-version-tab:")) { const [, versionId, tab] = action.split(":"); return go(`published/version?id=${versionId}&tab=${tab}`); }
     if (action.startsWith("resource-view:")) { ui.versionResourceView = action.split(":")[1]; return render(); }
+    if (action.startsWith("published-canvas-view:")) { ui.publishedCanvasView = action.split(":")[1] === "lineage" ? "lineage" : "semantic"; ui.selectedNode = null; return render(); }
+    if (action.startsWith("published-canvas-zoom:")) {
+      const direction = action.split(":")[1];
+      ui.publishedCanvasZoom = direction === "in" ? Math.min(1, ui.publishedCanvasZoom + .1) : direction === "out" ? Math.max(.5, ui.publishedCanvasZoom - .1) : .72;
+      return render();
+    }
     if (action === "clear-resource-filter") { ui.versionResourceQuery = ""; ui.versionResourceType = "全部"; return render(); }
     if (action.startsWith("open-published-resource:")) { const [, versionId, ...idParts] = action.split(":"); const id = idParts.join(":"); return go(`published/resource?version=${versionId}&id=${encodeURIComponent(id)}&tab=overview`); }
     if (action.startsWith("published-resource-tab:")) { const version = selectedVersion(); const id = routeParams().get("id"); return go(`published/resource?version=${version.id}&id=${encodeURIComponent(id)}&tab=${action.split(":")[1]}`); }

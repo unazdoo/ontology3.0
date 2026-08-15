@@ -293,6 +293,7 @@
       ui: {
         modal: null,
         drawer: null,
+        readerMoreOpen: false,
         actionUnit: "单位553",
         actionSubmissionId: null,
         pendingActionRef: null,
@@ -691,7 +692,7 @@
         .filter(Boolean)
         .map((raw) => JSON.parse(raw));
       if (!candidates.length) return newState();
-      const parsed = candidates.sort((left, right) => Number(right.savedAtMs || 0) - Number(left.savedAtMs || 0))[0];
+      const parsed = normalizeStoredPlaceholders(candidates.sort((left, right) => Number(right.savedAtMs || 0) - Number(left.savedAtMs || 0))[0]);
       if (![1, 2, 3, 4].includes(parsed.stateVersion)) return newState();
       const defaults = newState();
       parsed.stateVersion = 4;
@@ -723,6 +724,7 @@
       parsed.publishAttempt = 0;
       parsed.regenerationRequest = parsed.regenerationRequest || null;
       parsed.ui = { ...defaults.ui, ...(parsed.ui || {}) };
+      parsed.ui.readerMoreOpen = false;
       if (parsed.ui.pendingActionRef?.status === "提交中") {
         parsed.ui.pendingActionRef.status = "结果未知";
         parsed.ui.pendingActionRef.interruptionReason = "页面恢复时未取得明确接收结果；必须先按原提交标识核对。";
@@ -1085,7 +1087,7 @@
       return { allowed: false, reason: trust.recoveryAdvice || "当前权威组合尚不可消费。", factPackage };
     }
     if (binding.compatibility !== "兼容") {
-      return { allowed: false, reason: "当前 Published 语义与数据版本不兼容。", factPackage };
+      return { allowed: false, reason: "当前已发布语义与数据版本不兼容。", factPackage };
     }
     if (!factPackageIsAvailable(factPackage)) {
       return { allowed: false, reason: "当前精确权威组合的结构化事实包不可定位；不会改用其他版本事实。", factPackage };
@@ -1387,7 +1389,7 @@
       : trust.hardQualityFailure
       ? trust.recoveryAdvice || "当前权威组合存在硬质量失败。"
       : binding.compatibility !== "兼容"
-        ? "当前 Published 语义与数据版本不兼容。"
+        ? "当前已发布语义与数据版本不兼容。"
         : trust.readiness !== "可消费" || binding.readiness !== "可消费"
           ? trust.recoveryAdvice || "当前权威组合尚不可消费。"
           : "当前权威组合的精确业务事实包不可定位。";
@@ -1776,12 +1778,87 @@
   }
 
   function esc(value) {
-    return String(value ?? "")
+    return normalizeDisplayText(value)
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
+  }
+
+  function normalizeCorruptedText(value) {
+    let text = String(value ?? "").replace(/未\uFFFD+得/g, "未取得");
+    if (text.includes("\uFFFD")) text = "未取得";
+    return text;
+  }
+
+  function normalizeStoredPlaceholders(value) {
+    if (typeof value === "string") return normalizeCorruptedText(value);
+    if (Array.isArray(value)) return value.map(normalizeStoredPlaceholders);
+    if (value && typeof value === "object") {
+      return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, normalizeStoredPlaceholders(item)]));
+    }
+    return value;
+  }
+
+  function normalizeDisplayText(value) {
+    const text = normalizeCorruptedText(value);
+    const publishedOntologyMeta = text.match(/^Published\s*本体[：:]\s*(.+)$/);
+    if (publishedOntologyMeta) return `本体版本：${publishedOntologyMeta[1]}（已发布）`;
+    const dataAsOfMeta = text.match(/^T008[：:]\s*(.+)$/);
+    if (dataAsOfMeta) return `数据截至：${dataAsOfMeta[1]}`;
+    const bindingSummaryMeta = text.match(/^C017\s*版本绑定摘要[：:]\s*(.+)$/);
+    if (bindingSummaryMeta) return `版本绑定摘要：${bindingSummaryMeta[1]}`;
+    return text
+      .replace(/^报告标识[：:]/, "报告编号：")
+      .replace(/行动请求/g, "行动申请")
+      .replace(/([\u3400-\u9fff])\s+Published\b/g, "$1已发布")
+      .replace(/\bPublished\s+([\u3400-\u9fff])/g, "已发布$1")
+      .replace(/\bPublished\b/g, "已发布")
+      .replace(/([\u3400-\u9fff])\s+Draft\b/g, "$1草稿")
+      .replace(/\bDraft\s+([\u3400-\u9fff])/g, "草稿$1")
+      .replace(/\bDraft\b/g, "草稿")
+      .replace(/([\u3400-\u9fff])\s+Owner\b/g, "$1责任人")
+      .replace(/\bOwner\s+([\u3400-\u9fff])/g, "责任人$1")
+      .replace(/\bOwner\b/g, "责任人")
+      .replace(/([\u3400-\u9fff])\s+Action Request\b/g, "$1行动申请")
+      .replace(/\bAction Request\s+([\u3400-\u9fff])/g, "行动申请$1")
+      .replace(/\bAction Request\b/g, "行动申请");
+  }
+
+  function localizeVisibleText(root) {
+    if (!root) return;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
+    textNodes.forEach((node) => {
+      const normalized = normalizeDisplayText(node.nodeValue);
+      if (normalized !== node.nodeValue) node.nodeValue = normalized;
+    });
+    root.querySelectorAll?.("[title], [aria-label], [placeholder]").forEach((element) => {
+      ["title", "aria-label", "placeholder"].forEach((attribute) => {
+        if (!element.hasAttribute(attribute)) return;
+        element.setAttribute(attribute, normalizeDisplayText(element.getAttribute(attribute)));
+      });
+    });
+    root.querySelectorAll?.("input[readonly], textarea[readonly]").forEach((element) => {
+      element.value = normalizeDisplayText(element.value);
+    });
+  }
+
+  function normalizeFrozenReportHtml(html) {
+    if (!html) return html;
+    const template = document.createElement("template");
+    template.innerHTML = String(html);
+    const narrative = template.content.querySelector("#narrative-suggestion");
+    const suggestionBasis = template.content.querySelector("#suggestion-basis");
+    if (narrative && suggestionBasis) {
+      const duplicateParagraph = suggestionBasis.closest("p");
+      narrative.replaceChildren(suggestionBasis);
+      if (duplicateParagraph && duplicateParagraph !== narrative) duplicateParagraph.remove();
+    }
+    localizeVisibleText(template.content);
+    return template.innerHTML;
   }
 
   function icon(name, className = "") {
@@ -1841,10 +1918,10 @@
   }
 
   function routeInfo() {
-    const hash = window.location.hash || "#/dashboard/s001";
+    const hash = window.location.hash || "#/lifecycle";
     const raw = hash.startsWith("#") ? hash.slice(1) : hash;
     const [path, queryString = ""] = raw.split("?");
-    return { path: path || "/dashboard/s001", query: new URLSearchParams(queryString) };
+    return { path: path || "/lifecycle", query: new URLSearchParams(queryString) };
   }
 
   function navigate(path) {
@@ -1863,7 +1940,7 @@
     return `
       <div class="app-shell ${state.navOpen ? "nav-open" : ""}">
         <aside class="platform-rail" aria-label="平台模块">
-          <a class="platform-logo" href="../../ontology3-homepage-review/index.html" title="ontology3.0 平台首页">O3</a>
+          <a class="platform-logo" href="../../ontology3-homepage-review/index.html" aria-label="智财问策平台首页" title="智财问策平台首页">${icon("network")}</a>
           <a class="platform-button" href="../../ontology3-homepage-review/index.html" aria-label="平台首页" title="平台首页">${icon("house")}</a>
           <a class="platform-button" href="../../data-engineering-prototype-review/review-v3/%E6%96%B9%E6%A1%88B2.html" aria-label="数据工程" title="数据工程">${icon("database")}</a>
           <a class="platform-button" href="../../ontology-management-prototype/index.html" aria-label="本体管理" title="本体管理">${icon("network")}</a>
@@ -1887,7 +1964,6 @@
             <a class="product-nav-item ${active("/reports/view") || active("/reports/pdf") || currentPath === "/reports" && routeInfo().query.get("tab") === "products" ? "active" : ""}" href="#/reports?tab=products">${icon("library", "sm")}<span>正式报告</span><em>${currentPublishedReports().filter((item) => item.stage === "published").length}</em></a>
             <div class="product-nav-label">资源与分析</div>
             <a class="product-nav-item ${currentPath === "/reports" && routeInfo().query.get("tab") !== "products" ? "active" : ""}" href="#/reports?tab=definitions">${icon("file-cog", "sm")}<span>报告定义</span></a>
-            <a class="product-nav-item ${active("/scenes") || active("/dashboard")}" href="#/scenes">${icon("layout-dashboard", "sm")}<span>仪表盘目录</span><em>4</em></a>
           </div>
           <div class="product-nav-foot">
             <strong>当前工作区</strong>
@@ -1904,7 +1980,6 @@
             <div class="topbar-actions">
               <span class="badge plain trust-top-badge">数据截至 ${esc(shellAuthority.asOf || "未取得")}</span>
               <button class="btn ghost" type="button" data-action="open-reset" title="清除本次操作产生的内容">${icon("rotate-ccw", "sm")}重置状态</button>
-              <div class="account"><span class="account-avatar">财</span><div><strong>财务分析员</strong><small>集团财务管理</small></div></div>
             </div>
             ${runtimePersistenceError ? `<div class="persistence-banner">${icon("hard-drive", "sm")}<span>${esc(runtimePersistenceError)}</span><button class="btn" type="button" data-action="retry-persistence">重试保存</button></div>` : ""}
           </header>
@@ -1983,7 +2058,7 @@
       ["highCost", "高成本融资余额占比", formatNumber(m.highCost, 2), "%"],
       ["credit", "信用融资余额占比", formatNumber(m.credit, 2), "%"],
     ];
-    return `<div class="metric-grid">${items.map(([key, label, value, unit]) => `
+    return `<div class="metric-grid dashboard-metric-grid">${items.map(([key, label, value, unit]) => `
       <button class="metric-card" type="button" data-action="open-metric" data-metric="${key}">
         <span>${label}</span>
         <strong class="metric-value">${value}<small>${unit}</small></strong>
@@ -1994,7 +2069,7 @@
 
   function trendPanel() {
     const trend = currentFactPackage()?.trend || [];
-    if (!trend.length) return `<section class="panel"><div class="panel-body"><div class="empty-state"><div><div class="empty-icon">${icon("chart-no-axes-column-increasing")}</div><h2>趋势事实不可定位</h2><p>等待当前精确版本的 Published 业务事实可读后再展示。</p></div></div></div></section>`;
+    if (!trend.length) return `<section class="panel"><div class="panel-body"><div class="empty-state"><div><div class="empty-icon">${icon("chart-no-axes-column-increasing")}</div><h2>趋势事实不可定位</h2><p>等待当前精确版本的已发布业务事实可读后再展示。</p></div></div></div></section>`;
     const costs = trend.map((item) => item.cost);
     const min = Math.min(...costs) - 0.02;
     const max = Math.max(...costs) + 0.02;
@@ -2073,7 +2148,7 @@
     if (!factPackageIsAvailable(factPackage)) return `<section class="panel"><div class="panel-body"><div class="notice danger">${icon("file-question")}<div><strong>Rule 运行事实不可定位</strong><span>当前精确版本缺少 Rule 结果事实；不能发起基于其他版本证据的行动请求。</span></div></div></div></section>`;
     const pendingAction = state.ui.pendingActionRef;
     const pendingActionBlock = pendingAction && ["提交中", "结果未知", "未形成"].includes(pendingAction.status)
-      ? `<div class="notice warning" style="margin-bottom:10px">${icon("circle-help")}<div><strong>${pendingAction.status === "未形成" ? "原提交已确认未形成" : "Action Request 提交结果待核对"}</strong><span>${esc(pendingAction.unit)} · ${esc(pendingAction.clientSubmissionId)}。当前未记为成功，也没有在报告中心形成提醒或待办。</span></div><button class="text-link" type="button" data-action="resume-action-result">继续核对</button></div>`
+      ? `<div class="notice warning" style="margin-bottom:10px">${icon("circle-help")}<div><strong>${pendingAction.status === "未形成" ? "原提交已确认未形成" : "行动申请提交结果待核对"}</strong><span>${esc(pendingAction.unit)} · ${esc(pendingAction.clientSubmissionId)}。当前未记为成功，也没有在报告中心形成提醒或待办。</span></div><button class="text-link" type="button" data-action="resume-action-result">继续核对</button></div>`
       : "";
     const unitNames = state.dashboard.scopeType === "unit" ? [state.dashboard.scopeId] : Object.keys(factPackage.units);
     const cards = unitNames.map((unitName) => {
@@ -2081,10 +2156,10 @@
       return `<div class="rule-card"><div><div class="status-inline">${badge(item.rule.status, "warning")}<span class="scene-code">${item.rule.code}</span></div><h3>${unitName} · ${item.rule.name}</h3><p>${item.rule.branch}</p><div class="rule-evidence"><div class="fact"><span>指标快照</span><strong>${item.rule.metricValue}</strong></div><div class="fact"><span>阈值</span><strong>${item.rule.threshold}</strong></div><div class="fact"><span>评估时间</span><strong>${item.rule.evaluatedAt}</strong></div><div class="fact"><span>优先机构</span><strong>${item.institutions[0].name}</strong></div></div></div><button class="btn" type="button" data-action="open-rule" data-unit="${unitName}">${icon("search", "sm")}查看证据</button></div>`;
     }).join("");
     return `
-      <div class="two-col">
+      <div class="two-col dashboard-action-grid">
         <section class="panel"><div class="panel-head"><div><div class="panel-title">Rule 命中摘要</div><p>结论、阈值、分支和机构归因均来自已发布语义结果。</p></div></div><div class="panel-body section-stack">${cards}</div></section>
         <section class="panel" id="action-collaboration">
-          <div class="panel-head"><div><div class="panel-title">行动协同</div><p>只提交标准 Action Request；后续状态从决策中心读取。</p></div><button class="btn primary" type="button" data-action="open-action">${icon("send", "sm")}发起行动</button></div>
+          <div class="panel-head"><div><div class="panel-title">行动协同</div><p>只提交标准行动申请；后续状态从决策中心读取。</p></div><button class="btn primary" type="button" data-action="open-action">${icon("send", "sm")}发起行动</button></div>
           <div class="panel-body">
             ${pendingActionBlock}
             ${currentActionRequests().length === 0 ? `<div class="empty-state" style="min-height:180px;padding:20px"><div><div class="empty-icon">${icon("inbox")}</div><h2>暂无关联请求</h2><p>从单一单位的 Rule 证据发起行动后，请求标识会显示在这里。</p><button class="btn" type="button" data-action="reread-decision">${icon("refresh-cw", "sm")}重新读取</button></div></div>` : `
@@ -2122,11 +2197,11 @@
     return `
       <div class="section-stack">
         <section class="panel"><div class="panel-head"><div><div class="panel-title">核心指标</div><p>${state.dashboard.scopeId} · 数据截至 ${esc(current.asOf)}</p></div></div><div class="panel-body">${metricCards()}</div></section>
-        <div class="two-col">${trendPanel()}<section class="panel overview-structure-panel"><div class="panel-head"><div><div class="panel-title">债务结构</div><p>未知分类保持单列。</p></div><button class="text-link" type="button" data-action="set-dashboard-tab" data-tab="structure">查看详情 ${icon("chevron-right", "sm")}</button></div><div class="panel-body">${structureGrid()}</div></section></div>
+        <div class="two-col dashboard-analysis-grid">${trendPanel()}<section class="panel overview-structure-panel"><div class="panel-head"><div><div class="panel-title">债务结构</div><p>未知分类保持单列。</p></div><button class="text-link" type="button" data-action="set-dashboard-tab" data-tab="structure">查看详情 ${icon("chevron-right", "sm")}</button></div><div class="panel-body">${structureGrid()}</div></section></div>
         <section class="panel"><div class="panel-head"><div><div class="panel-title">金融机构分布</div><p>总体余额分布，不等同于 Rule 优先协商机构。</p></div></div><div class="panel-body flush">${institutionTable()}</div></section>
         ${comparisonSection()}
         ${ruleAndActionSection()}
-        <div class="equal-col">${insightSection()}<section class="panel"><div class="panel-head"><div><div class="panel-title">智能问数</div><p>带入当前场景、范围、单位与指标上下文。</p></div></div><div class="panel-body section-stack"><button class="btn full" type="button" data-action="open-ask" data-context="集团融资成本与结构">${icon("message-square-text", "sm")}集团融资成本与结构</button><button class="btn full" type="button" data-action="open-ask" data-context="单位风险原因">${icon("message-square-text", "sm")}单位风险原因</button><button class="btn full" type="button" data-action="open-ask" data-context="优先协商机构">${icon("message-square-text", "sm")}优先协商机构</button><div class="notice">${icon("info")}<div><strong>当前上下文</strong><span>${state.dashboard.scopeId} · ${state.dashboard.compareUnits.join("、")} · 语义 ${esc(current.semanticVersion)}</span></div></div></div></section></div>
+        <div class="equal-col dashboard-assist-grid">${insightSection()}<section class="panel"><div class="panel-head"><div><div class="panel-title">智能问数</div><p>带入当前场景、范围、单位与指标上下文。</p></div></div><div class="panel-body section-stack"><button class="btn full" type="button" data-action="open-ask" data-context="集团融资成本与结构">${icon("message-square-text", "sm")}集团融资成本与结构</button><button class="btn full" type="button" data-action="open-ask" data-context="单位风险原因">${icon("message-square-text", "sm")}单位风险原因</button><button class="btn full" type="button" data-action="open-ask" data-context="优先协商机构">${icon("message-square-text", "sm")}优先协商机构</button><div class="notice">${icon("info")}<div><strong>当前上下文</strong><span>${state.dashboard.scopeId} · ${state.dashboard.compareUnits.join("、")} · 语义 ${esc(current.semanticVersion)}</span></div></div></div></section></div>
       </div>
     `;
   }
@@ -2217,7 +2292,7 @@
     });
     const activeIndex = reportWorkflowIndex();
     const lifecycle = [
-      ["创建", "选择类型与定义", "file-plus-2"], ["固定证据", "锁定 Published 语义和数据上下文", "package-check"],
+      ["创建", "选择类型与定义", "file-plus-2"], ["固定证据", "锁定已发布语义和数据上下文", "package-check"],
       ["内容生成", "Agent 返回结构化内容项", "sparkles"], ["核验复核", "确定性核验与人工确认", "shield-check"],
       ["形成产物", "同源生成 HTML 与 PDF", "files"], ["发布历史", "冻结、追溯、撤回或替代", "history"],
     ];
@@ -2258,7 +2333,7 @@
     } else if (tab === "templates") {
       content = `<div class="resource-list">${DATA.templates.map((item) => `<div class="resource-row"><div><strong>${item.name}</strong><small>${item.id} · ${item.chapters.length} 个章节 · ${item.formats.join(" / ")}</small></div><div class="resource-meta"><span>版本</span><strong>${item.version}</strong></div><div>${badge(item.status)}</div><button class="btn" type="button" data-action="open-template" data-id="${item.id}">查看详情</button></div>`).join("")}</div>`;
     } else {
-      content = currentPublishedReports().length ? `<div class="resource-list">${currentPublishedReports().map((report) => `<div class="resource-row"><div><strong>集团融资经营分析报告</strong><small>${esc(report.reportNo)} · 内容版本 ${esc(report.contentVersion)}${report.replacedReportNo ? ` · 替代 ${esc(report.replacedReportNo)}` : ""}</small></div><div class="resource-meta"><span>发布时间</span><strong>${esc(report.publishedAt)}</strong></div><div>${badge(report.stage === "withdrawn" ? "已撤回" : "已发布", report.stage === "withdrawn" ? "warning" : "success")}</div><button class="btn ${report.stage === "published" ? "primary" : ""}" type="button" data-action="open-published-report" data-report="${esc(report.reportNo)}">${icon("book-open", "sm")}查看详情</button></div>`).join("")}</div>` : `<div class="panel"><div class="empty-state"><div><div class="empty-icon">${icon("library")}</div><h2>尚无正式报告</h2><p>从已启用的报告定义创建 Draft，经证据固定、自动核验和人工复核后发布。</p><button class="btn primary" type="button" data-action="open-generation-modal">${icon("file-plus-2", "sm")}创建报告</button></div></div></div>`;
+      content = currentPublishedReports().length ? `<div class="resource-list">${currentPublishedReports().map((report) => `<div class="resource-row"><div><strong>集团融资经营分析报告</strong><small class="record-reference">报告编号 ${esc(report.reportNo)} · 内容版本 ${esc(report.contentVersion)}${report.replacedReportNo ? ` · 替代 ${esc(report.replacedReportNo)}` : ""}</small></div><div class="resource-meta"><span>发布时间</span><strong>${esc(report.publishedAt)}</strong></div><div>${badge(report.stage === "withdrawn" ? "已撤回" : "已发布", report.stage === "withdrawn" ? "warning" : "success")}</div><button class="btn ${report.stage === "published" ? "primary" : ""}" type="button" data-action="open-published-report" data-report="${esc(report.reportNo)}">${icon("book-open", "sm")}查看详情</button></div>`).join("")}</div>` : `<div class="panel"><div class="empty-state"><div><div class="empty-icon">${icon("library")}</div><h2>尚无正式报告</h2><p>从已启用的报告定义创建草稿，经证据固定、自动核验和人工复核后发布。</p><button class="btn primary" type="button" data-action="open-generation-modal">${icon("file-plus-2", "sm")}创建报告</button></div></div></div>`;
     }
     return renderShell(`
       <div class="page" data-screen-label="报告资源管理">
@@ -2336,7 +2411,7 @@
 
   function reportPaper() {
     const report = readingReport();
-    if (["published", "withdrawn"].includes(report.stage) && report.frozenHtml) return report.frozenHtml;
+    if (["published", "withdrawn"].includes(report.stage) && report.frozenHtml) return normalizeFrozenReportHtml(report.frozenHtml);
     const binding = bindingFor(report);
     const bindingTrust = reportBindingSummary(report);
     const snapshot = report.contentSnapshot || createContentSnapshot(report);
@@ -2368,7 +2443,7 @@
           <span class="kicker">集团融资经营分析</span>
           <h1>集团融资成本与债务结构分析报告</h1>
           <p>围绕融资余额、加权融资成本、债务结构、重点单位与机构贡献，形成可追溯的经营情况分析。</p>
-          <div class="report-cover-meta"><span>报告标识：${esc(reportLabel)}</span><span>内容版本：${esc(contentVersion)}</span><span>Published 本体：${esc(binding.semanticVersion)}</span><span>数据版本：${esc(binding.dataVersion)}</span><span>T008：${esc(binding.asOf)}</span><span>C017 版本绑定摘要：${esc(bindingTrust?.id || "不可定位")} / ${esc(bindingTrust?.version || "未取得")}</span><span>证据包：${esc(report.evidencePackId)}</span></div>
+          <div class="report-cover-meta"><span>报告编号：${esc(reportLabel)}</span><span>内容版本：${esc(contentVersion)}</span><span>本体版本：${esc(binding.semanticVersion)}（已发布）</span><span>数据版本：${esc(binding.dataVersion)}</span><span>数据截至：${esc(binding.asOf)}</span><span>版本绑定摘要：${esc(bindingTrust?.id || "不可定位")} / ${esc(bindingTrust?.version || "未取得")}</span><span>证据包：${esc(report.evidencePackId)}</span></div>
         </header>
         <section class="report-section" id="sec-overview">
           <h2>一、经营概览</h2>
@@ -2397,12 +2472,11 @@
         <section class="report-section" id="sec-rules">
           <h2>五、规则发现</h2>
           ${ruleFacts.map((rule, index) => `<div class="report-rule" id="narrative-rule-${rule.code.toLowerCase()}"><strong>${evidenceSpan(`rule-${rule.code.toLowerCase()}-result`, `${rule.code} · ${rule.scope}${rule.result}`, `E${13 + index}`)}</strong><span>触发分支：${evidenceSpan(`rule-${rule.code.toLowerCase()}-branch`, rule.branch, `E${13 + index}`)}；阈值 ${evidenceSpan(`rule-${rule.code.toLowerCase()}-threshold`, rule.threshold, `E${13 + index}`)}；评估时间 ${evidenceSpan(`rule-${rule.code.toLowerCase()}-evaluated-at`, rule.evaluatedAt, `E${13 + index}`)}。</span></div>`).join("")}
-          <p id="narrative-suggestion" class="evidence-anchor ${!["published", "withdrawn"].includes(report.stage) && state.assistant.selectedAnchor === "narrative-suggestion" ? "selected" : ""}" tabindex="0" data-clickable="true" data-action="select-anchor" data-anchor="narrative-suggestion">${snapshotNarrative(snapshot, "suggestion", snapshotFactText(snapshot, "FACT-SUGGESTION-BASIS", 6, false))}${hasSuggestionGap ? `<sup class="review-marker">!</sup>` : `<sup class="evidence-ref">E16</sup>`}</p>
-          <p>${evidenceSpan("suggestion-basis", snapshotFactText(snapshot, "FACT-SUGGESTION-SCOPE", 6, false), "E16")}</p>
+          <p id="narrative-suggestion" class="evidence-anchor ${!["published", "withdrawn"].includes(report.stage) && state.assistant.selectedAnchor === "narrative-suggestion" ? "selected" : ""}" tabindex="0" data-clickable="true" data-action="select-anchor" data-anchor="narrative-suggestion">${hasSuggestionGap ? `<span id="suggestion-basis" class="evidence-anchor has-review" tabindex="0" data-clickable="true" data-action="select-anchor" data-anchor="suggestion-basis">${snapshotFactText(snapshot, "FACT-SUGGESTION-SCOPE", 6, false)}<sup class="review-marker">!</sup></span>` : evidenceSpan("suggestion-basis", snapshotFactText(snapshot, "FACT-SUGGESTION-SCOPE", 6, false), "E16")}</p>
         </section>
         <section class="report-section" id="sec-evidence">
           <h2>六、证据与限制</h2>
-          <div id="narrative-trust-disclosure"><p>本报告固定引用报告定义 ${evidenceSpan("disclosure-definition-version", snapshotFactText(snapshot, "FACT-REPORT-DEFINITION-VERSION", 6, false), "E17")}、模板 ${evidenceSpan("disclosure-template-version", snapshotFactText(snapshot, "FACT-REPORT-TEMPLATE-VERSION", 6, false), "E18")}、Published 语义版本 ${evidenceSpan("disclosure-semantic-version", snapshotFactText(snapshot, "FACT-PUBLISHED-SEMANTIC-VERSION", 6, false), "E19")}、数据版本 ${evidenceSpan("disclosure-data-version", snapshotFactText(snapshot, "FACT-DATA-VERSION", 6, false), "E20")}、C017 版本绑定摘要 ${esc(bindingTrust?.id || "不可定位")} / ${esc(bindingTrust?.version || "未取得")}（形成于 ${esc(bindingTrust?.formedAt || "未取得")}）和证据包 ${esc(report.evidencePackId)}。</p>
+          <div id="narrative-trust-disclosure"><p>本报告固定引用报告定义 ${evidenceSpan("disclosure-definition-version", snapshotFactText(snapshot, "FACT-REPORT-DEFINITION-VERSION", 6, false), "E17")}、模板 ${evidenceSpan("disclosure-template-version", snapshotFactText(snapshot, "FACT-REPORT-TEMPLATE-VERSION", 6, false), "E18")}、已发布语义版本 ${evidenceSpan("disclosure-semantic-version", snapshotFactText(snapshot, "FACT-PUBLISHED-SEMANTIC-VERSION", 6, false), "E19")}、数据版本 ${evidenceSpan("disclosure-data-version", snapshotFactText(snapshot, "FACT-DATA-VERSION", 6, false), "E20")}、版本绑定摘要 ${esc(bindingTrust?.id || "不可定位")} / ${esc(bindingTrust?.version || "未取得")}（形成于 ${esc(bindingTrust?.formedAt || "未取得")}）和证据包 ${esc(report.evidencePackId)}。</p>
           <p>数据截至 ${evidenceSpan("disclosure-data-asof", snapshotFactText(snapshot, "FACT-DATA-AS-OF-DISCLOSURE", 6, false), "E21")}；质量 ${evidenceSpan("disclosure-quality", snapshotFactText(snapshot, "FACT-DATA-QUALITY-STATUS", 6, false), "E22")}；新鲜度 ${evidenceSpan("disclosure-freshness", snapshotFactText(snapshot, "FACT-DATA-FRESHNESS", 6, false), "E23")}；生成时消费状态 ${evidenceSpan("disclosure-readiness", snapshotFactText(snapshot, "FACT-DATA-READINESS", 6, false), "E24")}。</p>
           <p>${evidenceSpan("disclosure-quality-limitation", snapshotFactText(snapshot, "FACT-QUALITY-LIMITATION", 6, false), "E25")} ${evidenceSpan("disclosure-llm-role", snapshotFactText(snapshot, "FACT-LLM-ROLE-LIMITATION", 6, false), "E26")} ${evidenceSpan("disclosure-snapshot-freeze", snapshotFactText(snapshot, "FACT-SNAPSHOT-FREEZE-LIMITATION", 6, false), "E27")}</p></div>
           <div class="report-footnotes">E01—E37 均可从报告助手或追溯详情打开。HTML 阅读版与 PDF 固定版共享报告标识、内容版本和证据链。</div>
@@ -2852,8 +2926,48 @@
     const explanationKey = comparison.explanationRequestId || comparison.explanationRunId;
     const explanation = explanationKey ? OWNERS.agent.getQA(explanationKey) : null;
     const history = report.comparisonRecords.map((item) => `<div class="detail-row"><span>${esc(item.recordId)}</span><div><strong>${esc(item.comparedAt)} · ${esc(item.currentBinding?.dataVersion)} · ${esc(item.comparisonOutcome || item.gate)}</strong><small>${esc(item.recordStatus || "当前")}${item.staleDetectedAt ? ` · 发现于 ${esc(item.staleDetectedAt)}` : ""}${item.staleReason ? ` · ${esc(item.staleReason)}` : ""}</small></div><button class="text-link" type="button" data-action="open-comparison-record" data-id="${esc(item.recordId)}">查看详情</button></div>`).join("");
-    const identities = `<div class="comparison-identities"><section class="trust-section"><h4>报告生成快照</h4><div class="detail-list"><div class="detail-row"><span>固定组合</span><strong>${esc(binding.bindingId)} · ${esc(binding.semanticVersion)} / ${esc(binding.dataVersion)}</strong></div><div class="detail-row"><span>T008</span><strong>${esc(binding.asOf || "未取得")}</strong></div><div class="detail-row"><span>C017 版本绑定摘要</span><strong>${esc(comparison.reportTrust?.id || "不可定位")} / ${esc(comparison.reportTrust?.version || "未取得")} · ${esc(comparison.reportTrust?.formedAt || "未取得")}</strong></div><div class="detail-row"><span>事实包</span><strong>${esc(comparison.reportFactPackage?.packageId || "不可定位")}</strong></div></div></section><section class="trust-section"><h4>当前权威组合</h4><div class="detail-list"><div class="detail-row"><span>C008 / T019</span><strong>${current ? `${esc(current.bindingId)} · ${esc(current.semanticVersion)} / ${esc(current.dataVersion)}` : "未取得"}</strong></div><div class="detail-row"><span>T008</span><strong>${esc(current?.asOf || "未取得")}</strong></div><div class="detail-row"><span>C017 当前摘要</span><strong>${trust ? `${esc(trust.id)} / ${esc(trust.version)} · ${esc(trust.formedAt)}` : "未取得"}</strong></div><div class="detail-row"><span>质量 / 消费</span><strong>${trust ? `${esc(trust.publishedQuality)} · ${esc(trust.readiness)}` : "未取得"}</strong></div></div></section><section class="trust-section readonly-identity"><h4>处理中、刷新失败或未采用版本</h4><div class="detail-list"><div class="detail-row"><span>候选版本</span><strong>${esc(candidate?.id || "未取得")} · ${esc(candidate?.dataVersion || "未取得")}</strong></div><div class="detail-row"><span>状态</span><strong>${esc(candidate?.readiness || "未取得")} · 未被 T019 采用</strong></div><div class="detail-row"><span>比较边界</span><strong>只读披露，不参与正式数值比较</strong></div></div></section><section class="trust-section readonly-identity"><h4>上一版本证据</h4><div class="detail-list"><div class="detail-row"><span>数据侧上一已通过版本</span><strong>${esc(dataPrevious?.id || "未取得")} · ${esc(dataPrevious?.dataVersion || "未取得")}</strong></div><div class="detail-row"><span>本体上一权威服务组合</span><strong>${esc(previousAuthoritative?.bindingId || "未取得")} · ${esc(previousAuthoritative?.semanticVersion || "未取得")} / ${esc(previousAuthoritative?.dataVersion || "未取得")}</strong></div><div class="detail-row"><span>使用边界</span><strong>两者只读分列，报告中心不得自行切换</strong></div></div></section></div>`;
-    const header = `<div class="context-box"><span>比较记录 ${esc(comparison.recordId)}</span><strong>报告快照与当前权威数据 · ${esc(comparison.recordStatus || "当前")}</strong>${comparison.recordStatus === "已陈旧" ? `<small>${esc(comparison.staleReason)} 发现于 ${esc(comparison.staleDetectedAt)}；再次比较将形成新记录。</small>` : ""}</div><div class="detail-list"><div class="detail-row"><span>确定性结论</span><div><strong>${esc(comparison.comparisonOutcome || comparison.gate || "读取中")}</strong><small>${esc(comparison.comparisonOutcomeReason || comparison.limitation || "")}</small></div></div><div class="detail-row"><span>读取与比较时间</span><strong>${esc(comparison.currentStatusReadAt || "未取得")} · ${esc(comparison.comparedAt || "处理中")}</strong></div><div class="detail-row"><span>权限与兼容性</span><strong>${esc(comparison.permission || "读取中")} · ${esc(comparison.compatibility || "未验证")}</strong></div></div>${identities}`;
+    const reportTrustState = comparison.reportTrust ? "生成时已固定" : "摘要不可定位";
+    const currentTrustState = trust ? `${esc(trust.publishedQuality)} · ${esc(trust.readiness)}` : "未取得";
+    const identities = `
+      <div class="snapshot-comparison" role="group" aria-label="报告快照与当前消费组合">
+        <div class="snapshot-comparison-corner">对照项</div>
+        <div class="snapshot-comparison-head report"><strong>报告快照</strong><small>生成时固定</small></div>
+        <div class="snapshot-comparison-head current"><strong>当前消费组合</strong><small>${esc(trust?.readiness || "未取得")}</small></div>
+        <div class="snapshot-row-label">本体版本</div>
+        <div class="snapshot-value">${esc(binding.semanticVersion || "未取得")}</div>
+        <div class="snapshot-value">${esc(current?.semanticVersion || "未取得")}</div>
+        <div class="snapshot-row-label">数据版本</div>
+        <div class="snapshot-value">${esc(binding.dataVersion || "未取得")}</div>
+        <div class="snapshot-value">${esc(current?.dataVersion || "未取得")}</div>
+        <div class="snapshot-row-label">数据截至</div>
+        <div class="snapshot-value">${esc(binding.asOf || "未取得")}</div>
+        <div class="snapshot-value">${esc(current?.asOf || "未取得")}</div>
+        <div class="snapshot-row-label">使用状态</div>
+        <div class="snapshot-value snapshot-state">${reportTrustState}</div>
+        <div class="snapshot-value snapshot-state">${currentTrustState}</div>
+      </div>
+      <details class="comparison-disclosure">
+        <summary>${icon("git-branch", "sm")}<span><strong>查看版本与追溯</strong><small>绑定、摘要、事实包及非当前版本</small></span>${icon("chevron-down", "sm")}</summary>
+        <div class="comparison-trace-grid">
+          <section class="trace-group"><h4>报告快照追溯</h4><div class="compact-trace">
+            <div><span>固定组合</span><strong>${esc(binding.bindingId || "未取得")}</strong></div>
+            <div><span>C017 版本绑定摘要</span><strong>${esc(comparison.reportTrust?.id || "不可定位")} / ${esc(comparison.reportTrust?.version || "未取得")} · ${esc(comparison.reportTrust?.formedAt || "未取得")}</strong></div>
+            <div><span>事实包</span><strong>${esc(comparison.reportFactPackage?.packageId || "不可定位")}</strong></div>
+          </div></section>
+          <section class="trace-group"><h4>当前组合追溯</h4><div class="compact-trace">
+            <div><span>C008 / T019 当前绑定</span><strong>${esc(current?.bindingId || "未取得")}</strong></div>
+            <div><span>C017 当前摘要</span><strong>${trust ? `${esc(trust.id)} / ${esc(trust.version)} · ${esc(trust.formedAt)}` : "未取得"}</strong></div>
+            <div><span>质量 / 消费</span><strong>${currentTrustState}</strong></div>
+          </div></section>
+          <section class="trace-group trace-boundary"><h4>候选与上一版本证据</h4><div class="compact-trace">
+            <div><span>候选版本</span><strong>${esc(candidate?.id || "未取得")} · ${esc(candidate?.dataVersion || "未取得")} · ${esc(candidate?.readiness || "未取得")} · 未被 T019 采用</strong></div>
+            <div><span>数据侧上一已通过版本</span><strong>${esc(dataPrevious?.id || "未取得")} · ${esc(dataPrevious?.dataVersion || "未取得")}</strong></div>
+            <div><span>本体上一权威服务组合</span><strong>${esc(previousAuthoritative?.bindingId || "未取得")} · ${esc(previousAuthoritative?.semanticVersion || "未取得")} / ${esc(previousAuthoritative?.dataVersion || "未取得")}</strong></div>
+            <div><span>使用边界</span><strong>以上版本只读披露，不参与正式数值比较，报告中心不得自行切换</strong></div>
+          </div></section>
+        </div>
+      </details>`;
+    const header = `<div class="context-box"><span>比较记录 ${esc(comparison.recordId)}</span><strong>报告快照与当前消费组合 · ${esc(comparison.recordStatus || "当前")}</strong>${comparison.recordStatus === "已陈旧" ? `<small>${esc(comparison.staleReason)} 发现于 ${esc(comparison.staleDetectedAt)}；再次比较将形成新记录。</small>` : ""}</div><div class="comparison-overview"><div class="comparison-outcome"><span>确定性结论</span><strong>${esc(comparison.comparisonOutcome || comparison.gate || "读取中")}</strong><small>${esc(comparison.comparisonOutcomeReason || comparison.limitation || "")}</small></div><div class="comparison-overview-meta"><div><span>读取 / 比较</span><strong>${esc(comparison.currentStatusReadAt || "未取得")} · ${esc(comparison.comparedAt || "处理中")}</strong></div><div><span>权限 / 兼容</span><strong>${esc(comparison.permission || "读取中")} · ${esc(comparison.compatibility || "未验证")}</strong></div></div></div>${identities}`;
     const blocked = comparison.comparisonOutcome === "无法比较" || comparison.gate === "无法比较";
     const body = blocked
       ? `<div class="notice danger">${icon("shield-x")}<div><strong>无法比较，报告固定结果仍可阅读</strong><span>${esc(comparison.comparisonOutcomeReason || comparison.limitation || trust?.recoveryAdvice || "当前精确事实包不可定位。")} 报告快照保持冻结，不显示当前数值或一致结论。</span></div></div>`
@@ -2919,7 +3033,8 @@
     const status = isPublished ? report.stage === "withdrawn" ? "已撤回" : "已发布" : report.stage === "confirmed" || report.stage === "publish_failed" ? "已确认待发布" : report.stage === "returned" ? "已退回" : "草稿待复核";
     let actions = "";
     if (isPublished) {
-      actions = `<button class="btn" type="button" data-action="open-trust">${icon("shield-check", "sm")}查看数据状态</button><button class="btn" type="button" data-action="start-current-comparison">${icon("git-compare-arrows", "sm")}与当前数据比较</button><button class="btn" type="button" data-action="open-export">${icon("download", "sm")}导出</button><button class="btn" type="button" data-action="open-pdf">${icon("file-text", "sm")}PDF 固定版</button><button class="btn" type="button" data-action="open-trace">${icon("git-branch", "sm")}查看追溯</button>${report.stage === "published" ? `<button class="btn danger" type="button" data-action="open-withdraw">撤回</button>` : ""}<button class="btn primary" type="button" data-action="request-regeneration">${icon("refresh-cw", "sm")}生成新内容版本</button>`;
+      const moreMenu = `<div class="reader-more"><button class="btn" type="button" data-action="toggle-reader-more" aria-haspopup="menu" aria-expanded="${state.ui.readerMoreOpen ? "true" : "false"}">${icon("ellipsis", "sm")}更多${icon("chevron-down", "sm")}</button>${state.ui.readerMoreOpen ? `<div class="reader-more-menu" role="menu" aria-label="报告浏览操作"><button type="button" role="menuitem" data-action="open-trust">${icon("shield-check", "sm")}<span><strong>查看数据状态</strong><small>查看报告快照与当前权威组合</small></span></button><button type="button" role="menuitem" data-action="start-current-comparison">${icon("git-compare-arrows", "sm")}<span><strong>与当前数据比较</strong><small>形成独立、可追溯的比较记录</small></span></button><button type="button" role="menuitem" data-action="open-export">${icon("download", "sm")}<span><strong>导出</strong><small>导出固定 HTML 或 PDF</small></span></button><button type="button" role="menuitem" data-action="open-pdf">${icon("file-text", "sm")}<span><strong>PDF 固定版</strong><small>打开同源固定呈现</small></span></button><button type="button" role="menuitem" data-action="open-trace">${icon("git-branch", "sm")}<span><strong>查看追溯</strong><small>查看版本、核验和证据链</small></span></button></div>` : ""}</div>`;
+      actions = `<button class="btn primary" type="button" data-action="request-regeneration">${icon("refresh-cw", "sm")}生成新内容版本</button>${moreMenu}${report.stage === "published" ? `<div class="reader-danger-zone"><button class="btn danger" type="button" data-action="open-withdraw">${icon("archive-x", "sm")}撤回</button></div>` : ""}`;
     } else if (report.stage === "confirmed") {
       actions = `<button class="btn" type="button" data-action="cancel-confirmation">取消确认</button><button class="btn primary" type="button" data-action="open-publish">${icon("upload", "sm")}发布报告</button>`;
     } else if (report.stage === "returned") {
@@ -2929,7 +3044,7 @@
     } else {
       actions = `<button class="btn" type="button" data-action="open-return">${icon("undo-2", "sm")}退回修订</button><button class="btn primary" type="button" data-action="confirm-draft">${icon("circle-check", "sm")}确认草稿</button>`;
     }
-    return `<header class="reader-toolbar"><div class="reader-title"><button class="icon-button" type="button" data-action="navigate" data-route="${isPublished ? "/reports?tab=products" : "/reports/generate"}" title="返回">${icon("arrow-left")}</button><div><strong>集团融资成本与债务结构分析报告</strong><small>${isPublished ? report.reportNo : report.draftId} · 内容版本 ${report.contentVersion || report.draftVersion}</small></div>${badge(status)}</div><div class="header-actions">${actions}</div></header>`;
+    return `<header class="reader-toolbar"><div class="reader-title"><button class="icon-button" type="button" data-action="navigate" data-route="${isPublished ? "/reports?tab=products" : "/reports/generate"}" title="返回">${icon("arrow-left")}</button><div><strong>集团融资成本与债务结构分析报告</strong><small class="record-reference">报告编号 ${isPublished ? report.reportNo : report.draftId} · 内容版本 ${report.contentVersion || report.draftVersion}</small></div>${badge(status)}</div><div class="header-actions">${actions}</div></header>`;
   }
 
   function reportTrustWarningBanner(report = readingReport()) {
@@ -2989,8 +3104,8 @@
     if (agentRecord?.kind === "report-generation") {
       fixed.reportId = `聚合 ${fixed.reportAggregateId || "未提供"} / 请求 ${fixed.reportRequestId || agentRecord.requestId || "未提供"}`;
       fixed.contentVersion = fixed.targetContentRevision
-        ? `目标修订 ${fixed.targetContentRevision} · Draft 尚未形成`
-        : "Draft 尚未形成（源草稿形成前）";
+        ? `目标修订 ${fixed.targetContentRevision} · 草稿尚未形成`
+        : "草稿尚未形成（源草稿形成前）";
       fixed.selectedAnchor = fixed.anchorContextStatus || "整份报告锚点清单已固定；单点锚点不适用";
       fixed.verificationRunId = fixed.verificationRunId || "尚未发起（生成阶段）";
     }
@@ -3289,6 +3404,7 @@
     else html = renderLifecycle();
     if (!path.startsWith("/external/")) html += renderDrawer() + renderModal();
     app.innerHTML = html;
+    localizeVisibleText(app);
     if (window.lucide) window.lucide.createIcons({ attrs: { "stroke-width": 1.8 } });
     restoreScroll();
     if (returnedSummaries.length) {
@@ -4094,7 +4210,7 @@
             name: `${task.reportNo}-${task.contentVersion}.html`,
             mime: "text/html;charset=utf-8",
             encoding: "text",
-            content: report?.frozenHtml || "",
+            content: normalizeFrozenReportHtml(report?.frozenHtml || ""),
           };
           task.presentationRoute = null;
         } else {
@@ -4109,6 +4225,11 @@
 
   function handleAction(element) {
     const action = element.dataset.action;
+    if (action !== "toggle-reader-more") state.ui.readerMoreOpen = false;
+    if (action === "toggle-reader-more") {
+      state.ui.readerMoreOpen = !state.ui.readerMoreOpen;
+      return renderApp();
+    }
     if (action === "retry-persistence") {
       const saved = saveState();
       renderApp();
@@ -5063,7 +5184,13 @@
 
   document.addEventListener("click", (event) => {
     const element = event.target.closest("[data-action]");
-    if (!element) return;
+    if (!element) {
+      if (state.ui.readerMoreOpen) {
+        state.ui.readerMoreOpen = false;
+        renderApp();
+      }
+      return;
+    }
     event.preventDefault();
     handleAction(element);
   });
@@ -5104,6 +5231,7 @@
     if (event.key === "Escape") {
       if (state.ui.modal) { state.ui.modal = null; commit(); }
       else if (state.ui.drawer) { state.ui.drawer = null; commit(); }
+      else if (state.ui.readerMoreOpen) { state.ui.readerMoreOpen = false; renderApp(); }
       else if (state.navOpen) { state.navOpen = false; commit(); }
     }
     if (event.key === "Enter" && event.target.matches('[data-input="qa-draft"]')) {

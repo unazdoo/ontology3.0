@@ -378,7 +378,7 @@
     const totalRuns = allRuns(state).length;
     return <div className="app-shell">
       <aside className="platform-rail" aria-label="平台模块">
-        <span className="platform-logo" title="Ontology 3.0"><Icon name="boxes" size={19} /></span>
+        <span className="platform-logo" title="智财问策"><Icon name="boxes" size={19} /></span>
         <span className="platform-static" title="平台总览（当前不可操作）" aria-label="平台总览，当前不可操作" aria-disabled="true"><Icon name="layout-dashboard" /></span>
         <button className="platform-button active" title="智能问数" onClick={() => navigate("ask")}><Icon name="messages-square" /></button>
         <span className="platform-static" title="决策中心（当前不可操作）" aria-label="决策中心，当前不可操作" aria-disabled="true"><Icon name="git-pull-request-arrow" /></span>
@@ -405,7 +405,6 @@
               <Icon name={context.ready ? "database-zap" : "triangle-alert"} size={16} /><span>{context.ready ? "权威上下文可用" : context.status}</span>
             </button>
             <IconButton icon="rotate-ccw" label="重置状态" onClick={onReset} />
-            <div className="account"><span>融</span><div><strong>融资分析员</strong><small>集团业务用户</small></div></div>
           </div>
         </header>
         <main className="main" data-screen-label={ROUTES[route.page].label} tabIndex={-1}>{children}</main>
@@ -1724,7 +1723,7 @@
     }, [route.page, route.id]);
     const notify = (message, tone = "success") => { const id = `toast-${Date.now()}`; setToasts((items) => [...items, { id, title: message, tone }]); window.setTimeout(() => setToasts((items) => items.filter((item) => item.id !== id)), 3200); };
     const navigate = (page, id) => go(page, id);
-    const confirmReset = () => { invalidateAsync(); setState(D.resetState(VARIANT.storageKey)); setEvidence(null); setContextRun(null); setModal(null); setResetOpen(false); go("ask"); notify("已恢复账号初始状态"); };
+    const confirmReset = () => { invalidateAsync(); setState(D.resetState(VARIANT.storageKey)); setEvidence(null); setContextRun(null); setModal(null); setResetOpen(false); go("ask"); notify("已恢复工作区初始状态"); };
     const pin = (run, explicitView = null) => {
       const view = explicitView || state.savedViews.find((item) => item.lastRunId === run?.id);
       if (!view && run) { setModal({ type: "save", run, thenPin: true }); return; }
@@ -1782,7 +1781,7 @@
       {modal?.type === "save" ? <SaveViewModal payload={modal} onClose={() => setModal(null)} onSave={(name) => saveAndMaybePin(modal.run, name, modal.thenPin)} /> : null}
       {modal?.type === "pin" ? <Modal open title="固定到仪表盘" description="智能问数只交付视图引用、展示建议、当前结果和可信度。" onClose={() => setModal(null)} footer={<><Button onClick={() => setModal(null)}>取消</Button><Button variant="primary" disabled={Boolean(modalPinView) && !modalPinGate?.allowed} title={!modalPinView ? "先保存问数视图，再提交引用" : !modalPinGate?.allowed ? modalPinGate?.reason : "提交视图引用"} onClick={() => pin(modal.run, modalPinView)}>{modalPinView ? "提交引用" : "保存并提交"}</Button></>}><FactGrid columns={2}><Fact label="问数视图" value={modalPinView?.name || "尚未保存"} /><Fact label="来源运行" value={modal.run?.id || "没有当前运行"} /><Fact label="语义版本" value={modal.run?.context?.semanticVersion || "无法定位"} /><Fact label="数据版本" value={modal.run?.context?.dataVersion || "无法定位"} /><Fact label="数据截至" value={modal.run?.context?.asOf || "无法定位"} /><Fact label="证据" value={modal.run?.result ? `${makeEvidence(modal.run).length} 项` : "未形成"} /></FactGrid>{!modalPinView ? <Notice tone="info" title="先形成可复用问数视图">保存后仍会再次核对当前结果、双版本、质量和证据，再向报告中心提交引用。</Notice> : modalPinGate?.allowed ? <Notice tone="info" title="提交不等于接收或发布">取得报告中心回执后才显示已接收；卡片、布局、编排和发布生命周期仍由报告中心拥有。</Notice> : <Notice tone="warning" title="当前不能提交">{modalPinGate?.reason}。查询定义和历史结果不会被改写。</Notice>}</Modal> : null}
       {modal?.type === "delete-view" ? <Modal open title="删除问数视图" description={`将删除“${modal.view.name}”；既有历史结果和报告中心已接收引用不被改写。`} onClose={() => setModal(null)} footer={<><Button onClick={() => setModal(null)}>取消</Button><Button variant="danger" onClick={() => deleteView(modal.view)}>确认删除</Button></>}><Notice tone="warning">此操作只删除智能问数中的用户自建视图。</Notice></Modal> : null}
-      {resetOpen ? <Modal open title="重置状态" description="恢复统一账号初始状态，可重新走完整业务流程。" onClose={() => setResetOpen(false)} footer={<><Button onClick={() => setResetOpen(false)}>取消</Button><Button variant="danger" icon="rotate-ccw" onClick={confirmReset}>确认重置</Button></>}><Notice tone="warning" title="将清除本模块运行内容">清除当前运行、历史会话、问数视图、固定引用和待接收请求；保留启用配置，并重新核对上游正式上下文。不修改本体管理、数据工程或其他模块状态。</Notice></Modal> : null}
+      {resetOpen ? <Modal open title="重置状态" description="恢复当前工作区初始状态，可重新走完整业务流程。" onClose={() => setResetOpen(false)} footer={<><Button onClick={() => setResetOpen(false)}>取消</Button><Button variant="danger" icon="rotate-ccw" onClick={confirmReset}>确认重置</Button></>}><Notice tone="warning" title="将清除本模块运行内容">清除当前运行、历史会话、问数视图、固定引用和待接收请求；保留启用配置，并重新核对上游正式上下文。不修改本体管理、数据工程或其他模块状态。</Notice></Modal> : null}
       {dataOpen ? <DataContextModal onClose={() => setDataOpen(false)} notify={notify} upstreamRevision={upstreamRevision} /> : null}
       <ToastRegion toasts={toasts} onDismiss={(id) => setToasts((items) => items.filter((item) => item.id !== id))} />
     </>;

@@ -165,7 +165,7 @@
   const TOOLS = [
     { id: "TOOL-IQ-SEMANTIC-QUERY", name: "语义查询", version: "1.0", owner: "智能问数", boundary: "对正式 Object、Metric、Rule 与 Link 求值；不读取源表字段" },
     { id: "TOOL-IQ-EVIDENCE-READ", name: "证据读取", version: "1.0", owner: "智能问数", boundary: "只读取本轮固定结果对应的受控证据" },
-    { id: "TOOL-IQ-ACTION-REQUEST", name: "行动请求提交", version: "1.0", owner: "智能问数", boundary: "只提交标准 Action Request，不运行提醒或待办" }
+    { id: "TOOL-IQ-ACTION-REQUEST", name: "行动申请提交", version: "1.0", owner: "智能问数", boundary: "只提交标准行动申请，不运行提醒或待办" }
   ];
 
   const PLATFORM_CAPABILITIES = [
@@ -476,10 +476,10 @@
   Object.assign(RESULT_TEMPLATES["institution-priority"].rows.find((row) => row.id === "bank-3"), { detail: "机构稳定身份 INST-019 · 10 笔融资 · 平均成本 3.004%" });
   RESULT_TEMPLATES["institution-priority"].evidenceReferences = [
     ...RESULT_TEMPLATES["institution-priority"].rows.map((row) => ({ ...evidenceRefsFor("institution-priority", row.id), type: "结果项", resourceId: row.resourceId })),
-    { ...evidenceRefsFor("institution-priority", "bank-1-loans"), type: "借据集合", resourceId: "OBJ-FINANCING-DETAIL", object: "欧陆银行", label: "必要借据证据", exact: "LOAN-004842、LOAN-004791", unit: "", status: "可追溯", detail: "只保留本轮行动请求所需的借据稳定身份。" },
-    { ...evidenceRefsFor("institution-priority", "bank-2-loans"), type: "借据集合", resourceId: "OBJ-FINANCING-DETAIL", object: "寰宇银行", label: "必要借据证据", exact: "LOAN-003206、LOAN-003241", unit: "", status: "可追溯", detail: "只保留本轮行动请求所需的借据稳定身份。" },
-    { ...evidenceRefsFor("institution-priority", "bank-3-loans"), type: "借据集合", resourceId: "OBJ-FINANCING-DETAIL", object: "海联银行", label: "必要借据证据", exact: "LOAN-002118、LOAN-002164", unit: "", status: "可追溯", detail: "只保留本轮行动请求所需的借据稳定身份。" },
-    { ...evidenceRefsFor("institution-priority", "owner-unit-553"), type: "负责人关系", resourceId: "LINK-ENTITY-OWNER", object: "单位553", label: "责任承接", exact: "OWNER-001 · 融资负责人001", unit: "", status: "可追溯", detail: "负责人只作为行动请求证据引用，不在智能问数中形成待办。" }
+    { ...evidenceRefsFor("institution-priority", "bank-1-loans"), type: "借据集合", resourceId: "OBJ-FINANCING-DETAIL", object: "欧陆银行", label: "必要借据证据", exact: "LOAN-004842、LOAN-004791", unit: "", status: "可追溯", detail: "只保留本轮行动申请所需的借据稳定身份。" },
+    { ...evidenceRefsFor("institution-priority", "bank-2-loans"), type: "借据集合", resourceId: "OBJ-FINANCING-DETAIL", object: "寰宇银行", label: "必要借据证据", exact: "LOAN-003206、LOAN-003241", unit: "", status: "可追溯", detail: "只保留本轮行动申请所需的借据稳定身份。" },
+    { ...evidenceRefsFor("institution-priority", "bank-3-loans"), type: "借据集合", resourceId: "OBJ-FINANCING-DETAIL", object: "海联银行", label: "必要借据证据", exact: "LOAN-002118、LOAN-002164", unit: "", status: "可追溯", detail: "只保留本轮行动申请所需的借据稳定身份。" },
+    { ...evidenceRefsFor("institution-priority", "owner-unit-553"), type: "负责人关系", resourceId: "LINK-ENTITY-OWNER", object: "单位553", label: "责任承接", exact: "OWNER-001 · 融资负责人001", unit: "", status: "可追溯", detail: "负责人只作为行动申请证据引用，不在智能问数中形成待办。" }
   ];
   RESULT_TEMPLATES["rule-explain"].resourceIds = [
     ...RESULT_TEMPLATES["rule-explain"].resourceIds,
@@ -1138,9 +1138,17 @@
     if (!projection?.ready || !projection.current?.semanticVersionId) return null;
     return `IQ-C004C007-${stableDigest({
       projectionId: projection.projectionId,
-      projectionVersion: projection.projectionVersion,
+      ontologyStableId: projection.current.ontologyStableId,
       semanticVersionId: projection.current.semanticVersionId,
-      scenarioContext: projection.scenarioContext
+      semanticVersion: projection.current.semanticVersion,
+      dataVersion: projection.current.dataVersion,
+      asOf: projection.current.asOf,
+      t019EvidenceId: projection.current.t019?.evidenceId || null,
+      resourceContractFingerprint: projection.current.resourceContractFingerprint || null,
+      endpointContractFingerprint: projection.current.endpointContractFingerprint || null,
+      scenarioId: projection.scenarioContext?.scenarioId || null,
+      scenarioVersion: projection.scenarioContext?.scenarioVersion || null,
+      scenarioRunId: projection.scenarioContext?.scenarioRunId || null
     })}`;
   }
 
@@ -1165,45 +1173,78 @@
 
   function readPublishedContextResponse(projection = readAuthoritativeProjection()) {
     const requestId = publishedContextRequestId(projection);
-    if (!requestId) return { ready: false, status: "正式组合未形成", reason: projection?.reason || "无法形成 Published 资源读取请求" };
-    const stored = readStoredJson(`${HANDOFF_CHANNEL}:response:${requestId}`, "Published 资源只读响应");
-    if (!stored.ok) return { ready: false, status: stored.missing ? "Published 资源待读取" : "Published 资源响应损坏", reason: stored.reason, requestId };
-    const response = stored.value;
-    if (response.channel !== HANDOFF_CHANNEL || response.targetModule !== "本体管理" || response.requestId !== requestId || response.operation !== "publishedContext" || response.ok !== true) {
-      return { ready: false, status: "Published 资源响应不可信", reason: response.error || "响应身份、操作或来源不匹配", requestId };
+    if (!requestId) return { ready: false, status: "正式组合未形成", reason: projection?.reason || "无法形成已发布资源读取请求" };
+    const responsePrefix = `${HANDOFF_CHANNEL}:response:`;
+    const responseCandidates = [];
+    const exactStorageKey = `${responsePrefix}${requestId}`;
+    const exact = readStoredJson(exactStorageKey, "已发布资源只读响应");
+    if (exact.ok) responseCandidates.push({ storageKey: exactStorageKey, response: exact.value, exact: true });
+    for (let index = 0; index < localStorage.length; index += 1) {
+      const storageKey = localStorage.key(index);
+      if (!storageKey?.startsWith(responsePrefix) || storageKey === exactStorageKey) continue;
+      const stored = readStoredJson(storageKey, "已发布资源只读响应");
+      if (stored.ok) responseCandidates.push({ storageKey, response: stored.value, exact: false });
     }
-    const discovery = response.result?.discovery || null;
-    const consumption = response.result?.consumption || null;
-    const exactVersion = Boolean(
-      discovery?.ontologyStableId === ACTIVE_ONTOLOGY_ID &&
-      discovery?.versionId === projection.current.semanticVersionId &&
-      discovery?.semanticVersion === projection.current.semanticVersion &&
-      discovery?.publicationState === "Published"
-    );
-    const exactBinding = Boolean(
-      consumption?.contractCode === "C008" &&
-      consumption?.versionId === projection.current.semanticVersionId &&
-      consumption?.semanticVersion === projection.current.semanticVersion &&
-      consumption?.binding?.dataVersion === projection.current.dataVersion &&
-      consumption?.binding?.asOf === projection.current.asOf &&
-      consumption?.consumable === true
-    );
-    const scenario = projection.scenarioContext;
-    const scenarioMatch = Boolean(
-      consumption?.binding?.scenarioContext?.scenarioId === scenario.scenarioId &&
-      consumption?.binding?.scenarioContext?.scenarioVersion === scenario.scenarioVersion &&
-      consumption?.binding?.scenarioContext?.scenarioRunId === scenario.scenarioRunId
-    );
-    const resources = Array.isArray(discovery?.resources) ? discovery.resources : [];
-    if (!exactVersion || !exactBinding || !scenarioMatch || !resources.length) {
+    if (!responseCandidates.length) {
+      return { ready: false, status: exact.missing ? "已发布资源待读取" : "已发布资源响应损坏", reason: exact.reason, requestId };
+    }
+    const evaluated = responseCandidates.map((candidate) => {
+      const response = candidate.response;
+      const responseRequestId = candidate.storageKey.slice(responsePrefix.length);
+      const identityTrusted = Boolean(
+        response.channel === HANDOFF_CHANNEL &&
+        response.targetModule === "本体管理" &&
+        response.operation === "publishedContext" &&
+        response.ok === true &&
+        responseRequestId.startsWith("IQ-C004C007-") &&
+        response.requestId === responseRequestId
+      );
+      const discovery = response.result?.discovery || null;
+      const consumption = response.result?.consumption || null;
+      const exactVersion = Boolean(
+        discovery?.ontologyStableId === ACTIVE_ONTOLOGY_ID &&
+        discovery?.versionId === projection.current.semanticVersionId &&
+        discovery?.semanticVersion === projection.current.semanticVersion &&
+        discovery?.publicationState === "Published"
+      );
+      const exactBinding = Boolean(
+        consumption?.contractCode === "C008" &&
+        consumption?.versionId === projection.current.semanticVersionId &&
+        consumption?.semanticVersion === projection.current.semanticVersion &&
+        consumption?.binding?.dataVersion === projection.current.dataVersion &&
+        consumption?.binding?.asOf === projection.current.asOf &&
+        consumption?.consumable === true
+      );
+      const scenario = projection.scenarioContext;
+      const scenarioMatch = Boolean(
+        consumption?.binding?.scenarioContext?.scenarioId === scenario.scenarioId &&
+        consumption?.binding?.scenarioContext?.scenarioVersion === scenario.scenarioVersion &&
+        consumption?.binding?.scenarioContext?.scenarioRunId === scenario.scenarioRunId
+      );
+      const resources = Array.isArray(discovery?.resources) ? discovery.resources : [];
+      return { ...candidate, responseRequestId, identityTrusted, discovery, consumption, exactVersion, exactBinding, scenarioMatch, resources };
+    });
+    const accepted = evaluated
+      .filter((candidate) => candidate.identityTrusted && candidate.exactVersion && candidate.exactBinding && candidate.scenarioMatch && candidate.resources.length)
+      .sort((left, right) => Number(right.exact) - Number(left.exact) || String(right.response.respondedAt || "").localeCompare(String(left.response.respondedAt || "")))[0];
+    if (accepted) {
       return {
-        ready: false,
-        status: "Published 资源上下文不一致",
-        reason: !exactVersion ? "C004—C007 响应未锁定 C008 中的精确 Published 版本" : !exactBinding ? "资源响应所带消费组合与当前 C008 不一致" : !scenarioMatch ? "资源响应与 C008 的场景、版本或运行轮次不一致" : "精确 Published 版本没有返回可发现资源",
-        requestId
+        ready: true,
+        status: "已发布资源已定位",
+        discovery: clone(accepted.discovery),
+        consumption: clone(accepted.consumption),
+        resources: clone(accepted.resources),
+        requestId: accepted.responseRequestId,
+        respondedAt: accepted.response.respondedAt || null
       };
     }
-    return { ready: true, status: "Published 资源已定位", discovery: clone(discovery), consumption: clone(consumption), resources: clone(resources), requestId, respondedAt: response.respondedAt || null };
+    const rejected = evaluated.find((candidate) => candidate.exact) || evaluated[0];
+    return {
+      ready: false,
+      status: rejected.identityTrusted ? "已发布资源上下文不一致" : "已发布资源响应不可信",
+      reason: !rejected.identityTrusted ? rejected.response.error || "响应身份、操作或来源不匹配" : !rejected.exactVersion ? "C004—C007 响应未锁定 C008 中的精确已发布版本" : !rejected.exactBinding ? "资源响应所带消费组合与当前 C008 不一致" : !rejected.scenarioMatch ? "资源响应与 C008 的场景、版本或运行轮次不一致" : "精确已发布版本没有返回可发现资源",
+      requestId
+    };
   }
 
   function versionSnapshotFromProjection(projection, publishedContext = readPublishedContextResponse(projection)) {
@@ -1311,15 +1352,15 @@
         return;
       }
       if (actual.type !== expected.type) problems.push(`${expected.id} 的资源类型已变化`);
-      if (actual.publicationState !== "Published") problems.push(`${expected.id} 不是 Published 资源`);
-      if (!actual.publishedVersionId || actual.publishedVersionId !== version.id || actual.publishedSemanticVersion !== version.semanticVersion) problems.push(`${expected.id} 未锁定当前精确 Published 版本`);
+      if (actual.publicationState !== "Published") problems.push(`${expected.id} 不是已发布资源`);
+      if (!actual.publishedVersionId || actual.publishedVersionId !== version.id || actual.publishedSemanticVersion !== version.semanticVersion) problems.push(`${expected.id} 未锁定当前精确已发布版本`);
       if (/停用|失效|不可用/.test(String(actual.businessValidityState || actual.bindability || ""))) problems.push(`${expected.id} 当前业务有效状态不允许使用`);
-      if (actual.owner !== "本体管理") problems.push(`${expected.id} 的定义 Owner 不是本体管理`);
+      if (actual.owner !== "本体管理") problems.push(`${expected.id} 的定义责任方不是本体管理`);
       if (expected.type === "Link Type" && (!byId[actual.source] || !byId[actual.target] || !endpointBelongsToObject(version, actual.sourceEndpoint, actual.source) || !endpointBelongsToObject(version, actual.targetEndpoint, actual.target))) problems.push(`${expected.id} 的端点对象或稳定端点不可定位`);
       if (expected.type === "Link Type" && (!actual.allowedDirection || !actual.cardinality)) problems.push(`${expected.id} 的允许方向或基数不完整`);
       if (expected.type === "Metric") {
         if (actual.unit !== expected.unit) problems.push(`${expected.id} 的单位与配置期望不一致`);
-        if (!actual.scope || !actual.time || !(actual.dependencyIds || []).length || actual.dependencyIds.some((id) => !byId[id])) problems.push(`${expected.id} 的范围、时间语义或 Published 依赖不完整`);
+        if (!actual.scope || !actual.time || !(actual.dependencyIds || []).length || actual.dependencyIds.some((id) => !byId[id])) problems.push(`${expected.id} 的范围、时间语义或已发布依赖不完整`);
       }
       if (expected.type === "Rule" && (!actual.scope || !(actual.dependencyIds || []).length || actual.dependencyIds.some((id) => byId[id]?.type !== "Metric"))) {
         problems.push(`${expected.id} 的适用对象或 Metric 依赖不完整`);
@@ -1442,10 +1483,10 @@
       discoverable: semanticReady,
       formalAnswerable: semanticReady,
       answerabilityStatus: semanticReady ? "正式组合已形成，等待数据可信度与配置核验" : "正式问数暂不可用",
-      answerabilityReason: semanticReady ? "" : linkProblems[0]?.reason || contractProblems[0] || "Published 资源包不完整",
+      answerabilityReason: semanticReady ? "" : linkProblems[0]?.reason || contractProblems[0] || "已发布资源包不完整",
       blocked: !semanticReady,
-      reason: semanticReady ? "" : linkProblems[0]?.reason || contractProblems[0] || "Published 资源包不完整",
-      recovery: semanticReady ? "" : "由本体管理修复同一精确版本的 C004—C007 Published 资源响应；C008 组合身份保持只读。",
+      reason: semanticReady ? "" : linkProblems[0]?.reason || contractProblems[0] || "已发布资源包不完整",
+      recovery: semanticReady ? "" : "由本体管理修复同一精确版本的 C004—C007 已发布资源响应；C008 组合身份保持只读。",
       ontologyId: projection.current.ontologyStableId,
       versionId: semanticReady ? projection.current.semanticVersionId : null,
       semanticVersion: semanticReady ? projection.current.semanticVersion : null,
@@ -1719,33 +1760,61 @@
     };
   }
 
-  function runtimeContextFingerprint(context) {
+  function runtimeContextIdentity(context) {
     if (!context) return null;
-    return JSON.stringify({
-      ontologyId: context.ontologyId || null,
-      versionId: context.versionId || null,
-      semanticVersion: context.semanticVersion || null,
-      dataVersion: context.dataVersion || null,
-      asOf: context.asOf || null,
-      switchedAt: context.switchedAt || null,
-      t019RecordId: context.t019RecordId || null,
-      t019EvidenceCode: context.t019EvidenceCode || null,
-      candidateValidationEvidenceProjection: context.candidateValidationEvidenceProjection || null,
-      questionSetVersionProjection: context.questionSetVersionProjection || null,
-      c029EvidenceCode: context.c029EvidenceCode || null,
-      t018EvidenceCode: context.t018EvidenceCode || null,
-      resourceContractFingerprint: context.resourceContractFingerprint || null,
-      endpointContractFingerprint: context.endpointContractFingerprint || `EP-${stableDigest(context.endpointContract || null)}`,
-      dataTrustFingerprint: context.dataTrustFingerprint || context.dataTrust?.trustFingerprint || null,
-      qualityEvidenceId: context.qualityEvidenceId || null,
-      freshnessStatus: context.freshnessStatus || null,
-      allowConsumption: context.allowConsumption === true,
-      scenarioId: context.scenarioId || null,
-      scenarioVersion: context.scenarioVersion || null,
-      scenarioRunId: context.scenarioRunId || null,
-      projectionId: context.projectionId || null,
-      projectionVersion: context.projectionVersion || null
-    });
+    let archived = null;
+    const live = typeof context === "object" ? context : null;
+    const archivedValue = typeof context === "string" ? context : live?.runtimeContextFingerprint;
+    if (typeof archivedValue === "string") {
+      try {
+        const parsed = JSON.parse(archivedValue);
+        if (parsed && typeof parsed === "object") archived = parsed;
+      } catch (_) {
+        archived = null;
+      }
+    }
+    const value = (key) => live?.[key] ?? archived?.[key] ?? null;
+    const endpointContractFingerprint = value("endpointContractFingerprint") || (live ? `EP-${stableDigest(live.endpointContract || null)}` : null);
+    return {
+      ontologyId: value("ontologyId"),
+      versionId: value("versionId"),
+      semanticVersion: value("semanticVersion"),
+      dataVersion: value("dataVersion"),
+      asOf: value("asOf"),
+      switchedAt: value("switchedAt"),
+      t019RecordId: value("t019RecordId"),
+      t019EvidenceCode: value("t019EvidenceCode"),
+      candidateValidationEvidenceProjection: value("candidateValidationEvidenceProjection"),
+      questionSetVersionProjection: value("questionSetVersionProjection"),
+      c029EvidenceCode: value("c029EvidenceCode"),
+      t018EvidenceCode: value("t018EvidenceCode"),
+      resourceContractFingerprint: value("resourceContractFingerprint"),
+      endpointContractFingerprint,
+      dataTrustFingerprint: value("dataTrustFingerprint") || live?.dataTrust?.trustFingerprint || null,
+      qualityEvidenceId: value("qualityEvidenceId"),
+      freshnessStatus: value("freshnessStatus"),
+      allowConsumption: value("allowConsumption") === true,
+      scenarioId: value("scenarioId"),
+      scenarioVersion: value("scenarioVersion"),
+      scenarioRunId: value("scenarioRunId"),
+      projectionId: value("projectionId")
+    };
+  }
+
+  function runtimeContextFingerprint(context) {
+    const identity = runtimeContextIdentity(context);
+    return identity ? JSON.stringify(identity) : null;
+  }
+
+  function runtimeContextMatches(left, right) {
+    const leftIdentity = runtimeContextIdentity(left);
+    const rightIdentity = runtimeContextIdentity(right);
+    const complete = (identity) => Boolean(
+      identity?.versionId && identity.semanticVersion && identity.dataVersion && identity.asOf &&
+      identity.t019EvidenceCode && identity.resourceContractFingerprint &&
+      identity.scenarioId && identity.scenarioVersion && identity.scenarioRunId && identity.projectionId
+    );
+    return complete(leftIdentity) && complete(rightIdentity) && JSON.stringify(leftIdentity) === JSON.stringify(rightIdentity);
   }
 
   function projectRuntimeContext(context) {
@@ -1815,7 +1884,7 @@
         scenarioRunId: null,
         scenarioReferenceStatus: "等待上游新轮次",
         reason: "当前工作轮次已定向重置，原 C033 运行轮次不能继续用于新问数。",
-        recovery: "等待上游形成不同的 scenarioRunId 后重新读取 C008、Published 资源和 C017。"
+        recovery: "等待上游形成不同的场景运行标识后重新读取 C008、已发布资源和 C017。"
       };
     }
     return projected;
@@ -1891,7 +1960,7 @@
       validation.t019EvidenceCode === runtimeContext.t019EvidenceCode &&
       validation.configFingerprint === config.contentFingerprint &&
       validation.resourceContractFingerprint === runtimeContext.resourceContractFingerprint &&
-      validation.runtimeContextFingerprint === runtimeContext.runtimeContextFingerprint
+      runtimeContextMatches(validation.runtimeContextFingerprint, runtimeContext)
     );
     return snapshotMatches
       ? { status: "兼容", tone: "success", reason: "配置验证快照与当前正式组合一致" }
@@ -1929,8 +1998,8 @@
     }
     if (!ontologyContext?.ready) {
       if (!ontologyContext?.versionId) {
-        issues.push({ gate: "Published 语义", owner: "本体管理", reason: ontologyContext?.reason || "当前没有可定位的精确 Published 语义版本", recovery: ontologyContext?.recovery || "在本体管理完成校验与发布后重新检查。" });
-        issues.push({ gate: "正式消费组合", owner: "本体管理", reason: "当前没有可定位的权威消费绑定", recovery: "Published 形成后仍需由本体管理按完整门禁原子提交正式消费绑定；数据侧消费资格不能替代。" });
+        issues.push({ gate: "已发布语义", owner: "本体管理", reason: ontologyContext?.reason || "当前没有可定位的精确已发布语义版本", recovery: ontologyContext?.recovery || "在本体管理完成校验与发布后重新检查。" });
+        issues.push({ gate: "正式消费组合", owner: "本体管理", reason: "当前没有可定位的权威消费绑定", recovery: "已发布版本形成后仍需由本体管理按完整门禁原子提交正式消费绑定；数据侧消费资格不能替代。" });
       } else if (!ontologyContext?.t019EvidenceCode) {
         issues.push({ gate: "正式消费组合", owner: "本体管理", reason: ontologyContext?.reason || "当前权威消费绑定不完整", recovery: ontologyContext?.recovery || "在本体管理核对正式采用记录与候选验证证据后重新检查。" });
       } else {
@@ -1947,7 +2016,7 @@
         validation.t019EvidenceCode === ontologyContext.t019EvidenceCode &&
         validation.configFingerprint === config.contentFingerprint &&
         validation.resourceContractFingerprint === ontologyContext.resourceContractFingerprint &&
-        validation.runtimeContextFingerprint === ontologyContext.runtimeContextFingerprint
+        runtimeContextMatches(validation.runtimeContextFingerprint, ontologyContext)
       );
       if (config.bindingVersionId !== ontologyContext.versionId || config.semanticVersion !== ontologyContext.semanticVersion || config.compatibility !== "兼容" || !c009Matches) {
         issues.push({ gate: "配置", owner: "智能问数", reason: "已启用配置的本体绑定或消费验证状态与当前精确已发布版本不一致", recovery: "在智能问数重新验证配置与当前正式绑定；不得沿用其他模块的验证投影。" });
@@ -2487,23 +2556,23 @@
     const blocked = run.result.rows.find((row) => BLOCKED_RESULT_STATUS.test(String(row.status || "")));
     if (blocked) return { allowed: false, reason: `${blocked.object} · ${blocked.label}为“${blocked.status}”，不能导出误导性数值` };
     const current = projectRuntimeContextForScenario(readRuntimeContext(), scenarioContext, run.configSnapshot);
-    if (!current?.ready || !run.context?.runtimeContextFingerprint || current.runtimeContextFingerprint !== run.context.runtimeContextFingerprint) return { allowed: false, reason: "当前权威消费上下文已变化，请按当前版本重新运行后导出" };
+    if (!current?.ready || !runtimeContextMatches(run.context, current)) return { allowed: false, reason: "当前权威消费上下文已变化，请按当前版本重新运行后导出" };
     const output = verifyFixedResult(run.result, run.context, run.configSnapshot);
     if (!output.passed) return { allowed: false, reason: output.issues[0] };
     return { allowed: true, reason: "" };
   }
 
   function actionEligibility(run, config = null, scenarioContext = null, requestedTargetStableId = null) {
-    if (run?.past || run?.context?.past) return { allowed: false, reason: "历史轮次只读；请按当前权威上下文重新运行后发起行动请求" };
-    if (run?.status !== "成功" || !run?.result) return { allowed: false, reason: "只有成功形成的固定结果可以发起行动请求" };
+    if (run?.past || run?.context?.past) return { allowed: false, reason: "历史轮次只读；请按当前权威上下文重新运行后发起行动申请" };
+    if (run?.status !== "成功" || !run?.result) return { allowed: false, reason: "只有成功形成的固定结果可以发起行动申请" };
     if (!run.context?.ready || run.context?.allowConsumption !== true || !run.context?.evidenceComplete) return { allowed: false, reason: "双版本、数据可信度或证据不完整" };
     const current = projectRuntimeContextForScenario(readRuntimeContext(), scenarioContext, config || run.configSnapshot);
-    if (!current?.ready || !run.context?.runtimeContextFingerprint || current.runtimeContextFingerprint !== run.context.runtimeContextFingerprint) return { allowed: false, reason: "当前权威消费上下文已变化，请按当前版本重新运行后发起行动请求" };
+    if (!current?.ready || !runtimeContextMatches(run.context, current)) return { allowed: false, reason: "当前权威消费上下文已变化，请按当前版本重新运行后发起行动申请" };
     const actionOptions = [run.result.actionContext, ...(run.result.actionContexts || [])].filter(Boolean);
     const action = requestedTargetStableId
       ? actionOptions.find((item) => item.singleTargetStableId === requestedTargetStableId)
       : actionOptions.length === 1 ? actionOptions[0] : null;
-    if (!action?.singleTargetStableId) return { allowed: false, reason: actionOptions.length > 1 ? "请从三条 Rule 结果中明确选择一个单一主体" : "行动请求必须绑定一个已确认的非集团主体" };
+    if (!action?.singleTargetStableId) return { allowed: false, reason: actionOptions.length > 1 ? "请从三条规则结果中明确选择一个单一主体" : "行动申请必须绑定一个已确认的非集团主体" };
     const effectiveConfig = config || run.configSnapshot;
     const actionResource = resourceFromContext(run.context, action.actionTypeId);
     if (actionResource?.type !== "Action Type" || !effectiveConfig?.allowedResources?.includes(action.actionTypeId) || !effectiveConfig?.allowedActions?.includes("提交标准 Action Request")) return { allowed: false, reason: "行动类型不在当前配置白名单、已发布资源包或后续操作范围内" };
@@ -2536,7 +2605,7 @@
     const idempotencyKey = request?.idempotencyKey || actionRequestIdempotencyKey(request);
     const sameId = requests.find((item) => item.id === request?.id);
     if (sameId && (sameId.idempotencyKey || actionRequestIdempotencyKey(sameId)) !== idempotencyKey) {
-      return { status: "conflict", request: sameId, requests, reason: "同一 Action Request ID 已绑定其他场景轮次或版本，原记录未被覆盖" };
+      return { status: "conflict", request: sameId, requests, reason: "同一行动申请标识已绑定其他场景轮次或版本，原记录未被覆盖" };
     }
     const duplicate = requests.find((item) => (item.idempotencyKey || actionRequestIdempotencyKey(item)) === idempotencyKey);
     if (duplicate) return { status: "duplicate", request: duplicate, requests, reason: "幂等键一致，返回原请求且不增加副作用" };
@@ -2786,7 +2855,7 @@
     RECOMMENDED_QUESTIONS, CANDIDATE_VALIDATION_QUESTIONS, RESULT_TEMPLATES, HISTORY, SAVED_VIEWS, PINS,
     clone, nowText, nextStableId, createInitialState, loadState, saveState, resetState,
     readStoredJson, readAuthoritativeProjection, legacyProjectionDiagnostics, requestPublishedContext, readPublishedContextResponse, readPublishedOntologyContext, readCandidateConsumptionContext, readOntologyBindingContext, readDataTrustContext, readRuntimeContext, readOntologyContext,
-    projectRuntimeContext, attachScenarioContext, projectRuntimeContextForScenario, runtimeContextFingerprint, resourceContractFingerprint, publishedContractProblems,
+    projectRuntimeContext, attachScenarioContext, projectRuntimeContextForScenario, runtimeContextFingerprint, runtimeContextMatches, resourceContractFingerprint, publishedContractProblems,
     bindConfigSnapshot, deriveConfigRuntimeState, runtimeCapabilityProof, isLinkDirectionAllowed, validateRunContext, configCompleteness,
     validateCandidateConfig, validateFixedQuestionSet, verifyFixedResult, isConfigCompatible, matchApplicableAgents,
     recommendationEligibility, recommendableQuestions, materializeResult, validateCandidateFixedQuestionSet,

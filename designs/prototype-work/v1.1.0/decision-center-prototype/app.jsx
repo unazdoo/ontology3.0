@@ -108,10 +108,6 @@ function DecisionProductNav({ route, onNavigate }) {
           </button>
         ))}
       </div>
-      <div className="product-nav-foot">
-        <span className="account-avatar">财</span>
-        <div><strong>财务运营账号</strong><small>当前账号</small></div>
-      </div>
     </nav>
   );
 }
@@ -130,8 +126,7 @@ function DecisionTopbar({ route, data }) {
   const [parent, title] = routeTitle(route, data);
   return (
     <header className="app-topbar">
-      <div className="breadcrumb"><span>Ontology 3.0</span><DCIcon name="ChevronRight" size={12} /><span>{parent}</span><DCIcon name="ChevronRight" size={12} /><strong>{title}</strong></div>
-      <div className="top-account"><span>财</span><div><strong>财务运营账号</strong><small>单账号</small></div></div>
+      <div className="breadcrumb"><span>智财问策</span><DCIcon name="ChevronRight" size={12} /><span>{parent}</span><DCIcon name="ChevronRight" size={12} /><strong>{title}</strong></div>
     </header>
   );
 }

@@ -57,7 +57,7 @@ const DC_STATUS_META = {
   validating: { label: "校验中", tone: "info", icon: "LoaderCircle", spin: true },
   awaiting: { label: window.DC_VARIANT === "portfolio" ? "待我决策" : "待确认", tone: "warning", icon: "Clock3" },
   supplement_requested: { label: "等待补充", tone: "warning", icon: "FileQuestion" },
-  confirmed: { label: "已确认", tone: "success", icon: "CircleCheck" },
+  confirmed: { label: "已处理", tone: "success", icon: "CircleCheck" },
   rejected: { label: "已拒绝", tone: "neutral", icon: "CircleMinus" },
   rejected_by_gate: { label: "请求已拒绝", tone: "neutral", icon: "ShieldX" },
   c017_blocked: { label: "安全读取阻断", tone: "danger", icon: "ShieldAlert" },

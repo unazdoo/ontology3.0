@@ -152,7 +152,6 @@ function App() {
               <span>{workspace.dataCheck.status === "failed" ? "上一可信版本服务中" : workspace.dataCheck.status === "checking" ? "正在检查数据状态" : workspace.dataCheck.status === "adopted" ? "权威绑定已更新" : workspace.dataCheck.status === "ready" ? "数据上下文已就绪" : "数据状态"}</span>
             </button>
             <IconButton icon="RotateCcw" label="重置状态" onClick={() => setResetModal(true)} />
-            <div className="account"><span>融</span><div><strong>融资分析员</strong><small>集团业务用户</small></div></div>
           </div>
         </header>
 

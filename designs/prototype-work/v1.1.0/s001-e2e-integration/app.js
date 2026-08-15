@@ -16,6 +16,13 @@
   let homeDomain = "foundation";
   let homeOrbitTurn = 0;
   let suppressHomeDomainStateRender = false;
+  let ontologyBridgeFrame = null;
+  let ontologyBridgeReady = null;
+  let ontologyContractReplay = null;
+
+  const IQ_STATE_KEY = "ontology3.iq.review.conversation.v1";
+  const C008_PROJECTION_KEY = "ontology3-c008-authoritative-projection-v1";
+  const HANDOFF_CHANNEL = STORE.HANDOFF_CHANNEL || "ontology3.0-s001-handoff-v1";
 
   const HOME_DOMAIN_ORDER = ["foundation", "intelligence", "action"];
   const HOME_DOMAINS = {
@@ -43,6 +50,7 @@
     home: '<path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9"/><path d="M9 20v-6h6v6"/>',
     database: '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>',
     network: '<circle cx="12" cy="5" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="m10.7 7.2-3.4 8.6M13.3 7.2l3.4 8.6M8.5 18h7"/>',
+    brainCircuit: '<path class="brain-mesh-outline" d="M12 4.35C10.92 2.72 8.42 2.35 6.92 3.78 4.76 3.6 3.14 5.67 3.82 7.7 2.18 8.78 2.28 11.18 3.72 12.5 2.62 14.5 3.8 16.96 5.93 17.52 6.22 20.2 9.42 21.38 11.28 19.72c.45-.4.72-.9.72-1.5 0 .6.27 1.1.72 1.5 1.86 1.66 5.06.48 5.35-2.2 2.13-.56 3.31-3.02 2.21-5.02 1.44-1.32 1.54-3.72-.1-4.8.68-2.03-.94-4.1-3.1-3.92-1.5-1.43-4-1.06-5.08.57Z"/><path class="brain-mesh-edge" d="M12 4.35 8.65 4.6 6.05 6.15 9.4 7.3 12 8.95 14.6 7.3 17.95 6.15 15.35 4.6 12 4.35M6.05 6.15 4.78 9.05 7.35 10.35 9.4 7.3M4.78 9.05 5.55 13.55 7.35 10.35 9.95 11.7 12 8.95M5.55 13.55 8.65 15.55 9.95 11.7 12 14.05 10.25 17.55 8.65 15.55M5.55 13.55 6.02 16.35 8.65 15.55M10.25 17.55 12 19.25 13.75 17.55 12 14.05M12 8.95 12 14.05M17.95 6.15 19.22 9.05 16.65 10.35 14.6 7.3M19.22 9.05 18.45 13.55 16.65 10.35 14.05 11.7 12 8.95M18.45 13.55 15.35 15.55 14.05 11.7 12 14.05 13.75 17.55 15.35 15.55M18.45 13.55 17.98 16.35 15.35 15.55M7.35 10.35 12 8.95 16.65 10.35M8.65 15.55 12 14.05 15.35 15.55"/><path class="brain-mesh-seam" d="M12 4.35v15"/><circle class="brain-mesh-node phase-a node-key" cx="12" cy="4.35" r=".48"/><circle class="brain-mesh-node phase-b" cx="8.65" cy="4.6" r=".34"/><circle class="brain-mesh-node phase-c" cx="6.05" cy="6.15" r=".38"/><circle class="brain-mesh-node phase-d" cx="9.4" cy="7.3" r=".34"/><circle class="brain-mesh-node phase-b" cx="4.78" cy="9.05" r=".4"/><circle class="brain-mesh-node phase-a" cx="7.35" cy="10.35" r=".34"/><circle class="brain-mesh-node phase-c" cx="9.95" cy="11.7" r=".38"/><circle class="brain-mesh-node phase-d" cx="5.55" cy="13.55" r=".38"/><circle class="brain-mesh-node phase-b" cx="6.02" cy="16.35" r=".34"/><circle class="brain-mesh-node phase-a" cx="8.65" cy="15.55" r=".4"/><circle class="brain-mesh-node phase-c" cx="10.25" cy="17.55" r=".34"/><circle class="brain-mesh-node phase-d node-key" cx="12" cy="8.95" r=".46"/><circle class="brain-mesh-node phase-a node-key" cx="12" cy="14.05" r=".46"/><circle class="brain-mesh-node phase-c node-key" cx="12" cy="19.25" r=".48"/><circle class="brain-mesh-node phase-b" cx="15.35" cy="4.6" r=".34"/><circle class="brain-mesh-node phase-a" cx="17.95" cy="6.15" r=".38"/><circle class="brain-mesh-node phase-d" cx="14.6" cy="7.3" r=".34"/><circle class="brain-mesh-node phase-c" cx="19.22" cy="9.05" r=".4"/><circle class="brain-mesh-node phase-b" cx="16.65" cy="10.35" r=".34"/><circle class="brain-mesh-node phase-d" cx="14.05" cy="11.7" r=".38"/><circle class="brain-mesh-node phase-a" cx="18.45" cy="13.55" r=".38"/><circle class="brain-mesh-node phase-c" cx="17.98" cy="16.35" r=".34"/><circle class="brain-mesh-node phase-d" cx="15.35" cy="15.55" r=".4"/><circle class="brain-mesh-node phase-b" cx="13.75" cy="17.55" r=".34"/>',
     sparkles: '<path d="m12 3 1.3 3.7L17 8l-3.7 1.3L12 13l-1.3-3.7L7 8l3.7-1.3L12 3Z"/><path d="m5 14 .8 2.2L8 17l-2.2.8L5 20l-.8-2.2L2 17l2.2-.8L5 14Zm14-2 .7 1.8 1.8.7-1.8.7L19 16l-.7-1.8-1.8-.7 1.8-.7L19 12Z"/>',
     insight: '<path d="M4 19V9m5 10V5m6 14v-7m5 7V3"/><path d="m3 13 6-5 6 2 6-6"/>',
     action: '<circle cx="12" cy="12" r="3"/><circle cx="4" cy="7" r="2"/><circle cx="20" cy="5" r="2"/><circle cx="20" cy="19" r="2"/><circle cx="4" cy="19" r="2"/><path d="m6 8 3.5 2m5 0 3.5-4m-3.5 8 3.5 4m-8.5-4L6 18"/>',
@@ -225,6 +233,141 @@
     }, window.location.origin);
   }
 
+  function readStoredObject(key) {
+    try {
+      const value = JSON.parse(localStorage.getItem(key) || "null");
+      return value && typeof value === "object" ? value : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function stableDigest(value) {
+    const text = typeof value === "string" ? value : JSON.stringify(value);
+    let hash = 2166136261;
+    for (let index = 0; index < text.length; index += 1) {
+      hash ^= text.charCodeAt(index);
+      hash = Math.imul(hash, 16777619);
+    }
+    return (hash >>> 0).toString(36).toUpperCase().padStart(7, "0");
+  }
+
+  function ensureOntologyBridgeFrame() {
+    if (ontologyBridgeFrame?.isConnected && ontologyBridgeReady) return ontologyBridgeReady;
+    const module = DATA.moduleById.ontology;
+    ontologyBridgeFrame = document.createElement("iframe");
+    ontologyBridgeFrame.id = "ontology-contract-bridge";
+    ontologyBridgeFrame.hidden = true;
+    ontologyBridgeFrame.tabIndex = -1;
+    ontologyBridgeFrame.setAttribute("aria-hidden", "true");
+    ontologyBridgeFrame.setAttribute("sandbox", "allow-scripts allow-same-origin");
+    ontologyBridgeFrame.src = sourceWithScenarioContext(module.source);
+    ontologyBridgeReady = new Promise((resolve, reject) => {
+      const timeout = window.setTimeout(() => reject(new Error("本体合同桥加载超时")), 5000);
+      ontologyBridgeFrame.addEventListener("load", () => {
+        window.clearTimeout(timeout);
+        deliverScenarioContextToFrame(ontologyBridgeFrame, module);
+        resolve(ontologyBridgeFrame);
+      }, { once: true });
+    });
+    document.body.appendChild(ontologyBridgeFrame);
+    return ontologyBridgeReady;
+  }
+
+  async function requestOntologyBridge(operation, payload, requestId) {
+    const frame = await ensureOntologyBridgeFrame();
+    return new Promise((resolve, reject) => {
+      const timeout = window.setTimeout(() => {
+        window.removeEventListener("message", receive);
+        reject(new Error(`${operation} 未取得本体管理响应`));
+      }, 4000);
+      function receive(event) {
+        const response = event.data;
+        if (event.origin !== window.location.origin || event.source !== frame.contentWindow) return;
+        if (response?.channel !== HANDOFF_CHANNEL || response?.targetModule !== "本体管理" || response?.requestId !== requestId || response?.operation !== operation) return;
+        window.clearTimeout(timeout);
+        window.removeEventListener("message", receive);
+        resolve(response);
+      }
+      window.addEventListener("message", receive);
+      frame.contentWindow.postMessage({
+        channel: HANDOFF_CHANNEL,
+        targetModule: "本体管理",
+        sourceModule: "统一平台",
+        requestId,
+        operation,
+        payload
+      }, window.location.origin);
+    });
+  }
+
+  function currentC009Record() {
+    const queryState = readStoredObject(IQ_STATE_KEY);
+    const config = queryState?.activeConfig;
+    const validation = config?.c009Validation;
+    const scenario = activeScenarioContext();
+    const sameScenario = validation?.sceneId === scenario?.scenarioId
+      && validation?.sceneVersion === scenario?.scenarioVersion
+      && validation?.sceneRunId === scenario?.scenarioRunId;
+    if (config?.status !== "已启用" || config?.compatibility !== "兼容" || validation?.status !== "通过" || !sameScenario) return null;
+    return {
+      sourceModule: "智能问数",
+      contractCode: "C009",
+      configId: config.id,
+      configVersion: config.version,
+      consumer: "智能问数",
+      semanticVersionId: validation.versionId,
+      semanticVersion: validation.semanticVersion,
+      dataVersion: validation.dataVersion,
+      status: "compatible",
+      checkedAt: validation.checkedAt,
+      reason: null,
+      evidenceLocator: `智能问数/${config.id}/${validation.configFingerprint || config.contentFingerprint || "兼容核验"}`
+    };
+  }
+
+  async function reconcileOntologyContracts() {
+    if (ontologyContractReplay) return ontologyContractReplay;
+    ontologyContractReplay = (async () => {
+      const c009 = currentC009Record();
+      if (!c009) return false;
+      const c009RequestId = `C009-${activeScenario().id}-${stableDigest(c009)}`;
+      const compatibility = await requestOntologyBridge("deliverConsumerCompatibility", c009, c009RequestId);
+      if (!compatibility?.ok) throw new Error(compatibility?.error || "智能问数兼容状态未被本体管理接收");
+
+      const projection = readStoredObject(C008_PROJECTION_KEY);
+      const context = projection?.scenarioContext;
+      const current = projection?.current;
+      if (!projection || projection.readStatus !== "available" || !current?.semanticVersionId || context?.scenarioRunId !== activeScenarioContext()?.scenarioRunId) {
+        throw new Error("当前 C008 权威组合不可读取");
+      }
+      const requestId = `IQ-C004C007-${stableDigest({
+        projectionId: projection.projectionId,
+        ontologyStableId: current.ontologyStableId,
+        semanticVersionId: current.semanticVersionId,
+        semanticVersion: current.semanticVersion,
+        dataVersion: current.dataVersion,
+        asOf: current.asOf,
+        t019EvidenceId: current.t019?.evidenceId || null,
+        resourceContractFingerprint: current.resourceContractFingerprint || null,
+        endpointContractFingerprint: current.endpointContractFingerprint || null,
+        scenarioId: context?.scenarioId || null,
+        scenarioVersion: context?.scenarioVersion || null,
+        scenarioRunId: context?.scenarioRunId || null
+      })}`;
+      const publishedContext = await requestOntologyBridge("publishedContext", { versionId: current.semanticVersionId }, requestId);
+      if (!publishedContext?.ok || !publishedContext?.result) throw new Error(publishedContext?.error || "已发布语义资源未返回");
+      localStorage.setItem(`${HANDOFF_CHANNEL}:response:${requestId}`, JSON.stringify(publishedContext));
+      document.documentElement.dataset.ontologyContracts = "ready";
+      return true;
+    })().catch((error) => {
+      document.documentElement.dataset.ontologyContracts = "blocked";
+      document.documentElement.dataset.ontologyContractReason = error?.message || "合同重放未完成";
+      return false;
+    });
+    return ontologyContractReplay;
+  }
+
   function scenarioWorkspaceMarkup() {
     const scenarios = enabledScenarios();
     const current = activeScenario();
@@ -277,6 +420,7 @@
         <button class="flow-trigger" type="button" data-action="open-flow" aria-label="打开 ${escapeHtml(scenario.id)} 链路进度">
           ${icon("layers", "sm")}<span><b>链路进度 · ${done}/${DATA.workflow.length}</b><small>${next ? `下一步：${next.title}` : "全部来源状态已确认"}</small></span><i><i style="width:${Math.round((done / DATA.workflow.length) * 100)}%"></i></i>
         </button>
+        ${route.type === "module" || route.type === "dashboard" ? `<button class="top-action" type="button" data-action="refresh-source" aria-label="重新读取六个模块状态" title="重新读取">${icon("refresh", "sm")}<span>重新读取</span></button>` : ""}
         <button class="top-action" type="button" data-action="open-reset" aria-label="重置当前场景" title="重置当前场景">${icon("reset", "sm")}<span>重置当前场景</span></button>
         <div class="user-account" title="当前账号"><span class="user-avatar">管</span><strong>平台管理员</strong></div>
       </div>
@@ -290,7 +434,7 @@
     const next = firstIncomplete();
     return `<aside class="global-nav">
       <button class="brand-lockup" type="button" data-action="toggle-navigation" aria-label="${state.navCollapsed ? "展开主菜单" : "收起主菜单"}" title="${state.navCollapsed ? "展开主菜单" : "收起主菜单"}">
-        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><div><strong>${DATA.brand.zh}</strong><small>${DATA.brand.en}</small></div>
+        <span class="brand-mark brand-mark-ai" aria-hidden="true">${icon("brainCircuit", "brand-brain")}</span><div><strong>${DATA.brand.zh}</strong><small>${DATA.brand.en}</small></div>
       </button>
       <div class="nav-context"><span>当前场景</span><strong>${escapeHtml(scenario.id)} · ${escapeHtml(scenario.name)}</strong></div>
       <nav class="primary-nav" aria-label="一级导航">
@@ -511,7 +655,7 @@
           <div class="architecture-foot">
             <span><b>01 数据治理</b>数据源、数据管道、资产版本与质量。</span>
             <span><b>02 语义问数</b>已发布业务定义、可信问数、报告与证据。</span>
-            <span><b>03 行动智能</b>行动请求、人工确认与受控协作。</span>
+            <span><b>03 行动智能</b>行动申请、人工确认与受控协作。</span>
           </div>
         </div>
         <div class="classic-domain-detail" aria-live="polite">
@@ -541,12 +685,13 @@
   }
 
   function initialHash(moduleId) {
-    return { data: "#/resources", ontology: "#modeling", query: "#/ask", decision: "#workbench", agent: "#/agents", report: "#/lifecycle", dashboard: "#/dashboard/s001" }[moduleId] || "";
+    return { data: "#/resources", ontology: "#modeling", query: "#/ask", decision: "#workbench", agent: "#/agents", report: "#/lifecycle", dashboard: "#/scenes" }[moduleId] || "";
   }
 
   function frameSource(module) {
     const saved = STORE.get().framePositions[module.id];
     const fallback = `${module.source}${initialHash(module.id)}`;
+    if (module.id === "dashboard") return sourceWithScenarioContext(fallback);
     if (!saved?.href) return sourceWithScenarioContext(fallback);
     try {
       const approvedUrl = new URL(module.source, window.location.href);
@@ -692,7 +837,7 @@
     if (!frame) return;
     frame.focus();
     try { frame.contentWindow.focus(); } catch (_) {}
-    showToast("已进入模块", "请在模块页面完成当前业务操作，完成后点击“重新读取状态”。", "success");
+    showToast("已进入模块", "请在模块页面完成当前业务操作，完成后在页眉点击“重新读取”。", "success");
   }
 
   function captureFramePosition() {
@@ -732,7 +877,7 @@
   }
 
   function frameAdapterCss(moduleId) {
-    const kind = moduleId === "dashboard" ? "report" : moduleId;
+    const kind = moduleId;
     const common = `
       html, body { width:100%!important; height:100%!important; }
       body { overflow:hidden!important; }
@@ -747,6 +892,11 @@
         @media (max-width:960px) {
           .app-shell { grid-template-columns:58px minmax(0,1fr)!important; }
         }
+        @media (max-width:700px) {
+          .app-shell { grid-template-columns:minmax(0,1fr)!important; }
+          .app-shell > .product-nav { display:none!important; }
+          .app-shell > .app-workspace { grid-column:1!important; }
+        }
       `,
       ontology: `
         .app-shell { grid-template-columns:184px minmax(0,1fr)!important; }
@@ -756,6 +906,11 @@
         .app-workspace > .topbar { display:none!important; }
         @media (max-width:960px) {
           .app-shell { grid-template-columns:58px minmax(0,1fr)!important; }
+        }
+        @media (max-width:700px) {
+          .app-shell { grid-template-columns:minmax(0,1fr)!important; }
+          .app-shell > .product-nav { display:none!important; }
+          .app-shell > .app-workspace { grid-column:1!important; }
         }
       `,
       query: `
@@ -797,6 +952,11 @@
         @media (max-width:820px) {
           .app-shell { grid-template-columns:58px minmax(0,1fr)!important; }
         }
+        @media (max-width:700px) {
+          .app-shell { grid-template-columns:minmax(0,1fr)!important; }
+          .app-shell > .product-nav { display:none!important; }
+          .app-shell > .workspace { grid-column:1!important; }
+        }
       `,
       report: `
         .app-shell { grid-template-columns:190px minmax(0,1fr)!important; }
@@ -823,6 +983,17 @@
           .app-shell > .product-nav { width:min(280px,85vw)!important; }
           .app-workspace > .topbar .persistence-banner { right:8px!important; width:calc(100vw - 62px)!important; }
         }
+      `,
+      dashboard: `
+        .app-shell { grid-template-columns:minmax(0,1fr)!important; grid-template-rows:minmax(0,1fr)!important; }
+        .app-shell > .platform-rail,
+        .app-shell > .product-nav { display:none!important; }
+        .app-shell > .app-workspace { grid-column:1!important; grid-row:1!important; grid-template-rows:minmax(0,1fr)!important; }
+        .app-workspace > .topbar { display:none!important; }
+        .app-workspace > .main,
+        .app-workspace .reader-toolbar,
+        .app-workspace .external-head { padding-left:initial!important; }
+        .app-workspace > .main { min-width:0!important; }
       `
     };
     return `${common}${adapters[kind] || ""}`;
@@ -849,7 +1020,9 @@
       }
       deliverScenarioContextToFrame(frame, module);
       const doc = frame.contentDocument;
-      if (!doc?.body) return;
+      const frameView = doc?.defaultView;
+      const body = doc?.body;
+      if (!body) return;
       doc.title = `${module.name} · ${DATA.brand.zh}`;
       installFrameAdapter(doc, module.id);
       const saved = STORE.get().framePositions[module.id];
@@ -903,7 +1076,7 @@
         return next;
       };
       const scrubNode = (root) => {
-        const walker = doc.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+        const walker = doc.createTreeWalker(root, frameView.NodeFilter?.SHOW_TEXT || 4);
         const nodes = [];
         while (walker.nextNode()) nodes.push(walker.currentNode);
         nodes.forEach((node) => {
@@ -912,7 +1085,7 @@
           const next = replaceKnownText(node.nodeValue);
           if (next !== node.nodeValue) node.nodeValue = next;
         });
-        if (root.nodeType === Node.ELEMENT_NODE) {
+        if (root.nodeType === 1) {
           [root, ...root.querySelectorAll("[aria-label], [title], [placeholder]")].forEach((element) => {
             ["aria-label", "title", "placeholder"].forEach((name) => {
               if (!element.hasAttribute?.(name)) return;
@@ -923,18 +1096,7 @@
           });
         }
       };
-      scrubNode(doc.body);
-      const FrameMutationObserver = frame.contentWindow.MutationObserver;
-      frameObserver = new FrameMutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-          if (mutation.type === "characterData" && mutation.target.parentElement) scrubNode(mutation.target.parentElement);
-          mutation.addedNodes.forEach((node) => {
-            if (node.nodeType === Node.ELEMENT_NODE) scrubNode(node);
-            if (node.nodeType === Node.TEXT_NODE && node.parentElement) scrubNode(node.parentElement);
-          });
-        });
-      });
-      frameObserver.observe(doc.body, { childList: true, subtree: true, characterData: true });
+      scrubNode(body);
 
       doc.addEventListener("click", (event) => {
         const anchor = event.target.closest?.("a[href]");
@@ -946,6 +1108,9 @@
             return;
           }
         }
+        [0, 240, 720].forEach((delay) => window.setTimeout(() => {
+          try { if (doc.body?.isConnected) scrubNode(doc.body); } catch (_) {}
+        }, delay));
         window.clearTimeout(frameSaveTimer);
         frameSaveTimer = window.setTimeout(() => { captureFramePosition(); refreshSourceState(false); }, 220);
       }, true);
@@ -1040,5 +1205,8 @@
   if (!window.location.hash) history.replaceState({ s001Shell: true, scenarioId: activeScenario().id, s001Depth: 0 }, "", "#home");
   else if (!history.state?.s001Shell) history.replaceState({ ...(history.state || {}), s001Shell: true, scenarioId: activeScenario().id, s001Depth: 0 }, "", window.location.href);
   STORE.refreshProjection?.();
+  reconcileOntologyContracts().then((updated) => {
+    if (updated) refreshSourceState(false);
+  });
   render();
 })();

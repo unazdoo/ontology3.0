@@ -344,10 +344,10 @@
       id: "MET-FIN-011",
       type: "Metric",
       name: "高成本融资余额占比",
-      definition: "命中当前 Published 高成本条件的融资余额占全部存续融资余额的比例。",
+      definition: "命中当前已发布高成本条件的融资余额占全部存续融资余额的比例。",
       unit: "%",
       appliesTo: "集团、板块、单位",
-      filter: "融资状态 = 存续；条件引用 RULE-FIN-R01 Published 2.3.0",
+      filter: "融资状态 = 存续；条件引用 RULE-FIN-R01 已发布版本 2.3.0",
       dataAsOf: "2026-08-09",
       calculationAt: "2026-08-09 09:18",
       effective: "2026-01-01—2026-12-31",
@@ -666,7 +666,7 @@
       { id: "FACT-R01-RESULT", kind: "Rule 结论", value: "命中", unit: null, scope: "单位553", evidence: ["RULE-FIN-R01", "MET-FIN-011"], resultVersion: "RR-20260809-0918" },
       { id: "FACT-R02-RESULT", kind: "Rule 结论", value: "命中", unit: null, scope: "单位465", evidence: ["RULE-FIN-R02", "MET-FIN-010"], resultVersion: "RR-20260809-0918" },
       { id: "FACT-R03-RESULT", kind: "Rule 结论", value: "命中", unit: null, scope: "单位561", evidence: ["RULE-FIN-R03", "MET-FIN-012"], resultVersion: "RR-20260809-0918" },
-      { id: "FACT-SUGGESTION-SCOPE", kind: "建议依据", value: "仅用于复核参考，不等同于 Action Request", unit: null, scope: "三家重点单位", evidence: ["RULE-FIN-R01", "RULE-FIN-R02", "RULE-FIN-R03", "AT-FIN-OPT-001"], resultVersion: "1.0" },
+      { id: "FACT-SUGGESTION-SCOPE", kind: "建议依据", value: "仅用于复核参考，不等同于行动申请", unit: null, scope: "三家重点单位", evidence: ["RULE-FIN-R01", "RULE-FIN-R02", "RULE-FIN-R03", "AT-FIN-OPT-001"], resultVersion: "1.0" },
       { id: "FACT-COST-TREND", kind: "图表序列", value: "2025-09 至 2026-08", unit: "%", scope: "集团", evidence: ["MET-FIN-008"], resultVersion: "MR-20260809-0918" },
     ],
   };
@@ -688,13 +688,13 @@
       id: "semanticConsistency",
       name: "语义一致性",
       owner: "报告中心",
-      method: "按本体管理返回的 Published 稳定标识核对名称、单位、适用对象和筛选范围。",
+      method: "按本体管理返回的已发布稳定标识核对名称、单位、适用对象和筛选范围。",
     },
     {
       id: "versionCompatibility",
       name: "版本兼容性",
       owner: "报告中心",
-      method: "核对报告绑定的 Published 语义版本与精确数据版本是否属于同一权威消费组合。",
+      method: "核对报告绑定的已发布语义版本与精确数据版本是否属于同一权威消费组合。",
     },
     {
       id: "trustDisclosure",
@@ -1014,7 +1014,7 @@
     anchorType: "建议依据",
     applicableChecks: suggestionFactChecks,
     details: {
-      limitation: "仅用于人工复核参考，不等同于 Action Request，不表示行动已执行。",
+      limitation: "仅用于人工复核参考，不等同于行动申请，不表示行动已执行。",
       basis: [
         { scope: "单位553", ruleId: "RULE-FIN-R01", ruleVersion: units["单位553"].rule.version, evaluationRecordId: units["单位553"].rule.evaluationId, resultVersion: units["单位553"].rule.resultVersion, direction: "核对高成本借据置换空间" },
         { scope: "单位465", ruleId: "RULE-FIN-R02", ruleVersion: units["单位465"].rule.version, evaluationRecordId: units["单位465"].rule.evaluationId, resultVersion: units["单位465"].rule.resultVersion, direction: "核对固定利率或利率上限条件" },
@@ -1047,7 +1047,7 @@
     {
       id: "FACT-PUBLISHED-SEMANTIC-VERSION",
       anchorId: "disclosure-semantic-version",
-      label: "Published 语义版本",
+      label: "已发布语义版本",
       kind: "版本元数据",
       value: "3.8.1",
       evidence: ["PUB-SEM-FIN-3.8.1", "T019-FIN-CURRENT"],
@@ -1604,7 +1604,7 @@
       id: "suggestion",
       anchorId: "narrative-suggestion",
       sectionId: "sec-rules",
-      text: "基于 Rule 命中证据的复核建议，不等同于 Action Request。",
+      text: "基于规则触发证据形成复核建议，不等同于行动申请。",
       factRefs: ["FACT-SUGGESTION-SCOPE", "FACT-SUGGESTION-BASIS"],
       contentRole: "interpretation",
     },
@@ -1827,7 +1827,7 @@
     semanticEvidenceOwner: "本体管理",
     dataTrustOwner: "数据工程",
     fixationRule: "生成证据包固定时复制对应权威组合的事实包；后续权威组合变化不得改写已固定事实。",
-    unavailableRule: "事实包不可用时返回无法核验；不得使用当前 Published 定义、当前数据或其他版本事实替代。",
+    unavailableRule: "事实包不可用时返回无法核验；不得使用当前已发布定义、当前数据或其他版本事实替代。",
     contentManifestRule: "生成时同时冻结事实库存、Agent 结构化内容项、模板静态项和 renderManifest；核验以内容项清单为全集，不能只遍历已形成事实。",
   };
 
@@ -2001,7 +2001,7 @@
       contentItems: [],
       renderManifest: null,
       generatedNarrativeContract: null,
-      unavailablePolicy: "返回历史事实包不可用；不得复制 2026.08.09-01 的事实，也不得以当前 Published 定义或当前数据冒充。",
+      unavailablePolicy: "返回历史事实包不可用；不得复制 2026.08.09-01 的事实，也不得以当前已发布定义或当前数据冒充。",
       owners: {
         contentFacts: "报告中心",
         contentManifest: "报告中心",

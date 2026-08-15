@@ -23,7 +23,7 @@ const AGENT_PROMPTS = [
           { title: "任务", body: "解释融资指标、Rule 命中和主体归因证据，输出可追溯的结构化洞察与行动候选。" },
           { title: "证据边界", body: "只能使用调用方固定的证据包和其中引用的 Published 资源，不补查企业原始数据，不自行选择当前版本。" },
           { title: "输出要求", body: "每项结论携带证据引用、适用范围、限制、生成时间与未确认状态。" },
-          { title: "禁止事项", body: "不得生成 Metric 公式、修改 Rule、替代确定性计算、确认 Action 或创建负责人待办。" }
+          { title: "禁止事项", body: "不得生成指标公式、修改规则、替代确定性计算、确认行动或创建负责人待办。" }
         ]
       },
       {
@@ -38,7 +38,7 @@ const AGENT_PROMPTS = [
           { title: "任务", body: "基于固定融资证据形成结构化洞察。" },
           { title: "证据边界", body: "不得使用包外数据。" },
           { title: "输出要求", body: "输出结论、证据与限制。" },
-          { title: "禁止事项", body: "不得替代 Metric、Rule 或 Action Type 定义。" }
+          { title: "禁止事项", body: "不得替代指标、规则或行动类型定义。" }
         ]
       }
     ]
@@ -1296,7 +1296,7 @@ const AGENT_APP_INITIAL_STATE = {
         agentGates: [
           { id: "new-run", name: "发起新洞察运行", status: "blocked", label: "阻断", reason: "候选版本硬质量失败且未被采用。", recovery: "等待上游明确提供并采用新的固定证据包；Agent 不自行选择上一版本。" },
           { id: "confirm-result", name: "确认新生成结果", status: "blocked", label: "阻断", reason: "不允许基于硬质量失败版本新确认正式洞察。", recovery: "既有历史结果保留原证据并按适用范围标记陈旧，不自动生成替代结果。" },
-          { id: "action-request", name: "准备 Action Request", status: "blocked", label: "阻断", reason: "该候选不得作为新行动请求证据。", recovery: "改用符合用途门的固定证据后重新发起；不替换原请求证据。" },
+          { id: "action-request", name: "准备行动申请", status: "blocked", label: "阻断", reason: "该候选不得作为新行动申请证据。", recovery: "改用符合用途门的固定证据后重新发起；不替换原申请证据。" },
           { id: "report-draft-transfer", name: "移交报告草稿评审副本", status: "blocked", label: "合同与质量双重阻断", reason: "候选包不是 Report Generation Request，且当前存在硬质量失败。", recovery: "先由数据工程形成新的合格版本，再由报告中心提供完整报告生成请求和固定证据。" }
         ],
         historyDimensions: [

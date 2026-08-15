@@ -1,6 +1,9 @@
 (function () {
   "use strict";
 
+  const FOUNDATION = window.OFWScenarioFoundation;
+  if (!FOUNDATION) throw new Error("场景公共底座未加载，已阻止初始化。请检查 foundation 脚本入口。");
+
   const STORAGE_KEY = "ontology.financial-world.s001.integration.v2";
   const HANDOFF_CHANNEL = "ontology3.0-s001-handoff-v1";
   const SCENARIO_CONTEXT_KEY = `${HANDOFF_CHANNEL}:scenario-context`;
@@ -52,22 +55,13 @@
     return new Date(nextTime).toISOString();
   }
 
-  function scenarioRunId(scenarioId, formedAt) {
-    const compactTime = formedAt.replace(/[-:.TZ]/g, "");
-    const entropy = globalThis.crypto?.randomUUID?.().replaceAll("-", "").slice(0, 12)
-      || `${Math.random().toString(36).slice(2, 8)}${Math.random().toString(36).slice(2, 8)}`;
-    return `${scenarioId}-RUN-${compactTime}-${entropy}`;
-  }
-
   function createScenarioContext(scenario, previousFormedAt = null) {
     const formedAt = nextIsoTimestamp(previousFormedAt);
-    return {
+    return FOUNDATION.createScenarioContext({
       scenarioId: scenario.id,
       scenarioVersion: scenario.scenarioVersion || scenario.version || `${scenario.id}-v1`,
-      scenarioRunId: scenarioRunId(scenario.id, formedAt),
-      formedAt,
       status: scenario.status || "active"
-    };
+    }, { now: formedAt });
   }
 
   function normalizedScenarioContext(value, scenario) {
@@ -78,8 +72,9 @@
     if (context.scenarioVersion !== (scenario.scenarioVersion || scenario.version || `${scenario.id}-v1`)) return null;
     if (Number.isNaN(Date.parse(context.formedAt))) return null;
     if (/\u6210\u529f|\u5b8c\u6210|\u5c31\u7eea|\u91c7\u7528/.test(context.status)) return null;
-    if (/(?:\u505c\u7528|\u672a\u77e5|\u65e0\u6548|\u5df2\u7ed3\u675f|inactive|unknown|disabled)/i.test(context.status)) return null;
-    return context;
+    if (/(?:\u505c\u7528|\u672a\u77e5|\u65e0\u6548|\u5df2\u7ed3\u675f|inactive|unknown|disabled|closed|historical-readonly)/i.test(context.status)) return null;
+    const validation = FOUNDATION.validateScenarioContext(context);
+    return validation.ok ? FOUNDATION.assertScenarioContext(context) : null;
   }
 
   function enabledScenarios() {
@@ -101,7 +96,9 @@
 
   function createScenarioState(scenarioId, options = {}) {
     const scenario = scenarioDefinition(scenarioId) || window.S001_DATA.scenario;
-    const scenarioContext = createScenarioContext(scenario, options.previousFormedAt || null);
+    const scenarioContext = options.scenarioContext
+      ? FOUNDATION.assertScenarioContext(options.scenarioContext)
+      : createScenarioContext(scenario, options.previousFormedAt || null);
     return {
       scenarioId: scenario.id,
       scenarioContext,
@@ -242,6 +239,12 @@
       evidenceLocator: `统一平台 / 场景工作区 / ${scenarioContext.scenarioId} / ${scenarioContext.scenarioRunId}`,
       scenarioContext: { ...scenarioContext }
     };
+  }
+
+  function createScenarioStorage(scope, storage = localStorage, scenarioId = state.activeScenarioId) {
+    const context = scenarioContextFor(scenarioId);
+    if (!context) throw new Error(`场景 ${scenarioId || "未提供"} 未注册或没有有效运行上下文。`);
+    return FOUNDATION.createNamespacedStorage({ storage, context, scope });
   }
 
   function publishScenarioContext(scenarioId = state.activeScenarioId, notify = true) {
@@ -756,8 +759,8 @@
     } else {
       mapping = stepRecord("mapping", {
         status: expectedDataVersion && drafts.length ? "observed" : "pending", sourceKey: SOURCE_KEYS.ontology,
-        detail: expectedDataVersion ? "已发现本体 Draft；请确认它精确引用本次数据资产并完成统一校验。" : "请先发布本次数据资产，再在本体管理完成对象、关系和字段映射。",
-        recovery: expectedDataVersion ? "进入本体管理的 Draft，核对数据版本并运行统一校验。" : "先在数据工程发布可引用的数据资产。"
+        detail: expectedDataVersion ? "已发现本体草稿；请确认它精确引用本次数据资产并完成统一校验。" : "请先发布本次数据资产，再在本体管理完成对象、关系和字段映射。",
+        recovery: expectedDataVersion ? "进入本体管理的草稿，核对数据版本并运行统一校验。" : "先在数据工程发布可引用的数据资产。"
       });
     }
 
@@ -968,34 +971,34 @@
         });
 
     const confirmed = activeMatched.filter((item) => item.request?.decision?.type === "confirm");
-    const confirmComplete = Boolean(actions.complete && confirmed.length === 3);
+    const confirmComplete = Boolean(actions.complete && confirmed.length >= 1);
     const confirm = confirmComplete
       ? stepRecord("confirm", {
           status: "complete", sourceKey: SOURCE_KEYS.decision, sourceRecordId: confirmed[0].request.id,
-          recordIds: confirmed.map((item) => item.request.id), detail: "三家单位行动申请均已完成人工确认。",
+          recordIds: confirmed.map((item) => item.request.id), detail: "已完成一条代表性行动申请的人工确认，其余申请继续保留在待决策队列。",
           at: confirmed.map((item) => item.request.decision.time).filter(Boolean).sort().at(-1)
         })
       : stepRecord("confirm", {
           status: confirmed.length ? "observed" : "pending", sourceKey: SOURCE_KEYS.decision,
           sourceRecordId: confirmed[0]?.request?.id, recordIds: confirmed.map((item) => item.request.id),
-          detail: confirmed.length ? `已发现 ${confirmed.length} 条人工确认记录，尚未覆盖三家单位的同一批行动申请。` : "行动申请接收后，由业务人员逐条确认负责人、银行和行动方向。",
+          detail: confirmed.length ? `已发现 ${confirmed.length} 条人工确认记录，但尚未形成一条完整的代表性确认闭环。` : "行动申请接收后，由业务人员选择一条完成负责人、银行和行动方向确认，其余可继续待决策。",
           recovery: "在决策中心逐条确认；确认前不创建负责人待办。"
         });
 
     const formedTasks = activeMatched.filter((item) => item.request?.status === "confirmed" && item.task);
-    const todoComplete = Boolean(confirm.complete && formedTasks.length === 3);
+    const todoComplete = Boolean(confirm.complete && formedTasks.length >= 1);
     const todo = todoComplete
       ? stepRecord("todo", {
           status: "complete", sourceKey: SOURCE_KEYS.decision, sourceRecordId: formedTasks[0].task.id,
-          recordIds: formedTasks.map((item) => item.task.id), detail: "三条负责人待办均由相应人工确认结果形成。",
+          recordIds: formedTasks.map((item) => item.task.id), detail: "一条负责人待办已由对应的人工确认结果形成，其余申请未越过确认门。",
           at: formedTasks.map((item) => item.task.createdAt).filter(Boolean).sort().at(-1),
           evidence: { taskIds: formedTasks.map((item) => item.task.id), requestIds: formedTasks.map((item) => item.request.id) }
         })
       : stepRecord("todo", {
           status: formedTasks.length ? "observed" : "pending", sourceKey: SOURCE_KEYS.decision,
           sourceRecordId: formedTasks[0]?.task?.id, recordIds: formedTasks.map((item) => item.task.id),
-          detail: formedTasks.length ? `已发现 ${formedTasks.length} 条与原请求对应的待办，尚未覆盖三家单位。` : "只有人工确认成功后，决策中心才会创建负责人待办。",
-          recovery: "完成三条人工确认，并核对待办与原请求、主体、负责人和版本一致。"
+          detail: formedTasks.length ? `已发现 ${formedTasks.length} 条待办，但尚未定位到可与代表性人工确认闭合的记录。` : "只有人工确认成功后，决策中心才会创建负责人待办。",
+          recovery: "完成一条代表性人工确认，并核对待办与原请求、主体、负责人和版本一致。"
         });
 
     return { steps: { actions, confirm, todo }, matched: activeMatched, sourceRunId: activeBatch?.runId || null, tasks: formedTasks.map((item) => item.task) };
@@ -1025,7 +1028,7 @@
       list(report.contentVersions).some((content) => content?.draftId === report.draftId && content?.reviewCopyId === report.reviewCopyId && content?.evidencePackId === report.evidencePackId && content?.generationRunId === report.generationRunId)
     );
     const taskIds = decisionResult.tasks.map((task) => task.id);
-    const linkedTasks = taskIds.length === 3 && includesEveryExact(report?.evidencePacks, taskIds);
+    const linkedTasks = taskIds.length >= 1 && includesEveryExact(report?.evidencePacks, taskIds);
     const reportComplete = Boolean(draftFormed && decisionResult.steps.todo.complete && linkedTasks);
     const reportStep = !report
       ? stepRecord("report", { sourceKey: SOURCE_KEYS.report })
@@ -1035,10 +1038,10 @@
             sourceRecordId: report.aggregateId || report.draftId,
             recordIds: [report.aggregateId, report.requestId, report.generationRunId, report.generationResultId, report.draftId],
             detail: reportComplete
-              ? "报告草稿已由本次三条负责人待办的固定摘要生成。"
-              : "报告中心已形成报告草稿，但报告证据包中未能定位本次三条负责人待办，暂不能确认属于同一链路。",
+              ? "报告草稿已固定引用本次代表性确认闭环的待办摘要。"
+              : "报告中心已形成报告草稿，但证据包中未能定位本次代表性待办，暂不能确认属于同一链路。",
             at: report.generatedAt,
-            recovery: "从决策中心本次运行摘要创建报告请求，并保留三条待办的精确引用。"
+            recovery: "从决策中心本次运行摘要创建报告请求，并保留代表性待办的精确引用。"
           })
         : stepRecord("report", {
             status: ["preparing", "generating"].includes(report.stage) ? "running" : "pending", sourceKey: SOURCE_KEYS.report,
@@ -1127,7 +1130,7 @@
             : observed
               ? "已发现报告伴读结果，但其报告编号、内容版本或会话绑定与本次已发布报告不一致。"
               : adapterRecord
-                ? "报告中心的外部 Owner 适配器已保存本次伴读回执，但 Agent 应用当前工作记录中没有同一运行与会话记录，暂不能确认跨模块接收。"
+                ? "报告中心的外部责任方适配记录已保存本次伴读回执，但 Agent 应用当前工作记录中没有同一运行与会话记录，暂不能确认跨模块接收。"
               : "报告发布后，从报告中心发起伴读，并在 Agent 应用中使用固定报告上下文回答。",
           recovery: adapterRecord
             ? "由 Agent 应用接收同一报告上下文，并返回可由双方精确定位的运行、会话和结果标识。"
@@ -1138,7 +1141,13 @@
 
   function comparisonProjection(reportResult, agentResult) {
     const report = reportResult.observedReport;
-    const comparison = report?.comparison;
+    const activeComparison = report?.comparison;
+    const latestCurrentRecord = list(report?.comparisonRecords).find((record) =>
+      record?.status === "completed" && record.recordStatus !== "已陈旧"
+    );
+    const comparison = activeComparison?.status && activeComparison.status !== "idle"
+      ? activeComparison
+      : latestCurrentRecord || activeComparison;
     const completeRecord = Boolean(
       comparison?.status === "completed" && comparison.recordId && comparison.comparedAt && comparison.currentStatusReadAt &&
       comparison.reportSnapshot?.dataVersion === report?.bindingSnapshot?.dataVersion &&
@@ -1366,9 +1375,6 @@
   function resetCurrentScenario(scenarioId = state.activeScenarioId) {
     const definition = enabledScenarios().find((scenario) => scenario.id === scenarioId);
     if (!definition) throw new Error(`场景 ${scenarioId || "未提供"} 未注册或未启用。`);
-    if (enabledScenarios().length > 1) {
-      throw new Error("模块状态合同尚不支持按场景定向清理；未清除任何模块工作记录。");
-    }
     const previousScenario = state.scenarios[scenarioId] || createScenarioState(scenarioId);
     const previousContext = scenarioContextFor(scenarioId);
     const archivedAt = nextIsoTimestamp(previousContext?.formedAt || null);
@@ -1383,14 +1389,25 @@
       }
     ];
     persist(false);
-    MODULE_STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
-    Object.keys(localStorage)
-      .filter((key) => key.startsWith("ontology3.0-s001-handoff-v1:response:"))
-      .forEach((key) => localStorage.removeItem(key));
-    sessionStorage.removeItem("ontology3-decision-center-view-v2-portfolio");
-    localStorage.removeItem("ontology3-decision-center-review-v2-portfolio-state-v6");
-    localStorage.removeItem("ontology.financial-world.s001.integration.v1");
-    const nextScenario = createScenarioState(scenarioId, { previousFormedAt: archivedAt });
+    let nextScenarioContext = null;
+    if (enabledScenarios().length > 1) {
+      const resetResult = FOUNDATION.directionalReset(
+        { storage: localStorage, currentContext: previousContext },
+        { now: archivedAt }
+      );
+      nextScenarioContext = resetResult.context;
+    } else {
+      MODULE_STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
+      Object.keys(localStorage)
+        .filter((key) => key.startsWith("ontology3.0-s001-handoff-v1:response:"))
+        .forEach((key) => localStorage.removeItem(key));
+      sessionStorage.removeItem("ontology3-decision-center-view-v2-portfolio");
+      localStorage.removeItem("ontology3-decision-center-review-v2-portfolio-state-v6");
+      localStorage.removeItem("ontology.financial-world.s001.integration.v1");
+    }
+    const nextScenario = createScenarioState(scenarioId, nextScenarioContext
+      ? { scenarioContext: nextScenarioContext }
+      : { previousFormedAt: archivedAt });
     nextScenario.scenarioRunHistory = previousScenario.scenarioRunHistory.map((record) => ({ ...record }));
     state.scenarios[scenarioId] = nextScenario;
     state.activeScenarioId = scenarioId;
@@ -1411,6 +1428,8 @@
   publishScenarioContext(state.activeScenarioId, false);
 
   window.S001_STORE = {
+    FOUNDATION,
+    BASELINE_SNAPSHOT_ID: FOUNDATION.CURRENT_BASELINE_SNAPSHOT_ID,
     STORAGE_KEY,
     HANDOFF_CHANNEL,
     SCENARIO_CONTEXT_KEY,
@@ -1420,6 +1439,7 @@
     getScenario: (scenarioId = state.activeScenarioId) => state.scenarios[scenarioId] || null,
     getScenarioContext: readScenarioContext,
     getScenarioContextEnvelope: scenarioContextEnvelope,
+    createScenarioStorage,
     publishScenarioContext,
     setActiveScenario,
     getProjection,

@@ -209,20 +209,18 @@
 
   function shell(content) {
     const currentRoute = route();
-    const ontologyLabel = state.ontology ? state.ontology.name : "尚未创建本体";
     return `
       <div class="app-shell">
         <aside class="rail" aria-label="平台导航">
-          <div class="rail-brand" title="Ontology 3.0">${icon("boxes", 19)}</div>
+          <div class="rail-brand" title="智财问策">${icon("boxes", 19)}</div>
           <button class="rail-button active" type="button" title="本体管理">${icon("waypoints", 18)}</button>
           <button class="rail-button" type="button" data-action="open-help" title="帮助">${icon("circle-help", 17)}</button>
           <div class="rail-spacer"></div>
           <button class="rail-button" type="button" data-action="open-reset" title="重置状态">${icon("rotate-ccw", 17)}</button>
         </aside>
         <header class="topbar">
-          <div class="crumbs"><span>Ontology 3.0</span><i>/</i><span>本体管理</span><i>/</i><b>${escapeHtml(pageTitle(currentRoute))}</b></div>
+          <div class="crumbs"><span>智财问策</span><i>/</i><span>本体管理</span><i>/</i><b>${escapeHtml(pageTitle(currentRoute))}</b></div>
           <div class="topbar-spacer"></div>
-          <div class="account"><span class="account-avatar">本</span><div class="account-copy"><b>本体管理账号</b><span>${escapeHtml(ontologyLabel)}</span></div></div>
         </header>
         <aside class="sidebar">
           <div class="module-title"><h1>${icon("waypoints")}本体管理</h1><p>对象 · 关系 · 逻辑 · 发布 · 消费</p></div>
@@ -235,7 +233,7 @@
             ${navItem("graph", "关系图", "share-2", "P6")}
             ${navItem("versions", "版本与消费", "package-check", "P11")}
           </nav>
-          <div class="sidebar-foot">集团融资成本与债务结构优化<br />单账号工作区</div>
+          <div class="sidebar-foot">S001<br />集团融资成本与债务结构优化</div>
         </aside>
         <main class="main"><div class="content">${content}</div></main>
       </div>

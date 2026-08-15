@@ -2,39 +2,38 @@
 
 ## 启动入口
 
-以 `designs/` 为静态服务根目录，打开：
+以 `designs/prototype-releases/v1.0.3/` 为静态服务根目录，在端口 `4325` 启动静态服务后打开唯一入口：
 
 ```text
-http://127.0.0.1:4311/s001-e2e-integration/#home
+http://127.0.0.1:4325/completed-run.html
 ```
 
 当前场景轮次：`S001-RUN-20260814062516042-e1fd5e6ab3f4`。
 
 ## 当前状态
 
-- 首页真实投影：`15/15`。
+- v1.0.3 版本化运行快照投影：`15/15`。
 - M02 数据工程：`3/3`。
 - M01 本体管理：`2/2`。
 - M03 智能问数：`2/2`。
 - M04 决策中心：`3/3`。
 - M05 Agent 应用：`1/1`。
 - M06 报告中心：`4/4`。
-- 刷新后仍为 `15/15`。
 - `acceptanceReady: false`。
 
-该状态只代表 S001 原型全链路联调完整，不表示模块评审通过、S001 正式验收通过或一期验收通过。
+`15/15` 表示 15 个链路步骤均保留了可查看的代表性闭环证据，不表示所有待决策事项均已人工确认或形成待办。该状态不表示模块评审通过、S001 正式验收通过或一期验收通过。
 
 ## 当前唯一入口
 
 | 页面 | 路径 |
 |---|---|
-| 首页 | `../ontology3-homepage-review/方案A-经典复刻版.html` |
-| 数据工程 | `../data-engineering-prototype-review/review-v3/方案B2.html` |
-| 本体管理 | `../ontology-management-review/canvas-first/index.html` |
-| 智能问数 | `../intelligent-query-prototype/review-next/conversation-workspace/index.html` |
-| 决策中心 | `../decision-center-prototype/index.html` |
-| Agent 应用 | `../agent-application/Agent应用.html` |
-| 报告中心 | `../report-center/review-lifecycle/index.html` |
+| 首页 | `designs/prototype-releases/v1.0.3/ontology3-homepage-review/方案A-经典复刻版.html` |
+| 数据工程 | `designs/prototype-releases/v1.0.3/data-engineering-prototype-review/review-v3/方案B2.html` |
+| 本体管理 | `designs/prototype-releases/v1.0.3/ontology-management-review/canvas-first/index.html` |
+| 智能问数 | `designs/prototype-releases/v1.0.3/intelligent-query-prototype/review-next/conversation-workspace/index.html` |
+| 决策中心 | `designs/prototype-releases/v1.0.3/decision-center-prototype/index.html` |
+| Agent 应用 | `designs/prototype-releases/v1.0.3/agent-application/Agent应用.html` |
+| 报告中心 | `designs/prototype-releases/v1.0.3/report-center/review-lifecycle/index.html` |
 
 ## 已联通业务链
 
@@ -44,7 +43,7 @@ http://127.0.0.1:4311/s001-e2e-integration/#home
 → 本体映射、V1 发布与 T019 正式采用
 → 智能问数 RUN-MSST9EZK-014
 → 三条 Rule 命中与三条 Action Request
-→ 决策中心三次安全门、人工确认与三条负责人待办
+→ 决策中心保留 4 笔待我决策，完成 1 笔代表性人工确认并形成唯一负责人待办
 → 报告生成、确定性核验与 HTML/PDF 发布
 → 报告伴读 Session/Run/Result
 → C027 当前数据比较
@@ -52,6 +51,9 @@ http://127.0.0.1:4311/s001-e2e-integration/#home
 
 关键下游证据：
 
+- 当前已处理：单位553 的代表性行动申请；可从“已处理”回看。
+- 当前唯一负责人待办：`TD-6708422393`（单位553）。
+- 当前待我决策：4 笔；其中当前问数批次的单位465、单位561仍待决策，另两笔为保留的既有单位553申请记录。
 - 正式报告：`RPT-20260814-201940-010 / 2.0`。
 - 证据包：`EP-20260814-201553-003 / 1.0`。
 - 生成 Run：`RUN-20260814-019`。
@@ -77,20 +79,29 @@ http://127.0.0.1:4311/s001-e2e-integration/#home
 - 首页按保存时间读取报告中心最新共享或当前标签页备用恢复点，备用恢复只解决浏览器容量问题，不改变报告中心 Owner。
 - “重置当前场景”会开启新轮次，不得用复制或整体替换其他模块状态模拟场景隔离。
 
-## 回归结果
+## v1.0.3 当前验证边界
 
-- 首页、报告、C027 比较和伴读记录刷新后可恢复。
-- 当前 `1176×891` 视口下平台壳与报告模块均无横向溢出；该宽度小于 1280。
-- 既有 `1440×900`、`1280×720`、`390×844` 外壳布局基线继续有效。
-- 控制台 error 为 0；M03/M04/M05 仅保留已知浏览器内 Babel warning。
-- 核验失败重试、PDF 发布失败重试和上一正式报告冻结均已实际验证。
+- 平台品牌标识为独立点阵神经网络脑形：完整轮廓、24 个错峰节点、细线连接和轻微整体悬浮；本体管理仍使用 network 图标。展开/折叠菜单均不改变模块 iframe。
+- 版本化运行快照已按“1 笔代表性确认和待办、4 笔待我决策”完成静态状态校对，快照 SHA-256 为 `3de07e7f69b013924dcb6725b6c35ff61f38fba3234f93a472aa45821ddec774`。
+- 非 vendor JavaScript 语法检查和 26 个 JSX 文件解析检查通过；全目录 U+FFFD 为 0 命中，七个接入入口当前可见叶子文本的 computed font-size 均不低于 10px。
+- `1440×900`、`1280×720`、`390×844` 已完成动态回归；首页及七个一级入口均无页面级横向溢出，Chrome 跨模块检查为 0 个控制台 error。
+- 本体管理已动态显示四个下游可供消费、智能问数兼容、消费上下文完整；只读语义画布和数据沿袭视图切换通过。
+- 智能问数已动态显示“权威上下文可用”，CSV 已实际下载为 3 行文件 `/Users/domi/Downloads/三家单位规则命中解释 (13).csv`（1,061 bytes）；该证据只说明当前浏览器下载可用，不扩写为生产文件服务证据。
+- 决策中心已动态显示 4 笔待我决策、1 笔已处理；两张摘要卡等宽，已处理记录可回看，追踪待办只显示 `TD-6708422393`。
+- 报告助手退出当前比较视图后，`CMP-20260814-202319-011` 仍从比较历史参与只读投影；报告中心与 Agent 应用往返后首页保持 `15/15`。
+- 报告中心的报告快照与当前消费组合使用紧凑三列对照；绑定、C017 摘要、事实包、候选和上一版本证据收纳在默认关闭的“查看版本与追溯”中，编号仍完整可查。
+- 一级“仪表盘”先进入目录，S001 可进入“集团融资成本与债务结构优化”详细仪表盘；三尺寸下目录和详细页均无页面级横向溢出。
+- 左侧菜单折叠前后模块 iframe 的 `src` 和未提交输入值保持不变，证明折叠未重建 iframe。
+- `390×844` 下统一外壳仅隐藏数据工程、本体管理和 Agent 应用内部的窄版第二列菜单，模块内容区单列承接；六模块业务源码未因此修改。
+- 核验失败重试、PDF 发布失败重试和上一正式报告冻结属于父版本保留的历史运行证据，不替代 v1.0.3 动态回归。
+- 非 vendor 源文件仍保留 100 条被共享字号层覆盖的旧 `<10px` CSS 声明；当前可见文本已达标，但若关闭条件要求源声明清零，该项仍需后续机械收敛。
 
 ## 文件职责
 
 - `index.html`：统一工作台入口与资源加载。
 - `styles.css`：平台壳、首页能力架构和响应式布局。
 - `data.js`：入口、场景和 15 步业务定义。
-- `state.js`：场景命名空间、跨模块只读投影、批次选择、最新恢复点和严格完成条件。
+- `state.js`：场景命名空间、跨模块只读投影、批次选择、最新恢复点、比较历史回退和严格完成条件。
 - `app.js`：模块挂接、导航、返回、滚动恢复和重置交互。
 - `联调结果.md`：本轮真实证据、修复、回归和结论边界。
 - `总控联调交接.md`：供平台总控复核的证据摘要和后续治理事项。

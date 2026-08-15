@@ -342,7 +342,7 @@ html[data-workspace="conversation"] .scope-summary dl {
 }
 html[data-workspace="conversation"] .context-summary dt,
 html[data-workspace="conversation"] .scope-summary dt {
-  font-size:9px;
+  font-size:var(--ofw-type-11, 11px);
   font-weight:650;
 }
 html[data-workspace="conversation"] .context-summary dd,
@@ -400,7 +400,7 @@ html[data-workspace="conversation"] .stage-card > header > span:first-child {
   border-radius:50%;
   color:#68788d;
   background:#fff;
-  font-size:8px;
+  font-size:var(--ofw-type-10, 10px);
   font-weight:760;
   font-variant-numeric:tabular-nums;
 }
@@ -449,13 +449,13 @@ html[data-workspace="conversation"] .stage-card dd {
 html[data-workspace="conversation"] .context-stage-card dt,
 html[data-workspace="conversation"] .stage-card dt {
   color:var(--faint);
-  font-size:9px;
+  font-size:var(--ofw-type-11, 11px);
   font-weight:650;
 }
 html[data-workspace="conversation"] .context-stage-card dd,
 html[data-workspace="conversation"] .stage-card dd {
   color:var(--ink-2);
-  font-size:9px;
+  font-size:var(--ofw-type-11, 11px);
   font-weight:650;
 }
 html[data-workspace="conversation"] .context-stage-card h3,
@@ -472,7 +472,7 @@ html[data-workspace="conversation"] .context-stage-card small,
 html[data-workspace="conversation"] .stage-card small {
   margin:0;
   color:var(--muted);
-  font-size:9px;
+  font-size:var(--ofw-type-11, 11px);
   line-height:1.55;
   overflow-wrap:anywhere;
 }
@@ -707,7 +707,7 @@ html[data-workspace="conversation"] .agent-capability-group header small {
   display:block;
   margin:1px 0 0;
   color:var(--muted);
-  font-size:9px;
+  font-size:var(--ofw-type-11, 11px);
   line-height:1.45;
 }
 html[data-workspace="conversation"] .capability-groups > .ui-notice,
@@ -750,7 +750,7 @@ html[data-workspace="conversation"] .capability-list small,
 html[data-workspace="conversation"] .capability-items small {
   grid-column:1 / -1;
   color:var(--muted);
-  font-size:9px;
+  font-size:var(--ofw-type-11, 11px);
   line-height:1.5;
 }
 html[data-workspace="conversation"] .capability-chip-list {
@@ -783,7 +783,7 @@ html[data-workspace="conversation"] .capability-chip-list strong {
 }
 html[data-workspace="conversation"] .capability-chip-list small {
   color:var(--muted);
-  font-size:9px;
+  font-size:var(--ofw-type-11, 11px);
 }
 html[data-workspace="conversation"] .skill-list > div {
   min-height:48px;
@@ -902,7 +902,7 @@ html[data-workspace="conversation"] .horizontal-scroll-frame {
     border-radius:11px;
     color:#718096;
     background:rgba(255,255,255,.82);
-    font-size:9px;
+    font-size:var(--ofw-type-11, 11px);
     line-height:1;
     pointer-events:none;
     white-space:nowrap;
