@@ -1,0 +1,153 @@
+{
+  "type": "design",
+  "designSystems": [],
+  "primaryDesignSystem": null,
+  "assets": {
+    "智财问策（Ontology Financial World）S001 统一工作台": {
+      "versions": [
+        {
+          "path": "index.html",
+          "createdAt": "2026-08-13T15:35:52.498Z",
+          "status": "needs-review",
+          "subtitle": "S001 当前轮次原型联调 15/15；报告、证据、伴读与当前比较可在刷新及跨模块返回后恢复；历史 3/15 证据独立保留",
+          "baselineRef": "首页与 M01—M06 唯一入口已完成只读确认；IT-MOD-008 已关闭",
+          "sourceBaselines": {
+            "homepage": "../ontology3-homepage-review/方案A-经典复刻版.html",
+            "ontology": "../ontology-management-review/canvas-first/index.html",
+            "data": "../data-engineering-prototype-review/review-v3/方案B2.html",
+            "query": "../intelligent-query-prototype/review-next/conversation-workspace/index.html",
+            "decision": "../decision-center-prototype/index.html",
+            "agent": "../agent-application/Agent应用.html",
+            "report": "../report-center/review-lifecycle/index.html"
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "verifiedViewports": [
+            "1440x900",
+            "1280x720",
+            "390x844"
+          ],
+          "pendingViewports": [],
+          "verification": {
+            "entryLoad": "7/7 passed",
+            "homepageModuleEntryDeduplication": "passed; one full-width six-module chain, six cards, zero duplicate shortcut rows",
+            "schemeACapabilityArchitecture": "passed; three original copy blocks, staggered path flows, scan, pulse, dual controls, clockwise orbit, core morph, rapid switching and refresh recovery",
+            "scenarioWorkspaceHeader": "passed; S001 read-only, zero ineffective selectors, three responsive viewports",
+            "scenarioSchema": "passed; v3 scenarios[scenarioId], v2 migration and active scenario refresh verified",
+            "c033Integration": "passed for current S001 run; exact five-field shared value and same-run module projections carried the real 15-step prototype flow; multi-scenario evidence remains separate",
+            "currentScenarioReset": "prior shell UI browser regression passed; C033 archive-and-rotate passed in Node VM; post-fix browser reset and module receipts pending",
+            "shellDeduplication": "passed",
+            "singleAccount": "passed",
+            "rightStepRailRemoved": "passed",
+            "collapsibleNavigationPreservesIframeState": "passed; in-frame input and src preserved",
+            "reportMobileMenu": "passed",
+            "topProgressSteps": 15,
+            "crossModuleReturn": "passed; 6/6 routes carry S001 in shell and iframe; home domain and click-aligned scroll position restore across return and refresh",
+            "headerUnitSelectorRemoved": "passed; no range selector, popup or ineffective scenario selector",
+            "fixedS001Scope": "passed at integration layer",
+            "currentProjection": "15/15",
+            "agentRunDetailPersistence": "passed; RUN-20260814-020 and RES-20260814-020, fixed report context, evidence items, honest zero-tool state, relations and landing references survive reload",
+            "reportLifecyclePersistence": "passed; RPT-20260814-201940-010 content 2.0, EP-20260814-201553-003, HTML/PDF identity, C024-20260814-202359-012 and CMP-20260814-202319-011 survive reload",
+            "reportAgentRoundTrip": "passed; report -> agent -> browser back restores report and 15/15 without rebuilding iframe state",
+            "responsive1280x720": "passed; shell 1280/1280 and report iframe 1048/1048, no horizontal overflow",
+            "consoleErrors": 0,
+            "consoleWarnings": "M03/M04/M05 in-browser Babel transformer"
+          },
+          "scenarioWorkspace": {
+            "schemaVersion": 3,
+            "activeScenarioId": "S001",
+            "registry": [
+              {
+                "scenarioId": "S001",
+                "scenarioVersion": "S001-v1",
+                "status": "active",
+                "name": "融资成本洞察与行动闭环",
+                "enabled": true
+              }
+            ],
+            "rootSharedPreferences": [
+              "navCollapsed"
+            ],
+            "namespacedState": [
+              "scenarioContext",
+              "scenarioRunHistory",
+              "homeDomain",
+              "homeOrbitTurn",
+              "context",
+              "framePositions",
+              "navigation",
+              "resetAt",
+              "lastReadAt"
+            ],
+            "sharedScenarioContextKey": "ontology3.0-s001-handoff-v1:scenario-context",
+            "sharedScenarioContextFields": [
+              "scenarioId",
+              "scenarioVersion",
+              "scenarioRunId",
+              "formedAt",
+              "status"
+            ],
+            "projectionRule": "home summary, progress, next step, blocker and recent activity remain projections from scenario-matched module records",
+            "resetScope": "integration root context is scenario-targeted; sole-S001 compatibility cleanup still cannot prove complete module history preservation or multi-scenario reset",
+            "multiScenarioEvidence": "not available; no synthetic S002/S003 registered"
+          },
+          "scenarioContractAudit": {
+            "M02": "current S001 run formed and published FIN-ASSET-20251231-v01 with the shared scenario round",
+            "M01": "current S001 run accepted the exact asset version and formed the Published V1 authority projection",
+            "M03": "current S001 run completed intelligent query and three Rule results against the same authority projection",
+            "M04": "current S001 run completed Action Request, human confirmation and accountable task formation",
+            "M05": "C024 companion flow is complete; C024-20260814-202359-012, RUN-20260814-020 and RES-20260814-020 survive refresh and module return",
+            "M06": "formal report, verification, HTML/PDF publication and C027 comparison are complete and reloadable"
+          },
+          "recommendedCR": "none for this gap; existing C033 integration implementation fixed; CR030 remains effective; runtime evidence tracked by IT-CON-004",
+          "e2e": {
+            "status": "prototype-integration-verified",
+            "completedSteps": 15,
+            "totalSteps": 15,
+            "lastObservedAction": "刷新并往返报告中心与 Agent 应用后，正式报告、伴读结果和当前比较记录保持可恢复",
+            "blockingPoint": null,
+            "blockingReason": null,
+            "acceptanceReady": false
+          },
+          "historicalE2eEvidence": {
+            "completedSteps": 3,
+            "totalSteps": 15,
+            "lastCompletedOwner": "M02 数据工程",
+            "publishedAssetVersion": "FIN-ASSET-20251231-v01",
+            "blockingOwner": "M01 本体管理 / M02 数据工程",
+            "blockingReason": "M01 Draft 仍绑定 FIN-ASSET-20251130-v01，未接收历史轮次 M02 发布的精确资产版本",
+            "separateFromCurrentRun": true
+          },
+          "itTracking": {
+            "closedBeforeThisFix": [
+              "IT-MOD-008"
+            ],
+            "closedByThisFix": [
+              "Agent RunDetail 历史恢复点空值与证据明细恢复问题",
+              "统一外壳 Agent iframe 旧构建地址复用问题"
+            ],
+            "c033ImplementationTracking": "IT-CON-004",
+            "newCR": null
+          },
+          "openSeverity": {
+            "P0": [],
+            "P1": [
+              "IT-CON-004：当前 S001 动态链路已通过；错配拒绝、换轮回执与多场景定向重置证据仍待独立验证"
+            ],
+            "P2": [
+              "六模块业务界面仍有内部术语、合同号和技术编号"
+            ],
+            "P3": [
+              "M03/M04/M05 浏览器内 Babel 转换 warning"
+            ]
+          },
+          "section": "统一平台"
+        }
+      ]
+    }
+  },
+  "createdAt": "2026-08-13T15:35:52.506Z",
+  "updatedAt": "2026-08-14T11:42:00.000Z"
+}

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>S001 全链路运行记录 · 智财问策</title>
+  <style>
+    :root { font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif; color: #182235; background: #edf2f8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: radial-gradient(circle at 80% 0, rgba(59,130,246,.16), transparent 34%), #edf2f8; }
+    header { min-height: 68px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; border-bottom: 1px solid #d8e0ec; background: rgba(255,255,255,.88); backdrop-filter: blur(18px); }
+    .brand strong { display: block; font-size: 18px; }.brand span { color: #66758c; font-size: 12px; }
+    .status { padding: 7px 11px; border-radius: 999px; background: #e7f7ee; color: #147a46; font-size: 13px; font-weight: 700; }
+    main { width: min(1180px, calc(100vw - 40px)); margin: 34px auto 60px; }
+    .hero { padding: 30px; border: 1px solid #d8e0ec; border-radius: 18px; background: rgba(255,255,255,.94); box-shadow: 0 20px 54px rgba(37,56,88,.12); }
+    .eyebrow { color: #1769e0; font-size: 13px; font-weight: 800; letter-spacing: .08em; }
+    h1 { margin: 10px 0 8px; font-size: clamp(28px,4vw,44px); letter-spacing: -.035em; }
+    .sub { margin: 0; color: #5d6c82; line-height: 1.7; }
+    .progress { margin-top: 26px; display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; }
+    .progress strong { font-size: 24px; }.track { height: 10px; border-radius: 999px; background: #e5ebf4; overflow: hidden; }.track i { display: block; width: 100%; height: 100%; background: linear-gradient(90deg,#1769e0,#13a070); }
+    .actions { margin-top: 26px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .button { min-height: 42px; display: inline-flex; align-items: center; justify-content: center; padding: 0 17px; border: 1px solid #cbd6e5; border-radius: 8px; background: #fff; color: #20324d; text-decoration: none; font-weight: 750; }
+    .button.primary { border-color: #1769e0; background: #1769e0; color: #fff; }
+    .grid { margin-top: 18px; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; }
+    .card { min-height: 148px; padding: 18px; border: 1px solid #d8e0ec; border-radius: 14px; background: rgba(255,255,255,.92); }
+    .card span { color: #6a7890; font-size: 12px; }.card strong { display: block; margin-top: 8px; font-size: 18px; overflow-wrap: anywhere; }.card p { margin: 8px 0 0; color: #56657b; font-size: 13px; line-height: 1.55; }
+    .modules { margin-top: 18px; display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 10px; }
+    .module { padding: 14px; border: 1px solid #d8e0ec; border-radius: 12px; background: #fff; }.module span { color: #6a7890; font-size: 12px; }.module strong { display: block; margin-top: 7px; }
+    .boundary { margin-top: 18px; padding: 14px 16px; border-left: 3px solid #e5a72f; border-radius: 8px; background: #fff9eb; color: #70531a; line-height: 1.65; font-size: 13px; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr 1fr; }.modules { grid-template-columns: repeat(3,1fr); } }
+    @media (max-width: 560px) { header { padding: 0 18px; }.grid { grid-template-columns: 1fr; }.modules { grid-template-columns: 1fr 1fr; }.progress { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header><div class="brand"><strong>智财问策</strong><span>Ontology Financial World</span></div><div class="status">全链路已完成</div></header>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">S001 · 全链路运行记录</div>
+      <h1>融资成本洞察与行动闭环</h1>
+      <p class="sub">场景轮次 S001-RUN-20260814062516042-e1fd5e6ab3f4 · 数据截至 2025-12-31</p>
+      <div class="progress"><strong>15/15</strong><div class="track"><i></i></div><span>六模块业务步骤完成</span></div>
+      <div class="actions">
+        <a class="button primary" href="./open-completed-run.html">恢复并查看本次运行</a>
+        <a class="button" href="./s001-e2e-integration/联调结果.md">查看完整证据记录</a>
+        <a class="button" href="./s001-e2e-integration/#home">从初始状态开始</a>
+      </div>
+    </section>
+    <section class="modules" aria-label="模块完成情况">
+      <div class="module"><span>数据工程</span><strong>3/3</strong></div>
+      <div class="module"><span>本体管理</span><strong>2/2</strong></div>
+      <div class="module"><span>智能问数</span><strong>2/2</strong></div>
+      <div class="module"><span>决策中心</span><strong>3/3</strong></div>
+      <div class="module"><span>Agent 应用</span><strong>1/1</strong></div>
+      <div class="module"><span>报告中心</span><strong>4/4</strong></div>
+    </section>
+    <section class="grid">
+      <article class="card"><span>数据与语义</span><strong>FIN-ASSET-20251231-v01 · V1</strong><p>精确语义标识 semantic-MSSNZ5NM-G57W，四个成员与三条关系完成覆盖。</p></article>
+      <article class="card"><span>问数与行动</span><strong>RUN-MSST9EZK-014</strong><p>三条 Rule 分别形成三条 Action Request，经人工确认后形成三条负责人待办。</p></article>
+      <article class="card"><span>正式报告</span><strong>RPT-20260814-201940-010 / 2.0</strong><p>HTML 与 PDF 同报告编号、同内容版本、同证据链。</p></article>
+      <article class="card"><span>证据包与核验</span><strong>EP-20260814-201553-003</strong><p>443/443 检查单元、60/60 事实和 77/77 锚点完成核验。</p></article>
+      <article class="card"><span>当前数据比较</span><strong>CMP-20260814-202319-011</strong><p>60 项无变化、0 项变化、0 项无法比较；新鲜度维度保留警告。</p></article>
+      <article class="card"><span>报告伴读</span><strong>RUN-20260814-020</strong><p>基于固定报告证据解释单位553的优先协商银行，不重新计算正式指标。</p></article>
+    </section>
+    <div class="boundary">该记录证明本次全链路联调完成。当前仍处于联调结果评审阶段，不代表模块正式评审、S001 正式验收或一期验收通过。</div>
+  </main>
+</body>
+</html>

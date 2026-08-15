@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "product": "智财问策（Ontology Financial World）",
+  "currentFrozenVersion": "1.0.3",
+  "currentWorkVersion": "1.1.0",
+  "activePatchVersion": null,
+  "releases": [
+    {
+      "version": "1.0.0",
+      "status": "superseded-code-only-baseline",
+      "path": "prototype-releases/v1.0.0",
+      "scenarioScope": ["S001"],
+      "scenarioRunId": "S001-RUN-20260814062516042-e1fd5e6ab3f4",
+      "integrationResult": "15/15",
+      "acceptanceReady": false,
+      "manifest": "prototype-releases/v1.0.0/manifest.json",
+      "entry": "prototype-releases/v1.0.0/s001-e2e-integration/index.html"
+    },
+    {
+      "version": "1.0.1",
+      "status": "frozen-baseline",
+      "parentVersion": "1.0.0",
+      "path": "prototype-releases/v1.0.1",
+      "scenarioScope": ["S001"],
+      "scenarioRunId": "S001-RUN-20260814062516042-e1fd5e6ab3f4",
+      "integrationResult": "15/15",
+      "runtimeSnapshotIncluded": true,
+      "acceptanceReady": false,
+      "manifest": "prototype-releases/v1.0.1/manifest.json",
+      "entry": "prototype-releases/v1.0.1/completed-run.html",
+      "runtimeEntry": "prototype-releases/v1.0.1/open-completed-run.html"
+    },
+    {
+      "version": "1.0.2",
+      "status": "frozen-baseline",
+      "parentVersion": "1.0.1",
+      "path": "prototype-releases/v1.0.2",
+      "scenarioScope": ["S001"],
+      "scenarioRunId": "S001-RUN-20260814062516042-e1fd5e6ab3f4",
+      "integrationResult": "15/15",
+      "runtimeSnapshotIncluded": true,
+      "acceptanceReady": false,
+      "manifest": "prototype-releases/v1.0.2/manifest.json",
+      "entry": "prototype-releases/v1.0.2/completed-run.html",
+      "runtimeEntry": "prototype-releases/v1.0.2/open-completed-run.html"
+    },
+    {
+      "version": "1.0.3",
+      "status": "frozen-baseline",
+      "parentVersion": "1.0.2",
+      "path": "prototype-releases/v1.0.3",
+      "scenarioScope": ["S001"],
+      "scenarioRunId": "S001-RUN-20260814062516042-e1fd5e6ab3f4",
+      "integrationResult": "15/15",
+      "runtimeSnapshotIncluded": true,
+      "referenceBaselineForSubsequentScenarios": true,
+      "acceptanceReady": false,
+      "manifest": "prototype-releases/v1.0.3/manifest.json",
+      "entry": "prototype-releases/v1.0.3/completed-run.html",
+      "runtimeEntry": "prototype-releases/v1.0.3/open-completed-run.html"
+    }
+  ],
+  "workspaces": [
+    {
+      "version": "1.1.0",
+      "status": "rebase-pending",
+      "sourceParentVersion": "1.0.1",
+      "referenceBaselineVersion": "1.0.3",
+      "referenceBaselinePath": "prototype-releases/v1.0.3",
+      "rebaseRequiredBeforeScenarioWork": true,
+      "path": "prototype-work/v1.1.0",
+      "target": "新增场景扩展，具体场景编号与范围待后续任务确定",
+      "acceptanceReady": false,
+      "entry": "prototype-work/v1.1.0/s001-e2e-integration/index.html"
+    }
+  ]
+}

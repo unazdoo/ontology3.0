@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>S001 运行快照归档</title>
+  <style>
+    :root { color-scheme: light; font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f4f7fb; color: #172033; }
+    main { width: min(680px, calc(100vw - 40px)); padding: 32px; border: 1px solid #dce4ef; border-radius: 16px; background: #fff; box-shadow: 0 18px 48px rgba(31, 51, 79, .12); }
+    h1 { margin: 0 0 12px; font-size: 24px; }
+    p { margin: 8px 0; color: #536176; line-height: 1.7; }
+    code { padding: 2px 6px; border-radius: 5px; background: #eef3f9; }
+    button { margin-top: 22px; min-height: 42px; padding: 0 18px; border: 0; border-radius: 8px; background: #1769e0; color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+    button:disabled { cursor: wait; opacity: .65; }
+    #status { margin-top: 14px; font-weight: 700; color: #1769e0; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>S001 运行快照归档</h1>
+    <p>导出当前浏览器中属于智财问策 S001 原型的模块运行记录，用于冻结本次已经完成的联调状态。</p>
+    <p>目标轮次：<code>S001-RUN-20260814062516042-e1fd5e6ab3f4</code></p>
+    <p>文件只在本机浏览器与本地工作区之间流转，不上传到外部服务。</p>
+    <button id="export" type="button">导出当前运行快照</button>
+    <div id="status" role="status" aria-live="polite"></div>
+  </main>
+  <script>
+    (() => {
+      "use strict";
+      const expectedRunId = "S001-RUN-20260814062516042-e1fd5e6ab3f4";
+      const allowed = key => key.startsWith("ontology3") || key.startsWith("ontology.financial-world");
+      const collect = storage => Object.fromEntries(
+        Array.from({ length: storage.length }, (_, index) => storage.key(index))
+          .filter(key => key && allowed(key))
+          .sort()
+          .map(key => [key, storage.getItem(key)])
+      );
+      document.getElementById("export").addEventListener("click", event => {
+        const button = event.currentTarget;
+        const status = document.getElementById("status");
+        button.disabled = true;
+        try {
+          const snapshot = {
+            format: "ontology3-prototype-runtime-snapshot",
+            formatVersion: 1,
+            sourceOrigin: location.origin,
+            scenarioId: "S001",
+            scenarioRunId: expectedRunId,
+            exportedAt: new Date().toISOString(),
+            localStorage: collect(localStorage),
+            sessionStorage: collect(sessionStorage)
+          };
+          const content = JSON.stringify(snapshot);
+          if (!content.includes(expectedRunId)) throw new Error("当前浏览器未定位到目标场景轮次，未导出。请从已完成联调的统一工作台打开本页。");
+          const href = URL.createObjectURL(new Blob([content], { type: "application/json" }));
+          const link = document.createElement("a");
+          link.href = href;
+          link.download = "S001-RUN-20260814062516042-e1fd5e6ab3f4.runtime.json";
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          URL.revokeObjectURL(href);
+          status.textContent = "运行快照已导出。";
+        } catch (error) {
+          status.textContent = error.message || "运行快照导出失败。";
+        } finally {
+          button.disabled = false;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

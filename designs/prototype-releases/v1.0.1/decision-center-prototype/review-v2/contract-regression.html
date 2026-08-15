@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head><meta charset="UTF-8" /><meta name="robots" content="noindex" /><title>M04 Contract Fixture</title></head>
+  <body><p>正在准备跨模块合同输入。</p>
+    <script>
+      (() => {
+        const params = new URLSearchParams(window.location.search);
+        const testCase = params.get("case") || "baseline";
+        if (testCase === "c019-read") {
+          const projection = (() => { try { return JSON.parse(localStorage.getItem("ontology3.decision-center.c019.projection.v1") || "null"); } catch (_) { return null; } })();
+          document.body.innerHTML = `<main><h1>C019 contract read</h1><pre id="projection"></pre></main>`;
+          document.getElementById("projection").textContent = JSON.stringify(projection, null, 2);
+          return;
+        }
+        const runId = params.get("run") || "S001-RUN-M04-REG-01";
+        const context = { scenarioId: "S001", scenarioVersion: "S001-v1", scenarioRunId: runId, formedAt: "2026-08-14 10:00:00", status: "active", source: "平台联调合同输入" };
+        const semanticVersion = "SEM-S001-PUBLISHED-01";
+        const dataVersion = testCase === "conflict" ? "FIN-ASSET-CONFLICT-v99" : "FIN-ASSET-20251231-v01";
+        const createRequest = (id, unit, ruleId, metricName, metricValue, owner, ownerId, bankNames) => ({
+          id, scenario: "集团融资成本与债务结构优化", scenarioContext: context,
+          subjectId: `UNIT-${unit}`, subjectName: `单位${unit}`, sourceType: "rule",
+          sourceRef: `规则运行 RUN-${ruleId}-S001`, requester: "智能问数规则运行", requestTime: "2026-08-14 10:10:00",
+          actionType: { id: "ACTION-FINANCING-OPTIMIZATION", name: "发起融资优化建议", version: semanticVersion, status: "已发布" },
+          rule: { id: ruleId, name: ruleId === "R01" ? "融资成本偏高" : ruleId === "R02" ? "浮动利率暴露" : "短期债务集中", version: semanticVersion, evaluatedAt: "2026-08-14 10:09:30", branch: `${ruleId} 已发布条件命中`, hitEvidence: `单位${unit} ${metricName} ${metricValue}` },
+          metric: { id: `MET-${ruleId}`, name: metricName, value: metricValue, explanation: `${metricName}触发已发布条件`, evaluatedAt: "2026-08-14 10:09:30", scope: `单位${unit} · 全部存量融资` },
+          loanCount: 3, balance: "按固定证据汇总", owner, ownerId,
+          recommendation: "优先与高贡献银行协商融资条件优化。",
+          banks: bankNames.map((name, index) => ({ name, balance: `${12 - index * 2}.00 亿元`, contribution: `${30 - index * 6}%`, loanCount: 1, note: index === 0 ? "优先协商" : "后续协商" })),
+          loans: bankNames.map((name, index) => ({ id: `LN-${unit}-${index + 1}`, bank: name, balance: `${5 - index}.00 亿元`, rate: "4.20%", type: "流动资金贷款" })),
+          evidence: { semanticVersion, dataVersion, cutoff: "2025-12-31 23:59", quality: "由 C017 当前摘要读取", ready: "由 C017 当前摘要读取", snapshotId: `MS-${unit}-S001-R1`, freshness: "由 C017 当前摘要读取" },
+        });
+        const requests = [
+          createRequest("AR-S001-553-01", "553", "R01", "加权融资成本", "5.72%", "融资负责人001", "OWNER-001", ["欧陆银行", "寰宇银行", "海联银行"]),
+          createRequest("AR-S001-465-01", "465", "R02", "浮动利率余额占比", "68.4%", "融资负责人009", "OWNER-009", ["融通银行", "启明银行", "嘉禾银行"]),
+          createRequest("AR-S001-561-01", "561", "R03", "短期融资余额占比", "74.9%", "融资负责人009", "OWNER-009", ["同州银行", "星河银行", "恒信银行"]),
+        ];
+        const defaultGate = { qualityStatus: "允许推进", hardQualityFailure: false, impactScope: "无硬质量失败影响", businessFieldCategories: "无受影响业务字段类别", reason: "当前摘要未标记硬质量失败", recovery: "无需恢复", evidenceLocator: "C017/FIN-S001/current" };
+        const scopes = {};
+        if (testCase === "confirmation-read-fail") scopes["UNIT-465"] = { gates: { confirmation_submit: { ...defaultGate, readFailure: true, reason: "人工确认提交前权威读取失败" } } };
+        if (testCase === "task-unknown") scopes["UNIT-561"] = { gates: { task_formation: { ...defaultGate, qualityStatus: "状态未知", hardQualityFailure: null, reason: "待办形成前当前状态未知", recovery: "恢复权威摘要后重新读取" } } };
+        if (testCase === "hard-request") {
+          requests.splice(0, requests.length, createRequest("AR-S001-553-HARD", "553", "R01", "加权融资成本", "5.72%", "融资负责人001", "OWNER-001", ["欧陆银行", "寰宇银行", "海联银行"]));
+          Object.assign(scopes, { "UNIT-553": { gates: { request_receipt: { qualityStatus: "事后硬质量失败", hardQualityFailure: true, detectedAt: "2026-08-14 10:08:30", impactScope: "单位553固定证据", businessFieldCategories: "金融机构标识", reason: "精确数据版本发生事后硬质量失败", recovery: "来源基于恢复后的可信版本重新发起请求", evidenceLocator: "C017/FIN-S001/hard-failure" } } } });
+        }
+        const inboxRequests = testCase === "baseline" || ["confirmation-read-fail", "task-unknown", "recovery"].includes(testCase) ? [] : testCase === "duplicate" ? [...requests, ...requests] : requests;
+        const c017 = { contractCode: "C017", consumer: "决策中心", scenarioContext: context, projections: [{ dataVersion, currentStateSummary: { id: `C017-${dataVersion}-CURRENT`, version: "C017-v1", formedAt: "2026-08-14 10:08:00" }, ...defaultGate, scopes }] };
+        localStorage.setItem("ontology3.platform.scenario-runtime.v1", JSON.stringify(context));
+        localStorage.setItem("ontology3.decision-center.c011.inbox.v1", JSON.stringify({ contractCode: "C011", scenarioContext: context, formedAt: "2026-08-14 10:10:02", requests: inboxRequests }));
+        localStorage.setItem("ontology3.c017.decision-center.projection.v1", JSON.stringify(c017));
+        const target = new URL("action-portfolio.html", window.location.href);
+        target.searchParams.set("scenarioId", context.scenarioId);
+        target.searchParams.set("scenarioVersion", context.scenarioVersion);
+        target.searchParams.set("scenarioRunId", context.scenarioRunId);
+        target.searchParams.set("scenarioStatus", context.status);
+        target.hash = testCase === "baseline" ? "workbench" : testCase === "confirmation-read-fail" ? "reminder/DR-S001-465-01" : testCase === "task-unknown" ? "reminder/DR-S001-561-01" : "operations/intake";
+        window.location.replace(target);
+      })();
+    </script>
+  </body>
+</html>
