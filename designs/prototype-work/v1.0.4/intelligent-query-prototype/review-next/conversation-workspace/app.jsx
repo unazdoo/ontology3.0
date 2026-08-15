@@ -1208,12 +1208,30 @@
     const [selectedCandidateQuestion, setSelectedCandidateQuestion] = React.useState(null);
     const deliveryInFlight = React.useRef(new Set());
     const stateRef = React.useRef(state);
+    const preserveValidationIdentity = React.useRef(null);
     React.useEffect(() => { stateRef.current = state; }, [state]);
     const activeConfig = configForScenario(state.activeConfig, state.scenarioContext);
     const candidate = configForScenario(state.candidateConfig, state.scenarioContext);
     const runtime = runtimeForScenario(state, activeConfig);
     const candidateContext = candidateForScenario(state, candidate);
     const configState = D.deriveConfigRuntimeState(activeConfig, runtime, D.readOntologyBindingContext());
+    const identityForConfig = (config) => [
+      config?.id,
+      config?.version,
+      config?.contentFingerprint,
+      config?.bindingVersionId,
+      config?.sceneRunId
+    ].filter(Boolean).join("|");
+    const activeConfigIdentity = identityForConfig(activeConfig);
+    React.useEffect(() => {
+      if (preserveValidationIdentity.current === activeConfigIdentity) {
+        preserveValidationIdentity.current = null;
+        return;
+      }
+      preserveValidationIdentity.current = null;
+      setActiveValidation("未开始");
+      setActiveValidationMessage(null);
+    }, [activeConfigIdentity]);
     React.useEffect(() => {
       setState((prev) => ({ ...prev, candidateConsumptionValidation: consumptionValidation }));
     }, [consumptionValidation]);
@@ -1288,6 +1306,7 @@
           };
           return { ...prev, activeConfig: validated, enabledConfigs: (prev.enabledConfigs || []).map((item) => item.id === validated.id ? clone(validated) : item) };
         });
+        preserveValidationIdentity.current = identityForConfig(validated);
         setActiveValidation("通过");
         setActiveValidationMessage("当前配置已使用同一精确上下文完成核验。");
         notify("当前启用配置已通过精确上下文验证");
@@ -1432,6 +1451,8 @@
         const enabledConfigs = [activated];
         return { ...prev, activeConfig: activated, enabledConfigs, serial: prev.serial + 1, candidateConfig: configForScenario(D.bindConfigSnapshot(D.CANDIDATE_CONFIG, runtime, false), prev.scenarioContext) };
       });
+      setActiveValidation("未开始");
+      setActiveValidationMessage(null);
       setTab("active");
       notify("新配置已启用；上一配置已停止接收新问题");
     };
