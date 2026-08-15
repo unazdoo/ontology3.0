@@ -83,6 +83,195 @@ assert.equal(overlayPackage.contentFacts.find((fact) => fact.id === "FACT-DATA-Q
 const unavailableOverlayPackage = overlayReportFactPackageFor(overlayReport, null);
 assert.notEqual(unavailableOverlayPackage.factPackageStatus, "available", "缺少 C008 精确事实包时不得以报告静态库存冒充可消费事实包");
 
+const contentSnapshotStart = appSource.indexOf("function createContentSnapshot");
+const contentSnapshotEnd = appSource.indexOf("function snapshotContentFact", contentSnapshotStart);
+assert.ok(contentSnapshotStart >= 0 && contentSnapshotEnd > contentSnapshotStart, "报告内容快照 helper 必须存在");
+const contentSnapshotSource = appSource.slice(contentSnapshotStart, contentSnapshotEnd);
+assert.doesNotMatch(contentSnapshotSource, /ruleId\.slice\(-3\)/, "建议依据不得再从 Rule ID 尾缀推导事实 ID");
+assert.match(contentSnapshotSource, /\["R01", "R02", "R03"\]/, "建议依据必须显式锁定 R01、R02、R03 三条结果事实");
+assert.match(contentSnapshotSource, /authoritativeFactById\.get\(`FACT-\$\{code\}-RESULT`\)/, "建议依据必须按 FACT-R01\/R02\/R03-RESULT 查找权威事实");
+
+const createContentSnapshot = new Function(
+  "factPackageForReport", "factPackageIsAvailable", "clone", "makeId", "nowText",
+  `${contentSnapshotSource}\nreturn createContentSnapshot;`,
+)(
+  (report) => report.factPackage,
+  (factPackage) => factPackage?.factPackageStatus === "available",
+  (value) => (value == null ? value : JSON.parse(JSON.stringify(value))),
+  (prefix) => `${prefix}-VERIFY-SUGGESTION-BASIS`,
+  () => "2026-08-15 20:10:00",
+);
+
+const m01RuleResults = [
+  {
+    factId: "FACT-R01-RESULT",
+    scope: "单位553",
+    ruleId: "RULE-HIGH-FINANCING-COST",
+    ruleVersion: "V2",
+    evaluationRecordId: "RULE-EVAL-R01-UNIT-553-FIN-ASSET-20251231-V01",
+    resultVersion: "RR-FIN-ASSET-20251231-V01-PUB-S001-FIN-002",
+    direction: "核对高成本借据置换空间",
+  },
+  {
+    factId: "FACT-R02-RESULT",
+    scope: "单位465",
+    ruleId: "RULE-FLOATING-RATE-EXPOSURE",
+    ruleVersion: "V2",
+    evaluationRecordId: "RULE-EVAL-R02-UNIT-465-FIN-ASSET-20251231-V01",
+    resultVersion: "RR-FIN-ASSET-20251231-V01-PUB-S001-FIN-002",
+    direction: "核对固定利率或利率上限条件",
+  },
+  {
+    factId: "FACT-R03-RESULT",
+    scope: "单位561",
+    ruleId: "RULE-SHORT-TERM-DEBT-CONCENTRATION",
+    ruleVersion: "V2",
+    evaluationRecordId: "RULE-EVAL-R03-UNIT-561-FIN-ASSET-20251231-V01",
+    resultVersion: "RR-FIN-ASSET-20251231-V01-PUB-S001-FIN-002",
+    direction: "核对展期与中长期置换条件",
+  },
+];
+const suggestionEvidence = [...m01RuleResults.map((item) => item.ruleId), "ACTION-FINANCING-OPTIMIZATION"];
+const legacyGeneratedSuggestionBasis = m01RuleResults.map((item, index) => ({
+  scope: item.scope,
+  ruleId: `RULE-FIN-R0${index + 1}`,
+  ruleVersion: "旧版本",
+  evaluationRecordId: `OLD-EVAL-R0${index + 1}`,
+  resultVersion: "OLD-RESULT",
+  direction: item.direction,
+}));
+const authoritativeSuggestionFacts = [
+  ...m01RuleResults.map((item) => ({
+    id: item.factId,
+    label: `${item.factId} 命中结论`,
+    kind: "Rule 结论",
+    value: "命中",
+    unit: null,
+    scope: item.scope,
+    resultVersion: item.resultVersion,
+    evidence: [item.ruleId, item.evaluationRecordId],
+    ruleSnapshot: {
+      ruleId: item.ruleId,
+      ruleVersion: item.ruleVersion,
+      evaluationRecordId: item.evaluationRecordId,
+      evaluationTime: "2026-08-15 09:50:00",
+      branch: "命中分支",
+      metricId: `MET-${item.factId.slice(5, 8)}`,
+      result: "命中",
+    },
+  })),
+  {
+    id: "FACT-SUGGESTION-BASIS",
+    label: "融资优化建议依据",
+    kind: "建议依据",
+    value: "三家重点单位融资优化建议",
+    unit: null,
+    scope: "三家重点单位",
+    resultVersion: "PUB-S001-FIN-002",
+    evidence: suggestionEvidence,
+    basis: m01RuleResults.map((item) => ({
+      scope: item.scope,
+      ruleId: item.ruleId,
+      ruleVersion: item.ruleVersion,
+      evaluationRecordId: item.evaluationRecordId,
+      resultVersion: item.resultVersion,
+      direction: item.direction,
+    })),
+  },
+];
+const suggestionFactPackage = {
+  factPackageStatus: "available",
+  packageId: "AFP-S001-SUGGESTION-VERIFY",
+  packageVersion: "1.0",
+  schemaVersion: "1.0",
+  factInventoryVersion: "S001-FINANCE-FACTS-1.0",
+  authorityBindingId: "T019-S001-VERIFY",
+  bindingId: "T019-S001-VERIFY",
+  semanticVersionId: "PUB-S001-FIN-002",
+  semanticVersion: "V2",
+  dataAssetVersionId: "FIN-ASSET-20251231-v01",
+  dataVersion: "FIN-ASSET-20251231-v01",
+  consumableVersionId: "EVD-T018-VERIFY",
+  asOf: "2025-12-31",
+  contentFacts: authoritativeSuggestionFacts,
+  anchors: [],
+  contentItems: [],
+  renderManifest: { manifestId: "RM-S001-SUGGESTION-VERIFY", version: "1.0", items: [] },
+  rules: m01RuleResults.map((item) => ({ id: item.ruleId, kind: "Rule", status: "Published" })),
+  actionTypes: [{
+    id: "ACTION-FINANCING-OPTIMIZATION",
+    type: "Action Type",
+    status: "Published",
+    publishedSemanticVersion: "V2",
+  }],
+};
+const suggestionSnapshot = createContentSnapshot(
+  { factPackage: suggestionFactPackage, revisionNumber: 1 },
+  {
+    contentRevision: 1,
+    contentFacts: [{
+      sourceFactId: "FACT-SUGGESTION-BASIS",
+      factId: "FACT-SUGGESTION-BASIS",
+      value: "三家重点单位融资优化建议",
+      scope: "三家重点单位",
+      resultVersion: "PUB-S001-FIN-002",
+      evidenceRefs: suggestionEvidence,
+      // 模拟 Agent 返回旧静态 Rule ID；内容快照必须由 M01 Rule 结果快照纠正。
+      basis: legacyGeneratedSuggestionBasis,
+      bindingStatus: "bound",
+    }],
+  },
+);
+assert.ok(suggestionSnapshot, "可用权威事实包必须形成报告内容快照");
+const snapshottedSuggestion = suggestionSnapshot.contentFacts.find((fact) => fact.factId === "FACT-SUGGESTION-BASIS");
+assert.equal(snapshottedSuggestion.basis.length, 3, "建议依据必须固定三条 Rule 结果");
+m01RuleResults.forEach((expected) => {
+  const resultFact = suggestionSnapshot.authoritativeFacts.find((fact) => fact.id === expected.factId);
+  assert.ok(resultFact, `${expected.factId} 必须存在于固定权威事实中`);
+  assert.equal(resultFact.ruleSnapshot.ruleId, expected.ruleId, `${expected.factId} 必须匹配 M01 稳定 Rule ID`);
+  const actual = snapshottedSuggestion.basis.find((item) => item.ruleId === expected.ruleId);
+  assert.deepEqual(
+    actual,
+    {
+      scope: expected.scope,
+      ruleId: expected.ruleId,
+      ruleVersion: expected.ruleVersion,
+      evaluationRecordId: expected.evaluationRecordId,
+      resultVersion: expected.resultVersion,
+      direction: expected.direction,
+    },
+    `${expected.factId} 的主体、Rule 版本、评估记录、结果版本和方向必须全部来自固定 Rule 结果`,
+  );
+});
+
+const ruleConsistencyStart = appSource.indexOf("function evaluateRuleConsistency");
+const ruleConsistencyEnd = appSource.indexOf("function comparableRenderedValue", ruleConsistencyStart);
+assert.ok(ruleConsistencyStart >= 0 && ruleConsistencyEnd > ruleConsistencyStart, "Rule 一致性核验 helper 必须存在");
+const evaluateRuleConsistency = new Function(
+  "DATA", "outcome", "snapshotBindingGap", "comparisonValueEqual",
+  `${appSource.slice(ruleConsistencyStart, ruleConsistencyEnd)}\nreturn evaluateRuleConsistency;`,
+)(
+  { semanticResources: [], rules: [], actionTypes: [] },
+  (status, code, message, impact, recovery, owner) => ({ status, code, message, impact, recovery, owner }),
+  () => false,
+  (left, right) => JSON.stringify(left) === JSON.stringify(right),
+);
+const suggestionVerification = evaluateRuleConsistency(
+  { factId: "FACT-SUGGESTION-BASIS" },
+  {
+    semanticMissing: false,
+    exactEvidenceAvailable: true,
+    snapshot: suggestionSnapshot,
+    facts: new Map(suggestionSnapshot.authoritativeFacts.map((fact) => [fact.id, fact])),
+    contentFacts: new Map(suggestionSnapshot.contentFacts.map((fact) => [fact.factId, fact])),
+    factPackage: suggestionFactPackage,
+    evidencePack: { semanticResourceIds: suggestionEvidence },
+    binding: { semanticVersion: "V2" },
+  },
+);
+assert.equal(suggestionVerification.status, "pass", "三条建议依据逐项一致时 Rule 一致性核验必须通过");
+assert.equal(suggestionVerification.code, "SUGGESTION_BASIS_MATCH", "建议依据通过必须返回稳定核验代码");
+
 class MemoryStorage {
   constructor(entries = {}) {
     this.values = new Map(Object.entries(entries));

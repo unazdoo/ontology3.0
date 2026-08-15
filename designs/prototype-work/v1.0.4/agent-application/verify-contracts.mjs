@@ -48,9 +48,18 @@ assert(
 assert(
   app.includes("scenarioFormedAt: run.snapshot.scenarioFormedAt")
     && app.includes("scenarioStatus: run.snapshot.scenarioStatus")
+    && app.includes("consumableVersionId: identity.consumableVersionId")
     && app.includes("consumableVersionId: run.snapshot.consumableVersionId")
     && app.includes("dataAsOf: run.snapshot.dataAsOf"),
   "C023/C025 结果必须保留完整场景、精确语义、数据、T018 与 T008 身份"
+);
+
+assert(
+  app.includes("function compactC024ForStorage(candidate = {})")
+    && app.includes("anchorSnapshotId: identity.anchorSnapshotId")
+    && app.includes("anchorSnapshotVersion: identity.anchorSnapshotVersion")
+    && app.includes("selectedAnchor: identity.selectedAnchor"),
+  "C024 持久化后必须保留锚点快照与稳定锚点，供报告中心严格回读 C025"
 );
 
 assert(
@@ -61,8 +70,19 @@ assert(
 );
 
 assert(
-  entry.includes('components.jsx?v=27') && entry.includes('app.jsx?v=56'),
+  entry.includes('components.jsx?v=27') && entry.includes('app.jsx?v=64'),
   "唯一 Agent 应用入口必须加载当前补丁版本"
+);
+
+const persistSection = app.slice(app.indexOf("function persistAgentModel"), app.indexOf("function hydratePersistedModel"));
+assert(
+  persistSection.includes("const removeLegacyAgentDirectories")
+    && persistSection.includes("removeLegacyAgentDirectories();")
+    && persistSection.includes("const oldAgentPayloads")
+    && !persistSection.includes('"ontology3.agent-application.task.v7"')
+    && !persistSection.includes('"ontology3.agent-application.orchestration.v20"')
+    && !persistSection.includes('"ontology3.agent-application.catalog.v8",'),
+  "Agent 目录迁移必须在新键成功写入后清理 v7/v8，且不得删除有效任务、编排工作区"
 );
 
 console.log("M05 contract verification passed");

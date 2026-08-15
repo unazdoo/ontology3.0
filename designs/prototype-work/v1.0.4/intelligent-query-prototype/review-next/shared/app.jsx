@@ -1234,33 +1234,32 @@
         }
         const check = D.validateFixedQuestionSet({ ...validationConfig, bindingVersionId: startedContext.versionId, semanticVersion: startedContext.semanticVersion, resourceContractFingerprint: startedContext.resourceContractFingerprint }, startedContext);
         if (!check.passed) { const message = check.issues[0] || "固定问题验证失败"; setActiveValidation("失败"); setActiveValidationMessage(message); notify(message, "danger"); return; }
-        setState((prev) => {
-          const validated = {
-            ...configForScenario(prev.activeConfig, prev.scenarioContext),
-            sceneId: startedContext.scenarioId,
-            sceneVersion: startedContext.scenarioVersion,
+        const verifiedAt = now();
+        const validated = {
+          ...configForScenario(stateRef.current.activeConfig, stateRef.current.scenarioContext),
+          sceneId: startedContext.scenarioId,
+          sceneVersion: startedContext.scenarioVersion,
+          sceneVersionStatus: startedContext.scenarioReferenceStatus,
+          bindingVersionId: startedContext.versionId,
+          semanticVersion: startedContext.semanticVersion,
+          bindingVersion: `${startedContext.semanticVersion} · ${startedContext.versionId}`,
+          resourceContractFingerprint: startedContext.resourceContractFingerprint,
+          compatibility: "兼容",
+          validationRef: `配置验证-${Date.now().toString(36).toUpperCase()}`,
+          c009Validation: {
+            owner: "智能问数", status: "通过", checkedAt: verifiedAt,
+            sceneId: startedContext.scenarioId, sceneVersion: startedContext.scenarioVersion,
             sceneVersionStatus: startedContext.scenarioReferenceStatus,
-            bindingVersionId: startedContext.versionId,
-            semanticVersion: startedContext.semanticVersion,
-            bindingVersion: `${startedContext.semanticVersion} · ${startedContext.versionId}`,
+            versionId: startedContext.versionId, semanticVersion: startedContext.semanticVersion,
+            dataVersion: startedContext.dataVersion, asOf: startedContext.asOf,
+            t019EvidenceCode: startedContext.t019EvidenceCode,
+            configFingerprint: stateRef.current.activeConfig.contentFingerprint,
             resourceContractFingerprint: startedContext.resourceContractFingerprint,
-            compatibility: "兼容",
-            validationRef: `配置验证-${Date.now().toString(36).toUpperCase()}`,
-            c009Validation: {
-              owner: "智能问数", status: "通过", checkedAt: now(),
-              sceneId: startedContext.scenarioId, sceneVersion: startedContext.scenarioVersion,
-              sceneVersionStatus: startedContext.scenarioReferenceStatus,
-              versionId: startedContext.versionId, semanticVersion: startedContext.semanticVersion,
-              dataVersion: startedContext.dataVersion, asOf: startedContext.asOf,
-              t019EvidenceCode: startedContext.t019EvidenceCode,
-              configFingerprint: prev.activeConfig.contentFingerprint,
-              resourceContractFingerprint: startedContext.resourceContractFingerprint,
-              runtimeContextFingerprint: startedContext.runtimeContextFingerprint,
-              questionResults: check.questions
-            }
-          };
-          return { ...prev, activeConfig: validated, enabledConfigs: (prev.enabledConfigs || []).map((item) => item.id === validated.id ? clone(validated) : item) };
-        });
+            runtimeContextFingerprint: startedContext.runtimeContextFingerprint,
+            questionResults: check.questions
+          }
+        };
+        setState((prev) => ({ ...prev, activeConfig: validated, enabledConfigs: (prev.enabledConfigs || []).map((item) => item.id === validated.id ? clone(validated) : item) }));
         setActiveValidation("通过");
         setActiveValidationMessage("当前配置已使用同一精确上下文完成核验。");
         notify("当前启用配置已通过精确上下文验证");

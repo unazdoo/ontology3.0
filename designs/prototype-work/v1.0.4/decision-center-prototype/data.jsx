@@ -530,20 +530,20 @@ function loadDecisionState() {
 function formatNow() {
   const date = new Date();
   const pad = (value) => String(value).padStart(2, "0");
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+  return `${date.getUTCFullYear()}-${pad(date.getUTCMonth() + 1)}-${pad(date.getUTCDate())} ${pad(date.getUTCHours())}:${pad(date.getUTCMinutes())}:${pad(date.getUTCSeconds())}`;
 }
 
 function dateOnly(date = new Date()) {
   const pad = (value) => String(value).padStart(2, "0");
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+  return `${date.getUTCFullYear()}-${pad(date.getUTCMonth() + 1)}-${pad(date.getUTCDate())}`;
 }
 
 function addWorkdays(startDate, count) {
   const date = new Date(startDate);
   let added = 0;
   while (added < count) {
-    date.setDate(date.getDate() + 1);
-    const day = date.getDay();
+    date.setUTCDate(date.getUTCDate() + 1);
+    const day = date.getUTCDay();
     if (day !== 0 && day !== 6) added += 1;
   }
   return dateOnly(date);

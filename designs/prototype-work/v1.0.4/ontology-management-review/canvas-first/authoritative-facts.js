@@ -240,11 +240,25 @@
     const metrics = Object.fromEntries((version.metrics || []).map((item) => [item.id, item]));
     const rules = Object.fromEntries((version.rules || []).map((item) => [item.id, item]));
     const action = (version.actions || []).find((item) => item.id === "ACTION-FINANCING-OPTIMIZATION");
+    const resourceById = new Map();
+    [...(version.objects || []), ...(version.links || []), ...(version.metrics || []), ...(version.rules || []), ...(version.actions || [])]
+      .forEach((resource) => { if (resource?.id) resourceById.set(resource.id, resource); });
+    (version.objects || []).forEach((object) => (object.properties || []).forEach((property) => {
+      if (property?.id) resourceById.set(property.id, { ...property, parentName: property.parentName || object.name, parentId: object.id });
+    }));
     const facts = [];
     const addFact = ({ id, label, kind, value, unit = null, scope, resourceId = null, evidence = [], resultVersion = metricResultVersion, applicableChecks = null, details = {} }) => {
       const anchorId = `ontology-${id.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
       const evidenceRefs = [...new Set([resourceId, ...sourceEvidence, ...evidence].filter(Boolean))];
       const checks = applicableChecks || ["evidenceCompleteness", "valueConsistency", "semanticConsistency", "versionCompatibility", "trustDisclosure"];
+      const resource = (resourceId && resourceById.get(resourceId)) || null;
+      const effectiveFrom = resource?.effectiveFrom || version.effectiveFrom || version.publishedAt || snapshot.asOf;
+      const effectiveTo = resource?.effectiveTo || version.effectiveTo || null;
+      const semanticResourceId = resourceId || version.ontologyStableId || semanticVersionId;
+      const semanticName = resource?.name || label;
+      const semanticDefinition = resource?.definition || resource?.requirement || resource?.evidence || `${label}的业务定义`;
+      const semanticApplicableObject = resource?.scope || resource?.appliesTo || resource?.target || resource?.parentName || scope || "集团融资业务";
+      const semanticTimeRange = resource?.time || `数据截至 ${snapshot.asOf}；业务有效期 ${effectiveFrom} 至 ${effectiveTo || "未预设"}`;
       facts.push({
         id,
         label,
@@ -261,12 +275,25 @@
         semanticSnapshot: {
           semanticVersionId,
           semanticVersion,
-          resourceId,
-          resourceName: resourceId ? metrics[resourceId]?.name || rules[resourceId]?.name || action?.name || null : null
+          publishedVersion: semanticVersion,
+          resourceId: semanticResourceId,
+          resourceName: semanticName,
+          name: semanticName,
+          definition: semanticDefinition,
+          applicableObject: semanticApplicableObject,
+          timeRange: semanticTimeRange,
+          unit: unit || resource?.unit || null,
+          baseUnit: resource?.unit || unit || null,
+          effectiveFrom,
+          effectiveTo,
+          resourceType: resource?.type || resource?.kind || kind
         },
         trustSnapshot: {
           dataVersion,
           asOf: snapshot.asOf,
+          qualityStatus: sourceContract.qualitySummary?.status || "通过",
+          freshnessStatus: `截至 ${snapshot.asOf}`,
+          consumptionReadiness: "可消费",
           sourceSha256: snapshot.source.sha256,
           t018EvidenceId,
           t019EvidenceId,
@@ -303,19 +330,33 @@
       const config = unitRuleConfig[unitName];
       const code = unit.ruleCode;
       const evaluationId = `RULE-EVAL-${code}-${token(unit.singleBusinessSubjectId)}-${token(dataVersion)}`;
+      const ruleSnapshot = { ruleId: config.ruleId, ruleVersion: semanticVersion, evaluationRecordId: evaluationId, branch: unit.ruleBranch, threshold: config.threshold, evaluatedAt: evaluationAt, evaluationTime: evaluationAt, metricId: config.metricId, metricValue: config.metricValue, result: "命中" };
       addFact({ id: `FACT-UNIT-${unitKey}-BALANCE`, label: `${unitName}融资余额`, kind: "Metric 结果", value: unit.balance, unit: "亿元", scope: unitName, resourceId: "MET-FINANCING-BALANCE" });
       addFact({ id: `FACT-UNIT-${unitKey}-COST`, label: `${unitName}余额加权融资成本`, kind: "Metric 结果", value: unit.cost, unit: "%", scope: unitName, resourceId: "MET-WAVG-FINANCING-COST" });
-      addFact({ id: `FACT-${code}-RESULT`, label: `${code} 命中结论`, kind: "Rule 结论", value: "命中", scope: unitName, resourceId: config.ruleId, evidence: [config.metricId, evaluationId], resultVersion: ruleResultVersion, applicableChecks: ["evidenceCompleteness", "valueConsistency", "semanticConsistency", "versionCompatibility", "trustDisclosure", "ruleConsistency"], details: { evaluationId, ruleSnapshot: { ruleId: config.ruleId, ruleVersion: semanticVersion, branch: unit.ruleBranch, threshold: config.threshold, evaluatedAt: evaluationAt } } });
-      addFact({ id: `FACT-${code}-BRANCH`, label: `${code} 触发分支`, kind: "Rule 命中证据", value: unit.ruleBranch, scope: unitName, resourceId: config.ruleId, evidence: [config.metricId, evaluationId], resultVersion: ruleResultVersion, applicableChecks: ["evidenceCompleteness", "valueConsistency", "semanticConsistency", "versionCompatibility", "trustDisclosure", "ruleConsistency"] });
-      addFact({ id: `FACT-${code}-THRESHOLD`, label: `${code} 阈值`, kind: "Rule 阈值", value: config.threshold, scope: unitName, resourceId: config.ruleId, evidence: [config.metricId, evaluationId], resultVersion: ruleResultVersion, applicableChecks: ["evidenceCompleteness", "semanticConsistency", "versionCompatibility", "ruleConsistency"] });
-      addFact({ id: `FACT-${code}-EVALUATED-AT`, label: `${code} 评估时间`, kind: "评估时间", value: evaluationAt, scope: unitName, resourceId: config.ruleId, evidence: [evaluationId], resultVersion: ruleResultVersion, applicableChecks: ["evidenceCompleteness", "versionCompatibility", "ruleConsistency"] });
-      addFact({ id: `FACT-${code}-INSTITUTIONS`, label: `${unitName}优先协商机构`, kind: "Rule 命中证据", value: unit.institutions.map((item) => item.name).join("、"), scope: unitName, resourceId: config.ruleId, evidence: [evaluationId], resultVersion: ruleResultVersion, applicableChecks: ["evidenceCompleteness", "valueConsistency", "semanticConsistency", "versionCompatibility", "trustDisclosure", "ruleConsistency"] });
+      addFact({ id: `FACT-${code}-RESULT`, label: `${code} 命中结论`, kind: "Rule 结论", value: "命中", scope: unitName, resourceId: config.ruleId, evidence: [config.metricId, evaluationId], resultVersion: ruleResultVersion, applicableChecks: ["evidenceCompleteness", "valueConsistency", "semanticConsistency", "versionCompatibility", "trustDisclosure", "ruleConsistency"], details: { evaluationId, ruleSnapshot } });
+      addFact({ id: `FACT-${code}-BRANCH`, label: `${code} 触发分支`, kind: "Rule 命中证据", value: unit.ruleBranch, scope: unitName, resourceId: config.ruleId, evidence: [config.metricId, evaluationId], resultVersion: ruleResultVersion, applicableChecks: ["evidenceCompleteness", "valueConsistency", "semanticConsistency", "versionCompatibility", "trustDisclosure", "ruleConsistency"], details: { evaluationId, ruleSnapshot } });
+      addFact({ id: `FACT-${code}-THRESHOLD`, label: `${code} 阈值`, kind: "Rule 阈值", value: config.threshold, scope: unitName, resourceId: config.ruleId, evidence: [config.metricId, evaluationId], resultVersion: ruleResultVersion, applicableChecks: ["evidenceCompleteness", "semanticConsistency", "versionCompatibility", "ruleConsistency"], details: { evaluationId, ruleSnapshot } });
+      addFact({ id: `FACT-${code}-EVALUATED-AT`, label: `${code} 评估时间`, kind: "评估时间", value: evaluationAt, scope: unitName, resourceId: config.ruleId, evidence: [evaluationId], resultVersion: ruleResultVersion, applicableChecks: ["evidenceCompleteness", "versionCompatibility", "ruleConsistency"], details: { evaluationId, ruleSnapshot } });
+      addFact({ id: `FACT-${code}-INSTITUTIONS`, label: `${unitName}优先协商机构`, kind: "Rule 命中证据", value: unit.institutions.map((item) => item.name).join("、"), scope: unitName, resourceId: config.ruleId, evidence: [evaluationId], resultVersion: ruleResultVersion, applicableChecks: ["evidenceCompleteness", "valueConsistency", "semanticConsistency", "versionCompatibility", "trustDisclosure", "ruleConsistency"], details: { evaluationId, ruleSnapshot } });
     });
-    addFact({ id: "FACT-R01-INSTITUTIONS", label: "单位553高成本融资重点机构", kind: "Rule 命中证据", value: snapshot.units["单位553"].institutions.map((item) => item.name).join("、"), scope: "单位553", resourceId: "RULE-HIGH-FINANCING-COST", evidence: ["MET-HIGH-COST-BALANCE-RATIO"], resultVersion: ruleResultVersion, applicableChecks: ["evidenceCompleteness", "valueConsistency", "semanticConsistency", "versionCompatibility", "trustDisclosure", "ruleConsistency"] });
+    const r01EvaluationId = `RULE-EVAL-R01-${token(snapshot.units["单位553"].singleBusinessSubjectId)}-${token(dataVersion)}`;
+    const r01RuleSnapshot = { ruleId: "RULE-HIGH-FINANCING-COST", ruleVersion: semanticVersion, evaluationRecordId: r01EvaluationId, branch: snapshot.units["单位553"].ruleBranch, threshold: unitRuleConfig["单位553"].threshold, evaluatedAt: evaluationAt, evaluationTime: evaluationAt, metricId: unitRuleConfig["单位553"].metricId, metricValue: unitRuleConfig["单位553"].metricValue, result: "命中" };
+    addFact({ id: "FACT-R01-HIGH-COST-INSTITUTIONS", label: "单位553高成本融资重点机构", kind: "Rule 命中证据", value: snapshot.units["单位553"].institutions.map((item) => item.name).join("、"), scope: "单位553", resourceId: "RULE-HIGH-FINANCING-COST", evidence: ["MET-HIGH-COST-BALANCE-RATIO", r01EvaluationId], resultVersion: ruleResultVersion, applicableChecks: ["evidenceCompleteness", "valueConsistency", "semanticConsistency", "versionCompatibility", "trustDisclosure", "ruleConsistency"], details: { evaluationId: r01EvaluationId, ruleSnapshot: r01RuleSnapshot } });
     addFact({ id: "FACT-UNIT553-FOREIGN-CURRENCY", label: "单位553外币融资占比", kind: "Metric 结果", value: snapshot.units["单位553"].foreign, unit: "%", scope: "单位553", resourceId: "MET-FX-FINANCING-SHARE" });
-    addFact({ id: "FACT-INSTITUTION-PRIORITY-BASIS", label: "优先协商机构排序口径", kind: "Rule 口径", value: "R01 两条分支同时命中，按高成本融资余额贡献降序列出前三家机构。", scope: "单位553", resourceId: "RULE-HIGH-FINANCING-COST", resultVersion: semanticVersionId, applicableChecks: ["evidenceCompleteness", "semanticConsistency", "versionCompatibility", "ruleConsistency"] });
-    addFact({ id: "FACT-SUGGESTION-SCOPE", label: "行动建议使用边界", kind: "建议依据", value: "已识别的问题可以形成融资优化行动申请；必须经人工确认后，才由决策中心创建负责人待办。", scope: "三家重点单位", resourceId: action.id, evidence: version.rules.map((item) => item.id), resultVersion: semanticVersionId });
-    addFact({ id: "FACT-SUGGESTION-BASIS", label: "融资优化建议依据", kind: "建议依据", value: "单位553优先核对高成本借据降息或置换，单位465优先协商固定利率或利率上限，单位561优先协商展期或中长期置换。", scope: "三家重点单位", resourceId: action.id, evidence: version.rules.map((item) => item.id), resultVersion: semanticVersionId });
+    addFact({ id: "FACT-INSTITUTION-PRIORITY-BASIS", label: "优先协商机构排序口径", kind: "Rule 口径", value: "R01 两条分支同时命中，按高成本融资余额贡献降序列出前三家机构。", scope: "单位553", resourceId: "RULE-HIGH-FINANCING-COST", evidence: [r01EvaluationId], resultVersion: ruleResultVersion, applicableChecks: ["evidenceCompleteness", "semanticConsistency", "versionCompatibility", "ruleConsistency"], details: { evaluationId: r01EvaluationId, ruleSnapshot: r01RuleSnapshot } });
+    const suggestionEvidence = [...version.rules.map((item) => item.id), action.id];
+    const suggestionDirections = {
+      "单位553": "核对高成本借据置换空间",
+      "单位465": "核对固定利率或利率上限条件",
+      "单位561": "核对展期与中长期置换条件"
+    };
+    const suggestionBasis = Object.entries(unitRuleConfig).map(([unitName, config]) => {
+      const unit = snapshot.units[unitName];
+      const evaluationRecordId = `RULE-EVAL-${unit.ruleCode}-${token(unit.singleBusinessSubjectId)}-${token(dataVersion)}`;
+      return { scope: unitName, ruleId: config.ruleId, ruleVersion: semanticVersion, evaluationRecordId, resultVersion: ruleResultVersion, direction: suggestionDirections[unitName] };
+    });
+    addFact({ id: "FACT-SUGGESTION-SCOPE", label: "行动建议使用边界", kind: "建议依据", value: "已识别的问题可以形成融资优化行动申请；必须经人工确认后，才由决策中心创建负责人待办。", scope: "三家重点单位", resourceId: action.id, evidence: suggestionEvidence, resultVersion: semanticVersionId });
+    addFact({ id: "FACT-SUGGESTION-BASIS", label: "融资优化建议依据", kind: "建议依据", value: "单位553优先核对高成本借据降息或置换，单位465优先协商固定利率或利率上限，单位561优先协商展期或中长期置换。", scope: "三家重点单位", resourceId: action.id, evidence: suggestionEvidence, resultVersion: semanticVersionId, details: { basis: suggestionBasis, limitation: "仅用于人工复核参考，不等同于行动申请，不表示行动已执行。" } });
 
     const anchors = facts.map((fact) => ({
       id: fact.primaryAnchorId,
@@ -388,6 +429,16 @@
       asOf: snapshot.asOf,
       formedAt: binding.switchedAt,
       resultVersions: { metric: metricResultVersion, rule: ruleResultVersion },
+      semanticResources: [
+        ...(version.objects || []),
+        ...(version.links || []),
+        ...(version.metrics || []),
+        ...(version.rules || []),
+        ...(version.actions || [])
+      ],
+      metrics: clone(version.metrics || []),
+      rules: clone(version.rules || []),
+      actionTypes: clone(version.actions || []),
       sourceProof: {
         sourceSnapshotId: sourceContract.sourceSnapshotId,
         sourceReadEventId: sourceContract.sourceReadEventId,

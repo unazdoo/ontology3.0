@@ -31,7 +31,8 @@ function nowText() {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
-    hour12: false
+    hour12: false,
+    timeZone: "UTC"
   }).format(new Date()).replaceAll("/", "-");
 }
 
@@ -57,16 +58,21 @@ function displayBusinessTerm(value) {
 function compactDate() {
   const date = new Date();
   const pad = (value) => String(value).padStart(2, "0");
-  return `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}`;
+  return `${date.getUTCFullYear()}${pad(date.getUTCMonth() + 1)}${pad(date.getUTCDate())}`;
 }
 
 const C022_INBOX_KEY = "ontology3.agent-application.c022-inbox.v1";
+const C023_OUTBOX_KEY = "ontology3.agent-application.c023-outbox.v1";
 const C024_INBOX_KEY = "ontology3.agent-application.c024-inbox.v1";
 const REPORT_OWNER_RECORD_KEY = "ontology3.agent-application.owner-records.v1";
 const PLATFORM_SCENARIO_CONTEXT_KEY = "ontology3.platform.scenario-runtime.v1";
 const C033_HANDOFF_CONTEXT_KEY = "ontology3.0-s001-handoff-v1:scenario-context";
 const C011_INBOX_KEY = "ontology3.decision-center.c011.inbox.v1";
 const C019_PROJECTION_KEY = "ontology3.decision-center.c019.projection.v1";
+const LEGACY_AGENT_STORAGE_KEYS = [
+  "ontology3.agent-application.catalog.v7",
+  "ontology3.agent-application.catalog.v8"
+];
 const SCENARIO_CONTEXT_FIELDS = ["scenarioId", "scenarioVersion", "scenarioRunId", "formedAt", "status"];
 const ACTIVE_SCENARIO_STATUSES = new Set(["active", "ready", "available", "有效", "启用", "进行中", "已启用", "可用"]);
 
@@ -428,10 +434,84 @@ function compactReportDraftResultForStorage(result, keepTransferPayload) {
   };
 }
 
+function compactC023TransferForStorage(run, result) {
+  if (!run || !result || result.type !== "Agent Report Draft") return null;
+  return {
+    contractCode: "C023",
+    schemaVersion: 1,
+    owner: "Agent 应用",
+    consumer: "报告中心",
+    run: {
+      id: run.id || null,
+      requestId: run.requestId || null,
+      sessionId: run.sessionId || null,
+      bindingId: run.bindingId || null,
+      status: run.status || null,
+      source: run.source || null,
+      createdAt: run.createdAt || null,
+      startedAt: run.startedAt || null,
+      finishedAt: run.finishedAt || null,
+      retryOf: run.retryOf || null,
+      replacesRun: run.replacesRun || null,
+      snapshot: compactRunIdentityForStorage(run.snapshot || {}),
+    },
+    result: compactReportDraftResultForStorage(result, true),
+    writtenAt: nowText(),
+    persistedAsReference: true,
+  };
+}
+
+function writeC023Transfer(run, result) {
+  const transfer = compactC023TransferForStorage(run, result);
+  if (!transfer) return false;
+  const serialized = JSON.stringify(transfer);
+  const write = (storage) => {
+    storage.setItem(C023_OUTBOX_KEY, serialized);
+    return true;
+  };
+  try {
+    write(localStorage);
+    try { sessionStorage.removeItem(C023_OUTBOX_KEY); } catch (_) {}
+    return true;
+  } catch (_) {
+    try {
+      write(sessionStorage);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+}
+
 function compactC024ForStorage(candidate = {}) {
+  const identity = c024Identity(candidate);
+  const context = candidate.reportContext || {};
   return {
     requestId: candidate.requestId || null,
     receivedAt: candidate.receivedAt || null,
+    reportContext: {
+      scenarioContext: deepClone(context.scenarioContext || {
+        scenarioId: identity.scenarioId,
+        scenarioVersion: identity.scenarioVersion,
+        scenarioRunId: identity.scenarioRunId,
+        formedAt: identity.scenarioFormedAt,
+        status: identity.scenarioStatus
+      }),
+      reportNumber: identity.reportNumber,
+      contentVersion: identity.contentVersion,
+      evidencePack: { id: identity.evidencePackageId, version: identity.evidencePackageVersion },
+      semanticBinding: {
+        semanticVersionId: identity.semanticVersionId,
+        semanticVersion: identity.semanticVersion,
+        dataAssetVersionId: identity.dataAssetVersionId,
+        dataVersion: identity.dataVersion,
+        consumableVersionId: identity.consumableVersionId,
+        asOf: identity.dataAsOf
+      },
+      anchorSnapshotId: identity.anchorSnapshotId,
+      anchorSnapshotVersion: identity.anchorSnapshotVersion,
+      selectedAnchor: identity.selectedAnchor
+    },
     persistedAsReference: true,
     payloadStoredIn: C024_INBOX_KEY
   };
@@ -548,6 +628,7 @@ function compactRunIdentityForStorage(snapshot = {}) {
     "evidencePackageVersion", "evidenceName", "dataVersion", "dataAssetVersionId", "consumableVersionId", "dataAsOf",
     "ontology", "ontologyScope", "ontologyVersion", "semanticVersionId", "quality", "freshness", "evidenceStatus", "evidenceAuthority", "evidenceFormedAt",
     "requestId", "question", "reportAggregateId", "reportDefinitionId", "reportDefinitionVersion", "templateId", "templateVersion",
+    "anchorSnapshotId", "anchorSnapshotVersion",
     "reportNumber", "contentVersion", "reportVersion", "anchor", "verificationSummary", "verificationRunRef", "contextIntent",
     "regenerationStatus", "regenerationRef"
   ];
@@ -591,6 +672,9 @@ function compactHistoricalReportRunForStorage(run = {}) {
     dataVersion: run.result.dataVersion || null,
     consumableVersionId: run.result.consumableVersionId || null,
     dataAsOf: run.result.dataAsOf || null,
+    anchorSnapshotId: run.result.anchorSnapshotId || null,
+    anchorSnapshotVersion: run.result.anchorSnapshotVersion || null,
+    anchor: run.result.anchor || null,
     scenarioContext: deepClone(run.result.scenarioContext || null),
     scenarioId: run.result.scenarioId || null,
     scenarioVersion: run.result.scenarioVersion || null,
@@ -663,6 +747,9 @@ function compactArchivedRunForStorage(run = {}) {
       dataVersion: run.result.dataVersion || null,
       consumableVersionId: run.result.consumableVersionId || null,
       dataAsOf: run.result.dataAsOf || null,
+      anchorSnapshotId: run.result.anchorSnapshotId || null,
+      anchorSnapshotVersion: run.result.anchorSnapshotVersion || null,
+      anchor: run.result.anchor || null,
       scenarioContext: deepClone(run.result.scenarioContext || null),
       sourceDraftId: run.result.sourceDraftId || null,
       persistedAsReference: true
@@ -767,12 +854,20 @@ function compactModelForStorage(model) {
 function persistAgentModel(model) {
   const key = window.AGENT_WORKSPACE_CONFIG.storageKey;
   const payload = JSON.stringify(compactModelForStorage(model));
+  const removeLegacyAgentDirectories = () => {
+    LEGACY_AGENT_STORAGE_KEYS.filter((legacyKey) => legacyKey !== key).forEach((legacyKey) => {
+      try { localStorage.removeItem(legacyKey); } catch (_) {}
+    });
+  };
   try {
     localStorage.setItem(key, payload);
+    try { sessionStorage.removeItem(key); } catch (_) {}
+    removeLegacyAgentDirectories();
     return;
   } catch (error) {
     if (error?.name !== "QuotaExceededError") throw error;
     const legacyPrototypeKeys = [
+      // 仅清理已确认废弃的旧原型工作区；任务与编排工作区仍是有效入口。
       "ontology-management-product-state-v1",
       "ontology3-canvas-first-review-v16",
       "ontology3.intelligent-query.workspace.v1",
@@ -782,18 +877,47 @@ function persistAgentModel(model) {
       "ontology3-decision-center-state-v1",
       "ontology3-decision-center-review-v2-queue-state-v6",
       "ontology3-decision-center-review-v2-continuous-state-v6",
-      "ontology3.agent-application.catalog.v8",
       "ontology3.report-center.state.v1",
       "ontology3.report-center.review-evidence.v1",
-      "ontology3.report-center.review-workspace.v2"
+      "ontology3.report-center.review-workspace.v2",
+      "ontology3.report-center.lifecycle-review.v0",
+      "ontology3.data-engineering.workspace.v4",
+      "ontology3.data-engineering.workspace.v5",
+      "ontology3.decision-center-review-v2-queue-state-v5",
+      "ontology3.decision-center-review-v2-continuous-state-v5"
     ].filter((legacyKey) => legacyKey !== key);
     if (legacyPrototypeKeys.length) {
       legacyPrototypeKeys.forEach((legacyKey) => localStorage.removeItem(legacyKey));
       try {
         localStorage.setItem(key, payload);
+        try { sessionStorage.removeItem(key); } catch (_) {}
+        removeLegacyAgentDirectories();
         return;
       } catch (_) {}
     }
+    // 迁移旧 Agent 目录键时，先保留内存中的完整模型，再释放旧键空间。
+    // 若新键写入失败，恢复旧键，避免把已有运行历史丢失。
+    const oldAgentKeys = LEGACY_AGENT_STORAGE_KEYS.filter((legacyKey) => legacyKey !== key);
+    const oldAgentPayloads = oldAgentKeys.map((legacyKey) => ({ key: legacyKey, value: localStorage.getItem(legacyKey) }))
+      .filter((entry) => entry.value);
+    oldAgentPayloads.forEach((entry) => localStorage.removeItem(entry.key));
+    try {
+      localStorage.setItem(key, payload);
+      try { sessionStorage.removeItem(key); } catch (_) {}
+      removeLegacyAgentDirectories();
+      return;
+    } catch (migrationError) {
+      oldAgentPayloads.forEach((entry) => {
+        try { localStorage.setItem(entry.key, entry.value); } catch (_) {}
+      });
+    }
+    // 浏览器 localStorage 已满时，使用同一标签页的 sessionStorage 保留完整工作区。
+    // sessionStorage 会跨模块导航和刷新保留，报告中心与总控均通过同一只读回退读取。
+    try {
+      sessionStorage.setItem(key, payload);
+      removeLegacyAgentDirectories();
+      return;
+    } catch (_) {}
     const previous = localStorage.getItem(key);
     if (!previous || payload.length >= previous.length) throw error;
     localStorage.removeItem(key);
@@ -833,7 +957,14 @@ function hydratePersistedModel(model) {
       ? (() => {
         const c024 = deepClone(resolveC024Reference(request.c024 || { requestId: request.id }));
         const identity = c024Identity(c024);
-        return { ...request, consumableVersionId: request.consumableVersionId || identity.consumableVersionId || null, c024 };
+        return {
+          ...request,
+          consumableVersionId: request.consumableVersionId || identity.consumableVersionId || null,
+          anchorSnapshotId: request.anchorSnapshotId || identity.anchorSnapshotId || null,
+          anchorSnapshotVersion: request.anchorSnapshotVersion || identity.anchorSnapshotVersion || null,
+          anchor: request.anchor || identity.selectedAnchor || null,
+          c024,
+        };
       })()
       : request);
   hydrated.evidencePackages = (hydrated.evidencePackages || []).map((evidence) => evidence.kind === "report-generation" && evidence.persistedAsReference
@@ -1152,6 +1283,7 @@ function evidenceFromC024(candidate, receivedAt = nowText()) {
     statusLabel: allowed ? "可用于当前报告上下文" : denied ? "权限不足" : "当前不可消费",
     dataVersion: identity.dataVersion,
     dataAssetVersionId: identity.dataAssetVersionId,
+    consumableVersionId: identity.consumableVersionId,
     dataAsOf: identity.dataAsOf,
     ontologyVersion: identity.semanticVersion,
     semanticVersionId: identity.semanticVersionId,
@@ -1377,7 +1509,7 @@ function reportContextVersionIssue(agentOrDraft, evidence, request = null) {
   if (!usesReportContextOntology(agentOrDraft)) return null;
   if (!evidence?.report || !evidence?.ontologyVersion || !evidence?.semanticVersionId) return "报告固定上下文缺少精确的已发布语义版本标识或版本。";
   if (evidence.credibility?.versionBindingSummary?.ontology !== evidence.ontologyVersion) return "报告证据包与 C017 版本绑定摘要中的已发布语义版本不一致。";
-  if (request && (request.reportNumber !== evidence.report.number || request.contentVersion !== evidence.report.contentVersion || request.evidencePackageId !== evidence.evidencePackageId || request.evidencePackageVersion !== evidence.evidencePackageVersion || request.semanticVersionId !== evidence.semanticVersionId || request.dataAssetVersionId !== evidence.dataAssetVersionId || request.anchor !== evidence.report.anchor)) return "报告请求与固定证据包的报告、内容、证据、语义、数据版本或稳定锚点不一致。";
+  if (request && (request.reportNumber !== evidence.report.number || request.contentVersion !== evidence.report.contentVersion || request.evidencePackageId !== evidence.evidencePackageId || request.evidencePackageVersion !== evidence.evidencePackageVersion || request.semanticVersionId !== evidence.semanticVersionId || request.dataAssetVersionId !== evidence.dataAssetVersionId || request.consumableVersionId !== evidence.consumableVersionId || request.anchor !== evidence.report.anchor)) return "报告请求与固定证据包的报告、内容、证据、语义、数据、可消费版本或稳定锚点不一致。";
   return null;
 }
 
@@ -2038,7 +2170,13 @@ function routePath(screen, id = null, version = null) {
 
 function loadState() {
   try {
-    const saved = localStorage.getItem(window.AGENT_WORKSPACE_CONFIG.storageKey);
+    const configuredKey = window.AGENT_WORKSPACE_CONFIG.storageKey;
+    const storageCandidates = [configuredKey, ...LEGACY_AGENT_STORAGE_KEYS.filter((key) => key !== configuredKey)];
+    let saved = null;
+    for (const key of storageCandidates) {
+      saved = localStorage.getItem(key) || sessionStorage.getItem(key);
+      if (saved) break;
+    }
     if (!saved) return scopeModelToActiveScenario(window.AGENT_APP_INITIAL_STATE);
     const parsed = JSON.parse(saved);
     if (parsed.schemaVersion === window.AGENT_APP_INITIAL_STATE.schemaVersion) return scopeModelToActiveScenario(hydratePersistedModel(parsed));
@@ -2303,6 +2441,14 @@ function App() {
     }
   }, [model]);
 
+  // C023 是跨模块交接的最小结果包。即使完整 Agent 工作区因浏览器容量
+  // 无法整体写回，也要保留当前报告草稿的可验证交接记录，供报告中心只读回读。
+  useEffect(() => {
+    const latestGeneration = (model.runs || []).find((run) => run.snapshot?.agentId === "report-draft"
+      && run.status === "complete" && run.result?.type === "Agent Report Draft" && currentProjection(run));
+    if (latestGeneration) writeC023Transfer(latestGeneration, latestGeneration.result);
+  }, [model.runs.map((run) => `${run.id}:${run.status}:${run.result?.id || ""}`).join("|")]);
+
   useEffect(() => {
     const reconcileReceipts = () => {
       setModel((current) => {
@@ -2478,10 +2624,21 @@ function App() {
       toast("报告生成请求已拒绝", `${issues.join("；")}。请由报告中心修复后重新提交。`, "danger");
       return;
     }
-    const existingRequest = model.inboundRequests.find((request) => request.sourceRequestId === candidate.requestId);
-    if (existingRequest) {
-      if (existingRequest.c022Fingerprint === c022Fingerprint(candidate)) toast("该生成请求已接收", `请求 ${existingRequest.id} 已存在，未重复创建当前资源。`, "success");
-      else toast("同一请求标识发生冲突", "已接收记录保持不变；请报告中心使用新的请求标识和完整固定上下文重新提交。", "danger");
+    const candidateFingerprint = c022Fingerprint(candidate);
+    const existingRequest = model.inboundRequests.find((request) => request.sourceRequestId === candidate.requestId && currentProjection(request));
+    const existingRun = existingRequest
+      ? model.runs.find((run) => run.requestId === existingRequest.id && currentProjection(run) && ["waiting", "running"].includes(run.status))
+      : null;
+    const replacingReceivedRequest = Boolean(existingRequest && existingRequest.c022Fingerprint !== candidateFingerprint);
+    const refreshingReceivedRequest = Boolean(existingRequest && !existingRun && !replacingReceivedRequest
+      && ["pending", "failed", "blocked"].includes(existingRequest.status)
+      && String(candidate.submittedAt || "") >= String(existingRequest.receivedAt || ""));
+    if (existingRequest && !replacingReceivedRequest && !refreshingReceivedRequest) {
+      toast("该生成请求已接收", `请求 ${existingRequest.id} 已存在，未重复创建当前资源。`, "success");
+      return;
+    }
+    if (replacingReceivedRequest && existingRun) {
+      toast("请求仍在运行", "同一请求已有运行中的固定上下文；请等待完成或先结束该运行，再重新交付新的 C022。", "danger");
       return;
     }
     const evidence = evidenceFromC022(candidate, receivedAt);
@@ -2516,15 +2673,19 @@ function App() {
       question: "按固定报告定义、模板槽位和证据包生成结构化源草稿",
       requestContext: deepClone(evidence.requestContext),
       c022: deepClone(candidate),
-      c022Fingerprint: c022Fingerprint(candidate),
+      c022Fingerprint: candidateFingerprint,
       blockedReason: null,
       recovery: null
     };
     setModel((current) => {
       const archive = (item, reason) => ({ ...item, currentProjection: false, projectionStatus: "history", archivedAt: receivedAt, archivedReason: reason });
       const activeGeneration = current.inboundRequests.find((item) => currentProjection(item) && item.type === "report-draft");
-      const contextChanged = Boolean(activeGeneration && (!sameScenarioContext(activeGeneration.scenarioContext, activeScenarioContext) || activeGeneration.reportAggregateId !== identity.aggregateId));
-      const historyReason = `报告中心提交了新的场景轮次或报告生成根（新请求：${request.id}）；旧请求、运行和结果保持只读。`;
+      const contextChanged = Boolean(activeGeneration && (!sameScenarioContext(activeGeneration.scenarioContext, activeScenarioContext)
+        || activeGeneration.reportAggregateId !== identity.aggregateId
+        || ((replacingReceivedRequest || refreshingReceivedRequest) && activeGeneration.id === existingRequest?.id)));
+      const historyReason = replacingReceivedRequest || refreshingReceivedRequest
+        ? `报告中心重新交付了同一请求的完整固定上下文；旧请求、运行和结果保持只读。`
+        : `报告中心提交了新的场景轮次或报告生成根（新请求：${request.id}）；旧请求、运行和结果保持只读。`;
       return {
         ...current,
         currentScenarioContext: deepClone(activeScenarioContext),
@@ -2623,6 +2784,8 @@ function App() {
       consumableVersionId: identity.consumableVersionId,
       dataAsOf: identity.dataAsOf,
       scenarioContext: deepClone(evidence.scenarioContext),
+      anchorSnapshotId: identity.anchorSnapshotId,
+      anchorSnapshotVersion: identity.anchorSnapshotVersion,
       anchor: identity.selectedAnchor,
       question: candidate.question,
       requestContext: deepClone(evidence.requestContext),
@@ -3213,6 +3376,8 @@ function App() {
       reportNumber: request?.reportNumber || evidence.report?.number || null,
       contentVersion: request?.contentVersion || evidence.report?.contentVersion || null,
       reportVersion: request?.reportVersion || (evidence.report ? `${evidence.report.number || evidence.report.name} · ${evidence.report.contentVersion}` : null),
+      anchorSnapshotId: request?.anchorSnapshotId || evidence.report?.anchorSnapshotId || null,
+      anchorSnapshotVersion: request?.anchorSnapshotVersion || evidence.report?.anchorSnapshotVersion || null,
       anchor: request?.anchor || evidence.report?.anchor || null,
       verificationSummary: evidence.report?.verification || null,
       verificationRunRef: evidence.report?.verificationRunRef || null,
@@ -3620,6 +3785,9 @@ function App() {
       scenarioStatus: run.snapshot.scenarioStatus,
       reportNumber: run.snapshot.reportNumber,
       contentVersion: run.snapshot.contentVersion,
+      anchorSnapshotId: run.snapshot.anchorSnapshotId,
+      anchorSnapshotVersion: run.snapshot.anchorSnapshotVersion,
+      anchor: run.snapshot.anchor,
       evidencePackageId: run.snapshot.evidencePackageId,
       evidencePackageVersion: run.snapshot.evidencePackageVersion,
       semanticVersionId: run.snapshot.semanticVersionId,

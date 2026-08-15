@@ -19,6 +19,7 @@
     "ontology3.iq.review.identity-counter.v1",
     "ontology3-decision-center-state-v1",
     "ontology3-decision-center-review-v2-portfolio-state-v6",
+    "ontology3.agent-application.catalog.v1.0.4",
     "ontology3.agent-application.catalog.v7",
     "ontology3.agent-application.catalog.v8",
     "ontology3.report-center.lifecycle-review.v1",
@@ -31,6 +32,7 @@
     ontology: "ontology3-canvas-first-review-v17",
     query: "ontology3.iq.review.conversation.v1",
     decision: "ontology3-decision-center-review-v2-portfolio-state-v6",
+    agent: "ontology3.agent-application.catalog.v1.0.4",
     agentV7: "ontology3.agent-application.catalog.v7",
     agentV8: "ontology3.agent-application.catalog.v8",
     agentOwner: "ontology3.agent-application.owner-records.v1",
@@ -45,7 +47,8 @@
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
-      hour12: false
+      hour12: false,
+      timeZone: "UTC"
     }).format(new Date()).replaceAll("/", "-");
   }
 
@@ -357,7 +360,7 @@
 
   function readJson(key) {
     try {
-      const value = JSON.parse(localStorage.getItem(key));
+      const value = JSON.parse(localStorage.getItem(key) || sessionStorage.getItem(key));
       return value && typeof value === "object" ? value : null;
     } catch (_) {
       return null;
@@ -1371,7 +1374,7 @@
       ontology: readJson(SOURCE_KEYS.ontology),
       query: readJson(SOURCE_KEYS.query),
       decision: readJson(SOURCE_KEYS.decision),
-      agent: readJson(SOURCE_KEYS.agentV7) || readJson(SOURCE_KEYS.agentV8),
+      agent: readJson(SOURCE_KEYS.agent) || readJson(SOURCE_KEYS.agentV7) || readJson(SOURCE_KEYS.agentV8),
       agentOwner: readJson(SOURCE_KEYS.agentOwner),
       report: readNewestJson(SOURCE_KEYS.report, `${SOURCE_KEYS.report}.active-tab`)
     };

@@ -496,11 +496,10 @@
     const context = state?.scenarioContexts?.[state.activeScenarioId] || DEFAULT_SCENARIO;
     return Object.values(state.externalDataAssets || {}).filter(contract => !dataAssetDeliveryIssues(contract).length && sameScenarioEnvelope(contract, context));
   }
-  function nowText() { return new Intl.DateTimeFormat("zh-CN", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date()).replace("/", "-"); }
-  function fullNowText() { return new Intl.DateTimeFormat("zh-CN", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }).format(new Date()).replaceAll("/", "-"); }
+  function nowText() { return new Intl.DateTimeFormat("zh-CN", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "UTC" }).format(new Date()).replace("/", "-"); }
+  function fullNowText() { return new Intl.DateTimeFormat("zh-CN", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "UTC" }).format(new Date()).replaceAll("/", "-"); }
   function nowLocalValue() {
-    const date = new Date(Date.now() - new Date().getTimezoneOffset() * 60000);
-    return date.toISOString().slice(0, 16);
+    return new Date().toISOString().slice(0, 16);
   }
   function humanDateTime(value, fallback = "待确认") { return value ? String(value).replace("T", " ") : fallback; }
   function publicationStateOf(resource) {

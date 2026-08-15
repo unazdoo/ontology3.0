@@ -1143,8 +1143,8 @@ a { color:inherit; text-decoration:none; }
     resetScenarioRun(request.requestId);return true;
   }
 
-  function nowText() { return new Intl.DateTimeFormat("zh-CN", { year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit", second:"2-digit", hour12:false }).format(new Date()).replaceAll("/","-"); }
-  function dateStamp() { const d=new Date(); return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`; }
+  function nowText() { return new Intl.DateTimeFormat("zh-CN", { year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit", second:"2-digit", hour12:false, timeZone:"UTC" }).format(new Date()).replaceAll("/","-"); }
+  function dateStamp() { const d=new Date(); return `${d.getUTCFullYear()}${String(d.getUTCMonth()+1).padStart(2,"0")}${String(d.getUTCDate()).padStart(2,"0")}`; }
   function nextDefinitionVersion() { return `DEF-${dateStamp()}-${String(flow.definitionRevision + 1).padStart(2,"0")}`; }
   function stableString(value) { return JSON.stringify(value); }
   function relationLabel(value) { return typeof value==="string"?value:(value?.name||value?.label||`${value?.fromMember||value?.from||"上游成员"} → ${value?.toMember||value?.to||"下游成员"}`); }

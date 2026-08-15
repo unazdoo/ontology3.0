@@ -447,6 +447,15 @@
       consumableVersionId: snapshot.consumableVersionId || null,
       asOf: snapshot.asOf || null,
       contentFacts: keepPayload ? (snapshot.contentFacts || []).map(compactGeneratedContentFact) : [],
+      // 固定报告的正文、结构和指标必须可脱离当前 C008/C017 重新阅读；
+      // 这些字段是历史快照负载，不得在恢复时被当前事实包覆盖。
+      authoritativeFacts: keepPayload ? clone(snapshot.authoritativeFacts || []) : [],
+      groupMetrics: keepPayload ? clone(snapshot.groupMetrics || null) : null,
+      units: keepPayload ? clone(snapshot.units || {}) : {},
+      trend: keepPayload ? clone(snapshot.trend || []) : [],
+      structures: keepPayload ? clone(snapshot.structures || null) : null,
+      institutions: keepPayload ? clone(snapshot.institutions || []) : [],
+      facts: keepPayload ? clone(snapshot.facts || []) : [],
       bindingGaps: clone(snapshot.bindingGaps || []),
       narratives: keepPayload ? clone(snapshot.narratives || []) : [],
       archivedContentFactCount: keepPayload ? null : (snapshot.contentFacts || []).length,
@@ -480,6 +489,27 @@
 
   function hydrateContentSnapshot(snapshot, report) {
     if (!snapshot) return null;
+    const hasFixedPayload = Boolean(
+      snapshot.contentFacts?.length
+      || snapshot.authoritativeFacts?.length
+      || snapshot.facts?.length
+      || snapshot.groupMetrics
+      || snapshot.structures
+      || snapshot.trend?.length
+      || snapshot.institutions?.length
+    );
+    if (hasFixedPayload) {
+      return {
+        ...snapshot,
+        authoritativeFacts: clone(snapshot.authoritativeFacts || snapshot.facts || []),
+        groupMetrics: clone(snapshot.groupMetrics || null),
+        units: clone(snapshot.units || {}),
+        trend: clone(snapshot.trend || []),
+        structures: clone(snapshot.structures || null),
+        institutions: clone(snapshot.institutions || []),
+        facts: clone(snapshot.facts || snapshot.authoritativeFacts || []),
+      };
+    }
     const factPackage = factPackageForStoredSnapshot(snapshot, report);
     if (!factPackageIsAvailable(factPackage)) {
       return {
@@ -569,7 +599,15 @@
     const factPackage = factPackageForStoredSnapshot(content.snapshot, report);
     hydrated.factInventory = content.factInventory?.length
       ? clone(content.factInventory)
-      : clone(factPackageIsAvailable(factPackage) ? factPackage.contentFacts : []);
+      : clone(
+        hydrated.snapshot?.authoritativeFacts?.length
+          ? hydrated.snapshot.authoritativeFacts
+          : hydrated.snapshot?.facts?.length
+            ? hydrated.snapshot.facts
+            : hydrated.snapshot?.contentFacts?.length
+              ? hydrated.snapshot.contentFacts
+              : factPackageIsAvailable(factPackage) ? factPackage.contentFacts : []
+      );
     hydrated.verificationPlan = content.verificationPlan?.length
       ? clone(content.verificationPlan)
       : rebuildStoredVerificationPlan(hydrated);
@@ -1695,19 +1733,58 @@
     const factPackage = factPackageForReport(report);
     if (!factPackageIsAvailable(factPackage)) return null;
     const authoritativeFacts = clone(factPackage.contentFacts || []);
+    const authoritativeFactById = new Map(authoritativeFacts.map((fact) => [fact.id, fact]));
+    const suggestionDirections = {
+      "单位553": "核对高成本借据置换空间",
+      "单位465": "核对固定利率或利率上限条件",
+      "单位561": "核对展期与中长期置换条件",
+    };
+    const canonicalSuggestionBasis = (fact) => {
+      if (fact?.id !== "FACT-SUGGESTION-BASIS") return null;
+      const existing = Array.isArray(fact.basis) ? fact.basis : [];
+      const ruleFacts = ["R01", "R02", "R03"].map((code) => authoritativeFactById.get(`FACT-${code}-RESULT`)).filter(Boolean);
+      if (ruleFacts.length !== 3) return clone(existing);
+      return ruleFacts.map((ruleFact) => {
+        const ruleSnapshot = ruleFact.ruleSnapshot || {};
+        const prior = existing.find((item) => item.scope === ruleFact.scope || item.ruleId === ruleSnapshot.ruleId) || {};
+        return {
+          scope: ruleFact.scope || prior.scope || "未提供主体",
+          ruleId: ruleSnapshot.ruleId || prior.ruleId || null,
+          ruleVersion: ruleSnapshot.ruleVersion || prior.ruleVersion || null,
+          evaluationRecordId: ruleSnapshot.evaluationRecordId || ruleFact.evaluationId || prior.evaluationRecordId || null,
+          resultVersion: ruleFact.resultVersion || prior.resultVersion || null,
+          direction: prior.direction || suggestionDirections[ruleFact.scope] || "按固定 Rule 结果复核",
+        };
+      });
+    };
     const generatedById = new Map((generatedContent?.contentFacts || []).map((fact) => [fact.sourceFactId || fact.intendedFactId || fact.factId, fact]));
     const contentFacts = authoritativeFacts.map((fact) => {
       const generated = generatedById.get(fact.id);
+      const suggestionBasis = canonicalSuggestionBasis(fact);
       if (generated) {
+        // 生成结果可以提供呈现文本，但不能成为可信度、语义或规则绑定的第二个真源。
+        // 这些字段必须从本次固定的权威事实包继承，避免 Agent 旧副本与 C017/C008 快照漂移。
+        const isTrustDisclosure = [
+          "FACT-DATA-QUALITY-STATUS",
+          "FACT-DATA-FRESHNESS",
+          "FACT-DATA-READINESS",
+          "FACT-DATA-AS-OF-DISCLOSURE",
+        ].includes(fact.id);
         return {
           ...clone(generated),
           sourceFactId: generated.sourceFactId || fact.id,
           factId: fact.id,
           intendedFactId: generated.intendedFactId || fact.id,
+          value: isTrustDisclosure ? clone(fact.value) : clone(generated.value ?? fact.value),
           authoritativeValue: clone(fact.value),
           unit: generated.unit ?? fact.unit ?? null,
-          semanticSnapshot: generated.semanticSnapshot || clone(fact.semanticSnapshot || null),
-          trustSnapshot: generated.trustSnapshot || clone(fact.trustSnapshot || null),
+          scope: fact.scope || generated.scope || null,
+          resultVersion: fact.resultVersion || generated.resultVersion || null,
+          evidenceRefs: clone(fact.evidence || generated.evidenceRefs || []),
+          basis: clone(suggestionBasis || fact.basis || generated.basis || []),
+          ruleSnapshot: clone(fact.ruleSnapshot || generated.ruleSnapshot || null),
+          semanticSnapshot: clone(fact.semanticSnapshot || generated.semanticSnapshot || null),
+          trustSnapshot: clone(fact.trustSnapshot || generated.trustSnapshot || null),
           bindingStatus: generated.bindingStatus || "bound",
         };
       }
@@ -1724,6 +1801,10 @@
         scope: fact.scope,
         resultVersion: fact.resultVersion,
         evidenceRefs: clone(fact.evidence || []),
+        basis: clone(suggestionBasis || fact.basis || []),
+        semanticSnapshot: clone(fact.semanticSnapshot || null),
+        trustSnapshot: clone(fact.trustSnapshot || null),
+        ruleSnapshot: clone(fact.ruleSnapshot || null),
         anchorIds: clone(fact.anchorIds || []),
         bindingStatus: "bound",
       };
@@ -1796,6 +1877,7 @@
 
   function buildContentContract(sourceItems, factPackage, draftId) {
     const providedManifest = factPackage.renderManifest || { manifestId: null, version: null, items: factPackage.contentItems || [] };
+    const factById = new Map((factPackage.contentFacts || []).map((fact) => [fact.id, fact]));
     const sourceByContentId = new Map((sourceItems || []).filter((item) => item.contentItemId).map((item) => [item.contentItemId, item]));
     const sourceByAnchor = new Map((sourceItems || []).filter((item) => item.anchorId).map((item) => [item.anchorId, item]));
     const sourceByFact = new Map((sourceItems || []).flatMap((item) => (item.factRefs || []).map((factId) => [factId, item])));
@@ -1808,6 +1890,13 @@
       const requiresEvidence = declared.requiresEvidence !== false;
       const factRefs = bindingMissing ? [] : clone(source?.factRefs?.length ? source.factRefs : declared.factRefs || []);
       const evidenceRefs = bindingMissing ? [] : clone(source?.evidenceRefs?.length ? source.evidenceRefs : declared.evidenceRefs || []);
+      const primaryFact = factRefs.length === 1 ? factById.get(factRefs[0]) : null;
+      const isStructuredFact = Boolean(primaryFact)
+        && declared.claimType !== "narrative"
+        && declared.presentationType !== "paragraph"
+        && declared.contentType !== "paragraph";
+      const canonicalValue = isStructuredFact ? clone(primaryFact.value) : null;
+      const canonicalUnit = isStructuredFact ? (primaryFact.unit ?? null) : null;
       return {
         ...clone(declared),
         sourceItemId: source?.sourceItemId || null,
@@ -1822,8 +1911,9 @@
         evidenceRefs,
         bindingStatus: requiresEvidence ? (bindingMissing || !factRefs.length || !evidenceRefs.length ? "missing" : "bound") : "not-required",
         requiresEvidence,
-        renderedValue: source?.renderedValue ?? source?.value ?? declared.renderedValue ?? declared.displayValue ?? null,
-        displayValue: source?.displayValue ?? source?.value ?? declared.displayValue ?? declared.renderedValue ?? null,
+        renderedValue: isStructuredFact ? canonicalValue : (source?.renderedValue ?? source?.value ?? declared.renderedValue ?? declared.displayValue ?? null),
+        displayValue: isStructuredFact ? canonicalValue : (source?.displayValue ?? source?.value ?? declared.displayValue ?? declared.renderedValue ?? null),
+        displayUnit: isStructuredFact ? canonicalUnit : (source?.displayUnit ?? declared.displayUnit ?? null),
         rendered: source ? source.rendered !== false : declared.origin === "template",
       };
     });
@@ -2082,13 +2172,14 @@
       minute: "2-digit",
       second: "2-digit",
       hour12: false,
+      timeZone: "UTC",
     }).format(new Date()).replaceAll("/", "-");
   }
 
   function compactStamp() {
     const d = new Date();
     const pad = (n) => String(n).padStart(2, "0");
-    return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
+    return `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}-${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}${pad(d.getUTCSeconds())}`;
   }
 
   function makeId(prefix) {
@@ -2969,13 +3060,15 @@
       const expectedBasis = Array.isArray(basis) ? basis : [];
       const actualBasis = Array.isArray(contentFact?.basis) ? contentFact.basis : [];
       const fields = ["scope", "ruleId", "ruleVersion", "evaluationRecordId", "resultVersion", "direction"];
-      const expectedRuleIds = suggestionRuleIds.slice(0, 3);
+      const expectedRuleIds = [...new Set(expectedBasis.map((item) => item.ruleId).filter(Boolean))];
       const basisComplete = expectedBasis.length === expectedRuleIds.length
         && actualBasis.length === expectedRuleIds.length
         && expectedRuleIds.every((ruleId) => {
           const expected = expectedBasis.find((item) => item.ruleId === ruleId);
           const actual = actualBasis.find((item) => item.ruleId === ruleId);
-          const resultFact = context.facts.get(`FACT-${ruleId.slice(-3)}-RESULT`);
+          const resultFact = [...context.facts.values()].find((candidate) => candidate?.ruleSnapshot?.ruleId === expected?.ruleId
+            && candidate?.ruleSnapshot?.evaluationRecordId === expected?.evaluationRecordId
+            && candidate?.scope === expected?.scope);
           return expected && actual
             && fields.every((field) => expected[field] && actual[field] === expected[field])
             && resultFact?.scope === expected.scope

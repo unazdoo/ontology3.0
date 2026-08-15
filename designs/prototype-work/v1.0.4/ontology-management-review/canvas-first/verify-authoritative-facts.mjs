@@ -103,9 +103,14 @@ assert.equal(factPackage.units["单位553"].rule.id, "RULE-HIGH-FINANCING-COST")
 assert.equal(factPackage.units["单位465"].rule.id, "RULE-FLOATING-RATE-EXPOSURE");
 assert.equal(factPackage.units["单位561"].rule.id, "RULE-SHORT-TERM-DEBT-CONCENTRATION");
 assert.equal(factPackage.units["单位553"].institutions[0].name, "欧陆银行");
-assert.ok(factPackage.contentFacts.length > 30);
+assert.equal(factPackage.contentFacts.length, 42);
 assert.equal(factPackage.anchors.length, factPackage.contentFacts.length);
 assert.equal(factPackage.contentItems.length, factPackage.contentFacts.length);
+assert.equal(new Set(factPackage.contentFacts.map((fact) => fact.id)).size, factPackage.contentFacts.length, "fact ids must be unique");
+assert.equal(new Set(factPackage.anchors.map((anchor) => anchor.id)).size, factPackage.anchors.length, "anchor ids must be unique");
+assert.equal(new Set(factPackage.contentItems.map((item) => item.contentItemId)).size, factPackage.contentItems.length, "content item ids must be unique");
+assert.ok(factPackage.contentFacts.some((fact) => fact.id === "FACT-R01-INSTITUTIONS"));
+assert.ok(factPackage.contentFacts.some((fact) => fact.id === "FACT-R01-HIGH-COST-INSTITUTIONS"));
 assert.ok(factPackage.contentItems.every((item) => item.bindingStatus === "bound" && item.factRefs.length && item.evidenceRefs.length));
 assert.ok(factPackage.contentFacts.some((fact) => fact.semanticSnapshot?.resourceId === "MET-CREDIT-FINANCING-SHARE"));
 assert.ok(factPackage.contentFacts.some((fact) => fact.semanticSnapshot?.resourceId === "RULE-SHORT-TERM-DEBT-CONCENTRATION"));

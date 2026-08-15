@@ -60,7 +60,7 @@
 
   const clone = (value) => value === undefined ? undefined : JSON.parse(JSON.stringify(value));
   const nowText = () => new Intl.DateTimeFormat("zh-CN", {
-    year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
+    year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "UTC"
   }).format(new Date()).replaceAll("/", "-");
 
   function nextStableId(prefix) {
@@ -100,19 +100,17 @@
     resource("Property", "PROP-FINANCING-ENTITY-UNIT-CODE", "单位编码", { parentId: "OBJ-FINANCING-ENTITY", role: "身份", dataType: "文本" }),
     resource("Property", "PROP-FINANCING-ENTITY-UNIT-NAME", "单位名称", { parentId: "OBJ-FINANCING-ENTITY", role: "标题", dataType: "文本" }),
     resource("Property", "PROP-FINANCING-ENTITY-SECTOR", "所属板块", { parentId: "OBJ-FINANCING-ENTITY", role: "分组", dataType: "文本" }),
+    resource("Property", "PROP-FINANCING-ENTITY-OWNER-ID", "负责人标识", { parentId: "OBJ-FINANCING-ENTITY", role: "关系端点", dataType: "文本" }),
     resource("Property", "PROP-FINANCING-DETAIL-LOAN-ID", "借据编号", { parentId: "OBJ-FINANCING-DETAIL", role: "身份", dataType: "文本" }),
-    resource("Property", "PROP-FINANCING-DETAIL-DOMESTIC-OVERSEAS", "境内外", { parentId: "OBJ-FINANCING-DETAIL", dataType: "枚举" }),
-    resource("Property", "PROP-FINANCING-DETAIL-DRAWDOWN-DATE", "提款日", { parentId: "OBJ-FINANCING-DETAIL", dataType: "日期" }),
-    resource("Property", "PROP-FINANCING-DETAIL-MATURITY-DATE", "到期日", { parentId: "OBJ-FINANCING-DETAIL", dataType: "日期" }),
-    resource("Property", "PROP-FINANCING-DETAIL-CURRENCY", "币种", { parentId: "OBJ-FINANCING-DETAIL", dataType: "文本" }),
-    resource("Property", "PROP-FINANCING-DETAIL-FX-RATE", "汇率", { parentId: "OBJ-FINANCING-DETAIL", dataType: "数值" }),
-    resource("Property", "PROP-FINANCING-DETAIL-ORIGINAL-BALANCE", "原币余额", { parentId: "OBJ-FINANCING-DETAIL", dataType: "数值" }),
+    resource("Property", "PROP-FINANCING-DETAIL-ENTITY-CODE", "单位编码", { parentId: "OBJ-FINANCING-DETAIL", role: "关系端点", dataType: "文本" }),
+    resource("Property", "PROP-FINANCING-DETAIL-INSTITUTION-CODE", "机构编码", { parentId: "OBJ-FINANCING-DETAIL", role: "关系端点", dataType: "文本" }),
+    resource("Property", "PROP-FINANCING-DETAIL-CURRENCY", "币种", { parentId: "OBJ-FINANCING-DETAIL", dataType: "枚举" }),
     resource("Property", "PROP-FINANCING-DETAIL-CNY-BALANCE", "折合人民币余额", { parentId: "OBJ-FINANCING-DETAIL", dataType: "数值", unit: "人民币元" }),
     resource("Property", "PROP-FINANCING-DETAIL-INTEREST-RATE", "当前利率", { parentId: "OBJ-FINANCING-DETAIL", dataType: "数值", unit: "%" }),
     resource("Property", "PROP-FINANCING-DETAIL-RATE-TYPE", "利率形式", { parentId: "OBJ-FINANCING-DETAIL", dataType: "枚举" }),
-    resource("Property", "PROP-FINANCING-DETAIL-FINANCING-TYPE", "融资类型", { parentId: "OBJ-FINANCING-DETAIL", dataType: "枚举" }),
     resource("Property", "PROP-FINANCING-DETAIL-TERM-TYPE", "期限种类", { parentId: "OBJ-FINANCING-DETAIL", dataType: "枚举" }),
     resource("Property", "PROP-FINANCING-DETAIL-GUARANTEE-TYPE", "担保方式", { parentId: "OBJ-FINANCING-DETAIL", dataType: "枚举" }),
+    resource("Property", "PROP-FINANCING-DETAIL-AS-OF-DATE", "数据截至时间", { parentId: "OBJ-FINANCING-DETAIL", dataType: "日期" }),
     resource("Property", "PROP-FINANCIAL-INSTITUTION-CODE", "机构编码", { parentId: "OBJ-FINANCIAL-INSTITUTION", role: "身份", dataType: "文本" }),
     resource("Property", "PROP-FINANCIAL-INSTITUTION-NAME", "机构名称", { parentId: "OBJ-FINANCIAL-INSTITUTION", role: "标题", dataType: "文本" }),
     resource("Property", "PROP-FINANCIAL-INSTITUTION-CATEGORY", "机构类别", { parentId: "OBJ-FINANCIAL-INSTITUTION", dataType: "文本" }),
@@ -138,6 +136,15 @@
   ];
 
   const resourceById = Object.fromEntries(RESOURCES.map((item) => [item.id, item]));
+  const CANONICAL_S001_RESOURCE_IDS = Object.freeze(RESOURCES.map((item) => item.id));
+  const LEGACY_S001_RESOURCE_IDS = new Set([
+    "PROP-FINANCING-DETAIL-DOMESTIC-OVERSEAS",
+    "PROP-FINANCING-DETAIL-DRAWDOWN-DATE",
+    "PROP-FINANCING-DETAIL-MATURITY-DATE",
+    "PROP-FINANCING-DETAIL-FX-RATE",
+    "PROP-FINANCING-DETAIL-ORIGINAL-BALANCE",
+    "PROP-FINANCING-DETAIL-FINANCING-TYPE"
+  ]);
   const RESOURCE_ID_ALIASES = Object.freeze({
     "MET-FIN-BALANCE": "MET-FINANCING-BALANCE",
     "MET-WAVG-COST": "MET-WAVG-FINANCING-COST",
@@ -152,13 +159,19 @@
   function migrateConfigResourceIds(config, defaults = null) {
     if (!config) return config;
     const fallback = defaults || {};
+    const migratedResourceIds = [...new Set((config.allowedResources || fallback.allowedResources || []).map((id) => RESOURCE_ID_ALIASES[id] || id))];
+    const isS001Config = (config.sceneId || fallback.sceneId) === "S001";
+    const needsPublishedResourceRepair = isS001Config && (
+      migratedResourceIds.some((id) => LEGACY_S001_RESOURCE_IDS.has(id)) ||
+      CANONICAL_S001_RESOURCE_IDS.some((id) => !migratedResourceIds.includes(id))
+    );
     return {
       ...clone(fallback),
       ...config,
       skills: clone(config.skills || fallback.skills || []),
       tools: clone(config.tools || fallback.tools || []),
       deterministicCapabilities: clone(config.deterministicCapabilities || fallback.deterministicCapabilities || []),
-      allowedResources: [...new Set((config.allowedResources || fallback.allowedResources || []).map((id) => RESOURCE_ID_ALIASES[id] || id))],
+      allowedResources: needsPublishedResourceRepair ? [...CANONICAL_S001_RESOURCE_IDS] : migratedResourceIds,
       effectiveFrom: config.effectiveFrom || fallback.effectiveFrom || null,
       effectiveTo: config.effectiveTo || fallback.effectiveTo || null
     };

@@ -45,7 +45,7 @@
       name: "Agent 应用",
       short: "Agent",
       icon: "bot",
-      source: "../agent-application/Agent应用.html",
+      source: "../agent-application/Agent应用.html?v=20260815-60",
       description: "围绕固定证据解释报告结论，不改写正式指标。",
       steps: ["companion"],
       color: "teal"
@@ -55,7 +55,7 @@
       name: "报告中心",
       short: "报告",
       icon: "file",
-      source: "../report-center/review-lifecycle/index.html",
+      source: "../report-center/review-lifecycle/index.html?v=20260815-66",
       description: "生成、核验和发布同源的 HTML/PDF 报告，并与当前数据比较。",
       steps: ["report", "verify", "publish", "compare"],
       color: "green"

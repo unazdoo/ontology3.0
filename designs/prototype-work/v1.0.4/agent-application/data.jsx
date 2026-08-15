@@ -1,7 +1,7 @@
 const AGENT_WORKSPACE_CONFIG = window.AGENT_WORKSPACE || {
   variant: "catalog",
   title: "Agent 目录工作台",
-  storageKey: "ontology3.agent-application.catalog.v8",
+  storageKey: "ontology3.agent-application.catalog.v1.0.4",
   initialRoute: "agents"
 };
 

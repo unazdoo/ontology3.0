@@ -15,9 +15,15 @@
     minute: "2-digit",
     second: "2-digit",
     hour12: false,
+    timeZone: "UTC",
   }).format(new Date()).replaceAll("/", "-");
 
-  const AGENT_APP_STORAGE_KEY = "ontology3.agent-application.catalog.v7";
+  const AGENT_APP_STORAGE_KEY = "ontology3.agent-application.catalog.v1.0.4";
+  const C023_OUTBOX_KEY = "ontology3.agent-application.c023-outbox.v1";
+  const AGENT_APP_LEGACY_STORAGE_KEYS = [
+    "ontology3.agent-application.catalog.v7",
+    "ontology3.agent-application.catalog.v8",
+  ];
   const C022_INBOX_KEY = "ontology3.agent-application.c022-inbox.v1";
   const C008_PROJECTION_STORAGE_KEY = "ontology3-c008-authoritative-projection-v1";
   const C017_REPORT_PROJECTION_STORAGE_KEY = "ontology3.c017.report-center.projection.v1";
@@ -52,7 +58,7 @@
 
   const readOwnerStore = (key, fallback) => {
     try {
-      const raw = localStorage.getItem(key);
+      const raw = localStorage.getItem(key) || sessionStorage.getItem(key);
       return raw ? JSON.parse(raw) : fallback;
     } catch (error) {
       return fallback;
@@ -291,8 +297,26 @@
   }
 
   function createAgentProjectionReader() {
-    const parseModel = () => readOwnerStore(AGENT_APP_STORAGE_KEY, null);
+    const parseModel = () => readOwnerStore(AGENT_APP_STORAGE_KEY, null)
+      || AGENT_APP_LEGACY_STORAGE_KEYS.map((key) => readOwnerStore(key, null)).find(Boolean)
+      || null;
     const parseC022Inbox = () => readOwnerStore(C022_INBOX_KEY, null);
+    const parseC023Outbox = () => readOwnerStore(C023_OUTBOX_KEY, null);
+    const c023TransferFor = (key, attemptKey = null) => {
+      const stored = parseC023Outbox();
+      const records = Array.isArray(stored) ? stored : Array.isArray(stored?.records) ? stored.records : stored?.run ? [stored] : [];
+      const candidates = records.filter((item) => {
+        const run = item?.run || {};
+        const result = item?.result || {};
+        return run.requestId === key || run.id === key || result.id === key;
+      });
+      if (!candidates.length) return null;
+      const filtered = attemptKey
+        ? candidates.filter((item) => generationAttemptKey(item.run || {}) === attemptKey)
+        : candidates;
+      const item = (filtered.length ? filtered : candidates).slice(-1)[0];
+      return item?.run ? { ...clone(item.run), result: clone(item.result || null) } : null;
+    };
     const activeScenario = () => {
       const params = new URLSearchParams(window.location.search);
       const fromUrl = {
@@ -318,9 +342,9 @@
       dataVersion: request.dataVersion || request.c024?.reportContext?.semanticBinding?.dataVersion || null,
       consumableVersionId: request.consumableVersionId || request.c024?.reportContext?.semanticBinding?.consumableVersionId || null,
       asOf: request.dataAsOf || request.c024?.reportContext?.semanticBinding?.asOf || null,
-      anchorSnapshotId: request.anchorSnapshotId || request.c024?.reportContext?.anchorSnapshotId || null,
-      anchorSnapshotVersion: request.anchorSnapshotVersion || request.c024?.reportContext?.anchorSnapshotVersion || null,
-      anchor: request.anchor || request.c024?.selectedAnchor || request.c024?.reportContext?.selectedAnchor || null,
+      anchorSnapshotId: request.anchorSnapshotId || request.c024?.anchorSnapshotId || request.c024?.reportContext?.anchorSnapshotId || null,
+      anchorSnapshotVersion: request.anchorSnapshotVersion || request.c024?.anchorSnapshotVersion || request.c024?.reportContext?.anchorSnapshotVersion || null,
+      anchor: request.anchor || request.c024?.anchor || request.c024?.selectedAnchor || request.c024?.reportContext?.selectedAnchor || null,
     });
     const generationIdentity = (request = {}) => {
       const context = request.reportContext || {};
@@ -489,6 +513,14 @@
           return run && item.id === run.requestId;
         });
       const rejection = (model.c024Rejections || []).find((item) => item.sourceRequestId === key);
+      const describeScenario = (value) => {
+        const scenario = scenarioContextFrom(value || {});
+        return `${scenario.scenarioId || "缺失"} / ${scenario.scenarioVersion || "缺失"} / ${scenario.scenarioRunId || "缺失"} / ${scenario.formedAt || "缺失"} / ${scenario.status || "缺失"}`;
+      };
+      const describeDifferences = (expected = {}, actual = {}, fields = []) => fields
+        .filter((field) => (expected[field] || null) !== (actual[field] || null))
+        .map((field) => `${field}=${expected[field] || "缺失"}→${actual[field] || "缺失"}`)
+        .join("；");
       if (!request) {
         if (!rejection) return null;
         return {
@@ -502,13 +534,31 @@
       }
       const identity = requestIdentity(request);
       const requiredIdentity = ["reportNo", "contentVersion", "evidencePackId", "evidencePackVersion", "semanticVersionId", "semanticVersion", "dataAssetVersionId", "dataVersion", "consumableVersionId", "asOf", "anchorSnapshotId", "anchorSnapshotVersion", "anchor"];
-      if (!sameScenario(identity.scenarioContext, current) || requiredIdentity.some((field) => !identity[field])) {
-        return { owner: "Agent 应用", requestId: request.id, status: "已拒绝", failure: "C025 固定报告、证据包、C033 或精确双版本身份不完整或错配", readAt: nowText() };
+      const missingIdentity = requiredIdentity.filter((field) => !identity[field]);
+      if (!sameScenario(identity.scenarioContext, current) || missingIdentity.length) {
+        const reason = missingIdentity.length
+          ? `缺少：${missingIdentity.join("、")}`
+          : `场景身份不一致（请求 ${describeScenario(identity.scenarioContext)}；当前 ${describeScenario(current)}）`;
+        return { owner: "Agent 应用", requestId: request.id, status: "已拒绝", failure: `C025 固定身份校验失败：${reason}`, readAt: nowText() };
       }
       const run = model.runs.find((item) => item.id === key || item.result?.id === key || item.sessionId === key || item.bindingId === key)
         || model.runs.find((item) => item.requestId === request.id || item.id === request.runId);
       if (!identityMatchesRun(identity, run)) {
-        return { owner: "Agent 应用", requestId: request.id, status: "已拒绝", failure: "C025 Run 与 C024 报告、证据包、场景轮次或精确双版本错配", readAt: nowText() };
+        const actualRunIdentity = run ? {
+          reportNo: run.snapshot?.reportNumber || null,
+          contentVersion: run.snapshot?.contentVersion || null,
+          evidencePackId: run.snapshot?.evidencePackageId || null,
+          evidencePackVersion: run.snapshot?.evidencePackageVersion || null,
+          semanticVersionId: run.snapshot?.semanticVersionId || null,
+          semanticVersion: run.snapshot?.ontologyVersion || run.snapshot?.semanticVersion || null,
+          dataAssetVersionId: run.snapshot?.dataAssetVersionId || null,
+          dataVersion: run.snapshot?.dataVersion || null,
+          consumableVersionId: run.snapshot?.consumableVersionId || null,
+          asOf: run.snapshot?.dataAsOf || run.snapshot?.asOf || null,
+          anchor: run.snapshot?.anchor || null,
+        } : {};
+        const mismatch = describeDifferences(identity, actualRunIdentity, ["reportNo", "contentVersion", "evidencePackId", "evidencePackVersion", "semanticVersionId", "semanticVersion", "dataAssetVersionId", "dataVersion", "consumableVersionId", "asOf", "anchor"]);
+        return { owner: "Agent 应用", requestId: request.id, runId: run?.id || null, status: "已拒绝", failure: `C025 Run 身份错配：${mismatch || "场景轮次或运行记录不可定位"}`, readAt: nowText() };
       }
       const session = (model.sessions || []).find((item) => item.id === (run?.sessionId || request.sessionId)) || null;
       const result = run?.result || null;
@@ -525,7 +575,20 @@
         && identity.consumableVersionId === (result.consumableVersionId || run?.snapshot?.consumableVersionId)
         && identity.asOf === (result.dataAsOf || run?.snapshot?.dataAsOf));
       if (!resultIdentityMatches) {
-        return { owner: "Agent 应用", requestId: request.id, runId: run?.id || null, status: "已拒绝", failure: "C025 Result 与 C024 报告、证据包、C033 或精确双版本错配", readAt: nowText() };
+        const actualResultIdentity = result ? {
+          reportNo: result.reportNumber || request.reportNumber || null,
+          contentVersion: result.contentVersion || request.contentVersion || null,
+          evidencePackId: result.evidencePackageId || null,
+          evidencePackVersion: result.evidencePackageVersion || run?.snapshot?.evidencePackageVersion || null,
+          semanticVersionId: result.semanticVersionId || run?.snapshot?.semanticVersionId || null,
+          semanticVersion: result.semanticVersion || run?.snapshot?.ontologyVersion || null,
+          dataAssetVersionId: result.dataAssetVersionId || run?.snapshot?.dataAssetVersionId || null,
+          dataVersion: result.dataVersion || null,
+          consumableVersionId: result.consumableVersionId || run?.snapshot?.consumableVersionId || null,
+          asOf: result.dataAsOf || run?.snapshot?.dataAsOf || null,
+        } : {};
+        const mismatch = describeDifferences(identity, actualResultIdentity, ["reportNo", "contentVersion", "evidencePackId", "evidencePackVersion", "semanticVersionId", "semanticVersion", "dataAssetVersionId", "dataVersion", "consumableVersionId", "asOf"]);
+        return { owner: "Agent 应用", requestId: request.id, runId: run?.id || null, status: "已拒绝", failure: `C025 Result 身份错配：${mismatch || "结果记录不可定位"}`, readAt: nowText() };
       }
       const fixedContextRef = fixedContextFor(request, run);
       return {
@@ -604,8 +667,9 @@
       const requests = Array.isArray(inbox) ? inbox : Array.isArray(inbox?.requests) ? inbox.requests : [];
       const model = parseModel();
       const allRuns = Array.isArray(model?.runs) ? model.runs : [];
+      const transferRun = c023TransferFor(key);
       const exactRun = allRuns.find((item) => item.id === key || item.result?.id === key) || null;
-      const run = exactRun || [...allRuns].reverse().find((item) => item.requestId === key) || null;
+      const run = exactRun || transferRun || [...allRuns].reverse().find((item) => item.requestId === key) || null;
       const request = generationRequest(run?.requestId || key, run ? generationAttemptKey(run) : null)
         || generationRequest(run?.requestId || key)
         || requests.find((item) => item?.requestId === run?.requestId || item?.requestId === key);
@@ -655,7 +719,7 @@
       bindingId: null,
       resultId: null,
     };
-    return Object.freeze({ readRecord, submit, publishGeneration, readGeneration, storageKey: AGENT_APP_STORAGE_KEY, c022StorageKey: C022_INBOX_KEY });
+    return Object.freeze({ readRecord, submit, publishGeneration, readGeneration, storageKey: AGENT_APP_STORAGE_KEY, c022StorageKey: C022_INBOX_KEY, c023StorageKey: C023_OUTBOX_KEY });
   }
 
   function createDecisionProjectionReader() {
