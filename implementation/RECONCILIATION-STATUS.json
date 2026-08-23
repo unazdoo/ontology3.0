@@ -5,12 +5,17 @@
   "overallStatus": "prototype-p0-p1-closed; implementation-p0-p1-open",
   "acceptanceReady": false,
   "modules": {
-    "M01": { "prototypeStatus": "closed", "designStatus": "owner-backfill-required", "implementationStatus": "open" },
-    "M02": { "prototypeStatus": "closed", "designStatus": "owner-backfill-required", "implementationStatus": "open" },
-    "M03": { "prototypeStatus": "closed", "designStatus": "owner-backfill-required", "implementationStatus": "open" },
-    "M04": { "prototypeStatus": "closed", "designStatus": "owner-backfill-required", "implementationStatus": "open" },
-    "M05": { "prototypeStatus": "closed", "designStatus": "owner-backfill-required", "implementationStatus": "open" },
-    "M06": { "prototypeStatus": "closed", "designStatus": "owner-backfill-required", "implementationStatus": "open" }
+    "M01": { "prototypeStatus": "closed", "designStatus": "owner-backfill-committed", "implementationStatus": "open" },
+    "M02": { "prototypeStatus": "closed", "designStatus": "owner-backfill-committed", "implementationStatus": "open" },
+    "M03": { "prototypeStatus": "closed", "designStatus": "owner-backfill-committed", "implementationStatus": "open" },
+    "M04": { "prototypeStatus": "closed", "designStatus": "owner-backfill-pending", "implementationStatus": "open" },
+    "M05": { "prototypeStatus": "closed", "designStatus": "owner-backfill-complete-uncommitted", "implementationStatus": "open" },
+    "M06": { "prototypeStatus": "closed", "designStatus": "owner-backfill-complete-uncommitted", "implementationStatus": "open" }
+  },
+  "ownerBackfillCommits": {
+    "M01-M03": "24c3dd2",
+    "M05-M06": "uncommitted-in-module-worktree",
+    "M04": null
   },
   "prototypeClosedEvidence": [
     "M02-M01 exact resource projection and asset detail alignment",
