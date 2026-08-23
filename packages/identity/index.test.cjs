@@ -62,6 +62,8 @@ test('compares the same run context and has stable serialization/fingerprint', (
   assert.equal(identity.stableSerialize({ b: 2, a: 1 }), identity.stableSerialize({ a: 1, b: 2 }));
   assert.equal(identity.contextFingerprint(left), identity.contextFingerprint({ ...left }));
   assert.notEqual(identity.contextFingerprint(left), identity.contextFingerprint({ ...left, scenarioVersion: 'S001-v2', scenarioRunId: 'S001-RUN-new' }));
+  assert.notEqual(identity.contextFingerprint(left), identity.contextFingerprint({ ...left, status: 'completed' }));
+  assert.equal(identity.contextFingerprint(left, { includeLifecycle: false }), identity.contextFingerprint({ ...left, status: 'completed' }, { includeLifecycle: false }));
 });
 
 test('generates and validates deterministic idempotency keys', () => {

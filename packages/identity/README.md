@@ -26,7 +26,8 @@ Unknown fields are rejected by default; migration tooling can opt into
 (`scenarioId`, `scenarioVersion`, `scenarioRunId`) and do not compare lifecycle
 status unless `{ includeLifecycle: true }` is supplied. `stableSerialize` sorts
 object keys recursively; `contextFingerprint` returns a deterministic SHA-256
-hex digest.
+hex digest of all five context fields by default. Pass
+`{ includeLifecycle: false }` for a run-identity-only fingerprint.
 
 ## Idempotency and trace
 

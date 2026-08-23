@@ -201,7 +201,10 @@ function sameRunContext(left, right, options) {
 
 function contextFingerprint(value, options = {}) {
   const context = normalizeScenarioContext(contextInput(value), options);
-  const fields = options.includeLifecycle === true ? CONTEXT_FIELDS : RUN_COMPARISON_FIELDS;
+  // A fingerprint represents the serialized context by default, including
+  // formation time and lifecycle. Callers that need only the stable run
+  // identity can explicitly request `{ includeLifecycle: false }`.
+  const fields = options.includeLifecycle === false ? RUN_COMPARISON_FIELDS : CONTEXT_FIELDS;
   const canonical = {};
   fields.forEach((field) => { canonical[field] = context?.[field]; });
   return sha256(stableSerialize(canonical));
