@@ -3,11 +3,42 @@
   "product": "智财问策（Ontology Financial World）",
   "currentFrozenVersion": "1.1.0",
   "currentFrozenBaselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+  "activeBaselineVersion": "1.1.0",
+  "activeBaselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+  "activeBaselineRole": "implementation-reference-only",
   "governanceBaselineVersion": "1.0.3",
   "governanceBaselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "governanceBaselineStatus": "historical-read-only-parent-and-rollback",
   "implementationBaselineVersion": "1.1.0",
   "currentWorkVersion": null,
   "activePatchVersion": null,
+  "activityBaselineRegistry": "scenario-checkpoints/ACTIVE-BASELINE-REGISTRY.json",
+  "pendingBaselineMigrations": [
+    {
+      "workId": "S005",
+      "recordedParentVersion": "1.0.3",
+      "recordedBaselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+      "requiredParentVersion": "1.1.0",
+      "requiredBaselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+      "status": "pending-explicit-migration"
+    },
+    {
+      "workId": "M07",
+      "recordedParentVersion": "1.0.3",
+      "recordedBaselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+      "requiredParentVersion": "1.1.0",
+      "requiredBaselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+      "status": "pending-explicit-migration"
+    },
+    {
+      "workId": "M08",
+      "recordedParentVersion": "1.0.3",
+      "recordedBaselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+      "requiredParentVersion": "1.1.0",
+      "requiredBaselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+      "status": "pending-explicit-migration"
+    }
+  ],
   "releases": [
     {
       "version": "1.0.0",
@@ -91,6 +122,9 @@
       "integrationResult": "four-scenario composite prototype closure passed",
       "runtimeSnapshotIncluded": false,
       "implementationReferenceBaseline": true,
+      "activityBaselineEligible": true,
+      "formalRuntimeBaselineReady": false,
+      "formalBaselineRegistry": "scenario-checkpoints/ACTIVE-BASELINE-REGISTRY.json",
       "acceptanceReady": false,
       "manifest": "prototype-releases/v1.1.0/manifest.json",
       "entry": "prototype-releases/v1.1.0/s001-e2e-integration/index.html",
@@ -258,6 +292,9 @@
       "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
       "scenarioScope": ["S001", "S002", "S003", "S004"],
       "implementationBaselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+      "activityBaselineVersion": "1.1.0",
+      "activityBaselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+      "formalRuntimeBaselineReady": false,
       "path": "prototype-work/v1.1.0",
       "pathType": "composite-worktree",
       "gitWorktreePath": "../ontology3.0-worktrees/integration-composite-v1.1.0",

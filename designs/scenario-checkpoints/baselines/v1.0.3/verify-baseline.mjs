@@ -39,13 +39,24 @@ assertEqual("acceptanceReady", checkpoint.acceptance?.acceptanceReady, false, fa
 const registry = JSON.parse(
   fs.readFileSync(path.join(projectRoot, "designs/prototype-versions.json"), "utf8")
 );
-assertEqual("registry current frozen version", registry.currentFrozenVersion, "1.0.3", failures);
-assertEqual(
-  "registry current baseline snapshot",
-  registry.currentFrozenBaselineSnapshotId,
-  "BSL-S001-V103-DE0119608E26",
-  failures
-);
+if (registry.currentFrozenVersion === "1.0.3") {
+  assertEqual(
+    "registry current baseline snapshot",
+    registry.currentFrozenBaselineSnapshotId,
+    "BSL-S001-V103-DE0119608E26",
+    failures
+  );
+} else {
+  // v1.0.3 remains valid as a historical parent/rollback baseline after v1.1.0 promotion.
+  assertEqual("registry historical governance version", registry.governanceBaselineVersion, "1.0.3", failures);
+  assertEqual(
+    "registry historical governance snapshot",
+    registry.governanceBaselineSnapshotId,
+    "BSL-S001-V103-DE0119608E26",
+    failures
+  );
+  assertEqual("registry active baseline version", registry.activeBaselineVersion, "1.1.0", failures);
+}
 const releaseRegistration = registry.releases.find((item) => item.version === "1.0.3");
 assertEqual(
   "release registration checkpoint digest",
