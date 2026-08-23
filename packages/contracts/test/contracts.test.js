@@ -68,6 +68,12 @@ test('rejects scenario version and run prefix mismatch', () => {
   assert.equal(result.errors.filter((error) => error.code === 'mismatch').length, 2);
 });
 
+test('rejects a syntactically shaped but impossible formedAt timestamp', () => {
+  const context = validContext();
+  context.formedAt = '2026-02-31T00:00:00.000Z';
+  assert.equal(contracts.validateScenarioContext(context).valid, false);
+});
+
 test('normalizes reference aliases without mutating input', () => {
   const input = { resourceType: 'dataset', resourceId: 'D-1', version: 'v2' };
   const normalized = contracts.normalizeResourceRef(input);

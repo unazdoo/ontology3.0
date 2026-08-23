@@ -40,7 +40,23 @@ function isText(value) {
 const DATE_TIME_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?(?:Z|[+-]\d{2}:\d{2})$/;
 
 function isDateTime(value) {
-  return typeof value === 'string' && DATE_TIME_PATTERN.test(value) && !Number.isNaN(Date.parse(value));
+  if (typeof value !== 'string' || !DATE_TIME_PATTERN.test(value) || Number.isNaN(Date.parse(value))) return false;
+  const match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d{1,9})?(Z|[+-]\d{2}:\d{2})$/.exec(value);
+  if (!match) return false;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const hour = Number(match[4]);
+  const minute = Number(match[5]);
+  const second = Number(match[6]);
+  const offset = match[7] === 'Z' ? null : match[7].slice(1).split(':').map(Number);
+  const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  return month >= 1 && month <= 12
+    && day >= 1 && day <= daysInMonth
+    && hour >= 0 && hour <= 23
+    && minute >= 0 && minute <= 59
+    && second >= 0 && second <= 59
+    && (!offset || (offset[0] >= 0 && offset[0] <= 23 && offset[1] >= 0 && offset[1] <= 59));
 }
 
 function clone(value) {
