@@ -211,9 +211,10 @@ const IDEMPOTENCY_KEY_RE = new RegExp(`^${IDEMPOTENCY_KEY_PREFIX}:[a-f0-9]{64}$`
 const GENERIC_IDEMPOTENCY_KEY_RE = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,255}$/;
 
 function validateIdempotencyKey(value, options = {}) {
+  const keyValue = isRecord(value) ? value.idempotencyKey : value;
   const errors = [];
-  if (!nonEmptyString(value)) errors.push(error('idempotencyKey', 'format', 'must be a non-empty token'));
-  else if (options.strictGenerated === true ? !IDEMPOTENCY_KEY_RE.test(value) : !GENERIC_IDEMPOTENCY_KEY_RE.test(value)) {
+  if (!nonEmptyString(keyValue)) errors.push(error('idempotencyKey', 'format', 'must be a non-empty token'));
+  else if (options.strictGenerated === true ? !IDEMPOTENCY_KEY_RE.test(keyValue) : !GENERIC_IDEMPOTENCY_KEY_RE.test(keyValue)) {
     errors.push(error('idempotencyKey', 'format', options.strictGenerated ? `must match ${IDEMPOTENCY_KEY_PREFIX}:<sha256>` : 'contains unsupported characters or exceeds 256 characters'));
   }
   return result(errors.length === 0, errors);
@@ -222,7 +223,7 @@ function validateIdempotencyKey(value, options = {}) {
 function assertIdempotencyKey(value, options = {}) {
   const validation = validateIdempotencyKey(value, options);
   if (!validation.valid) throw new IdentityValidationError('IdempotencyKey', validation.errors);
-  return value.trim();
+  return (isRecord(value) ? value.idempotencyKey : value).trim();
 }
 
 function idempotencyInput(value, options = {}) {
@@ -258,7 +259,7 @@ function readSeen(seen, key) {
 }
 
 function requestRecord(value, options = {}) {
-  const request = isRecord(value) ? value : { value };
+  const request = isRecord(value) ? value : (typeof value === 'string' ? { idempotencyKey: value } : { value });
   // `rememberRequest` stores a compact record rather than the original
   // payload. Reuse its fingerprint when it is later used as the seen index;
   // recomputing from the compact record would turn a true duplicate into a
@@ -370,7 +371,12 @@ function createTraceContext(value, options = {}) {
 }
 
 function propagateTraceContext(source, target = {}) {
-  const trace = createTraceContext(source, { traceId: extractTraceContext(source).traceId, correlationId: extractTraceContext(source).correlationId });
+  const inherited = extractTraceContext(source);
+  const targetContext = extractTraceContext(target);
+  const trace = createTraceContext(source, {
+    traceId: inherited.traceId || targetContext.traceId,
+    correlationId: inherited.correlationId || targetContext.correlationId
+  });
   const resultValue = isRecord(target) ? clone(target) : {};
   resultValue.traceId = trace.traceId;
   resultValue.correlationId = trace.correlationId;

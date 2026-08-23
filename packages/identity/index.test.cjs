@@ -71,6 +71,7 @@ test('generates and validates deterministic idempotency keys', () => {
   assert.equal(key, identity.generateIdempotencyKey(b));
   assert.equal(identity.validateIdempotencyKey(key).valid, true);
   assert.equal(identity.validateIdempotencyKey(key, { strictGenerated: true }).valid, true);
+  assert.equal(identity.validateIdempotencyKey({ idempotencyKey: key }).valid, true);
   assert.equal(identity.isValidIdempotencyKey('bad key'), false);
 });
 
@@ -114,4 +115,12 @@ test('trace and correlation IDs propagate without overwriting the source', () =>
   assert.deepEqual(target.traceId, 'trace-1');
   assert.deepEqual(target.correlationId, 'corr-1');
   assert.deepEqual(source, { traceId: 'trace-1', correlationId: 'corr-1' });
+});
+
+test('raw key requests and target trace context remain compatible', () => {
+  const key = identity.generateIdempotencyKey({ operation: 'raw' });
+  assert.equal(identity.identifyDuplicateRequest(key, new Set([key])).status, 'duplicate');
+  const target = identity.propagateTraceContext({}, { traceId: 'target-trace', correlationId: 'target-correlation' });
+  assert.equal(target.traceId, 'target-trace');
+  assert.equal(target.correlationId, 'target-correlation');
 });
