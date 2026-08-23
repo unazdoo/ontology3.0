@@ -418,17 +418,25 @@ function parseRestoreArgs(input, options) {
       targetScenarioRunId: input.targetScenarioRunId,
       newScenarioRunId: input.newScenarioRunId,
       scenarioRunId: input.scenarioRunId,
-      scenarioVersion: input.scenarioVersion
+      scenarioVersion: input.scenarioVersion,
+      requireSchemaVersion: input.requireSchemaVersion,
+      validationOptions: input.validationOptions
     } : {}),
     ...(isRequest && isPlainObject(input.options) ? input.options : {}),
     ...(options || {})
   };
+  Object.keys(mergedOptions).forEach((key) => {
+    if (mergedOptions[key] === undefined) delete mergedOptions[key];
+  });
   return { request, checkpoint, options: mergedOptions };
 }
 
 function createRestorePlan(checkpointValue, mode, status, options) {
   const config = options || {};
-  const checkpoint = assertRestorableCheckpoint(checkpointValue, config.validationOptions);
+  const checkpoint = assertRestorableCheckpoint(checkpointValue, {
+    ...(config.validationOptions || {}),
+    ...(config.requireSchemaVersion !== undefined ? { requireSchemaVersion: config.requireSchemaVersion } : {})
+  });
   const sourceContext = getContext(checkpoint);
   const context = deriveContext(sourceContext, status, {
     ...config,
