@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontology3.example/contracts/audit-fields/draft-0.1.0",
+  "title": "Foundation Audit Fields",
+  "description": "Minimum audit metadata. This schema does not implement an audit store or retention policy.",
+  "type": "object",
+  "x-contract-status": "draft",
+  "x-contract-version": "draft-0.1.0",
+  "x-contract-owner": "Foundation / packages/contracts",
+  "x-field-owners": {
+    "actorRef": "Caller/authentication boundary (identity reference only)",
+    "traceId": "Foundation tracing boundary",
+    "correlationId": "Request/correlation owner",
+    "scenarioContext": "Foundation C033",
+    "sourceVersion": "Producing module",
+    "targetVersion": "Consuming/transitioning module",
+    "formedAt": "Producing operation",
+    "operation": "Producing module",
+    "outcome": "Producing module"
+  },
+  "additionalProperties": true,
+  "required": [
+    "actorRef",
+    "traceId",
+    "correlationId",
+    "scenarioContext",
+    "sourceVersion",
+    "targetVersion",
+    "formedAt",
+    "operation",
+    "outcome"
+  ],
+  "properties": {
+    "actorRef": {
+      "oneOf": [
+        { "type": "string", "minLength": 1 },
+        {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": true,
+          "description": "Non-empty identity reference object; identity and authorization semantics remain outside Foundation."
+        }
+      ]
+    },
+    "traceId": { "type": "string", "minLength": 1, "pattern": "^\\S+$", "description": "Distributed trace identifier." },
+    "correlationId": { "type": "string", "minLength": 1, "pattern": "^\\S+$", "description": "Request/correlation identifier." },
+    "scenarioContext": { "$ref": "https://ontology3.example/contracts/scenario-context/draft-0.1.0", "description": "C033 context for the operation." },
+    "sourceVersion": { "type": "string", "minLength": 1, "pattern": "^\\S+$", "description": "Version from which the operation reads or migrates." },
+    "targetVersion": { "type": "string", "minLength": 1, "pattern": "^\\S+$", "description": "Version to which the operation targets or compares." },
+    "formedAt": { "type": "string", "format": "date-time", "description": "Time the audit metadata was formed." },
+    "operation": { "type": "string", "minLength": 1, "description": "Stable operation name." },
+    "outcome": { "type": "string", "minLength": 1, "description": "Operation outcome summary; not a business truth store." }
+  }
+}

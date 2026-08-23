@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontology3.example/contracts/resource-ref/draft-0.1.0",
+  "title": "Foundation Resource Reference",
+  "description": "Stable, read-only reference to a resource owned by another module. It does not transfer resource ownership.",
+  "type": "object",
+  "x-contract-status": "draft",
+  "x-contract-version": "draft-0.1.0",
+  "x-contract-owner": "Foundation / packages/contracts",
+  "x-field-owners": {
+    "refType": "Referencing module (declared resource kind)",
+    "refId": "Owning module (stable resource identity)",
+    "refVersion": "Owning module (optional immutable version)",
+    "locator": "Owning module (optional read locator)",
+    "owner": "Owning module",
+    "relation": "Referencing module (optional relationship label)",
+    "digest": "Owning module (optional content fingerprint)"
+  },
+  "additionalProperties": true,
+  "required": ["refType", "refId"],
+  "properties": {
+    "refType": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "description": "Stable resource kind, such as dataset, semantic-version, action-request, or report."
+    },
+    "refId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "description": "Stable identifier assigned by the resource owner."
+    },
+    "refVersion": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "description": "Optional immutable resource version."
+    },
+    "owner": { "type": "string", "minLength": 1, "description": "Owning module or boundary." },
+    "locator": { "type": "string", "minLength": 1, "description": "Optional read-only locator." },
+    "relation": { "type": "string", "minLength": 1, "description": "Optional relationship from the envelope to the resource." },
+    "digest": { "type": "string", "minLength": 1, "description": "Optional content fingerprint supplied by the owner." }
+  }
+}

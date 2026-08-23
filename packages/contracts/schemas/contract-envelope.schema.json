@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontology3.example/contracts/contract-envelope/draft-0.1.0",
+  "title": "Foundation Contract Envelope",
+  "description": "Minimum versioned event/API envelope for Foundation v1.1.x. This is a draft implementation schema, not a final platform contract.",
+  "type": "object",
+  "x-contract-status": "draft",
+  "x-contract-version": "draft-0.1.0",
+  "x-contract-owner": "Foundation / packages/contracts",
+  "x-field-owners": {
+    "eventId": "Producing module",
+    "eventType": "Producing module and registered consumer",
+    "schemaVersion": "Foundation schema registry",
+    "occurredAt": "Producing module",
+    "actorRef": "Caller/authentication boundary (reference only)",
+    "correlationId": "Request/correlation owner",
+    "traceId": "Foundation tracing boundary",
+    "idempotencyKey": "Producing caller / Foundation idempotency boundary",
+    "scenarioContext": "Foundation C033",
+    "resourceRefs": "Referenced resource owners",
+    "evidenceRefs": "Evidence-producing owners",
+    "payload": "Producing module; domain owner remains authoritative"
+  },
+  "additionalProperties": true,
+  "required": [
+    "eventId",
+    "eventType",
+    "schemaVersion",
+    "occurredAt",
+    "actorRef",
+    "correlationId",
+    "traceId",
+    "idempotencyKey",
+    "scenarioContext",
+    "resourceRefs",
+    "evidenceRefs",
+    "payload"
+  ],
+  "properties": {
+    "eventId": { "type": "string", "minLength": 1, "pattern": "^\\S+$" },
+    "eventType": { "type": "string", "minLength": 1, "pattern": "^\\S+$" },
+    "schemaVersion": { "type": "string", "minLength": 1, "pattern": "^\\S+$" },
+    "occurredAt": { "type": "string", "format": "date-time" },
+    "actorRef": {
+      "description": "Identity reference only; authorization remains outside this package.",
+      "oneOf": [
+        { "type": "string", "minLength": 1 },
+        {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": true
+        }
+      ]
+    },
+    "correlationId": { "type": "string", "minLength": 1, "pattern": "^\\S+$" },
+    "traceId": { "type": "string", "minLength": 1, "pattern": "^\\S+$" },
+    "idempotencyKey": { "type": "string", "minLength": 1, "pattern": "^\\S+$" },
+    "scenarioContext": { "$ref": "https://ontology3.example/contracts/scenario-context/draft-0.1.0" },
+    "resourceRefs": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "type": "string", "minLength": 1 },
+          { "$ref": "https://ontology3.example/contracts/resource-ref/draft-0.1.0" }
+        ]
+      }
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "type": "string", "minLength": 1 },
+          { "$ref": "https://ontology3.example/contracts/evidence-ref/draft-0.1.0" }
+        ]
+      }
+    },
+    "payload": {}
+  }
+}

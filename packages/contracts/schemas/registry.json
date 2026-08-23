@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontology3.example/contracts/registry/draft-0.1.0",
+  "title": "Foundation Draft Contract Registry",
+  "description": "Machine-readable index of the minimal Foundation schemas. Registry entries are draft and require M01-M06 reconciliation before promotion.",
+  "type": "object",
+  "x-contract-status": "draft",
+  "x-contract-version": "draft-0.1.0",
+  "x-contract-owner": "Foundation / packages/contracts",
+  "x-field-owners": {
+    "schemaVersion": "Foundation schema registry",
+    "status": "Foundation schema registry",
+    "owner": "Foundation schema registry",
+    "schemas": "Foundation schema registry"
+  },
+  "required": ["schemaVersion", "status", "owner", "schemas"],
+  "properties": {
+    "schemaVersion": { "const": "draft-0.1.0" },
+    "status": { "const": "draft" },
+    "owner": { "const": "Foundation / packages/contracts" },
+    "schemas": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "required": ["name", "$id", "path", "status", "owner"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "$id": { "type": "string", "format": "uri" },
+          "path": { "type": "string", "minLength": 1 },
+          "status": { "const": "draft" },
+          "owner": { "const": "Foundation / packages/contracts" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "schemaVersion": "draft-0.1.0",
+  "status": "draft",
+  "owner": "Foundation / packages/contracts",
+  "schemas": [
+    {
+      "name": "contract-envelope",
+      "$id": "https://ontology3.example/contracts/contract-envelope/draft-0.1.0",
+      "path": "./contract-envelope.schema.json",
+      "status": "draft",
+      "owner": "Foundation / packages/contracts"
+    },
+    {
+      "name": "scenario-context",
+      "$id": "https://ontology3.example/contracts/scenario-context/draft-0.1.0",
+      "path": "./scenario-context.schema.json",
+      "status": "draft",
+      "owner": "Foundation / packages/contracts"
+    },
+    {
+      "name": "resource-ref",
+      "$id": "https://ontology3.example/contracts/resource-ref/draft-0.1.0",
+      "path": "./resource-ref.schema.json",
+      "status": "draft",
+      "owner": "Foundation / packages/contracts"
+    },
+    {
+      "name": "evidence-ref",
+      "$id": "https://ontology3.example/contracts/evidence-ref/draft-0.1.0",
+      "path": "./evidence-ref.schema.json",
+      "status": "draft",
+      "owner": "Foundation / packages/contracts"
+    },
+    {
+      "name": "audit-fields",
+      "$id": "https://ontology3.example/contracts/audit-fields/draft-0.1.0",
+      "path": "./audit-fields.schema.json",
+      "status": "draft",
+      "owner": "Foundation / packages/contracts"
+    }
+  ]
+}
