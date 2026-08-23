@@ -38,9 +38,10 @@ Every envelope carries the following required fields:
 
 `scenarioContext` (C033) requires `scenarioId`, `scenarioVersion`,
 `scenarioRunId`, `formedAt`, and `status`. The pure validator rejects missing
-values and rejects a version or run identifier that does not use the
-`scenarioId` prefix. Prefix checking can be disabled only for migration tooling
-with `{ enforcePrefix: false }`; normal module calls should keep the default.
+values and rejects an explicitly recognizable version or run prefix that belongs
+to another scenario. Generic owner-defined identifiers remain possible;
+prefix checking can be disabled only for migration tooling with
+`{ enforcePrefix: false }`.
 
 `ResourceRef` and `EvidenceRef` are stable references, not embedded domain
 objects. The canonical fields are `refType`/`refId` and
@@ -93,3 +94,10 @@ extensions, while callers can fail closed with `{ allowUnknown: false }`.
 
 The envelope schema intentionally does not define idempotency storage or
 duplicate behavior. Those pure functions live in `packages/identity`.
+
+## Minimal configuration boundary
+
+`createFeatureFlagReader` and `resolveFeatureFlag` read a caller-owned scalar
+configuration snapshot. They do not persist flags, implement rollout or
+targeting, or make an authorization decision; a later owner must supply those
+platform capabilities if they are approved.

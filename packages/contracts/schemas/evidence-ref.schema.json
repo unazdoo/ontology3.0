@@ -16,6 +16,15 @@
     "formedAt": "Evidence-producing owner",
     "owner": "Evidence-producing owner"
   },
+  "x-field-purposes": {
+    "evidenceType": "Classify the evidence item.",
+    "evidenceId": "Identify the evidence in its owner namespace.",
+    "evidenceVersion": "Pin an optional immutable evidence revision.",
+    "locator": "Provide an optional read-only evidence locator.",
+    "digest": "Bind the evidence reference to an optional fingerprint.",
+    "formedAt": "Record when the evidence was formed.",
+    "owner": "Identify the evidence-producing owner."
+  },
   "additionalProperties": true,
   "required": ["evidenceType", "evidenceId"],
   "properties": {

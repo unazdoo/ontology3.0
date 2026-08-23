@@ -21,6 +21,20 @@
     "evidenceRefs": "Evidence-producing owners",
     "payload": "Producing module; domain owner remains authoritative"
   },
+  "x-field-purposes": {
+    "eventId": "Identify one envelope instance.",
+    "eventType": "Classify the API/event message.",
+    "schemaVersion": "Select the registered draft schema revision.",
+    "occurredAt": "Record when the producing operation occurred.",
+    "actorRef": "Carry an opaque actor reference without resolving permissions.",
+    "correlationId": "Join related requests and receipts.",
+    "traceId": "Join the distributed execution trace.",
+    "idempotencyKey": "Detect a repeated request before business side effects.",
+    "scenarioContext": "Bind the message to one C033 scenario/version/run.",
+    "resourceRefs": "Reference module-owned resources without copying them.",
+    "evidenceRefs": "Reference immutable or append-only evidence.",
+    "payload": "Carry the producing module's domain payload."
+  },
   "additionalProperties": true,
   "required": [
     "eventId",

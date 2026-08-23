@@ -3,6 +3,8 @@
 This package is the minimal C034 Provider SPI. It is storage-agnostic and has
 no module, database, queue, or workflow implementation. The public version is
 `ofw.c034.checkpoint.v1` and the SPI version is `c034.provider.v1`.
+Both identifiers are implementation compatibility names under draft contract
+version `draft-0.1.0`; they are not a final platform contract.
 
 ```js
 const {
@@ -26,6 +28,14 @@ The five methods are deliberately references/hooks. Missing implementation
 methods return a `NOT_IMPLEMENTED` error for `export` and use the pure safety
 receipts for recovery/comparison. `assertProvider()` can be used to require
 all five methods before registration.
+
+| Method | Purpose | Owner |
+| --- | --- | --- |
+| `export` | Return an immutable, versioned checkpoint reference | Owning module |
+| `validate` | Check structure and owner integrity evidence | Owning module + Foundation boundary |
+| `cloneRestore` | Prepare an isolated restore with a new run | Owning module, guarded by Foundation |
+| `isolatedReplay` | Prepare a side-effect-suppressed replay context | Owning module, guarded by Foundation |
+| `migrationCompare` | Compare source/target versions without writing either | Owning module + Foundation boundary |
 
 Recovery rules are enforced by the wrapper:
 

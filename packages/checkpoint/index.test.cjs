@@ -37,6 +37,15 @@ test("validates a minimal immutable checkpoint and rejects context mismatch", ()
   assert.equal(checkpoint.validateCheckpoint(mismatch).ok, false);
 });
 
+test("checkpoint C033 validation rejects missing formedAt and status", () => {
+  const withoutFormedAt = manifest({ scenarioContext: { ...context() } });
+  delete withoutFormedAt.scenarioContext.formedAt;
+  assert.equal(checkpoint.validateCheckpoint(withoutFormedAt).ok, false);
+  const withoutStatus = manifest({ scenarioContext: { ...context() } });
+  delete withoutStatus.scenarioContext.status;
+  assert.equal(checkpoint.validateCheckpoint(withoutStatus).ok, false);
+});
+
 test("cloneRestore creates a new run and leaves the source immutable", () => {
   const source = manifest({
     actionRequests: [{ id: "AR-1" }],
@@ -161,4 +170,33 @@ test("provider rejects adapter attempts to replay historical side effects", () =
     () => provider.cloneRestore(manifest(), { runIdFactory: fixedRunId }),
     (error) => error.code === "HISTORICAL_SIDE_EFFECT_REPLAY"
   );
+});
+
+test("provider request input cannot smuggle historical side-effect collections", () => {
+  let received;
+  const provider = checkpoint.createProvider({
+    cloneRestore: (request) => {
+      received = request;
+      return { restoredRefs: [] };
+    }
+  });
+  provider.cloneRestore({
+    checkpoint: manifest(),
+    actionRequests: [{ id: "AR-1" }],
+    notifications: [{ id: "N-1" }],
+    approvals: [{ id: "AP-1" }],
+    todos: [{ id: "TODO-1" }]
+  }, { runIdFactory: fixedRunId });
+  assert.equal("actionRequests" in received, false);
+  assert.equal("notifications" in received, false);
+  assert.equal("approvals" in received, false);
+  assert.equal("todos" in received, false);
+});
+
+test("provider accepts the common { valid, errors } validation shape", async () => {
+  const provider = checkpoint.createProvider({
+    export: () => manifest(),
+    validate: () => ({ valid: true, errors: [] })
+  });
+  assert.equal((await provider.validate(manifest())).ok, true);
 });

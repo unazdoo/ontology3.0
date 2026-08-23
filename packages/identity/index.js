@@ -16,6 +16,13 @@ const TRACE_SCHEMA_VERSION = 'ofw.trace-context.draft.v1';
 const IDEMPOTENCY_KEY_PREFIX = 'idem-v1';
 const CONTEXT_FIELDS = Object.freeze(['scenarioId', 'scenarioVersion', 'scenarioRunId', 'formedAt', 'status']);
 const RUN_COMPARISON_FIELDS = Object.freeze(['scenarioId', 'scenarioVersion', 'scenarioRunId']);
+const CONTEXT_FIELD_PURPOSES = Object.freeze({
+  scenarioId: 'Identify the scenario family.',
+  scenarioVersion: 'Identify the scenario definition revision.',
+  scenarioRunId: 'Identify one isolated execution run.',
+  formedAt: 'Record when the context was formed.',
+  status: 'Carry the scenario owner lifecycle status.'
+});
 const REQUEST_FINGERPRINT_FIELDS = Object.freeze([
   'schemaVersion',
   'eventType',
@@ -209,6 +216,10 @@ function compareScenarioContextDetailed(left, right, options = {}) {
 
 function contextFingerprint(value, options = {}) {
   const context = normalizeScenarioContext(contextInput(value), options);
+  if (options.validate !== false) {
+    const validation = validateScenarioContext(context, options);
+    if (!validation.valid) throw new IdentityValidationError('ScenarioContext', validation.errors);
+  }
   // A fingerprint represents the serialized context by default, including
   // formation time and lifecycle. Callers that need only the stable run
   // identity can explicitly request `{ includeLifecycle: false }`.
@@ -223,10 +234,21 @@ const GENERIC_IDEMPOTENCY_KEY_RE = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,255}$/;
 
 function validateIdempotencyKey(value, options = {}) {
   const keyValue = isRecord(value) ? value.idempotencyKey : value;
+  const optionKeys = new Set(['strictGenerated', 'request', 'expectedRequest', 'fields', 'path']);
+  const looksLikeRequest = isRecord(options)
+    && Object.keys(options).some((key) => !optionKeys.has(key));
+  const config = looksLikeRequest ? { request: options } : (options || {});
   const errors = [];
   if (!nonEmptyString(keyValue)) errors.push(error('idempotencyKey', 'format', 'must be a non-empty token'));
-  else if (options.strictGenerated === true ? !IDEMPOTENCY_KEY_RE.test(keyValue) : !GENERIC_IDEMPOTENCY_KEY_RE.test(keyValue)) {
-    errors.push(error('idempotencyKey', 'format', options.strictGenerated ? `must match ${IDEMPOTENCY_KEY_PREFIX}:<sha256>` : 'contains unsupported characters or exceeds 256 characters'));
+  else if (config.strictGenerated === true ? !IDEMPOTENCY_KEY_RE.test(keyValue) : !GENERIC_IDEMPOTENCY_KEY_RE.test(keyValue)) {
+    errors.push(error('idempotencyKey', 'format', config.strictGenerated ? `must match ${IDEMPOTENCY_KEY_PREFIX}:<sha256>` : 'contains unsupported characters or exceeds 256 characters'));
+  }
+  const expectedRequest = config.request || config.expectedRequest;
+  if (expectedRequest !== undefined && nonEmptyString(keyValue)) {
+    const expected = generateIdempotencyKey(expectedRequest, config);
+    if (keyValue !== expected) {
+      errors.push(error('idempotencyKey', 'mismatch', 'does not match the expected request fingerprint'));
+    }
   }
   return result(errors.length === 0, errors);
 }
@@ -362,6 +384,10 @@ function isValidIdempotencyKey(value, options) {
   return validateIdempotencyKey(value, options).valid;
 }
 
+function verifyIdempotencyKey(key, request, options = {}) {
+  return validateIdempotencyKey(key, { ...options, request });
+}
+
 function extractTraceContext(value) {
   const source = isRecord(value) ? value : {};
   const headers = isRecord(source.headers) ? source.headers : {};
@@ -401,25 +427,32 @@ function createTraceHeaders(value) {
 
 module.exports = Object.freeze({
   IDENTITY_SCHEMA_VERSION,
+  SCHEMA_VERSION: IDENTITY_SCHEMA_VERSION,
   C033_SCHEMA_VERSION,
   IDEMPOTENCY_SCHEMA_VERSION,
   TRACE_SCHEMA_VERSION,
   IDEMPOTENCY_KEY_PREFIX,
   CONTEXT_FIELDS,
+  CONTEXT_FIELD_PURPOSES,
   RUN_COMPARISON_FIELDS,
   IdentityValidationError,
   isDateTime,
   stableSerialize,
+  serializeContext: (value, options) => stableSerialize(normalizeScenarioContext(value, options)),
   contextFingerprint,
+  getContextFingerprint: contextFingerprint,
   fingerprintScenarioContext: contextFingerprint,
   scenarioContextFingerprint: contextFingerprint,
   validateScenarioContext,
+  validateC033Context: validateScenarioContext,
+  isValidScenarioContext: (value, options) => validateScenarioContext(value, options).valid,
   validateContext: validateScenarioContext,
   assertScenarioContext,
   assertContext: assertScenarioContext,
   normalizeScenarioContext,
   normalizeContext: normalizeScenarioContext,
   compareScenarioContext,
+  compareContexts: compareScenarioContext,
   compareScenarioContextDetailed,
   compareRunContext: compareScenarioContext,
   sameScenarioContext: compareScenarioContext,
@@ -430,21 +463,26 @@ module.exports = Object.freeze({
   stableSerializeScenarioContext: (value, options) => stableSerialize(normalizeScenarioContext(value, options)),
   validateIdempotencyKey,
   validateIdempotency: validateIdempotencyKey,
+  verifyIdempotencyKey,
   assertIdempotencyKey,
   isValidIdempotencyKey,
   generateIdempotencyKey,
+  makeIdempotencyKey: generateIdempotencyKey,
   generateIdempotency: generateIdempotencyKey,
   createIdempotencyKey: generateIdempotencyKey,
   requestFingerprint,
   identifyDuplicateRequest,
   detectDuplicateRequest: identifyDuplicateRequest,
   isDuplicateRequest: (request, seen, options) => identifyDuplicateRequest(request, seen, options).duplicate,
+  isDuplicate: (request, seen, options) => identifyDuplicateRequest(request, seen, options).duplicate,
   checkIdempotency: identifyDuplicateRequest,
+  checkDuplicate: identifyDuplicateRequest,
   rememberRequest,
   extractTraceContext,
   createTraceContext,
   propagateTraceContext,
   propagateTrace: propagateTraceContext,
   withTraceContext: propagateTraceContext,
+  propagateIds: propagateTraceContext,
   createTraceHeaders
 });

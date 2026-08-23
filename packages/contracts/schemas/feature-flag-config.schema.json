@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontology3.example/contracts/feature-flag-config/draft-0.1.0",
+  "title": "Foundation Minimal Configuration Snapshot",
+  "description": "Caller-owned scalar configuration only. This draft does not implement a feature-flag platform, rollout, persistence, or authorization.",
+  "type": "object",
+  "x-contract-status": "draft",
+  "x-contract-version": "draft-0.1.0",
+  "x-contract-owner": "Foundation / packages/contracts",
+  "x-field-owners": {
+    "<flagName>": "Configuration owner"
+  },
+  "x-field-purposes": {
+    "<flagName>": "Expose an already-declared scalar configuration value to a caller."
+  },
+  "additionalProperties": {
+    "type": ["boolean", "string", "number"]
+  },
+  "propertyNames": {
+    "pattern": "^[A-Za-z][A-Za-z0-9._:-]{0,127}$"
+  }
+}

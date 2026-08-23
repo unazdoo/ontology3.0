@@ -34,7 +34,8 @@ hex digest of all five context fields by default. Pass
 `generateIdempotencyKey` deterministically produces `idem-v1:<sha256>` from the
 request's semantic fields. `validateIdempotencyKey` accepts generated keys and
 bounded caller tokens; pass `{ strictGenerated: true }` to require the generated
-form. `identifyDuplicateRequest` is read-only: it returns `status: "new"`,
+form. `verifyIdempotencyKey(key, request)` additionally checks that a generated
+key matches the request fingerprint. `identifyDuplicateRequest` is read-only: it returns `status: "new"`,
 `"duplicate"`, or `"conflict"`, plus `sideEffectAllowed`. A same-key request
 with a different schema version is a `schema-version-conflict`; no map or
 business record is changed. `rememberRequest` returns a new caller-owned index
@@ -44,6 +45,11 @@ when a test or adapter explicitly wants to stage a record.
 `createTraceHeaders` carry `traceId` and `correlationId` without implementing a
 tracing backend. Existing IDs are preserved; missing IDs are generated with
 Node's secure UUID source.
+
+The C033 field purpose/owner split is deliberately small: Foundation owns the
+validation boundary and run identity; the scenario owner supplies
+`scenarioId`, `scenarioVersion` and lifecycle `status`; Foundation forms
+`scenarioRunId` and `formedAt` for a new run.
 
 Validation results contain `{ valid, errors }` and expose a non-enumerable
 `ok` compatibility property. `assert*` functions throw

@@ -18,6 +18,17 @@
     "operation": "Producing module",
     "outcome": "Producing module"
   },
+  "x-field-purposes": {
+    "actorRef": "Reference the actor supplied by the caller boundary.",
+    "traceId": "Join the operation to a distributed trace.",
+    "correlationId": "Join related requests and receipts.",
+    "scenarioContext": "Bind the operation to one C033 scenario/version/run.",
+    "sourceVersion": "Record the source version read or migrated from.",
+    "targetVersion": "Record the target version compared or migrated to.",
+    "formedAt": "Record when the audit metadata was formed.",
+    "operation": "Name the stable operation that produced the metadata.",
+    "outcome": "Record the operation outcome without becoming business truth."
+  },
   "additionalProperties": true,
   "required": [
     "actorRef",

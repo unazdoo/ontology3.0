@@ -78,13 +78,12 @@ function firstString(source, keys) {
 
 function scenarioPrefixMatches(scenarioId, candidate) {
   if (!isText(scenarioId) || !isText(candidate)) return false;
-  const id = scenarioId.trim().toLowerCase();
-  const value = candidate.trim().toLowerCase();
-  return value === id
-    || value.startsWith(`${id}-`)
-    || value.startsWith(`${id}_`)
-    || value.startsWith(`${id}.`)
-    || value.startsWith(`${id}/`);
+  const id = scenarioId.trim();
+  const value = candidate.trim();
+  if (value === id || value.startsWith(`${id}-`) || value.startsWith(`${id}_`)
+      || value.startsWith(`${id}.`) || value.startsWith(`${id}/`)) return true;
+  const explicitPrefix = /^([A-Za-z][A-Za-z0-9_-]*)-(?:v|RUN-)/.exec(value);
+  return !explicitPrefix || explicitPrefix[1] === id;
 }
 
 function validateScenarioContext(value, options = {}) {
@@ -156,8 +155,8 @@ function validateActorRef(value, options = {}) {
   if (!isRecord(value) || Object.keys(value).length === 0) {
     return { valid: false, errors: [issue(path, 'format', 'must be a non-empty string or reference object')] };
   }
-  const id = firstString(value, ['refId', 'actorId', 'subjectId', 'id', 'key', 'uri']);
-  if (!id) return { valid: false, errors: [issue(path, 'identity', 'reference object must contain a stable identity')] };
+  // The identity boundary owns the reference shape. Foundation only requires
+  // that an object reference is non-empty and remains opaque.
   return { valid: true, errors: [] };
 }
 
@@ -243,9 +242,49 @@ function validateAuditFields(value, options = {}) {
   });
   if (hasOwn(value, 'formedAt') && !isDateTime(value.formedAt)) errors.push(issue(`${path}.formedAt`, 'format', 'must be an RFC 3339 date-time'));
   if (hasOwn(value, 'scenarioContext')) {
-    errors.push(...validateScenarioContext(value.scenarioContext, { path: `${path}.scenarioContext`, enforcePrefix: options.enforcePrefix }).errors);
+    errors.push(...validateScenarioContext(value.scenarioContext, {
+      path: `${path}.scenarioContext`,
+      enforcePrefix: options.enforcePrefix,
+      allowUnknown: options.allowUnknown
+    }).errors);
+  }
+  if (options.allowUnknown === false) {
+    const allowed = new Set(required.concat(options.allowedFields || []));
+    Object.keys(value).forEach((key) => {
+      if (!allowed.has(key)) errors.push(issue(`${path}.${key}`, 'unknown', 'is not allowed'));
+    });
   }
   return { valid: errors.length === 0, errors };
+}
+
+// The field list is intentionally data-only.  It is a compile-time/documentary
+// contract, not an audit store or a policy engine.
+const AUDIT_FIELDS = Object.freeze([
+  'actorRef',
+  'traceId',
+  'correlationId',
+  'scenarioContext',
+  'sourceVersion',
+  'targetVersion',
+  'formedAt',
+  'operation',
+  'outcome'
+]);
+
+const AUDIT_FIELD_PURPOSES = Object.freeze({
+  actorRef: 'Reference the actor supplied by the caller boundary.',
+  traceId: 'Join the operation to a distributed trace.',
+  correlationId: 'Join related requests and receipts.',
+  scenarioContext: 'Bind the operation to one C033 scenario/version/run.',
+  sourceVersion: 'Record the source version read or migrated from.',
+  targetVersion: 'Record the target version compared or migrated to.',
+  formedAt: 'Record when the audit metadata was formed.',
+  operation: 'Name the stable operation that produced the metadata.',
+  outcome: 'Record the operation outcome without becoming business truth.'
+});
+
+function createAuditFields(value, options = {}) {
+  return assertAuditFields(value, options);
 }
 
 function normalizeAuditFields(value, options = {}) {
@@ -289,7 +328,11 @@ function validateContractEnvelope(value, options = {}) {
   if (hasOwn(value, 'occurredAt') && !isDateTime(value.occurredAt)) errors.push(issue(`${path}.occurredAt`, 'format', 'must be an RFC 3339 date-time'));
   if (hasOwn(value, 'actorRef')) errors.push(...validateActorRef(value.actorRef, { path: `${path}.actorRef` }).errors);
   if (hasOwn(value, 'scenarioContext')) {
-    errors.push(...validateScenarioContext(value.scenarioContext, { path: `${path}.scenarioContext`, enforcePrefix: options.enforcePrefix }).errors);
+    errors.push(...validateScenarioContext(value.scenarioContext, {
+      path: `${path}.scenarioContext`,
+      enforcePrefix: options.enforcePrefix,
+      allowUnknown: options.allowUnknown
+    }).errors);
   }
   if (hasOwn(value, 'resourceRefs')) {
     if (!Array.isArray(value.resourceRefs)) errors.push(issue(`${path}.resourceRefs`, 'type', 'must be an array'));
@@ -387,6 +430,9 @@ module.exports = {
   validateAuditFields: publicValidateAuditFields,
   normalizeAuditFields,
   assertAuditFields,
+  createAuditFields,
+  AUDIT_FIELDS,
+  AUDIT_FIELD_PURPOSES,
   validateContractEnvelope: publicValidateContractEnvelope,
   normalizeContractEnvelope,
   assertContractEnvelope,

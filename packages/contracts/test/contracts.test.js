@@ -121,3 +121,19 @@ test('strict mode can reject unknown fields while default draft mode permits the
   assert.equal(contracts.validateScenarioContext(context).valid, true);
   assert.equal(contracts.validateScenarioContext(context, { allowUnknown: false }).valid, false);
 });
+
+test('minimal feature-flag reader only reads caller-owned scalar config', () => {
+  const reader = contracts.createFeatureFlagReader({ 'foundation.recovery.guard': true, mode: 'draft' });
+  assert.equal(reader.get('foundation.recovery.guard'), true);
+  assert.equal(reader.get('missing', false), false);
+  assert.equal(reader.has('mode'), true);
+  assert.deepEqual(reader.snapshot(), { 'foundation.recovery.guard': true, mode: 'draft' });
+  assert.equal(contracts.validateFeatureFlagConfig({ bad: { rollout: 50 } }).valid, false);
+});
+
+test('strict envelope validation also closes the nested C033 context', () => {
+  const envelope = validEnvelope();
+  envelope.scenarioContext.futureField = true;
+  assert.equal(contracts.validateContractEnvelope(envelope).valid, true);
+  assert.equal(contracts.validateContractEnvelope(envelope, { allowUnknown: false }).valid, false);
+});

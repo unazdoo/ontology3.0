@@ -14,6 +14,13 @@
     "formedAt": "Foundation",
     "status": "Foundation (scenario owner may define lifecycle values)"
   },
+  "x-field-purposes": {
+    "scenarioId": "Identify the scenario family.",
+    "scenarioVersion": "Identify the scenario definition revision.",
+    "scenarioRunId": "Identify one isolated execution run.",
+    "formedAt": "Record when the context was formed.",
+    "status": "Carry the owner-defined lifecycle status."
+  },
   "additionalProperties": true,
   "required": [
     "scenarioId",

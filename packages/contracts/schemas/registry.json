@@ -13,6 +13,12 @@
     "owner": "Foundation schema registry",
     "schemas": "Foundation schema registry"
   },
+  "x-field-purposes": {
+    "schemaVersion": "Identify the registry metadata revision.",
+    "status": "Mark the registry as draft until reconciliation.",
+    "owner": "Identify the registry owner.",
+    "schemas": "List the language-neutral schemas and their paths."
+  },
   "required": ["schemaVersion", "status", "owner", "schemas"],
   "properties": {
     "schemaVersion": { "const": "draft-0.1.0" },
@@ -72,6 +78,13 @@
       "name": "audit-fields",
       "$id": "https://ontology3.example/contracts/audit-fields/draft-0.1.0",
       "path": "./audit-fields.schema.json",
+      "status": "draft",
+      "owner": "Foundation / packages/contracts"
+    },
+    {
+      "name": "feature-flag-config",
+      "$id": "https://ontology3.example/contracts/feature-flag-config/draft-0.1.0",
+      "path": "./feature-flag-config.schema.json",
       "status": "draft",
       "owner": "Foundation / packages/contracts"
     }

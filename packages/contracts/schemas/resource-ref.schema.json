@@ -16,6 +16,15 @@
     "relation": "Referencing module (optional relationship label)",
     "digest": "Owning module (optional content fingerprint)"
   },
+  "x-field-purposes": {
+    "refType": "Classify the referenced resource.",
+    "refId": "Identify the resource in its owner namespace.",
+    "refVersion": "Pin an optional immutable resource revision.",
+    "locator": "Provide an optional read-only lookup locator.",
+    "owner": "Identify the authoritative resource owner.",
+    "relation": "Describe the reference relationship.",
+    "digest": "Bind the reference to an optional content fingerprint."
+  },
   "additionalProperties": true,
   "required": ["refType", "refId"],
   "properties": {

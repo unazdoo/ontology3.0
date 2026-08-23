@@ -10,6 +10,16 @@ const crypto = require("node:crypto");
 
 const CHECKPOINT_SCHEMA_VERSION = "ofw.c034.checkpoint.v1";
 const PROVIDER_SPI_VERSION = "c034.provider.v1";
+const C034_CONTRACT_VERSION = "draft-0.1.0";
+const C034_CONTRACT_STATUS = "draft";
+
+const C034_METHOD_PURPOSES = Object.freeze({
+  export: "Ask the owning module for an immutable, versioned checkpoint reference.",
+  validate: "Validate checkpoint structure and owner-supplied integrity evidence.",
+  cloneRestore: "Prepare an isolated restore with a new scenarioRunId.",
+  isolatedReplay: "Prepare an isolated, side-effect-suppressed replay context.",
+  migrationCompare: "Compare source and target versions without mutating either side."
+});
 
 const SIDE_EFFECT_POLICY = Object.freeze({
   allowHistoricalActionRequestReplay: false,
@@ -36,7 +46,15 @@ const BLOCKED_REPLAY_KINDS = Object.freeze([
 
 const BLOCKED_COLLECTION_RE = /^(?:(?:historical|pending|replayed|queued)?(?:actionrequests?|notifications?|approvals?|todos?|tasks?)(?:history|records|items|queue)?)$/i;
 const BLOCKED_OUTPUT_RE = /^(?:replayed?|replay|dispatched?|dispatch|sent|created).*(?:action|notification|approval|todo|task)/i;
-const ISO_UTC_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
+const BLOCKED_DISPATCH_COLLECTIONS = new Set([
+  "dispatches",
+  "externaldispatches",
+  "outboundevents",
+  "sideeffects",
+  "emittednotifications",
+  "sentnotifications"
+]);
+const DATE_TIME_RE = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d{1,9})?(Z|[+-]\d{2}:\d{2})$/;
 
 class CheckpointError extends Error {
   constructor(code, message, details) {
@@ -89,6 +107,22 @@ function nonEmptyString(value) {
   return typeof value === "string" && value.trim().length > 0;
 }
 
+function isDateTime(value) {
+  if (typeof value !== "string" || !DATE_TIME_RE.test(value) || Number.isNaN(Date.parse(value))) return false;
+  const match = DATE_TIME_RE.exec(value);
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const hour = Number(match[4]);
+  const minute = Number(match[5]);
+  const second = Number(match[6]);
+  const offset = match[7] === "Z" ? null : match[7].slice(1).split(":").map(Number);
+  const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  return month >= 1 && month <= 12 && day >= 1 && day <= daysInMonth
+    && hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59 && second >= 0 && second <= 59
+    && (!offset || (offset[0] >= 0 && offset[0] <= 23 && offset[1] >= 0 && offset[1] <= 59));
+}
+
 function getContext(value) {
   if (!isPlainObject(value)) return null;
   return value.scenarioContext || value.context || value;
@@ -110,31 +144,33 @@ function validateScenarioContext(value, options) {
     }
   });
 
-  if (value.formedAt !== undefined &&
-      (!nonEmptyString(value.formedAt) || !ISO_UTC_RE.test(value.formedAt) || Number.isNaN(Date.parse(value.formedAt)))) {
-    errors.push(errorRecord("INVALID_FORMED_AT", "formedAt", "formedAt must be a UTC ISO timestamp with milliseconds"));
-  }
-  if (config.requireFormedAt && value.formedAt === undefined) {
+  const requireFormedAt = config.requireFormedAt !== false;
+  const requireStatus = config.requireStatus !== false;
+  if (requireFormedAt && value.formedAt === undefined) {
     errors.push(errorRecord("MISSING_SCENARIO_CONTEXT_FIELD", "formedAt", "formedAt is required"));
+  }
+  if (value.formedAt !== undefined &&
+      (!nonEmptyString(value.formedAt) || !isDateTime(value.formedAt))) {
+    errors.push(errorRecord("INVALID_FORMED_AT", "formedAt", "formedAt must be an RFC 3339 date-time"));
+  }
+  if (requireStatus && value.status === undefined) {
+    errors.push(errorRecord("MISSING_SCENARIO_CONTEXT_FIELD", "status", "status is required"));
   }
   if (value.status !== undefined && !nonEmptyString(value.status)) {
     errors.push(errorRecord("INVALID_CONTEXT_STATUS", "status", "status must be a non-empty string"));
   }
-  if (config.requireStatus && value.status === undefined) {
-    errors.push(errorRecord("MISSING_SCENARIO_CONTEXT_FIELD", "status", "status is required"));
-  }
 
-  /* Enforce prefix consistency for the canonical Sxxx forms while retaining
-   * compatibility with module-owned identifiers that use another format. */
+  /* Enforce an explicitly recognizable `<scenario>-v...` or
+   * `<scenario>-RUN-...` prefix while retaining generic owner formats. */
   if (nonEmptyString(value.scenarioId) && nonEmptyString(value.scenarioVersion)) {
     const scenarioVersionMatch = /^([A-Za-z][A-Za-z0-9_-]*)-v/.exec(value.scenarioVersion);
-    if (scenarioVersionMatch && scenarioVersionMatch[1].startsWith("S") && scenarioVersionMatch[1] !== value.scenarioId) {
+    if (scenarioVersionMatch && scenarioVersionMatch[1] !== value.scenarioId) {
       errors.push(errorRecord("SCENARIO_VERSION_MISMATCH", "scenarioVersion", "scenarioVersion must belong to scenarioId"));
     }
   }
   if (nonEmptyString(value.scenarioId) && nonEmptyString(value.scenarioRunId)) {
     const runPrefixMatch = /^([A-Za-z][A-Za-z0-9_-]*)-RUN-/.exec(value.scenarioRunId);
-    if (runPrefixMatch && runPrefixMatch[1].startsWith("S") && runPrefixMatch[1] !== value.scenarioId) {
+    if (runPrefixMatch && runPrefixMatch[1] !== value.scenarioId) {
       errors.push(errorRecord("SCENARIO_RUN_MISMATCH", "scenarioRunId", "scenarioRunId must belong to scenarioId"));
     }
   }
@@ -237,10 +273,14 @@ function validateCheckpoint(value, options) {
   if (value.checkpointId !== undefined && !nonEmptyString(value.checkpointId)) {
     errors.push(errorRecord("INVALID_CHECKPOINT_ID", "checkpointId", "checkpointId must be a non-empty string"));
   }
-  const context = getContext(value);
-  const contextResult = validateScenarioContext(context, config.contextOptions);
-  if (!contextResult.ok) {
-    contextResult.errors.forEach((error) => errors.push({ ...error, path: `scenarioContext.${error.path}` }));
+  const context = value.scenarioContext || value.context;
+  if (!context) {
+    errors.push(errorRecord("MISSING_SCENARIO_CONTEXT", "scenarioContext", "checkpoint must carry scenarioContext"));
+  } else {
+    const contextResult = validateScenarioContext(context, config.contextOptions);
+    if (!contextResult.ok) {
+      contextResult.errors.forEach((error) => errors.push({ ...error, path: `scenarioContext.${error.path}` }));
+    }
   }
   if (value.sourceScenarioRunId !== undefined && value.sourceScenarioRunId !== context?.scenarioRunId) {
     errors.push(errorRecord("SOURCE_RUN_MISMATCH", "sourceScenarioRunId", "sourceScenarioRunId must equal scenarioContext.scenarioRunId"));
@@ -278,7 +318,9 @@ function assertRestorableCheckpoint(value, options) {
 
 function isBlockedCollectionKey(key) {
   const normalized = String(key).replace(/[ _-]/g, "");
-  return BLOCKED_COLLECTION_RE.test(normalized) || BLOCKED_OUTPUT_RE.test(String(key));
+  return BLOCKED_COLLECTION_RE.test(normalized)
+    || BLOCKED_DISPATCH_COLLECTIONS.has(normalized.toLowerCase())
+    || BLOCKED_OUTPUT_RE.test(String(key));
 }
 
 function sanitizeHistoricalSideEffects(value, options, path, seen) {
@@ -526,8 +568,9 @@ function invokeProtectedRestore(implementation, methodName, parsed, mode, status
   const plan = createRestorePlan(parsed.checkpoint, mode, status, config);
   const method = implementation && implementation[methodName];
   if (typeof method !== "function") return deepFreeze(plan);
+  const safeRequest = sanitizeHistoricalSideEffects(parsed.request || {}, { removedPaths: [] });
   const delegateRequest = {
-    ...parsed.request,
+    ...safeRequest,
     checkpoint: plan.restoreInput,
     sourceCheckpoint: plan.restoreInput,
     sourceScenarioRunId: plan.sourceScenarioRunId,
@@ -575,6 +618,19 @@ function extractMigrationSide(value, role) {
     fail("INVALID_MIGRATION_INPUT", `${role}.scenarioRunId must be a non-empty string`);
   }
   return side;
+}
+
+function assertMigrationIdentity(side, role) {
+  const versionPrefix = /^([A-Za-z][A-Za-z0-9_-]*)-v/.exec(side.scenarioVersion);
+  if (versionPrefix && versionPrefix[1] !== side.scenarioId) {
+    fail("SCENARIO_VERSION_MISMATCH", `${role}.scenarioVersion must belong to scenarioId`);
+  }
+  if (side.scenarioRunId) {
+    const runPrefix = /^([A-Za-z][A-Za-z0-9_-]*)-RUN-/.exec(side.scenarioRunId);
+    if (runPrefix && runPrefix[1] !== side.scenarioId) {
+      fail("SCENARIO_RUN_MISMATCH", `${role}.scenarioRunId must belong to scenarioId`);
+    }
+  }
 }
 
 function compareNumericVersion(left, right) {
@@ -669,6 +725,8 @@ function migrationCompare(sourceOrRequest, targetOrOptions, maybeOptions) {
   if (source.baselineVersion === target.baselineVersion && source.baselineSnapshotId === target.baselineSnapshotId) {
     fail("UNCHANGED_BASELINE", "migration target must change baselineVersion or baselineSnapshotId");
   }
+  assertMigrationIdentity(source, "source");
+  assertMigrationIdentity(target, "target");
   const baselineDirection = compareNumericVersion(source.baselineVersion, target.baselineVersion);
   if (baselineDirection === -1 && !parsed.options.allowDowngrade) {
     fail("MIGRATION_VERSION_REGRESSION", "target baselineVersion cannot be older than source baselineVersion");
@@ -718,6 +776,9 @@ function normalizeValidationResult(value) {
   if (typeof value === "boolean") return { ok: value, errors: value ? [] : [errorRecord("PROVIDER_VALIDATION_FAILED", "$", "provider validation failed")] };
   if (isPlainObject(value) && typeof value.ok === "boolean") {
     return { ok: value.ok, errors: Array.isArray(value.errors) ? value.errors : [] };
+  }
+  if (isPlainObject(value) && typeof value.valid === "boolean") {
+    return { ok: value.valid, errors: Array.isArray(value.errors) ? value.errors : [] };
   }
   fail("INVALID_PROVIDER_VALIDATION_RESULT", "provider validate() must return a boolean or { ok, errors }");
 }
@@ -788,8 +849,17 @@ function createCheckpointProvider(implementation, options) {
       return mapMaybe(impl.migrationCompare.call(impl, request), (delegateResult) => {
         assertNoHistoricalSideEffects(delegateResult);
         return deepFreeze({
-          ...(isPlainObject(delegateResult) ? immutableJson(delegateResult, "migration comparison") : { providerResult: delegateResult }),
           ...baseline,
+          ...(isPlainObject(delegateResult) ? immutableJson(delegateResult, "migration comparison") : { providerResult: delegateResult }),
+          // Source/target identity and safety policy belong to Foundation; an
+          // adapter may add comparison findings or mark compatibility false,
+          // but cannot retarget the receipt or reopen side effects.
+          source: baseline.source,
+          target: baseline.target,
+          sourceScenarioRunId: baseline.sourceScenarioRunId,
+          targetScenarioRunId: baseline.targetScenarioRunId,
+          scenarioRunId: baseline.scenarioRunId,
+          newScenarioRunId: baseline.newScenarioRunId,
           sideEffectPolicy: SIDE_EFFECT_POLICY,
           overwritesSource: false,
           sideEffectsSuppressed: true
@@ -809,7 +879,8 @@ function assertProvider(provider) {
 
 function exportCheckpoint(providerOrImplementation, request) {
   const provider = providerOrImplementation && providerOrImplementation.spiVersion === PROVIDER_SPI_VERSION &&
-    typeof providerOrImplementation.export === "function"
+    providerOrImplementation.schemaVersion === CHECKPOINT_SCHEMA_VERSION &&
+    REQUIRED_PROVIDER_METHODS.every((method) => typeof providerOrImplementation[method] === "function")
     ? providerOrImplementation
     : createCheckpointProvider(providerOrImplementation);
   return provider.export(request);
@@ -818,16 +889,25 @@ function exportCheckpoint(providerOrImplementation, request) {
 const api = {
   CHECKPOINT_SCHEMA_VERSION,
   PROVIDER_SPI_VERSION,
+  C034_CONTRACT_VERSION,
+  C034_CONTRACT_STATUS,
+  C034_SCHEMA_VERSION: C034_CONTRACT_VERSION,
+  CHECKPOINT_CONTRACT_VERSION: C034_CONTRACT_VERSION,
+  C034_METHOD_PURPOSES,
   C034_PROVIDER_VERSION: PROVIDER_SPI_VERSION,
   SIDE_EFFECT_POLICY,
   REQUIRED_PROVIDER_METHODS,
   BLOCKED_REPLAY_KINDS,
   CheckpointError,
+  isDateTime,
   validateScenarioContext,
+  validateC034Context: validateScenarioContext,
+  isValidScenarioContext: (value, options) => validateScenarioContext(value, options).ok,
   assertScenarioContext,
   createScenarioRunId,
   validateCheckpoint,
   validate: validateCheckpoint,
+  isValidCheckpoint: (value, options) => validateCheckpoint(value, options).ok,
   assertCheckpoint,
   assertRestorableCheckpoint,
   sanitizeHistoricalSideEffects,
@@ -835,9 +915,15 @@ const api = {
   createSideEffectGuard,
   createRestorePlan,
   cloneRestore,
+  cloneRestoreCheckpoint: cloneRestore,
+  restore: cloneRestore,
   isolatedReplay,
+  replayIsolated: isolatedReplay,
+  replay: isolatedReplay,
   createIsolatedRegression,
   migrationCompare,
+  compareMigration: migrationCompare,
+  compare: migrationCompare,
   exportCheckpoint,
   createCheckpointProvider,
   createProvider: createCheckpointProvider,
