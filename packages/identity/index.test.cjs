@@ -92,6 +92,13 @@ test('a compact remembered record remains duplicate-detectable', () => {
   assert.equal(duplicate.status, 'duplicate');
 });
 
+test('a key-only seen index is treated as a duplicate without side effects', () => {
+  const first = request();
+  const duplicate = identity.identifyDuplicateRequest(first, new Set([first.idempotencyKey]));
+  assert.equal(duplicate.status, 'duplicate');
+  assert.equal(duplicate.sideEffectAllowed, false);
+});
+
 test('same idempotency key with a different schema version is a conflict', () => {
   const first = request();
   const seen = new Map([[first.idempotencyKey, first]]);

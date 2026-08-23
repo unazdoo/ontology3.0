@@ -250,7 +250,8 @@ function readSeen(seen, key) {
   if (seen instanceof Map) return seen.get(key);
   if (seen instanceof Set) return seen.has(key) ? { idempotencyKey: key, __opaque: true } : undefined;
   if (Array.isArray(seen)) {
-    return seen.find((item) => item === key || (item && item.idempotencyKey === key));
+    const found = seen.find((item) => item === key || (item && item.idempotencyKey === key));
+    return found === key ? { idempotencyKey: key, __opaque: true } : found;
   }
   if (isRecord(seen)) return seen[key] === true ? { idempotencyKey: key, __opaque: true } : seen[key];
   return undefined;
