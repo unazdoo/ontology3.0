@@ -379,6 +379,8 @@ module.exports = {
   validateEnvelope: publicValidateContractEnvelope,
   assertEnvelope: assertContractEnvelope,
   createEnvelope: createContractEnvelope,
+  assertContract: assertContractEnvelope,
+  validateContract: publicValidateContractEnvelope,
   normalizeEnvelope: normalizeContractEnvelope,
   validateScenario: publicValidateScenarioContext,
   assertScenario: assertScenarioContext,
