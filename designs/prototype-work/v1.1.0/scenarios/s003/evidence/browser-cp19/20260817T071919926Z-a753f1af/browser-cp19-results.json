@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp19-result.v1",
+  "runId": "20260817T071919926Z-a753f1af",
+  "formedAt": "2026-08-17T07:19:19.926Z",
+  "origin": "http://127.0.0.1:4333",
+  "formalSourceScenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+  "browserVersion": "149.0.7827.55",
+  "cases": [
+    {
+      "id": "m01-published-config",
+      "status": "passed",
+      "durationMs": 865,
+      "details": {
+        "configTabs": [
+          "配置总览",
+          "企业因子配置",
+          "调节因子配置",
+          "评分权重",
+          "风险分档配置"
+        ],
+        "unifiedLifecycle": true,
+        "publishedCanvas": true,
+        "lineageDetail": true
+      }
+    },
+    {
+      "id": "m03-m04-m05",
+      "status": "passed",
+      "durationMs": 7384,
+      "details": {
+        "recommendedQuestions": 6,
+        "queryAnswered": true,
+        "decisionGeneric": true,
+        "reportAgent": true
+      }
+    },
+    {
+      "id": "dashboard-and-report",
+      "status": "passed",
+      "durationMs": 1133,
+      "details": {
+        "enterpriseRows": 21,
+        "actionTypes": 4,
+        "reportSections": 9,
+        "verificationChecks": 13,
+        "directoryScrolled": true,
+        "downloadedFormalHtml": "formal-report-v6.html",
+        "downloadedTemplateJson": "s003-report-template.json"
+      }
+    }
+  ],
+  "totals": {
+    "cases": 3,
+    "passed": 3,
+    "failed": 0
+  },
+  "checkpointCreated": false,
+  "acceptanceReady": false
+}

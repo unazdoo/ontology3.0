@@ -1,0 +1,1334 @@
+const DC_STATE_SCHEMA_VERSION = 6;
+const DC_VARIANT = String(window.DC_VARIANT || "default").replace(/[^a-zA-Z0-9_-]/g, "") || "default";
+const DC_STORAGE_KEY = `ontology3-decision-center-review-v2-${DC_VARIANT}-state-v${DC_STATE_SCHEMA_VERSION}`;
+const DC_STATE_MODEL_VERSION = 2;
+const DC_C011_INBOX_KEY = "ontology3.decision-center.c011.inbox.v1";
+const DC_C017_PROJECTION_KEY = "ontology3.c017.decision-center.projection.v1";
+const DC_C019_PROJECTION_KEY = "ontology3.decision-center.c019.projection.v1";
+const DC_PLATFORM_CONTEXT_KEY = "ontology3.platform.scenario-runtime.v1";
+
+const ACTION_TYPE = {
+  id: "ACTION-FINANCING-OPTIMIZATION",
+  name: "发起融资优化建议",
+  version: "随精确已发布语义版本读取",
+  status: "已发布",
+};
+
+const S001_DATA_STRUCTURE = {
+  members: ["融资主体参考", "融资明细", "金融机构参考", "融资负责人参考"],
+  relations: ["融资明细→融资主体", "融资明细→金融机构", "融资主体→融资负责人"],
+};
+
+const SOURCE_META = {
+  rule: { label: "规则自动命中", icon: "Radar", tone: "blue" },
+  qa: { label: "智能问数", icon: "MessageSquareText", tone: "cyan" },
+  agent: { label: "Agent 应用", icon: "Bot", tone: "violet" },
+  report: { label: "报告中心仪表盘", icon: "LayoutDashboard", tone: "amber" },
+};
+
+// Historical review-only records retained solely for legacy state interpretation.
+// createInitialDecisionState never loads them into the current scenario projection.
+const LEGACY_REVIEW_REQUEST_FIXTURES = [
+  {
+    id: "AR-20260811-001",
+    reminderId: "DR-20260811-001",
+    subjectId: "UNIT-553",
+    subjectName: "单位553",
+    scenario: "融资优化",
+    sourceType: "rule",
+    sourceRef: "规则运行 RUN-RULE-0811-017",
+    requester: "规则运行服务",
+    requestTime: "2026-08-11 08:42:16",
+    generatedTime: "2026-08-11 08:42:19",
+    actionType: ACTION_TYPE,
+    rule: {
+      id: "R01",
+      name: "融资成本偏高",
+      version: "v1.6",
+      evaluatedAt: "2026-08-11 08:41:58",
+      branch: "加权融资成本高于已发布条件",
+      hitEvidence: "加权融资成本 5.72%，高于集团同期限基准 0.84 个百分点",
+    },
+    metric: {
+      id: "MET-FIN-COST-WA",
+      name: "加权融资成本",
+      value: "5.72%",
+      explanation: "较集团同期限基准高 0.84 个百分点",
+      evaluatedAt: "2026-08-11 08:41:58",
+      scope: "单位553 · 全部存量融资",
+    },
+    loanCount: 75,
+    balance: "393.134 亿元",
+    owner: "融资负责人001",
+    ownerId: "OWNER-001",
+    recommendation: "优先与高成本贡献银行协商降息或置换，先处理成本偏离最大的贷款组合。",
+    banks: [
+      { name: "欧陆银行", balance: "96.40 亿元", contribution: "24.5%", loanCount: 18, note: "成本偏离最高" },
+      { name: "寰宇银行", balance: "83.26 亿元", contribution: "21.2%", loanCount: 15, note: "余额贡献第二" },
+      { name: "海联银行", balance: "67.18 亿元", contribution: "17.1%", loanCount: 12, note: "可置换贷款集中" },
+    ],
+    loans: [
+      { id: "LN-553-041", bank: "欧陆银行", balance: "18.60 亿元", rate: "6.18%", type: "流动资金贷款" },
+      { id: "LN-553-028", bank: "欧陆银行", balance: "15.20 亿元", rate: "6.05%", type: "项目贷款" },
+      { id: "LN-553-063", bank: "寰宇银行", balance: "13.80 亿元", rate: "5.96%", type: "流动资金贷款" },
+      { id: "LN-553-017", bank: "海联银行", balance: "11.40 亿元", rate: "5.88%", type: "项目贷款" },
+    ],
+    evidence: {
+      semanticVersion: "SEM-2026.08.3",
+      dataVersion: "FIN-20260810-R3",
+      cutoff: "2026-08-10 23:59",
+      quality: "质量检查通过",
+      ready: "消费就绪",
+      snapshotId: "MS-20260811-553-01",
+      freshness: "当前可信",
+    },
+    status: "awaiting",
+    sourceEvents: [],
+    duplicateRequests: [
+      { id: "AR-20260811-007", sourceType: "qa", sourceRef: "问数会话 QA-0811-033", requester: "资金运营专员", time: "2026-08-11 09:03:12", relation: "严格重复·已关联" },
+    ],
+    decision: null,
+  },
+  {
+    id: "AR-20260811-002",
+    reminderId: "DR-20260811-002",
+    subjectId: "UNIT-465",
+    subjectName: "单位465",
+    scenario: "融资优化",
+    sourceType: "rule",
+    sourceRef: "规则运行 RUN-RULE-0811-018",
+    requester: "规则运行服务",
+    requestTime: "2026-08-11 08:43:01",
+    generatedTime: "2026-08-11 08:43:05",
+    actionType: ACTION_TYPE,
+    rule: {
+      id: "R02",
+      name: "浮动利率暴露",
+      version: "v1.4",
+      evaluatedAt: "2026-08-11 08:42:44",
+      branch: "浮动利率余额占比超过已发布条件",
+      hitEvidence: "浮动利率余额占比 68.4%，利率重定价敞口集中",
+    },
+    metric: {
+      id: "MET-FLOAT-RATE-RATIO",
+      name: "浮动利率余额占比",
+      value: "68.4%",
+      explanation: "浮动利率敞口集中，重定价风险较高",
+      evaluatedAt: "2026-08-11 08:42:44",
+      scope: "单位465 · 全部存量融资",
+    },
+    loanCount: 176,
+    balance: "770.000 亿元",
+    owner: "融资负责人009",
+    ownerId: "OWNER-009",
+    recommendation: "优先协商浮动利率敞口最大的银行，评估固定利率转换、利率上限或期限重组。",
+    banks: [
+      { name: "融通银行", balance: "168.20 亿元", contribution: "21.8%", loanCount: 31, note: "浮动敞口最大" },
+      { name: "启明银行", balance: "142.60 亿元", contribution: "18.5%", loanCount: 27, note: "重定价日期集中" },
+      { name: "嘉禾银行", balance: "119.40 亿元", contribution: "15.5%", loanCount: 24, note: "浮动贷款笔数较多" },
+    ],
+    loans: [
+      { id: "LN-465-126", bank: "融通银行", balance: "32.00 亿元", rate: "LPR+115BP", type: "并购贷款" },
+      { id: "LN-465-098", bank: "融通银行", balance: "28.50 亿元", rate: "LPR+108BP", type: "项目贷款" },
+      { id: "LN-465-077", bank: "启明银行", balance: "26.80 亿元", rate: "LPR+102BP", type: "项目贷款" },
+      { id: "LN-465-051", bank: "嘉禾银行", balance: "21.60 亿元", rate: "LPR+98BP", type: "流动资金贷款" },
+    ],
+    evidence: {
+      semanticVersion: "SEM-2026.08.3",
+      dataVersion: "FIN-20260810-R3",
+      cutoff: "2026-08-10 23:59",
+      quality: "质量检查通过",
+      ready: "消费就绪",
+      snapshotId: "MS-20260811-465-01",
+      freshness: "当前可信",
+    },
+    status: "awaiting",
+    sourceEvents: [],
+    duplicateRequests: [],
+    decision: null,
+  },
+  {
+    id: "AR-20260811-003",
+    reminderId: "DR-20260811-003",
+    subjectId: "UNIT-561",
+    subjectName: "单位561",
+    scenario: "融资优化",
+    sourceType: "rule",
+    sourceRef: "规则运行 RUN-RULE-0811-019",
+    requester: "规则运行服务",
+    requestTime: "2026-08-11 08:43:46",
+    generatedTime: "2026-08-11 08:43:50",
+    actionType: ACTION_TYPE,
+    rule: {
+      id: "R03",
+      name: "短期债务集中",
+      version: "v1.3",
+      evaluatedAt: "2026-08-11 08:43:22",
+      branch: "期限种类为短期的余额占比超过已发布条件",
+      hitEvidence: "短期融资余额占比 74.9%，一年内到期压力集中",
+    },
+    metric: {
+      id: "MET-SHORT-DEBT-RATIO",
+      name: "短期融资余额占比",
+      value: "74.9%",
+      explanation: "期限种类=短期的融资余额集中",
+      evaluatedAt: "2026-08-11 08:43:22",
+      scope: "单位561 · 全部存量融资",
+    },
+    loanCount: 50,
+    balance: "20.016 亿元",
+    owner: "融资负责人009",
+    ownerId: "OWNER-009",
+    recommendation: "优先与短期余额集中的银行协商展期或置换，降低一年内集中到期压力。",
+    banks: [
+      { name: "同州银行", balance: "5.86 亿元", contribution: "29.3%", loanCount: 11, note: "短期余额最高" },
+      { name: "星河银行", balance: "4.32 亿元", contribution: "21.6%", loanCount: 9, note: "半年内到期集中" },
+      { name: "恒信银行", balance: "3.18 亿元", contribution: "15.9%", loanCount: 8, note: "续作窗口临近" },
+    ],
+    loans: [
+      { id: "LN-561-043", bank: "同州银行", balance: "1.80 亿元", rate: "4.36%", type: "短期流贷" },
+      { id: "LN-561-038", bank: "同州银行", balance: "1.45 亿元", rate: "4.28%", type: "短期流贷" },
+      { id: "LN-561-024", bank: "星河银行", balance: "1.20 亿元", rate: "4.21%", type: "短期流贷" },
+      { id: "LN-561-016", bank: "恒信银行", balance: "0.96 亿元", rate: "4.18%", type: "银行承兑" },
+    ],
+    evidence: {
+      semanticVersion: "SEM-2026.08.3",
+      dataVersion: "FIN-20260810-R3",
+      cutoff: "2026-08-10 23:59",
+      quality: "质量检查通过",
+      ready: "消费就绪",
+      snapshotId: "MS-20260811-561-01",
+      freshness: "当前可信",
+    },
+    status: "awaiting",
+    sourceEvents: [],
+    duplicateRequests: [],
+    decision: null,
+  },
+  {
+    id: "AR-20260811-004",
+    reminderId: "DR-20260811-004",
+    subjectId: "UNIT-327",
+    subjectName: "单位327",
+    scenario: "融资优化",
+    sourceType: "qa",
+    sourceRef: "问数会话 QA-0811-041 · 回答 06",
+    requester: "经营分析员",
+    requestTime: "2026-08-11 09:16:27",
+    generatedTime: "2026-08-11 09:16:31",
+    actionType: ACTION_TYPE,
+    rule: {
+      id: "R03",
+      name: "短期债务集中",
+      version: "v1.3",
+      evaluatedAt: "2026-08-11 09:15:52",
+      branch: "期限种类为短期的余额占比超过已发布条件",
+      hitEvidence: "智能问数回答引用已发布 R03 固定证据：短期融资余额占比 62.8%",
+    },
+    metric: {
+      id: "MET-SHORT-DEBT-RATIO",
+      name: "短期融资余额占比",
+      value: "62.8%",
+      explanation: "智能问数回答实际引用 R03 依赖的已发布指标证据",
+      evaluatedAt: "2026-08-11 09:15:52",
+      scope: "单位327 · 全部存量融资",
+    },
+    loanCount: 22,
+    balance: "48.260 亿元",
+    owner: "融资负责人006",
+    ownerId: "OWNER-006",
+    recommendation: "优先核对短期融资贡献最大的三家银行，提前确认展期、续授信和置换安排。",
+    banks: [
+      { name: "中元银行", balance: "13.80 亿元", contribution: "28.6%", loanCount: 6, note: "30 天内到期" },
+      { name: "东晟银行", balance: "10.20 亿元", contribution: "21.1%", loanCount: 5, note: "授信续作待确认" },
+      { name: "瑞丰银行", balance: "8.60 亿元", contribution: "17.8%", loanCount: 4, note: "提款窗口临近" },
+    ],
+    loans: [
+      { id: "LN-327-022", bank: "中元银行", balance: "5.00 亿元", rate: "4.12%", type: "流动资金贷款" },
+      { id: "LN-327-019", bank: "东晟银行", balance: "4.20 亿元", rate: "4.08%", type: "流动资金贷款" },
+      { id: "LN-327-015", bank: "瑞丰银行", balance: "3.80 亿元", rate: "4.02%", type: "项目贷款" },
+    ],
+    evidence: {
+      semanticVersion: "SEM-2026.08.3",
+      dataVersion: "FIN-20260810-R3",
+      cutoff: "2026-08-10 23:59",
+      quality: "质量检查通过",
+      ready: "消费就绪",
+      snapshotId: "MS-20260811-327-01",
+      freshness: "当前可信",
+    },
+    status: "awaiting",
+    sourceEvents: [],
+    duplicateRequests: [],
+    decision: null,
+  },
+  {
+    id: "AR-20260811-005",
+    reminderId: "DR-20260811-005",
+    subjectId: "UNIT-188",
+    subjectName: "单位188",
+    scenario: "融资优化",
+    sourceType: "agent",
+    sourceRef: "融资结构诊断 · 运行 AG-RUN-0811-009",
+    requester: "融资分析 Agent",
+    requestTime: "2026-08-11 09:28:44",
+    generatedTime: "2026-08-11 09:28:48",
+    actionType: ACTION_TYPE,
+    rule: null,
+    metric: {
+      id: "MET-CREDIT-GAP",
+      name: "授信缺口",
+      value: "12.40 亿元",
+      explanation: "当前候选数据版本的机构映射与已发布语义版本不兼容",
+      evaluatedAt: "2026-08-11 09:27:50",
+      scope: "单位188 · 未来 180 天融资安排",
+    },
+    loanCount: 31,
+    balance: "86.200 亿元",
+    owner: "融资负责人004",
+    ownerId: "OWNER-004",
+    recommendation: "待证据兼容后重新评估授信缺口；当前不进入人工确认。",
+    banks: [],
+    loans: [],
+    evidence: {
+      semanticVersion: "SEM-2026.08.3",
+      dataVersion: "FIN-20260811-R1",
+      cutoff: "2026-08-11 08:00",
+      quality: "部分检查通过",
+      ready: "不可消费",
+      snapshotId: "MS-20260811-188-02",
+      freshness: "版本不兼容",
+      previousTrusted: {
+        dataVersion: "FIN-20260803-R2",
+        cutoff: "2026-08-03 23:59",
+        metricValue: "授信缺口 9.80 亿元",
+        status: "继续服务",
+      },
+    },
+    status: "blocked",
+    blockReason: "当前数据版本的金融机构映射与已发布语义版本不兼容，无法核对建议银行。",
+    recovery: "等待上游形成兼容的新版本后重新发起行动申请；上一可信证据继续只读服务。",
+    supplementPolicy: { canRequest: false, editableUpstream: false, resolutionMode: "等待兼容版本后重新发起行动申请" },
+    sourceEvents: [],
+    duplicateRequests: [],
+    decision: null,
+  },
+  {
+    id: "AR-20260811-006",
+    reminderId: "DR-20260811-006",
+    subjectId: "UNIT-402",
+    subjectName: "单位402",
+    scenario: "融资优化",
+    sourceType: "report",
+    sourceRef: "融资风险看板 v4.2 · 到期压力组件",
+    requester: "财务经理",
+    requestTime: "2026-08-11 09:34:20",
+    generatedTime: "2026-08-11 09:34:24",
+    actionType: ACTION_TYPE,
+    rule: null,
+    metric: {
+      id: "MET-SHORT-DEBT-RATIO",
+      name: "短期融资余额占比",
+      value: "66.7%",
+      explanation: "报告中心仪表盘引用已固定指标证据，未引用规则",
+      evaluatedAt: "2026-08-11 09:33:41",
+      scope: "单位402 · 全部存量融资",
+    },
+    loanCount: 46,
+    balance: "118.700 亿元",
+    owner: "融资负责人007",
+    ownerId: "OWNER-007",
+    recommendation: "优先与短期到期贡献最大的银行确认展期及置换安排。",
+    banks: [
+      { name: "华宸银行", balance: "26.40 亿元", contribution: "22.2%", loanCount: 9, note: "短期到期贡献最高" },
+      { name: "安泰银行", balance: "21.80 亿元", contribution: "18.4%", loanCount: 8, note: "续授信窗口临近" },
+      { name: "景和银行", balance: "16.60 亿元", contribution: "14.0%", loanCount: 6, note: "到期月份集中" },
+    ],
+    loans: [
+      { id: "LN-402-039", bank: "华宸银行", balance: "7.80 亿元", rate: "4.31%", type: "短期流贷" },
+      { id: "LN-402-031", bank: "安泰银行", balance: "6.20 亿元", rate: "4.26%", type: "短期流贷" },
+      { id: "LN-402-024", bank: "景和银行", balance: "5.40 亿元", rate: "4.20%", type: "短期流贷" },
+    ],
+    evidence: {
+      semanticVersion: "SEM-2026.08.3",
+      dataVersion: "FIN-20260810-R3",
+      cutoff: "2026-08-10 23:59",
+      quality: "质量检查通过",
+      ready: "消费就绪",
+      snapshotId: "MS-20260811-402-01",
+      freshness: "当前可信",
+    },
+    status: "awaiting",
+    sourceEvents: [],
+    duplicateRequests: [],
+    decision: null,
+  },
+  {
+    id: "AR-20260811-008",
+    reminderId: null,
+    subjectId: "UNIT-174",
+    subjectName: "单位174",
+    scenario: "融资优化",
+    sourceType: "agent",
+    sourceRef: "融资结构诊断 · 运行 AG-RUN-0811-012",
+    requester: "融资分析 Agent",
+    requestTime: "2026-08-11 09:40:18",
+    generatedTime: "2026-08-11 09:40:19",
+    actionType: ACTION_TYPE,
+    rule: null,
+    metric: {
+      id: "MET-CREDIT-GAP",
+      name: "授信缺口",
+      value: "18.60 亿元",
+      explanation: "来源运行形成了指标快照，但绑定数据版本随后被确认存在硬质量失败",
+      evaluatedAt: "2026-08-11 09:39:42",
+      scope: "单位174 · 未来 180 天融资安排",
+    },
+    loanCount: 28,
+    balance: "74.800 亿元",
+    owner: "融资负责人002",
+    ownerId: "OWNER-002",
+    recommendation: "先恢复可信数据版本，再重新评估授信缺口和建议银行。",
+    banks: [],
+    loans: [],
+    evidence: {
+      semanticVersion: "SEM-2026.08.3",
+      dataVersion: "FIN-20260811-R2",
+      cutoff: "2026-08-11 08:00",
+      quality: "事后硬质量失败",
+      ready: "不可消费",
+      snapshotId: "MS-20260811-174-01",
+      freshness: "当前权威版本硬质量失败",
+      availability: "不可用",
+      availableSections: ["行动申请元数据", "申请门失败回执"],
+      missingItems: [],
+      hardFailure: {
+        detectedAt: "2026-08-11 09:39:58",
+        impact: "单位174机构映射及授信余额范围",
+        reason: "金融机构稳定标识重复，无法证明贷款归属唯一",
+        recovery: "等待上游修复并由权威消费绑定采用可信组合后重新发起",
+      },
+    },
+    status: "rejected_by_gate",
+    requestGate: {
+      status: "rejected",
+      checkedAt: "2026-08-11 09:40:19",
+      receiptId: "RCP-20260811-008",
+      reason: "请求引用的数据版本已被标记为事后硬质量失败",
+      reminderCreated: false,
+    },
+    reminderCreated: false,
+    confirmationEligibility: { allowed: false, reason: "请求门已拒绝，未形成决策提醒" },
+    blockReason: "数据版本 FIN-20260811-R2 已发生硬质量失败，行动申请在申请门被拒绝。",
+    recovery: "查看失败回执并等待可信版本恢复；本记录不得进入人工确认或创建负责人待办。",
+    supplementPolicy: { canRequest: false, editableUpstream: false, resolutionMode: "重新发起新的行动申请" },
+    sourceEvents: [],
+    supplementRequests: [],
+    duplicateRequests: [],
+    decision: null,
+  },
+  {
+    id: "AR-20260811-009",
+    reminderId: "DR-20260811-009",
+    subjectId: "UNIT-518",
+    subjectName: "单位518",
+    scenario: "融资优化",
+    sourceType: "report",
+    sourceRef: "融资到期压力看板 v4.2 · 续授信组件",
+    requester: "财务经理",
+    requestTime: "2026-08-11 09:44:07",
+    generatedTime: "2026-08-11 09:44:11",
+    actionType: ACTION_TYPE,
+    rule: null,
+    metric: {
+      id: "MET-MATURITY-90D",
+      name: "90 天内到期融资余额",
+      value: "42.30 亿元",
+      explanation: "指标证据仍可读取，但数据截至时间已超过当前业务时效要求",
+      evaluatedAt: "2026-08-11 09:43:28",
+      scope: "单位518 · 未来 90 天到期融资",
+    },
+    loanCount: 19,
+    balance: "42.300 亿元",
+    owner: "融资负责人006",
+    ownerId: "OWNER-006",
+    recommendation: "先核对最新续授信进展，再决定是否启动集中协商。",
+    banks: [
+      { name: "东晟银行", balance: "12.40 亿元", contribution: "29.3%", loanCount: 6, note: "续授信状态待更新" },
+      { name: "瑞丰银行", balance: "9.80 亿元", contribution: "23.2%", loanCount: 5, note: "到期窗口临近" },
+    ],
+    loans: [
+      { id: "LN-518-017", bank: "东晟银行", balance: "4.60 亿元", rate: "4.08%", type: "流动资金贷款" },
+      { id: "LN-518-012", bank: "瑞丰银行", balance: "3.90 亿元", rate: "4.04%", type: "项目贷款" },
+    ],
+    evidence: {
+      semanticVersion: "SEM-2026.08.3",
+      dataVersion: "FIN-20260803-R2",
+      cutoff: "2026-08-03 23:59",
+      quality: "带警告允许消费",
+      ready: "消费可用（陈旧）",
+      snapshotId: "MS-20260811-518-01",
+      freshness: "证据陈旧",
+      availability: "完整但陈旧",
+      availableSections: ["指标快照", "银行归因", "贷款明细", "双版本证明"],
+      missingItems: [],
+      stale: {
+        since: "2026-08-11 10:02:00",
+        age: "7 天",
+        reason: "新数据刷新仍在处理中，当前继续使用上一可信证据",
+        candidateStatus: "处理中",
+      },
+    },
+    status: "stale",
+    confirmationEligibility: { allowed: false, reason: "证据已陈旧，需先重新读取来源或请求补充信息" },
+    supplementPolicy: { canRequest: true, editableUpstream: false, resolutionMode: "等待新申请或替代行动申请" },
+    sourceEvents: [
+      { type: "证据时效变化", time: "2026-08-11 10:02:00", reason: "提醒形成后，新数据刷新仍未完成，原固定证据超过业务时效要求" },
+    ],
+    supplementRequests: [],
+    duplicateRequests: [],
+    decision: null,
+  },
+  {
+    id: "AR-20260811-010",
+    reminderId: "DR-20260811-010",
+    subjectId: "UNIT-633",
+    subjectName: "单位633",
+    scenario: "融资优化",
+    sourceType: "agent",
+    sourceRef: "融资期限结构诊断 · 运行 AG-RUN-0811-015",
+    requester: "融资分析 Agent",
+    requestTime: "2026-08-11 09:48:32",
+    generatedTime: "2026-08-11 09:48:36",
+    actionType: ACTION_TYPE,
+    rule: null,
+    metric: {
+      id: "MET-FIN-COST-WA",
+      name: "加权融资成本",
+      value: "4.86%",
+      explanation: "核心成本和机构归因完整，2 笔贷款的担保方式分类未知",
+      evaluatedAt: "2026-08-11 09:47:54",
+      scope: "单位633 · 全部存量融资",
+    },
+    loanCount: 44,
+    balance: "126.500 亿元",
+    owner: "融资负责人008",
+    ownerId: "OWNER-008",
+    recommendation: "优先与成本贡献最高的两家银行核对置换空间，并补齐两笔贷款的担保方式。",
+    banks: [
+      { name: "安泰银行", balance: "34.20 亿元", contribution: "27.0%", loanCount: 12, note: "成本贡献最高" },
+      { name: "华宸银行", balance: "27.80 亿元", contribution: "22.0%", loanCount: 10, note: "置换空间较大" },
+    ],
+    loans: [
+      { id: "LN-633-036", bank: "安泰银行", balance: "8.20 亿元", rate: "5.31%", type: "项目贷款" },
+      { id: "LN-633-029", bank: "华宸银行", balance: "6.70 亿元", rate: "5.18%", type: "流动资金贷款" },
+    ],
+    evidence: {
+      semanticVersion: "SEM-2026.08.3",
+      dataVersion: "FIN-20260810-R3",
+      cutoff: "2026-08-10 23:59",
+      quality: "带警告允许消费",
+      ready: "部分可用",
+      snapshotId: "MS-20260811-633-01",
+      freshness: "当前可信",
+      availability: "部分可用",
+      availableSections: ["指标快照", "主体范围", "主要银行归因", "双版本证明"],
+      missingItems: ["2 笔贷款的担保方式分类"],
+      affectedScope: "只影响担保方式分解，不影响成本指标和主要银行排序",
+    },
+    status: "awaiting",
+    confirmationEligibility: { allowed: true, requiresAcknowledgement: true, reason: "非关键分类缺失，确认理由需说明已知影响" },
+    supplementPolicy: { canRequest: true, editableUpstream: false, resolutionMode: "等待上游补充或继续处理" },
+    sourceEvents: [],
+    supplementRequests: [],
+    duplicateRequests: [],
+    decision: null,
+  },
+  {
+    id: "AR-20260811-011",
+    reminderId: "DR-20260811-011",
+    subjectId: "UNIT-701",
+    subjectName: "单位701",
+    scenario: "融资优化",
+    sourceType: "qa",
+    sourceRef: "问数会话 QA-0811-057 · 回答 04",
+    requester: "资金运营专员",
+    requestTime: "2026-08-11 09:52:14",
+    generatedTime: "2026-08-11 09:52:18",
+    actionType: ACTION_TYPE,
+    rule: {
+      id: "R02",
+      name: "浮动利率暴露",
+      version: "v1.4",
+      evaluatedAt: "2026-08-11 09:51:37",
+      branch: "浮动利率余额占比超过已发布条件",
+      hitEvidence: "智能问数回答引用已发布 R02 固定证据：浮动利率余额占比 64.1%",
+    },
+    metric: {
+      id: "MET-FLOAT-RATE-RATIO",
+      name: "浮动利率余额占比",
+      value: "64.1%",
+      explanation: "规则与指标快照完整，但贷款级机构映射证据未返回",
+      evaluatedAt: "2026-08-11 09:51:37",
+      scope: "单位701 · 全部存量融资",
+    },
+    loanCount: 63,
+    balance: "158.900 亿元",
+    owner: "融资负责人010",
+    ownerId: "OWNER-010",
+    recommendation: "补齐机构与贷款证据后，再确定优先协商银行。",
+    banks: [],
+    loans: [],
+    evidence: {
+      semanticVersion: "SEM-2026.08.3",
+      dataVersion: "FIN-20260810-R3",
+      cutoff: "2026-08-10 23:59",
+      quality: "质量状态可用",
+      ready: "证据不完整",
+      snapshotId: "MS-20260811-701-01",
+      freshness: "当前可信",
+      availability: "关键证据缺失",
+      availableSections: ["规则命中", "指标快照", "主体范围", "双版本证明"],
+      missingItems: ["金融机构关系证据", "贷款级固定证据"],
+      affectedScope: "无法核对建议银行和候选贷款",
+    },
+    status: "blocked",
+    confirmationEligibility: { allowed: false, reason: "关键机构和贷款证据缺失" },
+    blockReason: "当前提醒缺少金融机构关系和贷款级固定证据，不能进入人工确认。",
+    recovery: "请记录需要补充的证据；收到新申请或替代行动申请后继续。",
+    supplementPolicy: { canRequest: true, editableUpstream: false, resolutionMode: "等待新申请或替代行动申请" },
+    sourceEvents: [],
+    supplementRequests: [],
+    duplicateRequests: [],
+    decision: null,
+  },
+  {
+    id: "AR-20260809-018",
+    reminderId: "DR-20260809-018",
+    subjectId: "UNIT-284",
+    subjectName: "单位284",
+    scenario: "融资优化",
+    sourceType: "report",
+    sourceRef: "融资风险看板 v4.1 · 高成本融资组件",
+    requester: "财务经理",
+    requestTime: "2026-08-09 14:18:06",
+    generatedTime: "2026-08-09 14:18:10",
+    actionType: ACTION_TYPE,
+    rule: null,
+    metric: {
+      id: "MET-FIN-COST-WA",
+      name: "加权融资成本",
+      value: "5.08%",
+      explanation: "来源在人工判断前撤回了本次行动申请",
+      evaluatedAt: "2026-08-09 14:17:42",
+      scope: "单位284 · 全部存量融资",
+    },
+    loanCount: 27,
+    balance: "68.400 亿元",
+    owner: "融资负责人004",
+    ownerId: "OWNER-004",
+    recommendation: "原建议已停止，请等待来源重新形成新的行动申请。",
+    banks: [
+      { name: "东晟银行", balance: "17.60 亿元", contribution: "25.7%", loanCount: 7, note: "原证据成本贡献最高" },
+      { name: "景泰银行", balance: "14.20 亿元", contribution: "20.8%", loanCount: 6, note: "原证据成本贡献第二" },
+    ],
+    loans: [
+      { id: "LN-284-021", bank: "东晟银行", balance: "5.20 亿元", rate: "5.48%", type: "项目贷款" },
+      { id: "LN-284-017", bank: "景泰银行", balance: "4.40 亿元", rate: "5.36%", type: "流动资金贷款" },
+    ],
+    evidence: {
+      semanticVersion: "SEM-2026.08.2",
+      dataVersion: "FIN-20260808-R2",
+      cutoff: "2026-08-08 23:59",
+      quality: "撤回前质量检查通过",
+      ready: "来源已撤回",
+      snapshotId: "MS-20260809-284-01",
+      freshness: "已撤回",
+      availability: "历史证据只读",
+      availableSections: ["指标快照", "主体范围", "银行归因", "贷款明细", "双版本证明"],
+      missingItems: [],
+    },
+    status: "withdrawn",
+    confirmationEligibility: { allowed: false, reason: "来源已撤回，本次请求不再进入人工判断" },
+    blockReason: "报告中心来源于 2026-08-09 14:26:31 撤回本次请求，尚未形成替代请求。",
+    recovery: "原行动申请、提醒和固定证据继续只读保留；后续新申请将独立进入校验。",
+    sourceEvents: [
+      { type: "上游撤回", time: "2026-08-09 14:26:31", reason: "来源发现续授信进展刚刚更新，需要重新固定证据", replacementId: null },
+    ],
+    supplementRequests: [],
+    duplicateRequests: [],
+    decision: null,
+  },
+  {
+    id: "AR-20260804-016",
+    reminderId: "DR-20260804-016",
+    subjectId: "UNIT-246",
+    subjectName: "单位246",
+    scenario: "融资优化",
+    sourceType: "qa",
+    sourceRef: "问数会话 QA-0804-019 · 回答 03",
+    requester: "资金运营专员",
+    requestTime: "2026-08-04 10:21:36",
+    generatedTime: "2026-08-04 10:21:40",
+    actionType: ACTION_TYPE,
+    rule: {
+      id: "R03",
+      name: "短期债务集中",
+      version: "v1.3",
+      evaluatedAt: "2026-08-04 10:20:58",
+      branch: "期限种类为短期的余额占比超过已发布条件",
+      hitEvidence: "智能问数回答引用已发布 R03 固定证据：短期融资余额占比 71.2%",
+    },
+    metric: {
+      id: "MET-SHORT-DEBT-RATIO",
+      name: "短期融资余额占比",
+      value: "71.2%",
+      explanation: "短期融资余额集中，需要提前落实续作安排",
+      evaluatedAt: "2026-08-04 10:20:58",
+      scope: "单位246 · 全部存量融资",
+    },
+    loanCount: 17,
+    balance: "36.800 亿元",
+    owner: "融资负责人005",
+    ownerId: "OWNER-005",
+    recommendation: "与优先银行确认续授信和期限重组安排。",
+    banks: [
+      { name: "景泰银行", balance: "11.20 亿元", contribution: "30.4%", loanCount: 5, note: "到期贡献最高" },
+      { name: "中元银行", balance: "8.60 亿元", contribution: "23.4%", loanCount: 4, note: "续授信待确认" },
+      { name: "华宸银行", balance: "6.40 亿元", contribution: "17.4%", loanCount: 3, note: "期限调整窗口临近" },
+    ],
+    loans: [
+      { id: "LN-246-014", bank: "景泰银行", balance: "4.20 亿元", rate: "4.16%", type: "流动资金贷款" },
+      { id: "LN-246-011", bank: "中元银行", balance: "3.80 亿元", rate: "4.10%", type: "项目贷款" },
+      { id: "LN-246-008", bank: "华宸银行", balance: "2.60 亿元", rate: "4.06%", type: "流动资金贷款" },
+    ],
+    evidence: {
+      semanticVersion: "SEM-2026.08.2",
+      dataVersion: "FIN-20260803-R2",
+      cutoff: "2026-08-03 23:59",
+      quality: "质量检查通过",
+      ready: "消费就绪",
+      snapshotId: "MS-20260804-246-01",
+      freshness: "确认时可信",
+    },
+    status: "confirmed",
+    sourceEvents: [],
+    duplicateRequests: [],
+    taskId: "TD-20260804-008",
+    decision: {
+      type: "confirm",
+      reason: "到期余额集中，需要提前落实续作安排。",
+      operator: "财务运营账号",
+      time: "2026-08-04 10:25:43",
+      owner: "融资负责人005",
+      dueDate: "2026-08-08",
+      instructions: "与优先银行确认续授信和期限重组安排。",
+      banks: ["景泰银行", "中元银行", "华宸银行"],
+    },
+  },
+  {
+    id: "AR-20260808-021",
+    reminderId: "DR-20260808-021",
+    subjectId: "UNIT-390",
+    subjectName: "单位390",
+    scenario: "融资优化",
+    sourceType: "rule",
+    sourceRef: "规则运行 RUN-RULE-0808-014",
+    requester: "规则运行服务",
+    requestTime: "2026-08-08 08:17:14",
+    generatedTime: "2026-08-08 08:17:18",
+    actionType: ACTION_TYPE,
+    rule: {
+      id: "R01",
+      name: "融资成本偏高",
+      version: "v1.6",
+      evaluatedAt: "2026-08-08 08:16:55",
+      branch: "加权融资成本高于已发布条件",
+      hitEvidence: "原证据中的两笔贷款归属机构有误",
+    },
+    metric: {
+      id: "MET-FIN-COST-WA",
+      name: "加权融资成本",
+      value: "5.49%",
+      explanation: "原固定证据已被上游纠正",
+      evaluatedAt: "2026-08-08 08:16:55",
+      scope: "单位390 · 全部存量融资",
+    },
+    loanCount: 39,
+    balance: "92.600 亿元",
+    owner: "融资负责人003",
+    ownerId: "OWNER-003",
+    recommendation: "转到替代请求查看纠正后的建议。",
+    banks: [],
+    loans: [],
+    evidence: {
+      semanticVersion: "SEM-2026.08.2",
+      dataVersion: "FIN-20260807-R2",
+      cutoff: "2026-08-07 23:59",
+      quality: "质量检查通过",
+      ready: "已撤回证据",
+      snapshotId: "MS-20260808-390-01",
+      freshness: "证据已纠正",
+    },
+    status: "replaced",
+    blockReason: "来源于 2026-08-08 10:12:03 纠正两笔贷款的机构映射。",
+    recovery: "请转到替代请求 AR-20260808-024 继续处理。",
+    confirmationEligibility: { allowed: false, reason: "原请求已被上游撤回并由替代请求承接" },
+    replacement: {
+      type: "replaced_by",
+      requestId: "AR-20260808-024",
+      formedAt: "2026-08-08 10:13:26",
+      reason: "两笔贷款的机构映射纠正后重新形成固定证据",
+    },
+    sourceEvents: [
+      { type: "上游撤回", time: "2026-08-08 10:10:42", reason: "来源运行发现机构映射需要复核，撤回原行动申请", replacementId: null },
+      { type: "证据纠正", time: "2026-08-08 10:12:03", reason: "两笔贷款的机构映射已修正", replacementId: "AR-20260808-024" },
+      { type: "形成替代申请", time: "2026-08-08 10:13:26", reason: "使用纠正后的固定证据形成新的独立行动申请", replacementId: "AR-20260808-024" },
+    ],
+    supplementRequests: [],
+    duplicateRequests: [],
+    decision: null,
+  },
+  {
+    id: "AR-20260808-024",
+    reminderId: "DR-20260808-024",
+    subjectId: "UNIT-390",
+    subjectName: "单位390",
+    scenario: "融资优化",
+    sourceType: "rule",
+    sourceRef: "规则运行 RUN-RULE-0808-017",
+    requester: "规则运行服务",
+    requestTime: "2026-08-08 10:13:22",
+    generatedTime: "2026-08-08 10:13:26",
+    actionType: ACTION_TYPE,
+    rule: {
+      id: "R01",
+      name: "融资成本偏高",
+      version: "v1.6",
+      evaluatedAt: "2026-08-08 10:12:48",
+      branch: "加权融资成本高于已发布条件",
+      hitEvidence: "纠正机构映射后，加权融资成本 5.31%，仍满足已发布条件",
+    },
+    metric: {
+      id: "MET-FIN-COST-WA",
+      name: "加权融资成本",
+      value: "5.31%",
+      explanation: "基于纠正后机构映射重新固定的指标快照",
+      evaluatedAt: "2026-08-08 10:12:48",
+      scope: "单位390 · 全部存量融资",
+    },
+    loanCount: 39,
+    balance: "92.600 亿元",
+    owner: "融资负责人003",
+    ownerId: "OWNER-003",
+    recommendation: "按纠正后的银行贡献顺序推进降息与置换协商。",
+    banks: [
+      { name: "启明银行", balance: "24.80 亿元", contribution: "26.8%", loanCount: 10, note: "纠正后成本贡献最高" },
+      { name: "海联银行", balance: "19.60 亿元", contribution: "21.2%", loanCount: 8, note: "高成本贷款集中" },
+      { name: "同州银行", balance: "14.20 亿元", contribution: "15.3%", loanCount: 6, note: "可置换空间较大" },
+    ],
+    loans: [
+      { id: "LN-390-031", bank: "启明银行", balance: "6.80 亿元", rate: "5.72%", type: "项目贷款" },
+      { id: "LN-390-024", bank: "海联银行", balance: "5.60 亿元", rate: "5.64%", type: "流动资金贷款" },
+      { id: "LN-390-018", bank: "同州银行", balance: "4.20 亿元", rate: "5.51%", type: "项目贷款" },
+    ],
+    evidence: {
+      semanticVersion: "SEM-2026.08.2",
+      dataVersion: "FIN-20260807-R3",
+      cutoff: "2026-08-07 23:59",
+      quality: "质量检查通过",
+      ready: "消费就绪",
+      snapshotId: "MS-20260808-390-02",
+      freshness: "当前可信",
+      availability: "完整可用",
+      availableSections: ["规则命中", "指标快照", "银行归因", "贷款明细", "双版本证明"],
+      missingItems: [],
+    },
+    status: "awaiting",
+    replacesRequestId: "AR-20260808-021",
+    replacementOf: "AR-20260808-021",
+    replacement: {
+      type: "replaces",
+      requestId: "AR-20260808-021",
+      formedAt: "2026-08-08 10:13:26",
+      reason: "原请求的两笔贷款机构映射被纠正",
+    },
+    confirmationEligibility: { allowed: true, reason: "替代请求证据完整，可独立判断" },
+    sourceEvents: [
+      { type: "替代请求形成", time: "2026-08-08 10:13:26", reason: "回指原请求 AR-20260808-021，原证据保持只读", originalRequestId: "AR-20260808-021" },
+    ],
+    supplementRequests: [],
+    duplicateRequests: [],
+    decision: null,
+  },
+  {
+    id: "AR-20260811-012",
+    reminderId: null,
+    subjectId: "UNIT-845",
+    subjectName: "单位845",
+    scenario: "融资优化",
+    sourceType: "qa",
+    sourceRef: "问数会话 QA-0811-063 · 回答 02",
+    requester: "资金运营专员",
+    requestTime: "2026-08-11 10:06:20",
+    generatedTime: "2026-08-11 10:06:21",
+    actionType: ACTION_TYPE,
+    rule: null,
+    metric: {
+      id: "MET-MATURITY-90D",
+      name: "90 天内到期融资余额",
+      value: "28.60 亿元",
+      explanation: "行动建议和固定证据已提交，但接收时无法确认所引数据版本的当前质量状态",
+      evaluatedAt: "2026-08-11 10:05:54",
+      scope: "单位845 · 未来 90 天到期融资",
+    },
+    loanCount: 14,
+    balance: "28.600 亿元",
+    owner: "融资负责人011",
+    ownerId: "OWNER-011",
+    recommendation: "优先与到期余额集中的银行确认续授信与置换窗口。",
+    banks: [
+      { name: "华宸银行", balance: "9.20 亿元", contribution: "32.2%", loanCount: 5, note: "到期余额贡献最高" },
+      { name: "同州银行", balance: "6.80 亿元", contribution: "23.8%", loanCount: 4, note: "续授信窗口临近" },
+      { name: "海联银行", balance: "4.60 亿元", contribution: "16.1%", loanCount: 2, note: "可置换贷款集中" },
+    ],
+    loans: [
+      { id: "LN-845-012", bank: "华宸银行", balance: "3.80 亿元", rate: "4.22%", type: "流动资金贷款" },
+      { id: "LN-845-009", bank: "同州银行", balance: "2.90 亿元", rate: "4.18%", type: "项目贷款" },
+      { id: "LN-845-006", bank: "海联银行", balance: "2.10 亿元", rate: "4.12%", type: "流动资金贷款" },
+    ],
+    evidence: {
+      semanticVersion: "SEM-2026.08.3",
+      dataVersion: "FIN-20260810-R3",
+      cutoff: "2026-08-10 23:59",
+      quality: "当前状态未知",
+      ready: "安全读取阻断",
+      snapshotId: "MS-20260811-845-01",
+      freshness: "等待重新读取",
+      availability: "固定证据已接收",
+      availableSections: ["指标快照", "主体范围", "银行归因", "贷款明细", "双版本证明"],
+      missingItems: [],
+    },
+    status: "c017_blocked",
+    requestGate: {
+      status: "blocked",
+      checkedAt: "2026-08-11 10:06:21",
+      reason: "C017 当前状态摘要返回状态未知，按保守原则暂停接收",
+      reminderCreated: false,
+    },
+    confirmationEligibility: { allowed: false, reason: "行动申请尚未通过 C017 接收安全门" },
+    blockReason: "无法确定数据版本 FIN-20260810-R3 的当前质量状态，本次请求未形成决策事项。",
+    recovery: "重新读取数据工程 C017 当前状态摘要；只有明确允许后才继续形成决策事项。",
+    supplementPolicy: { canRequest: false, editableUpstream: false, resolutionMode: "重新读取 C017 当前状态摘要" },
+    sourceEvents: [],
+    supplementRequests: [],
+    duplicateRequests: [],
+    decision: null,
+    c017SafetyReads: [{
+      gate: "request_receipt",
+      gateLabel: "行动申请接收前",
+      t007: "FIN-20260810-R3",
+      summaryId: "C017-FIN-20260810-R3-CURRENT",
+      summaryVersion: "current-17",
+      summaryFormedAt: "2026-08-11 10:06:12",
+      readAt: "2026-08-11 10:06:21",
+      qualityStatus: "状态未知",
+      hardFailure: "未能确认",
+      detectedAt: "不适用",
+      impactScope: "当前无法判定",
+      businessFieldCategories: "当前无法判定",
+      reason: "权威摘要返回状态未知",
+      recovery: "重新读取同一精确 T007 的当前摘要",
+      evidenceLocator: "C017 / FIN-20260810-R3 / current",
+      outcome: "blocked",
+    }],
+    c017ReadAttempts: { request_receipt: 0, confirmation_submit: 0, task_formation: 0 },
+  },
+].map((request) => {
+  const requestGate = request.requestGate || {
+    status: "accepted",
+    checkedAt: request.generatedTime,
+    reason: "行动类型、主体和固定证据通过请求门",
+    reminderCreated: Boolean(request.reminderId),
+  };
+  const confirmationBlockedAtFormation = ["blocked", "missing_evidence"].includes(request.status);
+  const defaultReceiptRead = request.status === "rejected_by_gate" ? {
+    gate: "request_receipt",
+    gateLabel: "行动申请接收前",
+    t007: request.evidence.dataVersion,
+    summaryId: `C017-${request.evidence.dataVersion}-CURRENT`,
+    summaryVersion: "current-16",
+    summaryFormedAt: request.evidence.hardFailure?.detectedAt || request.generatedTime,
+    readAt: request.requestGate?.checkedAt || request.generatedTime,
+    qualityStatus: "事后硬质量失败",
+    hardFailure: "是",
+    detectedAt: request.evidence.hardFailure?.detectedAt || request.generatedTime,
+    impactScope: request.evidence.hardFailure?.impact || "所引数据版本",
+    businessFieldCategories: "金融机构标识、融资归属",
+    reason: request.evidence.hardFailure?.reason || request.requestGate?.reason,
+    recovery: request.evidence.hardFailure?.recovery || request.recovery,
+    evidenceLocator: `C017 / ${request.evidence.dataVersion} / hard-failure`,
+    outcome: "rejected",
+  } : {
+    gate: "request_receipt",
+    gateLabel: "行动申请接收前",
+    t007: request.evidence.dataVersion,
+    summaryId: `C017-${request.evidence.dataVersion}-CURRENT`,
+    summaryVersion: request.evidence.semanticVersion === "SEM-2026.08.2" ? "current-12" : "current-15",
+    summaryFormedAt: request.generatedTime,
+    readAt: request.requestGate?.checkedAt || request.generatedTime,
+    qualityStatus: "允许推进",
+    hardFailure: "否",
+    detectedAt: "不适用",
+    impactScope: "无硬质量失败影响",
+    businessFieldCategories: "无受影响业务字段类别",
+    reason: "当前摘要未标记版本级或范围级硬质量失败",
+    recovery: "无需恢复",
+    evidenceLocator: `C017 / ${request.evidence.dataVersion} / current`,
+    outcome: "allowed",
+  };
+  return {
+    ruleApplicability: request.rule ? "适用" : "不适用",
+    requestGate,
+    confirmationEligibility: { allowed: request.status === "awaiting", reason: request.status === "awaiting" ? "固定证据可进入人工判断" : "当前状态不可确认" },
+    supplementPolicy: { canRequest: true, editableUpstream: false, resolutionMode: "等待新申请或替代行动申请" },
+    supplementRequests: [],
+    replacement: null,
+    ...request,
+    actionType: { ...request.actionType, publishedSemanticVersion: request.evidence.semanticVersion },
+    rule: request.rule ? { ...request.rule, publishedSemanticVersion: request.evidence.semanticVersion } : null,
+    requestGate,
+    s001DataStructure: S001_DATA_STRUCTURE,
+    c017SafetyReads: request.c017SafetyReads || [defaultReceiptRead],
+    c017ReadAttempts: request.c017ReadAttempts || { request_receipt: 0, confirmation_submit: 0, task_formation: 0 },
+    formation: request.formation || {
+      requestGateStatus: requestGate.status,
+      requestGateCheckedAt: requestGate.checkedAt,
+      requestGateReason: requestGate.reason,
+      reminderCreated: Boolean(requestGate.reminderCreated && request.reminderId),
+      confirmationGateStatus: requestGate.status !== "accepted" ? "not_reached" : confirmationBlockedAtFormation ? "blocked" : "passed",
+      confirmationGateReason: requestGate.status !== "accepted" ? "请求接收安全门未通过，未到达人工确认门" : confirmationBlockedAtFormation ? request.blockReason : "形成时固定证据可进入人工判断",
+    },
+    evidence: {
+      availability: "完整可用",
+      availableSections: ["指标快照", "主体范围", "银行归因", "贷款明细", "双版本证明"],
+      missingItems: [],
+      ...request.evidence,
+    },
+  };
+});
+
+const LEGACY_REVIEW_TASK_FIXTURES = [
+  {
+    id: "TD-20260804-008",
+    requestId: "AR-20260804-016",
+    reminderId: "DR-20260804-016",
+    subjectId: "UNIT-246",
+    subjectName: "单位246",
+    owner: "融资负责人005",
+    ownerId: "OWNER-005",
+    title: "推进单位246融资期限优化协商",
+    actionType: ACTION_TYPE,
+    ruleLabel: "R03 短期债务集中 · v1.3",
+    metricLabel: "短期融资余额占比 71.2%",
+    dataVersion: "FIN-20260803-R2",
+    cutoff: "2026-08-03 23:59",
+    createdAt: "2026-08-04 10:26:11",
+    dueDate: "2026-08-08",
+    status: "in_progress",
+    overdue: true,
+    instructions: "与优先银行确认续授信和期限重组安排。",
+    banks: ["景泰银行", "中元银行", "华宸银行"],
+    decisionReason: "到期余额集中，需要提前落实续作安排。",
+    progress: [
+      { time: "2026-08-05 14:20:08", author: "融资负责人005", content: "已向三家银行发送期限优化材料，等待授信反馈。" },
+    ],
+    history: [
+      { time: "2026-08-04 10:25:43", label: "人工确认", detail: "确认由融资负责人005承接" },
+      { time: "2026-08-04 10:26:11", label: "待办创建", detail: "到期日 2026-08-08" },
+      { time: "2026-08-05 09:12:36", label: "开始处理", detail: "进入处理中" },
+      { time: "2026-08-09 00:00:00", label: "到期提醒", detail: "未完成，保留处理中事实" },
+    ],
+    sourceChanged: false,
+    failure: null,
+    result: null,
+    correction: null,
+    updateAttempts: 0,
+  },
+];
+
+function parseJsonValue(raw) {
+  try {
+    return raw ? JSON.parse(raw) : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+function normalizedScenarioContext(candidate = {}) {
+  const context = candidate?.scenarioContext || candidate?.context || candidate;
+  const scenarioId = context?.scenarioId || context?.id || null;
+  const scenarioVersion = context?.scenarioVersion || context?.version || null;
+  const scenarioRunId = context?.scenarioRunId || context?.runId || null;
+  const status = context?.status || (scenarioId && scenarioVersion && scenarioRunId ? "active" : "unknown");
+  return {
+    scenarioId,
+    scenarioVersion,
+    scenarioRunId,
+    formedAt: context?.formedAt || context?.createdAt || null,
+    status,
+    source: context?.source || "平台场景运行上下文",
+  };
+}
+
+function scenarioContextReady(context) {
+  return Boolean(context?.scenarioId && context?.scenarioVersion && context?.scenarioRunId && ["active", "ready", "已启用", "可用"].includes(context.status));
+}
+
+function scenarioContextIdentified(context) {
+  return Boolean(context?.scenarioId && context?.scenarioVersion && context?.scenarioRunId);
+}
+
+function scenarioContextResolvable(context) {
+  return context?.scenarioId === "S003" ? scenarioContextIdentified(context) : scenarioContextReady(context);
+}
+
+function decisionContextReadOnly(context) {
+  return Boolean(window.S003DecisionAdapter?.isReadOnlyContext?.(context));
+}
+
+function resolveScenarioContext() {
+  const params = new URLSearchParams(window.location.search);
+  const platformContext = normalizedScenarioContext(parseJsonValue(window.localStorage.getItem(DC_PLATFORM_CONTEXT_KEY)) || {});
+  const rawUrlContext = normalizedScenarioContext({
+    scenarioId: params.get("scenarioId"),
+    scenarioVersion: params.get("scenarioVersion"),
+    scenarioRunId: params.get("scenarioRunId"),
+    formedAt: params.get("scenarioContextFormedAt") || params.get("formedAt"),
+    status: params.get("scenarioStatus") || undefined,
+    source: "平台入口上下文",
+  });
+  const sameStoredRun = ["scenarioId", "scenarioVersion", "scenarioRunId"].every((field) => rawUrlContext[field] && rawUrlContext[field] === platformContext[field]);
+  const fromUrl = normalizedScenarioContext({
+    ...rawUrlContext,
+    formedAt: rawUrlContext.formedAt || (sameStoredRun ? platformContext.formedAt : null),
+  });
+  if (scenarioContextResolvable(fromUrl)) return fromUrl;
+  if (scenarioContextResolvable(platformContext)) return platformContext;
+  try {
+    const parentContext = window.parent !== window && window.parent.S001_STORE?.getScenario?.();
+    const projected = normalizedScenarioContext(parentContext || {});
+    if (scenarioContextResolvable(projected)) return projected;
+  } catch (_) {}
+  return fromUrl;
+}
+
+function readDecisionStateRecord(context) {
+  if (window.S003DecisionAdapter?.isActive?.(context)) {
+    return window.S003DecisionAdapter.readRecord(context, "state", window.localStorage);
+  }
+  return parseJsonValue(window.localStorage.getItem(DC_STORAGE_KEY));
+}
+
+function persistDecisionStateRecord(data) {
+  if (window.S003DecisionAdapter?.isActive?.(data?.scenarioContext)) {
+    return window.S003DecisionAdapter.writeRecord(data.scenarioContext, "state", data, window.localStorage);
+  }
+  window.localStorage.setItem(DC_STORAGE_KEY, JSON.stringify(data));
+  return true;
+}
+
+function persistDecisionProjectionRecord(data) {
+  const projection = buildC019Projection(data);
+  if (window.S003DecisionAdapter?.isActive?.(data?.scenarioContext)) {
+    return window.S003DecisionAdapter.writeRecord(data.scenarioContext, "projection", projection, window.localStorage);
+  }
+  window.localStorage.setItem(DC_C019_PROJECTION_KEY, JSON.stringify(projection));
+  return true;
+}
+
+function createInitialDecisionState(scenarioContext = resolveScenarioContext(), auditHistory = []) {
+  const projectionCompatibility = window.S003DecisionAdapter?.isActive?.(scenarioContext)
+    ? window.S003DecisionAdapter.getProjectionIssue?.() || null
+    : null;
+  return {
+    schemaVersion: DC_STATE_SCHEMA_VERSION,
+    stateModelVersion: DC_STATE_MODEL_VERSION,
+    variant: DC_VARIANT,
+    stateRevision: 1,
+    scenarioContext: normalizedScenarioContext(scenarioContext),
+    requests: [],
+    tasks: [],
+    receipts: [],
+    auditHistory: JSON.parse(JSON.stringify(auditHistory || [])),
+    projectionCompatibility,
+    aiSummaries: {
+      workbench: {
+        scope: "决策工作台",
+        status: "idle",
+        summary: null,
+        filterSnapshot: null,
+        dataCutoff: null,
+        generatedAt: null,
+        sourceRevision: null,
+        attempts: 0,
+        error: null,
+        needsRefresh: false,
+      },
+      operationsOverview: {
+        scope: "决策运营概览",
+        status: "idle",
+        summary: null,
+        filterSnapshot: null,
+        dataCutoff: null,
+        generatedAt: null,
+        sourceRevision: null,
+        attempts: 0,
+        error: null,
+        needsRefresh: false,
+      },
+    },
+    pageStates: {
+      workbench: {
+        status: "ready",
+        partial: false,
+        error: null,
+        lastSuccessfulAt: null,
+        recoverable: true,
+        restoreContext: { view: "reminders", search: "", source: "all", status: "all", layout: "list", scrollTop: 0 },
+      },
+      taskWork: {
+        status: "ready",
+        partial: false,
+        error: null,
+        lastSuccessfulAt: null,
+        recoverable: true,
+        restoreContext: { owner: "all", status: "all", sort: "dueDate", scrollTop: 0 },
+      },
+      operationsOverview: {
+        status: "ready",
+        partial: false,
+        error: null,
+        lastSuccessfulAt: null,
+        recoverable: true,
+        restoreContext: { timeRange: "all", source: "all", subject: "all", scrollTop: 0 },
+      },
+    },
+    activity: [],
+    resetAt: null,
+  };
+}
+
+function loadDecisionState() {
+  try {
+    const incomingContext = resolveScenarioContext();
+    const parsed = readDecisionStateRecord(incomingContext);
+    if (!parsed) return createInitialDecisionState(incomingContext);
+    if (parsed.schemaVersion !== DC_STATE_SCHEMA_VERSION || parsed.variant !== DC_VARIANT) {
+      window.S003DecisionAdapter?.markProjectionIssue?.("state", "状态 schemaVersion 或界面变体与当前通用决策工作区不兼容", "INCOMPATIBLE_STATE_SCHEMA");
+      return createInitialDecisionState(incomingContext);
+    }
+    if (!Array.isArray(parsed.requests) || !Array.isArray(parsed.tasks)) {
+      window.S003DecisionAdapter?.markProjectionIssue?.("state", "状态缺少 requests 或 tasks 数组", "INCOMPATIBLE_STATE_PAYLOAD");
+      return createInitialDecisionState(incomingContext);
+    }
+    if (parsed.stateModelVersion !== DC_STATE_MODEL_VERSION || !parsed.scenarioContext) {
+      window.S003DecisionAdapter?.markProjectionIssue?.("state", "旧状态缺少当前 stateModelVersion 或完整 C033 场景运行上下文", "INCOMPATIBLE_STATE_MODEL");
+      return createInitialDecisionState(resolveScenarioContext(), [{
+        archivedAt: formatNow(),
+        reason: "旧状态缺少 C033 场景运行上下文，已隔离且未归入当前轮次",
+        scenarioContext: null,
+        counts: {
+          requests: parsed.requests.length,
+          reminders: parsed.requests.filter((item) => item.reminderId).length,
+          confirmations: parsed.requests.filter((item) => item.decision).length,
+          tasks: parsed.tasks.length,
+          activity: Array.isArray(parsed.activity) ? parsed.activity.length : 0,
+        },
+        records: [],
+      }]);
+    }
+    if (scenarioContextIdentified(incomingContext) && ["scenarioId", "scenarioVersion", "scenarioRunId"].some((key) => parsed.scenarioContext?.[key] !== incomingContext[key])) {
+      window.S003DecisionAdapter?.markProjectionIssue?.("state", "状态载荷中的场景运行身份与当前 URL/C033 上下文不一致", "SCENARIO_CONTEXT_MISMATCH");
+      const archived = [...(parsed.auditHistory || []), {
+        archivedAt: formatNow(),
+        reason: "平台切换了场景运行上下文，原工作投影已转为历史审计",
+        scenarioContext: parsed.scenarioContext,
+        counts: {
+          requests: parsed.requests.length,
+          reminders: parsed.requests.filter((item) => item.reminderId).length,
+          confirmations: parsed.requests.filter((item) => item.decision).length,
+          tasks: parsed.tasks.length,
+          activity: Array.isArray(parsed.activity) ? parsed.activity.length : 0,
+        },
+        records: { requests: parsed.requests, tasks: parsed.tasks, receipts: parsed.receipts || [], activity: parsed.activity || [] },
+      }];
+      return createInitialDecisionState(incomingContext, archived);
+    }
+    if (scenarioContextIdentified(incomingContext)
+      && ["scenarioId", "scenarioVersion", "scenarioRunId"].every((key) => parsed.scenarioContext?.[key] === incomingContext[key])
+      && (!parsed.scenarioContext.formedAt || parsed.scenarioContext.status !== incomingContext.status)) {
+      parsed.scenarioContext = normalizedScenarioContext({
+        ...parsed.scenarioContext,
+        formedAt: parsed.scenarioContext.formedAt || incomingContext.formedAt,
+        status: incomingContext.status,
+        source: incomingContext.source,
+      });
+    }
+    parsed.receipts = Array.isArray(parsed.receipts) ? parsed.receipts : [];
+    parsed.auditHistory = Array.isArray(parsed.auditHistory) ? parsed.auditHistory : [];
+    parsed.projectionCompatibility = window.S003DecisionAdapter?.isActive?.(incomingContext)
+      ? window.S003DecisionAdapter.getProjectionIssue?.() || parsed.projectionCompatibility || null
+      : null;
+    parsed.requests = parsed.requests.map((item) => ({
+      ...item,
+      scenarioContext: window.S003DecisionAdapter?.isActive?.(incomingContext) ? normalizedScenarioContext(incomingContext) : item.scenarioContext,
+      snapshotProjection: window.S003DecisionAdapter?.isActive?.(incomingContext) ? decisionContextReadOnly(incomingContext) : item.snapshotProjection,
+      projectionMode: window.S003DecisionAdapter?.isActive?.(incomingContext)
+        ? (decisionContextReadOnly(incomingContext) ? "historical-readonly" : (item.projectionMode || (item.actionRequestImmutable ? "active-existing-result" : "active-submitted-request")))
+        : item.projectionMode,
+      owner: item.owner || "集团资金管理岗",
+      recommendation: item.recommendation || `核实${item.subjectName || "当前主体"}的融资异常并形成受控优化方案`,
+      banks: Array.isArray(item.banks) ? item.banks : [],
+      loans: Array.isArray(item.loans) ? item.loans : [],
+      loanCount: Number.isFinite(Number(item.loanCount)) ? Number(item.loanCount) : (Array.isArray(item.loans) ? item.loans.length : 0),
+      confirmationEligibility: {
+        ...(item.confirmationEligibility || {}),
+        requiresAcknowledgement: item.confirmationEligibility?.requiresAcknowledgement === true || !Array.isArray(item.banks) || item.banks.length === 0
+      }
+    }));
+    parsed.tasks = parsed.tasks.map((item) => ({
+      ...item,
+      scenarioContext: window.S003DecisionAdapter?.isActive?.(incomingContext) ? normalizedScenarioContext(incomingContext) : item.scenarioContext,
+      snapshotProjection: window.S003DecisionAdapter?.isActive?.(incomingContext) ? decisionContextReadOnly(incomingContext) : item.snapshotProjection,
+      projectionMode: window.S003DecisionAdapter?.isActive?.(incomingContext)
+        ? (decisionContextReadOnly(incomingContext) ? "historical-readonly" : (item.projectionMode || "active-owner-todo"))
+        : item.projectionMode,
+    }));
+    return parsed;
+  } catch (error) {
+    return createInitialDecisionState();
+  }
+}
+
+function formatNow() {
+  const date = new Date();
+  const pad = (value) => String(value).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+}
+
+function dateOnly(date = new Date()) {
+  const pad = (value) => String(value).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+}
+
+function addWorkdays(startDate, count) {
+  const date = new Date(startDate);
+  let added = 0;
+  while (added < count) {
+    date.setDate(date.getDate() + 1);
+    const day = date.getDay();
+    if (day !== 0 && day !== 6) added += 1;
+  }
+  return dateOnly(date);
+}

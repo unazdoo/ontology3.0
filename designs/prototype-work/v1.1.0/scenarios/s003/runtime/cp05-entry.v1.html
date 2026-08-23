@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>S003 CP05 · 决策链完成</title>
+    <style>
+      :root { color-scheme: light; font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif; }
+      body { margin: 0; color: #172538; background: #f3f5f7; }
+      main { width: min(920px, calc(100% - 32px)); margin: 48px auto; }
+      article { padding: 28px; background: #fff; border: 1px solid #d9dee5; border-radius: 8px; box-shadow: 0 10px 30px rgba(30, 45, 64, .07); }
+      h1 { margin: 0 0 8px; font-size: 24px; }
+      p { color: #5d6875; line-height: 1.7; }
+      .grid { margin-top: 24px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+      .card { padding: 14px; background: #f7f9fb; border: 1px solid #e1e6ec; border-radius: 6px; }
+      .card strong { display: block; font-size: 20px; }
+      .card small { color: #6b7784; }
+      .ok { color: #25725d; font-weight: 700; }
+      @media (max-width: 620px) { main { margin: 20px auto; } article { padding: 20px; } .grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <article>
+        <h1>S003 CP05：通用决策链完成</h1>
+        <p><span class="ok">decision-chain-completed</span>。9 条候选中仅 1 条经人工确认进入通用 Action Request 和负责人待办，其余仍保持待确认。</p>
+        <div class="grid">
+          <div class="card"><strong>9</strong><small>处置候选</small></div>
+          <div class="card"><strong>1</strong><small>Action Request</small></div>
+          <div class="card"><strong>1</strong><small>负责人待办</small></div>
+          <div class="card"><strong>0</strong><small>审批/通知</small></div>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>

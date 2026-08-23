@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "ofw.s002.checkpoint-evidence-index.v1",
+  "checkpointId": "CP02",
+  "checkpointNode": "data-connected",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815010000000-a283fabf23f6",
+    "formedAt": "2026-08-15T01:00:00.000Z",
+    "status": "active"
+  },
+  "formedAt": "2026-08-15T01:10:00.000Z",
+  "files": [
+    {
+      "ref": "evidence/CP02-data-connected/feature-flags.json",
+      "sha256": "83a201538c4caed5636e8b040ab07cd9ffae12df7145e802dc0ac69415dd609b",
+      "kind": "feature-flags",
+      "owner": "平台公共层"
+    },
+    {
+      "ref": "evidence/CP02-data-connected/M01-owner-receipt.json",
+      "sha256": "406ed3fdb77bd8c8bcc5eee1f14dfbd206b86674563d590b6bad8e0e7ec17811",
+      "kind": "owner-validation-receipt",
+      "owner": "本体管理"
+    },
+    {
+      "ref": "evidence/CP02-data-connected/M01-state-export.json",
+      "sha256": "cc0b2cb363d8a2922bb6dc55aaf76f89dda770acf69b23ddbdda15df0db248b2",
+      "kind": "module-state-export",
+      "owner": "本体管理"
+    },
+    {
+      "ref": "evidence/CP02-data-connected/M02-owner-receipt.json",
+      "sha256": "c1c77ed81bf11ab3b8b878523db1e162a5356256eef613c523c66659cf94b5e7",
+      "kind": "owner-validation-receipt",
+      "owner": "数据工程"
+    },
+    {
+      "ref": "evidence/CP02-data-connected/M02-state-export.json",
+      "sha256": "734c6fb09f87d6c026aac3aa5e9f72b5c4b91e0cd514cba6bb4c948b37eee8e8",
+      "kind": "module-state-export",
+      "owner": "数据工程"
+    },
+    {
+      "ref": "evidence/CP02-data-connected/M03-owner-receipt.json",
+      "sha256": "6a78c6230e41d559d06c5010e4c281c5867a16d5220773301c71000a5210233a",
+      "kind": "owner-validation-receipt",
+      "owner": "智能问数"
+    },
+    {
+      "ref": "evidence/CP02-data-connected/M03-state-export.json",
+      "sha256": "5ef5552579433e4c8eb0666f4a8b2397a736a28d9c69b9ea023e50de3ec6ffb2",
+      "kind": "module-state-export",
+      "owner": "智能问数"
+    },
+    {
+      "ref": "evidence/CP02-data-connected/M04-owner-receipt.json",
+      "sha256": "d80dccbdf718eda05a2a98460ef11e00e0bf93be1a80715737ab765fd1bb3612",
+      "kind": "owner-validation-receipt",
+      "owner": "决策中心"
+    },
+    {
+      "ref": "evidence/CP02-data-connected/M04-state-export.json",
+      "sha256": "0860b41fdd5312fb72740408cfa79b1e8072eb15bce21cd00e8863abc6869e03",
+      "kind": "module-state-export",
+      "owner": "决策中心"
+    },
+    {
+      "ref": "evidence/CP02-data-connected/M05-owner-receipt.json",
+      "sha256": "7678e24ba7cccb5b092f878f1e250ff98c0ff5fb8a87e3554d43b8878c042957",
+      "kind": "owner-validation-receipt",
+      "owner": "Agent 应用"
+    },
+    {
+      "ref": "evidence/CP02-data-connected/M05-state-export.json",
+      "sha256": "230bb9f6bc85b16581208957c270f7d09f94f3808c4b1a8823c8ad5059b11e9a",
+      "kind": "module-state-export",
+      "owner": "Agent 应用"
+    },
+    {
+      "ref": "evidence/CP02-data-connected/M06-owner-receipt.json",
+      "sha256": "eee0d551a452d219426f6fde21e29c80913dcdcd6f2588d26e0f162e09cbf897",
+      "kind": "owner-validation-receipt",
+      "owner": "报告中心"
+    },
+    {
+      "ref": "evidence/CP02-data-connected/M06-state-export.json",
+      "sha256": "fe6af4b65fc7e033e4e2e4fe83f1e335e11ca82a5f8302c0cad0fb9c9c79154e",
+      "kind": "module-state-export",
+      "owner": "报告中心"
+    },
+    {
+      "ref": "evidence/CP02-data-connected/scenario-configuration.json",
+      "sha256": "d9514fed9c674e60cf3ce1dd5719972a7eb374d2ace55f232eff1cae16d5a4e6",
+      "kind": "scenario-configuration",
+      "owner": "S002场景包"
+    },
+    {
+      "ref": "evidence/CP02-data-connected/test-fixture.json",
+      "sha256": "d2148282ef88489cd3c3b933c88f199fe4108584c52ce01131bd225c1f34bbd1",
+      "kind": "test-fixture",
+      "owner": "S002场景包"
+    }
+  ],
+  "immutableIntent": true,
+  "conclusionBoundary": "清单只证明技术引用和 Owner 回执可定位，不代表业务验收通过"
+}

@@ -1,0 +1,391 @@
+{
+  "outputRef": "checkpoints/CP21-v103-v7-report-browser-regression-completed.json",
+  "checkpointId": "CP-S003-20260817193000000-c03521000021",
+  "checkpointNode": "e2e-integrated",
+  "createdAt": "2026-08-17T19:30:00.000Z",
+  "buildVersion": "S003-CP21",
+  "acceptanceReady": false,
+  "entryRef": "runtime/cp21-entry.v1.html",
+  "baseline": {
+    "baselineVersion": "1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "parentVersion": "1.0.3"
+  },
+  "scenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "codeRefs": [
+    "tests/baseline-extension-contract.test.js",
+    "scripts/browser-cp14.cjs",
+    "data.js",
+    "integration-config.js",
+    "app.js",
+    "state.js",
+    "scripts/browser-cp15.cjs",
+    "resources/m01/model-configuration.v1.json",
+    "resources/m02/source-registry.v2.json",
+    "resources/m02/pipeline-current-projection.v2.json",
+    "resources/m05/agent-position.v2.json",
+    "domain/report-service-v2.js",
+    "scripts/build-report-assets-v2.cjs",
+    "scripts/build-report-assets-v3.cjs",
+    "tests/report-assets-v2.test.js",
+    "resources/m06/report-contract.v2.json",
+    "resources/m06/report-definition.v2.json",
+    "resources/m06/report-template.v2.json",
+    "resources/m06/report-assurance-profile.v1.json",
+    "resources/m06/report-manifest.v3.json",
+    "resources/m06/report-contents.v3.json",
+    "resources/m06/report-artifacts.v3.json",
+    "scripts/browser-cp16.cjs",
+    "tests/workbench-shell.test.js",
+    "scripts/browser-cp17.cjs",
+    "scripts/browser-cp18.cjs",
+    "index.html",
+    "styles.css",
+    "domain/checkpoint-service.js",
+    "domain/checkpoint-projection.js",
+    "domain/query-service.js",
+    "domain/decision-service.js",
+    "tests/checkpoint-service.test.js",
+    "tests/checkpoint-projection.test.js",
+    "tests/data-assets.test.js",
+    "tests/decision-service.test.js",
+    "tests/navigation-assembly.test.js",
+    "tests/query-service.test.js",
+    "tests/state-persistence.test.js",
+    "resources/m01/published-pointer.v1.json",
+    "resources/m01/action-type-catalog.v1.json",
+    "resources/m01/c035-risk-results.v1.json",
+    "resources/m01/published-risk-facts.v1.json",
+    "resources/m02/source-asset.v1.json",
+    "resources/m02/pipeline-run.v1.json",
+    "resources/m02/c017-decision-projection.v1.json",
+    "resources/m03/query-catalog.v1.json",
+    "resources/m03/query-catalog.v2.json",
+    "resources/m03/query-results.v1.json",
+    "resources/m04/decision-inbox.v1.json",
+    "resources/m04/decision-inbox.v2.json",
+    "resources/m04/decision-results.v2.json",
+    "resources/m05/agent-position.v3.json",
+    "resources/m05/agent-position.v4.json",
+    "scripts/build-agent-position-v3.cjs",
+    "domain/report-service-v3.js",
+    "domain/report-service-v4.js",
+    "domain/report-service-v5.js",
+    "scripts/build-report-assets-v4.cjs",
+    "scripts/build-report-assets-v5.cjs",
+    "scripts/build-report-assets-v6.cjs",
+    "tests/report-assets-v4.test.js",
+    "tests/report-assets-v5.test.js",
+    "tests/report-assets-v6.test.js",
+    "resources/m06/report-assurance-profile.v2.json",
+    "resources/m06/report-assurance-profile.v3.json",
+    "resources/m06/report-manifest.v4.json",
+    "resources/m06/report-manifest.v5.json",
+    "resources/m06/report-manifest.v6.json",
+    "resources/m06/report-contents.v4.json",
+    "resources/m06/report-contents.v5.json",
+    "resources/m06/report-contents.v6.json",
+    "resources/m06/report-artifacts.v4.json",
+    "resources/m06/report-artifacts.v5.json",
+    "resources/m06/report-artifacts.v6.json",
+    "resources/m06/report-history-index.v1.json",
+    "README.md",
+    "CHANGELOG.md",
+    "scripts/browser-cp19.cjs",
+    "domain/config-service.js",
+    "tests/config-service.test.js",
+    "resources/m01/model-configuration.v2.json",
+    "resources/m02/source-registry.v3.json",
+    "resources/m02/pipeline-run.v2.json",
+    "resources/m02/pipeline-current-projection.v3.json",
+    "resources/m05/agent-position.v5.json",
+    "scripts/build-report-assets-v7.cjs",
+    "tests/report-assets-v7.test.js",
+    "resources/m06/report-history-index.v2.json",
+    "resources/m06/report-manifest.v7.json",
+    "resources/m06/report-contents.v7.json",
+    "resources/m06/report-artifacts.v7.json",
+    "evidence/M06-report-content-v7-validation.md",
+    "scripts/create-checkpoint-v2.cjs",
+    "runtime/cp21-entry.v1.html",
+    "evidence/CP21-v103-v7-report-browser-regression.md"
+  ],
+  "modules": {
+    "M01": {
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M01-RUNTIME-EXPORT-20260815-001",
+      "exportRef": "resources/m01/runtime-export.v1.json",
+      "evidenceRef": "evidence/CP21-v103-v7-report-browser-regression.md"
+    },
+    "M02": {
+      "moduleVersion": "1.1.0",
+      "exportId": "S003-M02-DATA-CONTRACT",
+      "exportRef": "resources/m02/data-contract.v1.1.json",
+      "evidenceRef": "evidence/CP21-v103-v7-report-browser-regression.md"
+    },
+    "M03": {
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M03-QUERY-RUNTIME",
+      "exportRef": "resources/m03/query-runtime.v1.json",
+      "evidenceRef": "evidence/CP21-v103-v7-report-browser-regression.md"
+    },
+    "M04": {
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M04-DECISION-RUNTIME",
+      "exportRef": "resources/m04/decision-runtime.v1.json",
+      "evidenceRef": "evidence/CP21-v103-v7-report-browser-regression.md"
+    },
+    "M05": {
+      "moduleVersion": "1.5.0",
+      "exportId": "S003-M05-REPORT-COPILOT-SCENARIO-PROFILE",
+      "exportRef": "resources/m05/agent-position.v5.json",
+      "evidenceRef": "evidence/CP21-v103-v7-report-browser-regression.md"
+    },
+    "M06": {
+      "moduleVersion": "1.5.0",
+      "exportId": "S003-M06-REPORT-MANIFEST-20260817-006",
+      "exportRef": "resources/m06/report-manifest.v7.json",
+      "evidenceRef": "evidence/CP21-v103-v7-report-browser-regression.md"
+    }
+  },
+  "stateSections": {
+    "data": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-M02-SOURCE-REGISTRY",
+          "version": "3.0.0",
+          "ref": "resources/m02/source-registry.v3.json"
+        },
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-M02-PIPELINE-RUN-20260815-002",
+          "version": "2.0.0",
+          "ref": "resources/m02/pipeline-run.v2.json"
+        },
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-M02-PIPELINE-CURRENT-PROJECTION",
+          "version": "3.0.0",
+          "ref": "resources/m02/pipeline-current-projection.v3.json"
+        },
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "version": "1.0.0",
+          "ref": "resources/m02/formal-candidate-data-asset.v1.json"
+        }
+      ]
+    },
+    "semantics": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-M01-DEBT-RISK-PKG",
+          "version": "1.0.0",
+          "ref": "resources/m01/model-package.v1.json"
+        },
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-M01-MODEL-CONFIGURATION",
+          "version": "2.0.0",
+          "ref": "resources/m01/model-configuration.v2.json"
+        },
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-M01-PUBLISHED-POINTER",
+          "version": "1.0.1",
+          "ref": "resources/m01/published-pointer.v1.json"
+        },
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-M01-ACTION-TYPE-CATALOG",
+          "version": "1.0.1",
+          "ref": "resources/m01/action-type-catalog.v1.json"
+        }
+      ]
+    },
+    "configurations": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "平台场景包",
+          "resourceId": "S003-SCENARIO-MANIFEST",
+          "version": "1.0.0",
+          "ref": "resources/scenario-manifest.json"
+        },
+        {
+          "owner": "平台公共层与 S003 总装",
+          "resourceId": "S003-V103-BASELINE-MODULE-INTEGRATION-20260817-CP21-V7",
+          "version": "12.0.0",
+          "ref": "resources/integration/v103-baseline-extension-inventory.v12.json"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP21-INTEGRATION-CONFIG",
+          "version": "1.2.3",
+          "ref": "integration-config.js"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP21-RUNTIME-CONFIG",
+          "version": "1.2.3",
+          "ref": "data.js"
+        },
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-M02-C017-DECISION-PROJECTION-20260815-001",
+          "version": "1.0.0",
+          "ref": "resources/m02/c017-decision-projection.v1.json"
+        }
+      ]
+    },
+    "results": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-C035-RISK-RESULTS-20251231-v1",
+          "version": "1.0.0",
+          "ref": "resources/m01/c035-risk-results.v1.json"
+        },
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-PUBLISHED-RISK-FACTS-20251231-v1",
+          "version": "1.0.0",
+          "ref": "resources/m01/published-risk-facts.v1.json"
+        },
+        {
+          "owner": "M03 智能问数",
+          "resourceId": "S003-M03-QUERY-RESULTS-20260815-001",
+          "version": "1.0.0",
+          "ref": "resources/m03/query-results.v1.json"
+        }
+      ]
+    },
+    "reports": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-M06-REPORT-MANIFEST-20260817-006",
+          "version": "1.5.0",
+          "ref": "resources/m06/report-manifest.v7.json"
+        },
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-M06-REPORT-CONTENTS-20260817-006",
+          "version": "1.5.0",
+          "ref": "resources/m06/report-contents.v7.json"
+        },
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-M06-REPORT-ARTIFACTS-20260817-006",
+          "version": "1.5.0",
+          "ref": "resources/m06/report-artifacts.v7.json"
+        },
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-RPT-TPL-ENTERPRISE-RISK",
+          "version": "1.1.0",
+          "ref": "resources/m06/report-template.v2.json"
+        },
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-RPT-ASSURANCE-PROFILE",
+          "version": "1.2.0",
+          "ref": "resources/m06/report-assurance-profile.v3.json"
+        }
+      ]
+    },
+    "decisions": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M04 决策中心",
+          "resourceId": "S003-M04-MANUAL-ACTION-INBOX-20260817-002",
+          "version": "1.1.0",
+          "ref": "resources/m04/decision-inbox.v2.json"
+        },
+        {
+          "owner": "M04 决策中心",
+          "resourceId": "S003-M04-DECISION-RESULTS-20260817-002",
+          "version": "1.1.0",
+          "ref": "resources/m04/decision-results.v2.json"
+        }
+      ]
+    },
+    "evidence": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP21-VALIDATION-EVIDENCE",
+          "version": "1.0.0",
+          "ref": "evidence/CP21-v103-v7-report-browser-regression.md"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP21-BROWSER-RESULT",
+          "version": "1.0.0",
+          "ref": "evidence/browser-cp21/20260817T193000000Z-7741b424/browser-cp19-results.json"
+        },
+        {
+          "owner": "平台公共层与 S003 总装",
+          "resourceId": "S003-CP21-DERIVED-TREE-INVENTORY",
+          "version": "12.0.0",
+          "ref": "resources/integration/v103-baseline-extension-inventory.v12.json"
+        }
+      ]
+    },
+    "testFixtures": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-AUTHORITATIVE-WORKBOOK-FIXTURE",
+          "version": "1.0.0",
+          "ref": "resources/m02/企业债务风险评估模版_S003兼容版.xlsx"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-ENTERPRISE-FIXTURE",
+          "version": "1.0.0",
+          "ref": "fixtures/enterprise-fixture.v1.json"
+        },
+        {
+          "owner": "M03 智能问数",
+          "resourceId": "S003-M03-QUERY-CATALOG",
+          "version": "2.0.0",
+          "ref": "resources/m03/query-catalog.v2.json"
+        }
+      ]
+    },
+    "featureFlags": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "平台场景包",
+          "resourceId": "S003-FEATURE-FLAGS",
+          "version": "1.0.0",
+          "ref": "resources/scenario-manifest.json"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CONDITIONAL-INTEGRATION",
+          "version": "1.2.3",
+          "ref": "integration-config.js"
+        }
+      ]
+    }
+  },
+  "restoreEvidenceRef": "evidence/CP21-v103-v7-report-browser-regression.md"
+}

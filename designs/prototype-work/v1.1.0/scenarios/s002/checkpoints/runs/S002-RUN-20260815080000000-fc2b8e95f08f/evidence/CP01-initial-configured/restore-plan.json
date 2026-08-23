@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "ofw.s002.restore-plan.v2",
+  "checkpointNode": "initial-configured",
+  "moduleAdapters": [
+    {
+      "moduleId": "M01",
+      "scenarioAdapterVersion": "S002-M01-1.0.0",
+      "baselineModuleBinding": {
+        "baselineVersion": "1.0.3",
+        "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+        "prototypePath": "designs/prototype-releases/v1.0.3/ontology-management-review",
+        "exactVersion": "v1.0.3#75870802dbcf5f3c",
+        "treeSha256": "75870802dbcf5f3ced2b8c6efaca41f01ae1e57fc34893ef44a14710633142fd",
+        "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+        "supportingPrototypeComponents": [
+          {
+            "prototypePath": "designs/prototype-releases/v1.0.3/ontology-management-prototype",
+            "treeSha256": "e0591568e3c52f464b53b295b8106056dea531c9f407c056bee6c21191645443",
+            "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+            "files": 4,
+            "bytes": 134336
+          }
+        ],
+        "files": 4,
+        "bytes": 761907
+      },
+      "exportRef": "checkpoints/runs/S002-RUN-20260815080000000-fc2b8e95f08f/evidence/CP01-initial-configured/M01-state-export.json",
+      "restoreMode": "isolated-clone"
+    },
+    {
+      "moduleId": "M02",
+      "scenarioAdapterVersion": "S002-M02-1.0.0",
+      "baselineModuleBinding": {
+        "baselineVersion": "1.0.3",
+        "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+        "prototypePath": "designs/prototype-releases/v1.0.3/data-engineering-prototype-review",
+        "exactVersion": "v1.0.3#dd47ca1f16b985c6",
+        "treeSha256": "dd47ca1f16b985c6e7acbdd2f262af2636b1bb18ceb7187f727ae33630b87fe5",
+        "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+        "supportingPrototypeComponents": [],
+        "files": 15,
+        "bytes": 1477062
+      },
+      "exportRef": "checkpoints/runs/S002-RUN-20260815080000000-fc2b8e95f08f/evidence/CP01-initial-configured/M02-state-export.json",
+      "restoreMode": "isolated-clone"
+    },
+    {
+      "moduleId": "M03",
+      "scenarioAdapterVersion": "S002-M03-1.0.0",
+      "baselineModuleBinding": {
+        "baselineVersion": "1.0.3",
+        "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+        "prototypePath": "designs/prototype-releases/v1.0.3/intelligent-query-prototype",
+        "exactVersion": "v1.0.3#5122f6b9bfab04af",
+        "treeSha256": "5122f6b9bfab04af794460fdba30d41b35fecd71d4d966472f66e7bc799c3e56",
+        "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+        "supportingPrototypeComponents": [],
+        "files": 25,
+        "bytes": 5977996
+      },
+      "exportRef": "checkpoints/runs/S002-RUN-20260815080000000-fc2b8e95f08f/evidence/CP01-initial-configured/M03-state-export.json",
+      "restoreMode": "isolated-clone"
+    },
+    {
+      "moduleId": "M04",
+      "scenarioAdapterVersion": "S002-M04-1.0.0",
+      "baselineModuleBinding": {
+        "baselineVersion": "1.0.3",
+        "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+        "prototypePath": "designs/prototype-releases/v1.0.3/decision-center-prototype",
+        "exactVersion": "v1.0.3#243f7a8a779b1fb9",
+        "treeSha256": "243f7a8a779b1fb9dddb74996c5bc7d99ad51211f019a2991afb6c8916f7b66b",
+        "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+        "supportingPrototypeComponents": [],
+        "files": 35,
+        "bytes": 10919329
+      },
+      "exportRef": "checkpoints/runs/S002-RUN-20260815080000000-fc2b8e95f08f/evidence/CP01-initial-configured/M04-state-export.json",
+      "restoreMode": "isolated-clone"
+    },
+    {
+      "moduleId": "M05",
+      "scenarioAdapterVersion": "S002-M05-1.0.0",
+      "baselineModuleBinding": {
+        "baselineVersion": "1.0.3",
+        "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+        "prototypePath": "designs/prototype-releases/v1.0.3/agent-application",
+        "exactVersion": "v1.0.3#027d9f20c7d7ebd7",
+        "treeSha256": "027d9f20c7d7ebd753eb8e36b4475a5c271c91d979feda8e0d57c39b3cb9bcb2",
+        "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+        "supportingPrototypeComponents": [],
+        "files": 25,
+        "bytes": 6067300
+      },
+      "exportRef": "checkpoints/runs/S002-RUN-20260815080000000-fc2b8e95f08f/evidence/CP01-initial-configured/M05-state-export.json",
+      "restoreMode": "isolated-clone"
+    },
+    {
+      "moduleId": "M06",
+      "scenarioAdapterVersion": "S002-M06-1.0.0",
+      "baselineModuleBinding": {
+        "baselineVersion": "1.0.3",
+        "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+        "prototypePath": "designs/prototype-releases/v1.0.3/report-center",
+        "exactVersion": "v1.0.3#8be8533ca1583f91",
+        "treeSha256": "8be8533ca1583f9135c76acf3bfab844d1431abc0e4807ec301e2f63d1dad0ad",
+        "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+        "supportingPrototypeComponents": [],
+        "files": 8,
+        "bytes": 1032893
+      },
+      "exportRef": "checkpoints/runs/S002-RUN-20260815080000000-fc2b8e95f08f/evidence/CP01-initial-configured/M06-state-export.json",
+      "restoreMode": "isolated-clone"
+    }
+  ],
+  "historicalReadOnly": true,
+  "cloneCreatesNewScenarioRunId": true,
+  "regressionClearsDownstreamSideEffects": true,
+  "formedAt": "2026-08-15T08:00:00.000Z"
+}

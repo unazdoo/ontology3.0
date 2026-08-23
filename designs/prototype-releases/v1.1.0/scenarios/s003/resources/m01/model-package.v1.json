@@ -1,0 +1,209 @@
+{
+  "schemaVersion": "ofw.s003.m01.atomic-model-package.v1",
+  "moduleId": "M01",
+  "moduleOwner": "本体管理",
+  "businessOwner": "财务公司",
+  "packageId": "S003-M01-DEBT-RISK-PKG",
+  "packageVersion": "1.0.0",
+  "lifecycleStatus": "published",
+  "resourceType": "published-metric-rule-action-type-atomic-package",
+  "forbiddenResourceType": "first-class-scoring-model",
+  "scenarioIdentity": {"scenarioId": "S003", "scenarioVersion": "S003-v1"},
+  "assessment": {
+    "formula": "round(clamp(rawScore * (1 + factorSum), 0, 100), 2)",
+    "underConstructionRawScore": 60,
+    "profitHistoryInsufficientGrade": "A",
+    "profitHistoryInsufficientScore": 100,
+    "applicableMissingFactorPolicy": "DEFAULTED_ZERO",
+    "notApplicableFactorPolicy": "NOT_APPLICABLE",
+    "invalidValuePolicy": "BLOCK",
+    "draftRunnable": false,
+    "rerunCreatesNewScenarioRunId": true
+  },
+  "indicatorOrder": [
+    "总资产",
+    "净利润",
+    "经营活动产生的现金流入",
+    "现金比率",
+    "资产负债率",
+    "利息保障倍数",
+    "现金流动负债比率",
+    "应收账款周转率",
+    "总资产周转率",
+    "总资产收益率",
+    "净资产收益率",
+    "销售毛利率",
+    "营业利润率",
+    "盈利稳定性",
+    "股东权益同比增长率"
+  ],
+  "formulas": {
+    "总资产": "资产总计_期末余额",
+    "净利润": "净利润_本年累计数",
+    "经营活动产生的现金流入": "经营活动现金流入小计_本年累计数",
+    "现金比率": "(货币资金 + 交易性金融资产) / 流动负债合计",
+    "资产负债率": "负债合计 / 资产总计",
+    "利息保障倍数": "(利润总额 + 财务费用) / 财务费用",
+    "现金流动负债比率": "经营活动现金流量净额 / 流动负债合计",
+    "应收账款周转率": "营业总收入 / 平均应收账款",
+    "总资产周转率": "营业总收入 / 平均总资产",
+    "总资产收益率": "净利润 / 平均总资产",
+    "净资产收益率": "净利润 / 平均所有者权益",
+    "销售毛利率": "(营业总收入 - 营业成本) / 营业总收入",
+    "营业利润率": "营业利润 / 营业总收入",
+    "盈利稳定性": "三年利润总额增长率判定；历史不足时按 A",
+    "股东权益同比增长率": "(期末所有者权益 - 年初所有者权益) / abs(年初所有者权益)"
+  },
+  "weights": {
+    "新能源产业-风电": [5, 5, 10, 5, 10, 5, 5, 5, 5, 5, 5, 5, 10, 15, 5],
+    "核电": [5, 5, 5, 5, 10, 5, 5, 5, 5, 10, 10, 5, 10, 10, 5],
+    "环保": [5, 5, 15, 5, 5, 5, 5, 20, 5, 5, 5, 5, 5, 5, 5]
+  },
+  "scoreAnchors": {
+    "新能源产业-风电": {
+      "总资产": [2200000000, 1200000000, 400000000, 230000000, 230000000, "positive"],
+      "净利润": [67000000, 23000000, 0, -6600000, -6600000, "positive"],
+      "经营活动产生的现金流入": [350000000, 120000000, 2600000, 0, 0, "positive"],
+      "现金比率": [0.14, 0.07, 0.03, 0, 0, "positive"],
+      "资产负债率": [0.6, 0.65, 0.7, 0.9, 0.9, "inverse"],
+      "利息保障倍数": [4, 3, 2, 0.4, 0.4, "positive"],
+      "现金流动负债比率": [0.6, 0.3, 0.01, 0, 0, "positive"],
+      "应收账款周转率": [2, 1, 0.8, 0.5, 0.5, "positive"],
+      "总资产周转率": [0.15, 0.12, 0.01, 0, 0, "positive"],
+      "总资产收益率": [0.04, 0.03, 0.02, 0, 0, "positive"],
+      "净资产收益率": [0.14, 0.1, 0, -0.05, -0.05, "positive"],
+      "销售毛利率": [0.6, 0.5, 0.4, 0, 0, "positive"],
+      "营业利润率": [0.4, 0.3, 0.2, -0.8, -0.8, "positive"],
+      "盈利稳定性": null,
+      "股东权益同比增长率": [0.5, 0.1, 0, -0.04, -0.04, "positive"]
+    },
+    "核电": {
+      "总资产": [80000000000, 56000000000, 22000000000, 13000000000, 13000000000, "positive"],
+      "净利润": [3100000000, 18000000, 1100000000, -200000000, -200000000, "positive"],
+      "经营活动产生的现金流入": [13000000000, 8200000000, 6700000000, 5600000000, 5600000000, "positive"],
+      "现金比率": [2, 1, 0.2, 0.1, 0.1, "positive"],
+      "资产负债率": [0.65, 0.7, 0.75, 0.85, 0.85, "inverse"],
+      "利息保障倍数": [4, 2.5, 1.5, -29, -29, "positive"],
+      "现金流动负债比率": [0.8, 0.6, 0.4, 0.2, 0.2, "positive"],
+      "应收账款周转率": [10, 9, 8, 7, 7, "positive"],
+      "总资产周转率": [0.25, 0.2, 0.1, 0.05, 0.05, "positive"],
+      "总资产收益率": [0.07, 0.04, 0.02, 0, 0, "positive"],
+      "净资产收益率": [0.2, 0.15, 0.1, 0, 0, "positive"],
+      "销售毛利率": [0.5, 0.4, 0.35, 0.3, 0.3, "positive"],
+      "营业利润率": [0.35, 0.25, 0.2, 0, 0, "positive"],
+      "盈利稳定性": null,
+      "股东权益同比增长率": [0.1, 0.05, 0.01, -0.04, -0.04, "positive"]
+    },
+    "环保": {
+      "总资产": [7000000000, 870000000, 230000000, 59000000, 59000000, "positive"],
+      "净利润": [110000000, 230000, 770000, -360000000, -360000000, "positive"],
+      "经营活动产生的现金流入": [1200000000, 300000000, 100000000, 20000000, 20000000, "positive"],
+      "现金比率": [0.5, 0.25, 0.1, 0, 0, "positive"],
+      "资产负债率": [0.4, 0.5, 0.65, 0.8, 0.8, "inverse"],
+      "利息保障倍数": [10, 3, -5, -100, -100, "positive"],
+      "现金流动负债比率": [0.2, 0.05, -0.05, -0.3, -0.3, "positive"],
+      "应收账款周转率": [3, 2, 1, 0.6, 0.6, "positive"],
+      "总资产周转率": [0.6, 0.4, 0.2, 0.08, 0.08, "positive"],
+      "总资产收益率": [0.06, 0.03, 0, -0.1, -0.1, "positive"],
+      "净资产收益率": [0.12, 0.08, 0.01, -0.3, -0.3, "positive"],
+      "销售毛利率": [0.4, 0.3, 0.2, 0.05, 0.05, "positive"],
+      "营业利润率": [0.2, 0.1, 0.01, -0.6, -0.6, "positive"],
+      "盈利稳定性": null,
+      "股东权益同比增长率": [0.15, 0.04, 0, -0.04, -0.04, "positive"]
+    }
+  },
+  "profitStability": {
+    "grades": {"A": 100, "B": 75, "C": 50, "D": 25, "E": 0},
+    "historyInsufficient": {"grade": "A", "score": 100, "marker": "HISTORY_INSUFFICIENT_DEFAULT_A"},
+    "rules": [
+      {"when": "三年利润总额均为正且连续两年增长率均大于15%", "grade": "A"},
+      {"when": "三年利润总额均为正且连续两年均增长", "grade": "B"},
+      {"when": "三年利润总额均为正但增长方向不连续", "grade": "C"},
+      {"when": "三年利润总额均为正且连续两年均下降", "grade": "D"},
+      {"when": "三年内存在负利润总额", "grade": "E"}
+    ]
+  },
+  "factors": [
+    {
+      "factorId": "credit-utilization",
+      "name": "融资能力（已用授信余额/授信总额）",
+      "applicableCategories": ["ALL"],
+      "tiers": [
+        {"tierId": "ZERO", "label": "融资使用率小于等于50%", "coefficient": 0},
+        {"tierId": "MID", "label": "融资使用率大于50%且小于等于80%", "coefficient": -0.1},
+        {"tierId": "HIGH", "label": "融资使用率大于80%", "coefficient": -0.2}
+      ]
+    },
+    {
+      "factorId": "guarantee",
+      "name": "担保情况",
+      "applicableCategories": ["ALL"],
+      "tiers": [
+        {"tierId": "ZERO", "label": "未涉及担保", "coefficient": 0},
+        {"tierId": "EXTERNAL", "label": "仅提供对外担保", "coefficient": -0.05},
+        {"tierId": "RECEIVED", "label": "仅接受担保", "coefficient": 0.05}
+      ]
+    },
+    {
+      "factorId": "headquarters-support",
+      "name": "总部支持程度",
+      "applicableCategories": ["ALL"],
+      "tiers": [
+        {"tierId": "FULL", "label": "总部持股比例100%", "coefficient": 0.1},
+        {"tierId": "HIGH", "label": "总部持股比例75%以上且小于100%", "coefficient": 0.05},
+        {"tierId": "ZERO", "label": "总部持股比例50%以上且小于75%", "coefficient": 0},
+        {"tierId": "LOW", "label": "总部持股比例25%以上且小于50%", "coefficient": -0.05},
+        {"tierId": "VERY_LOW", "label": "总部持股比例25%以下", "coefficient": -0.1}
+      ]
+    },
+    {
+      "factorId": "electricity-price",
+      "name": "电价波动率",
+      "applicableCategories": ["新能源产业-风电", "核电"],
+      "tiers": [
+        {"tierId": "LOW", "label": "电价变化率小于等于-15%", "coefficient": -0.2},
+        {"tierId": "MID", "label": "电价变化率大于-15%且小于等于0", "coefficient": -0.1},
+        {"tierId": "ZERO", "label": "电价变化率大于0", "coefficient": 0}
+      ]
+    },
+    {
+      "factorId": "litigation",
+      "name": "是否存在重大诉讼",
+      "applicableCategories": ["ALL"],
+      "tiers": [
+        {"tierId": "ZERO", "label": "诉讼标的小于净资产1%", "coefficient": 0},
+        {"tierId": "MID", "label": "诉讼标的为净资产1%至5%", "coefficient": -0.05},
+        {"tierId": "HIGH", "label": "诉讼标的大于净资产5%", "coefficient": -0.15}
+      ]
+    },
+    {
+      "factorId": "fund-gap",
+      "name": "资金余缺预警",
+      "applicableCategories": ["ALL"],
+      "tiers": [
+        {"tierId": "ZERO", "label": "无资金缺口", "coefficient": 0},
+        {"tierId": "CURRENT", "label": "当月资金余缺预警", "coefficient": -0.3},
+        {"tierId": "M1", "label": "未来第一个月资金余缺预警", "coefficient": -0.2},
+        {"tierId": "M2", "label": "未来第二个月资金余缺预警", "coefficient": -0.1},
+        {"tierId": "M3", "label": "未来第三个月资金余缺预警", "coefficient": -0.05}
+      ]
+    }
+  ],
+  "riskTiers": [
+    {"tierId": "GREEN", "name": "绿灯", "minInclusive": 40, "maxExclusive": null, "color": "#3f8f73"},
+    {"tierId": "YELLOW", "name": "黄灯", "minInclusive": 25, "maxExclusive": 40, "color": "#c8902f"},
+    {"tierId": "RED", "name": "红灯", "minInclusive": 10, "maxExclusive": 25, "color": "#c95d54"},
+    {"tierId": "BLACK", "name": "黑灯", "minInclusive": 0, "maxExclusive": 10, "color": "#28323d"}
+  ],
+  "actionTypes": [
+    {"actionTypeId": "S003_RISK_FOLLOW_UP", "triggerTier": "YELLOW", "requiresHumanConfirmation": true},
+    {"actionTypeId": "S003_SPECIAL_DISPOSAL", "triggerTier": "RED", "requiresHumanConfirmation": true},
+    {"actionTypeId": "S003_EMERGENCY_RESPONSE", "triggerTier": "BLACK", "requiresHumanConfirmation": true},
+    {"actionTypeId": "S003_FACTOR_EMERGENCY", "triggerFactors": ["重大诉讼", "当月资金余缺预警"], "requiresHumanConfirmation": true}
+  ],
+  "provenance": {
+    "sourceSkillSha256": "731722434a309e4b76c4b83b6de82a2e590c50a524c611ccf5721c7516e2441b",
+    "userOverrideDecision": "D095",
+    "contracts": ["C005", "C035"]
+  }
+}

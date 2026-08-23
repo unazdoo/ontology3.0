@@ -1,6 +1,10 @@
 {
-  "version": "1.1.0",
-  "status": "public-bootstrap",
+  "version": "1.1.0-rc.10",
+  "status": "review-candidate",
+  "sourceProductBaseline": "v1.0.7",
+  "candidateParentVersion": "v1.1.0-rc.9",
+  "governanceBaselineVersion": "v1.0.3",
+  "targetVersion": "v1.1.0-rc.10",
   "sourceParentVersion": "1.0.1",
   "parentVersion": "1.0.3",
   "baselineVersion": "1.0.3",
@@ -13,7 +17,7 @@
   "migrationRecord": "MIGRATION-v1.0.1-to-v1.0.3.json",
   "sourceMaterializationManifest": "manifest.json",
   "sourceMaterializationManifestRole": "v1.0.3 逐文件物化对照，不是 v1.1.0 当前工作区发布清单",
-  "currentWorkspaceManifest": null,
+  "currentWorkspaceManifest": "COMPOSITE-MANIFEST.json",
   "createdAt": "2026-08-14",
   "baselineMigratedAt": "2026-08-15T12:31:49+08:00",
   "workspaceRole": "公共 bootstrap 与最终受控总装基线",
@@ -30,13 +34,58 @@
   "scenarioPackages": {
     "S002": "scenarios/s002",
     "S003": "scenarios/s003",
-    "S004": "scenarios/s004"
+    "S004": "scenarios/s004-runtime-v2.1.0"
   },
-  "scenarioImplementationStatus": "not-started",
+  "scenarioImplementationStatus": "All four completed source scenario runs are assembled into the six canonical module workbenches and the standalone dashboard",
+  "activeScenarioRunId": null,
+  "sourceScenarioRunIds": {
+    "S001": "S001-RUN-20260816081748567-705ac89fb83a",
+    "S002": "S002-RUN-20260815080000000-6ef5d0ef82f9",
+    "S003": "S003-RUN-20260817163000000-c02200000001",
+    "S004": "S004-RUN-20260815233000000-7f3c8e42a1b6"
+  },
+  "compositeRunEvidence": "COMPOSITE-RUN-RC4.json",
+  "invalidatedCompositeRunEvidence": "COMPOSITE-RUN-202608211618.json",
+  "integrationResult": "All applicable module steps are complete for S001-S004; exact source run identities and not-applicable boundaries are preserved",
+  "runtimeSnapshotIncluded": false,
+  "historicalRuntimeSnapshots": {
+    "S001": {
+      "path": "runtime-snapshots/S001-RUN-20260816081748567-705ac89fb83a.runtime.json",
+      "sha256": "5f9a9a75d1a9916b20a6758aa9d0285fac4a7eba3f64a1637b8be0ecb0cada18",
+      "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+      "mode": "read-only-source-evidence"
+    }
+  },
+  "legacyRestoreEntry": null,
+  "legacyEntryPolicy": "completed-run.html and open-completed-run.html redirect to the unique composite review entry",
+  "regressionResult": "COMPOSITE-REGRESSION-MATRIX.json",
   "entry": "s001-e2e-integration/index.html",
-  "recommendedPort": 4331,
+  "reviewRevision": "closure-rc10-review",
+  "changeScope": [
+    "Home capability architecture with three persistent arrows and one semantically highlighted path",
+    "M06 440px report assistant, compact recommendation rail and expanded answer canvas",
+    "M06 low-frequency in-place QA and verification motion with reduced-motion support",
+    "M05 report-verification-agent separated from report copilot with Prompt, Skill, Tool and Report Verification Extraction v1",
+    "M06 real report-verification Agent run followed by five deterministic rule groups and exact verification items",
+    "Report verification Agent extracts claims and evidence anchors but cannot return formal pass or fail",
+    "Existing rc.9 dashboard, breadcrumb, C011 and report lifecycle capabilities preserved"
+  ],
+  "candidateSnapshotStatus": "promoted to the immutable v1.1.0 implementation baseline; exact source scenario runs remain read-only and no formal four-scenario runtime snapshot is asserted",
+  "promotion": {
+    "status": "promoted-to-frozen-implementation-baseline",
+    "releaseVersion": "1.1.0",
+    "releasePath": "../../prototype-releases/v1.1.0",
+    "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+    "promotedAt": "2026-08-24",
+    "runtimeSnapshotIncluded": false,
+    "acceptanceReady": false
+  },
+  "integrityManifest": "RC10-INTEGRITY.json",
+  "rollbackVersion": "v1.0.3",
+  "recommendedPort": 4342,
   "acceptanceReady": false,
-  "editable": true,
+  "reviewEntry": true,
+  "editable": false,
   "promotionRequiresFullRegression": true,
   "frozenBaselineImmutable": true,
   "historicalS001StatePolicy": "read-only-reference-only; never copy into a new scenario run",

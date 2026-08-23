@@ -1,0 +1,278 @@
+{
+  "schemaVersion": "ofw.s002.module-state-export.v2",
+  "moduleId": "M01",
+  "moduleName": "本体管理",
+  "owner": "本体管理",
+  "moduleVersion": "S002-M01-1.0.0",
+  "scenarioAdapterVersion": "S002-M01-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "baselineCheckpointBinding": {
+    "ref": "designs/scenario-checkpoints/baselines/v1.0.3/T056-baseline-checkpoint.json",
+    "sha256": "0a90f5f68dccaa7c18be71b4c82019616f19b0e359f931024652d95165ecd414"
+  },
+  "baselineModuleBinding": {
+    "baselineVersion": "1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "prototypePath": "designs/prototype-releases/v1.0.3/ontology-management-review",
+    "exactVersion": "v1.0.3#75870802dbcf5f3c",
+    "treeSha256": "75870802dbcf5f3ced2b8c6efaca41f01ae1e57fc34893ef44a14710633142fd",
+    "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+    "supportingPrototypeComponents": [
+      {
+        "prototypePath": "designs/prototype-releases/v1.0.3/ontology-management-prototype",
+        "treeSha256": "e0591568e3c52f464b53b295b8106056dea531c9f407c056bee6c21191645443",
+        "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)"
+      }
+    ]
+  },
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815080000000-c12c9b3e8520",
+    "formedAt": "2026-08-15T08:00:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "query-integrated",
+  "formedAt": "2026-08-17T10:05:00.000Z",
+  "stateDeclaration": "referenced",
+  "emptyReason": null,
+  "resources": [
+    {
+      "resourceId": "ONT-S002-BUDGET-v1",
+      "resourceType": "ontology-object",
+      "version": "1.0.0",
+      "summary": "预算主体、期间、科目、版本、情景、项目、PR/PO 与凭证对象",
+      "authoritativeRef": "S002/S002-RUN-20260815080000000-c12c9b3e8520/M01/ONT-S002-BUDGET-v1",
+      "formedAt": "2026-08-17T10:05:00.000Z"
+    },
+    {
+      "resourceId": "REL-S002-BUDGET-v1",
+      "resourceType": "ontology-relationship",
+      "version": "1.0.0",
+      "summary": "预算、实际、占用、计提和项目余额关系",
+      "authoritativeRef": "S002/S002-RUN-20260815080000000-c12c9b3e8520/M01/REL-S002-BUDGET-v1",
+      "formedAt": "2026-08-17T10:05:00.000Z"
+    },
+    {
+      "resourceId": "MET-S002-BUDGET-v1",
+      "resourceType": "metric",
+      "version": "1.0.0",
+      "summary": "成本占收比、真正毛利率、净在途占用等九项 Metric",
+      "authoritativeRef": "S002/S002-RUN-20260815080000000-c12c9b3e8520/M01/MET-S002-BUDGET-v1",
+      "formedAt": "2026-08-17T10:05:00.000Z"
+    },
+    {
+      "resourceId": "RULE-S002-BUDGET-v1",
+      "resourceType": "rule",
+      "version": "1.0.0",
+      "summary": "项目余额、费用预算执行偏离、成本占收比、年末集中度与价格复核五项 Rule",
+      "authoritativeRef": "S002/S002-RUN-20260815080000000-c12c9b3e8520/M01/RULE-S002-BUDGET-v1",
+      "formedAt": "2026-08-17T10:05:00.000Z"
+    },
+    {
+      "resourceId": "ACTION-TYPE-S002-BUDGET-v1",
+      "resourceType": "action-type",
+      "version": "1.0.0",
+      "summary": "预算执行整改、下一年度预算合理性复核、费用管理优化核查、预算申报依据补充、采购占用清理和供应商价格复核",
+      "authoritativeRef": "S002/S002-RUN-20260815080000000-c12c9b3e8520/M01/ACTION-TYPE-S002-BUDGET-v1",
+      "formedAt": "2026-08-17T10:05:00.000Z"
+    },
+    {
+      "resourceId": "T019-S002-v1",
+      "resourceType": "published-binding",
+      "version": "1.0.0",
+      "summary": "Published 本体精确绑定 S002-BUDGET-EXEC-v1 与 S002-PROJECT-OCC-v1；S002-DATA-v1 仅为兼容组合指针",
+      "authoritativeRef": "S002/S002-RUN-20260815080000000-c12c9b3e8520/M01/T019-S002-v1",
+      "formedAt": "2026-08-17T10:05:00.000Z"
+    }
+  ],
+  "ownerBoundary": {
+    "ownsOnly": [
+      "ontology-object",
+      "ontology-relationship",
+      "metric",
+      "rule",
+      "action-type",
+      "published-binding"
+    ],
+    "consumesByReference": true,
+    "copiesOtherModuleTruth": false
+  },
+  "demoDataMarker": "SYNTHETIC_FOR_DEMO",
+  "sideEffectPolicy": {
+    "allowHistoricalReplay": false,
+    "allowExternalDispatch": false
+  },
+  "runtimeState": {
+    "moduleId": "M01",
+    "moduleVersion": "S002-M01-1.0.0",
+    "progress": {
+      "mappingApplied": true,
+      "ontologyPublished": true
+    },
+    "mappingVersion": {
+      "mappingId": "S002-MAPPING-v1",
+      "dataAssetVersion": "S002-DATA-v1",
+      "componentAssetVersions": [
+        "S002-BUDGET-EXEC-v1",
+        "S002-PROJECT-OCC-v1"
+      ],
+      "assetBindings": [
+        {
+          "assetId": "S002-BUDGET-EXECUTION-ASSET",
+          "assetVersion": "S002-BUDGET-EXEC-v1",
+          "memberIds": [
+            "MEM-S002-BUDGET-SUBJECT",
+            "MEM-S002-BUDGET-VERSION",
+            "MEM-S002-BUDGET-ACCOUNT",
+            "MEM-S002-ACTUAL-VOUCHER"
+          ],
+          "internalRelationIds": [
+            "REL-LINK-S002-VERSION-SUBJECT",
+            "REL-LINK-S002-VERSION-ACCOUNT",
+            "REL-LINK-S002-VOUCHER-SUBJECT",
+            "REL-LINK-S002-VOUCHER-ACCOUNT"
+          ],
+          "crossAssetRelationIds": [
+            "REL-LINK-S002-VOUCHER-PROJECT"
+          ]
+        },
+        {
+          "assetId": "S002-PROJECT-OCCUPANCY-ASSET",
+          "assetVersion": "S002-PROJECT-OCC-v1",
+          "memberIds": [
+            "MEM-S002-PROJECT-OCCUPANCY",
+            "MEM-S002-PURCHASE-INITIATION",
+            "MEM-S002-SUPPLIER"
+          ],
+          "internalRelationIds": [
+            "REL-LINK-S002-PURCHASE-PROJECT",
+            "REL-LINK-S002-PURCHASE-SUPPLIER"
+          ],
+          "crossAssetRelationIds": [
+            "REL-LINK-S002-PROJECT-VERSION"
+          ]
+        }
+      ],
+      "crossAssetRelations": [
+        {
+          "relationId": "REL-LINK-S002-VOUCHER-PROJECT",
+          "sourceAssetVersion": "S002-BUDGET-EXEC-v1",
+          "targetAssetVersion": "S002-PROJECT-OCC-v1",
+          "stableKey": "项目标识"
+        },
+        {
+          "relationId": "REL-LINK-S002-PROJECT-VERSION",
+          "sourceAssetVersion": "S002-PROJECT-OCC-v1",
+          "targetAssetVersion": "S002-BUDGET-EXEC-v1",
+          "stableKey": "预算版本标识"
+        }
+      ],
+      "stableKeys": [
+        "主体",
+        "期间",
+        "科目",
+        "预算版本",
+        "情景",
+        "项目",
+        "凭证行",
+        "采购发起"
+      ],
+      "formedAt": "2026-08-15T08:00:00.000Z"
+    },
+    "c003Receipt": {
+      "receiptId": "RECEIPT-C003-S002-DATA-v1",
+      "sourceModule": "本体管理",
+      "contractCode": "C003",
+      "status": "accepted",
+      "deliveryId": "C003-S002-DATA-v1",
+      "reason": null,
+      "t007Version": "S002-DATA-v1",
+      "t006Id": "S002-DATA-BUNDLE",
+      "t008AsOf": "2025-12-31",
+      "assetRole": "compatibility-delivery-pointer",
+      "componentAssets": [
+        {
+          "assetId": "S002-BUDGET-EXECUTION-ASSET",
+          "name": "预算编制与执行数据资产",
+          "version": "S002-BUDGET-EXEC-v1",
+          "asOf": "2025-12-31"
+        },
+        {
+          "assetId": "S002-PROJECT-OCCUPANCY-ASSET",
+          "name": "项目预算占用与余额数据资产",
+          "version": "S002-PROJECT-OCC-v1",
+          "asOf": "2025-12-31"
+        }
+      ],
+      "targetDraftId": "DRAFT-S002-BUDGET-v1",
+      "targetDraftRevision": 1,
+      "previousDraftId": null,
+      "previousAssetVersion": null,
+      "replacement": null,
+      "scenarioContext": {
+        "scenarioId": "S002",
+        "scenarioVersion": "S002-v1",
+        "scenarioRunId": "S002-RUN-20260815080000000-c12c9b3e8520",
+        "formedAt": "2026-08-15T08:00:00.000Z",
+        "status": "active"
+      },
+      "receivedAt": "2026-08-15T08:00:00.000Z"
+    },
+    "targetDraftBinding": {
+      "deliveryId": "C003-S002-DATA-v1",
+      "sourceDeliveryId": "C003-S002-DATA-v1",
+      "assetVersion": "S002-DATA-v1",
+      "sourceAssetVersion": "S002-DATA-v1",
+      "componentAssetVersions": [
+        "S002-BUDGET-EXEC-v1",
+        "S002-PROJECT-OCC-v1"
+      ],
+      "targetDraftId": "DRAFT-S002-BUDGET-v1",
+      "targetDraftRevision": 1,
+      "formedAt": "2026-08-15T08:00:00.000Z"
+    },
+    "publishedOntology": {
+      "ontologyVersion": "S002-ONTO-v1",
+      "publishedPointer": "T019-S002-v1",
+      "dataAssetVersion": "S002-DATA-v1",
+      "componentAssetVersions": [
+        "S002-BUDGET-EXEC-v1",
+        "S002-PROJECT-OCC-v1"
+      ],
+      "metricVersion": "S002-METRIC-v1",
+      "ruleVersion": "S002-RULE-v1",
+      "actionTypeVersion": "S002-ACTION-TYPE-v1",
+      "status": "published-for-scenario",
+      "consumptionContext": {
+        "scenarioContext": {
+          "scenarioId": "S002",
+          "scenarioVersion": "S002-v1",
+          "scenarioRunId": "S002-RUN-20260815080000000-c12c9b3e8520",
+          "formedAt": "2026-08-15T08:00:00.000Z",
+          "status": "active"
+        },
+        "dataBundleVersion": "S002-DATA-v1",
+        "componentAssetVersions": [
+          "S002-BUDGET-EXEC-v1",
+          "S002-PROJECT-OCC-v1"
+        ],
+        "ontologyVersion": "S002-ONTO-v1",
+        "publishedPointer": "T019-S002-v1",
+        "asOf": "2025-12-31",
+        "currency": "CNY",
+        "unit": "万元",
+        "expenseBasis": "费用不含税",
+        "incomeSign": "源负号代表收益，展示转正",
+        "c003ReceiptId": "RECEIPT-C003-S002-DATA-v1",
+        "c003DeliveryId": "C003-S002-DATA-v1",
+        "targetDraftId": "DRAFT-S002-BUDGET-v1",
+        "targetDraftRevision": 1,
+        "status": "ready-for-current-scenario-run",
+        "readOnly": true
+      },
+      "formedAt": "2026-08-15T08:00:00.000Z"
+    }
+  }
+}

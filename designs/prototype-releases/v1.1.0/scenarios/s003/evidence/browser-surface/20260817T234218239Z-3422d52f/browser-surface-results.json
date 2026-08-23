@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "ofw.s003.browser-surface-result.v1",
+  "runId": "20260817T234218239Z-3422d52f",
+  "formedAt": "2026-08-17T23:43:50.816Z",
+  "baseUrl": "http://127.0.0.1:4333",
+  "cases": [
+    {
+      "id": "m02-detail",
+      "status": "failed",
+      "error": {
+        "message": "page.waitForFunction: Timeout 30000ms exceeded.",
+        "stack": "page.waitForFunction: Timeout 30000ms exceeded.\n    at openShell (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:35:14)\n    at async m02Detail (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:68:49)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:179:51)"
+      },
+      "durationMs": 30399
+    },
+    {
+      "id": "m01-published",
+      "status": "failed",
+      "error": {
+        "message": "M01 config missing 债务风险模型配置",
+        "stack": "AssertionError [ERR_ASSERTION]: M01 config missing 债务风险模型配置\n    at m01Published (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:112:12)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:179:51)"
+      },
+      "durationMs": 1316
+    },
+    {
+      "id": "m03-deep-link",
+      "status": "failed",
+      "error": {
+        "message": "page.waitForFunction: Timeout 30000ms exceeded.",
+        "stack": "page.waitForFunction: Timeout 30000ms exceeded.\n    at openShell (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:35:14)\n    at async m03DeepLink (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:125:49)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:179:51)"
+      },
+      "durationMs": 30123
+    },
+    {
+      "id": "m06-report",
+      "status": "failed",
+      "error": {
+        "message": "page.waitForFunction: Timeout 30000ms exceeded.",
+        "stack": "page.waitForFunction: Timeout 30000ms exceeded.\n    at openShell (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:35:14)\n    at async m06Report (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:150:49)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:179:51)"
+      },
+      "durationMs": 30134
+    }
+  ],
+  "totals": {
+    "cases": 4,
+    "passed": 0,
+    "failed": 4
+  }
+}

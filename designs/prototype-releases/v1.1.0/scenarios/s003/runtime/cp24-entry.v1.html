@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>S003 CP24 · 集成清单去重修正</title>
+    <style>
+      :root { color-scheme: light; font-family: -apple-system, "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif; --ink:#172538; --muted:#657180; --line:#d9dee5; --panel:#fff; --canvas:#f3f5f7; --navy:#163f68; --success:#25725d; --blue-soft:#eef3f8; }
+      * { box-sizing: border-box; }
+      body { margin: 0; color: var(--ink); background: var(--canvas); }
+      main { width: min(980px, calc(100% - 32px)); margin: 48px auto; }
+      article { padding: 30px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 10px 30px rgba(30,45,64,.07); }
+      .eyebrow { color: var(--navy); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+      h1 { margin: 8px 0; font-size: clamp(24px, 3vw, 32px); }
+      p { margin: 8px 0 0; color: var(--muted); line-height: 1.75; }
+      .status { color: var(--success); font-weight: 750; }
+      .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 26px; }
+      .card { min-height: 88px; padding: 16px; background: #f7f9fb; border: 1px solid #e1e6ec; border-radius: 6px; }
+      .card strong { display: block; font-size: 22px; line-height: 1.25; }
+      .card small { display: block; margin-top: 6px; color: var(--muted); line-height: 1.45; }
+      .contract { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 8px 18px; margin: 24px 0 0; padding: 18px; background: #f7f9fb; border: 1px solid #e1e6ec; border-radius: 6px; }
+      dt { color: var(--muted); } dd { margin: 0; min-width: 0; overflow-wrap: anywhere; font-weight: 650; }
+      code { overflow-wrap: anywhere; font-family: "SFMono-Regular", Consolas, monospace; font-size: .92em; }
+      .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+      a { padding: 10px 14px; color: #fff; background: var(--navy); border-radius: 5px; text-decoration: none; font-weight: 650; }
+      a.secondary { color: var(--navy); background: var(--blue-soft); }
+      @media (max-width: 700px) { main { margin: 24px auto; } article { padding: 22px; } .grid { grid-template-columns: 1fr; } .contract { grid-template-columns: 1fr; gap: 4px; } }
+    </style>
+  </head>
+  <body>
+    <main data-screen-label="S003 CP24 集成清单去重修正">
+      <article>
+        <span class="eyebrow">C034 · immutable checkpoint</span>
+        <h1>S003 CP24：集成清单去重修正</h1>
+        <p><span class="status">inventory correction validated</span>。CP23 保持不可变；CP24 只修正派生集成清单的重复文件登记，不改变模块功能、业务资源、运行身份或正式 Published 事实。</p>
+        <div class="grid">
+          <div class="card"><strong>186 / 186</strong><small>v18 清单文件登记与唯一文件数</small></div>
+          <div class="card"><strong>331 / 331</strong><small>现行 Node 与合同回归</small></div>
+          <div class="card"><strong>false</strong><small>用户验收仍未开启</small></div>
+        </div>
+        <dl class="contract">
+          <dt>父基线</dt><dd><code>1.0.3 · BSL-S001-V103-DE0119608E26</code></dd>
+          <dt>场景身份</dt><dd><code>S003 · S003-v1</code></dd>
+          <dt>正式来源运行</dt><dd><code>S003-RUN-20260817163000000-c02200000001</code></dd>
+          <dt>修正范围</dt><dd>移除集成清单中重复的 state-persistence.test.js 登记，新增 v18 清单与 CP24 证据。</dd>
+          <dt>功能影响</dt><dd>无；M01—M06、公共壳、路由、模型配置、亮灯预警和成员单位接口人行动链路均保持 CP23 语义。</dd>
+          <dt>验收边界</dt><dd><code>acceptanceReady = false</code>；本节点不代表用户正式验收或总控冻结。</dd>
+        </dl>
+        <div class="links">
+          <a href="../../../s001-e2e-integration/index.html?scenarioId=S003#dashboard">打开 S003 公共壳</a>
+          <a class="secondary" href="../evidence/CP24-inventory-deduplication-validation.md">查看验证证据</a>
+          <a class="secondary" href="../checkpoints/CP24-inventory-deduplication-validated.json">查看 CP24 清单</a>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>

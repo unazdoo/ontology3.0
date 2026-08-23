@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>S003 CP04 · 问数联调</title>
+    <style>
+      :root { color-scheme: light; font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif; }
+      body { margin: 0; color: #172538; background: #f3f5f7; }
+      main { width: min(920px, calc(100% - 32px)); margin: 48px auto; }
+      article { padding: 28px; background: #fff; border: 1px solid #d9dee5; border-radius: 8px; box-shadow: 0 10px 30px rgba(30, 45, 64, .07); }
+      h1 { margin: 0 0 8px; font-size: 24px; }
+      p { color: #5d6875; line-height: 1.7; }
+      ol { margin: 22px 0 0; padding-left: 24px; display: grid; gap: 10px; }
+      li { padding-left: 4px; line-height: 1.55; }
+      code { color: #234e7a; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .ok { color: #25725d; font-weight: 700; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <article>
+        <h1>S003 CP04：只读问数联调完成</h1>
+        <p><span class="ok">query-integrated</span>。本恢复入口锁定 CP04 当时的六个问数结果；历史查看不重新执行查询，也不会触发 Action Request、待办或通知。</p>
+        <ol>
+          <li>集团风险档分布</li>
+          <li>红灯或黑灯企业</li>
+          <li>指定企业评估详情（<code>S003-ENT-001</code>）</li>
+          <li>指定企业最低三项指标</li>
+          <li>缺失套零与不适用因子</li>
+          <li>待人工确认的风险处置候选</li>
+        </ol>
+      </article>
+    </main>
+  </body>
+</html>

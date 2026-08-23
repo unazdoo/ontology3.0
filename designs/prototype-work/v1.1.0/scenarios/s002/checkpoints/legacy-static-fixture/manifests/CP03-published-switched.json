@@ -1,0 +1,211 @@
+{
+  "schemaVersion": "ofw.c034.checkpoint.v1",
+  "checkpointId": "CP-S002-20260815011500000-59bb98e32e32",
+  "checkpointNode": "published-switched",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "parentVersion": "1.0.3",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815010000000-a283fabf23f6",
+    "formedAt": "2026-08-15T01:00:00.000Z",
+    "status": "active"
+  },
+  "sourceScenarioRunId": "S002-RUN-20260815010000000-a283fabf23f6",
+  "createdAt": "2026-08-15T01:15:00.000Z",
+  "immutable": true,
+  "code": {
+    "prototypeVersion": "1.1.0",
+    "buildVersion": "S002-v1+c238e1068abb",
+    "entryRef": "designs/prototype-work/v1.1.0/scenarios/s002/index.html",
+    "treeSha256": "c238e1068abbe277296b6963e461f9911cdbbdf1a2963304a011019a245ea270"
+  },
+  "modules": {
+    "M01": {
+      "moduleId": "M01",
+      "moduleVersion": "S002-M01-1.0.0",
+      "exportId": "M01-EXPORT-CP03-299cc6769b7a",
+      "exportRef": "evidence/CP03-published-switched/M01-state-export.json",
+      "exportSha256": "299cc6769b7ac516b7437b10b324267b1e4c0136e455d150d1bae7bbe8a560d5",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:15:00.000Z",
+        "evidenceRef": "evidence/CP03-published-switched/M01-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M02": {
+      "moduleId": "M02",
+      "moduleVersion": "S002-M02-1.0.0",
+      "exportId": "M02-EXPORT-CP03-551d93771dd1",
+      "exportRef": "evidence/CP03-published-switched/M02-state-export.json",
+      "exportSha256": "551d93771dd19e4f4ebfc3227247abc00fa3dbb0cbabc482276156395eb2e364",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:15:00.000Z",
+        "evidenceRef": "evidence/CP03-published-switched/M02-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M03": {
+      "moduleId": "M03",
+      "moduleVersion": "S002-M03-1.0.0",
+      "exportId": "M03-EXPORT-CP03-e9375ad435c2",
+      "exportRef": "evidence/CP03-published-switched/M03-state-export.json",
+      "exportSha256": "e9375ad435c20c686d9d6e3a930d9399e676e10ff0e9b4f794d8d40ceb23f24c",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:15:00.000Z",
+        "evidenceRef": "evidence/CP03-published-switched/M03-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M04": {
+      "moduleId": "M04",
+      "moduleVersion": "S002-M04-1.0.0",
+      "exportId": "M04-EXPORT-CP03-067b9230a566",
+      "exportRef": "evidence/CP03-published-switched/M04-state-export.json",
+      "exportSha256": "067b9230a566f9bbb6872cd762051a8ecdbebc6705bc43803cc37f3fab0cd99e",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:15:00.000Z",
+        "evidenceRef": "evidence/CP03-published-switched/M04-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M05": {
+      "moduleId": "M05",
+      "moduleVersion": "S002-M05-1.0.0",
+      "exportId": "M05-EXPORT-CP03-d870388b2ebe",
+      "exportRef": "evidence/CP03-published-switched/M05-state-export.json",
+      "exportSha256": "d870388b2ebed65be7dbd5b8dba1e8e7e316d96690fdc65b30f9d81eb421a4ab",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:15:00.000Z",
+        "evidenceRef": "evidence/CP03-published-switched/M05-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M06": {
+      "moduleId": "M06",
+      "moduleVersion": "S002-M06-1.0.0",
+      "exportId": "M06-EXPORT-CP03-64b6fc0767bc",
+      "exportRef": "evidence/CP03-published-switched/M06-state-export.json",
+      "exportSha256": "64b6fc0767bc7e6b9d8ba4e125dc15dd6f93ce3d910bdcaa3e94c38261b4bf27",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:15:00.000Z",
+        "evidenceRef": "evidence/CP03-published-switched/M06-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    }
+  },
+  "stateSections": {
+    "data": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "数据工程",
+          "resourceId": "M02-EXPORT-CP03-551d93771dd1",
+          "version": "S002-M02-1.0.0",
+          "ref": "evidence/CP03-published-switched/M02-state-export.json",
+          "sha256": "551d93771dd19e4f4ebfc3227247abc00fa3dbb0cbabc482276156395eb2e364",
+          "formedAt": "2026-08-15T01:15:00.000Z"
+        }
+      ]
+    },
+    "semantics": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "本体管理",
+          "resourceId": "M01-EXPORT-CP03-299cc6769b7a",
+          "version": "S002-M01-1.0.0",
+          "ref": "evidence/CP03-published-switched/M01-state-export.json",
+          "sha256": "299cc6769b7ac516b7437b10b324267b1e4c0136e455d150d1bae7bbe8a560d5",
+          "formedAt": "2026-08-15T01:15:00.000Z"
+        }
+      ]
+    },
+    "configurations": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "S002场景包",
+          "resourceId": "S002-CONFIG-CP03",
+          "version": "S002-CONFIG-1.0.0",
+          "ref": "evidence/CP03-published-switched/scenario-configuration.json",
+          "sha256": "467ca3d551f45225dd462f85f540098a5573259a5d763c5a215ce9f194a2aba8",
+          "formedAt": "2026-08-15T01:15:00.000Z"
+        }
+      ]
+    },
+    "results": {
+      "status": "empty",
+      "reason": "问数或 Agent 运行尚未发生；结果分区为空",
+      "items": []
+    },
+    "reports": {
+      "status": "empty",
+      "reason": "报告与预算驾驶舱尚未形成；报告分区为空",
+      "items": []
+    },
+    "decisions": {
+      "status": "empty",
+      "reason": "Action Request、人工确认和平台内待办尚未形成；决策分区为空",
+      "items": []
+    },
+    "testFixtures": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "S002场景包",
+          "resourceId": "S002-FIXTURE-CP03",
+          "version": "S002-FIXTURE-1.0.0",
+          "ref": "evidence/CP03-published-switched/test-fixture.json",
+          "sha256": "f6d466859b3f7273ea15451570c851e441c196fbe2619d869f66a2656cac4206",
+          "formedAt": "2026-08-15T01:15:00.000Z"
+        }
+      ]
+    },
+    "featureFlags": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "平台公共层",
+          "resourceId": "S002-FLAGS-CP03",
+          "version": "S002-FLAGS-1.0.0",
+          "ref": "evidence/CP03-published-switched/feature-flags.json",
+          "sha256": "3141fd4c1b5ceabd49a7a28abe3f86045fa537d5b7c55d3c31cfecbbc88d3efb",
+          "formedAt": "2026-08-15T01:15:00.000Z"
+        }
+      ]
+    },
+    "evidence": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "平台公共层",
+          "resourceId": "S002-EVIDENCE-CP03",
+          "version": "S002-EVIDENCE-1.0.0",
+          "ref": "evidence/CP03-published-switched/evidence-index.json",
+          "sha256": "92deedcfc7c05896d496e84c566673ec99d6a6b5959b90baafc99505c2fb0245",
+          "formedAt": "2026-08-15T01:15:00.000Z"
+        }
+      ]
+    }
+  },
+  "restoreReadiness": {
+    "status": "verified",
+    "verifiedAt": "2026-08-15T01:15:00.000Z",
+    "evidenceRef": "evidence/CP03-published-switched/restore-validation.json"
+  },
+  "sideEffectPolicy": {
+    "allowHistoricalActionRequestReplay": false,
+    "allowHistoricalNotificationReplay": false,
+    "allowHistoricalApprovalReplay": false,
+    "allowHistoricalTodoReplay": false,
+    "allowExternalDispatch": false
+  }
+}

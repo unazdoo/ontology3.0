@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "ofw.s003.m03.query-catalog.v1",
+  "moduleId": "M03",
+  "moduleOwner": "智能问数",
+  "catalogId": "S003-M03-QUERY-CATALOG",
+  "catalogVersion": "1.0.0",
+  "mode": "read-only-published-facts",
+  "requires": ["C008", "T019", "C035"],
+  "forbids": ["直接读取兼容性T007", "自行重算风险分", "修改模型参数", "自动创建Action Request"],
+  "queries": [
+    {"queryId": "S003-QRY-001", "question": "当前集团各风险等级有多少家企业？", "resultShape": "risk-tier-counts"},
+    {"queryId": "S003-QRY-002", "question": "哪些企业处于红灯或黑灯？", "resultShape": "enterprise-list"},
+    {"queryId": "S003-QRY-003", "question": "本轮评分最低的五家企业是什么？", "resultShape": "ranked-enterprise-list"},
+    {"queryId": "S003-QRY-004", "question": "哪些企业存在重大诉讼或当月资金缺口？", "resultShape": "factor-hit-list"},
+    {"queryId": "S003-QRY-005", "question": "在建企业采用了什么评分口径？", "resultShape": "published-rule-explanation"},
+    {"queryId": "S003-QRY-006", "question": "环保企业电价因子为什么为空？", "resultShape": "applicability-explanation"}
+  ]
+}

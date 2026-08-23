@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "ofw.s004.human-confirmation.v2",
+  "confirmationId": "HCONF-S004-20260815-0002",
+  "owner": "M06",
+  "sourceTag": "human-confirmed",
+  "inputClass": "human-input",
+  "verificationPrerequisiteId": "VER-S004-20260815-V2-001",
+  "verificationStatusAtConfirmation": "PASS",
+  "scenarioContext": {
+    "baselineVersion": "v1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v2",
+    "scenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+    "formedAt": "2026-08-15T23:30:00.000Z"
+  },
+  "identity": {
+    "applicationId": "APP-S004-20260815-0001",
+    "reportId": "RPT-S004-20260815-0001",
+    "reportNumber": "S004-PLR-2026-0001"
+  },
+  "investigationOpinion": {
+    "inputClass": "human-input",
+    "confirmedByRole": "财务公司调查岗",
+    "confirmedAt": "2026-08-15T15:06:00+08:00",
+    "statement": "借款人主体、集团成员资格及贷款申请稳定身份已核对；本演示案例的外部补充资料和客户专属资料均按模拟节点管理，真实业务使用前须以实际资料替换并重新核验。"
+  },
+  "riskControllabilityJudgements": [
+    {
+      "riskId": "RISK-S004-V2-001",
+      "inputClass": "human-input",
+      "confirmedByRole": "财务公司报告复核岗",
+      "statement": "整体而言，公司机组利用小时数稳定、成本管控有效，电价市场化风险总体可控，但需持续关注市场交易电价走势及广东区域集中度。"
+    },
+    {
+      "riskId": "RISK-S004-V2-002",
+      "inputClass": "human-input",
+      "confirmedByRole": "财务公司报告复核岗",
+      "statement": "结合借款人历年安全运行业绩、专业工程管理体系及在建项目管理措施，整体运营风险可控；该判断为人工复核意见。"
+    },
+    {
+      "riskId": "RISK-S004-V2-003",
+      "inputClass": "human-input",
+      "confirmedByRole": "财务公司报告复核岗",
+      "statement": "结合盈利和经营获现能力，整体偿债风险可控，但需对短期偿债指标走弱及盈利波动保持持续监测；该判断为人工复核意见。"
+    },
+    {
+      "riskId": "RISK-S004-V2-004",
+      "inputClass": "human-input",
+      "confirmedByRole": "财务公司报告复核岗",
+      "statement": "在建机组投产有望带动装机与发电量增长，但资本支出及盈利阶段性承压风险仍须在授信期内持续跟踪；该判断为人工复核意见。"
+    }
+  ],
+  "creditConclusion": {
+    "inputClass": "human-input",
+    "confirmedByRole": "财务公司调查审查人员",
+    "confirmedAt": "2026-08-15T15:08:00+08:00",
+    "decisionClass": "SUBMIT_TO_MANUAL_CREDIT_APPROVAL",
+    "comprehensiveJudgement": "综合判断：中国广核作为央企控股的核电运营企业，经营基本面稳健、经营获现能力较强，具备本次授信的主体资格与还款基础。经财务公司调查审查人员人工复核，原则上同意将本次贷款申请提交财务公司授信审批；最终是否授信以及额度、期限、利率和条件，以财务公司人工授信审批结果为准。",
+    "approvedAmount": null,
+    "interestRate": null,
+    "conditions": null
+  },
+  "publicationAuthorization": {
+    "inputClass": "human-input",
+    "authorizedByRole": "财务公司报告复核与发布岗",
+    "authorizedAt": "2026-08-15T15:10:00+08:00",
+    "authorized": true,
+    "formats": ["CONTROLLED_HTML", "SAME_SOURCE_PDF"]
+  },
+  "automationBoundary": {
+    "agentGeneratedInvestigationOpinion": false,
+    "agentGeneratedRiskControllability": false,
+    "agentGeneratedCreditDecision": false,
+    "ruleGeneratedCreditDecision": false,
+    "agentGeneratedAmountRateOrConditions": false,
+    "actionRequestCreated": false,
+    "todoCreated": false
+  }
+}

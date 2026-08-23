@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "ofw.s003.m06.report-contract.v1",
+  "moduleId": "M06",
+  "moduleOwner": "报告中心",
+  "contractId": "S003-M06-REPORT-CONTRACT",
+  "contractVersion": "1.0.0",
+  "workbenchSceneId": "S003-DEBT-RISK-WORKBENCH",
+  "consumes": ["C008", "T019", "C035", "C019"],
+  "readOnlyModelConsumption": true,
+  "reportIdentity": [
+    "scenarioId",
+    "scenarioVersion",
+    "scenarioRunId",
+    "enterpriseId",
+    "assessmentAt",
+    "modelVersion",
+    "publishedVersion",
+    "reportId",
+    "contentVersion",
+    "artifactVersion"
+  ],
+  "reportSections": [
+    "总体风险评分与等级",
+    "整体评估结论",
+    "调节因子明细",
+    "财务指标评分明细",
+    "关键风险与证据",
+    "处置候选与人工确认状态",
+    "版本、来源和默认语义"
+  ],
+  "formats": ["html", "print-to-pdf"],
+  "sameIdentityAcrossFormats": true,
+  "deepLinkRequired": true,
+  "rerun": {
+    "explicitOnly": true,
+    "requiresPublishedModel": true,
+    "createsNewScenarioRunId": true,
+    "keepsLastSuccessfulRunUntilSuccess": true,
+    "autoGenerateReports": true,
+    "autoCreateTodo": false
+  }
+}

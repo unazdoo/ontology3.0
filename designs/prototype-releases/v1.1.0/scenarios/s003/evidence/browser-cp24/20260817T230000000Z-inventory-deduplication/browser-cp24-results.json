@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "ofw.s003.browser-evidence.v1",
+  "evidenceId": "S003-CP24-BROWSER-RESULT",
+  "formedAt": "2026-08-17T23:00:00.000Z",
+  "browser": "Codex in-app Chromium",
+  "entry": "http://127.0.0.1:4333/s001-e2e-integration/index.html?scenarioId=S003#dashboard",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260817163000000-c02200000001"
+  },
+  "statePolicy": {
+    "existingBrowserStatePreserved": true,
+    "localStorageCleared": false,
+    "newScenarioRunCreated": false,
+    "historicalSideEffectsReplayed": false,
+    "workingProjectionPromotedToPublished": false
+  },
+  "checks": [
+    {
+      "id": "CP23_MANIFEST_LOAD",
+      "status": "passed",
+      "observed": "公共壳重新加载后 CP23 清单可读取，不再显示 404 File not found。"
+    },
+    {
+      "id": "DASHBOARD_ENTRY",
+      "status": "passed",
+      "observed": "集团债务风险监测仪表盘可加载，模型配置入口和正式评分视图可见。"
+    },
+    {
+      "id": "IDENTITY_PRESERVATION",
+      "status": "passed",
+      "observed": "正式来源 scenarioRunId 保持 S003-RUN-20260817163000000-c02200000001，未创建新正式运行。"
+    },
+    {
+      "id": "NO_SIDE_EFFECT",
+      "status": "passed",
+      "observed": "本轮只读复测未提交 C011、未确认接口人、未生成待办、未提升工作投影为 Published。"
+    }
+  ],
+  "browserErrors": {
+    "console": 0,
+    "page": 0,
+    "request": 0,
+    "http": 0
+  },
+  "status": "passed"
+}

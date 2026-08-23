@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "ofw.composite-run.v1",
+  "candidateVersion": "v1.1.0-rc.1",
+  "runMode": "user-triggered-sequential-composite-runtime",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "acceptanceReady": false,
+  "chain": [
+    "数据接入", "管道运行", "数据资产发布", "本体映射", "Published 发布",
+    "智能问数", "Rule 命中", "Action Request", "人工确认", "负责人待办",
+    "报告生成", "确定性核验", "HTML/PDF 发布", "报告伴读", "当前数据比较"
+  ],
+  "scenarios": {
+    "S001": { "scenarioVersion": "S001-v1", "scenarioRunId": "S001-RUN-20260821161829072-ba7be58687ff", "steps": "15/15", "status": "completed" },
+    "S002": { "scenarioVersion": "S002-v1", "scenarioRunId": "S002-RUN-20260821161831835-3f46fe0c13be", "steps": "13/13", "status": "completed" },
+    "S003": { "scenarioVersion": "S003-v1", "scenarioRunId": "S003-RUN-20260821161834227-42071162a3ae", "steps": "15/15", "status": "completed" },
+    "S004": { "scenarioVersion": "S004-v2.1.0", "scenarioRunId": "S004-RUN-20260821161836988-08c450c2f872", "steps": "15/15", "status": "completed" }
+  },
+  "isolation": {
+    "eachScenarioOwnsRunId": true,
+    "historicalActionReplay": false,
+    "historicalTodoReplay": false,
+    "crossScenarioStateOverwrite": false,
+    "singleShellNoNestedNavigation": true
+  },
+  "note": "本次四场景运行由统一聚合原型的用户操作产生；模块页展示跨场景聚合资源，不把本次组合运行自动写成生产或正式验收事实。"
+}

@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp13-result.v1",
+  "runId": "20260816T104411323Z-f90cdd1d",
+  "formedAt": "2026-08-16T10:44:11.325Z",
+  "origin": "http://127.0.0.1:4333",
+  "formalScenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "gitHead": "5620618386b1427cbf0a19877ff00b1b44dd249e",
+  "playwrightNodeModules": "/Users/domi/.codex/skills/baoyu-design/agents/gen-pptx/node_modules",
+  "headless": true,
+  "cases": [
+    {
+      "id": "m04-incompatible-projections",
+      "label": "M04 state/view/projection 不兼容记录隔离与 React 重建",
+      "status": "failed",
+      "startedAt": "2026-08-16T10:44:11.754Z",
+      "durationMs": 31397,
+      "details": null,
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": "evidence/browser-cp13/20260816T104411323Z-f90cdd1d/m04-incompatible-projections.png",
+      "error": {
+        "name": "TimeoutError",
+        "message": "page.waitForFunction: Timeout 30000ms exceeded.",
+        "stack": "page.waitForFunction: Timeout 30000ms exceeded.\n    at Object.caseM04IncompatibleProjections (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:363:14)\n    at async executeCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:700:5)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:757:22)"
+      },
+      "completedAt": "2026-08-16T10:44:43.151Z"
+    }
+  ],
+  "totals": {
+    "cases": 1,
+    "passed": 0,
+    "failed": 1,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "httpErrors": 0,
+    "ignoredAbortedRequests": 0
+  },
+  "errorBudget": {
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "httpErrors": 0
+  },
+  "checkpointCreated": false,
+  "acceptanceReady": false,
+  "browserVersion": "149.0.7827.55",
+  "completedAt": "2026-08-16T10:44:43.185Z"
+}

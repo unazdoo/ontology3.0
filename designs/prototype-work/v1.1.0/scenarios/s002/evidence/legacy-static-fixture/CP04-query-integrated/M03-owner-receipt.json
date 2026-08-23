@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "ofw.s002.owner-validation-receipt.v1",
+  "receiptId": "RECEIPT-M03-query-integrated-0e6d9a01cce1",
+  "moduleId": "M03",
+  "owner": "智能问数",
+  "moduleVersion": "S002-M03-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815010000000-a283fabf23f6",
+    "formedAt": "2026-08-15T01:00:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "query-integrated",
+  "exportRef": "evidence/CP04-query-integrated/M03-state-export.json",
+  "exportSha256": "0e6d9a01cce11541d982c0d2530c232e00e9eb5f832fbdc610fe1f1fee3619f1",
+  "validatedAt": "2026-08-15T01:20:00.000Z",
+  "validationStatus": "verified",
+  "checks": {
+    "scenarioIdentity": "verified",
+    "baselineBinding": "verified",
+    "ownerBoundary": "verified",
+    "exportDigest": "verified",
+    "isolatedCloneShape": "verified",
+    "historicalSideEffectsDisabled": "verified"
+  },
+  "conclusionBoundary": "技术导出校验通过，不代表模块业务验收或平台验收通过"
+}

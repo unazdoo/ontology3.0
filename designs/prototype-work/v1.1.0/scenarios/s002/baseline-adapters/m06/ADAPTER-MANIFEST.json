@@ -1,0 +1,69 @@
+{
+  "module": "M06",
+  "scenarioId": "S002",
+  "scenarioVersion": "S002-v1",
+  "implementationDate": "2026-08-15",
+  "verificationDate": "2026-08-17",
+  "baselineVersion": "1.0.3",
+  "sourcePath": "designs/prototype-releases/v1.0.3/report-center",
+  "sourceTreeSha256": "8be8533ca1583f9135c76acf3bfab844d1431abc0e4807ec301e2f63d1dad0ad",
+  "sourceFiles": 8,
+  "sourceBytes": 1032893,
+  "runtimeEntry": "baseline-adapters/m06/report-center/review-lifecycle/index.html",
+  "adapterScript": "baseline-adapters/m06/report-center/review-lifecycle/s002-adapter.js",
+  "additionalExistingAdapterScript": null,
+  "retiredHistoricalAdapterScript": "baseline-adapters/m06/s002-adapter.js",
+  "originalEntrySha256": "b0bd7099d759a3ffa43e7cbaa62d350c7f1782fc50909394cf37f9304b9dd58a",
+  "changedFiles": [
+    {
+      "path": "report-center/review-lifecycle/index.html",
+      "change": "仅新增 S002 adapter script 标签；保留 v1.0.3 报告生命周期、驾驶舱、筛选、比较、下钻和报告草稿/发布边界。",
+      "originalSha256": "b0bd7099d759a3ffa43e7cbaa62d350c7f1782fc50909394cf37f9304b9dd58a",
+      "adaptedSha256": "b98bd566a316c04b15656772e5d8533c1932fa041b23b76b40e07d94ca2593ad"
+    },
+    {
+      "path": "report-center/review-lifecycle/s002-adapter.js",
+      "change": "注入 S002 预算事实包、9 项 Metric、5 项 Rule、六类整改型 Action、五主题报告证据和 C008/C017/C019 只读投影；形成 58 项事实、66 个稳定锚点及 426 项适用核验计划；E16 固定为 8 条请求、3 确认、1 拒绝、4 待决策。",
+      "adaptedSha256": "b7420459024a47543e8e3308d7246c8d4e0bc48542441890a3ea632367e57a6d"
+    },
+    {
+      "path": "report-center/review-lifecycle/app.js",
+      "change": "仅在场景复制副本中切换 S002 路由、报告存储键、预算报告定义/模板引用和显示投影；首屏以核心指标、六类预警切换和五个监督主题压缩信息层级，保留六维筛选、卡片下钻和基线详情抽屉；预算报告改为六章真实正文，自动核验完成后回显 426/426 覆盖数。",
+      "originalSha256": "82b5a98665c754005e1f6db4b3457d2633d81b68dd3ca5dad94fdb481aae4cec",
+      "adaptedSha256": "9e794b02a8e75668da4e4a582885fdd8f92194ccebfebfd93a1f7997466eae0f"
+    },
+    {
+      "path": "report-center/review-lifecycle/styles.css",
+      "change": "在基线组件样式之上增加 S002 驾驶舱紧凑首屏、六类预警切换卡、单条重点预警摘要、五主题导航和三档响应式布局；完整预警页保持两列并支持移动端单列，不改动报告中心公共样式源文件。",
+      "originalSha256": "76a26a1eb52938f5fce96a877df02144d15a408af802bdbaec0ab7c2b53a2554",
+      "adaptedSha256": "665555aebeed759fe95cce1a78053cbe256bf759257e31e26b350985842ba59f"
+    },
+    {
+      "path": "report-center/review-lifecycle/external-owners.js",
+      "change": "保留 v1.0.3 Owner 读取接口，统一 S002 决策展示映射、负责人名称及 RULE-002 低执行率正式命中，不改变决策真值 Owner。",
+      "originalSha256": "f51785c2d23671337ba62bfdcb0a220989b40ee9caeef86842ae4e759a3881ad",
+      "adaptedSha256": "8decce3a8d81cf6ae2967700e99b29fbb0b37ca343aa785147846f9215560e46"
+    },
+    {
+      "path": "../../tests/m06-dashboard-actions.test.cjs",
+      "change": "校验 E16、六类受控预警、RULE-003 / HIT-003 成本效率事项、已处理事项状态文案、类型切换、五主题入口和紧凑首屏布局。",
+      "adaptedSha256": "74affdf83c1efafd759e72e1dd98fe01ca6ca672900cdc8ec971c66f614d0699"
+    },
+    {
+      "path": "../../tests/m06-report-contract.test.cjs",
+      "change": "锁定 58 项事实、66 个锚点、426 项适用核验、9 Metric / 5 Rule / 6 Action Type、RULE-003 成本占收比语义、六类驾驶舱预警及六章预算报告正文。",
+      "adaptedSha256": "336bca04ccdf8ed7a5f30eae5c049a3c64daf016042aa7bfca58ede02bf22ab3"
+    },
+    {
+      "path": "ADAPTER-NOTES.md",
+      "change": "补充 RULE-003、跨年计提质量核验、六类预警切换、六章报告正文和自动核验覆盖结果说明。",
+      "adaptedSha256": "a681d19df4cbcb7511628e55ef9e87ed6eb89a0971c9aa0671e8b0e95118ead2"
+    },
+    {
+      "path": "tests/owner-state-isolation.test.cjs",
+      "change": "验证 M06 只接受精确 scenarioId/scenarioVersion/scenarioRunId 的 Owner State，驾驶舱发布与报告草稿分别投影，且正式报告集合与 T049 引用保持为空。",
+      "adaptedSha256": "3262ec62018889e8241062cb35edf132cd3dfbe91005650fcf25ffdb3c2ee68c"
+    }
+  ],
+  "boundary": "预算驾驶舱唯一归报告中心；报告草稿与驾驶舱发布分离；不冒充 T049 正式报告。旧根级主题脚本仅保留为历史证据，不参与运行。"
+}

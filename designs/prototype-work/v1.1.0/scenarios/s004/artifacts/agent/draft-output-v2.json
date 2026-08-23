@@ -1,0 +1,211 @@
+{
+  "schemaVersion": "ofw.s004.agent-draft.v2",
+  "contractId": "C008",
+  "agentDefinitionId": "AGENT-S004-PREFLIGHT-REPORT-002",
+  "agentReleaseVersion": "2.0.0",
+  "promptVersion": "PROMPT-S004-REPORT-002",
+  "skillVersion": "SKILL-S004-REPORT-ASSEMBLY-002",
+  "agentRunId": "ARUN-S004-20260815-0002",
+  "owner": "M05",
+  "evidencePackageId": "EVID-S004-20260815-0002",
+  "reportId": "RPT-S004-20260815-0001",
+  "status": "STRUCTURED_DRAFT_COMPLETED",
+  "startedAt": "2026-08-15T14:56:00+08:00",
+  "completedAt": "2026-08-15T14:58:00+08:00",
+  "scenarioContext": {
+    "baselineVersion": "v1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v2",
+    "scenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+    "formedAt": "2026-08-15T23:30:00.000Z"
+  },
+  "sections": [
+    {
+      "sectionId": "sec-01-borrower-evaluation",
+      "title": "第一部分 借款人评价（工商信息）",
+      "paragraphs": [
+        {
+          "paragraphId": "DRAFT-V2-01-001",
+          "text": "中国广核电力股份有限公司（简称“中国广核”，A股代码003816.SZ，H股代码1816.HK）成立于2014年3月25日，注册资本人民币5,049,861.11万元（约504.99亿元），法定代表人杨长利，注册地址为广东省深圳市福田区深南大道2002号中广核大厦南楼18楼，统一社会信用代码91440300093677087R。公司实际控制人为国务院国有资产监督管理委员会，控股股东为中国广核集团有限公司，是中央企业中国广核集团旗下核电运营上市平台，为中广核核能发电的唯一平台。截至2025年12月31日，公司总股本50,498,611,100股（约504.99亿股）。",
+          "evidenceRefs": ["FACT-S004-V2-BORROWER-001", "SRC-CGN-AR-2025", "SIM_BUSINESS_REGISTRY_UPLOAD"]
+        },
+        {
+          "paragraphId": "DRAFT-V2-01-002",
+          "text": "公司主要经营业务范围以工商登记资料为准：一般经营项目为无；许可经营项目包括以核能为主的电力生产、热力生产和供应，相关专业技术服务，核废物处置，核电站工程项目建设及管理，核电站运行、维修，核电站设计及科研，以及相关投资和进出口业务。",
+          "evidenceRefs": ["FACT-S004-V2-BORROWER-001", "SIM_BUSINESS_REGISTRY_UPLOAD"]
+        },
+        {
+          "paragraphId": "DRAFT-V2-01-003",
+          "text": "控股股东中国广核集团有限公司持股58.89%，实际控制人为国务院国资委；其余41.11%股份由H股及A股公众股东持有。截至2025年末，公司普通股股东总数243,258户，其中A股240,425户、H股2,833户。控股股东所持股份无质押、冻结；第三大股东广东恒健投资控股有限公司持有公司股份中质押6.62亿股，占其持股的19.31%，整体质押比例较低。公司股权结构清晰、国资背景稳固，无实际控制人变更记录。",
+          "evidenceRefs": ["FACT-S004-V2-OWNERSHIP-001", "SRC-CGN-AR-2025", "SIM_BUSINESS_REGISTRY_UPLOAD"]
+        }
+      ]
+    },
+    {
+      "sectionId": "sec-02-operations",
+      "title": "第二部分 借款人经营情况",
+      "subsections": [
+        {
+          "subsectionId": "sec-02-01-basic",
+          "title": "1.基本情况",
+          "paragraphs": [
+            {
+              "paragraphId": "DRAFT-V2-02-001",
+              "text": "中国广核是专注于核能发电的清洁能源企业，隶属于中国广核集团，为中广核核能发电的唯一平台。截至2025年末，公司管理在运核电机组28台（含控股股东委托管理机组4台），在运装机容量约31,838兆瓦；在建核电机组20台、容量约24,222兆瓦（含控股股东委托管理4台），占全国在运及在建核电总装机容量的44.48%。公司经营范围主要包括以核能为主的电力生产、热力生产和供应，相关专业技术服务，核电站工程项目建设和管理，核电站运行、维修及相关服务，核电站设计和科研，以及为集团内关联方提供核电站运维及相关技术支持服务。",
+              "evidenceRefs": ["FACT-S004-V2-BORROWER-001", "FACT-S004-V2-OPERATIONS-001", "SRC-CGN-AR-2025"]
+            },
+            {
+              "paragraphId": "DRAFT-V2-02-002",
+              "text": "中国广核集团在核能之外亦布局风电、光伏等新能源业务，但该等业务由集团另一上市平台中国广核新能源控股有限公司（01811.HK）持有，不在本借款人合并报表范围内。",
+              "evidenceRefs": ["FACT-S004-V2-BORROWER-001", "SRC-CGN-AR-2025"]
+            }
+          ]
+        },
+        {
+          "subsectionId": "sec-02-02-main-business",
+          "title": "2.主要业务经营情况",
+          "paragraphs": [
+            {
+              "paragraphId": "DRAFT-V2-02-003",
+              "text": "公司主要业务为核能发电，主要客户为国家电网、南方电网及地方电网公司，电力销售收入为公司营业收入的主要来源。2025年，公司管理的在运核电机组实现上网电量2,326.48亿千瓦时（含联营企业，同比增加2.36%），约占全国核电上网电量的53.00%；其中子公司上网电量1,834.98亿千瓦时，子公司口径发电量1,947.38亿千瓦时。",
+              "evidenceRefs": ["FACT-S004-V2-OPERATIONS-001", "SRC-CGN-AR-2025"]
+            },
+            {
+              "paragraphId": "DRAFT-V2-02-004",
+              "text": "公司电力业务具有机组利用小时数高、运营稳定、成本可控的特点：2025年在运核电机组平均能力因子约92.65%、平均负荷因子约88.66%、平均利用小时数约7,767小时；WANO业绩指标中85.12%达世界前1/4、83.33%达世界前1/10，28台在运机组全部实现安全稳定运行。",
+              "evidenceRefs": ["FACT-S004-V2-OPERATIONS-001", "SRC-CGN-AR-2025"]
+            },
+            {
+              "paragraphId": "DRAFT-V2-02-005",
+              "text": "2025年，公司市场化交易电量占总上网电量约56.2%，同比提升约5.3个百分点；受部分区域市场交易电价下行影响，公司平均市场电价同比下降约8.8%。公司电力销售收入（含调试电收入）合计约617.57亿元，占年度营业收入比重约81.6%。2025年公司实现合并口径营业收入7,569,655.90万元（约756.97亿元），同比下降4.11%；分行业看，电力收入占比81.59%，建筑安装和设计服务占比14.98%。",
+              "evidenceRefs": ["FACT-S004-V2-OPERATIONS-001", "MET-REVENUE-GROWTH", "SRC-CGN-AR-2025"]
+            },
+            {
+              "paragraphId": "DRAFT-V2-02-006",
+              "text": "公司在建机组20台（含控股股东委托管理4台），2025年完成陆丰1号及2号、惠州3号、招远1号、宁德6号等五台机组及控股股东委托管理的苍南3号机组FCD，并推进惠州1号及2号、苍南1号及2号等机组建设，工程建设按计划实施。",
+              "evidenceRefs": ["FACT-S004-V2-OPERATIONS-001", "SRC-CGN-AR-2025"]
+            }
+          ]
+        },
+        {
+          "subsectionId": "sec-02-03-industry",
+          "title": "3.行业研究与市场观点（公开资料综合）",
+          "paragraphs": [
+            {
+              "paragraphId": "DRAFT-V2-02-007",
+              "text": "核电作为低碳、稳定、高利用小时的基荷电源，在“双碳”目标下持续受益于清洁能源装机增长。演示行业资料显示，政策层面延续积极安全有序推进核电建设的方向，核电项目核准呈常态化、批量化态势。",
+              "evidenceRefs": ["SIM_INDUSTRY_POLICY_UPLOAD"]
+            },
+            {
+              "paragraphId": "DRAFT-V2-02-008",
+              "text": "电力市场化改革推进使市场化交易电量占比逐步提高，部分区域市场交易电价存在下行压力，对核电电价与毛利形成一定挤压；但核电凭借较低燃料成本和较高利用小时，在各类电源中仍具较强竞争力。",
+              "evidenceRefs": ["FACT-S004-V2-OPERATIONS-001", "SIM_INDUSTRY_POLICY_UPLOAD"]
+            },
+            {
+              "paragraphId": "DRAFT-V2-02-009",
+              "text": "演示政策与行业资料显示，全国统一电力市场体系建设及核电装机目标有利于核电以更优机制参与市场交易并释放低碳价值；上述资料为演示上传节点，仅用于本场景证据链展示。",
+              "evidenceRefs": ["SIM_INDUSTRY_POLICY_UPLOAD", "SIM_PUBLIC_DISCLOSURE_UPLOAD"]
+            }
+          ]
+        },
+        {
+          "subsectionId": "sec-02-04-plan",
+          "title": "4.发展规划",
+          "paragraphs": [
+            {
+              "paragraphId": "DRAFT-V2-02-010",
+              "text": "公司将继续立足核电运营核心主业，安全高效推进在建核电机组建设投产，稳步提升在运装机与发电量；持续推动降本增效与技术创新，增强电价市场化环境下的经营韧性。2025年公司申请专利2,031项、获授权1,196项，并积极推进核能供暖、核能供汽、储能、海水淡化及“核电+算力中心”等核能综合利用方向的前期研究。",
+              "evidenceRefs": ["FACT-S004-V2-OPERATIONS-001", "SRC-CGN-AR-2025", "SIM_PUBLIC_DISCLOSURE_UPLOAD"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sectionId": "sec-03-financial",
+      "title": "第三部分 借款人财务情况",
+      "paragraphs": [
+        {
+          "paragraphId": "DRAFT-V2-03-001",
+          "role": "cashFlowSupplementaryAnalysis",
+          "text": "2025年公司经营活动现金流量净额299.71亿元，高于同期净利润147.31亿元，差异主要源于固定资产折旧、无形资产摊销、长期待摊费用摊销及财务费用等对利润有影响而对经营现金流无影响的项目，表明公司经营获现质量较好。投资活动现金流量净额连续两年净流出逾320亿元，主要用于在建核电项目投资；筹资活动2025年净流入66.77亿元，主要用于满足生产经营、投资支出及债务周转。",
+          "evidenceRefs": ["CF-OPERATING-NET", "CF-INVESTING-NET", "CF-FINANCING-NET", "SRC-CGN-AR-2025"]
+        },
+        {
+          "paragraphId": "DRAFT-V2-03-002",
+          "role": "solvencyAnalysis",
+          "text": "长期偿债能力方面，中国广核2023年至2025年资产负债率分别为60.19%、61.20%和65.15%，近3年平均值为62.18%，资产负债率呈小幅上升趋势但仍小于70%。短期偿债能力方面，公司近3年流动比率分别为0.94、0.88和0.66，2025年流动比率有所下降，主要因2025年末短期借款由2024年的1,773,474.86万元增至4,215,111.99万元，而货币资金为2,082,672.08万元；利息保障倍数近3年分别为4.56、4.91和4.87。",
+          "evidenceRefs": ["MET-DEBT-ASSET-RATIO", "MET-CURRENT-RATIO", "MET-EBIT-INTEREST-COVERAGE", "BS-ST-BORROWINGS", "BS-CASH"]
+        },
+        {
+          "paragraphId": "DRAFT-V2-03-003",
+          "role": "profitabilityAnalysis",
+          "text": "盈利能力方面，中国广核2023年至2025年主营业务利润率分别为34.91%、36.27%和30.80%，近3年平均值为34.00%；总资产报酬率分别为6.38%、6.12%和4.79%，平均值为5.76%；净资产收益率分别为9.74%、8.96%和7.76%，平均值为8.82%。2025年上述指标较2023—2024年有所回落，营业收入同比下降4.11%，电价市场化交易占比提升对主力电力业务毛利形成一定挤压，盈利绝对额阶段性承压。",
+          "evidenceRefs": ["MET-MAIN-BUSINESS-PROFIT-MARGIN", "MET-RETURN-ON-TOTAL-ASSETS", "MET-RETURN-ON-PARENT-EQUITY", "MET-REVENUE-GROWTH", "SRC-CGN-AR-2025"]
+        },
+        {
+          "paragraphId": "DRAFT-V2-03-004",
+          "role": "operatingEfficiencyAnalysis",
+          "text": "营运能力方面，公司2023—2025年存货周转率分别为2.76次、2.41次、2.41次，应收账款周转率分别为6.17次、7.54次、8.84次，总资产周转率分别为0.20次、0.18次、0.15次，流动资产周转率分别为1.15次、1.09次、1.01次。公司处于核电建设扩张期，资产规模增长而营业收入连续两年负增长，单位资产创收能力阶段性走弱；应收账款下降反映回款节奏改善。",
+          "evidenceRefs": ["MET-INVENTORY-TURNOVER", "MET-AR-TURNOVER", "MET-TOTAL-ASSET-TURNOVER", "MET-CURRENT-ASSET-TURNOVER", "BS-AR"]
+        },
+        {
+          "paragraphId": "DRAFT-V2-03-005",
+          "role": "growthAnalysis",
+          "text": "成长性方面，中国广核2023年至2025年总资产增长率分别为1.52%、13.55%和7.24%，净资产增长率分别为5.80%、13.56%和-4.20%，净利润增长率分别为11.84%、2.48%和-15.67%，销售增长率分别为-0.33%、-4.37%和-4.11%。随着在建机组陆续投产，预计公司资产规模与发电量仍将保持增长，但盈利增速短期承压。",
+          "evidenceRefs": ["MET-TOTAL-ASSET-GROWTH", "MET-PARENT-EQUITY-GROWTH", "MET-NET-PROFIT-GROWTH", "MET-REVENUE-GROWTH", "BS-CIP"]
+        }
+      ]
+    },
+    {
+      "sectionId": "sec-04-risk",
+      "title": "第四部分 借款风险分析",
+      "riskDrafts": [
+        {
+          "riskId": "RISK-S004-V2-001",
+          "title": "一、电价市场化及电力市场拓展风险",
+          "draftText": "随着电力市场化改革推进，市场化交易电量占比逐步提升，部分区域市场交易电价存在下行可能，将对公司电力业务收入及毛利水平产生影响。公司电力销售收入（含调试电收入）合计约617.57亿元，占年度营业收入比重约81.6%；按地区划分，广东省营业收入占比49.38%，区域集中度较高。公司可通过巩固购售电安排、优化机组运行效率和推进多基地布局等措施缓释相关风险。",
+          "evidenceRefs": ["FACT-S004-V2-OPERATIONS-001", "MET-MAIN-BUSINESS-PROFIT-MARGIN", "SIM_INDUSTRY_POLICY_UPLOAD"],
+          "controllabilityOutput": "HUMAN_INPUT_REQUIRED"
+        },
+        {
+          "riskId": "RISK-S004-V2-002",
+          "title": "二、运营风险",
+          "draftText": "核电运营对安全可靠性要求极高，若机组运行、检修或工程建设出现重大质量与安全问题，公司存在发电量减少及承担损失的风险。公司建立了核电运营管理与工程技术队伍，持续完善安全、质量和环境管控体系。截至报告期，公司管理的在运核电机组保持安全稳定运行。公司正处于核电建设扩张期，2024年、2025年在建工程分别为8,505,150.57万元和11,393,091.07万元，投资活动现金流量净额连续两年净流出逾320亿元，工程建设安全与按期投产亦构成重点关注事项。",
+          "evidenceRefs": ["FACT-S004-V2-OPERATIONS-001", "BS-CIP", "CF-INVESTING-NET", "SRC-CGN-AR-2025"],
+          "controllabilityOutput": "HUMAN_INPUT_REQUIRED"
+        },
+        {
+          "riskId": "RISK-S004-V2-003",
+          "title": "三、偿债风险",
+          "draftText": "本次拟申请授信的还款来源为借款人自有资金、运营收入及其他融资资金。中国广核2023—2025年合并口径净利润分别为1,704,577.16万元、1,746,813.06万元和1,473,114.42万元，经营活动产生的现金流量净额分别为3,311,989.43万元、3,750,572.80万元和2,997,052.94万元。但公司资产负债率由60.19%升至65.15%，流动比率由0.94降至0.66，2025年末短期借款增至4,215,111.99万元，需关注短期债务集中到期压力及盈利阶段性承压。",
+          "evidenceRefs": ["MET-DEBT-ASSET-RATIO", "MET-CURRENT-RATIO", "MET-NET-PROFIT-GROWTH", "CF-OPERATING-NET", "BS-ST-BORROWINGS"],
+          "controllabilityOutput": "HUMAN_INPUT_REQUIRED"
+        },
+        {
+          "riskId": "RISK-S004-V2-004",
+          "title": "四、资本支出与盈利阶段性承压风险",
+          "draftText": "受电价市场化、机组检修及成本刚性共同影响，2025年公司营业收入、净利润同比分别下降4.11%和15.67%，主营业务利润率由36.27%降至30.80%，盈利绝对额阶段性承压；与此同时，公司在建工程规模持续扩大，2025年达到11,393,091.07万元，资本开支对外部融资依赖度较高，投资活动现金持续净流出。",
+          "evidenceRefs": ["MET-REVENUE-GROWTH", "MET-NET-PROFIT-GROWTH", "MET-MAIN-BUSINESS-PROFIT-MARGIN", "BS-CIP", "CF-INVESTING-NET"],
+          "controllabilityOutput": "HUMAN_INPUT_REQUIRED"
+        }
+      ]
+    },
+    {
+      "sectionId": "sec-05-credit-conclusion",
+      "title": "第五部分 授信结论",
+      "draftStatus": "HUMAN_INPUT_REQUIRED",
+      "draftText": null,
+      "evidenceRefs": []
+    }
+  ],
+  "decisionOutput": {
+    "creditDecision": null,
+    "approvedAmount": null,
+    "interestRate": null,
+    "conditions": null,
+    "riskControllability": null,
+    "generatedByAgent": false
+  }
+}

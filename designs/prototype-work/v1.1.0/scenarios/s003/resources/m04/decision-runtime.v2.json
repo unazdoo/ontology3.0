@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "ofw.s003.m04.decision-runtime.v2",
+  "moduleId": "M04",
+  "moduleOwner": "决策中心",
+  "runtimeId": "S003-M04-DECISION-RUNTIME",
+  "runtimeVersion": "1.1.0",
+  "status": "implemented-generic-decision-binding",
+  "formedAt": "2026-08-17T16:35:00.000Z",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+    "formedAt": "2026-08-17T16:30:00.000Z",
+    "status": "active"
+  },
+  "serviceRef": "domain/decision-service.js",
+  "binding": {
+    "ref": "resources/m04/decision-binding.v2.json",
+    "sha256": "dad7f3e1b91a2eb60df91131b1604afbee19fd4a0b04d58a8bd8df9184797a1a",
+    "bindingId": "S003-M04-GENERIC-DECISION-BINDING",
+    "bindingVersion": "1.1.0"
+  },
+  "source": {
+    "resultSetId": "S003-C035-RISK-RESULTS-20251231-v2",
+    "resultSetVersion": "1.1.0",
+    "ref": "resources/m01/c035-risk-results.v2.json",
+    "sha256": "fbcbff5095a556293cf3ede0249c548bb9208da8a2e2f66139be418419fabf7a",
+    "schemaVersion": "ofw.s003.c035.risk-result-set.v2",
+    "status": "published-results",
+    "c035ResultCount": 21,
+    "candidateCount": 5
+  },
+  "candidateSummary": {
+    "total": 5,
+    "byActionType": {
+      "S003_RISK_FOLLOW_UP": 4,
+      "S003_SPECIAL_DISPOSAL": 1
+    },
+    "alertPolicy": "YELLOW_RED_BLACK_ONE_ALERT_PER_ENTERPRISE"
+  },
+  "confirmation": {
+    "required": true,
+    "fields": [
+      "confirmed",
+      "owner",
+      "note"
+    ],
+    "ownerRequired": true,
+    "noteOptional": true,
+    "duplicateConfirmation": "idempotent-no-new-record",
+    "noMultiUserPermissions": true,
+    "noMultiLevelApproval": true,
+    "decisionRecipientRole": "成员单位债务风险接口人",
+    "actionRequestCreatedAtDashboardSubmission": true,
+    "todoCreatedOnlyAfterRecipientConfirmation": true
+  },
+  "idempotencyKey": [
+    "scenarioRunId",
+    "enterpriseId",
+    "actionTypeId",
+    "assessmentAt",
+    "resultVersion"
+  ],
+  "sideEffects": {
+    "automaticCandidateCreation": false,
+    "actionRequestRequiresHumanSubmission": true,
+    "actionRequestCreatedAtDashboardSubmission": true,
+    "actionRequestCreatedOnlyAfterConfirmation": false,
+    "todoCreatedOnlyAfterConfirmation": true,
+    "notificationsSent": false,
+    "externalDispatch": false,
+    "historicalReplayAllowed": false,
+    "regressionReplayAllowed": false
+  },
+  "contracts": [
+    "C011",
+    "C019",
+    "C033",
+    "C035"
+  ]
+}

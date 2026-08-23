@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "ofw.s004.source-snapshot.v2",
+  "snapshotId": "DS-S004-20260815-V2-001",
+  "snapshotVersion": "2.0.0",
+  "owner": "M02",
+  "lockedAt": "2026-08-15T14:30:00+08:00",
+  "scenarioContext": {
+    "baselineVersion": "v1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v2",
+    "scenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+    "formedAt": "2026-08-15T23:30:00.000Z"
+  },
+  "stableIdentity": {
+    "financialCompanyId": "FC-DEMO-001",
+    "borrowerId": "BORR-CN-USCC-91440300093677087R",
+    "memberId": "MEM-CGN-003816",
+    "applicationId": "APP-S004-20260815-0001",
+    "reportId": "RPT-S004-20260815-0001",
+    "reportNumber": "S004-PLR-2026-0001"
+  },
+  "sourceNodes": [
+    {
+      "sourceNodeId": "SRC-CGN-AR-2023",
+      "sourceClass": "official-document",
+      "name": "中国广核2023年年度报告",
+      "periodEnd": "2023-12-31",
+      "sha256": "ad61895a8117b7c9129bb28483816f4f5d60b346245bd3a8a09d5c22e62f5d67",
+      "dataAlreadyInFinancialReport": true,
+      "uploadSimulationCreated": false
+    },
+    {
+      "sourceNodeId": "SRC-CGN-AR-2024",
+      "sourceClass": "official-document",
+      "name": "中国广核2024年年度报告",
+      "periodEnd": "2024-12-31",
+      "sha256": "c379d7a62bb0fb8c0c5ceeba34f1ca9c806ee2ceb1b53bfcbf6c6f22076f9d5e",
+      "dataAlreadyInFinancialReport": true,
+      "uploadSimulationCreated": false
+    },
+    {
+      "sourceNodeId": "SRC-CGN-AR-2025",
+      "sourceClass": "official-document",
+      "name": "中国广核2025年年度报告",
+      "periodEnd": "2025-12-31",
+      "sha256": "f1ae0b9f53db25faf937d38be0abcee756ea7c8b58c29635aee0335a87904206",
+      "dataAlreadyInFinancialReport": true,
+      "uploadSimulationCreated": false
+    },
+    {
+      "sourceNodeId": "SIM_BUSINESS_REGISTRY_UPLOAD",
+      "sourceClass": "synthetic-demo",
+      "name": "工商登记与股东信息演示上传节点",
+      "asOfDate": "2025-12-31",
+      "dataAlreadyInFinancialReport": false,
+      "uploadSimulationCreated": true
+    },
+    {
+      "sourceNodeId": "SIM_PUBLIC_DISCLOSURE_UPLOAD",
+      "sourceClass": "synthetic-demo",
+      "name": "公司公告及业绩发布会资料演示上传节点",
+      "asOfDate": "2026-08-15",
+      "dataAlreadyInFinancialReport": false,
+      "uploadSimulationCreated": true
+    },
+    {
+      "sourceNodeId": "SIM_RATING_REPORT_UPLOAD",
+      "sourceClass": "synthetic-demo",
+      "name": "外部评级报告演示上传节点",
+      "asOfDate": "2026-06-26",
+      "dataAlreadyInFinancialReport": false,
+      "uploadSimulationCreated": true
+    },
+    {
+      "sourceNodeId": "SIM_INDUSTRY_POLICY_UPLOAD",
+      "sourceClass": "synthetic-demo",
+      "name": "核电行业与电力市场政策资料演示上传节点",
+      "asOfDate": "2026-08-15",
+      "dataAlreadyInFinancialReport": false,
+      "uploadSimulationCreated": true
+    },
+    {
+      "sourceNodeId": "SIM_MEMBER_REGISTRY",
+      "sourceClass": "synthetic-demo",
+      "name": "集团成员名录模拟节点",
+      "asOfDate": "2026-08-15",
+      "dataAlreadyInFinancialReport": false,
+      "uploadSimulationCreated": true
+    },
+    {
+      "sourceNodeId": "SIM_LOAN_APPLICATION",
+      "sourceClass": "synthetic-demo",
+      "name": "贷款申请模拟节点",
+      "asOfDate": "2026-08-15",
+      "dataAlreadyInFinancialReport": false,
+      "uploadSimulationCreated": true
+    },
+    {
+      "sourceNodeId": "SIM_INTERNAL_CREDIT",
+      "sourceClass": "synthetic-demo",
+      "name": "内部授信额度模拟节点",
+      "asOfDate": "2026-08-14",
+      "dataAlreadyInFinancialReport": false,
+      "uploadSimulationCreated": true
+    },
+    {
+      "sourceNodeId": "SIM_LOAN_LEDGER",
+      "sourceClass": "synthetic-demo",
+      "name": "历史融资及营运资金来源模拟节点",
+      "asOfDate": "2026-08-14",
+      "dataAlreadyInFinancialReport": false,
+      "uploadSimulationCreated": true
+    }
+  ],
+  "formalConsumptionBoundary": {
+    "publishedOntologyRequired": true,
+    "c008Required": true,
+    "directWorkbookRead": false,
+    "directSourceNodeReadByReportBuilder": false,
+    "directSourceDocumentReadByAgent": false
+  }
+}

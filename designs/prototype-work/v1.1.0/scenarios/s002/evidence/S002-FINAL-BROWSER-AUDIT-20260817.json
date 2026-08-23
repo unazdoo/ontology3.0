@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "ofw.s002.final-browser-audit.v4",
+  "scenarioId": "S002",
+  "scenarioVersion": "S002-v1",
+  "implementationDate": "2026-08-15",
+  "verifiedAt": "2026-08-17",
+  "build": "S002-v1+c47b2b67b663",
+  "codeBinding": {
+    "treeSha256": "c47b2b67b66362d50bad96c74ee634e815b28cd9ee4778cf01cb8731bfe5508f",
+    "checkpointMatchesWorkingTree": true
+  },
+  "baseline": {
+    "version": "1.0.3",
+    "snapshotId": "BSL-S001-V103-DE0119608E26",
+    "t056Sha256": "0a90f5f68dccaa7c18be71b4c82019616f19b0e359f931024652d95165ecd414",
+    "unchanged": true
+  },
+  "authoritativeCheckpoint": {
+    "scenarioRunId": "S002-RUN-20260815155030000-79841356bdf8",
+    "checkpointId": "CP-S002-20260815155930000-f36a5448ef0f",
+    "checkpointSha256": "7eda0ee8bdbc3baffa9bade3aad963ed49f31f24284b151906d321119d2c57c6",
+    "checkpointCatalogSha256": "1dfd6625780f04a32a6fef439b5917195062551871ac83470632d807adfc7fb3",
+    "scenarioPackageSha256": "c6d0ba715fcd1764bd61f2967a0371d5f32aafd051abc6ed1ba2fa98172a923a",
+    "nodes": 8,
+    "ownerReceipts": 48,
+    "validation": "passed"
+  },
+  "moduleRouteChecks": {
+    "M01": "7 Object / 8 Link / 9 Metric / 5 Rule / 6 Action Type / T019-S002-v1",
+    "M02": "5 logical sources / 8 snapshots / 2 pipelines / 2 business data assets / source download available",
+    "M03": "6 approved questions / text-table-BI views / semantic resources / Agent configuration / evidence drilldown",
+    "M04": "8 Action Requests / 3 confirmed / 1 rejected / 4 awaiting decision / 3 platform todos",
+    "M05": "budget anomaly analysis Agent and budget report draft Agent completed",
+    "M06": "six report chapters / 426 of 426 verification / dashboard five themes / six alert categories"
+  },
+  "m02DownloadVerification": {
+    "file": "2024年实际执行.xlsx",
+    "httpStatus": "passed",
+    "sha256": "5064556a172d2e91dbc33454987ae12caab2849f00a2888c6646559b50ba92a7",
+    "matchesCatalog": true,
+    "changesOwnerState": false
+  },
+  "m04DecisionVerification": {
+    "actionRequests": 8,
+    "confirmed": 3,
+    "rejected": 1,
+    "awaitingDecision": 4,
+    "todos": 3,
+    "actionTypes": [
+      "预算执行整改",
+      "下一年度预算合理性复核",
+      "费用管理优化核查",
+      "预算申报依据补充",
+      "采购占用清理",
+      "供应商价格复核"
+    ],
+    "externalDispatch": false
+  },
+  "reportVerification": {
+    "completedChecks": 426,
+    "applicableChecks": 426,
+    "verifiedFacts": 58,
+    "facts": 58,
+    "verifiedAnchors": 66,
+    "anchors": 66,
+    "failed": 0,
+    "unverifiable": 0,
+    "formalReportPublished": false,
+    "t049Ref": null
+  },
+  "m06OwnerHandshakeRegression": {
+    "freshSession": true,
+    "path": "report draft -> automatic verification 426/426 -> dashboard",
+    "requestMessage": "request-view-context",
+    "parentResponseRestrictedToCurrentIframeAndView": true,
+    "identityFields": ["scenarioId", "scenarioVersion", "scenarioRunId"],
+    "ownerStatePrecedesStaleCachedProjection": true,
+    "historicalReadonlyFallsBackToActiveLocalStorage": false,
+    "dashboardConsumable": true,
+    "dataVersion": "S002-DATA-v1",
+    "semanticVersion": "S002-ONTO-v1",
+    "dashboardThemes": 5,
+    "alertCategories": 6
+  },
+  "currentCp07InteractiveReplay": {
+    "verifiedAt": "2026-08-17",
+    "entry": "index.html?delivery=cp07&v=20260817-current-cp07#dashboard",
+    "scenarioRunId": "S002-RUN-20260815155030000-79841356bdf8",
+    "path": "report draft -> automatic verification 426/426 -> dashboard",
+    "historicalReadonly": true,
+    "dashboardConsumable": true,
+    "dataVersion": "S002-DATA-v1",
+    "semanticVersion": "S002-ONTO-v1",
+    "dashboardThemes": 5,
+    "alertCategories": 6,
+    "productSourceErrors": 0,
+    "routeOrResourceErrors": 0,
+    "fullPageHorizontalOverflow": false,
+    "screenshots": [
+      {
+        "path": "evidence/final-browser-20260817/dashboard-1440x900-current-cp07.png",
+        "sha256": "532824d8b0a71191a262ed95bb430a9c65eef0378cbc2738d51bb8d19f37ed51"
+      },
+      {
+        "path": "evidence/final-browser-20260817/dashboard-900x900-current-cp07.png",
+        "sha256": "d8be2fcdcab4ba20c6c0101fc300c2a127a84d7b605eb97c3a9d8acd7f20cc9e"
+      },
+      {
+        "path": "evidence/final-browser-20260817/dashboard-390x844-current-cp07.png",
+        "sha256": "d734e05e62875846f55ee0cb232253261277a127d80f83859588fa09cc45b1cf"
+      }
+    ]
+  },
+  "responsive": {
+    "1440x900": "passed",
+    "900x900": "passed",
+    "390x844": "passed",
+    "fullPageHorizontalOverflow": false,
+    "screenshots": [
+      "evidence/final-browser-20260817/dashboard-1440x900-owner-ready.png",
+      "evidence/final-browser-20260817/dashboard-900x900-owner-ready.png",
+      "evidence/final-browser-20260817/dashboard-390x844-owner-ready.png",
+      "evidence/final-browser-20260817/dashboard-1440x900-current-cp07.png",
+      "evidence/final-browser-20260817/dashboard-900x900-current-cp07.png",
+      "evidence/final-browser-20260817/dashboard-390x844-current-cp07.png"
+    ]
+  },
+  "console": {
+    "productSourceErrors": 0,
+    "routeOrResourceErrors": 0,
+    "allowedWarnings": ["v1.0.3 baseline Babel development transformer warning"]
+  },
+  "automatedVerification": {
+    "nodeTests": "120/120 passed",
+    "checkpointValidation": "8 nodes / 48 Owner receipts / code hash passed",
+    "baselineImmutability": "passed"
+  },
+  "boundary": "Prototype creates decision drafts and platform todos only; it does not auto-approve, post, overwrite final approved budget, or call an external budget system."
+}

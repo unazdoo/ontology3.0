@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "ofw.s002.module-state-export.v2",
+  "moduleId": "M06",
+  "moduleName": "报告中心",
+  "owner": "报告中心",
+  "moduleVersion": "S002-M06-1.0.0",
+  "scenarioAdapterVersion": "S002-M06-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "baselineCheckpointBinding": {
+    "ref": "designs/scenario-checkpoints/baselines/v1.0.3/T056-baseline-checkpoint.json",
+    "sha256": "0a90f5f68dccaa7c18be71b4c82019616f19b0e359f931024652d95165ecd414"
+  },
+  "baselineModuleBinding": {
+    "baselineVersion": "1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "prototypePath": "designs/prototype-releases/v1.0.3/report-center",
+    "exactVersion": "v1.0.3#8be8533ca1583f91",
+    "treeSha256": "8be8533ca1583f9135c76acf3bfab844d1431abc0e4807ec301e2f63d1dad0ad",
+    "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+    "supportingPrototypeComponents": []
+  },
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815084500000-93d63d78776a",
+    "formedAt": "2026-08-15T08:45:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "data-connected",
+  "formedAt": "2026-08-15T08:47:00.000Z",
+  "stateDeclaration": "empty",
+  "emptyReason": "尚未到达 agent-report-dashboard-completed；仅导出可恢复空状态",
+  "resources": [],
+  "ownerBoundary": {
+    "ownsOnly": [
+      "dashboard-version",
+      "dashboard-view",
+      "report-draft",
+      "evidence-package"
+    ],
+    "consumesByReference": true,
+    "copiesOtherModuleTruth": false,
+    "ownsDecisionState": false,
+    "dashboardOwner": true
+  },
+  "demoDataMarker": "SYNTHETIC_FOR_DEMO",
+  "sideEffectPolicy": {
+    "allowHistoricalReplay": false,
+    "allowExternalDispatch": false
+  },
+  "runtimeState": {
+    "moduleId": "M06",
+    "moduleVersion": "S002-M06-1.0.0",
+    "progress": {
+      "reportBuilt": false,
+      "dashboardPublished": false
+    },
+    "reports": [],
+    "dashboardVersions": [],
+    "dashboardView": null
+  }
+}

@@ -1,0 +1,740 @@
+{
+  "outputRef": "checkpoints/CP16-v103-post-seal-regression-completed.json",
+  "checkpointId": "CP-S003-20260816203000000-c03516000016",
+  "checkpointNode": "e2e-integrated",
+  "createdAt": "2026-08-16T20:30:00.000Z",
+  "buildVersion": "S003-CP16",
+  "entryRef": "runtime/cp16-entry.v1.html",
+  "baseline": {
+    "baselineVersion": "1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "parentVersion": "1.0.3"
+  },
+  "scenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "codeRefs": [
+    "README.md",
+    "CHANGELOG.md",
+    "index.html",
+    "styles.css",
+    "integration-config.js",
+    "data.js",
+    "state.js",
+    "app.js",
+    "domain/config-service.js",
+    "domain/score-engine.js",
+    "domain/query-service.js",
+    "domain/decision-service.js",
+    "domain/report-service.js",
+    "domain/report-service-v2.js",
+    "domain/checkpoint-service.js",
+    "domain/checkpoint-projection.js",
+    "scripts/extract-workbook-fixture.cjs",
+    "scripts/build-data-assets.cjs",
+    "scripts/build-published-assets.cjs",
+    "scripts/build-query-assets.cjs",
+    "scripts/build-decision-assets.cjs",
+    "scripts/build-decision-results.cjs",
+    "scripts/validate-decision-assets.cjs",
+    "scripts/build-report-assets.cjs",
+    "scripts/build-report-assets-v2.cjs",
+    "scripts/build-report-assets-v3.cjs",
+    "scripts/build-baseline-extension-inventory.cjs",
+    "scripts/browser-cp12.cjs",
+    "scripts/browser-cp13.cjs",
+    "scripts/browser-s003-surface.cjs",
+    "scripts/create-checkpoint.cjs",
+    "scripts/create-checkpoint-v2.cjs",
+    "tests/baseline-extension-contract.test.js",
+    "tests/checkpoint-projection.test.js",
+    "tests/checkpoint-service.test.js",
+    "tests/config-service.test.js",
+    "tests/data-assets.test.js",
+    "tests/decision-assets.test.js",
+    "tests/decision-service.test.js",
+    "tests/published-assets.test.js",
+    "tests/query-assets.test.js",
+    "tests/query-service.test.js",
+    "tests/report-assets.test.js",
+    "tests/report-assets-v2.test.js",
+    "tests/report-service.test.js",
+    "tests/score-engine.test.js",
+    "tests/state-persistence.test.js",
+    "tests/workbench-shell.test.js",
+    "resources/scenario-manifest.json",
+    "fixtures/enterprise-fixture.v1.json",
+    "resources/integration/v103-baseline-extension-inventory.v1.json",
+    "resources/integration/v103-baseline-extension-inventory.v2.json",
+    "resources/integration/v103-baseline-extension-inventory.v3.json",
+    "resources/integration/v103-baseline-extension-inventory.v4.json",
+    "resources/integration/v103-baseline-extension-inventory.v5.json",
+    "resources/integration/v103-baseline-extension-inventory.v6.json",
+    "resources/integration/v103-baseline-extension-inventory.v7.json",
+    "resources/m01/model-package.v1.json",
+    "resources/m01/model-configuration.v1.json",
+    "resources/m01/published-pointer.v1.json",
+    "resources/m01/published-pointer.v1.json.sha256",
+    "resources/m01/evaluation-run.v1.json",
+    "resources/m01/evaluation-run.v1.json.sha256",
+    "resources/m01/c035-risk-results.v1.json",
+    "resources/m01/c035-risk-results.v1.json.sha256",
+    "resources/m01/published-risk-facts.v1.json",
+    "resources/m01/published-risk-facts.v1.json.sha256",
+    "resources/m01/runtime-export.v1.json",
+    "resources/m01/runtime-export.v1.json.sha256",
+    "resources/m02/data-contract.v1.json",
+    "resources/m02/data-contract.v1.1.json",
+    "resources/m02/source-asset.v1.json",
+    "resources/m02/source-registry.v2.json",
+    "resources/m02/human-input-snapshot.v1.json",
+    "resources/m02/formal-candidate-data-asset.v1.json",
+    "resources/m02/pipeline-run.v1.json",
+    "resources/m02/pipeline-current-projection.v2.json",
+    "resources/m02/quality-result.v1.json",
+    "resources/m03/query-catalog.v1.json",
+    "resources/m03/query-runtime.v1.json",
+    "resources/m03/query-runtime.v1.json.sha256",
+    "resources/m03/query-results.v1.json",
+    "resources/m03/query-results.v1.json.sha256",
+    "resources/m04/decision-binding.v1.json",
+    "resources/m04/decision-runtime.v1.json",
+    "resources/m04/decision-runtime.v1.json.sha256",
+    "resources/m04/decision-results.v1.json",
+    "resources/m04/decision-results.v1.json.sha256",
+    "resources/m04/decision-inbox.v1.json",
+    "resources/m05/agent-position.v1.json",
+    "resources/m05/agent-position.v2.json",
+    "resources/m06/report-contract.v1.json",
+    "resources/m06/report-contract.v1.json.sha256",
+    "resources/m06/report-manifest.v1.json",
+    "resources/m06/report-manifest.v1.json.sha256",
+    "resources/m06/report-contents.v1.json",
+    "resources/m06/report-contents.v1.json.sha256",
+    "resources/m06/report-artifacts.v1.json",
+    "resources/m06/report-artifacts.v1.json.sha256",
+    "resources/m06/report-contract.v2.json",
+    "resources/m06/report-contract.v2.json.sha256",
+    "resources/m06/report-definition.v2.json",
+    "resources/m06/report-definition.v2.json.sha256",
+    "resources/m06/report-template.v2.json",
+    "resources/m06/report-template.v2.json.sha256",
+    "resources/m06/report-manifest.v2.json",
+    "resources/m06/report-manifest.v2.json.sha256",
+    "resources/m06/report-contents.v2.json",
+    "resources/m06/report-contents.v2.json.sha256",
+    "resources/m06/report-artifacts.v2.json",
+    "resources/m06/report-artifacts.v2.json.sha256",
+    "resources/m06/report-manifest.v3.json",
+    "resources/m06/report-manifest.v3.json.sha256",
+    "resources/m06/report-contents.v3.json",
+    "resources/m06/report-contents.v3.json.sha256",
+    "resources/m06/report-artifacts.v3.json",
+    "resources/m06/report-artifacts.v3.json.sha256",
+    "checkpoints/spec-CP12.json",
+    "checkpoints/CP12-v103-native-integration-corrected.json",
+    "checkpoints/CP12-v103-native-integration-corrected.json.sha256",
+    "checkpoints/spec-CP13.json",
+    "evidence/CP13-v103-native-conditional-integration-validation.md",
+    "evidence/CP13-v103-native-conditional-integration-validation.md.sha256",
+    "evidence/browser-cp13/20260816T103742191Z-2234f1aa/browser-cp13-results.json",
+    "evidence/browser-cp13/20260816T103742191Z-2234f1aa/m04-incompatible-projections.png",
+    "evidence/browser-cp13/20260816T104940531Z-f98ae7af/browser-cp13-results.json",
+    "evidence/browser-cp13/20260816T104940531Z-f98ae7af/health-gating.png",
+    "evidence/browser-cp13/20260816T104940531Z-f98ae7af/m01-dynamic-publish.png",
+    "evidence/browser-cp13/20260816T104940531Z-f98ae7af/m01-legacy-bootstrap-projection.png",
+    "evidence/browser-cp13/20260816T104940531Z-f98ae7af/m02-native-detail.png",
+    "evidence/browser-cp13/20260816T104940531Z-f98ae7af/m03-incompatible-projection.png",
+    "evidence/browser-cp13/20260816T104940531Z-f98ae7af/m04-incompatible-projections.png",
+    "evidence/browser-cp13/20260816T104940531Z-f98ae7af/m06-native-routes.png",
+    "evidence/browser-cp13/20260816T104940531Z-f98ae7af/m06-reset-new-run.png",
+    "evidence/browser-cp13/20260816T104940531Z-f98ae7af/m06-v2-priority.png",
+    "evidence/browser-cp13/20260816T104940531Z-f98ae7af/module-failure-home-health.png",
+    "evidence/browser-cp13/20260816T104940531Z-f98ae7af/s001-six-module-isolation.png",
+    "evidence/browser-cp12/20260816T102927794Z-ca987471/browser-cp12-results.json",
+    "evidence/browser-surface/20260816T102948990Z-d398429c/browser-surface-results.json",
+    "evidence/browser-surface/20260816T102948990Z-d398429c/m01-published-config.png",
+    "evidence/browser-surface/20260816T102948990Z-d398429c/m02-detail.png",
+    "evidence/browser-surface/20260816T102948990Z-d398429c/m03-to-m01-deep-link.png",
+    "evidence/browser-surface/20260816T102948990Z-d398429c/m06-dashboard-report.png",
+    "runtime/cp14-entry.v1.html",
+    "scripts/browser-cp14.cjs",
+    "resources/m02/factor-config.v1.json",
+    "resources/m02/risk-band-config.v1.json",
+    "resources/m02/企业债务风险评估模版_S003兼容版.xlsx",
+    "resources/m02/企业债务风险评估模版_S003兼容版.csv",
+    "resources/m06/report-definition.v1.json",
+    "resources/m06/report-template.v1.json",
+    "resources/m06/report-assurance-profile.v1.json",
+    "checkpoints/CP13-v103-native-conditional-integration-completed.json",
+    "checkpoints/CP13-v103-native-conditional-integration-completed.json.sha256",
+    "checkpoints/spec-CP14.json",
+    "evidence/CP14-v103-full-scene-regression-validation.md",
+    "evidence/CP14-v103-full-scene-regression-validation.md.sha256",
+    "evidence/browser-cp14/20260816T140715236Z-9ba9021d/browser-cp14-results.json",
+    "evidence/browser-cp14/20260816T140715236Z-9ba9021d/dashboard-enterprise-report.png",
+    "evidence/browser-cp14/20260816T140715236Z-9ba9021d/m01-published-canvas.png",
+    "evidence/browser-cp14/20260816T140715236Z-9ba9021d/quick-rerun-current-projection.png",
+    "evidence/browser-cp14/20260816T140715236Z-9ba9021d/shell-and-modules.png",
+    "evidence/browser-cp14/m02-regression/result.json",
+    "evidence/browser-cp14/m02-regression/m02-native-surfaces.png",
+    "evidence/browser-cp14/m02-regression/m02-config-legacy.png",
+    "evidence/browser-cp14/m02-regression/m02-config-corrupt.png",
+    "evidence/browser-cp14/m02-regression/m02-public-shell.png",
+    "evidence/browser-cp14/m02-regression/m02-s001-isolation.png",
+    "checkpoints/CP14-v103-full-scene-regression-completed.json",
+    "checkpoints/CP14-v103-full-scene-regression-completed.json.sha256",
+    "checkpoints/spec-CP15.json",
+    "runtime/cp15-entry.v1.html",
+    "scripts/browser-cp15.cjs",
+    "evidence/CP15-v103-full-scene-validation.md",
+    "evidence/CP15-v103-full-scene-validation.md.sha256",
+    "evidence/browser-cp15/20260816T193833116Z-9ee802c8/browser-cp15-results.json",
+    "evidence/browser-cp15/20260816T193833116Z-9ee802c8/shell-and-modules.png",
+    "evidence/browser-cp15/20260816T193833116Z-9ee802c8/m01-published-canvas.png",
+    "evidence/browser-cp15/20260816T193833116Z-9ee802c8/dashboard-enterprise-report.png",
+    "evidence/browser-cp15/20260816T193833116Z-9ee802c8/quick-rerun-current-projection.png",
+    "evidence/browser-cp15/20260816T193833116Z-9ee802c8/formal-report-v3.html",
+    "checkpoints/CP15-v103-full-scene-correction-completed.json",
+    "checkpoints/CP15-v103-full-scene-correction-completed.json.sha256",
+    "checkpoints/spec-CP16.json",
+    "runtime/cp16-entry.v1.html",
+    "scripts/browser-cp16.cjs",
+    "evidence/CP16-post-seal-regression-validation.md",
+    "evidence/CP16-post-seal-regression-validation.md.sha256"
+  ],
+  "modules": {
+    "M01": {
+      "moduleVersion": "1.0.1",
+      "exportId": "S003-M01-RUNTIME-EXPORT-20260815-001",
+      "exportRef": "resources/m01/runtime-export.v1.json",
+      "evidenceRef": "evidence/CP16-post-seal-regression-validation.md"
+    },
+    "M02": {
+      "moduleVersion": "1.1.0",
+      "exportId": "S003-M02-DATA-CONTRACT",
+      "exportRef": "resources/m02/data-contract.v1.1.json",
+      "evidenceRef": "evidence/CP16-post-seal-regression-validation.md"
+    },
+    "M03": {
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M03-QUERY-RUNTIME",
+      "exportRef": "resources/m03/query-runtime.v1.json",
+      "evidenceRef": "evidence/CP16-post-seal-regression-validation.md"
+    },
+    "M04": {
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M04-DECISION-RUNTIME",
+      "exportRef": "resources/m04/decision-runtime.v1.json",
+      "evidenceRef": "evidence/CP16-post-seal-regression-validation.md"
+    },
+    "M05": {
+      "moduleVersion": "1.1.0",
+      "exportId": "S003-M05-REPORT-COPILOT-SCENARIO-PROFILE",
+      "exportRef": "resources/m05/agent-position.v2.json",
+      "evidenceRef": "evidence/CP16-post-seal-regression-validation.md"
+    },
+    "M06": {
+      "moduleVersion": "1.1.1",
+      "exportId": "S003-M06-REPORT-MANIFEST-20260816-002",
+      "exportRef": "resources/m06/report-manifest.v3.json",
+      "evidenceRef": "evidence/CP16-post-seal-regression-validation.md"
+    }
+  },
+  "stateSections": {
+    "data": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-M02-SOURCE-XLSX-20251231",
+          "version": "1.0.0",
+          "ref": "resources/m02/source-asset.v1.json"
+        },
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-M02-SOURCE-REGISTRY",
+          "version": "2.0.0",
+          "ref": "resources/m02/source-registry.v2.json"
+        },
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-T053-INPUT-20251231-v1",
+          "version": "1.0.0",
+          "ref": "resources/m02/human-input-snapshot.v1.json"
+        },
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "version": "1.0.0",
+          "ref": "resources/m02/formal-candidate-data-asset.v1.json"
+        },
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-M02-PIPELINE-RUN-20260815-001",
+          "version": "1.0.0",
+          "ref": "resources/m02/pipeline-run.v1.json"
+        },
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-M02-PIPELINE-CURRENT-PROJECTION",
+          "version": "2.0.0",
+          "ref": "resources/m02/pipeline-current-projection.v2.json"
+        },
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-M02-QUALITY-20251231-v1",
+          "version": "1.0.0",
+          "ref": "resources/m02/quality-result.v1.json"
+        }
+      ]
+    },
+    "semantics": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-M01-DEBT-RISK-PKG",
+          "version": "1.0.0",
+          "ref": "resources/m01/model-package.v1.json"
+        },
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-M01-PUBLISHED-POINTER",
+          "version": "1.0.0",
+          "ref": "resources/m01/published-pointer.v1.json"
+        },
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-M01-DEBT-RISK-PKG@activeTarget.publishedSnapshot",
+          "version": "1.0.1",
+          "ref": "resources/m01/published-pointer.v1.json"
+        }
+      ]
+    },
+    "configurations": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "平台场景包",
+          "resourceId": "S003-SCENARIO-MANIFEST",
+          "version": "1.0.0",
+          "ref": "resources/scenario-manifest.json"
+        },
+        {
+          "owner": "平台公共层与 S003 总装",
+          "resourceId": "S003-V103-BASELINE-MODULE-INTEGRATION-20260816-CP13",
+          "version": "4.0.0",
+          "ref": "resources/integration/v103-baseline-extension-inventory.v4.json"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP16-INTEGRATION-CONFIG",
+          "version": "1.2.1",
+          "ref": "integration-config.js"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP16-RUNTIME-CONFIG",
+          "version": "1.2.1",
+          "ref": "data.js"
+        },
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-M01-MODEL-CONFIGURATION",
+          "version": "1.0.0",
+          "ref": "resources/m01/model-configuration.v1.json"
+        },
+        {
+          "owner": "M03 智能问数",
+          "resourceId": "S003-M03-QUERY-RUNTIME",
+          "version": "1.0.0",
+          "ref": "resources/m03/query-runtime.v1.json"
+        },
+        {
+          "owner": "M04 决策中心",
+          "resourceId": "S003-M04-DECISION-RUNTIME",
+          "version": "1.0.0",
+          "ref": "resources/m04/decision-runtime.v1.json"
+        },
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-M06-REPORT-CONTRACT",
+          "version": "1.1.0",
+          "ref": "resources/m06/report-contract.v2.json"
+        },
+        {
+          "owner": "M05 Agent 应用",
+          "resourceId": "S003-M05-REPORT-COPILOT-SCENARIO-PROFILE",
+          "version": "1.1.0",
+          "ref": "resources/m05/agent-position.v2.json"
+        },
+        {
+          "owner": "平台公共层",
+          "resourceId": "S003-CP16-CHECKPOINT-RUNTIME",
+          "version": "1.2.1",
+          "ref": "domain/checkpoint-service.js"
+        },
+        {
+          "owner": "平台公共层",
+          "resourceId": "S003-CP16-CHECKPOINT-PROJECTION",
+          "version": "1.2.1",
+          "ref": "domain/checkpoint-projection.js"
+        },
+        {
+          "owner": "平台公共层与 S003 总装",
+          "resourceId": "S003-V103-BASELINE-MODULE-INTEGRATION-20260816-CP14",
+          "version": "5.0.0",
+          "ref": "resources/integration/v103-baseline-extension-inventory.v5.json"
+        },
+        {
+          "owner": "平台公共层与 S003 总装",
+          "resourceId": "S003-V103-BASELINE-MODULE-INTEGRATION-20260816-CP15",
+          "version": "6.0.0",
+          "ref": "resources/integration/v103-baseline-extension-inventory.v6.json"
+        },
+        {
+          "owner": "平台公共层与 S003 总装",
+          "resourceId": "S003-V103-BASELINE-MODULE-INTEGRATION-20260816-CP16",
+          "version": "7.0.0",
+          "ref": "resources/integration/v103-baseline-extension-inventory.v7.json"
+        }
+      ]
+    },
+    "results": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-C035-RISK-RESULTS-20251231-v1",
+          "version": "1.0.0",
+          "ref": "resources/m01/c035-risk-results.v1.json"
+        },
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-PUBLISHED-RISK-FACTS-20251231-v1",
+          "version": "1.0.0",
+          "ref": "resources/m01/published-risk-facts.v1.json"
+        },
+        {
+          "owner": "M03 智能问数",
+          "resourceId": "S003-M03-QUERY-RESULTS-20260815-001",
+          "version": "1.0.0",
+          "ref": "resources/m03/query-results.v1.json"
+        }
+      ]
+    },
+    "reports": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-M06-REPORT-MANIFEST-20260816-002",
+          "version": "1.1.1",
+          "ref": "resources/m06/report-manifest.v3.json"
+        },
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-M06-REPORT-CONTENTS-20260816-002",
+          "version": "1.1.1",
+          "ref": "resources/m06/report-contents.v3.json"
+        },
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-M06-REPORT-ARTIFACTS-20260816-002",
+          "version": "1.1.1",
+          "ref": "resources/m06/report-artifacts.v3.json"
+        },
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-RPT-DEF-DEBT-RISK",
+          "version": "1.1.0",
+          "ref": "resources/m06/report-definition.v2.json"
+        },
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-RPT-TPL-ENTERPRISE-RISK",
+          "version": "1.1.0",
+          "ref": "resources/m06/report-template.v2.json"
+        },
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-M06-REPORT-ASSURANCE-PROFILE",
+          "version": "1.0.0",
+          "ref": "resources/m06/report-assurance-profile.v1.json"
+        }
+      ]
+    },
+    "decisions": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M04 决策中心",
+          "resourceId": "S003-M04-DECISION-RESULTS-20260815-001",
+          "version": "1.0.0",
+          "ref": "resources/m04/decision-results.v1.json"
+        },
+        {
+          "owner": "M04 决策中心",
+          "resourceId": "S003-M04-MANUAL-ACTION-INBOX-20260815-001",
+          "version": "1.0.0",
+          "ref": "resources/m04/decision-inbox.v1.json"
+        }
+      ]
+    },
+    "testFixtures": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-FIXTURE-20251231-v1",
+          "version": "1.0.0",
+          "ref": "fixtures/enterprise-fixture.v1.json"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BASELINE-EXTENSION-TESTS",
+          "version": "1.0.0",
+          "ref": "tests/baseline-extension-contract.test.js"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-PERSISTENCE-TESTS",
+          "version": "1.0.0",
+          "ref": "tests/state-persistence.test.js"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-WORKBENCH-SHELL-TESTS",
+          "version": "1.0.0",
+          "ref": "tests/workbench-shell.test.js"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-FULL-TREE-SCRIPT",
+          "version": "1.0.0",
+          "ref": "scripts/browser-cp13.cjs"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-COMPATIBILITY-SCRIPT",
+          "version": "1.0.0",
+          "ref": "scripts/browser-cp12.cjs"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-SURFACE-SCRIPT",
+          "version": "1.0.0",
+          "ref": "scripts/browser-s003-surface.cjs"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-EXTERNAL-ADAPTER-INVENTORY",
+          "version": "4.0.0",
+          "ref": "resources/integration/v103-baseline-extension-inventory.v4.json"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP14-BROWSER-FULL-SCENE",
+          "version": "1.0.0",
+          "ref": "scripts/browser-cp14.cjs"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP15-BROWSER-FULL-SCENE",
+          "version": "2.0.0",
+          "ref": "scripts/browser-cp15.cjs"
+        },
+        {
+          "owner": "M06 报告中心测试",
+          "resourceId": "S003-CP15-REPORT-ASSETS-V2-V3-TESTS",
+          "version": "1.0.0",
+          "ref": "tests/report-assets-v2.test.js"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP15-EXTERNAL-ADAPTER-INVENTORY",
+          "version": "6.0.0",
+          "ref": "resources/integration/v103-baseline-extension-inventory.v6.json"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP16-BROWSER-FULL-SCENE",
+          "version": "1.0.0",
+          "ref": "scripts/browser-cp16.cjs"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP16-EXTERNAL-ADAPTER-INVENTORY",
+          "version": "7.0.0",
+          "ref": "resources/integration/v103-baseline-extension-inventory.v7.json"
+        }
+      ]
+    },
+    "featureFlags": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "平台场景包",
+          "resourceId": "S003-FEATURE-FLAGS",
+          "version": "1.0.0",
+          "ref": "resources/scenario-manifest.json"
+        }
+      ]
+    },
+    "evidence": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP12-IMMUTABLE-PREDECESSOR",
+          "version": "1.0.0",
+          "ref": "checkpoints/CP12-v103-native-integration-corrected.json"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP13-NATIVE-CONDITIONAL-INTEGRATION-VALIDATION",
+          "version": "1.0.0",
+          "ref": "evidence/CP13-v103-native-conditional-integration-validation.md"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP13-ENTRY",
+          "version": "1.0.0",
+          "ref": "runtime/cp13-entry.v1.html"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-FULL-TREE-RESULT",
+          "version": "1.0.0",
+          "ref": "evidence/browser-cp13/20260816T104940531Z-f98ae7af/browser-cp13-results.json"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-COMPATIBILITY-RESULT",
+          "version": "1.0.0",
+          "ref": "evidence/browser-cp12/20260816T102927794Z-ca987471/browser-cp12-results.json"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-SURFACE-RESULT",
+          "version": "1.0.0",
+          "ref": "evidence/browser-surface/20260816T102948990Z-d398429c/browser-surface-results.json"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-PRE-FIX-FAILURE-RESULT",
+          "version": "1.0.0",
+          "ref": "evidence/browser-cp13/20260816T103742191Z-2234f1aa/browser-cp13-results.json"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-M02-DETAIL",
+          "version": "1.0.0",
+          "ref": "evidence/browser-surface/20260816T102948990Z-d398429c/m02-detail.png"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-M01-PUBLISHED",
+          "version": "1.0.0",
+          "ref": "evidence/browser-surface/20260816T102948990Z-d398429c/m01-published-config.png"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-M03-DEEP-LINK",
+          "version": "1.0.0",
+          "ref": "evidence/browser-surface/20260816T102948990Z-d398429c/m03-to-m01-deep-link.png"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-M06-REPORT",
+          "version": "1.0.0",
+          "ref": "evidence/browser-surface/20260816T102948990Z-d398429c/m06-dashboard-report.png"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP13-IMMUTABLE-PREDECESSOR",
+          "version": "1.0.0",
+          "ref": "checkpoints/CP13-v103-native-conditional-integration-completed.json"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP14-FULL-SCENE-VALIDATION",
+          "version": "1.0.0",
+          "ref": "evidence/CP14-v103-full-scene-regression-validation.md"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP14-BROWSER-RESULT",
+          "version": "1.0.0",
+          "ref": "evidence/browser-cp14/20260816T140715236Z-9ba9021d/browser-cp14-results.json"
+        },
+        {
+          "owner": "M02 数据工程测试",
+          "resourceId": "S003-CP14-M02-BROWSER-RESULT",
+          "version": "1.0.0",
+          "ref": "evidence/browser-cp14/m02-regression/result.json"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP14-IMMUTABLE-PREDECESSOR",
+          "version": "1.0.0",
+          "ref": "checkpoints/CP14-v103-full-scene-regression-completed.json"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP15-FULL-SCENE-VALIDATION",
+          "version": "1.0.0",
+          "ref": "evidence/CP15-v103-full-scene-validation.md"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP15-ENTRY",
+          "version": "1.0.0",
+          "ref": "runtime/cp15-entry.v1.html"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP15-BROWSER-RESULT",
+          "version": "2.0.0",
+          "ref": "evidence/browser-cp15/20260816T193833116Z-9ee802c8/browser-cp15-results.json"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP15-BROWSER-DASHBOARD-REPORT",
+          "version": "1.0.0",
+          "ref": "evidence/browser-cp15/20260816T193833116Z-9ee802c8/dashboard-enterprise-report.png"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP15-DOWNLOADED-FORMAL-REPORT-V3",
+          "version": "1.1.1",
+          "ref": "evidence/browser-cp15/20260816T193833116Z-9ee802c8/formal-report-v3.html"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP15-IMMUTABLE-PREDECESSOR",
+          "version": "1.0.0",
+          "ref": "checkpoints/CP15-v103-full-scene-correction-completed.json"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP16-POST-SEAL-REGRESSION-VALIDATION",
+          "version": "1.0.0",
+          "ref": "evidence/CP16-post-seal-regression-validation.md"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP16-ENTRY",
+          "version": "1.0.0",
+          "ref": "runtime/cp16-entry.v1.html"
+        }
+      ]
+    }
+  },
+  "restoreEvidenceRef": "evidence/CP16-post-seal-regression-validation.md"
+}

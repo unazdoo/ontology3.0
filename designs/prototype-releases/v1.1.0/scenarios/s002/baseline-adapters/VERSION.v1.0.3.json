@@ -1,0 +1,48 @@
+{
+  "version": "1.0.3",
+  "status": "frozen-baseline",
+  "frozenAt": "2026-08-15",
+  "parentVersion": "1.0.2",
+  "scenarioScope": ["S001"],
+  "scenarioRunId": "S001-RUN-20260814062516042-e1fd5e6ab3f4",
+  "integrationResult": {
+    "completedSteps": 15,
+    "totalSteps": 15,
+    "projectionAfterRefresh": "15/15",
+    "decisionDistribution": "4 awaiting decision / 1 processed / 1 owner task",
+    "acceptanceReady": false
+  },
+  "entry": "completed-run.html",
+  "runtimeEntry": "open-completed-run.html",
+  "recommendedPort": 4325,
+  "immutable": true,
+  "successStateHardcoded": false,
+  "referenceBaseline": {
+    "versionLine": "v1.0",
+    "purpose": "reference baseline for subsequent real-scenario development",
+    "reusableScope": [
+      "unified platform shell and navigation",
+      "six-module entry structure",
+      "scenario registry and scenarioId namespace",
+      "cross-module context and read-only progress projection",
+      "shared type scale and responsive layout",
+      "current-scenario reset boundary"
+    ],
+    "nonReusableScope": [
+      "S001 business facts and completion state",
+      "S001 runtime snapshot and scenarioRunId",
+      "S001 report, task, evidence and comparison identifiers"
+    ]
+  },
+  "runtimeSnapshot": {
+    "path": "runtime-snapshots/S001-RUN-20260814062516042-e1fd5e6ab3f4.runtime.json",
+    "sha256": "3de07e7f69b013924dcb6725b6c35ff61f38fba3234f93a472aa45821ddec774",
+    "restoreMode": "explicit versioned historical-run restore"
+  },
+  "evidence": [
+    "s001-e2e-integration/联调结果.md",
+    "s001-e2e-integration/总控联调交接.md",
+    "s001-e2e-integration/_d_meta.json",
+    "SCENARIO-BASELINE.md"
+  ]
+}

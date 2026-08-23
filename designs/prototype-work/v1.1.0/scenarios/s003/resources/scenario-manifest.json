@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "ofw.s003.scenario-package.v1",
+  "scenario": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "initialScenarioRunId": "S003-RUN-20260815123937016-96a195ed3f4c",
+    "formedAt": "2026-08-15T12:39:37.016Z",
+    "status": "active",
+    "name": "债务风险监测",
+    "businessOwner": "财务公司",
+    "primaryUsers": ["集团债务风险管理人员"]
+  },
+  "baseline": {
+    "baselineVersion": "1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "frozenTag": "prototype-v1.0.3-frozen",
+    "frozenCommit": "ea69e9ad3bceef93b000e6f3ddc639ab093e2515",
+    "immutable": true
+  },
+  "workspace": {
+    "prototypeVersion": "1.1.0",
+    "branch": "codex/s003-v1.1.0",
+    "packagePath": "designs/prototype-work/v1.1.0/scenarios/s003",
+    "recommendedPort": 4333,
+    "storageRoot": "ofw:v1.1.0:S003:S003-v1",
+    "sharedFilesWritable": false
+  },
+  "scope": {
+    "included": [
+      "统一风险工作台",
+      "风险总览与企业评分明细",
+      "企业因子在线填报与不可变输入版本",
+      "Metric、Rule、Action Type 原子模型包配置和 Published 生命周期",
+      "显式发布后快速重评",
+      "Published 风险事实只读问数",
+      "企业报告生成、稳定深链和打印导出",
+      "通用 Action Request 人工确认与负责人待办",
+      "CP01—CP07、历史查看、克隆恢复和隔离回归"
+    ],
+    "excluded": [
+      "S003 专属一级平台模块",
+      "S003 专属处置页面",
+      "多用户、经办、审批权限",
+      "复核人和多级审批",
+      "S003 专属 Agent",
+      "自动创建 Action Request 或负责人待办",
+      "复用或改写 S001 场景身份、运行证据和业务定义",
+      "消费或改义 S003 兼容性 T007"
+    ]
+  },
+  "sources": [
+    {
+      "role": "authoritative-data-fixture",
+      "name": "企业债务风险评估模版_S003兼容版.xlsx",
+      "sha256": "dbdab9c870d7f2e456c3a9e0f91b340b372da6d40eb241551e0ee8848cac42a0"
+    },
+    {
+      "role": "interaction-reference-only",
+      "name": "集团债务风险监测总览.html",
+      "sha256": "574493f9c7fc2592162e992f8b942e9b24113532577cf2920546864e09a765bf"
+    },
+    {
+      "role": "algorithm-reference-only",
+      "name": "wind-debt-risk-skill.zip",
+      "sha256": "731722434a309e4b76c4b83b6de82a2e590c50a524c611ccf5721c7516e2441b"
+    }
+  ],
+  "featureFlags": {
+    "factorOnlineEntry": true,
+    "modelConfiguration": true,
+    "riskTierConfiguration": true,
+    "explicitQuickRerun": true,
+    "enterpriseReportDrilldown": true,
+    "queryReadOnly": true,
+    "genericDecisionBinding": true,
+    "dedicatedAgent": false,
+    "multiUserPermissions": false,
+    "multiLevelApproval": false,
+    "automaticTodoCreation": false
+  },
+  "contracts": ["C005", "C008", "C011", "C019", "C031", "C033", "C034", "C035"],
+  "decisions": ["D091", "D094", "D095"],
+  "closedQuestions": ["Q026"]
+}

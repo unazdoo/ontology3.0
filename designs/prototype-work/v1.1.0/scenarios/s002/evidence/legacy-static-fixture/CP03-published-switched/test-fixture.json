@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "ofw.s002.test-fixture.v1",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815010000000-a283fabf23f6",
+    "formedAt": "2026-08-15T01:00:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "published-switched",
+  "marker": "SYNTHETIC_FOR_DEMO",
+  "sourceFile": "S002预算监督管理_演示加工数据候选包_v0.1.xlsx",
+  "sourceSha256": "a283fabf23f63506f33c5900d0f3643c82734659a890ee504d7394bdb0244599",
+  "dataAsOf": "2025-12-31",
+  "legalDemoCorrections": {
+    "duplicateVoucherGroups": 21,
+    "periodAnomalies": 13,
+    "reversedDates": 6,
+    "syntheticTrendAndDepartmentCompletion": true
+  },
+  "truthBoundary": "仅用于隔离演示，不作为生产预算系统事实或自动审批依据"
+}

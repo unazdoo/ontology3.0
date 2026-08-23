@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp19-result.v1",
+  "runId": "20260817T062919012Z-86b93663",
+  "formedAt": "2026-08-17T06:29:19.012Z",
+  "origin": "http://127.0.0.1:4333",
+  "formalSourceScenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+  "browserVersion": "149.0.7827.55",
+  "cases": [
+    {
+      "id": "shell-and-modules",
+      "status": "failed",
+      "durationMs": 4183,
+      "error": {
+        "name": "AssertionError",
+        "message": "Expected values to be strictly equal:\n\n8 !== 1\n",
+        "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n8 !== 1\n\n    at caseShellAndModules (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:181:10)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:871:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:899:16)"
+      }
+    },
+    {
+      "id": "m02-native",
+      "status": "failed",
+      "durationMs": 275,
+      "error": {
+        "name": "AssertionError",
+        "message": "Expected values to be strictly equal:\n\n8 !== 1\n",
+        "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n8 !== 1\n\n    at caseM02Native (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:299:10)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:871:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:899:16)"
+      }
+    },
+    {
+      "id": "m01-canvas",
+      "status": "failed",
+      "durationMs": 478,
+      "error": {
+        "name": "AssertionError",
+        "message": "Expected values to be strictly equal:\n\n27 !== 34\n",
+        "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n27 !== 34\n\n    at caseM01Canvas (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:228:10)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:871:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:899:16)"
+      }
+    },
+    {
+      "id": "m01-published-config",
+      "status": "failed",
+      "durationMs": 60641,
+      "error": {
+        "name": "TimeoutError",
+        "message": "frame.waitForFunction: Timeout 60000ms exceeded.",
+        "stack": "frame.waitForFunction: Timeout 60000ms exceeded.\n    at caseM01PublishedAndConfig (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:386:15)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:871:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:899:16)"
+      }
+    },
+    {
+      "id": "m03-m04-m05",
+      "status": "failed",
+      "durationMs": 34163,
+      "error": {
+        "name": "TimeoutError",
+        "message": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '提新问题', exact: true }).first()\u001b[22m\n",
+        "stack": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '提新问题', exact: true }).first()\u001b[22m\n\n    at caseM03M04M05 (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:428:79)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:871:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:899:16)"
+      }
+    },
+    {
+      "id": "dashboard-and-report",
+      "status": "failed",
+      "durationMs": 60746,
+      "error": {
+        "name": "AssertionError",
+        "message": "The input did not match the regular expression /#\\/reports\\/s003\\?/. Input:\n\n'http://127.0.0.1:4333/report-center/review-lifecycle/index.html?prototypeBuild=20260817-30-cp18&scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/dashboard/s003'\n",
+        "stack": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /#\\/reports\\/s003\\?/. Input:\n\n'http://127.0.0.1:4333/report-center/review-lifecycle/index.html?prototypeBuild=20260817-30-cp18&scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/dashboard/s003'\n\n    at caseDashboardAndReport (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:529:10)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:871:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:899:16)"
+      }
+    },
+    {
+      "id": "dashboard-action-and-config",
+      "status": "failed",
+      "durationMs": 62193,
+      "error": {
+        "name": "TimeoutError",
+        "message": "locator.waitFor: Timeout 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '确认并交办', exact: true }).last() to be visible\u001b[22m\n",
+        "stack": "locator.waitFor: Timeout 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '确认并交办', exact: true }).last() to be visible\u001b[22m\n\n    at caseDashboardActionAndConfig (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:658:17)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:871:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:899:16)"
+      }
+    },
+    {
+      "id": "old-projection-compatibility",
+      "status": "failed",
+      "durationMs": 308,
+      "error": {
+        "name": "Error",
+        "message": "page.evaluate: Error: 未找到 M02 当前工作投影\n    at eval (eval at evaluate (:303:30), <anonymous>:4:24)\n    at UtilityScript.evaluate (<anonymous>:305:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+        "stack": "page.evaluate: Error: 未找到 M02 当前工作投影\n    at eval (eval at evaluate (:303:30), <anonymous>:4:24)\n    at UtilityScript.evaluate (<anonymous>:305:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at caseOldProjectionCompatibility (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:720:14)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:871:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:899:16)"
+      }
+    },
+    {
+      "id": "quick-rerun-and-history",
+      "status": "failed",
+      "durationMs": 60984,
+      "error": {
+        "name": "TimeoutError",
+        "message": "frame.waitForFunction: Timeout 60000ms exceeded.",
+        "stack": "frame.waitForFunction: Timeout 60000ms exceeded.\n    at caseQuickRerunAndHistory (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:766:15)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:871:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:899:16)"
+      }
+    },
+    {
+      "id": "s001-isolation",
+      "status": "passed",
+      "durationMs": 3752,
+      "details": {
+        "checked": [
+          {
+            "module": "data",
+            "url": "http://127.0.0.1:4333/data-engineering-prototype-review/review-v3/%E6%96%B9%E6%A1%88B2.html?prototypeBuild=20260817-30-cp18&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260817063403392-d130e0cceee0&formedAt=2026-08-17T06%3A34%3A03.392Z&status=active&contextCreatedAt=2026-08-17T06%3A34%3A03.392Z&contextStatus=active&scenarioFormedAt=2026-08-17T06%3A34%3A03.392Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/resources"
+          },
+          {
+            "module": "ontology",
+            "url": "http://127.0.0.1:4333/ontology-management-review/canvas-first/index.html?prototypeBuild=20260817-30-cp18&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260817063403392-d130e0cceee0&formedAt=2026-08-17T06%3A34%3A03.392Z&status=active&contextCreatedAt=2026-08-17T06%3A34%3A03.392Z&contextStatus=active&scenarioFormedAt=2026-08-17T06%3A34%3A03.392Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#modeling"
+          },
+          {
+            "module": "query",
+            "url": "http://127.0.0.1:4333/intelligent-query-prototype/review-next/conversation-workspace/index.html?prototypeBuild=20260817-30-cp18&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260817063403392-d130e0cceee0&formedAt=2026-08-17T06%3A34%3A03.392Z&status=active&contextCreatedAt=2026-08-17T06%3A34%3A03.392Z&contextStatus=active&scenarioFormedAt=2026-08-17T06%3A34%3A03.392Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/ask"
+          },
+          {
+            "module": "decision",
+            "url": "http://127.0.0.1:4333/decision-center-prototype/review-v2/action-portfolio.html?prototypeBuild=20260817-30-cp18&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260817063403392-d130e0cceee0&formedAt=2026-08-17T06%3A34%3A03.392Z&status=active&contextCreatedAt=2026-08-17T06%3A34%3A03.392Z&contextStatus=active&scenarioFormedAt=2026-08-17T06%3A34%3A03.392Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#workbench"
+          },
+          {
+            "module": "agent",
+            "url": "http://127.0.0.1:4333/agent-application/Agent%E5%BA%94%E7%94%A8.html?prototypeBuild=20260817-30-cp18&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260817063403392-d130e0cceee0&formedAt=2026-08-17T06%3A34%3A03.392Z&status=active&contextCreatedAt=2026-08-17T06%3A34%3A03.392Z&contextStatus=active&scenarioFormedAt=2026-08-17T06%3A34%3A03.392Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/evidence"
+          },
+          {
+            "module": "report",
+            "url": "http://127.0.0.1:4333/report-center/review-lifecycle/index.html?prototypeBuild=20260817-30-cp18&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260817063403392-d130e0cceee0&formedAt=2026-08-17T06%3A34%3A03.392Z&status=active&contextCreatedAt=2026-08-17T06%3A34%3A03.392Z&contextStatus=active&scenarioFormedAt=2026-08-17T06%3A34%3A03.392Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/lifecycle"
+          }
+        ]
+      }
+    }
+  ],
+  "totals": {
+    "cases": 10,
+    "passed": 1,
+    "failed": 9
+  },
+  "checkpointCreated": false,
+  "acceptanceReady": false
+}

@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "ofw.s004.evidence-package.v2",
+  "contractId": "C008",
+  "evidencePackageId": "EVID-S004-20260815-0002",
+  "evidencePackageVersion": "2.0.0",
+  "owner": "M06",
+  "consumer": "AGENT-S004-PREFLIGHT-REPORT-002",
+  "lockedAt": "2026-08-15T14:55:00+08:00",
+  "scenarioContext": {
+    "baselineVersion": "v1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v2",
+    "scenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+    "formedAt": "2026-08-15T23:30:00.000Z"
+  },
+  "identity": {
+    "applicationId": "APP-S004-20260815-0001",
+    "reportId": "RPT-S004-20260815-0001",
+    "reportNumber": "S004-PLR-2026-0001"
+  },
+  "lockedResources": [
+    {
+      "resourceType": "PUBLISHED_ONTOLOGY",
+      "resourceId": "ONTO-S004-LOAN-PREFLIGHT-002",
+      "version": "2.0.0",
+      "ref": "artifacts/ontology/published-resources-v2.json",
+      "sha256": "d8e62b08a0ea20411cd206edafee8cea1d3da075bebacd7f1ece3dd663998074"
+    },
+    {
+      "resourceType": "C008_FACT_BUNDLE",
+      "resourceId": "C008-S004-AUTHORITATIVE-FACTS-002",
+      "version": "2.0.0",
+      "ref": "artifacts/ontology/c008-authoritative-facts-v2.json",
+      "sha256": "ce9b89c15416899a68f293b57fdbac578eab587d1d18492594d1eaa86bbfa85d"
+    }
+  ],
+  "allowedEvidenceIds": [
+    "FACT-S004-V2-SUBJECT-001", "FACT-S004-V2-MEMBER-001", "FACT-S004-V2-APPLICATION-001",
+    "FACT-S004-V2-FACILITY-001", "FACT-S004-V2-BORROWER-001", "FACT-S004-V2-OWNERSHIP-001",
+    "FACT-S004-V2-OPERATIONS-001", "FACT-S004-V2-WORKING-CAPITAL-001",
+    "SRC-CGN-AR-2023", "SRC-CGN-AR-2024", "SRC-CGN-AR-2025",
+    "SIM_BUSINESS_REGISTRY_UPLOAD", "SIM_PUBLIC_DISCLOSURE_UPLOAD", "SIM_RATING_REPORT_UPLOAD",
+    "SIM_INDUSTRY_POLICY_UPLOAD", "SIM_MEMBER_REGISTRY", "SIM_LOAN_APPLICATION",
+    "SIM_INTERNAL_CREDIT", "SIM_LOAN_LEDGER",
+    "BS-CIP", "BS-ST-BORROWINGS", "BS-CASH", "BS-AR", "BS-INVENTORY", "BS-AP",
+    "CF-OPERATING-NET", "CF-INVESTING-NET", "CF-FINANCING-NET",
+    "MET-DEBT-ASSET-RATIO", "MET-CURRENT-RATIO", "MET-EBIT-INTEREST-COVERAGE",
+    "MET-MAIN-BUSINESS-PROFIT-MARGIN", "MET-RETURN-ON-TOTAL-ASSETS",
+    "MET-RETURN-ON-PARENT-EQUITY", "MET-INVENTORY-TURNOVER", "MET-AR-TURNOVER",
+    "MET-TOTAL-ASSET-TURNOVER", "MET-CURRENT-ASSET-TURNOVER", "MET-TOTAL-ASSET-GROWTH",
+    "MET-PARENT-EQUITY-GROWTH", "MET-NET-PROFIT-GROWTH", "MET-REVENUE-GROWTH",
+    "MET-WORKING-CAPITAL-TURNOVER", "MET-WORKING-CAPITAL-NEED",
+    "MET-MAX-NEW-WORKING-CAPITAL-LOAN"
+  ],
+  "selectedFactPaths": [
+    "facts.formalBusinessSubject", "facts.memberStatus", "facts.loanApplication", "facts.internalFacility",
+    "facts.borrower", "facts.ownership", "facts.operations", "facts.financialStatements",
+    "facts.workingCapital", "facts.externalContext", "facts.riskThemes", "facts.sourceCatalogue",
+    "metricRun.results", "ruleRun.results"
+  ],
+  "qualityWarnings": [
+    "工商、评级、政策、成员资格、贷款申请及内部授信等节点为synthetic-demo。",
+    "2024年度为2025年报重述比较数，2023年度按权威示例列示口径保留。",
+    "资金需求测算严格采用权威示例的展示精度和取整规则。"
+  ],
+  "humanOnlyFields": [
+    "investigationOpinion",
+    "riskControllabilityJudgements",
+    "creditComprehensiveJudgement",
+    "publicationAuthorization"
+  ],
+  "generationPolicy": {
+    "fixedEvidenceOnly": true,
+    "directWorkbookRead": false,
+    "directSourceNodeRead": false,
+    "latestDataSelection": false,
+    "formalMetricRecalculation": false,
+    "creditDecisionGeneration": false,
+    "riskControllabilityGeneration": false
+  }
+}

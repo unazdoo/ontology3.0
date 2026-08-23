@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "ofw.s003.m04.decision-runtime.v1",
+  "moduleId": "M04",
+  "moduleOwner": "决策中心",
+  "runtimeId": "S003-M04-DECISION-RUNTIME",
+  "runtimeVersion": "1.0.0",
+  "status": "implemented-generic-decision-binding",
+  "formedAt": "2026-08-15T13:30:00.000Z",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "serviceRef": "domain/decision-service.js",
+  "binding": {
+    "ref": "resources/m04/decision-binding.v1.json",
+    "sha256": "50d98198f2cbceb56a6eb34d81d982bbc28133743700eeae9b760878ae38e158",
+    "bindingId": "S003-M04-GENERIC-DECISION-BINDING",
+    "bindingVersion": "1.0.0"
+  },
+  "source": {
+    "resultSetId": "S003-C035-RISK-RESULTS-20251231-v1",
+    "resultSetVersion": "1.0.0",
+    "ref": "resources/m01/c035-risk-results.v1.json",
+    "sha256": "10e8ca2284abaaf680b549b6da3c5374ac6168a5e9b4bbe6d0abbcdb864b6153",
+    "schemaVersion": "ofw.s003.c035.risk-result-set.v1",
+    "status": "published-results",
+    "c035ResultCount": 21,
+    "candidateCount": 9
+  },
+  "candidateSummary": {
+    "candidateIds": [
+      "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-007-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+      "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-007-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0",
+      "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-009-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0",
+      "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-017-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+      "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-017-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0",
+      "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+      "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-019-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+      "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.0.0",
+      "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-020-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0"
+    ],
+    "actionTypeIds": [
+      "S003_FACTOR_EMERGENCY",
+      "S003_RISK_FOLLOW_UP",
+      "S003_SPECIAL_DISPOSAL"
+    ],
+    "riskTierCounts": {
+      "YELLOW": 6,
+      "GREEN": 1,
+      "RED": 2
+    }
+  },
+  "confirmation": {
+    "required": true,
+    "fields": [
+      "confirmed",
+      "owner",
+      "note"
+    ],
+    "ownerRequired": true,
+    "noteOptional": true,
+    "duplicateConfirmation": "idempotent-no-new-record",
+    "noMultiUserPermissions": true,
+    "noMultiLevelApproval": true
+  },
+  "idempotencyKey": [
+    "scenarioRunId",
+    "enterpriseId",
+    "actionTypeId",
+    "assessmentAt",
+    "resultVersion"
+  ],
+  "sideEffects": {
+    "automaticCandidateCreation": false,
+    "actionRequestRequiresHumanConfirmation": true,
+    "actionRequestCreatedOnlyAfterConfirmation": true,
+    "todoCreatedOnlyAfterConfirmation": true,
+    "notificationsSent": false,
+    "externalDispatch": false,
+    "historicalReplayAllowed": false,
+    "regressionReplayAllowed": false
+  },
+  "contracts": [
+    "C011",
+    "C019",
+    "C033",
+    "C035"
+  ]
+}

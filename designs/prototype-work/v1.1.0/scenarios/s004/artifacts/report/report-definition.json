@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "ofw.s004.report-definition.v1",
+  "reportDefinitionId": "RDEF-S004-LOAN-PREFLIGHT-001",
+  "reportDefinitionVersion": "1.0.0",
+  "owner": "M06",
+  "status": "Published",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "formalBusinessSubject": "财务公司",
+  "borrowerScope": "集团成员单位",
+  "sourceStructureEvidence": [
+    {
+      "name": "中国广核贷前调查报告_工商信息版.docx",
+      "sha256": "dcdaac53d7ec62d8f7f65d5edd4b2932b5cb4d219bdd5e8927d7c3cb292974e1"
+    },
+    {
+      "name": "中国广核贷前调查报告_新结构v1.md",
+      "sha256": "a929fa629804ba688b5ed928782ca8b17846a6422d6403ea9e2553c466175ef7"
+    }
+  ],
+  "sections": [
+    {
+      "order": 1,
+      "anchor": "sec-01-borrower-evaluation",
+      "title": "第一部分 借款人评价",
+      "contentItems": [
+        "工商及主体信息",
+        "集团成员资格",
+        "基本情况",
+        "股权与治理"
+      ],
+      "generationBoundary": "固定事实与Agent组织表达；身份冲突由人工处理"
+    },
+    {
+      "order": 2,
+      "anchor": "sec-02-operations",
+      "title": "第二部分 借款人经营情况",
+      "contentItems": [
+        "经营基本情况",
+        "主要业务经营",
+        "行业与市场",
+        "发展规划"
+      ],
+      "generationBoundary": "Agent仅基于固定证据组织文字"
+    },
+    {
+      "order": 3,
+      "anchor": "sec-03-financial",
+      "title": "第三部分 借款人财务情况",
+      "contentItems": [
+        "资产负债表",
+        "利润表",
+        "现金流量表",
+        "14项财务指标",
+        "财务评价",
+        "资金需求分析"
+      ],
+      "generationBoundary": "正式数值、Metric和Rule由确定性程序形成；Agent不得重算"
+    },
+    {
+      "order": 4,
+      "anchor": "sec-04-risk",
+      "title": "第四部分 借款风险分析",
+      "contentItems": [
+        "按借款人事实动态生成的风险主题",
+        "关注事实",
+        "缓释事实",
+        "调查意见"
+      ],
+      "generationBoundary": "Agent可起草风险证据，不得自动写风险可控"
+    },
+    {
+      "order": 5,
+      "anchor": "sec-05-credit-conclusion",
+      "title": "第五部分 授信结论",
+      "contentItems": [
+        "综合判断"
+      ],
+      "generationBoundary": "全文、决定、额度、利率和条件均为human-input"
+    },
+    {
+      "order": 6,
+      "anchor": "sec-06-data-sources",
+      "title": "数据来源",
+      "contentItems": [
+        "来源文档",
+        "来源节点",
+        "版本与证据引用"
+      ],
+      "generationBoundary": "确定性列示"
+    }
+  ],
+  "formalOutputs": {
+    "formats": [
+      "CONTROLLED_HTML",
+      "SAME_SOURCE_PDF"
+    ],
+    "sharedFields": [
+      "reportNumber",
+      "contentVersion",
+      "evidencePackageId",
+      "stableAnchors",
+      "publicationStatus"
+    ],
+    "docx": "NOT_IN_PHASE_ONE",
+    "electronicSignature": "NOT_IN_SCOPE",
+    "externalSubmission": "NOT_IN_SCOPE"
+  },
+  "publicationGate": [
+    "C008权威事实已锁定",
+    "C017可信度摘要可消费",
+    "确定性核验通过",
+    "人工风险判断已确认",
+    "人工授信结论已确认",
+    "HTML与PDF同源"
+  ]
+}

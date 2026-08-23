@@ -1,0 +1,219 @@
+{
+  "schemaVersion": "ofw.c034.checkpoint.v1",
+  "checkpointId": "CP-S002-20260815012000000-d765ba464a65",
+  "checkpointNode": "query-integrated",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "parentVersion": "1.0.3",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815010000000-a283fabf23f6",
+    "formedAt": "2026-08-15T01:00:00.000Z",
+    "status": "active"
+  },
+  "sourceScenarioRunId": "S002-RUN-20260815010000000-a283fabf23f6",
+  "createdAt": "2026-08-15T01:20:00.000Z",
+  "immutable": true,
+  "code": {
+    "prototypeVersion": "1.1.0",
+    "buildVersion": "S002-v1+c238e1068abb",
+    "entryRef": "designs/prototype-work/v1.1.0/scenarios/s002/index.html",
+    "treeSha256": "c238e1068abbe277296b6963e461f9911cdbbdf1a2963304a011019a245ea270"
+  },
+  "modules": {
+    "M01": {
+      "moduleId": "M01",
+      "moduleVersion": "S002-M01-1.0.0",
+      "exportId": "M01-EXPORT-CP04-71ca73c92541",
+      "exportRef": "evidence/CP04-query-integrated/M01-state-export.json",
+      "exportSha256": "71ca73c925415ab5a9595212e10b6366bf7a441c813006b810f0c42e61dfaf36",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:20:00.000Z",
+        "evidenceRef": "evidence/CP04-query-integrated/M01-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M02": {
+      "moduleId": "M02",
+      "moduleVersion": "S002-M02-1.0.0",
+      "exportId": "M02-EXPORT-CP04-4fac69849ec1",
+      "exportRef": "evidence/CP04-query-integrated/M02-state-export.json",
+      "exportSha256": "4fac69849ec1dc6912ecb6debf0caf8f3e934a9f23e221744d6acd89d642dcd6",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:20:00.000Z",
+        "evidenceRef": "evidence/CP04-query-integrated/M02-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M03": {
+      "moduleId": "M03",
+      "moduleVersion": "S002-M03-1.0.0",
+      "exportId": "M03-EXPORT-CP04-0e6d9a01cce1",
+      "exportRef": "evidence/CP04-query-integrated/M03-state-export.json",
+      "exportSha256": "0e6d9a01cce11541d982c0d2530c232e00e9eb5f832fbdc610fe1f1fee3619f1",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:20:00.000Z",
+        "evidenceRef": "evidence/CP04-query-integrated/M03-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M04": {
+      "moduleId": "M04",
+      "moduleVersion": "S002-M04-1.0.0",
+      "exportId": "M04-EXPORT-CP04-0d015da88e6e",
+      "exportRef": "evidence/CP04-query-integrated/M04-state-export.json",
+      "exportSha256": "0d015da88e6ebcdeb0427bccf39487f3fb0b98394c5cca2fc9571e0f1533d192",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:20:00.000Z",
+        "evidenceRef": "evidence/CP04-query-integrated/M04-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M05": {
+      "moduleId": "M05",
+      "moduleVersion": "S002-M05-1.0.0",
+      "exportId": "M05-EXPORT-CP04-6f9fe16d7a60",
+      "exportRef": "evidence/CP04-query-integrated/M05-state-export.json",
+      "exportSha256": "6f9fe16d7a604c1c7e21830bb76739f39f3afd6656181daa57cce8b84447e374",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:20:00.000Z",
+        "evidenceRef": "evidence/CP04-query-integrated/M05-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M06": {
+      "moduleId": "M06",
+      "moduleVersion": "S002-M06-1.0.0",
+      "exportId": "M06-EXPORT-CP04-3b04d026dde0",
+      "exportRef": "evidence/CP04-query-integrated/M06-state-export.json",
+      "exportSha256": "3b04d026dde03fe7dd56f074bddc16e433e325879dc367384c9f6672c16a4b7f",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:20:00.000Z",
+        "evidenceRef": "evidence/CP04-query-integrated/M06-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    }
+  },
+  "stateSections": {
+    "data": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "数据工程",
+          "resourceId": "M02-EXPORT-CP04-4fac69849ec1",
+          "version": "S002-M02-1.0.0",
+          "ref": "evidence/CP04-query-integrated/M02-state-export.json",
+          "sha256": "4fac69849ec1dc6912ecb6debf0caf8f3e934a9f23e221744d6acd89d642dcd6",
+          "formedAt": "2026-08-15T01:20:00.000Z"
+        }
+      ]
+    },
+    "semantics": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "本体管理",
+          "resourceId": "M01-EXPORT-CP04-71ca73c92541",
+          "version": "S002-M01-1.0.0",
+          "ref": "evidence/CP04-query-integrated/M01-state-export.json",
+          "sha256": "71ca73c925415ab5a9595212e10b6366bf7a441c813006b810f0c42e61dfaf36",
+          "formedAt": "2026-08-15T01:20:00.000Z"
+        }
+      ]
+    },
+    "configurations": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "S002场景包",
+          "resourceId": "S002-CONFIG-CP04",
+          "version": "S002-CONFIG-1.0.0",
+          "ref": "evidence/CP04-query-integrated/scenario-configuration.json",
+          "sha256": "d748701d8adc0a9a60c8d502d26b11349c8af0c3faa387c5ed711131b456b933",
+          "formedAt": "2026-08-15T01:20:00.000Z"
+        }
+      ]
+    },
+    "results": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "智能问数",
+          "resourceId": "M03-EXPORT-CP04-0e6d9a01cce1",
+          "version": "S002-M03-1.0.0",
+          "ref": "evidence/CP04-query-integrated/M03-state-export.json",
+          "sha256": "0e6d9a01cce11541d982c0d2530c232e00e9eb5f832fbdc610fe1f1fee3619f1",
+          "formedAt": "2026-08-15T01:20:00.000Z"
+        }
+      ]
+    },
+    "reports": {
+      "status": "empty",
+      "reason": "报告与预算驾驶舱尚未形成；报告分区为空",
+      "items": []
+    },
+    "decisions": {
+      "status": "empty",
+      "reason": "Action Request、人工确认和平台内待办尚未形成；决策分区为空",
+      "items": []
+    },
+    "testFixtures": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "S002场景包",
+          "resourceId": "S002-FIXTURE-CP04",
+          "version": "S002-FIXTURE-1.0.0",
+          "ref": "evidence/CP04-query-integrated/test-fixture.json",
+          "sha256": "b44ea103df1a076f618520be3449128da0c03f240cfb5928d1f3a5053696d8b6",
+          "formedAt": "2026-08-15T01:20:00.000Z"
+        }
+      ]
+    },
+    "featureFlags": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "平台公共层",
+          "resourceId": "S002-FLAGS-CP04",
+          "version": "S002-FLAGS-1.0.0",
+          "ref": "evidence/CP04-query-integrated/feature-flags.json",
+          "sha256": "86852bf8f8410b216b4731170a89440dbbbd7495a74bee7ee75b68bf6dcf0a88",
+          "formedAt": "2026-08-15T01:20:00.000Z"
+        }
+      ]
+    },
+    "evidence": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "平台公共层",
+          "resourceId": "S002-EVIDENCE-CP04",
+          "version": "S002-EVIDENCE-1.0.0",
+          "ref": "evidence/CP04-query-integrated/evidence-index.json",
+          "sha256": "8d41e4550a70f5d802be341723448af00e48035d10fecedf045569071a015316",
+          "formedAt": "2026-08-15T01:20:00.000Z"
+        }
+      ]
+    }
+  },
+  "restoreReadiness": {
+    "status": "verified",
+    "verifiedAt": "2026-08-15T01:20:00.000Z",
+    "evidenceRef": "evidence/CP04-query-integrated/restore-validation.json"
+  },
+  "sideEffectPolicy": {
+    "allowHistoricalActionRequestReplay": false,
+    "allowHistoricalNotificationReplay": false,
+    "allowHistoricalApprovalReplay": false,
+    "allowHistoricalTodoReplay": false,
+    "allowExternalDispatch": false
+  }
+}

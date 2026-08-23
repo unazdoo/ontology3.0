@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "ofw.s003.browser-surface-result.v1",
+  "runId": "20260816T092257449Z-86bcf401",
+  "formedAt": "2026-08-16T09:23:03.609Z",
+  "baseUrl": "http://127.0.0.1:4333",
+  "cases": [
+    {
+      "id": "m02-detail",
+      "status": "failed",
+      "error": {
+        "message": "M02 detail missing 本视图不执行评分",
+        "stack": "AssertionError [ERR_ASSERTION]: M02 detail missing 本视图不执行评分\n    at m02Detail (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:62:12)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:157:51)"
+      },
+      "durationMs": 1000
+    },
+    {
+      "id": "m01-published",
+      "status": "passed",
+      "details": {
+        "route": "http://127.0.0.1:4333/ontology-management-review/canvas-first/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13:30:00.000Z&scenarioStatus=active#published/version?id=S003-M01-DEBT-RISK-V1&tab=s003-model-config",
+        "weightInputCount": 45,
+        "factorInputCount": 22,
+        "tierInputCount": 8
+      },
+      "durationMs": 1316
+    },
+    {
+      "id": "m03-deep-link",
+      "status": "passed",
+      "details": {
+        "sourceRoute": "http://127.0.0.1:4333/intelligent-query-prototype/review-next/conversation-workspace/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/semantics",
+        "targetRoute": "http://127.0.0.1:4333/ontology-management-review/canvas-first/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioContextFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#published/ontology?id=S003-M01-DEBT-RISK-PKG&version=S003-M01-DEBT-RISK-V1"
+      },
+      "durationMs": 2995
+    },
+    {
+      "id": "m06-report",
+      "status": "failed",
+      "error": {
+        "message": "M06 dashboard missing 集团债务风险监测",
+        "stack": "AssertionError [ERR_ASSERTION]: M06 dashboard missing 集团债务风险监测\n    at m06Report (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:133:77)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:157:51)"
+      },
+      "durationMs": 302
+    }
+  ],
+  "totals": {
+    "cases": 4,
+    "passed": 2,
+    "failed": 2
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "ofw.s004.report-publication-manifest.v1",
+  "publicationId": "PUB-S004-20260815-0002",
+  "supersedesPublicationId": "PUB-S004-20260815-0001",
+  "owner": "M06",
+  "status": "PUBLISHED_DEMO",
+  "publishedAt": "2026-08-15T13:06:00.000Z",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "reportIdentity": {
+    "reportId": "RPT-S004-20260815-0001",
+    "reportNumber": "S004-PLR-2026-0001",
+    "contentVersion": "1.0.1",
+    "reportDefinitionId": "RDEF-S004-LOAN-PREFLIGHT-001",
+    "evidencePackageId": "EVP-S004-20260815-0001",
+    "sourceContentId": "RSRC-S004-20260815-0002"
+  },
+  "changeReason": "修正封面打印页眉裁切；业务事实、人工授信结论、证据包和稳定锚点均未变化",
+  "formalOutputs": [
+    {
+      "format": "CONTROLLED_HTML",
+      "file": "RPT-S004-CGNPC-20260815-v1.0.1.html",
+      "immutable": true
+    },
+    {
+      "format": "SAME_SOURCE_PDF",
+      "file": "RPT-S004-CGNPC-20260815-v1.0.1.pdf",
+      "immutable": true
+    }
+  ],
+  "stableAnchors": [
+    "sec-01-borrower-evaluation",
+    "sec-02-operations",
+    "sec-03-financial",
+    "sec-04-risk",
+    "sec-05-credit-conclusion",
+    "sec-06-data-sources"
+  ],
+  "humanConfirmationId": "HCONF-S004-20260815-0001",
+  "verificationRunId": "VERIFY-S004-20260815-0001",
+  "sameSourceRequired": true,
+  "inPlaceUpdateAllowed": false,
+  "docxOutput": "NOT_IN_PHASE_ONE"
+}

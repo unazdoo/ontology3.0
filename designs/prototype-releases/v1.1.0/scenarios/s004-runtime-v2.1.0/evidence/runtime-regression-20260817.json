@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "ofw.s004.runtime-regression-evidence.v1",
+  "evidenceKind": "focused-runtime-regression",
+  "formalCheckpoint": false,
+  "formalPublication": false,
+  "verifiedAt": "2026-08-17T15:06:00+08:00",
+  "scenario": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v2.1.0",
+    "baselineVersion": "v1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26"
+  },
+  "scope": [
+    "M06 report definition deduplication",
+    "M06 borrower/application generation entry",
+    "M06 to M02 data-preparation navigation",
+    "M05 report Agent business presentation",
+    "M05 Prompt/Skill/Tool/Published ontology penetration",
+    "three-viewport and same-origin regression"
+  ],
+  "automated": {
+    "command": "node --test tests/*.test.cjs",
+    "passed": 129,
+    "failed": 0,
+    "status": "PASS",
+    "syntaxCheck": "PASS"
+  },
+  "browserRegression": {
+    "origin": "http://127.0.0.1:4339",
+    "viewports": [
+      "1440x900",
+      "1280x720",
+      "390x844"
+    ],
+    "reportDefinitions": {
+      "enabledDefinitionCount": 1,
+      "status": "PASS"
+    },
+    "reportGeneration": {
+      "borrowerOptionCount": 4,
+      "readyBorrower": "中国广核电力股份有限公司",
+      "readyBorrowerOpensNativeSixStepWizard": true,
+      "pendingBorrowers": [
+        "中广核工程有限公司",
+        "岭澳核电有限公司",
+        "选择其他集团成员单位"
+      ],
+      "pendingBorrowerGenerationDisabled": true,
+      "dataPreparationRoute": "#module/data / #/resources",
+      "status": "PASS"
+    },
+    "agent": {
+      "enabled": true,
+      "businessContext": "财务公司贷款贷前调查报告生成",
+      "removedVisibleTechnicalCopy": [
+        "权威边界",
+        "场景运行参数与跨借款人复用",
+        "更换借款人不会改写本 Agent 或历史报告",
+        "由报告中心 C022 固定上下文继承",
+        "AG-SB-REPORT-GENERATION"
+      ],
+      "penetrableResources": [
+        "系统提示词",
+        "技能绑定",
+        "工具白名单",
+        "已发布本体绑定"
+      ],
+      "status": "PASS"
+    },
+    "layout": {
+      "outerHorizontalOverflow": false,
+      "iframeHorizontalOverflow": false,
+      "applicationConsoleErrors": 0,
+      "mobileMenuHandling": "v1.0.3 native collapse action",
+      "status": "PASS"
+    },
+    "sameOrigin": {
+      "s001Entry": "prototype-releases/v1.0.3/completed-run.html",
+      "s001Title": "S001 全链路运行记录 · 智财问策",
+      "s004ScenarioIdentityStable": true,
+      "status": "PASS"
+    }
+  },
+  "baselineIntegrity": {
+    "releaseDirectory": "designs/prototype-releases/v1.0.3",
+    "gitUnstagedDiff": false,
+    "gitStagedDiff": false,
+    "gitUntrackedEntries": false,
+    "releaseDirectoryManifestSha256": "9e5be9d04b059e720c9fa3f5be32e7a9b09da65f487c4611eefc539fda1cdd14",
+    "status": "PASS"
+  },
+  "portIsolation": {
+    "S004": 4339,
+    "S002": 4400,
+    "S003": [48123, 48124],
+    "conflict": false
+  },
+  "sideEffects": {
+    "v1_0_3Modified": false,
+    "s002Modified": false,
+    "s003Modified": false,
+    "historicalReportModified": false,
+    "historicalCheckpointModified": false,
+    "newFormalCheckpointCreated": false,
+    "newFormalReportPublished": false
+  },
+  "status": "PASS"
+}

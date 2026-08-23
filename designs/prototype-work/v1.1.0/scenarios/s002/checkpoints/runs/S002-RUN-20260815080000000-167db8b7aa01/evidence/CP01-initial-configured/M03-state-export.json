@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "ofw.s002.module-state-export.v2",
+  "moduleId": "M03",
+  "moduleName": "智能问数",
+  "owner": "智能问数",
+  "moduleVersion": "S002-M03-1.0.0",
+  "scenarioAdapterVersion": "S002-M03-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "baselineCheckpointBinding": {
+    "ref": "designs/scenario-checkpoints/baselines/v1.0.3/T056-baseline-checkpoint.json",
+    "sha256": "0a90f5f68dccaa7c18be71b4c82019616f19b0e359f931024652d95165ecd414"
+  },
+  "baselineModuleBinding": {
+    "baselineVersion": "1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "prototypePath": "designs/prototype-releases/v1.0.3/intelligent-query-prototype",
+    "exactVersion": "v1.0.3#5122f6b9bfab04af",
+    "treeSha256": "5122f6b9bfab04af794460fdba30d41b35fecd71d4d966472f66e7bc799c3e56",
+    "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+    "supportingPrototypeComponents": []
+  },
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815080000000-167db8b7aa01",
+    "formedAt": "2026-08-15T08:00:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "initial-configured",
+  "formedAt": "2026-08-15T08:00:00.000Z",
+  "stateDeclaration": "empty",
+  "emptyReason": "尚未到达 query-integrated；仅导出可恢复空状态",
+  "resources": [],
+  "ownerBoundary": {
+    "ownsOnly": [
+      "query-agent",
+      "prompt",
+      "skill",
+      "query-configuration",
+      "view-definition",
+      "query-run",
+      "query-result"
+    ],
+    "consumesByReference": true,
+    "copiesOtherModuleTruth": false
+  },
+  "demoDataMarker": "SYNTHETIC_FOR_DEMO",
+  "sideEffectPolicy": {
+    "allowHistoricalReplay": false,
+    "allowExternalDispatch": false
+  },
+  "runtimeState": {
+    "moduleId": "M03",
+    "moduleVersion": "S002-M03-1.0.0",
+    "progress": {
+      "queryRun": false,
+      "rulesRun": false
+    },
+    "queryRuns": [],
+    "ruleHits": [],
+    "ruleEvaluations": [],
+    "viewContracts": [],
+    "fixedView": null
+  }
+}

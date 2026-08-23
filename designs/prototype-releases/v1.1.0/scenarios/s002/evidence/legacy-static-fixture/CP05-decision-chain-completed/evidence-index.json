@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "ofw.s002.checkpoint-evidence-index.v1",
+  "checkpointId": "CP05",
+  "checkpointNode": "decision-chain-completed",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815010000000-a283fabf23f6",
+    "formedAt": "2026-08-15T01:00:00.000Z",
+    "status": "active"
+  },
+  "formedAt": "2026-08-15T01:25:00.000Z",
+  "files": [
+    {
+      "ref": "evidence/CP05-decision-chain-completed/feature-flags.json",
+      "sha256": "97b658d0691103131447437747e21425477ed29fdc781a4c69cd52d99f6136f2",
+      "kind": "feature-flags",
+      "owner": "平台公共层"
+    },
+    {
+      "ref": "evidence/CP05-decision-chain-completed/M01-owner-receipt.json",
+      "sha256": "e03cd1849bfa79b5be996a1e13d11c64c800356de32f65979fea2f050eecf970",
+      "kind": "owner-validation-receipt",
+      "owner": "本体管理"
+    },
+    {
+      "ref": "evidence/CP05-decision-chain-completed/M01-state-export.json",
+      "sha256": "86aab8d894f7cd4d9770cadf442ad3ac0d55f476269b32828dc19aa6488f75ee",
+      "kind": "module-state-export",
+      "owner": "本体管理"
+    },
+    {
+      "ref": "evidence/CP05-decision-chain-completed/M02-owner-receipt.json",
+      "sha256": "b32ece4aa82aa4b7378656b30b075a3c7c44a5cd846d28e8de8d9f109bb60b12",
+      "kind": "owner-validation-receipt",
+      "owner": "数据工程"
+    },
+    {
+      "ref": "evidence/CP05-decision-chain-completed/M02-state-export.json",
+      "sha256": "21dbf70bfa8d55f808ae1086fc5051201a7835c5a2e58423c92248ccd6cdf01a",
+      "kind": "module-state-export",
+      "owner": "数据工程"
+    },
+    {
+      "ref": "evidence/CP05-decision-chain-completed/M03-owner-receipt.json",
+      "sha256": "946a52adf296079eaa4b88e263c05f74b0c49c3ff56da2a4db997e828e3ce523",
+      "kind": "owner-validation-receipt",
+      "owner": "智能问数"
+    },
+    {
+      "ref": "evidence/CP05-decision-chain-completed/M03-state-export.json",
+      "sha256": "8859135f7eb157f29a73e58734a069930c1915220554ccf947830e7a94dcac48",
+      "kind": "module-state-export",
+      "owner": "智能问数"
+    },
+    {
+      "ref": "evidence/CP05-decision-chain-completed/M04-owner-receipt.json",
+      "sha256": "08cd537e1845412bc55d5a15896e3f14172d3678f6384f6329d41ed618235541",
+      "kind": "owner-validation-receipt",
+      "owner": "决策中心"
+    },
+    {
+      "ref": "evidence/CP05-decision-chain-completed/M04-state-export.json",
+      "sha256": "7760666730fdfa1fef774a66e7fbbdc2942ff1d89d237f9ccee1650b77c9db47",
+      "kind": "module-state-export",
+      "owner": "决策中心"
+    },
+    {
+      "ref": "evidence/CP05-decision-chain-completed/M05-owner-receipt.json",
+      "sha256": "e3e9e07e2cde44057c3d4c868780612a51f8dc7251ac9a3d82363de647767f07",
+      "kind": "owner-validation-receipt",
+      "owner": "Agent 应用"
+    },
+    {
+      "ref": "evidence/CP05-decision-chain-completed/M05-state-export.json",
+      "sha256": "83a9532f3fdd8c268c33b97bc9f8e29ff3177c7959a608be3aad0874c5790c5f",
+      "kind": "module-state-export",
+      "owner": "Agent 应用"
+    },
+    {
+      "ref": "evidence/CP05-decision-chain-completed/M06-owner-receipt.json",
+      "sha256": "a6901aea2406056f451ea7f8b3f00ba481ef6a5f85f37a1cb432a8c433ad8831",
+      "kind": "owner-validation-receipt",
+      "owner": "报告中心"
+    },
+    {
+      "ref": "evidence/CP05-decision-chain-completed/M06-state-export.json",
+      "sha256": "c47b42dcbde5d9e21aad6472a6772e643244e1962359d1ec950a65d8970c4970",
+      "kind": "module-state-export",
+      "owner": "报告中心"
+    },
+    {
+      "ref": "evidence/CP05-decision-chain-completed/scenario-configuration.json",
+      "sha256": "e21c791e88f1b9f778e3927b9fb340aa261a168f6a39445608fe0e4fef33fb18",
+      "kind": "scenario-configuration",
+      "owner": "S002场景包"
+    },
+    {
+      "ref": "evidence/CP05-decision-chain-completed/test-fixture.json",
+      "sha256": "efc044987eec7e74dfaab0375e07abd6678f3ef09c9c189e08e3e43d1a9459d8",
+      "kind": "test-fixture",
+      "owner": "S002场景包"
+    }
+  ],
+  "immutableIntent": true,
+  "conclusionBoundary": "清单只证明技术引用和 Owner 回执可定位，不代表业务验收通过"
+}

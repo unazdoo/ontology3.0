@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 2,
+  "resourceType": "T056",
+  "resourceName": "场景快照",
+  "checkpointType": "frozen-implementation-reference-baseline",
+  "checkpointId": "BSL-OFW-V110-94ABD0E991B7",
+  "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+  "identitySeed": {
+    "source": "v1.1.0-rc.10 RC10-INTEGRITY.json SHA-256 prefix",
+    "sha256": "94abd0e991b7f71a504bd1f517879d65fe8c6ecf526a82b119fd8ba949cff233"
+  },
+  "status": "locked",
+  "formedAt": "2026-08-24T00:00:00+08:00",
+  "owner": {
+    "catalogAndManifest": "平台公共层",
+    "baselineBindingAndMigrationApproval": "平台总控",
+    "moduleStateAndEvidence": "M01—M06 各资源 Owner"
+  },
+  "contract": "C034",
+  "decisionRefs": [
+    "D076",
+    "D077",
+    "D079",
+    "D100"
+  ],
+  "baseline": {
+    "version": "1.1.0",
+    "sourceCandidate": "v1.1.0-rc.10",
+    "sourceProductBaseline": "v1.0.7",
+    "parentVersion": "1.0.3",
+    "governanceBaselineVersion": "1.0.3",
+    "governanceBaselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "path": "designs/prototype-releases/v1.1.0",
+    "entry": "designs/prototype-releases/v1.1.0/s001-e2e-integration/index.html",
+    "manifest": "designs/prototype-releases/v1.1.0/manifest.json",
+    "manifestSha256": "4127512eeb9d29c37171937ac49f301c060fc4e95e4454830793251bc07822bd",
+    "versionFileSha256": "3fb0bf716d787395cade304bed6207d6bb18a713ba379621ce17bf123736aefb",
+    "releaseTreeSha256": "9e35b04702b42ab1622655ed949d62f7df052b7eb149133c8413e7f26ee225d9",
+    "releaseFileCount": 12809,
+    "releaseBytes": 353120659,
+    "gitTag": "prototype-v1.1.0-frozen",
+    "rollbackVersion": "1.0.3",
+    "immutable": true
+  },
+  "scenarioScope": [
+    {
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceScenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+      "historicalViewMode": "read-only-source-evidence",
+      "recoveryRule": "正式恢复必须克隆为新的 scenarioRunId，不得覆盖来源轮次"
+    },
+    {
+      "scenarioId": "S002",
+      "scenarioVersion": "S002-v1",
+      "sourceScenarioRunId": "S002-RUN-20260815080000000-6ef5d0ef82f9",
+      "historicalViewMode": "read-only-source-evidence",
+      "recoveryRule": "正式恢复必须克隆为新的 scenarioRunId，不得覆盖来源轮次"
+    },
+    {
+      "scenarioId": "S003",
+      "scenarioVersion": "S003-v1",
+      "sourceScenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+      "historicalViewMode": "read-only-source-evidence",
+      "recoveryRule": "正式恢复必须克隆为新的 scenarioRunId，不得覆盖来源轮次"
+    },
+    {
+      "scenarioId": "S004",
+      "scenarioVersion": "S004-v2.1.0",
+      "sourceScenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+      "historicalViewMode": "read-only-source-evidence",
+      "recoveryRule": "正式恢复必须克隆为新的 scenarioRunId，不得覆盖来源轮次"
+    }
+  ],
+  "prototypeBuild": {
+    "version": "1.1.0",
+    "sourceCandidate": "v1.1.0-rc.10",
+    "componentCount": 13,
+    "entryCount": 10,
+    "fileCount": 12809,
+    "integrityStatus": "verified-by-manifest-v2"
+  },
+  "platformComponents": [
+    {
+      "name": "统一产品 Shell",
+      "prototypePath": "designs/prototype-releases/v1.1.0/s001-e2e-integration",
+      "treeSha256": "c3ce3e5f3564f9d3ca7d3d6918028e5eedbe1c8af7ef18bca4c9a3ba490fc082"
+    },
+    {
+      "name": "场景公共 Foundation",
+      "prototypePath": "designs/prototype-releases/v1.1.0/foundation",
+      "treeSha256": "e8a42d99e512e248675a2704d9340e21aa7270290827b6eaba7e903e16f52e18"
+    },
+    {
+      "name": "一级仪表盘",
+      "prototypePath": "designs/prototype-releases/v1.1.0/dashboard",
+      "treeSha256": "7fdec55c12ed6fe22a2571a0dfd215cda9bc634f0111bca9b298f379d2be97b7"
+    }
+  ],
+  "moduleVersions": [
+    {
+      "module": "M01",
+      "name": "本体管理",
+      "owner": "本体管理",
+      "prototypePath": "designs/prototype-releases/v1.1.0/ontology-management-review",
+      "treeSha256": "b2e3583c34b8431969467483e1f2a85f64e3ea8f255508a1c309361fb5035029",
+      "exactVersion": "v1.1.0#b2e3583c34b84319"
+    },
+    {
+      "module": "M02",
+      "name": "数据工程",
+      "owner": "数据工程",
+      "prototypePath": "designs/prototype-releases/v1.1.0/data-engineering-prototype-review",
+      "treeSha256": "026a8f0e43c7b8c3c2c47c625e6763e6fe1cc414679b968fb079426b9baf95e3",
+      "exactVersion": "v1.1.0#026a8f0e43c7b8c3"
+    },
+    {
+      "module": "M03",
+      "name": "智能问数",
+      "owner": "智能问数",
+      "prototypePath": "designs/prototype-releases/v1.1.0/intelligent-query-prototype",
+      "treeSha256": "f957a9f990cd3a8726c54b0cf5d3247a33a968fc72d043cd0aaf2fe1d098b202",
+      "exactVersion": "v1.1.0#f957a9f990cd3a87"
+    },
+    {
+      "module": "M04",
+      "name": "决策中心",
+      "owner": "决策中心",
+      "prototypePath": "designs/prototype-releases/v1.1.0/decision-center-prototype",
+      "treeSha256": "4c1662d8b3c563413fd1fe00a00ff35341df9dd2b07f65289a38648184b26005",
+      "exactVersion": "v1.1.0#4c1662d8b3c56341"
+    },
+    {
+      "module": "M05",
+      "name": "Agent 应用",
+      "owner": "Agent 应用",
+      "prototypePath": "designs/prototype-releases/v1.1.0/agent-application",
+      "treeSha256": "9e77471a5258f57870b447c05b434326beb27eba96715ef363883bd94b68ed5f",
+      "exactVersion": "v1.1.0#9e77471a5258f578"
+    },
+    {
+      "module": "M06",
+      "name": "报告中心",
+      "owner": "报告中心",
+      "prototypePath": "designs/prototype-releases/v1.1.0/report-center",
+      "treeSha256": "6d58b15edf41c2aeeae74ec69c469d26997bc195dd36be84dde4bd52d81e8fdc",
+      "exactVersion": "v1.1.0#6d58b15edf41c2ae"
+    }
+  ],
+  "lockedReferences": {
+    "scenarioRegistry": "designs/prototype-releases/v1.1.0/SCENARIO-REGISTRY.json",
+    "checkpointRegistry": "designs/prototype-releases/v1.1.0/CHECKPOINT-REGISTRY.md",
+    "regressionMatrix": "designs/prototype-releases/v1.1.0/COMPOSITE-REGRESSION-MATRIX.json",
+    "sourceCandidateIntegrity": "designs/prototype-releases/v1.1.0/RC10-INTEGRITY.json",
+    "compositeRunEvidence": "designs/prototype-releases/v1.1.0/COMPOSITE-RUN-RC4.json"
+  },
+  "runtimeBoundary": {
+    "runtimeSnapshotIncluded": false,
+    "formalFourScenarioRecoveryReady": false,
+    "historicalS001RuntimeReference": {
+      "path": "runtime-snapshots/S001-RUN-20260816081748567-705ac89fb83a.runtime.json",
+      "mode": "read-only-source-evidence"
+    },
+    "s004PublicCheckpoint": "not-created",
+    "meaning": "本清单锁定产品代码、模块树、四个来源轮次和证据索引，不声称已经形成四场景生产级可恢复运行快照。"
+  },
+  "moduleInterfaceReadiness": {
+    "status": "contract-confirmed-implementation-evidence-pending",
+    "meaning": "M01—M06 正式 C034 导出、校验、克隆恢复和隔离回归接口证据仍待项目实施。"
+  },
+  "immutability": {
+    "detachedDigest": "T056-baseline-checkpoint.sha256",
+    "releaseManifest": "designs/prototype-releases/v1.1.0/manifest.json",
+    "verificationScript": "verify-baseline.mjs",
+    "changeRule": "本清单和发布目录不得原地修改；任何变化必须形成新版本和新 baselineSnapshotId。"
+  },
+  "acceptance": {
+    "acceptanceReady": false,
+    "meaning": "仅冻结实施参考原型，不表示用户评审、模块评审、场景验收、生产技术联调或一期验收通过。"
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "ofw.s004.deterministic-verification.v1",
+  "verificationRunId": "VERIFY-S004-20260815-0001",
+  "owner": "M06",
+  "status": "PASS",
+  "verifiedAt": "2026-08-15T13:07:00.000Z",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "checks": [
+    {
+      "checkId": "VER-ID-001",
+      "name": "申请、借款人和报告稳定身份一致",
+      "result": "PASS"
+    },
+    {
+      "checkId": "VER-MEMBER-001",
+      "name": "集团成员ACTIVE",
+      "expected": "ACTIVE",
+      "actual": "ACTIVE",
+      "result": "PASS"
+    },
+    {
+      "checkId": "VER-AMOUNT-001",
+      "name": "申请金额不超过资金需求上限",
+      "requestedAmount": "100000.00",
+      "maximumAmount": "107679.67",
+      "result": "PASS"
+    },
+    {
+      "checkId": "VER-FACILITY-001",
+      "name": "申请金额不超过内部可用授信",
+      "requestedAmount": "100000.00",
+      "availableFacility": "180000.00",
+      "result": "PASS"
+    },
+    {
+      "checkId": "VER-APPROVAL-001",
+      "name": "人工批准额度不超过申请额及资金需求上限",
+      "approvedAmount": "50000.00",
+      "requestedAmount": "100000.00",
+      "maximumAmount": "107679.67",
+      "result": "PASS"
+    },
+    {
+      "checkId": "VER-RATE-001",
+      "name": "申请与人工授信固定利率一致",
+      "expected": "0.0235",
+      "actual": "0.0235",
+      "result": "PASS"
+    },
+    {
+      "checkId": "VER-SOURCE-001",
+      "name": "official-public与synthetic-demo分层",
+      "result": "PASS"
+    },
+    {
+      "checkId": "VER-CALC-001",
+      "name": "资金需求使用全精度规则版本",
+      "expected": "S004-FUNDING-V2-FULL-PRECISION",
+      "actual": "S004-FUNDING-V2-FULL-PRECISION",
+      "result": "PASS"
+    },
+    {
+      "checkId": "VER-HUMAN-001",
+      "name": "风险判断、授信决定、额度和条件均来自human-confirmed",
+      "result": "PASS"
+    },
+    {
+      "checkId": "VER-AGENT-001",
+      "name": "Agent未重算Metric、未生成授信决定、未发布报告",
+      "result": "PASS"
+    },
+    {
+      "checkId": "VER-ACTION-001",
+      "name": "未创建Action Request、审批通知或待办",
+      "expectedCount": 0,
+      "actualCount": 0,
+      "result": "PASS"
+    },
+    {
+      "checkId": "VER-ANCHOR-001",
+      "name": "六个稳定报告锚点完整",
+      "expectedCount": 6,
+      "actualCount": 6,
+      "result": "PASS"
+    }
+  ],
+  "qualityRef": "artifacts/data/data-quality.json",
+  "humanConfirmationRef": "artifacts/report/human-confirmation.json",
+  "agentDraftRef": "artifacts/agent/draft-output.json",
+  "publicationEligible": true
+}

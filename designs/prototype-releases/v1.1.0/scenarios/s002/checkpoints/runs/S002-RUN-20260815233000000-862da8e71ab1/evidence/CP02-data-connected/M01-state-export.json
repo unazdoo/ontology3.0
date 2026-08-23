@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "ofw.s002.module-state-export.v2",
+  "moduleId": "M01",
+  "moduleName": "本体管理",
+  "owner": "本体管理",
+  "moduleVersion": "S002-M01-1.0.0",
+  "scenarioAdapterVersion": "S002-M01-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "baselineCheckpointBinding": {
+    "ref": "designs/scenario-checkpoints/baselines/v1.0.3/T056-baseline-checkpoint.json",
+    "sha256": "0a90f5f68dccaa7c18be71b4c82019616f19b0e359f931024652d95165ecd414"
+  },
+  "baselineModuleBinding": {
+    "baselineVersion": "1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "prototypePath": "designs/prototype-releases/v1.0.3/ontology-management-review",
+    "exactVersion": "v1.0.3#75870802dbcf5f3c",
+    "treeSha256": "75870802dbcf5f3ced2b8c6efaca41f01ae1e57fc34893ef44a14710633142fd",
+    "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+    "supportingPrototypeComponents": [
+      {
+        "prototypePath": "designs/prototype-releases/v1.0.3/ontology-management-prototype",
+        "treeSha256": "e0591568e3c52f464b53b295b8106056dea531c9f407c056bee6c21191645443",
+        "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)"
+      }
+    ]
+  },
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815233000000-862da8e71ab1",
+    "formedAt": "2026-08-15T23:30:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "data-connected",
+  "formedAt": "2026-08-15T23:32:00.000Z",
+  "stateDeclaration": "empty",
+  "emptyReason": "尚未到达 published-switched；仅导出可恢复空状态",
+  "resources": [],
+  "ownerBoundary": {
+    "ownsOnly": [
+      "ontology-object",
+      "ontology-relationship",
+      "metric",
+      "rule",
+      "action-type",
+      "published-binding"
+    ],
+    "consumesByReference": true,
+    "copiesOtherModuleTruth": false
+  },
+  "demoDataMarker": "SYNTHETIC_FOR_DEMO",
+  "sideEffectPolicy": {
+    "allowHistoricalReplay": false,
+    "allowExternalDispatch": false
+  },
+  "runtimeState": {
+    "moduleId": "M01",
+    "moduleVersion": "S002-M01-1.0.0",
+    "progress": {
+      "mappingApplied": false,
+      "ontologyPublished": false
+    },
+    "mappingVersion": null,
+    "publishedOntology": null
+  }
+}

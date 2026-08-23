@@ -1,0 +1,409 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp12-result.v1",
+  "runId": "20260816T102208169Z-5f630812",
+  "formedAt": "2026-08-16T10:22:08.170Z",
+  "baseUrl": "http://127.0.0.1:4333/s001-e2e-integration/index.html?scenarioId=S003#home",
+  "s001Url": "http://127.0.0.1:4333/s001-e2e-integration/index.html?scenarioId=S001#home",
+  "gitHead": "5620618386b1427cbf0a19877ff00b1b44dd249e",
+  "playwrightNodeModules": "/Users/domi/.codex/skills/baoyu-design/agents/gen-pptx/node_modules",
+  "headless": true,
+  "cases": [
+    {
+      "id": "clean-state",
+      "label": "干净态启动与正式 Published 健康检查",
+      "status": "passed",
+      "startedAt": "2026-08-16T10:22:08.374Z",
+      "durationMs": 897,
+      "details": {
+        "scenarioContext": {
+          "scenarioId": "S003",
+          "scenarioVersion": "S003-v1",
+          "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+          "formedAt": "2026-08-15T13:30:00.000Z",
+          "status": "active"
+        },
+        "runtimeHealth": "healthy",
+        "authorityMode": "published-evidence"
+      },
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": null,
+      "error": null,
+      "completedAt": "2026-08-16T10:22:09.271Z"
+    },
+    {
+      "id": "legacy-v0",
+      "label": "已知 browser-projection.v0 显式迁移并保留恢复回执",
+      "status": "passed",
+      "startedAt": "2026-08-16T10:22:09.310Z",
+      "durationMs": 978,
+      "details": {
+        "injected": {
+          "key": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m02:factor-inputs%2Fcurrent",
+          "mutationMode": "legacy-v0"
+        },
+        "health": {
+          "moduleId": "M02",
+          "scope": "m02",
+          "key": "factor-inputs/current",
+          "status": "migrated",
+          "readable": true,
+          "writable": true,
+          "detail": "旧版当前工作投影已显式迁移；原始记录保存在恢复回执中。",
+          "checkedAt": "2026-08-16T10:22:09.774Z",
+          "physicalKey": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m02:factor-inputs%2Fcurrent",
+          "receiptId": "PR-S003-20260816102209773-1701f99bfc32"
+        },
+        "receiptId": "PR-S003-20260816102209773-1701f99bfc32"
+      },
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": null,
+      "error": null,
+      "completedAt": "2026-08-16T10:22:10.288Z"
+    },
+    {
+      "id": "unknown-schema",
+      "label": "未知投影 schema 原样隔离并从正式输入重建 Draft",
+      "status": "passed",
+      "startedAt": "2026-08-16T10:22:10.345Z",
+      "durationMs": 1041,
+      "details": {
+        "injected": {
+          "key": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m02:factor-inputs%2Fcurrent",
+          "mutationMode": "unknown-schema"
+        },
+        "health": {
+          "moduleId": "M02",
+          "scope": "m02",
+          "key": "factor-inputs/current",
+          "status": "isolated-rebuilt",
+          "readable": true,
+          "writable": true,
+          "detail": "不兼容工作投影已原样隔离，并在同一 scenarioRunId 下从正式 Published 输入重建 Draft。",
+          "checkedAt": "2026-08-16T10:22:10.789Z",
+          "physicalKey": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m02:factor-inputs%2Fcurrent",
+          "receiptId": "PR-S003-20260816102210788-1d6434547a8c"
+        },
+        "receiptId": "PR-S003-20260816102210788-1d6434547a8c"
+      },
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": null,
+      "error": null,
+      "completedAt": "2026-08-16T10:22:11.386Z"
+    },
+    {
+      "id": "m02-draft-m01-published",
+      "label": "M02 Draft 异常不影响 M01 Published 只读资源",
+      "status": "passed",
+      "startedAt": "2026-08-16T10:22:11.425Z",
+      "durationMs": 1055,
+      "details": {
+        "injected": {
+          "key": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m02:factor-inputs%2Fcurrent",
+          "mutationMode": "invalid-enterprise"
+        },
+        "m02Health": {
+          "moduleId": "M02",
+          "scope": "m02",
+          "key": "factor-inputs/current",
+          "status": "isolated-rebuilt",
+          "readable": true,
+          "writable": true,
+          "detail": "不兼容工作投影已原样隔离，并在同一 scenarioRunId 下从正式 Published 输入重建 Draft。",
+          "checkedAt": "2026-08-16T10:22:11.974Z",
+          "physicalKey": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m02:factor-inputs%2Fcurrent",
+          "receiptId": "PR-S003-20260816102211973-c4c5abed44c7"
+        },
+        "m01": {
+          "status": "healthy",
+          "formalRead": "ready",
+          "draftProjection": {
+            "moduleId": "M01",
+            "scope": "m01",
+            "key": "config/current",
+            "status": "missing",
+            "readable": true,
+            "writable": true,
+            "detail": "当前工作投影尚未形成；正式 Published 资源可独立读取。",
+            "checkedAt": "2026-08-16T10:22:11.974Z"
+          },
+          "detail": "正式 Published 模型可独立读取。"
+        }
+      },
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": null,
+      "error": null,
+      "completedAt": "2026-08-16T10:22:12.480Z"
+    },
+    {
+      "id": "native-navigation",
+      "label": "M01—M06 原生模块导航和场景上下文连续传递",
+      "status": "failed",
+      "startedAt": "2026-08-16T10:22:12.527Z",
+      "durationMs": 4534,
+      "details": {
+        "modules": [
+          {
+            "moduleId": "data",
+            "url": "http://127.0.0.1:4333/data-engineering-prototype-review/review-v3/%E6%96%B9%E6%A1%88B2.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/resources",
+            "matchedTexts": [
+              "数据工程",
+              "调节因子"
+            ]
+          },
+          {
+            "moduleId": "ontology",
+            "url": "http://127.0.0.1:4333/ontology-management-review/canvas-first/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#modeling",
+            "matchedTexts": [
+              "本体建模"
+            ]
+          },
+          {
+            "moduleId": "query",
+            "url": "http://127.0.0.1:4333/intelligent-query-prototype/review-next/conversation-workspace/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/ask",
+            "matchedTexts": [
+              "智能问数",
+              "Published"
+            ]
+          },
+          {
+            "moduleId": "decision",
+            "url": "http://127.0.0.1:4333/decision-center-prototype/review-v2/action-portfolio.html?prototypeBuild=20260814-02&scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#workbench",
+            "matchedTexts": [
+              "决策中心",
+              "待我决策"
+            ]
+          },
+          {
+            "moduleId": "agent",
+            "url": "http://127.0.0.1:4333/agent-application/Agent%E5%BA%94%E7%94%A8.html?prototypeBuild=20260814-17&scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/agents",
+            "matchedTexts": [
+              "Agent",
+              "一期不建设专属 Agent"
+            ]
+          },
+          {
+            "moduleId": "report",
+            "url": "http://127.0.0.1:4333/report-center/review-lifecycle/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/lifecycle",
+            "matchedTexts": [
+              "报告中心",
+              "S003"
+            ]
+          }
+        ]
+      },
+      "diagnostics": {
+        "consoleErrors": [
+          {
+            "text": "Warning: %s must not return anything besides a function, which is used for clean-up.%s%s useEffect  You returned: true \n    at App (<anonymous>:5771:35)",
+            "location": {
+              "url": "http://127.0.0.1:4333/intelligent-query-prototype/vendor/react-dom.development.js",
+              "line": 72,
+              "column": 31,
+              "lineNumber": 72,
+              "columnNumber": 31
+            }
+          }
+        ],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": "evidence/browser-cp12/20260816T102208169Z-5f630812/native-navigation.png",
+      "error": {
+        "name": "AssertionError",
+        "message": "console error 非零: [{\"text\":\"Warning: %s must not return anything besides a function, which is used for clean-up.%s%s useEffect  You returned: true \\n    at App (<anonymous>:5771:35)\",\"location\":{\"url\":\"http://127.0.0.1:4333/intelligent-query-prototype/vendor/react-dom.development.js\",\"line\":72,\"column\":31,\"lineNumber\":72,\"columnNumber\":31}}]\n\n1 !== 0\n",
+        "stack": "AssertionError [ERR_ASSERTION]: console error 非零: [{\"text\":\"Warning: %s must not return anything besides a function, which is used for clean-up.%s%s useEffect  You returned: true \\n    at App (<anonymous>:5771:35)\",\"location\":{\"url\":\"http://127.0.0.1:4333/intelligent-query-prototype/vendor/react-dom.development.js\",\"line\":72,\"column\":31,\"lineNumber\":72,\"columnNumber\":31}}]\n\n1 !== 0\n\n    at assertDiagnosticsClean (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp12.cjs:130:10)\n    at executeCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp12.cjs:489:5)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp12.cjs:543:22)"
+      },
+      "completedAt": "2026-08-16T10:22:17.061Z"
+    },
+    {
+      "id": "s001-isolation",
+      "label": "S003 操作不污染 S001 当前上下文和固定键",
+      "status": "passed",
+      "startedAt": "2026-08-16T10:22:17.120Z",
+      "durationMs": 859,
+      "details": {
+        "s003RerunId": "S003-RUN-20260816102217470-ad1155ef895d",
+        "s001Context": {
+          "scenarioId": "S001",
+          "scenarioVersion": "S001-v1",
+          "scenarioRunId": "S001-RUN-20260816102217130-702bfd8022f7",
+          "formedAt": "2026-08-16T10:22:17.130Z",
+          "status": "active"
+        }
+      },
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": null,
+      "error": null,
+      "completedAt": "2026-08-16T10:22:17.979Z"
+    },
+    {
+      "id": "historical-no-side-effects",
+      "label": "历史查看禁止 Action Request/待办/通知/审批副作用",
+      "status": "passed",
+      "startedAt": "2026-08-16T10:22:18.027Z",
+      "durationMs": 618,
+      "details": {
+        "checkpoint": "CP11",
+        "historicalRunId": "S003-RUN-20260815133000000-c03503000001",
+        "blocked": {
+          "blocked": true,
+          "message": "历史快照或隔离查看不得重放 Action Request。"
+        }
+      },
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": null,
+      "error": null,
+      "completedAt": "2026-08-16T10:22:18.645Z"
+    },
+    {
+      "id": "restore-no-side-effects",
+      "label": "克隆恢复创建新 runId 且不重放历史副作用",
+      "status": "passed",
+      "startedAt": "2026-08-16T10:22:18.694Z",
+      "durationMs": 769,
+      "details": {
+        "checkpoint": "CP06",
+        "context": {
+          "scenarioId": "S003",
+          "scenarioVersion": "S003-v1",
+          "scenarioRunId": "S003-RUN-20260816102219071-66716780c797",
+          "formedAt": "2026-08-16T10:22:19.071Z",
+          "status": "restored"
+        },
+        "blocked": {
+          "blocked": true,
+          "message": "恢复、历史或已关闭运行不得创建 Action Request、通知或负责人待办。"
+        }
+      },
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": null,
+      "error": null,
+      "completedAt": "2026-08-16T10:22:19.463Z"
+    },
+    {
+      "id": "regression-no-side-effects",
+      "label": "隔离回归创建新 runId 且不产生正式副作用",
+      "status": "passed",
+      "startedAt": "2026-08-16T10:22:19.511Z",
+      "durationMs": 842,
+      "details": {
+        "checkpoint": "CP06",
+        "context": {
+          "scenarioId": "S003",
+          "scenarioVersion": "S003-v1",
+          "scenarioRunId": "S003-RUN-20260816102219864-4bed9de1ed6c",
+          "formedAt": "2026-08-16T10:22:19.864Z",
+          "status": "regression"
+        },
+        "blocked": {
+          "blocked": true,
+          "message": "隔离回归为演练模式，不得创建 Action Request、通知或负责人待办。"
+        }
+      },
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": null,
+      "error": null,
+      "completedAt": "2026-08-16T10:22:20.353Z"
+    },
+    {
+      "id": "rerun-no-side-effects",
+      "label": "快速重跑只形成工作投影且不产生正式副作用",
+      "status": "passed",
+      "startedAt": "2026-08-16T10:22:20.404Z",
+      "durationMs": 805,
+      "details": {
+        "context": {
+          "scenarioId": "S003",
+          "scenarioVersion": "S003-v1",
+          "scenarioRunId": "S003-RUN-20260816102220733-b8f84f705c1e",
+          "formedAt": "2026-08-16T10:22:20.733Z",
+          "status": "active"
+        },
+        "authorityMode": "published-runtime",
+        "blocked": {
+          "blocked": true,
+          "message": "M04 Action Request 已阻断：当前结果是浏览器工作投影，尚未提升为正式 Published 证据。"
+        }
+      },
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": null,
+      "error": null,
+      "completedAt": "2026-08-16T10:22:21.209Z"
+    }
+  ],
+  "totals": {
+    "cases": 10,
+    "passed": 9,
+    "failed": 1,
+    "consoleErrors": 1,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "httpErrors": 0,
+    "ignoredAbortedRequests": 0
+  },
+  "errorBudget": {
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "httpErrors": 0
+  },
+  "checkpointCreated": false,
+  "browserVersion": "149.0.7827.55",
+  "completedAt": "2026-08-16T10:22:21.235Z"
+}

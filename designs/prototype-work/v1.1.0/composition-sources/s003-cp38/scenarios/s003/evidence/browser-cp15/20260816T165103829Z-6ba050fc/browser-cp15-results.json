@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp15-result.v2",
+  "runId": "20260816T165103829Z-6ba050fc",
+  "formedAt": "2026-08-16T16:53:58.327Z",
+  "origin": "http://127.0.0.1:4333",
+  "formalSourceScenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+  "browserVersion": "149.0.7827.55",
+  "cases": [
+    {
+      "id": "shell-and-modules",
+      "status": "failed",
+      "durationMs": 33204,
+      "error": {
+        "name": "Error",
+        "message": "query 未进入基线原生页面：http://127.0.0.1:4333/intelligent-query-prototype/review-next/conversation-workspace/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/ask",
+        "stack": "Error: query 未进入基线原生页面：http://127.0.0.1:4333/intelligent-query-prototype/review-next/conversation-workspace/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/ask\n    at waitFrame (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:96:9)\n    at async caseShellAndModules (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:118:19)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:514:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:539:17)"
+      }
+    },
+    {
+      "id": "m02-native",
+      "status": "failed",
+      "durationMs": 2443,
+      "error": {
+        "name": "AssertionError",
+        "message": "The input did not match the regular expression /评估时点/. Input:\n\n'工作区\\n' +\n  '数据资源\\n' +\n  '数据管道\\n' +\n  '最近运行\\n' +\n  'S003-M02-PIPELINE-RUN-20260815-001 · 成功 · 消费就绪\\n' +\n  '融资数据已可消费\\n' +\n  '企业债务风险评估模版\\n' +\n  '\\n' +\n  'S003 财务工作簿来源；当前管道只消费财务数据成员，企业因子由独立在线输入源维护。\\n' +\n  '\\n' +\n  '返回目录\\n' +\n  '查看修订证据\\n' +\n  '查看来源内容核验证据\\n' +\n  '编辑设置\\n' +\n  '手工工作簿 · 按需上传工作簿\\n' +\n  '正式来源已登记 · 当前快照已确认\\n' +\n  '\\n' +\n  '正式来源 S003-M02-SOURCE-XLSX-20251231 · SHA-256 dbdab9c870d7f2e456c3a9e0f91b340b372da6d40eb241551e0ee8848cac42a0\\n' +\n  '\\n' +\n  '最近取得\\n' +\n  '2026-08-15T13:04\\n' +\n  '当前数据截至\\n' +\n  '2025-12-31\\n' +\n  '快照总数\\n' +\n  '1 个\\n' +\n  '取得方式\\n' +\n  '按需上传完整工作簿\\n' +\n  '概览\\n' +\n  '内容与字段\\n' +\n  '快照历史\\n' +\n  '引用关系\\n' +\n  '设置\\n' +\n  '正式快照内容\\n' +\n  '\\n' +\n  '按正式快照 → 逻辑成员 → 字段与样例逐层查看。\\n' +\n  '\\n' +\n  '1 个业务输入 Sheet\\n' +\n  '当前快照\\n' +\n  '企业债务风险评估模版_S003兼容版.xlsx · 内容已核验\\n' +\n  '快照、数据截至、结构与有限样例已按当前场景身份锁定；历史记录不会被后续上传覆盖。\\n' +\n  '当前输入范围\\n' +\n  '原附件调节因子 Sheet 只作为历史初始化依据；当前企业因子取值由独立在线输入源维护。\\n' +\n  '工作簿\\n' +\n  '企业债务风险评估模版_S003兼容版.xlsx\\n' +\n  '已取得文件包含财务数据和调节因子两个业务输入 Sheet；内容已核验，但尚未受控登记为正式快照。\\n' +\n  '财务数据\\n' +\n  '21 条 · 27 列 · 表头第 1 行\\n' +\n  '未纳入当前管道输入\\n' +\n  '调节因子\\n' +\n  '财务输入\\n' +\n  '财务数据\\n' +\n  'A1:AA22\\n' +\n  '21 条 · 27 列\\n' +\n  '字段结构\\n' +\n  '27 个字段\\n' +\n  '#\\t字段名称\\t推断类型\\t空值概况\\t来源位置\\n' +\n  '1\\t单位名称\\t文本\\t已核验文件统计\\t财务数据 · 第 1 列\\n' +\n  '2\\t流动负债合计_年初余额\\t数值\\t已核验文件统计\\t财务数据 · 第 2 列\\n' +\n  '3\\t流动负债合计_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 3 列\\n' +\n  '4\\t营业总收入_本年累计数\\t数值\\t已核验文件统计\\t财务数据 · 第 4 列\\n' +\n  '5\\t营业利润_本年累计数\\t数值\\t已核验文件统计\\t财务数据 · 第 5 列\\n' +\n  '6\\t净利润_本年累计数\\t数值\\t已核验文件统计\\t财务数据 · 第 6 列\\n' +\n  '7\\t交易性金融资产_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 7 列\\n' +\n  '8\\t利润总额_上年同期累计数\\t数值\\t已核验文件统计\\t财务数据 · 第 8 列\\n' +\n  '9\\t利润总额_本年累计数\\t数值\\t已核验文件统计\\t财务数据 · 第 9 列\\n' +\n  '10\\t存货_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 10 列\\n' +\n  '11\\t存货_年初余额\\t数值\\t已核验文件统计\\t财务数据 · 第 11 列\\n' +\n  '12\\t实收资本（股本）_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 12 列\\n' +\n  '13\\t应收账款_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 13 列\\n' +\n  '14\\t应收账款_年初余额\\t数值\\t已核验文件统计\\t财务数据 · 第 14 列\\n' +\n  '15\\t所有者权益（或股东权益）合计_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 15 列\\n' +\n  '16\\t所有者权益（或股东权益）合计_年初余额\\t数值\\t已核验文件统计\\t财务数据 · 第 16 列\\n' +\n  '17\\t流动资产合计_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 17 列\\n' +\n  '18\\t经营活动产生的现金流量净额_本年累计数\\t文本\\t已核验文件统计\\t财务数据 · 第 18 列\\n' +\n  '19\\t经营活动现金流入小计_本年累计数\\t文本\\t已核验文件统计\\t财务数据 · 第 19 列\\n' +\n  '20\\t营业成本_本年累计数\\t数值\\t已核验文件统计\\t财务数据 · 第 20 列\\n' +\n  '21\\t负债合计_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 21 列\\n' +\n  '22\\t财务费用_本年累计数\\t数值\\t已核验文件统计\\t财务数据 · 第 22 列\\n' +\n  '23\\t货币资金_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 23 列\\n' +\n  '24\\t资产总计_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 24 列\\n' +\n  '25\\t资产总计_年初余额(上年)\\t数值\\t已核验文件统计\\t财务数据 · 第 25 列\\n' +\n  '26\\t利润总额_上年同期累计数(上年)\\t数值\\t已核验文件统计\\t财务数据 · 第 26 列\\n' +\n  '27\\t利润总额_本年累计数(上年)\\t数值\\t已核验文件统计\\t财务数据 · 第 27 列\\n' +\n  '数据样例\\n' +\n  '最多 5 行\\n' +\n  '单位名称\\t流动负债合计_期末余额\\t营业总收入_本年累计数\\t利润总额_本年累计数\\t资产总计_期末余额\\t利润总额_本年累计数(上年)\\n' +\n  '风电测试公司01\\t157,604,723.54\\t165,253,679.04\\t29,592,164.73\\t2,401,237,335.86\\t80,023,640.21\\n' +\n  '风电测试公司02\\t149,465,816.73\\t139,232,065.41\\t24,363,333.89\\t1,963,645,551.06\\t67,060,516.92\\n' +\n  '风电测试公司03\\t156,736,382.21\\t160,630,633.82\\t29,776,922.02\\t2,354,869,416.43\\t73,009,250.98\\n' +\n  '风电测试公司04\\t151,003,728.71\\t157,375,682.06\\t30,099,628.66\\t2,309,930,447.52\\t74,685,322.48\\n' +\n  '风电测试公司05\\t193,741,948.78\\t131,791,641.47\\t13,662,164.91\\t1,885,051,891.18\\t59,759,475.46'\n",
+        "stack": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /评估时点/. Input:\n\n'工作区\\n' +\n  '数据资源\\n' +\n  '数据管道\\n' +\n  '最近运行\\n' +\n  'S003-M02-PIPELINE-RUN-20260815-001 · 成功 · 消费就绪\\n' +\n  '融资数据已可消费\\n' +\n  '企业债务风险评估模版\\n' +\n  '\\n' +\n  'S003 财务工作簿来源；当前管道只消费财务数据成员，企业因子由独立在线输入源维护。\\n' +\n  '\\n' +\n  '返回目录\\n' +\n  '查看修订证据\\n' +\n  '查看来源内容核验证据\\n' +\n  '编辑设置\\n' +\n  '手工工作簿 · 按需上传工作簿\\n' +\n  '正式来源已登记 · 当前快照已确认\\n' +\n  '\\n' +\n  '正式来源 S003-M02-SOURCE-XLSX-20251231 · SHA-256 dbdab9c870d7f2e456c3a9e0f91b340b372da6d40eb241551e0ee8848cac42a0\\n' +\n  '\\n' +\n  '最近取得\\n' +\n  '2026-08-15T13:04\\n' +\n  '当前数据截至\\n' +\n  '2025-12-31\\n' +\n  '快照总数\\n' +\n  '1 个\\n' +\n  '取得方式\\n' +\n  '按需上传完整工作簿\\n' +\n  '概览\\n' +\n  '内容与字段\\n' +\n  '快照历史\\n' +\n  '引用关系\\n' +\n  '设置\\n' +\n  '正式快照内容\\n' +\n  '\\n' +\n  '按正式快照 → 逻辑成员 → 字段与样例逐层查看。\\n' +\n  '\\n' +\n  '1 个业务输入 Sheet\\n' +\n  '当前快照\\n' +\n  '企业债务风险评估模版_S003兼容版.xlsx · 内容已核验\\n' +\n  '快照、数据截至、结构与有限样例已按当前场景身份锁定；历史记录不会被后续上传覆盖。\\n' +\n  '当前输入范围\\n' +\n  '原附件调节因子 Sheet 只作为历史初始化依据；当前企业因子取值由独立在线输入源维护。\\n' +\n  '工作簿\\n' +\n  '企业债务风险评估模版_S003兼容版.xlsx\\n' +\n  '已取得文件包含财务数据和调节因子两个业务输入 Sheet；内容已核验，但尚未受控登记为正式快照。\\n' +\n  '财务数据\\n' +\n  '21 条 · 27 列 · 表头第 1 行\\n' +\n  '未纳入当前管道输入\\n' +\n  '调节因子\\n' +\n  '财务输入\\n' +\n  '财务数据\\n' +\n  'A1:AA22\\n' +\n  '21 条 · 27 列\\n' +\n  '字段结构\\n' +\n  '27 个字段\\n' +\n  '#\\t字段名称\\t推断类型\\t空值概况\\t来源位置\\n' +\n  '1\\t单位名称\\t文本\\t已核验文件统计\\t财务数据 · 第 1 列\\n' +\n  '2\\t流动负债合计_年初余额\\t数值\\t已核验文件统计\\t财务数据 · 第 2 列\\n' +\n  '3\\t流动负债合计_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 3 列\\n' +\n  '4\\t营业总收入_本年累计数\\t数值\\t已核验文件统计\\t财务数据 · 第 4 列\\n' +\n  '5\\t营业利润_本年累计数\\t数值\\t已核验文件统计\\t财务数据 · 第 5 列\\n' +\n  '6\\t净利润_本年累计数\\t数值\\t已核验文件统计\\t财务数据 · 第 6 列\\n' +\n  '7\\t交易性金融资产_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 7 列\\n' +\n  '8\\t利润总额_上年同期累计数\\t数值\\t已核验文件统计\\t财务数据 · 第 8 列\\n' +\n  '9\\t利润总额_本年累计数\\t数值\\t已核验文件统计\\t财务数据 · 第 9 列\\n' +\n  '10\\t存货_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 10 列\\n' +\n  '11\\t存货_年初余额\\t数值\\t已核验文件统计\\t财务数据 · 第 11 列\\n' +\n  '12\\t实收资本（股本）_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 12 列\\n' +\n  '13\\t应收账款_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 13 列\\n' +\n  '14\\t应收账款_年初余额\\t数值\\t已核验文件统计\\t财务数据 · 第 14 列\\n' +\n  '15\\t所有者权益（或股东权益）合计_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 15 列\\n' +\n  '16\\t所有者权益（或股东权益）合计_年初余额\\t数值\\t已核验文件统计\\t财务数据 · 第 16 列\\n' +\n  '17\\t流动资产合计_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 17 列\\n' +\n  '18\\t经营活动产生的现金流量净额_本年累计数\\t文本\\t已核验文件统计\\t财务数据 · 第 18 列\\n' +\n  '19\\t经营活动现金流入小计_本年累计数\\t文本\\t已核验文件统计\\t财务数据 · 第 19 列\\n' +\n  '20\\t营业成本_本年累计数\\t数值\\t已核验文件统计\\t财务数据 · 第 20 列\\n' +\n  '21\\t负债合计_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 21 列\\n' +\n  '22\\t财务费用_本年累计数\\t数值\\t已核验文件统计\\t财务数据 · 第 22 列\\n' +\n  '23\\t货币资金_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 23 列\\n' +\n  '24\\t资产总计_期末余额\\t数值\\t已核验文件统计\\t财务数据 · 第 24 列\\n' +\n  '25\\t资产总计_年初余额(上年)\\t数值\\t已核验文件统计\\t财务数据 · 第 25 列\\n' +\n  '26\\t利润总额_上年同期累计数(上年)\\t数值\\t已核验文件统计\\t财务数据 · 第 26 列\\n' +\n  '27\\t利润总额_本年累计数(上年)\\t数值\\t已核验文件统计\\t财务数据 · 第 27 列\\n' +\n  '数据样例\\n' +\n  '最多 5 行\\n' +\n  '单位名称\\t流动负债合计_期末余额\\t营业总收入_本年累计数\\t利润总额_本年累计数\\t资产总计_期末余额\\t利润总额_本年累计数(上年)\\n' +\n  '风电测试公司01\\t157,604,723.54\\t165,253,679.04\\t29,592,164.73\\t2,401,237,335.86\\t80,023,640.21\\n' +\n  '风电测试公司02\\t149,465,816.73\\t139,232,065.41\\t24,363,333.89\\t1,963,645,551.06\\t67,060,516.92\\n' +\n  '风电测试公司03\\t156,736,382.21\\t160,630,633.82\\t29,776,922.02\\t2,354,869,416.43\\t73,009,250.98\\n' +\n  '风电测试公司04\\t151,003,728.71\\t157,375,682.06\\t30,099,628.66\\t2,309,930,447.52\\t74,685,322.48\\n' +\n  '风电测试公司05\\t193,741,948.78\\t131,791,641.47\\t13,662,164.91\\t1,885,051,891.18\\t59,759,475.46'\n\n    at caseM02Native (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:220:80)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:514:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:539:17)"
+      }
+    },
+    {
+      "id": "m01-canvas",
+      "status": "passed",
+      "durationMs": 4454,
+      "details": {
+        "nodeCount": 34,
+        "edgeCount": 18,
+        "overlaps": [],
+        "wheelZoomed": true,
+        "nodeDragged": true
+      }
+    },
+    {
+      "id": "m01-published-config",
+      "status": "failed",
+      "durationMs": 31717,
+      "error": {
+        "name": "TimeoutError",
+        "message": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('a[href*=\"s003-model-config\"][href*=\"configTab=overview\"]') to be visible\u001b[22m\n",
+        "stack": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('a[href*=\"s003-model-config\"][href*=\"configTab=overview\"]') to be visible\u001b[22m\n\n    at caseM01PublishedAndConfig (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:260:83)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:514:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:539:17)"
+      }
+    },
+    {
+      "id": "m03-m04-m05",
+      "status": "failed",
+      "durationMs": 31858,
+      "error": {
+        "name": "Error",
+        "message": "query 未进入基线原生页面：http://127.0.0.1:4333/intelligent-query-prototype/review-next/conversation-workspace/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/ask",
+        "stack": "Error: query 未进入基线原生页面：http://127.0.0.1:4333/intelligent-query-prototype/review-next/conversation-workspace/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/ask\n    at waitFrame (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:96:9)\n    at async caseM03M04M05 (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:293:22)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:514:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:539:17)"
+      }
+    },
+    {
+      "id": "dashboard-and-report",
+      "status": "failed",
+      "durationMs": 6563,
+      "error": {
+        "name": "AssertionError",
+        "message": "The input did not match the regular expression /执行摘要与总体结论/. Input:\n\n'报告工作\\n' +\n  '报告目录\\n' +\n  '0\\n' +\n  '创建与生成\\n' +\n  '正式报告\\n' +\n  '0\\n' +\n  '资源与分析\\n' +\n  '报告定义\\n' +\n  '当前工作区\\n' +\n  '集团财务管理\\n' +\n  '报告生命周期工作区\\n' +\n  '企业债务风险评估报告\\n' +\n  '\\n' +\n  '正在读取当前运行的正式报告资源。\\n' +\n  '\\n' +\n  '正在读取 S003 已发布报告资源\\n' +\n  '基线报告目录、生命周期和生成工作区保持可用；场景资源完成校验后作为原生记录装入。'\n",
+        "stack": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /执行摘要与总体结论/. Input:\n\n'报告工作\\n' +\n  '报告目录\\n' +\n  '0\\n' +\n  '创建与生成\\n' +\n  '正式报告\\n' +\n  '0\\n' +\n  '资源与分析\\n' +\n  '报告定义\\n' +\n  '当前工作区\\n' +\n  '集团财务管理\\n' +\n  '报告生命周期工作区\\n' +\n  '企业债务风险评估报告\\n' +\n  '\\n' +\n  '正在读取当前运行的正式报告资源。\\n' +\n  '\\n' +\n  '正在读取 S003 已发布报告资源\\n' +\n  '基线报告目录、生命周期和生成工作区保持可用；场景资源完成校验后作为原生记录装入。'\n\n    at caseDashboardAndReport (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:345:180)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:514:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:539:17)"
+      }
+    },
+    {
+      "id": "dashboard-action-and-config",
+      "status": "failed",
+      "durationMs": 34726,
+      "error": {
+        "name": "TimeoutError",
+        "message": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[data-action=\"s003-navigate-module\"][data-module=\"ontology\"]').first()\u001b[22m\n\u001b[2m    - locator resolved to <button title=\"本体管理\" type=\"button\" aria-label=\"本体管理\" data-module=\"ontology\" class=\"platform-button\" data-action=\"s003-navigate-module\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    52 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+        "stack": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[data-action=\"s003-navigate-module\"][data-module=\"ontology\"]').first()\u001b[22m\n\u001b[2m    - locator resolved to <button title=\"本体管理\" type=\"button\" aria-label=\"本体管理\" data-module=\"ontology\" class=\"platform-button\" data-action=\"s003-navigate-module\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    52 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at caseDashboardActionAndConfig (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:376:27)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:514:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:539:17)"
+      }
+    },
+    {
+      "id": "old-projection-compatibility",
+      "status": "failed",
+      "durationMs": 2939,
+      "error": {
+        "name": "Error",
+        "message": "page.evaluate: Error: 未找到 M02 当前工作投影\n    at eval (eval at evaluate (:303:30), <anonymous>:4:24)\n    at UtilityScript.evaluate (<anonymous>:305:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+        "stack": "page.evaluate: Error: 未找到 M02 当前工作投影\n    at eval (eval at evaluate (:303:30), <anonymous>:4:24)\n    at UtilityScript.evaluate (<anonymous>:305:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at caseOldProjectionCompatibility (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:400:14)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:514:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:539:17)"
+      }
+    },
+    {
+      "id": "quick-rerun-and-history",
+      "status": "passed",
+      "durationMs": 14683,
+      "details": {
+        "oldRunId": "S003-RUN-20260815133000000-c03503000001",
+        "nextRunId": "S003-RUN-20260816165339013-4efef5a9c555",
+        "options": [
+          "工作投影 · 2025-12-31 · 4efef5a9c555",
+          "正式运行 · 2025-12-31 · c03503000001"
+        ],
+        "final": {
+          "shellUrl": "http://127.0.0.1:4333/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260816165339013-4efef5a9c555&formedAt=2026-08-16T16%3A53%3A39.013Z&status=active&contextCreatedAt=2026-08-16T16%3A53%3A39.013Z&contextStatus=active&scenarioFormedAt=2026-08-16T16%3A53%3A39.013Z&scenarioStatus=active#dashboard",
+          "frameUrl": "http://127.0.0.1:4333/report-center/review-lifecycle/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260816165339013-4efef5a9c555&formedAt=2026-08-16T16%3A53%3A39.013Z&status=active&contextCreatedAt=2026-08-16T16%3A53%3A39.013Z&contextStatus=active&scenarioFormedAt=2026-08-16T16%3A53%3A39.013Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/dashboard/s003",
+          "frameRunId": "S003-RUN-20260816165339013-4efef5a9c555",
+          "context": {
+            "scenarioId": "S003",
+            "scenarioVersion": "S003-v1",
+            "scenarioRunId": "S003-RUN-20260816165339013-4efef5a9c555",
+            "formedAt": "2026-08-16T16:53:39.013Z",
+            "status": "active"
+          },
+          "activeRunId": "S003-RUN-20260816165339013-4efef5a9c555",
+          "lastSuccessfulRunId": "S003-RUN-20260815133000000-c03503000001",
+          "decisionCount": 0
+        },
+        "historicalSideEffectsReplayed": false,
+        "historicalSubmitButtons": 0,
+        "historicalReadonlyButtons": 8
+      }
+    },
+    {
+      "id": "s001-isolation",
+      "status": "passed",
+      "durationMs": 9901,
+      "details": {
+        "checked": [
+          {
+            "module": "data",
+            "url": "http://127.0.0.1:4333/data-engineering-prototype-review/review-v3/%E6%96%B9%E6%A1%88B2.html?scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260816165348678-5d4e39034af4&formedAt=2026-08-16T16%3A53%3A48.678Z&status=active&contextCreatedAt=2026-08-16T16%3A53%3A48.678Z&contextStatus=active&scenarioFormedAt=2026-08-16T16%3A53%3A48.678Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/resources"
+          },
+          {
+            "module": "ontology",
+            "url": "http://127.0.0.1:4333/ontology-management-review/canvas-first/index.html?prototypeBuild=20260816-15&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260816165348678-5d4e39034af4&formedAt=2026-08-16T16%3A53%3A48.678Z&status=active&contextCreatedAt=2026-08-16T16%3A53%3A48.678Z&contextStatus=active&scenarioFormedAt=2026-08-16T16%3A53%3A48.678Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#modeling"
+          },
+          {
+            "module": "query",
+            "url": "http://127.0.0.1:4333/intelligent-query-prototype/review-next/conversation-workspace/index.html?scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260816165348678-5d4e39034af4&formedAt=2026-08-16T16%3A53%3A48.678Z&status=active&contextCreatedAt=2026-08-16T16%3A53%3A48.678Z&contextStatus=active&scenarioFormedAt=2026-08-16T16%3A53%3A48.678Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/ask"
+          },
+          {
+            "module": "decision",
+            "url": "http://127.0.0.1:4333/decision-center-prototype/review-v2/action-portfolio.html?prototypeBuild=20260814-02&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260816165348678-5d4e39034af4&formedAt=2026-08-16T16%3A53%3A48.678Z&status=active&contextCreatedAt=2026-08-16T16%3A53%3A48.678Z&contextStatus=active&scenarioFormedAt=2026-08-16T16%3A53%3A48.678Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#workbench"
+          },
+          {
+            "module": "agent",
+            "url": "http://127.0.0.1:4333/agent-application/Agent%E5%BA%94%E7%94%A8.html?prototypeBuild=20260814-17&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260816165348678-5d4e39034af4&formedAt=2026-08-16T16%3A53%3A48.678Z&status=active&contextCreatedAt=2026-08-16T16%3A53%3A48.678Z&contextStatus=active&scenarioFormedAt=2026-08-16T16%3A53%3A48.678Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/agents"
+          },
+          {
+            "module": "report",
+            "url": "http://127.0.0.1:4333/report-center/review-lifecycle/index.html?scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260816165348678-5d4e39034af4&formedAt=2026-08-16T16%3A53%3A48.678Z&status=active&contextCreatedAt=2026-08-16T16%3A53%3A48.678Z&contextStatus=active&scenarioFormedAt=2026-08-16T16%3A53%3A48.678Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/lifecycle"
+          }
+        ]
+      }
+    }
+  ],
+  "totals": {
+    "cases": 10,
+    "passed": 3,
+    "failed": 7
+  },
+  "checkpointCreated": false,
+  "acceptanceReady": false
+}

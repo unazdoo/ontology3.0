@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "ofw.s002.module-state-export.v1",
+  "moduleId": "M04",
+  "moduleName": "决策中心",
+  "owner": "决策中心",
+  "moduleVersion": "S002-M04-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815010000000-a283fabf23f6",
+    "formedAt": "2026-08-15T01:00:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "e2e-integrated",
+  "formedAt": "2026-08-15T01:35:00.000Z",
+  "stateDeclaration": "referenced",
+  "emptyReason": null,
+  "resources": [
+    {
+      "resourceId": "AR-S002-BUDGET-001",
+      "resourceType": "action-request",
+      "version": "1.0.0",
+      "summary": "预算调增草稿 Action Request",
+      "authoritativeRef": "S002/S002-RUN-20260815010000000-a283fabf23f6/M04/AR-S002-BUDGET-001",
+      "formedAt": "2026-08-15T01:35:00.000Z"
+    },
+    {
+      "resourceId": "CONFIRM-S002-BUDGET-001",
+      "resourceType": "human-confirmation",
+      "version": "1.0.0",
+      "summary": "平台管理员人工确认记录",
+      "authoritativeRef": "S002/S002-RUN-20260815010000000-a283fabf23f6/M04/CONFIRM-S002-BUDGET-001",
+      "formedAt": "2026-08-15T01:35:00.000Z"
+    },
+    {
+      "resourceId": "TODO-S002-BUDGET-001",
+      "resourceType": "owner-todo",
+      "version": "1.0.0",
+      "summary": "确认后生成的平台内负责人待办",
+      "authoritativeRef": "S002/S002-RUN-20260815010000000-a283fabf23f6/M04/TODO-S002-BUDGET-001",
+      "formedAt": "2026-08-15T01:35:00.000Z"
+    }
+  ],
+  "ownerBoundary": {
+    "ownsOnly": [
+      "action-request",
+      "human-confirmation",
+      "owner-todo"
+    ],
+    "consumesByReference": true,
+    "copiesOtherModuleTruth": false,
+    "externalBudgetSystemDispatch": false,
+    "automaticApproval": false,
+    "automaticPosting": false,
+    "approvedBudgetOverwrite": false,
+    "demoOutcome": "仅形成 Action Request 草稿、人工确认与平台内待办"
+  },
+  "demoDataMarker": "SYNTHETIC_FOR_DEMO",
+  "sideEffectPolicy": {
+    "allowHistoricalReplay": false,
+    "allowExternalDispatch": false
+  }
+}

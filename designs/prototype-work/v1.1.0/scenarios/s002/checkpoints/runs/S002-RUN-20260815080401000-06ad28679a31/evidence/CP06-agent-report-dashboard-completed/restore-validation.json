@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "ofw.s002.restore-validation.v2",
+  "checkpointId": "CP-S002-20260815081221000-a1393cf95802",
+  "checkpointNode": "agent-report-dashboard-completed",
+  "validatedAt": "2026-08-15T08:12:21.000Z",
+  "validationScope": "prototype-scenario-adapter",
+  "historicalView": {
+    "status": "verified",
+    "preservesScenarioRunId": true,
+    "readOnly": true,
+    "writeRejected": true,
+    "projectionMatches": true
+  },
+  "cloneRestore": {
+    "status": "verified",
+    "createsNewScenarioRunId": true,
+    "projectionMatches": true,
+    "moduleVersionsMatch": true,
+    "externalSideEffectsReplayed": false
+  },
+  "isolatedRegression": {
+    "status": "verified",
+    "createsNewScenarioRunId": true,
+    "historicalActionRequestReplayCount": 0,
+    "historicalTodoReplayCount": 0,
+    "historicalReportReplayCount": 0,
+    "externalCapabilitiesDefault": "disabled"
+  },
+  "sideEffectPolicy": {
+    "allowHistoricalActionRequestReplay": false,
+    "allowHistoricalNotificationReplay": false,
+    "allowHistoricalApprovalReplay": false,
+    "allowHistoricalTodoReplay": false,
+    "allowExternalDispatch": false
+  },
+  "conclusionBoundary": "S002原型场景适配器的状态查看、克隆恢复和隔离回归已验证；不代表生产模块部署或外部预算系统联通。"
+}

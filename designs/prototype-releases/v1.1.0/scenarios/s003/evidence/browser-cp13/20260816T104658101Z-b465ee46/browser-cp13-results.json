@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp13-result.v1",
+  "runId": "20260816T104658101Z-b465ee46",
+  "formedAt": "2026-08-16T10:46:58.102Z",
+  "origin": "http://127.0.0.1:4333",
+  "formalScenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "gitHead": "5620618386b1427cbf0a19877ff00b1b44dd249e",
+  "playwrightNodeModules": "/Users/domi/.codex/skills/baoyu-design/agents/gen-pptx/node_modules",
+  "headless": true,
+  "cases": [
+    {
+      "id": "m04-incompatible-projections",
+      "label": "M04 state/view/projection 不兼容记录隔离与 React 重建",
+      "status": "passed",
+      "startedAt": "2026-08-16T10:46:58.559Z",
+      "durationMs": 2817,
+      "details": {
+        "primaryKeys": {
+          "state": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m04:decision-center.portfolio.state.v6",
+          "view": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m04:decision-center.portfolio.view.v2",
+          "projection": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m04:decision-center.c019.projection.v1"
+        },
+        "recoveryKeys": {
+          "state": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m04:decision-center.portfolio.state.recovered.v1",
+          "view": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m04:decision-center.portfolio.view.recovered.v1",
+          "projection": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m04:decision-center.c019.projection.recovered.v1"
+        },
+        "recoveredPresence": {
+          "state": true,
+          "view": true,
+          "projection": true
+        },
+        "issues": [
+          {
+            "code": "CORRUPT_STORAGE_RECORD",
+            "kind": "state",
+            "isolated": true,
+            "writeBlocked": false,
+            "recoveryRecordCorrupt": false,
+            "reason": "S003 M04 state 工作投影不可兼容读取：命名空间记录 schemaVersion 不兼容",
+            "recovery": "原命名空间记录保持不变；当前通用决策工作区将从不可变正式结果重新装入 decision-center.portfolio.state.recovered.v1，只读证据不会被覆盖。",
+            "originalLogicalKey": "decision-center.portfolio.state.v6",
+            "rebuiltLogicalKey": "decision-center.portfolio.state.recovered.v1",
+            "detectedAt": "2026-08-16T10:46:59.830Z"
+          },
+          {
+            "code": "CORRUPT_STORAGE_RECORD",
+            "kind": "view",
+            "isolated": true,
+            "writeBlocked": false,
+            "recoveryRecordCorrupt": false,
+            "reason": "S003 M04 view 工作投影不可兼容读取：命名空间记录 schemaVersion 不兼容",
+            "recovery": "原命名空间记录保持不变；当前通用决策工作区将从不可变正式结果重新装入 decision-center.portfolio.view.recovered.v1，只读证据不会被覆盖。",
+            "originalLogicalKey": "decision-center.portfolio.view.v2",
+            "rebuiltLogicalKey": "decision-center.portfolio.view.recovered.v1",
+            "detectedAt": "2026-08-16T10:46:59.830Z"
+          },
+          {
+            "code": "INCOMPATIBLE_PROJECTION",
+            "kind": "projection",
+            "isolated": true,
+            "writeBlocked": false,
+            "recoveryRecordCorrupt": false,
+            "reason": "S003 M04 projection 工作投影不可兼容读取：S003 M04 projection 命名空间记录与当前 scenarioRunId 不一致",
+            "recovery": "原命名空间记录保持不变；当前通用决策工作区将从不可变正式结果重新装入 decision-center.c019.projection.recovered.v1，只读证据不会被覆盖。",
+            "originalLogicalKey": "decision-center.c019.projection.v1",
+            "rebuiltLogicalKey": "decision-center.c019.projection.recovered.v1",
+            "detectedAt": "2026-08-16T10:46:59.843Z"
+          }
+        ]
+      },
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": null,
+      "error": null,
+      "completedAt": "2026-08-16T10:47:01.376Z"
+    }
+  ],
+  "totals": {
+    "cases": 1,
+    "passed": 1,
+    "failed": 0,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "httpErrors": 0,
+    "ignoredAbortedRequests": 0
+  },
+  "errorBudget": {
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "httpErrors": 0
+  },
+  "checkpointCreated": false,
+  "acceptanceReady": false,
+  "browserVersion": "149.0.7827.55",
+  "completedAt": "2026-08-16T10:47:01.402Z"
+}

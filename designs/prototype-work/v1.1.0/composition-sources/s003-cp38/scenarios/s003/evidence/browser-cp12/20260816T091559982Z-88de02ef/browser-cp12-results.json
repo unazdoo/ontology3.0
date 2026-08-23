@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp12-result.v1",
+  "runId": "20260816T091559982Z-88de02ef",
+  "formedAt": "2026-08-16T09:15:59.989Z",
+  "baseUrl": "http://127.0.0.1:4333/s001-e2e-integration/index.html?scenarioId=S003#home",
+  "s001Url": "http://127.0.0.1:4333/s001-e2e-integration/index.html?scenarioId=S001#home",
+  "gitHead": "5620618386b1427cbf0a19877ff00b1b44dd249e",
+  "playwrightNodeModules": "/Users/domi/.codex/skills/baoyu-design/agents/gen-pptx/node_modules",
+  "headless": true,
+  "cases": [
+    {
+      "id": "native-navigation",
+      "label": "M01—M06 原生模块导航和场景上下文连续传递",
+      "status": "passed",
+      "startedAt": "2026-08-16T09:16:00.493Z",
+      "durationMs": 5006,
+      "details": {
+        "modules": [
+          {
+            "moduleId": "data",
+            "url": "http://127.0.0.1:4333/data-engineering-prototype-review/review-v3/%E6%96%B9%E6%A1%88B2.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/resources",
+            "matchedTexts": [
+              "数据工程",
+              "调节因子"
+            ]
+          },
+          {
+            "moduleId": "ontology",
+            "url": "http://127.0.0.1:4333/ontology-management-review/canvas-first/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#modeling",
+            "matchedTexts": [
+              "本体建模"
+            ]
+          },
+          {
+            "moduleId": "query",
+            "url": "http://127.0.0.1:4333/intelligent-query-prototype/review-next/conversation-workspace/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/ask",
+            "matchedTexts": [
+              "智能问数",
+              "Published"
+            ]
+          },
+          {
+            "moduleId": "decision",
+            "url": "http://127.0.0.1:4333/decision-center-prototype/review-v2/action-portfolio.html?prototypeBuild=20260814-02&scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#workbench",
+            "matchedTexts": [
+              "决策中心",
+              "待我决策"
+            ]
+          },
+          {
+            "moduleId": "agent",
+            "url": "http://127.0.0.1:4333/agent-application/Agent%E5%BA%94%E7%94%A8.html?prototypeBuild=20260814-17&scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/agents",
+            "matchedTexts": [
+              "Agent",
+              "一期不建设专属 Agent"
+            ]
+          },
+          {
+            "moduleId": "report",
+            "url": "http://127.0.0.1:4333/report-center/review-lifecycle/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/lifecycle",
+            "matchedTexts": [
+              "报告中心",
+              "S003"
+            ]
+          }
+        ]
+      },
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": null,
+      "error": null,
+      "completedAt": "2026-08-16T09:16:05.499Z"
+    }
+  ],
+  "totals": {
+    "cases": 1,
+    "passed": 1,
+    "failed": 0,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "httpErrors": 0,
+    "ignoredAbortedRequests": 0
+  },
+  "errorBudget": {
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "httpErrors": 0
+  },
+  "checkpointCreated": false,
+  "browserVersion": "149.0.7827.55",
+  "completedAt": "2026-08-16T09:16:05.533Z"
+}

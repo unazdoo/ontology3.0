@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "ofw.s004.report-publication-manifest.v2",
+  "publicationId": "PUB-S004-20260815-0003",
+  "supersedesPublicationId": "PUB-S004-20260815-0002",
+  "owner": "M06",
+  "status": "PUBLISHED",
+  "publishedAt": "2026-08-15T15:12:00+08:00",
+  "scenarioContext": {
+    "baselineVersion": "v1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v2",
+    "scenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+    "formedAt": "2026-08-15T23:30:00.000Z"
+  },
+  "reportIdentity": {
+    "reportId": "RPT-S004-20260815-0001",
+    "reportNumber": "S004-PLR-2026-0001",
+    "contentVersion": "2.0.0",
+    "reportDefinitionId": "RDEF-S004-PREFLIGHT-002",
+    "evidencePackageId": "EVID-S004-20260815-0002",
+    "sourceContentId": "RSRC-S004-20260815-0003"
+  },
+  "publicationSequence": [
+    {
+      "step": 1,
+      "name": "DETERMINISTIC_VERIFICATION",
+      "status": "PASS",
+      "ref": "artifacts/report/deterministic-verification-v2.json",
+      "sha256": "5ebf8c00a0da3a2dcf8c74952af8fc9df4b3d47ed22cd4e0c75b23fb2c09cdaa"
+    },
+    {
+      "step": 2,
+      "name": "HUMAN_CONFIRMATION",
+      "status": "CONFIRMED",
+      "ref": "artifacts/report/human-confirmation-v2.json",
+      "confirmationId": "HCONF-S004-20260815-0002"
+    },
+    {
+      "step": 3,
+      "name": "HTML_PDF_PUBLICATION",
+      "status": "PUBLISHED"
+    }
+  ],
+  "formalOutputs": [
+    {
+      "format": "CONTROLLED_HTML",
+      "file": "RPT-S004-CGNPC-20260815-v2.0.html",
+      "sha256": "427d331975337fe5e69d86363f8798145861913a90288beea310e5325bb68449",
+      "immutable": true
+    },
+    {
+      "format": "SAME_SOURCE_PDF",
+      "file": "RPT-S004-CGNPC-20260815-v2.0.pdf",
+      "sha256": "7e07f0a9a477cf44ca30deb4f6e63c8ddfec88d3f7f16acab06bcd540f79cc1e",
+      "immutable": true
+    }
+  ],
+  "stableAnchors": [
+    "report-cover",
+    "sec-01-borrower-evaluation",
+    "sec-02-operations",
+    "sec-03-financial",
+    "sec-04-risk",
+    "sec-05-credit-conclusion",
+    "sec-06-data-sources"
+  ],
+  "reportDataRef": "artifacts/report/report-data-v2.json",
+  "reportDataSha256": "92ce0ead12f4009eaec21bb9aeeb3ac7db3781659585fafd067ecda98f361e00",
+  "humanConfirmationId": "HCONF-S004-20260815-0002",
+  "verificationRunId": "VER-S004-20260815-V2-001",
+  "sameSourceRequired": true,
+  "formalPageSystem": "A4_PORTRAIT",
+  "pdfMetadataPolicy": {
+    "creationDate": "2026-08-15T15:55:00.000Z",
+    "modificationDate": "2026-08-15T15:55:00.000Z",
+    "reproducible": true
+  },
+  "inPlaceUpdateAllowed": false,
+  "docxOutput": "NOT_IN_PHASE_ONE",
+  "electronicSignature": "NOT_IN_PHASE_ONE",
+  "externalSubmission": "NOT_IN_PHASE_ONE"
+}

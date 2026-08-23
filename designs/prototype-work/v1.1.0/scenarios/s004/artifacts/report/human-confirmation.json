@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "ofw.s004.human-confirmation.v1",
+  "confirmationId": "HCONF-S004-20260815-0001",
+  "owner": "M06",
+  "sourceTag": "human-confirmed",
+  "inputClass": "human-input",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "identity": {
+    "applicationId": "APP-S004-20260815-0001",
+    "reportId": "RPT-S004-20260815-0001",
+    "reportNumber": "S004-PLR-2026-0001"
+  },
+  "dataScopeAcknowledgement": {
+    "confirmedByRole": "数据及口径批准人",
+    "confirmedAt": "2026-08-15T13:00:00.000Z",
+    "decision": "ACCEPT_WITH_DISCLOSURE",
+    "statement": "确认2025指标使用2025年报当前期及其重述的2024比较期；2023原始口径单列并标注可比性受限，不基于混合口径形成趋势结论。"
+  },
+  "calculationPolicyAcknowledgement": {
+    "confirmedByRole": "数据及口径批准人",
+    "confirmedAt": "2026-08-15T13:00:30.000Z",
+    "decision": "ACCEPT",
+    "calculationRuleVersion": "S004-FUNDING-V2-FULL-PRECISION",
+    "statement": "确认正式资金需求测算中间过程不舍入，最终金额保留两位小数。"
+  },
+  "investigationOpinion": {
+    "confirmedByRole": "调查经办人",
+    "confirmedAt": "2026-08-15T13:01:00.000Z",
+    "statement": "借款人主体及成员资格材料一致，申请用途资料覆盖申请金额；资产负债率、流动比率、短期借款增长及资本支出压力需在授信期内持续跟踪。"
+  },
+  "riskReview": {
+    "inputClass": "human-input",
+    "confirmedByRole": "报告复核与发布人",
+    "confirmedAt": "2026-08-15T13:03:00.000Z",
+    "riskControllability": "CONDITIONALLY_CONTROLLABLE",
+    "statement": "结合经营现金流、利息保障能力及人工设置的提款和贷后条件，风险在落实条件后总体可控；该判断为人工复核意见。"
+  },
+  "creditDecision": {
+    "inputClass": "human-input",
+    "confirmedByRole": "最终授信决定人",
+    "confirmedAt": "2026-08-15T13:05:00.000Z",
+    "decision": "APPROVE_WITH_CONDITIONS",
+    "approvedAmount": "50000.00",
+    "currency": "CNY",
+    "unit": "CNY_10K",
+    "termMonths": 12,
+    "rateType": "FIXED",
+    "annualInterestRate": "0.0235",
+    "guaranteeMode": "CREDIT",
+    "guarantorStatus": "NOT_APPLICABLE",
+    "collateralStatus": "NOT_APPLICABLE",
+    "conditions": [
+      {
+        "conditionId": "COND-S004-001",
+        "inputClass": "human-input",
+        "text": "每次提款前复核借款人集团成员ACTIVE状态及可用授信额度。"
+      },
+      {
+        "conditionId": "COND-S004-002",
+        "inputClass": "human-input",
+        "text": "贷款资金仅用于已核验的核电运营日常经营用途，按合同和支付凭证实施受托或封闭支付管理。"
+      },
+      {
+        "conditionId": "COND-S004-003",
+        "inputClass": "human-input",
+        "text": "按季度跟踪资产负债率、流动比率、经营现金流、短期借款和重大在建项目变化。"
+      },
+      {
+        "conditionId": "COND-S004-004",
+        "inputClass": "human-input",
+        "text": "如出现新增重大逾期、成员资格失效或重大不利事项，暂停未提款额度并提交人工复核。"
+      }
+    ],
+    "humanAuthoredConclusion": "综合判断：经人工复核，借款人为集团有效成员单位，主营业务及经营现金流具备还款基础，本次申请金额未超过确定性资金需求上限和内部可用授信额度；考虑资产负债率、流动比率、短期借款增长及资本支出压力，同意向借款人核定人民币50,000万元的一年期流动资金信用贷款，固定年利率2.35%，在落实用途管理、季度监测及重大不利事项复核等人工设定条件后执行。"
+  },
+  "publicationAuthorization": {
+    "authorizedByRole": "报告复核与发布人",
+    "authorizedAt": "2026-08-15T13:06:00.000Z",
+    "authorized": true,
+    "formats": [
+      "CONTROLLED_HTML",
+      "SAME_SOURCE_PDF"
+    ]
+  },
+  "automationBoundary": {
+    "agentGeneratedDecision": false,
+    "ruleGeneratedDecision": false,
+    "agentGeneratedConditions": false,
+    "actionRequestCreated": false,
+    "todoCreated": false
+  }
+}

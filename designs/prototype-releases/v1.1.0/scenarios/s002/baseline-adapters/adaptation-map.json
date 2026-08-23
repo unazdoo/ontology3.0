@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "ofw.s002.v103-baseline-adaptation-map.v1",
+  "scenario": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815160000000-9f72297443c6",
+    "baselineVersion": "v1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "adaptationDate": "2026-08-15",
+    "verificationDate": "2026-08-17",
+    "scope": "仅复制基线页面并注入预算场景数据、语义、问题集和证据提示；不修改冻结基线。"
+  },
+  "runtimeEntrypoints": {
+    "M01": {
+      "source": "designs/prototype-releases/v1.0.3/ontology-management-review/canvas-first/index.html",
+      "entry": "baseline-adapters/ontology-management-review/canvas-first/index.html",
+      "sourceTreeSha256": "75870802dbcf5f3ced2b8c6efaca41f01ae1e57fc34893ef44a14710633142fd",
+      "copiedAuthorityFiles": ["index.html", "app.js", "app.css", "_d_meta.json", "../../shared-type-scale.css"],
+      "modifiedBaselineCopyFiles": [
+        "index.html (追加 s002-adapter.js script 标签)",
+        "app.js (仅将跨模块 M02 链接限定到 /baseline-adapters/data-engineering-prototype-review)"
+      ],
+      "newAdapterFiles": ["s002-adapter.js"],
+      "preservedDomAnchors": [".app-shell", ".platform-rail", ".product-nav", ".topbar", ".main", ".canvas-viewport", ".canvas-toolbar", ".tabs", ".drawer", ".modal"],
+      "sceneProjection": ["7类预算业务对象", "8条关系（6条资产内关系、2条跨资产关系）", "62项属性", "9 项 Metric", "5 项 Rule", "6类整改/复核 Action Type", "S002-BUDGET-EXEC-v1 + S002-PROJECT-OCC-v1 双资产及双管道消费上下文", "C003/C033/Draft/T019联合证据", "Published T019-S002-v1"]
+    },
+    "M02": {
+      "source": "designs/prototype-releases/v1.0.3/data-engineering-prototype-review/review-v3/方案B2.html",
+      "entry": "baseline-adapters/data-engineering-prototype-review/review-v3/方案B2.html",
+      "sourceTreeSha256": "dd47ca1f16b985c6e7acbdd2f262af2636b1bb18ceb7187f727ae33630b87fe5",
+      "copiedAuthorityFiles": ["方案B2.html", "review-v3/shared/*", "../../shared-type-scale.css"],
+      "modifiedBaselineCopyFiles": [
+        "方案B2.html（由本地 shared 源重新构建，保留 v1.0.3 DOM/组件/交互；加载 S002 场景适配器）",
+        "review-v3/shared/app.js（将 S002 默认输入从8个年度文件节点纠偏为5个逻辑数据源节点，年度文件保留为8个快照集合）",
+        "review-v3/shared/fixtures.js（仅同步5逻辑源/8快照/14成员的本地场景夹具摘要）",
+        "review-v3/shared/manifest.json（登记9节点默认图、5逻辑源和8快照，不改变基线功能边界）",
+        "review-v3/shared/shell.html（追加 S002 adapter 与场景同源样式）"
+      ],
+      "newAdapterFiles": ["s002-adapter.js"],
+      "preservedDomAnchors": [".app-shell", ".platform-rail", ".product-nav", ".topbar", ".main", ".tabs", ".resource-table", ".canvas-workbench", ".modal-backdrop", ".run-list", ".rule-table"],
+      "sceneProjection": ["5个逻辑数据源", "8个年度/确认快照", "14个逻辑成员", "预算管道3源/6快照", "项目与采购管道4源/6快照", "2个独立业务数据资产", "快照文件只读下载", "合法重复/期间异常/日期倒置源值与 CORRECTED 标识", "数据工程不承载预算公式或 Rule 阈值"]
+    },
+    "M03": {
+      "source": "designs/prototype-releases/v1.0.3/intelligent-query-prototype/review-next/conversation-workspace/index.html",
+      "entry": "baseline-adapters/intelligent-query-prototype/review-next/conversation-workspace/index.html",
+      "sourceTreeSha256": "5122f6b9bfab04af794460fdba30d41b35fecd71d4d966472f66e7bc799c3e56",
+      "copiedAuthorityFiles": ["index.html", "app.jsx", "components.jsx", "data.jsx", "styles.css", "variant.css", "../../vendor/*", "../../../shared-type-scale.css"],
+      "modifiedBaselineCopyFiles": [
+        "index.html（追加 S002 adapter 与同源场景样式）",
+        "data.jsx（在基线问数域内增加S002已发布资源、六个固定问题、Prompt/Skill/Tool和确定性结果合同）",
+        "app.jsx（保留基线会话、运行、证据、视图与Agent配置结构，仅增加S002运行条件分支）"
+      ],
+      "newAdapterFiles": ["s002-adapter.js"],
+      "preservedDomAnchors": [".app-shell", ".platform-rail", ".product-nav", ".topbar", ".main", ".query-page", ".run-surface", ".table-result", ".evidence-rail", ".history-list", ".views-tabs-frame"],
+      "sceneProjection": ["预算问数 Agent", "S002-BUDGET-QUERY-PROMPT-v1", "S002-BUDGET-SUPERVISION-SKILL-v1", "97项Published语义资源", "6 个获准问题及逐题语义路径", "非获准问题明确阻断", "文字/表格/BI视图", "结构化结果/Rule Hit/证据下钻", "Agent/Skill/Tool详情", "完整链路不显示数据不可用占位"]
+    }
+  },
+  "nonGoals": [
+    "不使用统一 module.html 或 module-app.js 作为 M01-M03 正式入口",
+    "不把场景适配投影当作生产成功数据资产、本体或正式报告",
+    "不自动调用外部预算系统、审批、过账或覆盖最终批准预算",
+    "不修改 v1.0.3、S001、总控台账、六模块主文档、S003/S004 或 v1.1.0 根级文件"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp26-result.v1",
+  "formedAt": "2026-08-17T23:22:17.521Z",
+  "baseUrl": "http://127.0.0.1:4340",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260817163000000-c02200000001"
+  },
+  "cases": [
+    {
+      "id": "dashboard-risk-action",
+      "status": "passed",
+      "route": "/s001-e2e-integration/index.html#dashboard",
+      "observations": {
+        "enterpriseCount": 21,
+        "riskActionCandidates": 5,
+        "yellow": 4,
+        "red": 1,
+        "black": 0,
+        "greenActionCandidates": 0,
+        "submitLabel": "提交行动申请",
+        "submittedStatus": "已送达成员单位接口人 · 待确认",
+        "recipientRole": "成员单位债务风险接口人"
+      },
+      "screenshot": "evidence/browser-cp26-dashboard.png"
+    },
+    {
+      "id": "m01-model-configuration",
+      "status": "passed",
+      "route": "/s001-e2e-integration/index.html#module/ontology#published/version?tab=s003-model-config",
+      "observations": {
+        "tabs": ["配置总览", "调节因子配置", "评分权重", "风险分档配置"],
+        "enterpriseFactorConfigurationTab": false,
+        "businessOwner": "财务公司",
+        "effectMechanism": "保存 Draft → 校验 → 发布新模型版本 → 新 scenarioRunId 快速重跑"
+      },
+      "screenshot": "evidence/browser-cp26-m01-config.png"
+    }
+  ],
+  "applicationSourceChecks": {
+    "businessMutationObserverCalls": 0,
+    "nodeTests": "203/203 passed",
+    "moduleIntegrationTests": "122/122 passed",
+    "frozenBaselineTrackedDiff": 0
+  },
+  "browserHarnessDiagnostic": {
+    "status": "external-tooling-noise",
+    "message": "in-app Browser injected global listener initialization reports MutationObserver.observe parameter 1 is not a Node; reproduced in clean tabs and across ports, while application resources load and interactions pass.",
+    "applicationSourceReference": "browser-client.mjs global listener helper",
+    "acceptanceReady": false
+  }
+}

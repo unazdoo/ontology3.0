@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "ofw.s002.module-state-export.v2",
+  "moduleId": "M05",
+  "moduleName": "Agent 应用",
+  "owner": "Agent 应用",
+  "moduleVersion": "S002-M05-1.0.0",
+  "scenarioAdapterVersion": "S002-M05-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "baselineCheckpointBinding": {
+    "ref": "designs/scenario-checkpoints/baselines/v1.0.3/T056-baseline-checkpoint.json",
+    "sha256": "0a90f5f68dccaa7c18be71b4c82019616f19b0e359f931024652d95165ecd414"
+  },
+  "baselineModuleBinding": {
+    "baselineVersion": "1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "prototypePath": "designs/prototype-releases/v1.0.3/agent-application",
+    "exactVersion": "v1.0.3#027d9f20c7d7ebd7",
+    "treeSha256": "027d9f20c7d7ebd753eb8e36b4475a5c271c91d979feda8e0d57c39b3cb9bcb2",
+    "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+    "supportingPrototypeComponents": []
+  },
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815154900000-6cdb7ec5603f",
+    "formedAt": "2026-08-15T15:49:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "query-integrated",
+  "formedAt": "2026-08-15T15:54:00.000Z",
+  "stateDeclaration": "empty",
+  "emptyReason": "尚未到达 agent-report-dashboard-completed；仅导出可恢复空状态",
+  "resources": [],
+  "ownerBoundary": {
+    "ownsOnly": [
+      "agent-definition",
+      "agent-release",
+      "orchestration-definition",
+      "orchestration-release",
+      "step-binding",
+      "step-run",
+      "agent-run",
+      "agent-result",
+      "orchestration-run"
+    ],
+    "consumesByReference": true,
+    "copiesOtherModuleTruth": false,
+    "publishesMetricOrRule": false,
+    "createsTodoDirectly": false,
+    "publishesReportDirectly": false
+  },
+  "demoDataMarker": "SYNTHETIC_FOR_DEMO",
+  "sideEffectPolicy": {
+    "allowHistoricalReplay": false,
+    "allowExternalDispatch": false
+  },
+  "runtimeState": {
+    "moduleId": "M05",
+    "moduleVersion": "S002-M05-1.0.0",
+    "progress": {
+      "agentsRun": false
+    },
+    "agentRuns": [],
+    "orchestrationRun": null
+  }
+}

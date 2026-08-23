@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "ofw.scenario-registry.v1",
+  "sourceProductBaseline": "v1.0.7",
+  "governanceBaselineVersion": "v1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "implementationBaselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+  "scenarios": [
+    {
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "mergeStatus": "assembled-complete",
+      "scenarioRunIdPolicy": "历史运行只读恢复；新运行必须生成新 ID",
+      "namespacePrefix": "ofw:v1.1.0:S001:S001-v1",
+      "checkpoint": "S001 v1.0.7 runtime snapshot · read-only"
+    },
+    {
+      "scenarioId": "S002",
+      "scenarioVersion": "S002-v1",
+      "mergeStatus": "assembled-complete",
+      "namespacePrefix": "ofw:v1.1.0:S002:S002-v1",
+      "package": "scenarios/s002",
+      "checkpoint": "scenarios/s002/checkpoints/checkpoint-catalog.json",
+      "remainingGate": "用户验收和生产级真实数据证据独立保留，不阻断实施参考原型冻结"
+    },
+    {
+      "scenarioId": "S003",
+      "scenarioVersion": "S003-v1",
+      "mergeStatus": "assembled-complete",
+      "namespacePrefix": "ofw:v1.1.0:S003:S003-v1",
+      "package": "scenarios/s003",
+      "moduleCapabilitySource": "decision-center-prototype/review-v2",
+      "provenanceSource": "composition-sources/s003-cp38/decision-center-prototype/review-v2",
+      "checkpoint": "scenarios/s003/checkpoints/CP38-performance-and-m04-ux.json",
+      "remainingGate": "兼容性 T007 与生产正式链路继续隔离；用户验收和生产证据独立保留"
+    },
+    {
+      "scenarioId": "S004",
+      "scenarioVersion": "S004-v2.1.0",
+      "mergeStatus": "assembled-complete",
+      "namespacePrefix": "ofw:v1.1.0:S004:S004-v2.1.0",
+      "package": "scenarios/s004-runtime-v2.1.0",
+      "moduleCapabilitySource": "scenarios/s004-runtime-v2.1.0",
+      "checkpoint": "scenario.manifest.json · publicCheckpoint.status=not-created",
+      "remainingGate": "正式 public Checkpoint 尚未形成；实施参考冻结不声明生产恢复就绪"
+    }
+  ],
+  "selectionRule": "平台不提供全局场景切换；所有场景资源进入同一个模块目录，scenarioId 只作为记录字段、筛选条件和证据身份。"
+}

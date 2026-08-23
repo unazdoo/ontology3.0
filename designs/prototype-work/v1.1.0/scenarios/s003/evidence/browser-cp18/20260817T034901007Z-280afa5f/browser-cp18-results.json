@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp18-result.v1",
+  "runId": "20260817T034901007Z-280afa5f",
+  "formedAt": "2026-08-17T03:49:01.007Z",
+  "origin": "http://127.0.0.1:48123",
+  "formalSourceScenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+  "browserVersion": "149.0.7827.55",
+  "cases": [
+    {
+      "id": "shell-and-modules",
+      "status": "failed",
+      "durationMs": 156,
+      "error": {
+        "name": "Error",
+        "message": "page.goto: net::ERR_EMPTY_RESPONSE at http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#home\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#home\", waiting until \"domcontentloaded\"\u001b[22m\n",
+        "stack": "page.goto: net::ERR_EMPTY_RESPONSE at http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#home\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#home\", waiting until \"domcontentloaded\"\u001b[22m\n\n    at openShell (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:90:14)\n    at async caseShellAndModules (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:153:42)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:809:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:837:16)"
+      }
+    },
+    {
+      "id": "m02-native",
+      "status": "failed",
+      "durationMs": 29,
+      "error": {
+        "name": "Error",
+        "message": "page.goto: net::ERR_EMPTY_RESPONSE at http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#module/data\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#module/data\", waiting until \"domcontentloaded\"\u001b[22m\n",
+        "stack": "page.goto: net::ERR_EMPTY_RESPONSE at http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#module/data\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#module/data\", waiting until \"domcontentloaded\"\u001b[22m\n\n    at openShell (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:90:14)\n    at async caseM02Native (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:278:42)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:809:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:837:16)"
+      }
+    },
+    {
+      "id": "m01-canvas",
+      "status": "failed",
+      "durationMs": 30,
+      "error": {
+        "name": "Error",
+        "message": "page.goto: net::ERR_EMPTY_RESPONSE at http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#module/ontology\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#module/ontology\", waiting until \"domcontentloaded\"\u001b[22m\n",
+        "stack": "page.goto: net::ERR_EMPTY_RESPONSE at http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#module/ontology\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#module/ontology\", waiting until \"domcontentloaded\"\u001b[22m\n\n    at openShell (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:90:14)\n    at async caseM01Canvas (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:215:42)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:809:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:837:16)"
+      }
+    },
+    {
+      "id": "m01-published-config",
+      "status": "failed",
+      "durationMs": 30,
+      "error": {
+        "name": "Error",
+        "message": "page.goto: net::ERR_EMPTY_RESPONSE at http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#module/ontology\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#module/ontology\", waiting until \"domcontentloaded\"\u001b[22m\n",
+        "stack": "page.goto: net::ERR_EMPTY_RESPONSE at http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#module/ontology\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#module/ontology\", waiting until \"domcontentloaded\"\u001b[22m\n\n    at openShell (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:90:14)\n    at async caseM01PublishedAndConfig (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:345:42)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:809:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:837:16)"
+      }
+    },
+    {
+      "id": "m03-m04-m05",
+      "status": "failed",
+      "durationMs": 31,
+      "error": {
+        "name": "Error",
+        "message": "page.goto: net::ERR_EMPTY_RESPONSE at http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#home\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#home\", waiting until \"domcontentloaded\"\u001b[22m\n",
+        "stack": "page.goto: net::ERR_EMPTY_RESPONSE at http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#home\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#home\", waiting until \"domcontentloaded\"\u001b[22m\n\n    at openShell (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:90:14)\n    at async caseM03M04M05 (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:392:42)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:809:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:837:16)"
+      }
+    },
+    {
+      "id": "dashboard-and-report",
+      "status": "failed",
+      "durationMs": 27,
+      "error": {
+        "name": "Error",
+        "message": "page.goto: net::ERR_EMPTY_RESPONSE at http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#dashboard\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#dashboard\", waiting until \"domcontentloaded\"\u001b[22m\n",
+        "stack": "page.goto: net::ERR_EMPTY_RESPONSE at http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#dashboard\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#dashboard\", waiting until \"domcontentloaded\"\u001b[22m\n\n    at openShell (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:90:14)\n    at async caseDashboardAndReport (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:469:42)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:809:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:837:16)"
+      }
+    },
+    {
+      "id": "dashboard-action-and-config",
+      "status": "failed",
+      "durationMs": 28,
+      "error": {
+        "name": "Error",
+        "message": "page.goto: net::ERR_EMPTY_RESPONSE at http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#dashboard\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#dashboard\", waiting until \"domcontentloaded\"\u001b[22m\n",
+        "stack": "page.goto: net::ERR_EMPTY_RESPONSE at http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#dashboard\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:48123/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active#dashboard\", waiting until \"domcontentloaded\"\u001b[22m\n\n    at openShell (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:90:14)\n    at async caseDashboardActionAndConfig (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:538:42)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:809:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:837:16)"
+      }
+    }
+  ],
+  "totals": {
+    "cases": 7,
+    "passed": 0,
+    "failed": 7
+  },
+  "checkpointCreated": false,
+  "acceptanceReady": false
+}

@@ -1,0 +1,93 @@
+{
+  "version": "data-engineering-workbench-v2",
+  "fixtureHash": "de-b2-s001-three-rule-fields-and-t007-boundary-20260814",
+  "currentVariant": "B2",
+  "variants": [
+    {
+      "key": "B2",
+      "title": "数据工程作业台",
+      "focus": "右栏配置、底栏宽幅证据与运行状态反馈",
+      "layout": "dense-operations",
+      "motion": "仅运行状态短时流向反馈"
+    }
+  ],
+  "screens": [
+    { "id": "resource-directory", "label": "数据源与数据资产同屏目录", "route": "#/resources" },
+    { "id": "finance-source-overview", "label": "融资来源概览", "route": "#/resources/source/finance-workbook?tab=overview" },
+    { "id": "finance-source-content", "label": "融资来源内容与字段", "route": "#/resources/source/finance-workbook?tab=content" },
+    { "id": "finance-source-snapshots", "label": "融资来源快照历史", "route": "#/resources/source/finance-workbook?tab=snapshots" },
+    { "id": "finance-source-references", "label": "融资来源引用关系", "route": "#/resources/source/finance-workbook?tab=references" },
+    { "id": "finance-source-settings", "label": "融资来源设置", "route": "#/resources/source/finance-workbook?tab=settings" },
+    { "id": "risk-source-overview", "label": "债务风险来源概览", "route": "#/resources/source/s003-workbook?tab=overview" },
+    { "id": "risk-source-content", "label": "债务风险来源内容", "route": "#/resources/source/s003-workbook?tab=content" },
+    { "id": "published-asset-overview", "label": "融资数据资产—版本概览", "route": "#/resources/asset/finance-asset-target?tab=overview" },
+    { "id": "published-asset-members", "label": "融资数据资产—包含的数据", "route": "#/resources/asset/finance-asset-target?tab=members" },
+    { "id": "published-asset-lineage", "label": "融资数据资产—如何产生", "route": "#/resources/asset/finance-asset-target?tab=lineage" },
+    { "id": "published-asset-consumption", "label": "融资数据资产—如何变为可用", "route": "#/resources/asset/finance-asset-target?tab=consumption" },
+    { "id": "pipeline-directory", "label": "管道目录", "route": "#/pipelines?tab=definitions" },
+    { "id": "formal-runs", "label": "正式运行历史", "route": "#/pipelines?tab=runs" },
+    { "id": "canvas-source", "label": "数据源节点", "route": "#/pipelines/finance-pipeline/canvas" },
+    { "id": "canvas-python", "label": "Python 节点与只读代码", "route": "#/pipelines/finance-pipeline/canvas" },
+    { "id": "canvas-quality", "label": "通用数据检查节点", "route": "#/pipelines/finance-pipeline/canvas" },
+    { "id": "canvas-publish", "label": "发布数据资产节点", "route": "#/pipelines/finance-pipeline/canvas" },
+    { "id": "canvas-refresh", "label": "提交本体刷新请求节点", "route": "#/pipelines/finance-pipeline/canvas" },
+    { "id": "new-pipeline", "label": "新建管道编辑草稿", "route": "#/pipelines/new/canvas" }
+  ],
+  "invariants": {
+    "primaryNavigation": ["数据资源", "数据管道"],
+    "resourceDirectoryLayout": "数据源与数据资产左右对照同屏",
+    "resourceViewModes": ["卡片", "列表"],
+    "sourceGroups": ["手工工作簿", "共享文件夹", "SAP", "司库系统", "数据中台"],
+    "assetDetailViews": ["overview", "members", "lineage", "consumption"],
+    "formalRunDetailTabs": ["summary", "nodes-quality", "publish-refresh"],
+    "financeNodeCount": 5,
+    "s001TargetAssetMemberCount": 4,
+    "s001TargetAssetRelationshipCount": 3,
+    "s001InitialSnapshotCount": 0,
+    "s001InitialDataAsOf": null,
+    "s001InitialT008Confirmed": false,
+    "s001VerifiedStructureFingerprint": {
+      "sha256": "83232e2dda913e63d2faa1e45aab824270f4ab5bcb96849a44ab8a03f93db12d",
+      "sizeBytes": 807264
+    },
+    "snapshotRegistration": {
+      "readMethod": "file.arrayBuffer",
+      "hashMethod": "crypto.subtle.digest(SHA-256)",
+      "deduplicationKey": "SHA-256 内容指纹",
+      "duplicateReadEvidence": "复用稳定快照身份并保留本轮文件名、读取时间、内容指纹和完整 C033 的独立读取事件",
+      "t008Confirmation": "上传登记后独立确认"
+    },
+    "scenarioContextFields": ["scenarioId", "scenarioVersion", "scenarioRunId", "formedAt", "status"],
+    "t007DuplicateBoundary": "同一完整 C033 场景工作轮次内按内容、时点、成员关系合同和业务输出去重；新的工作轮次形成新的不可变 T007",
+    "scenarioContextRequiredBefore": ["发布管道定义", "正式运行", "发布数据资产", "交付数据资产", "提交本体刷新请求"],
+    "ontologyHandoff": {
+      "channel": "ontology3.0-s001-handoff-v1",
+      "targetModule": "本体管理",
+      "operations": ["deliverScenarioContext", "deliverDataAsset", "discoverRefreshTargets", "publishedContext", "deliverRefreshRequest", "handoffSnapshot"]
+    },
+    "handoffContracts": {
+      "C003": "稳定 deliveryId，且交付尝试不可变；只读展示平台当前 C033 与 T007/正式运行生产 C033，并将同轮平台完整 C033 原样转交 M01 后发送资产、T008、质量、来源、四成员三关系与证据；跨轮次时标记合同冲突并禁止重发；仅以 handoffSnapshot 中同标识已接收合同、完整回执、同轮 C033 根回执，以及目标 Draft 对本次 deliveryId、精确 T007 和修订号的绑定证据确认接收；历史误标保留原尝试并形成 A02，A02 无完整正式拒绝回执时只允许重读、不盲生 A03",
+      "C032": "目标发现和提交刷新前分别读取；核对形成时间、读取时间及交接快照；绑定、目标、语义、映射或覆盖漂移即阻断",
+      "C028": "最新 C032 身份、C003 稳定交付引用、精确数据版本、T008、成员、关系、质量、完整 C033 和 currentFormalSnapshot；按完整请求和本体响应时间核对接收"
+    },
+    "resetBehavior": "清理当前场景工作投影与本地消费指针；不自行生成 scenarioRunId；等待平台提供新的完整 C033；保留 runs、assetVersions、dataAssetDeliveries、refreshAttempts、uploadedSnapshots、snapshotReadEvents 及其证据",
+    "s001InitialFormalRunCount": 0,
+    "s001InitialQualityResultCount": 0,
+    "s001InitialPublishedAssetVersionCount": 0,
+    "s001InitialRefreshAttemptCount": 0,
+    "s001InitialOntologyBindingCount": 0,
+    "s001InitialAuthorityVersionCount": 0,
+    "s001TargetAssetState": "未发布结构合同",
+    "s003RunCount": 0,
+    "s003PublishedAssetCount": 0,
+    "s003SnapshotCount": 0,
+    "s003AcquisitionState": "文件已取得 · 内容已核验 · 待受控登记",
+    "s003Consumption": "不可消费",
+    "refreshResultDoesNotImplyT019": true,
+    "formalRunHistoryOnly": true,
+    "fakePlatformRecords": false
+  },
+  "entries": [
+    { "source": "shared/shell.html", "output": "方案B2.html", "variant": "B2" }
+  ]
+}

@@ -1,0 +1,192 @@
+{
+  "schemaVersion": "ofw.s002.module-state-export.v2",
+  "moduleId": "M05",
+  "moduleName": "Agent 应用",
+  "owner": "Agent 应用",
+  "moduleVersion": "S002-M05-1.0.0",
+  "scenarioAdapterVersion": "S002-M05-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "baselineCheckpointBinding": {
+    "ref": "designs/scenario-checkpoints/baselines/v1.0.3/T056-baseline-checkpoint.json",
+    "sha256": "0a90f5f68dccaa7c18be71b4c82019616f19b0e359f931024652d95165ecd414"
+  },
+  "baselineModuleBinding": {
+    "baselineVersion": "1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "prototypePath": "designs/prototype-releases/v1.0.3/agent-application",
+    "exactVersion": "v1.0.3#027d9f20c7d7ebd7",
+    "treeSha256": "027d9f20c7d7ebd753eb8e36b4475a5c271c91d979feda8e0d57c39b3cb9bcb2",
+    "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+    "supportingPrototypeComponents": []
+  },
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815150000000-ab0e15700f22",
+    "formedAt": "2026-08-15T15:00:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "e2e-integrated",
+  "formedAt": "2026-08-15T15:09:00.000Z",
+  "stateDeclaration": "referenced",
+  "emptyReason": null,
+  "resources": [
+    {
+      "resourceId": "AGENT-S002-ANOMALY-v1",
+      "resourceType": "agent-definition",
+      "version": "1.0.0",
+      "summary": "预算异常分析 Agent Definition",
+      "authoritativeRef": "S002/S002-RUN-20260815150000000-ab0e15700f22/M05/AGENT-S002-ANOMALY-v1",
+      "formedAt": "2026-08-15T15:09:00.000Z"
+    },
+    {
+      "resourceId": "AGENT-S002-ANOMALY-REL-v1",
+      "resourceType": "agent-release",
+      "version": "1.0.0",
+      "summary": "预算异常分析 Agent Release",
+      "authoritativeRef": "S002/S002-RUN-20260815150000000-ab0e15700f22/M05/AGENT-S002-ANOMALY-REL-v1",
+      "formedAt": "2026-08-15T15:09:00.000Z"
+    },
+    {
+      "resourceId": "AGENT-S002-REPORT-DRAFT-v1",
+      "resourceType": "agent-definition",
+      "version": "1.0.0",
+      "summary": "预算报告草稿 Agent Definition",
+      "authoritativeRef": "S002/S002-RUN-20260815150000000-ab0e15700f22/M05/AGENT-S002-REPORT-DRAFT-v1",
+      "formedAt": "2026-08-15T15:09:00.000Z"
+    },
+    {
+      "resourceId": "AGENT-S002-REPORT-DRAFT-REL-v1",
+      "resourceType": "agent-release",
+      "version": "1.0.0",
+      "summary": "预算报告草稿 Agent Release",
+      "authoritativeRef": "S002/S002-RUN-20260815150000000-ab0e15700f22/M05/AGENT-S002-REPORT-DRAFT-REL-v1",
+      "formedAt": "2026-08-15T15:09:00.000Z"
+    },
+    {
+      "resourceId": "ORCH-S002-BUDGET-v1",
+      "resourceType": "orchestration-definition",
+      "version": "1.0.0",
+      "summary": "双Agent轻量编排定义",
+      "authoritativeRef": "S002/S002-RUN-20260815150000000-ab0e15700f22/M05/ORCH-S002-BUDGET-v1",
+      "formedAt": "2026-08-15T15:09:00.000Z"
+    },
+    {
+      "resourceId": "ORCH-S002-BUDGET-REL-v1",
+      "resourceType": "orchestration-release",
+      "version": "1.0.0",
+      "summary": "双Agent轻量编排Release",
+      "authoritativeRef": "S002/S002-RUN-20260815150000000-ab0e15700f22/M05/ORCH-S002-BUDGET-REL-v1",
+      "formedAt": "2026-08-15T15:09:00.000Z"
+    },
+    {
+      "resourceId": "STEP-BINDING-S002-v1",
+      "resourceType": "step-binding",
+      "version": "1.0.0",
+      "summary": "Rule/C018/C019至两个Agent的步骤绑定",
+      "authoritativeRef": "S002/S002-RUN-20260815150000000-ab0e15700f22/M05/STEP-BINDING-S002-v1",
+      "formedAt": "2026-08-15T15:09:00.000Z"
+    },
+    {
+      "resourceId": "STEP-RUN-S002-v1",
+      "resourceType": "step-run",
+      "version": "1.0.0",
+      "summary": "编排步骤运行与中间结果",
+      "authoritativeRef": "S002/S002-RUN-20260815150000000-ab0e15700f22/M05/STEP-RUN-S002-v1",
+      "formedAt": "2026-08-15T15:09:00.000Z"
+    },
+    {
+      "resourceId": "C014-S002-RUN-001",
+      "resourceType": "orchestration-run",
+      "version": "1.0.0",
+      "summary": "固定证据下的双 Agent 轻量编排",
+      "authoritativeRef": "S002/S002-RUN-20260815150000000-ab0e15700f22/M05/C014-S002-RUN-001",
+      "formedAt": "2026-08-15T15:09:00.000Z"
+    },
+    {
+      "resourceId": "RUN-S002-AGENT-001",
+      "resourceType": "agent-run",
+      "version": "1.0.0",
+      "summary": "异常解释与报告草稿运行",
+      "authoritativeRef": "S002/S002-RUN-20260815150000000-ab0e15700f22/M05/RUN-S002-AGENT-001",
+      "formedAt": "2026-08-15T15:09:00.000Z"
+    },
+    {
+      "resourceId": "RES-S002-AGENT-001",
+      "resourceType": "agent-result",
+      "version": "1.0.0",
+      "summary": "原因候选、行动建议和报告草稿结果",
+      "authoritativeRef": "S002/S002-RUN-20260815150000000-ab0e15700f22/M05/RES-S002-AGENT-001",
+      "formedAt": "2026-08-15T15:09:00.000Z"
+    }
+  ],
+  "ownerBoundary": {
+    "ownsOnly": [
+      "agent-definition",
+      "agent-release",
+      "orchestration-definition",
+      "orchestration-release",
+      "step-binding",
+      "step-run",
+      "agent-run",
+      "agent-result",
+      "orchestration-run"
+    ],
+    "consumesByReference": true,
+    "copiesOtherModuleTruth": false,
+    "publishesMetricOrRule": false,
+    "createsTodoDirectly": false,
+    "publishesReportDirectly": false
+  },
+  "demoDataMarker": "SYNTHETIC_FOR_DEMO",
+  "sideEffectPolicy": {
+    "allowHistoricalReplay": false,
+    "allowExternalDispatch": false
+  },
+  "runtimeState": {
+    "moduleId": "M05",
+    "moduleVersion": "S002-M05-1.0.0",
+    "progress": {
+      "agentsRun": true
+    },
+    "agentRuns": [
+      {
+        "runId": "AG-RUN-S002-1786806440000-ANOMALY",
+        "agentId": "budget-anomaly-analyst",
+        "definitionVersion": "S002-AGENT-ANOMALY-v1",
+        "name": "预算异常分析 Agent",
+        "status": "complete",
+        "summary": "聚合6条Rule命中和2条分析建议，输出六类受约束Action候选。",
+        "evidence": [
+          "C018-S002-v1",
+          "S002-RULE-v1",
+          "C019-S002-v1"
+        ]
+      },
+      {
+        "runId": "AG-RUN-S002-1786806440000-REPORT",
+        "agentId": "budget-report-drafter",
+        "definitionVersion": "S002-AGENT-REPORT-v1",
+        "name": "预算报告草稿 Agent",
+        "status": "complete",
+        "summary": "只读消费C018固定视图和C019决策摘要，生成五主题报告草稿；不引用尚未形成的T049。",
+        "evidence": [
+          "C018-S002-v1",
+          "C019-S002-v1",
+          "T019-S002-v1"
+        ]
+      }
+    ],
+    "orchestrationRun": {
+      "runId": "ORCH-RUN-S002-1786806440000",
+      "definitionVersion": "S002-ORCH-v1",
+      "status": "complete",
+      "steps": [
+        "AG-RUN-S002-1786806440000-ANOMALY",
+        "AG-RUN-S002-1786806440000-REPORT"
+      ],
+      "formedAt": "2026-08-15T15:07:20.000Z"
+    }
+  }
+}

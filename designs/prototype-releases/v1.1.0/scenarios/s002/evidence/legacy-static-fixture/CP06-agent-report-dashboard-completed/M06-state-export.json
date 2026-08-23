@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "ofw.s002.module-state-export.v1",
+  "moduleId": "M06",
+  "moduleName": "报告中心",
+  "owner": "报告中心",
+  "moduleVersion": "S002-M06-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815010000000-a283fabf23f6",
+    "formedAt": "2026-08-15T01:00:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "agent-report-dashboard-completed",
+  "formedAt": "2026-08-15T01:30:00.000Z",
+  "stateDeclaration": "referenced",
+  "emptyReason": null,
+  "resources": [
+    {
+      "resourceId": "DASH-S002-BUDGET-v1",
+      "resourceType": "dashboard",
+      "version": "1.0.0",
+      "summary": "预算管理驾驶舱",
+      "authoritativeRef": "S002/S002-RUN-20260815010000000-a283fabf23f6/M06/DASH-S002-BUDGET-v1",
+      "formedAt": "2026-08-15T01:30:00.000Z"
+    },
+    {
+      "resourceId": "DASH-VIEW-S002-5TOPIC-v1",
+      "resourceType": "dashboard-view",
+      "version": "1.0.0",
+      "summary": "五主题展示与集团至证据下钻",
+      "authoritativeRef": "S002/S002-RUN-20260815010000000-a283fabf23f6/M06/DASH-VIEW-S002-5TOPIC-v1",
+      "formedAt": "2026-08-15T01:30:00.000Z"
+    },
+    {
+      "resourceId": "RPT-S002-BUDGET-001",
+      "resourceType": "report",
+      "version": "1.0.0",
+      "summary": "预算监督管理专题报告",
+      "authoritativeRef": "S002/S002-RUN-20260815010000000-a283fabf23f6/M06/RPT-S002-BUDGET-001",
+      "formedAt": "2026-08-15T01:30:00.000Z"
+    },
+    {
+      "resourceId": "RPT-S002-BUDGET-001-v1",
+      "resourceType": "report-version",
+      "version": "1.0.0",
+      "summary": "报告内容版本",
+      "authoritativeRef": "S002/S002-RUN-20260815010000000-a283fabf23f6/M06/RPT-S002-BUDGET-001-v1",
+      "formedAt": "2026-08-15T01:30:00.000Z"
+    },
+    {
+      "resourceId": "EP-S002-BUDGET-001",
+      "resourceType": "evidence-package",
+      "version": "1.0.0",
+      "summary": "数据、Published、问数、决策和 Agent 证据包",
+      "authoritativeRef": "S002/S002-RUN-20260815010000000-a283fabf23f6/M06/EP-S002-BUDGET-001",
+      "formedAt": "2026-08-15T01:30:00.000Z"
+    }
+  ],
+  "ownerBoundary": {
+    "ownsOnly": [
+      "dashboard",
+      "dashboard-view",
+      "report",
+      "report-version",
+      "evidence-package"
+    ],
+    "consumesByReference": true,
+    "copiesOtherModuleTruth": false,
+    "ownsDecisionState": false,
+    "dashboardOwner": true
+  },
+  "demoDataMarker": "SYNTHETIC_FOR_DEMO",
+  "sideEffectPolicy": {
+    "allowHistoricalReplay": false,
+    "allowExternalDispatch": false
+  }
+}

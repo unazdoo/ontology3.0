@@ -1,0 +1,49 @@
+{
+  "outputRef": "checkpoints/CP01-initial-configured.json",
+  "checkpointId": "CP-S003-20260815124825000-f7e888094abe",
+  "checkpointNode": "initial-configured",
+  "createdAt": "2026-08-15T12:48:25.000Z",
+  "buildVersion": "S003-CP01",
+  "entryRef": "index.html",
+  "scenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815123937016-96a195ed3f4c",
+    "formedAt": "2026-08-15T12:39:37.016Z",
+    "status": "active"
+  },
+  "codeRefs": [
+    "README.md",
+    "CHANGELOG.md",
+    "scripts/create-checkpoint.cjs",
+    "resources/scenario-manifest.json",
+    "resources/m01/model-package.v1.json",
+    "resources/m02/data-contract.v1.json",
+    "resources/m03/query-catalog.v1.json",
+    "resources/m04/decision-binding.v1.json",
+    "resources/m05/agent-position.v1.json",
+    "resources/m06/report-contract.v1.json",
+    "evidence/CP01-initial-config-validation.md"
+  ],
+  "modules": {
+    "M01": {"moduleVersion": "1.0.0", "exportId": "S003-M01-DEBT-RISK-PKG", "exportRef": "resources/m01/model-package.v1.json", "evidenceRef": "evidence/CP01-initial-config-validation.md#M01"},
+    "M02": {"moduleVersion": "1.0.0", "exportId": "S003-M02-DATA-CONTRACT", "exportRef": "resources/m02/data-contract.v1.json", "evidenceRef": "evidence/CP01-initial-config-validation.md#M02"},
+    "M03": {"moduleVersion": "1.0.0", "exportId": "S003-M03-QUERY-CATALOG", "exportRef": "resources/m03/query-catalog.v1.json", "evidenceRef": "evidence/CP01-initial-config-validation.md#M03"},
+    "M04": {"moduleVersion": "1.0.0", "exportId": "S003-M04-GENERIC-DECISION-BINDING", "exportRef": "resources/m04/decision-binding.v1.json", "evidenceRef": "evidence/CP01-initial-config-validation.md#M04"},
+    "M05": {"moduleVersion": "1.0.0", "exportId": "S003-M05-NO-DEDICATED-AGENT", "exportRef": "resources/m05/agent-position.v1.json", "evidenceRef": "evidence/CP01-initial-config-validation.md#M05"},
+    "M06": {"moduleVersion": "1.0.0", "exportId": "S003-M06-REPORT-CONTRACT", "exportRef": "resources/m06/report-contract.v1.json", "evidenceRef": "evidence/CP01-initial-config-validation.md#M06"}
+  },
+  "stateSections": {
+    "data": {"status": "empty", "reason": "CP01 仅锁定初始配置，正式候选数据在 CP02 接入。"},
+    "semantics": {"status": "referenced", "items": [{"owner": "M01 本体管理", "resourceId": "S003-M01-DEBT-RISK-PKG", "version": "1.0.0", "ref": "resources/m01/model-package.v1.json"}]},
+    "configurations": {"status": "referenced", "items": [{"owner": "平台场景包", "resourceId": "S003-SCENARIO-MANIFEST", "version": "1.0.0", "ref": "resources/scenario-manifest.json"}]},
+    "results": {"status": "empty", "reason": "尚未执行确定性评估。"},
+    "reports": {"status": "empty", "reason": "尚未生成企业报告。"},
+    "decisions": {"status": "empty", "reason": "尚未形成处置候选或 Action Request。"},
+    "testFixtures": {"status": "empty", "reason": "权威工作簿夹具将在 CP02 形成。"},
+    "featureFlags": {"status": "referenced", "items": [{"owner": "平台场景包", "resourceId": "S003-FEATURE-FLAGS", "version": "1.0.0", "ref": "resources/scenario-manifest.json"}]},
+    "evidence": {"status": "referenced", "items": [{"owner": "S003 总装", "resourceId": "S003-CP01-VALIDATION", "version": "1.0.0", "ref": "evidence/CP01-initial-config-validation.md"}]}
+  },
+  "restoreEvidenceRef": "evidence/CP01-initial-config-validation.md#恢复校验"
+}
+

@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "ofw.s002.owner-validation-receipt.v2",
+  "receiptId": "RECEIPT-M04-decision-chain-completed-7c038a1b6baf",
+  "moduleId": "M04",
+  "owner": "决策中心",
+  "moduleVersion": "S002-M04-1.0.0",
+  "scenarioAdapterVersion": "S002-M04-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "baselineCheckpointBinding": {
+    "ref": "designs/scenario-checkpoints/baselines/v1.0.3/T056-baseline-checkpoint.json",
+    "sha256": "0a90f5f68dccaa7c18be71b4c82019616f19b0e359f931024652d95165ecd414"
+  },
+  "baselineModuleBinding": {
+    "baselineVersion": "1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "prototypePath": "designs/prototype-releases/v1.0.3/decision-center-prototype",
+    "exactVersion": "v1.0.3#243f7a8a779b1fb9",
+    "treeSha256": "243f7a8a779b1fb9dddb74996c5bc7d99ad51211f019a2991afb6c8916f7b66b",
+    "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+    "supportingPrototypeComponents": []
+  },
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815080000000-113c6bced530",
+    "formedAt": "2026-08-15T08:00:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "decision-chain-completed",
+  "exportRef": "checkpoints/runs/S002-RUN-20260815080000000-113c6bced530/evidence/CP05-decision-chain-completed/M04-state-export.json",
+  "exportSha256": "7c038a1b6bafee24e2a8c3ac5f72cf6e741308e89d0923c9879e69f8e0fc243e",
+  "validatedAt": "2026-08-15T23:52:50.000Z",
+  "validationStatus": "verified",
+  "checks": {
+    "scenarioIdentity": "verified",
+    "baselineBinding": "verified",
+    "baselineModuleTreeDigest": "verified-by-deterministic-tree-digest",
+    "ownerBoundary": "verified",
+    "exportDigest": "verified",
+    "isolatedCloneShape": "verified-by-scenario-adapter",
+    "historicalSideEffectsDisabled": "verified"
+  },
+  "validationScope": "prototype-scenario-adapter",
+  "conclusionBoundary": "S002原型适配器导出与恢复校验通过，不代表生产模块部署或平台验收通过"
+}

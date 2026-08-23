@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "ofw.s003.m02.pipeline-current-projection.v2",
+  "projectionId": "S003-M02-PIPELINE-CURRENT-PROJECTION",
+  "projectionVersion": "2.0.0",
+  "status": "consumption-ready",
+  "formedAt": "2026-08-15T13:30:00.000Z",
+  "sourcePipelineRunId": "S003-M02-PIPELINE-RUN-20260815-001",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "inputSources": [
+    {
+      "nodeId": "node-source-workbook",
+      "slotId": "financialWorkbook",
+      "nativeResourceId": "s003-workbook",
+      "sourceId": "S003-M02-SOURCE-XLSX-20251231",
+      "name": "企业债务风险评估模版 · 财务数据",
+      "version": "S003-M02-SOURCE-XLSX-20251231",
+      "contentMode": "full-data",
+      "passContentToPython": true
+    },
+    {
+      "nodeId": "node-source-enterprise-factors",
+      "slotId": "enterpriseFactorInput",
+      "nativeResourceId": "s003-enterprise-factor-input",
+      "sourceId": "S003-M02-SOURCE-ENTERPRISE-FACTOR-INPUT",
+      "name": "企业因子输入",
+      "version": "S003-T053-INPUT-20251231-v1",
+      "contentMode": "full-data",
+      "passContentToPython": true
+    }
+  ],
+  "adoptionEvidence": {
+    "status": "adopted",
+    "publishedPointerId": "S003-M01-PUBLISHED-POINTER",
+    "publishedSemanticVersionId": "S003-M01-DEBT-RISK-V1",
+    "dataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+    "assessmentAt": "2025-12-31",
+    "adoptedAt": "2026-08-15T13:30:00.000Z",
+    "owner": "M01 本体管理"
+  },
+  "derivation": [
+    "resources/m02/pipeline-run.v1.json",
+    "resources/m02/human-input-snapshot.v1.json",
+    "resources/m01/published-pointer.v1.json"
+  ],
+  "historicalEvidenceMutated": false
+}

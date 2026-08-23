@@ -1,13 +1,26 @@
-# v1.1.0 工作区发布说明
+# v1.1.0 四场景组合总装冻结来源
 
-本目录当前是 `public-bootstrap`，不是冻结发布版。当前父版本、基线快照、隔离工作区和合并规则以 `VERSION.json`、`WORKSPACE.md` 与 `MIGRATION-v1.0.1-to-v1.0.3.json` 为准。
+当前状态：**已晋级实施参考原型冻结基线**。
 
-源冻结基线是 `designs/prototype-releases/v1.0.3/`，唯一基线身份为：
+本目录只保留来源候选与审计材料；冻结发布入口位于 `designs/prototype-releases/v1.1.0/`：
 
-`BSL-S001-V103-DE0119608E26`
+```text
+http://127.0.0.1:4342/s001-e2e-integration/index.html?rev=v1.1.0-frozen#home
+```
 
-目录内的 S001 历史入口、runtime 快照和 `manifest.json` 只用于基线回归与物化对照，不得作为 S002—S004 的初始化数据或成功状态。
+M01—M06 各保留一个完整工作台，S001—S004 的业务资源和已完成来源轮次按统一数据结构装入模块目录；仪表盘使用独立一级入口。组合过程不设置全局场景切换，不加载独立场景页面，也不复制场景历史事实形成第二套状态真源。
 
-S002、S003、S004 必须先在各自 Git worktree 内独立建设并通过场景联调门，再按 S002→S003→S004 的顺序汇入集成工作区。每次汇入均须在同一 Origin 回归 S001 和所有已汇入场景。
+候选基线：
 
-只有完成全场景回归、形成新的完整性清单并取得后续发布授权后，才能把候选内容复制到新的不可变发布目录。当前 `acceptanceReady=false`，不表示任何模块评审、S001 正式验收或一期验收通过。
+- `sourceProductBaseline = v1.0.7`
+- `governanceBaselineVersion = v1.0.3`
+- `baselineSnapshotId = BSL-S001-V103-DE0119608E26`
+- `sourceCandidate = v1.1.0-rc.10`
+- `implementationBaselineSnapshotId = BSL-OFW-V110-94ABD0E991B7`
+- `parentVersion = v1.0.3`
+- `integrityManifest = RC10-INTEGRITY.json`
+- `acceptanceReady = false`
+
+四场景来源轮次及适用边界记录在 `COMPOSITE-RUN-RC4.json`；模块、入口、三档视口和控制台结果记录在 `COMPOSITE-REGRESSION-MATRIX.json`。旧组合运行账本 `COMPOSITE-RUN-202608211618.json` 已失效，只保留审计。
+
+本来源候选已完成组合产品走查所需的组装与内部回归。冻结发布树锁定完整文件清单、入口和回退版本；冻结后不得原地修改，缺陷必须从 `prototype-v1.1.0-frozen` 建立新版本。该结论不表示模块正式评审通过、场景正式验收通过或一期验收通过。

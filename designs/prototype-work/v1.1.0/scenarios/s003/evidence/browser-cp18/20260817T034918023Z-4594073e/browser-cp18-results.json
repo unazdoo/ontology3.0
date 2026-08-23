@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp18-result.v1",
+  "runId": "20260817T034918023Z-4594073e",
+  "formedAt": "2026-08-17T03:49:18.023Z",
+  "origin": "http://127.0.0.1:48124",
+  "formalSourceScenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+  "browserVersion": "149.0.7827.55",
+  "cases": [
+    {
+      "id": "shell-and-modules",
+      "status": "failed",
+      "durationMs": 3927,
+      "error": {
+        "name": "AssertionError",
+        "message": "report 二级菜单仍重复显示模块标题层\n\n'' !== 'none'\n",
+        "stack": "AssertionError [ERR_ASSERTION]: report 二级菜单仍重复显示模块标题层\n\n'' !== 'none'\n\n    at caseShellAndModules (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:167:14)\n    at runNextTicks (node:internal/process/task_queues:65:5)\n    at process.processImmediate (node:internal/timers:453:9)\n    at process.callbackTrampoline (node:internal/async_hooks:130:17)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:809:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:837:16)"
+      }
+    },
+    {
+      "id": "m02-native",
+      "status": "failed",
+      "durationMs": 509,
+      "error": {
+        "name": "AssertionError",
+        "message": "The input did not match the regular expression /按需上传完整工作簿/. Input:\n\n'工作区\\n' +\n  '数据资源\\n' +\n  '数据管道\\n' +\n  '最近运行\\n' +\n  'S003-M02-PIPELINE-RUN-20260815-001 · 成功 · 消费就绪\\n' +\n  '债务风险数据可消费\\n' +\n  '企业债务风险评估模版\\n' +\n  '\\n' +\n  'S003 财务工作簿来源；当前管道只消费财务数据成员。企业因子取值不属于该数据源，由 M01 模型配置统一维护，M02 形成独立输入快照。\\n' +\n  '\\n' +\n  '返回目录\\n' +\n  '查看修订证据\\n' +\n  '查看来源内容核验证据\\n' +\n  '编辑设置\\n' +\n  '手工工作簿 · 按需上传工作簿\\n' +\n  '正式来源已登记 · 当前快照已确认\\n' +\n  '\\n' +\n  '正式来源 S003-M02-SOURCE-XLSX-20251231 · SHA-256 dbdab9c870d7f2e456c3a9e0f91b340b372da6d40eb241551e0ee8848cac42a0\\n' +\n  '\\n' +\n  '最近取得\\n' +\n  '2026-08-15T13:04\\n' +\n  '当前数据截至\\n' +\n  '2025-12-31\\n' +\n  '快照总数\\n' +\n  '1 个\\n' +\n  '来源取得方式\\n' +\n  '按需上传形成快照\\n' +\n  '概览\\n' +\n  '内容与字段\\n' +\n  '快照历史\\n' +\n  '引用关系\\n' +\n  '设置\\n' +\n  '来源状态\\n' +\n  '正式来源已登记 · 当前快照已确认\\n' +\n  '数据源名称\\n' +\n  '企业债务风险评估模版\\n' +\n  '来源分类\\n' +\n  '手工工作簿\\n' +\n  '接入方式\\n' +\n  '按需上传工作簿\\n' +\n  '快照\\n' +\n  '1 个\\n' +\n  '当前快照文件\\n' +\n  '企业债务风险评估模版_S003兼容版.xlsx\\n' +\n  '数据截至\\n' +\n  '2025-12-31\\n' +\n  '文件已完成受控登记并形成当前场景快照；历史快照和下载证据保持可追溯。\\n' +\n  '来源核验状态\\n' +\n  '\\n' +\n  '内容、结构、受控登记和消费状态\\n' +\n  '\\n' +\n  '消费就绪\\n' +\n  '权威阶段\\n' +\n  'S003 正式场景 · 已受控登记\\n' +\n  '数据工程内部状态\\n' +\n  '来源、人工输入与质量结果已登记\\n' +\n  '合同结构\\n' +\n  '兼容\\n' +\n  '下一责任方\\n' +\n  '本体管理\\n' +\n  '已核验\\n' +\n  '财务输入范围\\n' +\n  '当前数据源和工作簿详情只包含财务数据；企业因子在 M01 模型配置统一维护，M02 仅向管道提供已发布输入快照。\\n' +\n  '已确认\\n' +\n  '文件内容\\n' +\n  '评估时点、币种、金额单位和 I / AA 财务字段口径已确认。\\n' +\n  '已登记\\n' +\n  '受控登记与处理\\n' +\n  '财务快照、企业因子输入快照、质量结果和正式资产均已登记。\\n' +\n  '消费就绪\\n' +\n  '当前消费状态\\n' +\n  '正式数据资产已由 M01 已发布 指针采用。\\n' +\n  '当前资产已获得本体管理正式采用证据；模型系数、权重和风险阈值仍不进入数据管道。\\n' +\n  '来源取得设置\\n' +\n  '按需上传形成快照\\n' +\n  '来源取得\\n' +\n  '按需上传形成快照\\n' +\n  '来源自动同步\\n' +\n  '不适用\\n' +\n  '管道运行计划\\n' +\n  '仅手工正式运行\\n' +\n  '最近取得\\n' +\n  '2026-08-15T13:04 · 最近成功读取\\n' +\n  '前往管道设置运行计划\\n' +\n  '\\n' +\n  '手工工作簿不设置来源同步计划；每次按需上传形成新的不可变快照。与 v1.0.3 一致，只有共享文件夹扫描属于数据源同步；定时、触发和正式运行计划只在数据管道中独立维护。\\n' +\n  '\\n' +\n  '文件身份\\n' +\n  'dbdab9c870d7f2e456c3a9e0f91b340b372da6d40eb241551e0ee8848cac42a0\\n' +\n  '当前 SHA-256\\n' +\n  'dd917b497f43ebf5c72607b49d70ae049969a32505311fb6bf9aa7a85d36a498\\n' +\n  '修订前 SHA-256\\n' +\n  'S003 财务来源与合同\\n' +\n  '\\n' +\n  '当前工作簿只作为财务数据来源；原附件中的调节因子 Sheet 不再作为当前企业人工输入。\\n' +\n  '\\n' +\n  '正式来源已登记\\n' +\n  '来源标识\\n' +\n  'S003-M02-SOURCE-XLSX-20251231\\n' +\n  '评估时点\\n' +\n  '2025-12-31\\n' +\n  '币种 / 金额单位\\n' +\n  'CNY / 元\\n' +\n  '当前管道成员\\n' +\n  '财务数据\\n' +\n  '当前期 / 上期字段\\n' +\n  'I / AA\\n' +\n  '企业因子输入快照\\n' +\n  'S003-T053-INPUT-20251231-v1\\n' +\n  '企业因子在线填报已从数据源详情剥离，在 M01 债务风险模型配置统一维护；M02 仅负责人工输入快照的版本、校验与发布。M02 不计算风险评分、系数、权重或阈值，这些内容也不得进入 Python 管道参数或质量规则。\\n' +\n  '数据质量与正式采用\\n' +\n  '\\n' +\n  '财务来源、企业因子输入快照、质量结果和正式 T007 可追溯到同一 S003 正式来源运行。\\n' +\n  '\\n' +\n  '消费就绪\\n' +\n  '质量结果\\n' +\n  'S003-M02-QUALITY-20251231-v1\\n' +\n  '检查项\\n' +\n  '8 项\\n' +\n  '原管道运行\\n' +\n  'S003-M02-PIPELINE-RUN-20260815-001\\n' +\n  '正式数据资产\\n' +\n  'S003-T007-FORMAL-CANDIDATE-20251231-v1\\n' +\n  '已发布 指针\\n' +\n  'S003-M01-PUBLISHED-POINTER\\n' +\n  '消费状态\\n' +\n  '本体侧已正式采用\\n' +\n  '质量检查不拥有业务模型\\n' +\n  '明确排除：风险评分、评分公式、因子系数、评分权重、风险阈值、风险分档命中、Action Type 命中\\n' +\n  '来源取得与运行计划\\n' +\n  '按需上传\\n' +\n  '手工工作簿\\n' +\n  '无来源同步计划\\n' +\n  '取得方式\\n' +\n  '按需上传形成快照\\n' +\n  '管道运行计划\\n' +\n  '在数据管道中独立维护\\n' +\n  '当前快照\\n' +\n  'S003-M02-SOURCE-XLSX-20251231\\n' +\n  '与 v1.0.3 一致：手工工作簿不设置来源同步计划；共享文件夹的扫描/同步计划仍归数据源设置；定时、触发和正式运行计划归数据管道。'\n",
+        "stack": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /按需上传完整工作簿/. Input:\n\n'工作区\\n' +\n  '数据资源\\n' +\n  '数据管道\\n' +\n  '最近运行\\n' +\n  'S003-M02-PIPELINE-RUN-20260815-001 · 成功 · 消费就绪\\n' +\n  '债务风险数据可消费\\n' +\n  '企业债务风险评估模版\\n' +\n  '\\n' +\n  'S003 财务工作簿来源；当前管道只消费财务数据成员。企业因子取值不属于该数据源，由 M01 模型配置统一维护，M02 形成独立输入快照。\\n' +\n  '\\n' +\n  '返回目录\\n' +\n  '查看修订证据\\n' +\n  '查看来源内容核验证据\\n' +\n  '编辑设置\\n' +\n  '手工工作簿 · 按需上传工作簿\\n' +\n  '正式来源已登记 · 当前快照已确认\\n' +\n  '\\n' +\n  '正式来源 S003-M02-SOURCE-XLSX-20251231 · SHA-256 dbdab9c870d7f2e456c3a9e0f91b340b372da6d40eb241551e0ee8848cac42a0\\n' +\n  '\\n' +\n  '最近取得\\n' +\n  '2026-08-15T13:04\\n' +\n  '当前数据截至\\n' +\n  '2025-12-31\\n' +\n  '快照总数\\n' +\n  '1 个\\n' +\n  '来源取得方式\\n' +\n  '按需上传形成快照\\n' +\n  '概览\\n' +\n  '内容与字段\\n' +\n  '快照历史\\n' +\n  '引用关系\\n' +\n  '设置\\n' +\n  '来源状态\\n' +\n  '正式来源已登记 · 当前快照已确认\\n' +\n  '数据源名称\\n' +\n  '企业债务风险评估模版\\n' +\n  '来源分类\\n' +\n  '手工工作簿\\n' +\n  '接入方式\\n' +\n  '按需上传工作簿\\n' +\n  '快照\\n' +\n  '1 个\\n' +\n  '当前快照文件\\n' +\n  '企业债务风险评估模版_S003兼容版.xlsx\\n' +\n  '数据截至\\n' +\n  '2025-12-31\\n' +\n  '文件已完成受控登记并形成当前场景快照；历史快照和下载证据保持可追溯。\\n' +\n  '来源核验状态\\n' +\n  '\\n' +\n  '内容、结构、受控登记和消费状态\\n' +\n  '\\n' +\n  '消费就绪\\n' +\n  '权威阶段\\n' +\n  'S003 正式场景 · 已受控登记\\n' +\n  '数据工程内部状态\\n' +\n  '来源、人工输入与质量结果已登记\\n' +\n  '合同结构\\n' +\n  '兼容\\n' +\n  '下一责任方\\n' +\n  '本体管理\\n' +\n  '已核验\\n' +\n  '财务输入范围\\n' +\n  '当前数据源和工作簿详情只包含财务数据；企业因子在 M01 模型配置统一维护，M02 仅向管道提供已发布输入快照。\\n' +\n  '已确认\\n' +\n  '文件内容\\n' +\n  '评估时点、币种、金额单位和 I / AA 财务字段口径已确认。\\n' +\n  '已登记\\n' +\n  '受控登记与处理\\n' +\n  '财务快照、企业因子输入快照、质量结果和正式资产均已登记。\\n' +\n  '消费就绪\\n' +\n  '当前消费状态\\n' +\n  '正式数据资产已由 M01 已发布 指针采用。\\n' +\n  '当前资产已获得本体管理正式采用证据；模型系数、权重和风险阈值仍不进入数据管道。\\n' +\n  '来源取得设置\\n' +\n  '按需上传形成快照\\n' +\n  '来源取得\\n' +\n  '按需上传形成快照\\n' +\n  '来源自动同步\\n' +\n  '不适用\\n' +\n  '管道运行计划\\n' +\n  '仅手工正式运行\\n' +\n  '最近取得\\n' +\n  '2026-08-15T13:04 · 最近成功读取\\n' +\n  '前往管道设置运行计划\\n' +\n  '\\n' +\n  '手工工作簿不设置来源同步计划；每次按需上传形成新的不可变快照。与 v1.0.3 一致，只有共享文件夹扫描属于数据源同步；定时、触发和正式运行计划只在数据管道中独立维护。\\n' +\n  '\\n' +\n  '文件身份\\n' +\n  'dbdab9c870d7f2e456c3a9e0f91b340b372da6d40eb241551e0ee8848cac42a0\\n' +\n  '当前 SHA-256\\n' +\n  'dd917b497f43ebf5c72607b49d70ae049969a32505311fb6bf9aa7a85d36a498\\n' +\n  '修订前 SHA-256\\n' +\n  'S003 财务来源与合同\\n' +\n  '\\n' +\n  '当前工作簿只作为财务数据来源；原附件中的调节因子 Sheet 不再作为当前企业人工输入。\\n' +\n  '\\n' +\n  '正式来源已登记\\n' +\n  '来源标识\\n' +\n  'S003-M02-SOURCE-XLSX-20251231\\n' +\n  '评估时点\\n' +\n  '2025-12-31\\n' +\n  '币种 / 金额单位\\n' +\n  'CNY / 元\\n' +\n  '当前管道成员\\n' +\n  '财务数据\\n' +\n  '当前期 / 上期字段\\n' +\n  'I / AA\\n' +\n  '企业因子输入快照\\n' +\n  'S003-T053-INPUT-20251231-v1\\n' +\n  '企业因子在线填报已从数据源详情剥离，在 M01 债务风险模型配置统一维护；M02 仅负责人工输入快照的版本、校验与发布。M02 不计算风险评分、系数、权重或阈值，这些内容也不得进入 Python 管道参数或质量规则。\\n' +\n  '数据质量与正式采用\\n' +\n  '\\n' +\n  '财务来源、企业因子输入快照、质量结果和正式 T007 可追溯到同一 S003 正式来源运行。\\n' +\n  '\\n' +\n  '消费就绪\\n' +\n  '质量结果\\n' +\n  'S003-M02-QUALITY-20251231-v1\\n' +\n  '检查项\\n' +\n  '8 项\\n' +\n  '原管道运行\\n' +\n  'S003-M02-PIPELINE-RUN-20260815-001\\n' +\n  '正式数据资产\\n' +\n  'S003-T007-FORMAL-CANDIDATE-20251231-v1\\n' +\n  '已发布 指针\\n' +\n  'S003-M01-PUBLISHED-POINTER\\n' +\n  '消费状态\\n' +\n  '本体侧已正式采用\\n' +\n  '质量检查不拥有业务模型\\n' +\n  '明确排除：风险评分、评分公式、因子系数、评分权重、风险阈值、风险分档命中、Action Type 命中\\n' +\n  '来源取得与运行计划\\n' +\n  '按需上传\\n' +\n  '手工工作簿\\n' +\n  '无来源同步计划\\n' +\n  '取得方式\\n' +\n  '按需上传形成快照\\n' +\n  '管道运行计划\\n' +\n  '在数据管道中独立维护\\n' +\n  '当前快照\\n' +\n  'S003-M02-SOURCE-XLSX-20251231\\n' +\n  '与 v1.0.3 一致：手工工作簿不设置来源同步计划；共享文件夹的扫描/同步计划仍归数据源设置；定时、触发和正式运行计划归数据管道。'\n\n    at caseM02Native (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:293:66)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:809:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:837:16)"
+      }
+    },
+    {
+      "id": "m01-canvas",
+      "status": "failed",
+      "durationMs": 759,
+      "error": {
+        "name": "AssertionError",
+        "message": "画布节点拖动未生效",
+        "stack": "AssertionError [ERR_ASSERTION]: 画布节点拖动未生效\n    at caseM01Canvas (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:259:10)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:809:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:837:16)"
+      }
+    },
+    {
+      "id": "m01-published-config",
+      "status": "failed",
+      "durationMs": 619,
+      "error": {
+        "name": "AssertionError",
+        "message": "The input did not match the regular expression /风险分档跟踪/. Input:\n\n'产品\\n' +\n  '语义资产\\n' +\n  'S003\\n' +\n  '债务风险监测\\n' +\n  '已发布本体\\n' +\n  '企业债务风险评估模型\\n' +\n  '\\n' +\n  'V1.0.1 · 精确已发布语义版本\\n' +\n  '\\n' +\n  '返回本体详情\\n' +\n  '创建修订草稿\\n' +\n  '精确语义版本\\n' +\n  'V1.0.1\\n' +\n  '版本稳定标识\\n' +\n  'S003-M01-DEBT-RISK-V1\\n' +\n  '发布状态\\n' +\n  '已发布\\n' +\n  '业务有效状态\\n' +\n  '有效\\n' +\n  '发布时数据映射\\n' +\n  'S003 数据合同已锁定\\n' +\n  '正式使用状态\\n' +\n  '当前正式使用\\n' +\n  '业务生效\\n' +\n  '2026-08-15 13:30:00.000Z\\n' +\n  '发布时间\\n' +\n  '2026-08-15T13:30:00.000Z\\n' +\n  '适用场景\\n' +\n  'S003 债务风险监测\\n' +\n  '版本概览\\n' +\n  '资源与模型\\n' +\n  '在画布中查看\\n' +\n  '数据与消费\\n' +\n  '更新与回退\\n' +\n  '记录与证据\\n' +\n  '模型配置\\n' +\n  '债务风险监测模型本体配置\\n' +\n  '\\n' +\n  '配置作为当前原生已发布版本的扩展页签；Metric、Rule、行动类型、版本、资源与画布仍由基线页面提供。\\n' +\n  '\\n' +\n  '草稿服务可写\\n' +\n  '已发布模型\\n' +\n  '1.0.1\\n' +\n  'S003-M01-DEBT-RISK-PKG\\n' +\n  '当前场景运行\\n' +\n  'S003-RUN-20260815133000000-c03503000001\\n' +\n  'active\\n' +\n  '企业因子输入\\n' +\n  'S003-T053-INPUT-20251231-v1\\n' +\n  'M01 统一配置 · M02 输入快照服务\\n' +\n  '正式数据资产\\n' +\n  'S003-T007-FORMAL-CANDIDATE-20251231-v1\\n' +\n  '2025-12-31\\n' +\n  '配置总览\\n' +\n  '企业因子配置\\n' +\n  '调节因子配置\\n' +\n  '评分权重\\n' +\n  '风险分档配置\\n' +\n  '行动触发\\n' +\n  '固定业务语义\\n' +\n  '发布与版本\\n' +\n  '风险分档阈值\\n' +\n  '\\n' +\n  '绿、黄、红、黑四档必须连续覆盖 0—100，无重叠、无空档。\\n' +\n  '\\n' +\n  'GREEN\\n' +\n  '绿灯\\n' +\n  '下界（含）\\n' +\n  '上界（不含）\\n' +\n  'YELLOW\\n' +\n  '黄灯\\n' +\n  '下界（含）\\n' +\n  '上界（不含）\\n' +\n  'RED\\n' +\n  '红灯\\n' +\n  '下界（含）\\n' +\n  '上界（不含）\\n' +\n  'BLACK\\n' +\n  '黑灯\\n' +\n  '下界（含）\\n' +\n  '上界（不含）'\n",
+        "stack": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /风险分档跟踪/. Input:\n\n'产品\\n' +\n  '语义资产\\n' +\n  'S003\\n' +\n  '债务风险监测\\n' +\n  '已发布本体\\n' +\n  '企业债务风险评估模型\\n' +\n  '\\n' +\n  'V1.0.1 · 精确已发布语义版本\\n' +\n  '\\n' +\n  '返回本体详情\\n' +\n  '创建修订草稿\\n' +\n  '精确语义版本\\n' +\n  'V1.0.1\\n' +\n  '版本稳定标识\\n' +\n  'S003-M01-DEBT-RISK-V1\\n' +\n  '发布状态\\n' +\n  '已发布\\n' +\n  '业务有效状态\\n' +\n  '有效\\n' +\n  '发布时数据映射\\n' +\n  'S003 数据合同已锁定\\n' +\n  '正式使用状态\\n' +\n  '当前正式使用\\n' +\n  '业务生效\\n' +\n  '2026-08-15 13:30:00.000Z\\n' +\n  '发布时间\\n' +\n  '2026-08-15T13:30:00.000Z\\n' +\n  '适用场景\\n' +\n  'S003 债务风险监测\\n' +\n  '版本概览\\n' +\n  '资源与模型\\n' +\n  '在画布中查看\\n' +\n  '数据与消费\\n' +\n  '更新与回退\\n' +\n  '记录与证据\\n' +\n  '模型配置\\n' +\n  '债务风险监测模型本体配置\\n' +\n  '\\n' +\n  '配置作为当前原生已发布版本的扩展页签；Metric、Rule、行动类型、版本、资源与画布仍由基线页面提供。\\n' +\n  '\\n' +\n  '草稿服务可写\\n' +\n  '已发布模型\\n' +\n  '1.0.1\\n' +\n  'S003-M01-DEBT-RISK-PKG\\n' +\n  '当前场景运行\\n' +\n  'S003-RUN-20260815133000000-c03503000001\\n' +\n  'active\\n' +\n  '企业因子输入\\n' +\n  'S003-T053-INPUT-20251231-v1\\n' +\n  'M01 统一配置 · M02 输入快照服务\\n' +\n  '正式数据资产\\n' +\n  'S003-T007-FORMAL-CANDIDATE-20251231-v1\\n' +\n  '2025-12-31\\n' +\n  '配置总览\\n' +\n  '企业因子配置\\n' +\n  '调节因子配置\\n' +\n  '评分权重\\n' +\n  '风险分档配置\\n' +\n  '行动触发\\n' +\n  '固定业务语义\\n' +\n  '发布与版本\\n' +\n  '风险分档阈值\\n' +\n  '\\n' +\n  '绿、黄、红、黑四档必须连续覆盖 0—100，无重叠、无空档。\\n' +\n  '\\n' +\n  'GREEN\\n' +\n  '绿灯\\n' +\n  '下界（含）\\n' +\n  '上界（不含）\\n' +\n  'YELLOW\\n' +\n  '黄灯\\n' +\n  '下界（含）\\n' +\n  '上界（不含）\\n' +\n  'RED\\n' +\n  '红灯\\n' +\n  '下界（含）\\n' +\n  '上界（不含）\\n' +\n  'BLACK\\n' +\n  '黑灯\\n' +\n  '下界（含）\\n' +\n  '上界（不含）'\n\n    at caseM01PublishedAndConfig (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:368:76)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:809:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:837:16)"
+      }
+    },
+    {
+      "id": "m03-m04-m05",
+      "status": "passed",
+      "durationMs": 7126,
+      "details": {
+        "recommendedQuestions": 6,
+        "queryAnswered": true,
+        "decisionGeneric": true,
+        "reportAgent": true
+      }
+    },
+    {
+      "id": "dashboard-and-report",
+      "status": "failed",
+      "durationMs": 60507,
+      "error": {
+        "name": "TimeoutError",
+        "message": "frame.waitForFunction: Timeout 60000ms exceeded.",
+        "stack": "frame.waitForFunction: Timeout 60000ms exceeded.\n    at caseDashboardAndReport (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:497:15)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:809:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:837:16)"
+      }
+    },
+    {
+      "id": "dashboard-action-and-config",
+      "status": "failed",
+      "durationMs": 62119,
+      "error": {
+        "name": "TimeoutError",
+        "message": "frame.waitForFunction: Timeout 60000ms exceeded.",
+        "stack": "frame.waitForFunction: Timeout 60000ms exceeded.\n    at caseDashboardActionAndConfig (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:588:18)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:809:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:837:16)"
+      }
+    }
+  ],
+  "totals": {
+    "cases": 7,
+    "passed": 1,
+    "failed": 6
+  },
+  "checkpointCreated": false,
+  "acceptanceReady": false
+}

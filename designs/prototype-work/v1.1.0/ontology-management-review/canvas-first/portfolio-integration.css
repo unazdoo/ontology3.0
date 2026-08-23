@@ -1,0 +1,120 @@
+.workspace-context { gap:10px; }
+.ontology-portfolio-filter {
+  min-height:32px;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:0 8px;
+  border:1px solid var(--line-strong);
+  border-radius:6px;
+  background:#fff;
+  color:var(--muted);
+  font-size:11px;
+}
+.ontology-portfolio-filter select {
+  min-width:174px;
+  height:28px;
+  border:0;
+  outline:0;
+  color:var(--ink-2);
+  background:transparent;
+  font-weight:750;
+}
+.ontology-scene-badge {
+  min-height:20px;
+  margin-left:7px;
+  padding:1px 7px;
+  display:inline-flex;
+  align-items:center;
+  border:1px solid #bcd0ee;
+  border-radius:10px;
+  color:#28579f;
+  background:#edf4ff;
+  font-size:10px;
+  font-weight:850;
+  line-height:1.2;
+  vertical-align:middle;
+}
+.ontology-scene-badge[data-scene="S002"] { color:#67519d; border-color:#d7cbea; background:#f2edfa; }
+.ontology-scene-badge[data-scene="S003"] { color:#956018; border-color:#ead1a5; background:#fff5e5; }
+.ontology-scene-badge[data-scene="S004"] { color:#16705d; border-color:#b9ddcf; background:#eaf7f2; }
+[data-ofw-portfolio-hidden="true"] { display:none !important; }
+.ontology-portfolio-caption {
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.45;
+}
+
+/* Published detail pages keep long identities readable without pushing the
+   record grid outside its panel. The catalog now opens the selected version
+   directly, so this is the single detail surface users land on. */
+.published-version,
+.resource-detail {
+  min-width: 0;
+}
+.published-version .page-head,
+.resource-detail .page-head {
+  align-items: flex-start;
+}
+.published-version .page-head > div:first-child,
+.resource-detail .page-head > div:first-child {
+  min-width: 0;
+  flex: 1 1 320px;
+}
+.published-version .page-actions,
+.resource-detail .page-actions {
+  min-width: 0;
+  max-width: 100%;
+  justify-content: flex-end;
+}
+.published-version .definition-grid,
+.resource-detail .definition-grid {
+  min-width: 0;
+}
+.published-version .definition-grid dd,
+.resource-detail .definition-grid dd,
+.resource-identity.published b {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.resource-identity.published b {
+  white-space: normal;
+  line-height: 1.45;
+}
+
+@media (max-width:1180px) {
+  .published-version .page-head,
+  .resource-detail .page-head {
+    flex-wrap: wrap;
+  }
+  .published-version .page-actions,
+  .resource-detail .page-actions {
+    width: 100%;
+    margin-left: 0;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width:760px) {
+  .published-version,
+  .resource-detail {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .published-version .definition-grid,
+  .resource-detail .definition-grid {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .published-version .definition-grid dd,
+  .resource-detail .definition-grid dd {
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+}
+@media (max-width:900px) {
+  .ontology-portfolio-filter span { display:none; }
+  .ontology-portfolio-filter select { min-width:132px; }
+}

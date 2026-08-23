@@ -1,0 +1,427 @@
+{
+  "schemaVersion": "ofw.c034.checkpoint.v1",
+  "checkpointId": "CP-S003-20260817230000000-c02424000024",
+  "checkpointNode": "e2e-integrated",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "parentVersion": "1.0.3",
+  "scenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+    "formedAt": "2026-08-17T16:30:00.000Z",
+    "status": "active"
+  },
+  "sourceScenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+  "createdAt": "2026-08-17T23:00:00.000Z",
+  "immutable": true,
+  "code": {
+    "prototypeVersion": "1.1.0",
+    "buildVersion": "S003-CP24",
+    "entryRef": "runtime/cp24-entry.v1.html",
+    "treeSha256": "bb9803b821f46c9067f2350510cc884e6b6579397b2f108917dde92d5ab05eae"
+  },
+  "modules": {
+    "M01": {
+      "moduleId": "M01",
+      "moduleVersion": "1.1.0",
+      "exportId": "S003-M01-RUNTIME-EXPORT-20260817-002",
+      "exportRef": "resources/m01/runtime-export.v2.json",
+      "exportSha256": "bc39529937bf2a93a782a400b6fc16d531c5aeb6f92aa4311c65b92f28d54f41",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-17T23:00:00.000Z",
+        "evidenceRef": "evidence/CP24-inventory-deduplication-validation.md"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M02": {
+      "moduleId": "M02",
+      "moduleVersion": "1.1.0",
+      "exportId": "S003-M02-DATA-CONTRACT",
+      "exportRef": "resources/m02/data-contract.v1.1.json",
+      "exportSha256": "2facf06f9f9cd44e02071e6896975cdea00b60bdb4c961c9143c97bea0f17e15",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-17T23:00:00.000Z",
+        "evidenceRef": "evidence/CP24-inventory-deduplication-validation.md"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M03": {
+      "moduleId": "M03",
+      "moduleVersion": "1.1.0",
+      "exportId": "S003-M03-QUERY-RUNTIME",
+      "exportRef": "resources/m03/query-runtime.v2.json",
+      "exportSha256": "987008e183554cadf9173897e6eefbe0414ca911b5bc7e3b8ff61e026cb4c3ee",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-17T23:00:00.000Z",
+        "evidenceRef": "evidence/CP24-inventory-deduplication-validation.md"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M04": {
+      "moduleId": "M04",
+      "moduleVersion": "1.1.0",
+      "exportId": "S003-M04-DECISION-RUNTIME",
+      "exportRef": "resources/m04/decision-runtime.v2.json",
+      "exportSha256": "4d2e7b04b5ebc34f0c920b4922e703cc7e812991314961608d529ca3631dfcec",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-17T23:00:00.000Z",
+        "evidenceRef": "evidence/CP24-inventory-deduplication-validation.md"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M05": {
+      "moduleId": "M05",
+      "moduleVersion": "1.7.0",
+      "exportId": "S003-M05-REPORT-COPILOT-SCENARIO-PROFILE",
+      "exportRef": "resources/m05/agent-position.v7.json",
+      "exportSha256": "01209a8d9d699bf32a835e4a633d1e13a0c6d0680fb491caef8c422e8fd13fe7",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-17T23:00:00.000Z",
+        "evidenceRef": "evidence/CP24-inventory-deduplication-validation.md"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M06": {
+      "moduleId": "M06",
+      "moduleVersion": "1.7.0",
+      "exportId": "S003-M06-REPORT-MANIFEST-20260817-008",
+      "exportRef": "resources/m06/report-manifest.v9.json",
+      "exportSha256": "65cfa665e3eee4d375f8a57609df3dd0118e15b5cdd0a94a5059587a423e0d15",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-17T23:00:00.000Z",
+        "evidenceRef": "evidence/CP24-inventory-deduplication-validation.md"
+      },
+      "restoreMode": "isolated-clone"
+    }
+  },
+  "stateSections": {
+    "data": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-M02-SOURCE-REGISTRY",
+          "version": "4.0.0",
+          "ref": "resources/m02/source-registry.v4.json",
+          "sha256": "c3c232797662f269f50553fb51dc7687d0f44710c1fb6f81815301e91aa4045f",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-M02-PIPELINE-CURRENT-PROJECTION",
+          "version": "4.0.0",
+          "ref": "resources/m02/pipeline-current-projection.v4.json",
+          "sha256": "83ae2212c0829835beb655b632d090540d8ce0b69e164c694950e1d16609911a",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-T053-INPUT-SNAPSHOT-20251231-v1",
+          "version": "1.0.0",
+          "ref": "resources/m02/human-input-snapshot.v1.json",
+          "sha256": "6cf3798465875855a2a0b5c3f46eed5d92c353def0953ed758cb75a046f59c64",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "version": "1.0.0",
+          "ref": "resources/m02/formal-candidate-data-asset.v1.json",
+          "sha256": "4c3cacb90bc41b8a75b90e8359b2bf55a80d0b7d0e2e9c0b8e5b3cc39eb9894a",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        }
+      ]
+    },
+    "semantics": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-M01-DEBT-RISK-PKG",
+          "version": "1.0.2",
+          "ref": "resources/m01/model-package.v2.json",
+          "sha256": "c1bcfdf2c61313e57233ad4ecd471e24b09535aa7f62d4bfb97741e15ec9b014",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-M01-MODEL-CONFIGURATION",
+          "version": "3.0.0",
+          "ref": "resources/m01/model-configuration.v3.json",
+          "sha256": "30f53df8df5c3e2c9054139d480b1f14cecbc058c8642429a6074dc728de2a1e",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-M01-PUBLISHED-POINTER",
+          "version": "1.1.0",
+          "ref": "resources/m01/published-pointer.v2.json",
+          "sha256": "9b42e601cb5d64c03178682f8a21e8ef9119e4382d3d929c02849a0e43efd481",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-M01-ACTION-TYPE-CATALOG",
+          "version": "1.1.0",
+          "ref": "resources/m01/action-type-catalog.v2.json",
+          "sha256": "3c87805e603b0f3c8a5a33d4419755c22113a6fa4351cb2f40f8903709f28faa",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        }
+      ]
+    },
+    "configurations": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "平台场景包",
+          "resourceId": "S003-SCENARIO-MANIFEST",
+          "version": "1.0.0",
+          "ref": "resources/scenario-manifest.json",
+          "sha256": "9610188ea98965ee18cd9f66a24fb32a0abfd07bb30483e759ddc29bd53c8d90",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "平台公共层与 S003 总装",
+          "resourceId": "S003-V103-BASELINE-MODULE-INTEGRATION-20260817-CP24",
+          "version": "18.0.0",
+          "ref": "resources/integration/v103-baseline-extension-inventory.v18.json",
+          "sha256": "03d6be6148341ac7903211ceae1c3219f8ba9543977a094d79ee2215d7145bc7",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP24-INTEGRATION-CONFIG",
+          "version": "1.2.5",
+          "ref": "integration-config.js",
+          "sha256": "847220c1c67b325aa2ea283a7b99fa9bf12eb5cbca4621925eedf6bab17c82f3",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP24-RUNTIME-CONFIG",
+          "version": "1.2.5",
+          "ref": "data.js",
+          "sha256": "ee7607a1534dc975c323108ea713479b0ae58aa67e94b54a6352780ad41979cb",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        }
+      ]
+    },
+    "results": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-M01-EVALUATION-RUN-20260817-002",
+          "version": "1.1.0",
+          "ref": "resources/m01/evaluation-run.v2.json",
+          "sha256": "55eab61a938115b5db9d4a0c5abd8f79d64f475f41f3b5c5babb07a1ba564bef",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-C035-RISK-RESULTS-20251231-v2",
+          "version": "1.1.0",
+          "ref": "resources/m01/c035-risk-results.v2.json",
+          "sha256": "fbcbff5095a556293cf3ede0249c548bb9208da8a2e2f66139be418419fabf7a",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-PUBLISHED-RISK-FACTS-20251231-v2",
+          "version": "1.1.0",
+          "ref": "resources/m01/published-risk-facts.v2.json",
+          "sha256": "95784154c9ce49bbc500a444f832d435bc60f42426bbf9846ef27f154db55ca1",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "M03 智能问数",
+          "resourceId": "S003-M03-QUERY-RESULTS-20260817-002",
+          "version": "1.1.0",
+          "ref": "resources/m03/query-results.v2.json",
+          "sha256": "f8d48902e3fae67f44ab6e5f37e9dc2ade8b4b33385fa1d0c62e5cc9473e8071",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        }
+      ]
+    },
+    "reports": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-RPT-DEF-DEBT-RISK",
+          "version": "1.1.0",
+          "ref": "resources/m06/report-definition.v2.json",
+          "sha256": "50351f630c7204be0fd7464eaddf932ddc4c110eeeb9514d6a71aabbeb76e4b0",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-RPT-TPL-ENTERPRISE-RISK",
+          "version": "1.1.0",
+          "ref": "resources/m06/report-template.v2.json",
+          "sha256": "37da9508359b0c78dc0f578e26ab00e085c4dfc71ae41a6c4b8120cfd5d6cb0b",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-M06-REPORT-MANIFEST-20260817-008",
+          "version": "1.7.0",
+          "ref": "resources/m06/report-manifest.v9.json",
+          "sha256": "65cfa665e3eee4d375f8a57609df3dd0118e15b5cdd0a94a5059587a423e0d15",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-M06-REPORT-CONTENTS-20260817-008",
+          "version": "1.7.0",
+          "ref": "resources/m06/report-contents.v9.json",
+          "sha256": "588fd9c70fcd60d9ddf61932ea0f6811fae30109f5a70634472e916f8b2235b9",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-M06-REPORT-ARTIFACTS-20260817-008",
+          "version": "1.7.0",
+          "ref": "resources/m06/report-artifacts.v9.json",
+          "sha256": "57877cd41c1ddf76ee77ba32bc8c96e5018052d5b125c31d37f456e1fb8c8a21",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        }
+      ]
+    },
+    "decisions": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M04 决策中心",
+          "resourceId": "S003-M04-GENERIC-DECISION-BINDING",
+          "version": "1.1.0",
+          "ref": "resources/m04/decision-binding.v2.json",
+          "sha256": "dad7f3e1b91a2eb60df91131b1604afbee19fd4a0b04d58a8bd8df9184797a1a",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "M04 决策中心",
+          "resourceId": "S003-M04-DECISION-RUNTIME",
+          "version": "1.1.0",
+          "ref": "resources/m04/decision-runtime.v2.json",
+          "sha256": "4d2e7b04b5ebc34f0c920b4922e703cc7e812991314961608d529ca3631dfcec",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "M04 决策中心",
+          "resourceId": "S003-M04-MANUAL-ACTION-INBOX-20260817-003",
+          "version": "1.2.0",
+          "ref": "resources/m04/decision-inbox.v3.json",
+          "sha256": "6e9f619aec47592a8e16f143f57b5066fc8f209b99c0c7b145751d14546a0b2e",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "M04 决策中心",
+          "resourceId": "S003-M04-ENTERPRISE-CONTACT-ROUTING",
+          "version": "1.0.0",
+          "ref": "resources/m04/enterprise-contact-routing.v1.json",
+          "sha256": "4837718fc90298f655a19cd7be1aff4688bd55f57a1b14e5c674d00f0cbb5d10",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        }
+      ]
+    },
+    "testFixtures": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-AUTHORITATIVE-WORKBOOK-FIXTURE",
+          "version": "1.0.0",
+          "ref": "resources/m02/企业债务风险评估模版_S003兼容版.xlsx",
+          "sha256": "dbdab9c870d7f2e456c3a9e0f91b340b372da6d40eb241551e0ee8848cac42a0",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-ENTERPRISE-FIXTURE",
+          "version": "1.0.0",
+          "ref": "fixtures/enterprise-fixture.v1.json",
+          "sha256": "09191f28b87aac2757e805265fb7b9593f6979dc003ad43b8f72ea5d738f875a",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "M03 智能问数",
+          "resourceId": "S003-M03-QUERY-CATALOG",
+          "version": "1.2.0",
+          "ref": "resources/m03/query-catalog.v3.json",
+          "sha256": "53d0e637a1ba8424e855e364e6a2cb366072eef3b5e763ddf08633848043fced",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        }
+      ]
+    },
+    "featureFlags": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "平台场景包",
+          "resourceId": "S003-FEATURE-FLAGS",
+          "version": "1.0.0",
+          "ref": "resources/scenario-manifest.json",
+          "sha256": "9610188ea98965ee18cd9f66a24fb32a0abfd07bb30483e759ddc29bd53c8d90",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CONDITIONAL-INTEGRATION",
+          "version": "1.2.5",
+          "ref": "integration-config.js",
+          "sha256": "847220c1c67b325aa2ea283a7b99fa9bf12eb5cbca4621925eedf6bab17c82f3",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        }
+      ]
+    },
+    "evidence": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP24-VALIDATION-EVIDENCE",
+          "version": "1.0.0",
+          "ref": "evidence/CP24-inventory-deduplication-validation.md",
+          "sha256": "9d53da71ef439fd954fd63ec8032f099a97e2a14b172783333b74b52e8e458b1",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP24-BROWSER-RESULT",
+          "version": "1.0.0",
+          "ref": "evidence/browser-cp24/20260817T230000000Z-inventory-deduplication/browser-cp24-results.json",
+          "sha256": "045538bf0d90655b0422dce14b6344c78ea90c7d1ab983446a21e82d0f22b721",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        },
+        {
+          "owner": "平台公共层与 S003 总装",
+          "resourceId": "S003-CP24-DERIVED-TREE-INVENTORY",
+          "version": "18.0.0",
+          "ref": "resources/integration/v103-baseline-extension-inventory.v18.json",
+          "sha256": "03d6be6148341ac7903211ceae1c3219f8ba9543977a094d79ee2215d7145bc7",
+          "formedAt": "2026-08-17T23:00:00.000Z"
+        }
+      ]
+    }
+  },
+  "restoreReadiness": {
+    "status": "verified",
+    "verifiedAt": "2026-08-17T23:00:00.000Z",
+    "evidenceRef": "evidence/CP24-inventory-deduplication-validation.md"
+  },
+  "sideEffectPolicy": {
+    "allowHistoricalActionRequestReplay": false,
+    "allowHistoricalNotificationReplay": false,
+    "allowHistoricalApprovalReplay": false,
+    "allowHistoricalTodoReplay": false,
+    "allowExternalDispatch": false
+  }
+}

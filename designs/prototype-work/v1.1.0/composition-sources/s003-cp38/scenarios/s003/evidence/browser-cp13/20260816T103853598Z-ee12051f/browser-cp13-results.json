@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp13-result.v1",
+  "runId": "20260816T103853598Z-ee12051f",
+  "formedAt": "2026-08-16T10:38:53.603Z",
+  "origin": "http://127.0.0.1:4333",
+  "formalScenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "gitHead": "5620618386b1427cbf0a19877ff00b1b44dd249e",
+  "playwrightNodeModules": "/Users/domi/.codex/skills/baoyu-design/agents/gen-pptx/node_modules",
+  "headless": true,
+  "cases": [
+    {
+      "id": "health-gating",
+      "label": "首页初始 checking；逐个真实打开 M01—M06 后才健康",
+      "status": "failed",
+      "startedAt": "2026-08-16T10:38:54.035Z",
+      "durationMs": 4534,
+      "details": null,
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": "evidence/browser-cp13/20260816T103853598Z-ee12051f/health-gating.png",
+      "error": {
+        "name": "AssertionError",
+        "message": "The input did not match the regular expression /当前运行健康/. Input:\n\n'当前无待处理事项'\n",
+        "stack": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /当前运行健康/. Input:\n\n'当前无待处理事项'\n\n    at Object.caseHealthGating [as health-gating] (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:285:10)\n    at async executeCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:696:5)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:753:22)"
+      },
+      "completedAt": "2026-08-16T10:38:58.569Z"
+    },
+    {
+      "id": "m01-legacy-bootstrap-projection",
+      "label": "M01 旧 S001 启动投影显式隔离并重建",
+      "status": "failed",
+      "startedAt": "2026-08-16T10:38:58.612Z",
+      "durationMs": 30615,
+      "details": null,
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": "evidence/browser-cp13/20260816T103853598Z-ee12051f/m01-legacy-bootstrap-projection.png",
+      "error": {
+        "name": "TimeoutError",
+        "message": "page.waitForFunction: Timeout 30000ms exceeded.",
+        "stack": "page.waitForFunction: Timeout 30000ms exceeded.\n    at Object.caseM01LegacyBootstrapProjection (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:416:14)\n    at async executeCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:696:5)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:753:22)"
+      },
+      "completedAt": "2026-08-16T10:39:29.227Z"
+    },
+    {
+      "id": "m01-dynamic-publish",
+      "label": "M01 实际发布 1.0.2，保留 1.0.1 历史并精确更新 C008",
+      "status": "failed",
+      "startedAt": "2026-08-16T10:39:29.286Z",
+      "durationMs": 30644,
+      "details": null,
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": "evidence/browser-cp13/20260816T103853598Z-ee12051f/m01-dynamic-publish.png",
+      "error": {
+        "name": "TimeoutError",
+        "message": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('企业债务风险评估模型').first() to be visible\u001b[22m\n\u001b[2m    63 × locator resolved to hidden <span>企业债务风险评估模型 · V1.0.1</span>\u001b[22m\n",
+        "stack": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('企业债务风险评估模型').first() to be visible\u001b[22m\n\u001b[2m    63 × locator resolved to hidden <span>企业债务风险评估模型 · V1.0.1</span>\u001b[22m\n\n    at waitForFrameHash (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:242:83)\n    at async openM01PublishedConfig (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:438:3)\n    at async Object.caseM01DynamicPublish (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:447:3)\n    at async executeCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:696:5)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:753:22)"
+      },
+      "completedAt": "2026-08-16T10:39:59.930Z"
+    }
+  ],
+  "totals": {
+    "cases": 3,
+    "passed": 0,
+    "failed": 3,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "httpErrors": 0,
+    "ignoredAbortedRequests": 0
+  },
+  "errorBudget": {
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "httpErrors": 0
+  },
+  "checkpointCreated": false,
+  "acceptanceReady": false,
+  "browserVersion": "149.0.7827.55",
+  "completedAt": "2026-08-16T10:39:59.957Z"
+}

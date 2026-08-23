@@ -1,0 +1,204 @@
+{
+  "schemaVersion": "ofw.s002.scenario-configuration.v2",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815161937720-79841356bdf8",
+    "formedAt": "2026-08-15T16:19:37.720Z",
+    "status": "active"
+  },
+  "checkpointNode": "query-integrated",
+  "runtimeState": {
+    "platform": {
+      "context": {
+        "scenarioId": "S002",
+        "scenarioVersion": "S002-v1",
+        "scenarioRunId": "S002-RUN-20260815161937720-79841356bdf8",
+        "formedAt": "2026-08-15T16:19:37.720Z",
+        "status": "active"
+      },
+      "mode": "live",
+      "activeTheme": "execution",
+      "filters": {
+        "year": 2025,
+        "department": "全部"
+      },
+      "selectedQuestion": "Q-ACTION",
+      "drill": null,
+      "events": [
+        {
+          "type": "step-completed",
+          "step": "dataConnected",
+          "detail": "8份权威资料及14个逻辑成员进入S002独立命名空间。",
+          "context": {
+            "scenarioId": "S002",
+            "scenarioVersion": "S002-v1",
+            "scenarioRunId": "S002-RUN-20260815161937720-79841356bdf8",
+            "formedAt": "2026-08-15T16:19:37.720Z",
+            "status": "active"
+          },
+          "at": "2026-08-15T16:20:37.720Z"
+        },
+        {
+          "type": "step-completed",
+          "step": "qualityPassed",
+          "detail": "合法重复保留；期间和日期异常按授权形成可追溯演示修正。",
+          "context": {
+            "scenarioId": "S002",
+            "scenarioVersion": "S002-v1",
+            "scenarioRunId": "S002-RUN-20260815161937720-79841356bdf8",
+            "formedAt": "2026-08-15T16:19:37.720Z",
+            "status": "active"
+          },
+          "at": "2026-08-15T16:21:07.720Z"
+        },
+        {
+          "type": "step-completed",
+          "step": "assetPublished",
+          "detail": "M02形成S002-DATA-v1，业务阈值和指标公式仍不进入管道。",
+          "context": {
+            "scenarioId": "S002",
+            "scenarioVersion": "S002-v1",
+            "scenarioRunId": "S002-RUN-20260815161937720-79841356bdf8",
+            "formedAt": "2026-08-15T16:19:37.720Z",
+            "status": "active"
+          },
+          "at": "2026-08-15T16:21:37.720Z"
+        },
+        {
+          "type": "step-completed",
+          "step": "mappingApplied",
+          "detail": "对象、关系、事件和稳定键映射完成，未按工作表页签建模。",
+          "context": {
+            "scenarioId": "S002",
+            "scenarioVersion": "S002-v1",
+            "scenarioRunId": "S002-RUN-20260815161937720-79841356bdf8",
+            "formedAt": "2026-08-15T16:19:37.720Z",
+            "status": "active"
+          },
+          "at": "2026-08-15T16:22:07.720Z"
+        },
+        {
+          "type": "step-completed",
+          "step": "ontologyPublished",
+          "detail": "M01切换Published本体和T019；M03/M06仅按引用消费。",
+          "context": {
+            "scenarioId": "S002",
+            "scenarioVersion": "S002-v1",
+            "scenarioRunId": "S002-RUN-20260815161937720-79841356bdf8",
+            "formedAt": "2026-08-15T16:19:37.720Z",
+            "status": "active"
+          },
+          "at": "2026-08-15T16:22:37.720Z"
+        },
+        {
+          "type": "step-completed",
+          "step": "queryRun",
+          "questionId": "Q-EXECUTION",
+          "detail": "固定问数视图返回结构化确定性结果。",
+          "context": {
+            "scenarioId": "S002",
+            "scenarioVersion": "S002-v1",
+            "scenarioRunId": "S002-RUN-20260815161937720-79841356bdf8",
+            "formedAt": "2026-08-15T16:19:37.720Z",
+            "status": "active"
+          },
+          "at": "2026-08-15T16:22:52.720Z"
+        },
+        {
+          "type": "step-completed",
+          "step": "queryRun",
+          "questionId": "Q-SUBMISSION",
+          "detail": "固定问数视图返回结构化确定性结果。",
+          "context": {
+            "scenarioId": "S002",
+            "scenarioVersion": "S002-v1",
+            "scenarioRunId": "S002-RUN-20260815161937720-79841356bdf8",
+            "formedAt": "2026-08-15T16:19:37.720Z",
+            "status": "active"
+          },
+          "at": "2026-08-15T16:23:07.720Z"
+        },
+        {
+          "type": "step-completed",
+          "step": "queryRun",
+          "questionId": "Q-BALANCE",
+          "detail": "固定问数视图返回结构化确定性结果。",
+          "context": {
+            "scenarioId": "S002",
+            "scenarioVersion": "S002-v1",
+            "scenarioRunId": "S002-RUN-20260815161937720-79841356bdf8",
+            "formedAt": "2026-08-15T16:19:37.720Z",
+            "status": "active"
+          },
+          "at": "2026-08-15T16:23:22.720Z"
+        },
+        {
+          "type": "step-completed",
+          "step": "queryRun",
+          "questionId": "Q-COMMITMENT",
+          "detail": "固定问数视图返回结构化确定性结果。",
+          "context": {
+            "scenarioId": "S002",
+            "scenarioVersion": "S002-v1",
+            "scenarioRunId": "S002-RUN-20260815161937720-79841356bdf8",
+            "formedAt": "2026-08-15T16:19:37.720Z",
+            "status": "active"
+          },
+          "at": "2026-08-15T16:23:37.720Z"
+        },
+        {
+          "type": "step-completed",
+          "step": "queryRun",
+          "questionId": "Q-TREND",
+          "detail": "固定问数视图返回结构化确定性结果。",
+          "context": {
+            "scenarioId": "S002",
+            "scenarioVersion": "S002-v1",
+            "scenarioRunId": "S002-RUN-20260815161937720-79841356bdf8",
+            "formedAt": "2026-08-15T16:19:37.720Z",
+            "status": "active"
+          },
+          "at": "2026-08-15T16:23:52.720Z"
+        },
+        {
+          "type": "step-completed",
+          "step": "queryRun",
+          "questionId": "Q-ACTION",
+          "detail": "固定问数视图返回结构化确定性结果。",
+          "context": {
+            "scenarioId": "S002",
+            "scenarioVersion": "S002-v1",
+            "scenarioRunId": "S002-RUN-20260815161937720-79841356bdf8",
+            "formedAt": "2026-08-15T16:19:37.720Z",
+            "status": "active"
+          },
+          "at": "2026-08-15T16:24:07.720Z"
+        },
+        {
+          "type": "step-completed",
+          "step": "rulesRun",
+          "hitCount": 5,
+          "detail": "5条正式Rule命中；分析建议与Rule命中分开保存。",
+          "context": {
+            "scenarioId": "S002",
+            "scenarioVersion": "S002-v1",
+            "scenarioRunId": "S002-RUN-20260815161937720-79841356bdf8",
+            "formedAt": "2026-08-15T16:19:37.720Z",
+            "status": "active"
+          },
+          "at": "2026-08-15T16:24:37.720Z"
+        }
+      ],
+      "checkpointHistory": [],
+      "checkpoint": null,
+      "restoredFrom": null,
+      "regressionFrom": null,
+      "lastEventAt": "2026-08-15T16:24:37.720Z"
+    }
+  },
+  "sourcePackageSha256": "a283fabf23f63506f33c5900d0f3643c82734659a890ee504d7394bdb0244599",
+  "formedAt": "2026-08-15T16:24:37.720Z"
+}

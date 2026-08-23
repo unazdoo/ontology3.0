@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "ofw.s002.owner-validation-receipt.v2",
+  "receiptId": "RECEIPT-M03-query-integrated-9781c7c60ea7",
+  "moduleId": "M03",
+  "owner": "智能问数",
+  "moduleVersion": "S002-M03-1.0.0",
+  "scenarioAdapterVersion": "S002-M03-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "baselineCheckpointBinding": {
+    "ref": "designs/scenario-checkpoints/baselines/v1.0.3/T056-baseline-checkpoint.json",
+    "sha256": "0a90f5f68dccaa7c18be71b4c82019616f19b0e359f931024652d95165ecd414"
+  },
+  "baselineModuleBinding": {
+    "baselineVersion": "1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "prototypePath": "designs/prototype-releases/v1.0.3/intelligent-query-prototype",
+    "exactVersion": "v1.0.3#5122f6b9bfab04af",
+    "treeSha256": "5122f6b9bfab04af794460fdba30d41b35fecd71d4d966472f66e7bc799c3e56",
+    "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+    "supportingPrototypeComponents": []
+  },
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815080000000-79841356bdf8",
+    "formedAt": "2026-08-15T08:00:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "query-integrated",
+  "exportRef": "checkpoints/runs/S002-RUN-20260815080000000-79841356bdf8/evidence/CP04-query-integrated/M03-state-export.json",
+  "exportSha256": "9781c7c60ea7a9886f9943ff07bd1a0cbdbc8b22b7ee1ed68e1032e66ea26a8c",
+  "validatedAt": "2026-08-15T08:05:00.000Z",
+  "validationStatus": "verified",
+  "checks": {
+    "scenarioIdentity": "verified",
+    "baselineBinding": "verified",
+    "baselineModuleTreeDigest": "verified-by-deterministic-tree-digest",
+    "ownerBoundary": "verified",
+    "exportDigest": "verified",
+    "isolatedCloneShape": "verified-by-scenario-adapter",
+    "historicalSideEffectsDisabled": "verified"
+  },
+  "validationScope": "prototype-scenario-adapter",
+  "conclusionBoundary": "S002原型适配器导出与恢复校验通过，不代表生产模块部署或平台验收通过"
+}

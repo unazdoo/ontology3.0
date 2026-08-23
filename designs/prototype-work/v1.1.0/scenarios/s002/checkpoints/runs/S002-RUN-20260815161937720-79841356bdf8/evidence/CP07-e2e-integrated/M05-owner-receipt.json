@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "ofw.s002.owner-validation-receipt.v1",
+  "receiptId": "RECEIPT-M05-e2e-integrated-1e34eb8e79b7",
+  "moduleId": "M05",
+  "owner": "Agent 应用",
+  "moduleVersion": "S002-M05-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815161937720-79841356bdf8",
+    "formedAt": "2026-08-15T16:19:37.720Z",
+    "status": "active"
+  },
+  "checkpointNode": "e2e-integrated",
+  "exportRef": "checkpoints/runs/S002-RUN-20260815161937720-79841356bdf8/evidence/CP07-e2e-integrated/M05-state-export.json",
+  "exportSha256": "1e34eb8e79b777b63a957c960dc6de2455b4ca365c354afd90277ccd071c9fde",
+  "validatedAt": "2026-08-15T16:28:27.720Z",
+  "validationStatus": "verified",
+  "checks": {
+    "scenarioIdentity": "verified",
+    "baselineBinding": "verified",
+    "ownerBoundary": "verified",
+    "exportDigest": "verified",
+    "isolatedCloneShape": "verified-by-scenario-adapter",
+    "historicalSideEffectsDisabled": "verified"
+  },
+  "validationScope": "prototype-scenario-adapter",
+  "conclusionBoundary": "S002原型适配器导出与恢复校验通过，不代表生产模块部署或平台验收通过"
+}

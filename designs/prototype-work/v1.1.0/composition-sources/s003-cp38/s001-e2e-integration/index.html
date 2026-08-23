@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href="data:," />
+    <meta
+      name="description"
+      content="智财问策统一工作台，贯通数据、本体、问数、决策、Agent 与报告。"
+    />
+    <title>智财问策（Ontology Financial World）</title>
+    <link rel="stylesheet" href="../shared-type-scale.css?v=20260815-01" />
+    <link rel="stylesheet" href="./styles.css?v=20260819-40-performance" />
+  </head>
+  <body>
+    <div id="app" aria-live="polite"></div>
+    <div id="modal-root"></div>
+    <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+    <script>
+      (function () {
+        const params = new URLSearchParams(window.location.search);
+        if (window.location.protocol === "file:" && params.get("scenarioId") === "S003") {
+          const handoff = new URL("../scenarios/s003/index.html", window.location.href);
+          handoff.search = "?fileMode=1";
+          window.location.replace(handoff.href);
+        }
+      })();
+    </script>
+    <script src="../foundation/ofw-scenario-foundation.js?v=20260815-01"></script>
+    <script src="../scenarios/s003/integration-config.js?v=20260819-40-performance"></script>
+    <script src="../scenarios/s003/data.js?v=20260819-40-performance"></script>
+    <script src="../scenarios/s003/state.js?v=20260819-40-performance"></script>
+    <script src="./data.js?v=20260819-40-performance"></script>
+    <script src="./state.js?v=20260819-40-performance"></script>
+    <script src="./app.js?v=20260819-40-performance"></script>
+  </body>
+</html>

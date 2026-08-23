@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "ofw.s003.browser-surface-result.v1",
+  "runId": "20260817T235424781Z-4699cb65",
+  "formedAt": "2026-08-17T23:54:31.904Z",
+  "baseUrl": "http://127.0.0.1:4393",
+  "cases": [
+    {
+      "id": "m02-detail",
+      "status": "failed",
+      "error": {
+        "message": "M02 detail missing 质量通过",
+        "stack": "AssertionError [ERR_ASSERTION]: M02 detail missing 质量通过\n    at m02Detail (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:80:12)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:176:51)"
+      },
+      "durationMs": 1362
+    },
+    {
+      "id": "m01-published",
+      "status": "failed",
+      "error": {
+        "message": "M01 config missing 债务风险模型配置",
+        "stack": "AssertionError [ERR_ASSERTION]: M01 config missing 债务风险模型配置\n    at m01Published (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:109:12)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:176:51)"
+      },
+      "durationMs": 1296
+    },
+    {
+      "id": "m03-deep-link",
+      "status": "failed",
+      "error": {
+        "message": "The input did not match the regular expression /#published\\/ontology\\?id=S003-M01-DEBT-RISK-PKG&version=S003-M01-DEBT-RISK-V1/. Input:\n\n'http://127.0.0.1:4393/ontology-management-review/canvas-first/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001&scenarioContextFormedAt=2026-08-17T16%3A30%3A00.000Z&scenarioStatus=active#published/ontology?id=S003-M01-DEBT-RISK-PKG&version=S003-M01-DEBT-RISK-PKG%401.0.2'\n",
+        "stack": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /#published\\/ontology\\?id=S003-M01-DEBT-RISK-PKG&version=S003-M01-DEBT-RISK-V1/. Input:\n\n'http://127.0.0.1:4393/ontology-management-review/canvas-first/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001&scenarioContextFormedAt=2026-08-17T16%3A30%3A00.000Z&scenarioStatus=active#published/ontology?id=S003-M01-DEBT-RISK-PKG&version=S003-M01-DEBT-RISK-PKG%401.0.2'\n\n    at m03DeepLink (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:136:10)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:176:51)"
+      },
+      "durationMs": 3199
+    },
+    {
+      "id": "m06-report",
+      "status": "failed",
+      "error": {
+        "message": "Expected values to be strictly equal:\n\n0 !== 1\n",
+        "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 1\n\n    at m06Report (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:154:10)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:176:51)"
+      },
+      "durationMs": 671
+    }
+  ],
+  "totals": {
+    "cases": 4,
+    "passed": 0,
+    "failed": 4
+  }
+}

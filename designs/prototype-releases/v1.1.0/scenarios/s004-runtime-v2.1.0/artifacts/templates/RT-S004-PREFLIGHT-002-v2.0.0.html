@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>财务公司贷款贷前调查报告模板</title>
+  <style>
+    @page { size: A4 portrait; margin: 18mm 17mm 20mm; }
+    * { box-sizing: border-box; }
+    html { background: #eef2f6; }
+    body { margin: 0; color: #162033; background: #eef2f6; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; font-size: 10.5pt; line-height: 1.65; }
+    .screen-note { position: sticky; top: 0; z-index: 2; padding: 9px 16px; color: #fff; background: #244c83; text-align: center; font-size: 12px; }
+    .paper { width: min(210mm, calc(100vw - 32px)); min-height: 297mm; margin: 24px auto 48px; padding: 18mm 17mm 22mm; background: #fff; box-shadow: 0 10px 32px rgba(25, 39, 58, .14); }
+    .cover { padding: 18mm 0 14mm; border-bottom: 2px solid #244c83; text-align: center; }
+    .cover h1 { margin: 0; color: #244c83; font-size: 24pt; letter-spacing: .1em; }
+    .cover .borrower { margin-top: 10px; font-size: 14pt; font-weight: 700; }
+    .meta { margin: 16px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px 18px; color: #526174; font-size: 9pt; text-align: left; }
+    section { padding-top: 20px; }
+    h2 { margin: 0 0 12px; color: #244c83; font-size: 15.5pt; }
+    h3 { margin: 16px 0 8px; color: #2c568d; font-size: 12.5pt; }
+    p { margin: 0 0 9px; text-align: justify; }
+    table { width: 100%; margin: 8px 0 14px; border-collapse: collapse; table-layout: fixed; font-size: 9pt; }
+    th, td { padding: 6px 7px; border: 1px solid #9aa5b1; vertical-align: top; overflow-wrap: anywhere; }
+    th { color: #243248; background: #dce7f5; text-align: center; }
+    .placeholder { color: #526d91; background: #f3f7fc; font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; }
+    .source-note { padding: 10px 12px; border-left: 3px solid #6687b3; background: #f2f6fb; color: #43526a; }
+    .confirm-block { margin: 10px 0; padding: 10px 12px; border-left: 4px solid #b17a1a; background: #fff8e8; color: #5f4514; }
+    .confirm-block strong { display: block; margin-bottom: 4px; color: #875c0a; }
+    .confirm-block em { font-style: normal; font-weight: 700; }
+    .formula { padding: 9px 11px; border-left: 3px solid #315d9b; background: #f7f9fc; font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; }
+    .page-break { break-before: page; page-break-before: always; }
+    .template-footer { margin-top: 24px; padding-top: 12px; border-top: 1px solid #c8d0da; color: #64748b; font-size: 8.5pt; }
+    @media (max-width: 760px) {
+      .paper { width: 100%; min-height: 0; margin: 0; padding: 24px 18px 44px; box-shadow: none; }
+      .meta { grid-template-columns: 1fr; }
+      table { font-size: 8.5pt; }
+    }
+    @media print {
+      html, body { background: #fff; }
+      .screen-note { display: none; }
+      .paper { width: auto; min-height: 0; margin: 0; padding: 0; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="screen-note">S004 报告模板 · RT-S004-PREFLIGHT-002 · 版本 2.0.0 · 下载查看版</div>
+  <main class="paper" data-template-id="RT-S004-PREFLIGHT-002" data-template-version="2.0.0">
+    <header class="cover" id="report-cover">
+      <h1>贷前调查报告</h1>
+      <div class="borrower">（{{borrower.fullName}}）</div>
+      <div class="meta">
+        <span>报告编号：{{report.reportNumber}}</span><span>内容版本：{{report.contentVersion}}</span>
+        <span>贷款申请编号：{{loan.applicationId}}</span><span>报告日期：{{report.reportDate}}</span>
+        <span>正式业务主体：财务公司</span><span>借款人范围：集团成员单位</span>
+      </div>
+    </header>
+
+    <p class="source-note">{{report.introductorySourceStatement}}。正式事实必须来自固定证据包，并追溯到 Published 本体、C008、Metric/Rule 结果和证据来源；模板本身不提供业务结论。</p>
+
+    <section id="sec-01-borrower-evaluation">
+      <h2>第一部分 借款人评价（工商信息）</h2>
+      <h3 id="sec-01-01-basic">一、借款人基本情况</h3>
+      <table>
+        <tbody>
+          <tr><th>借款人全称</th><td class="placeholder">{{borrower.fullName}}</td><th>统一社会信用代码</th><td class="placeholder">{{borrower.unifiedSocialCreditCode}}</td></tr>
+          <tr><th>成立日期</th><td class="placeholder">{{borrower.establishedDate}}</td><th>注册资本</th><td class="placeholder">{{borrower.registeredCapital}}</td></tr>
+          <tr><th>法定代表人</th><td class="placeholder">{{borrower.legalRepresentative}}</td><th>注册地址</th><td class="placeholder">{{borrower.registeredAddress}}</td></tr>
+          <tr><th>控股股东</th><td class="placeholder">{{borrower.controllingShareholder}}</td><th>实际控制人</th><td class="placeholder">{{borrower.ultimateController}}</td></tr>
+          <tr><th>经营范围</th><td colspan="3" class="placeholder">{{borrower.businessScope}}</td></tr>
+        </tbody>
+      </table>
+      <h3 id="sec-01-02-equity">股权结构及前十大股东</h3>
+      <p class="placeholder">{{ownership.equityDiagramAndSummary}}</p>
+      <table><thead><tr><th>排名</th><th>股东名称</th><th>股东性质</th><th>持股比例</th><th>持股数量</th></tr></thead><tbody><tr><td colspan="5" class="placeholder">{{ownership.topTenShareholders[]}}</td></tr></tbody></table>
+      <p class="placeholder">{{ownership.shareholderCountAndPledgeFreezeStatus}}</p>
+    </section>
+
+    <section id="sec-02-operations">
+      <h2>第二部分 借款人经营情况</h2>
+      <h3 id="sec-02-01-basic">1.基本情况</h3><p class="placeholder">{{operations.basicSituationNarrative}}</p>
+      <h3 id="sec-02-02-main-business">2.主要业务经营情况</h3><p class="placeholder">{{operations.mainBusinessNarrative}}</p>
+      <table><thead><tr><th>经营指标/基地</th><th>本期值</th><th>同比/说明</th><th>证据引用</th></tr></thead><tbody><tr><td colspan="4" class="placeholder">{{operations.baseOnGridElectricityTable[]}}</td></tr></tbody></table>
+      <h3 id="sec-02-03-industry">3.行业研究与市场观点（公开资料综合）</h3><p class="placeholder">{{operations.industryAndMarketNarrative}}</p>
+      <h3 id="sec-02-04-plan">4.发展规划</h3><p class="placeholder">{{operations.developmentPlanNarrative}}</p>
+    </section>
+
+    <section id="sec-03-financial" class="page-break">
+      <h2>第三部分 借款人财务情况</h2>
+      <h3 id="sec-03-01-basic-financial">基本财务情况</h3>
+      <table><thead><tr><th>资产负债表项目</th><th>{{period.year1}}</th><th>{{period.year2}}</th><th>{{period.year3}}</th></tr></thead><tbody><tr><td colspan="4" class="placeholder">{{financial.balanceSheetRows[]}}</td></tr></tbody></table>
+      <table><thead><tr><th>利润表项目</th><th>{{period.year1}}</th><th>{{period.year2}}</th><th>{{period.year3}}</th></tr></thead><tbody><tr><td colspan="4" class="placeholder">{{financial.incomeStatementRows[]}}</td></tr></tbody></table>
+      <table><thead><tr><th>现金流量表项目</th><th>{{period.year1}}</th><th>{{period.year2}}</th><th>{{period.year3}}</th></tr></thead><tbody><tr><td colspan="4" class="placeholder">{{financial.cashFlowRows[]}}</td></tr></tbody></table>
+      <table><thead><tr><th>指标</th><th>{{period.year1}}</th><th>{{period.year2}}</th><th>{{period.year3}}</th><th>Metric/口径</th></tr></thead><tbody><tr><td colspan="5" class="placeholder">{{financial.metricRows[]}}</td></tr></tbody></table>
+      <p class="placeholder">{{financial.deterministicAnalysisNarrative}}</p>
+      <h3 id="sec-03-02-funding">资金需求分析</h3>
+      <table><thead><tr><th>测算输入</th><th>数值</th><th>单位</th><th>来源/证据</th></tr></thead><tbody><tr><td colspan="4" class="placeholder">{{funding.inputRows[]}}</td></tr></tbody></table>
+      <p class="formula">营运资金量 = 上年度销售收入 ×（1 - 上年度销售利润率）×（1 + 预计销售收入年增长率）÷ 营运资金周转次数</p>
+      <p class="formula">新增流动资金贷款额度 = 营运资金量 - 借款人自有资金 - 现有流动资金贷款 - 其他渠道提供的营运资金</p>
+      <p class="placeholder">{{funding.roundingAndInputDisclosure}}</p>
+    </section>
+
+    <section id="sec-04-risk">
+      <h2>第四部分 借款风险分析</h2>
+      <h3 id="sec-04-01-market-price">一、电价市场化及电力市场拓展风险</h3><p class="placeholder">{{risk.marketPrice.evidenceNarrative}}</p>
+      <div class="confirm-block"><strong>【需人工确认】</strong><em>AI 建议（基于已固化资料与系统事实生成）：</em> {{risk.marketPrice.aiSuggestion}}</div>
+      <h3 id="sec-04-02-operation">二、运营风险</h3><p class="placeholder">{{risk.operation.evidenceNarrative}}</p>
+      <div class="confirm-block"><strong>【需人工确认】</strong><em>AI 建议（基于已固化资料与系统事实生成）：</em> {{risk.operation.aiSuggestion}}</div>
+      <h3 id="sec-04-03-solvency">三、偿债风险</h3><p class="placeholder">{{risk.solvency.evidenceNarrative}}</p>
+      <div class="confirm-block"><strong>【需人工确认】</strong><em>AI 建议（基于已固化资料与系统事实生成）：</em> {{risk.solvency.aiSuggestion}}</div>
+      <h3 id="sec-04-04-capex">四、资本支出与盈利阶段性承压风险</h3><p class="placeholder">{{risk.capex.evidenceNarrative}}</p>
+      <div class="confirm-block"><strong>【需人工确认】</strong><em>AI 建议（基于已固化资料与系统事实生成）：</em> {{risk.capex.aiSuggestion}}</div>
+    </section>
+
+    <section id="sec-05-credit-conclusion">
+      <h2>第五部分 授信结论</h2>
+      <div class="confirm-block"><strong>【需人工确认】</strong><em>AI 建议（基于已固化资料与系统事实生成）：</em> {{creditConclusion.aiSuggestion}}<br><br>最终授信决定、额度、期限、利率和条件必须由财务公司有权人员人工确认；系统不得自动形成正式授信决定。</div>
+    </section>
+
+    <section id="sec-06-data-sources">
+      <h2>数据来源</h2>
+      <table><thead><tr><th>来源编号</th><th>资料名称</th><th>来源分类</th><th>期间/截至</th><th>证据定位</th></tr></thead><tbody><tr><td colspan="5" class="placeholder">{{dataSources[]}}</td></tr></tbody></table>
+      <p class="source-note">年度财务报告已包含的数据不得重复设置上传型模拟数据；合成演示资料包只补充贷款申请、征信、历史融资、内部授信、用途合同和现场调查等缺口资料。外部公告、评级、政策和行业信息必须先登记并固化为来源快照；报告生成阶段不直接联网搜索。</p>
+    </section>
+
+    <footer class="template-footer">模板 Owner：报告中心（M06） · 正式产物：受控 HTML + 同源 PDF · DOCX：一期不纳入 · 模板不承担证据选择、Metric/Rule 计算、授信审批或发布授权。</footer>
+  </main>
+</body>
+</html>

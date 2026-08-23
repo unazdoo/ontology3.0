@@ -1,0 +1,172 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp15-result.v2",
+  "runId": "20260816T173325915Z-505b0cd2",
+  "formedAt": "2026-08-16T17:35:40.147Z",
+  "origin": "http://127.0.0.1:4333",
+  "formalSourceScenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+  "browserVersion": "149.0.7827.55",
+  "cases": [
+    {
+      "id": "shell-and-modules",
+      "status": "failed",
+      "durationMs": 52996,
+      "error": {
+        "name": "TimeoutError",
+        "message": "frame.waitForFunction: Timeout 30000ms exceeded.",
+        "stack": "frame.waitForFunction: Timeout 30000ms exceeded.\n    at caseShellAndModules (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:157:20)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:577:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:602:17)"
+      }
+    },
+    {
+      "id": "m02-native",
+      "status": "failed",
+      "durationMs": 5052,
+      "error": {
+        "name": "TypeError",
+        "message": "Assignment to constant variable.",
+        "stack": "TypeError: Assignment to constant variable.\n    at caseM02Native (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:270:9)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:577:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:602:17)"
+      }
+    },
+    {
+      "id": "m01-canvas",
+      "status": "passed",
+      "durationMs": 6586,
+      "details": {
+        "nodeCount": 34,
+        "edgeCount": 18,
+        "overlaps": [],
+        "wheelZoomed": true,
+        "nodeDragged": true
+      }
+    },
+    {
+      "id": "m01-published-config",
+      "status": "passed",
+      "durationMs": 5804,
+      "details": {
+        "configTabs": [
+          "配置概览",
+          "指标与权重",
+          "调节因子规则",
+          "风险分档阈值",
+          "固定业务语义",
+          "企业因子输入引用",
+          "校验与发布"
+        ],
+        "publishedCanvas": true,
+        "lineageDetail": true
+      }
+    },
+    {
+      "id": "m03-m04-m05",
+      "status": "failed",
+      "durationMs": 15331,
+      "error": {
+        "name": "AssertionError",
+        "message": "The input did not match the regular expression /一期不建设专属 Agent/. Input:\n\n'工作区\\n' +\n  'Agent 目录\\n' +\n  '1\\n' +\n  '配置资源\\n' +\n  '2\\n' +\n  '运行中心\\n' +\n  '证据与结果\\n' +\n  '1\\n' +\n  '协作编排\\n' +\n  '运行约束\\n' +\n  '固定证据与精确版本\\n' +\n  'S003 · 债务风险监测\\n' +\n  'S003-v1 · S003-RUN-20260815133000000-c03503000001\\n' +\n  '基线 1.0.3\\n' +\n  'BSL-S001-V103-DE0119608E26\\n' +\n  '当前运行可写\\n' +\n  'Agent 目录\\n' +\n  '\\n' +\n  '正式 Release 与配置草稿分开管理；本目录仅管理报告、洞察与伴读 Agent。\\n' +\n  '\\n' +\n  '创建配置草稿\\n' +\n  '发起运行\\n' +\n  'S003 · 债务风险监测\\n' +\n  '报告伴读场景配置\\n' +\n  '\\n' +\n  '复用平台通用报告伴读 Agent，在原目录、详情、运行和证据结构中装入 S003 正式报告上下文。\\n' +\n  '\\n' +\n  '场景配置已装入\\n' +\n  '场景\\n' +\n  'S003 / S003-v1\\n' +\n  'S003-RUN-20260815133000000-c03503000001\\n' +\n  '复用方式\\n' +\n  '平台通用 Agent 场景配置\\n' +\n  'Agent应用 · 1.1.0\\n' +\n  '一期边界\\n' +\n  '不新增专属 Agent\\n' +\n  '不参与确定性评分与业务写入\\n' +\n  '当前装入的通用能力\\n' +\n  'Agent ID、Release、Prompt、Skill、工具和报告合同均沿用 v1.0.3 原生生命周期。\\n' +\n  '1\\n' +\n  '债务风险报告伴读助手\\n' +\n  '报告伴读 Agent · Release 1.0 · S003 场景配置\\n' +\n  '已启用\\n' +\n  '允许复用\\n' +\n  '解释正式企业债务风险报告\\n' +\n  '解释报告中心确定性核验结果\\n' +\n  '按稳定锚点回指包内证据\\n' +\n  '\\n' +\n  '只有用户显式进入时复用；输出仍受原 Agent 输入合同、证据包和用途门约束。\\n' +\n  '\\n' +\n  '明确禁止\\n' +\n  '重算C035结果\\n' +\n  '修改模型配置\\n' +\n  '自动创建Action Request\\n' +\n  '替代人工确认\\n' +\n  '\\n' +\n  '评分、配置、Action Request 与人工确认的 Owner 边界保持不变。\\n' +\n  '\\n' +\n  '配置化装入，不新增产品壳\\n' +\n  '下方仍是 v1.0.3 的正式目录、详情、配置资源、运行中心和证据与结果；S003 只增加当前场景的报告上下文、核验和运行引用。\\n' +\n  '可用 Agent\\n' +\n  '1\\n' +\n  '报告、洞察与伴读\\n' +\n  '配置草稿\\n' +\n  '0\\n' +\n  '不进入正式目录\\n' +\n  '进行中运行\\n' +\n  '0\\n' +\n  '固定版本与证据\\n' +\n  '受限资源\\n' +\n  '2\\n' +\n  '发布前需处理\\n' +\n  '正式目录\\n' +\n  '配置草稿\\n' +\n  '报告伴读 Agent\\n' +\n  '债务风险报告伴读助手\\n' +\n  '已启用\\n' +\n  '\\n' +\n  '复用平台通用报告伴读能力，解释 S003 正式企业债务风险报告、确定性核验结果和固定证据引用。\\n' +\n  '\\n' +\n  '当前 Release\\n' +\n  '1.0\\n' +\n  '输入合同\\n' +\n  'Report Context Binding v1\\n' +\n  '输出合同\\n' +\n  'Report Copilot Answer v1\\n' +\n  '场景\\n' +\n  '集团债务风险监测\\n' +\n  '3 个 Skill · 7 个工具\\n' +\n  '查看详情'\n",
+        "stack": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /一期不建设专属 Agent/. Input:\n\n'工作区\\n' +\n  'Agent 目录\\n' +\n  '1\\n' +\n  '配置资源\\n' +\n  '2\\n' +\n  '运行中心\\n' +\n  '证据与结果\\n' +\n  '1\\n' +\n  '协作编排\\n' +\n  '运行约束\\n' +\n  '固定证据与精确版本\\n' +\n  'S003 · 债务风险监测\\n' +\n  'S003-v1 · S003-RUN-20260815133000000-c03503000001\\n' +\n  '基线 1.0.3\\n' +\n  'BSL-S001-V103-DE0119608E26\\n' +\n  '当前运行可写\\n' +\n  'Agent 目录\\n' +\n  '\\n' +\n  '正式 Release 与配置草稿分开管理；本目录仅管理报告、洞察与伴读 Agent。\\n' +\n  '\\n' +\n  '创建配置草稿\\n' +\n  '发起运行\\n' +\n  'S003 · 债务风险监测\\n' +\n  '报告伴读场景配置\\n' +\n  '\\n' +\n  '复用平台通用报告伴读 Agent，在原目录、详情、运行和证据结构中装入 S003 正式报告上下文。\\n' +\n  '\\n' +\n  '场景配置已装入\\n' +\n  '场景\\n' +\n  'S003 / S003-v1\\n' +\n  'S003-RUN-20260815133000000-c03503000001\\n' +\n  '复用方式\\n' +\n  '平台通用 Agent 场景配置\\n' +\n  'Agent应用 · 1.1.0\\n' +\n  '一期边界\\n' +\n  '不新增专属 Agent\\n' +\n  '不参与确定性评分与业务写入\\n' +\n  '当前装入的通用能力\\n' +\n  'Agent ID、Release、Prompt、Skill、工具和报告合同均沿用 v1.0.3 原生生命周期。\\n' +\n  '1\\n' +\n  '债务风险报告伴读助手\\n' +\n  '报告伴读 Agent · Release 1.0 · S003 场景配置\\n' +\n  '已启用\\n' +\n  '允许复用\\n' +\n  '解释正式企业债务风险报告\\n' +\n  '解释报告中心确定性核验结果\\n' +\n  '按稳定锚点回指包内证据\\n' +\n  '\\n' +\n  '只有用户显式进入时复用；输出仍受原 Agent 输入合同、证据包和用途门约束。\\n' +\n  '\\n' +\n  '明确禁止\\n' +\n  '重算C035结果\\n' +\n  '修改模型配置\\n' +\n  '自动创建Action Request\\n' +\n  '替代人工确认\\n' +\n  '\\n' +\n  '评分、配置、Action Request 与人工确认的 Owner 边界保持不变。\\n' +\n  '\\n' +\n  '配置化装入，不新增产品壳\\n' +\n  '下方仍是 v1.0.3 的正式目录、详情、配置资源、运行中心和证据与结果；S003 只增加当前场景的报告上下文、核验和运行引用。\\n' +\n  '可用 Agent\\n' +\n  '1\\n' +\n  '报告、洞察与伴读\\n' +\n  '配置草稿\\n' +\n  '0\\n' +\n  '不进入正式目录\\n' +\n  '进行中运行\\n' +\n  '0\\n' +\n  '固定版本与证据\\n' +\n  '受限资源\\n' +\n  '2\\n' +\n  '发布前需处理\\n' +\n  '正式目录\\n' +\n  '配置草稿\\n' +\n  '报告伴读 Agent\\n' +\n  '债务风险报告伴读助手\\n' +\n  '已启用\\n' +\n  '\\n' +\n  '复用平台通用报告伴读能力，解释 S003 正式企业债务风险报告、确定性核验结果和固定证据引用。\\n' +\n  '\\n' +\n  '当前 Release\\n' +\n  '1.0\\n' +\n  '输入合同\\n' +\n  'Report Context Binding v1\\n' +\n  '输出合同\\n' +\n  'Report Copilot Answer v1\\n' +\n  '场景\\n' +\n  '集团债务风险监测\\n' +\n  '3 个 Skill · 7 个工具\\n' +\n  '查看详情'\n\n    at caseM03M04M05 (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:362:10)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:577:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:602:17)"
+      }
+    },
+    {
+      "id": "dashboard-and-report",
+      "status": "passed",
+      "durationMs": 6964,
+      "details": {
+        "enterpriseRows": 21,
+        "actionTypes": 3,
+        "reportSections": 9,
+        "directoryScrolled": true,
+        "downloadedFormalHtml": "formal-report-v2.html"
+      }
+    },
+    {
+      "id": "dashboard-action-and-config",
+      "status": "passed",
+      "durationMs": 8933,
+      "details": {
+        "modelConfigRoute": true,
+        "actionSubmittedToDecisionCenter": true
+      }
+    },
+    {
+      "id": "old-projection-compatibility",
+      "status": "passed",
+      "durationMs": 7186,
+      "details": {
+        "oldProjectionSchema": "v999",
+        "status": "isolated-rebuilt",
+        "publishedReadReady": true
+      }
+    },
+    {
+      "id": "quick-rerun-and-history",
+      "status": "passed",
+      "durationMs": 12459,
+      "details": {
+        "oldRunId": "S003-RUN-20260815133000000-c03503000001",
+        "nextRunId": "S003-RUN-20260816173522248-9efe967afe98",
+        "options": [
+          "工作投影 · 2025-12-31 · 9efe967afe98",
+          "正式运行 · 2025-12-31 · c03503000001"
+        ],
+        "final": {
+          "shellUrl": "http://127.0.0.1:4333/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260816173522248-9efe967afe98&formedAt=2026-08-16T17%3A35%3A22.248Z&status=active&contextCreatedAt=2026-08-16T17%3A35%3A22.248Z&contextStatus=active&scenarioFormedAt=2026-08-16T17%3A35%3A22.248Z&scenarioStatus=active#dashboard",
+          "frameUrl": "http://127.0.0.1:4333/report-center/review-lifecycle/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260816173522248-9efe967afe98&formedAt=2026-08-16T17%3A35%3A22.248Z&status=active&contextCreatedAt=2026-08-16T17%3A35%3A22.248Z&contextStatus=active&scenarioFormedAt=2026-08-16T17%3A35%3A22.248Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/dashboard/s003",
+          "frameRunId": "S003-RUN-20260816173522248-9efe967afe98",
+          "context": {
+            "scenarioId": "S003",
+            "scenarioVersion": "S003-v1",
+            "scenarioRunId": "S003-RUN-20260816173522248-9efe967afe98",
+            "formedAt": "2026-08-16T17:35:22.248Z",
+            "status": "active"
+          },
+          "activeRunId": "S003-RUN-20260816173522248-9efe967afe98",
+          "lastSuccessfulRunId": "S003-RUN-20260815133000000-c03503000001",
+          "decisionCount": 0
+        },
+        "historicalSideEffectsReplayed": false,
+        "historicalSubmitButtons": 0,
+        "historicalReadonlyButtons": 8
+      }
+    },
+    {
+      "id": "s001-isolation",
+      "status": "passed",
+      "durationMs": 9720,
+      "details": {
+        "checked": [
+          {
+            "module": "data",
+            "url": "http://127.0.0.1:4333/data-engineering-prototype-review/review-v3/%E6%96%B9%E6%A1%88B2.html?scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260816173530759-06e607666ad0&formedAt=2026-08-16T17%3A35%3A30.759Z&status=active&contextCreatedAt=2026-08-16T17%3A35%3A30.759Z&contextStatus=active&scenarioFormedAt=2026-08-16T17%3A35%3A30.759Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/resources"
+          },
+          {
+            "module": "ontology",
+            "url": "http://127.0.0.1:4333/ontology-management-review/canvas-first/index.html?prototypeBuild=20260816-16&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260816173530759-06e607666ad0&formedAt=2026-08-16T17%3A35%3A30.759Z&status=active&contextCreatedAt=2026-08-16T17%3A35%3A30.759Z&contextStatus=active&scenarioFormedAt=2026-08-16T17%3A35%3A30.759Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#modeling"
+          },
+          {
+            "module": "query",
+            "url": "http://127.0.0.1:4333/intelligent-query-prototype/review-next/conversation-workspace/index.html?scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260816173530759-06e607666ad0&formedAt=2026-08-16T17%3A35%3A30.759Z&status=active&contextCreatedAt=2026-08-16T17%3A35%3A30.759Z&contextStatus=active&scenarioFormedAt=2026-08-16T17%3A35%3A30.759Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/ask"
+          },
+          {
+            "module": "decision",
+            "url": "http://127.0.0.1:4333/decision-center-prototype/review-v2/action-portfolio.html?prototypeBuild=20260814-02&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260816173530759-06e607666ad0&formedAt=2026-08-16T17%3A35%3A30.759Z&status=active&contextCreatedAt=2026-08-16T17%3A35%3A30.759Z&contextStatus=active&scenarioFormedAt=2026-08-16T17%3A35%3A30.759Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#workbench"
+          },
+          {
+            "module": "agent",
+            "url": "http://127.0.0.1:4333/agent-application/Agent%E5%BA%94%E7%94%A8.html?prototypeBuild=20260814-17&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260816173530759-06e607666ad0&formedAt=2026-08-16T17%3A35%3A30.759Z&status=active&contextCreatedAt=2026-08-16T17%3A35%3A30.759Z&contextStatus=active&scenarioFormedAt=2026-08-16T17%3A35%3A30.759Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/agents"
+          },
+          {
+            "module": "report",
+            "url": "http://127.0.0.1:4333/report-center/review-lifecycle/index.html?scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260816173530759-06e607666ad0&formedAt=2026-08-16T17%3A35%3A30.759Z&status=active&contextCreatedAt=2026-08-16T17%3A35%3A30.759Z&contextStatus=active&scenarioFormedAt=2026-08-16T17%3A35%3A30.759Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/lifecycle"
+          }
+        ]
+      }
+    }
+  ],
+  "totals": {
+    "cases": 10,
+    "passed": 7,
+    "failed": 3
+  },
+  "checkpointCreated": false,
+  "acceptanceReady": false
+}

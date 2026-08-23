@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "ofw.s002.owner-validation-receipt.v1",
+  "receiptId": "RECEIPT-M05-query-integrated-6f9fe16d7a60",
+  "moduleId": "M05",
+  "owner": "Agent 应用",
+  "moduleVersion": "S002-M05-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815010000000-a283fabf23f6",
+    "formedAt": "2026-08-15T01:00:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "query-integrated",
+  "exportRef": "evidence/CP04-query-integrated/M05-state-export.json",
+  "exportSha256": "6f9fe16d7a604c1c7e21830bb76739f39f3afd6656181daa57cce8b84447e374",
+  "validatedAt": "2026-08-15T01:20:00.000Z",
+  "validationStatus": "verified",
+  "checks": {
+    "scenarioIdentity": "verified",
+    "baselineBinding": "verified",
+    "ownerBoundary": "verified",
+    "exportDigest": "verified",
+    "isolatedCloneShape": "verified",
+    "historicalSideEffectsDisabled": "verified"
+  },
+  "conclusionBoundary": "技术导出校验通过，不代表模块业务验收或平台验收通过"
+}

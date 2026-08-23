@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>S003 CP07 · 端到端联调完成</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: -apple-system, "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
+        --ink: #172538;
+        --muted: #657180;
+        --line: #d9dee5;
+        --panel: #ffffff;
+        --canvas: #f3f5f7;
+        --navy: #163f68;
+        --success: #25725d;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; color: var(--ink); background: var(--canvas); }
+      main { width: min(1040px, calc(100% - 32px)); margin: 48px auto; }
+      article { padding: 30px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 10px 30px rgba(30, 45, 64, .07); }
+      .eyebrow { color: var(--navy); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+      h1 { margin: 8px 0; font-size: clamp(24px, 3vw, 32px); letter-spacing: -.02em; }
+      p { margin: 8px 0 0; color: var(--muted); line-height: 1.75; }
+      .status { color: var(--success); font-weight: 750; }
+      .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 26px; }
+      .card { min-height: 92px; padding: 16px; background: #f7f9fb; border: 1px solid #e1e6ec; border-radius: 6px; }
+      .card strong { display: block; font-size: 22px; line-height: 1.25; }
+      .card small { display: block; margin-top: 6px; color: var(--muted); line-height: 1.45; }
+      .contract { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 8px 18px; margin: 24px 0 0; padding: 18px; background: #f7f9fb; border: 1px solid #e1e6ec; border-radius: 6px; }
+      dt { color: var(--muted); }
+      dd { margin: 0; min-width: 0; overflow-wrap: anywhere; font-weight: 650; }
+      .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+      a { padding: 10px 14px; color: #fff; background: var(--navy); border-radius: 5px; text-decoration: none; font-weight: 650; }
+      a.secondary { color: var(--navy); background: #eef3f8; }
+      code { overflow-wrap: anywhere; font-family: "SFMono-Regular", Consolas, monospace; font-size: .92em; }
+      @media (max-width: 760px) {
+        main { margin: 24px auto; }
+        article { padding: 22px; }
+        .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .contract { grid-template-columns: 1fr; gap: 4px; }
+        .contract dd + dt { margin-top: 8px; }
+      }
+      @media (max-width: 520px) {
+        main { width: min(100% - 20px, 1040px); margin: 10px auto; }
+        article { padding: 18px; }
+        .grid { grid-template-columns: 1fr; }
+        .links { display: grid; }
+        a { text-align: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <main data-screen-label="S003 CP07 端到端联调完成">
+      <article>
+        <span class="eyebrow">C034 · immutable checkpoint</span>
+        <h1>S003 CP07：端到端联调完成</h1>
+        <p><span class="status">e2e-integrated</span>。正式 C035 运行、M01—M06 导出、工作台、企业报告与快照运行语义已锁定；历史查看、恢复、回归和失败重试均保持场景隔离。</p>
+        <div class="grid">
+          <div class="card"><strong>7 / 7</strong><small>不可变场景节点</small></div>
+          <div class="card"><strong>80 / 80</strong><small>自动化测试通过</small></div>
+          <div class="card"><strong>21 / 21</strong><small>企业报告与制品</small></div>
+          <div class="card"><strong>5 项关闭</strong><small>回归副作用与外发能力</small></div>
+        </div>
+        <dl class="contract">
+          <dt>父基线</dt>
+          <dd><code>1.0.3 · BSL-S001-V103-DE0119608E26</code></dd>
+          <dt>场景身份</dt>
+          <dd><code>S003 · S003-v1</code></dd>
+          <dt>权威运行</dt>
+          <dd><code>S003-RUN-20260815133000000-c03503000001</code></dd>
+          <dt>恢复语义</dt>
+          <dd>历史只读；恢复、回归与重试均创建新 runId 和隔离命名空间</dd>
+        </dl>
+        <div class="links">
+          <a href="../index.html#checkpoints">打开场景快照</a>
+          <a class="secondary" href="../index.html#runs">查看运行与报告</a>
+          <a class="secondary" href="../index.html#report/S003-ENT-020">穿透红灯企业报告</a>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>

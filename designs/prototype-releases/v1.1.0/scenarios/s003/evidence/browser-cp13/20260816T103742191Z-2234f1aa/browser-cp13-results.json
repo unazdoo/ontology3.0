@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp13-result.v1",
+  "runId": "20260816T103742191Z-2234f1aa",
+  "formedAt": "2026-08-16T10:37:42.192Z",
+  "origin": "http://127.0.0.1:4333",
+  "formalScenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "gitHead": "5620618386b1427cbf0a19877ff00b1b44dd249e",
+  "playwrightNodeModules": "/Users/domi/.codex/skills/baoyu-design/agents/gen-pptx/node_modules",
+  "headless": true,
+  "cases": [
+    {
+      "id": "m03-incompatible-projection",
+      "label": "M03 不兼容工作投影原字节保留并写入恢复键",
+      "status": "passed",
+      "startedAt": "2026-08-16T10:37:42.327Z",
+      "durationMs": 2061,
+      "details": {
+        "primaryKey": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m03:workspace%2Fstate",
+        "recoveryKey": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m03:workspace%2Fstate.recovered.v1",
+        "issue": {
+          "code": "INCOMPATIBLE_PROJECTION",
+          "reason": "M03 当前工作投影不可读取：命名空间记录 schemaVersion 不兼容",
+          "recovery": "原命名空间记录保持不变；已从正式 Published 资源重建当前工作投影并写入独立逻辑键 workspace/state.recovered.v1。",
+          "isolated": true,
+          "detectedAt": "2026-08-16T10:37:43.545Z",
+          "originalLogicalKey": "workspace/state",
+          "rebuiltLogicalKey": "workspace/state.recovered.v1"
+        },
+        "recoveredSavedAt": "2026-08-16T10:37:43.554Z"
+      },
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": null,
+      "error": null,
+      "completedAt": "2026-08-16T10:37:44.388Z"
+    },
+    {
+      "id": "m04-incompatible-projections",
+      "label": "M04 state/view/projection 不兼容记录隔离与 React 重建",
+      "status": "failed",
+      "startedAt": "2026-08-16T10:37:44.447Z",
+      "durationMs": 31261,
+      "details": null,
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": "evidence/browser-cp13/20260816T103742191Z-2234f1aa/m04-incompatible-projections.png",
+      "error": {
+        "name": "TimeoutError",
+        "message": "page.waitForFunction: Timeout 30000ms exceeded.",
+        "stack": "page.waitForFunction: Timeout 30000ms exceeded.\n    at Object.caseM04IncompatibleProjections (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:361:14)\n    at async executeCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:696:5)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:753:22)"
+      },
+      "completedAt": "2026-08-16T10:38:15.708Z"
+    }
+  ],
+  "totals": {
+    "cases": 2,
+    "passed": 1,
+    "failed": 1,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "httpErrors": 0,
+    "ignoredAbortedRequests": 0
+  },
+  "errorBudget": {
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "httpErrors": 0
+  },
+  "checkpointCreated": false,
+  "acceptanceReady": false,
+  "browserVersion": "149.0.7827.55",
+  "completedAt": "2026-08-16T10:38:15.737Z"
+}

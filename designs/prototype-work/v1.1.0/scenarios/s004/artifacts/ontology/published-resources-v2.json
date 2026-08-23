@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "ofw.s004.published-resources.v2",
+  "resourcePackageId": "ONTO-S004-LOAN-PREFLIGHT-002",
+  "resourcePackageVersion": "2.0.0",
+  "owner": "M01",
+  "lifecycleStatus": "Published",
+  "publishedAt": "2026-08-15T14:45:00+08:00",
+  "publishedPointer": "T019-S004-PUBLISHED-002",
+  "scenarioContext": {
+    "baselineVersion": "v1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v2",
+    "scenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+    "formedAt": "2026-08-15T23:30:00.000Z"
+  },
+  "objects": [
+    { "objectTypeId": "OBJ-FINANCIAL-COMPANY", "name": "财务公司", "stableKey": "financialCompanyId" },
+    { "objectTypeId": "OBJ-GROUP-MEMBER-BORROWER", "name": "集团成员借款人", "stableKey": "borrowerId", "alternateKey": "unifiedSocialCreditCode" },
+    { "objectTypeId": "OBJ-LOAN-APPLICATION", "name": "贷款申请", "stableKey": "applicationId" },
+    { "objectTypeId": "OBJ-FINANCIAL-STATEMENT-FACT", "name": "财务报表事实", "stableKey": "factId" },
+    { "objectTypeId": "OBJ-SHAREHOLDING", "name": "股权事实", "stableKey": "shareholdingFactId" },
+    { "objectTypeId": "OBJ-OPERATING-FACT", "name": "经营事实", "stableKey": "operatingFactId" },
+    { "objectTypeId": "OBJ-CREDIT-FACILITY", "name": "内部授信额度", "stableKey": "facilityId" },
+    { "objectTypeId": "OBJ-PREFLIGHT-REPORT", "name": "贷前调查报告", "stableKey": "reportId" }
+  ],
+  "relations": [
+    { "relationTypeId": "REL-MEMBER-OF-GROUP", "name": "借款人属于集团", "from": "OBJ-GROUP-MEMBER-BORROWER", "to": "OBJ-FINANCIAL-COMPANY" },
+    { "relationTypeId": "REL-SUBMITS-APPLICATION", "name": "借款人提交贷款申请", "from": "OBJ-GROUP-MEMBER-BORROWER", "to": "OBJ-LOAN-APPLICATION" },
+    { "relationTypeId": "REL-STATEMENT-DESCRIBES-BORROWER", "name": "财务事实描述借款人", "from": "OBJ-FINANCIAL-STATEMENT-FACT", "to": "OBJ-GROUP-MEMBER-BORROWER" },
+    { "relationTypeId": "REL-SHAREHOLDER-HOLDS-BORROWER", "name": "股东持有借款人股份", "from": "OBJ-SHAREHOLDING", "to": "OBJ-GROUP-MEMBER-BORROWER" },
+    { "relationTypeId": "REL-REPORT-EVALUATES-APPLICATION", "name": "报告调查贷款申请", "from": "OBJ-PREFLIGHT-REPORT", "to": "OBJ-LOAN-APPLICATION" }
+  ],
+  "metrics": [
+    { "metricId": "MET-DEBT-ASSET-RATIO", "name": "资产负债率", "formula": "totalLiabilities / totalAssets", "unit": "RATIO", "displayPrecision": 2 },
+    { "metricId": "MET-CURRENT-RATIO", "name": "流动比率", "formula": "currentAssets / currentLiabilities", "unit": "TIMES", "displayPrecision": 2 },
+    { "metricId": "MET-EBIT-INTEREST-COVERAGE", "name": "EBIT/利息", "formula": "(profitBeforeTax + interestExpense) / interestExpense", "unit": "TIMES", "displayPrecision": 2 },
+    { "metricId": "MET-MAIN-BUSINESS-PROFIT-MARGIN", "name": "主营业务利润率", "formula": "(revenue - operatingCost - taxAndSurcharges) / revenue", "unit": "RATIO", "displayPrecision": 2 },
+    { "metricId": "MET-RETURN-ON-TOTAL-ASSETS", "name": "总资产报酬率", "formula": "(profitBeforeTax + interestExpense) / average(totalAssets)", "unit": "RATIO", "displayPrecision": 2 },
+    { "metricId": "MET-RETURN-ON-PARENT-EQUITY", "name": "净资产收益率", "formula": "parentNetProfit / average(parentEquity)", "unit": "RATIO", "displayPrecision": 2 },
+    { "metricId": "MET-INVENTORY-TURNOVER", "name": "存货周转率", "formula": "operatingCost / average(inventory)", "unit": "TIMES", "displayPrecision": 2 },
+    { "metricId": "MET-AR-TURNOVER", "name": "应收账款周转率", "formula": "revenue / average(accountsReceivable)", "unit": "TIMES", "displayPrecision": 2 },
+    { "metricId": "MET-TOTAL-ASSET-TURNOVER", "name": "总资产周转率", "formula": "revenue / average(totalAssets)", "unit": "TIMES", "displayPrecision": 2 },
+    { "metricId": "MET-CURRENT-ASSET-TURNOVER", "name": "流动资产周转率", "formula": "revenue / average(currentAssets)", "unit": "TIMES", "displayPrecision": 2 },
+    { "metricId": "MET-TOTAL-ASSET-GROWTH", "name": "总资产增长率", "formula": "currentTotalAssets / priorTotalAssets - 1", "unit": "RATIO", "displayPrecision": 2 },
+    { "metricId": "MET-PARENT-EQUITY-GROWTH", "name": "净资产增长率", "formula": "currentParentEquity / priorParentEquity - 1", "unit": "RATIO", "displayPrecision": 2 },
+    { "metricId": "MET-NET-PROFIT-GROWTH", "name": "净利润增长率", "formula": "currentNetProfit / priorNetProfit - 1", "unit": "RATIO", "displayPrecision": 2 },
+    { "metricId": "MET-REVENUE-GROWTH", "name": "销售增长率", "formula": "currentRevenue / priorRevenue - 1", "unit": "RATIO", "displayPrecision": 2 },
+    { "metricId": "MET-WORKING-CAPITAL-TURNOVER", "name": "营运资金周转次数", "formula": "360 / (inventoryDays + receivableDays - payableDays + prepaymentDays - advanceReceiptDays)", "unit": "TIMES", "displayPrecision": 4 },
+    { "metricId": "MET-WORKING-CAPITAL-NEED", "name": "营运资金量", "formula": "revenue * (1 - mainBusinessProfitMargin) * (1 + expectedRevenueGrowth) / workingCapitalTurnover", "unit": "CNY_10K", "displayPrecision": 0 },
+    { "metricId": "MET-MAX-NEW-WORKING-CAPITAL-LOAN", "name": "新增流动资金贷款额度", "formula": "workingCapitalNeed - borrowerOwnFunds - existingWorkingCapitalLoans - otherWorkingCapitalChannels", "unit": "CNY_10K", "displayPrecision": 0 }
+  ],
+  "rules": [
+    { "ruleId": "RULE-S004-MEMBER-ACTIVE", "name": "集团成员资格校验", "effect": "DETERMINISTIC_GATE" },
+    { "ruleId": "RULE-S004-LOAN-MINIMUM-SCOPE", "name": "人民币一年期流动资金信用贷款范围校验", "effect": "DETERMINISTIC_GATE" },
+    { "ruleId": "RULE-S004-AMOUNT-WITHIN-FUNDING", "name": "申请金额不超过资金需求测算额度", "effect": "DETERMINISTIC_GATE" },
+    { "ruleId": "RULE-S004-AMOUNT-WITHIN-FACILITY", "name": "申请金额不超过可用授信额度", "effect": "DETERMINISTIC_GATE" },
+    { "ruleId": "RULE-S004-REPORT-STRUCTURE-COMPLETE", "name": "权威示例章节与字段完整性校验", "effect": "DETERMINISTIC_GATE" },
+    { "ruleId": "RULE-S004-REPORT-FACT-TRACEABLE", "name": "正式事实可追溯至Published本体和C008", "effect": "DETERMINISTIC_GATE" },
+    { "ruleId": "RULE-S004-HUMAN-CREDIT-CONCLUSION", "name": "授信综合判断必须来自人工确认", "effect": "DETERMINISTIC_GATE" },
+    { "ruleId": "RULE-S004-RISK-CONTROLLABILITY-HUMAN", "name": "风险可控判断必须来自人工确认", "effect": "DETERMINISTIC_GATE" },
+    { "ruleId": "RULE-S004-NO-RAW-SOURCE-CONSUMPTION", "name": "正式构建禁止直读工作簿或来源节点", "effect": "DETERMINISTIC_GATE" }
+  ],
+  "actionTypes": [
+    {
+      "actionTypeId": "AT-S004-MANUAL-FOLLOW-UP",
+      "name": "提交贷前问题人工跟进请求",
+      "status": "Published",
+      "instantiatedInDemo": false,
+      "submissionBoundary": "仅用户通过受控入口显式提交"
+    }
+  ],
+  "prohibitedSemantics": [
+    "Agent自动形成授信结论",
+    "Metric或Rule自动形成风险可控判断",
+    "报告助手自动发布报告",
+    "报告助手自动创建Action Request或待办",
+    "正式报告构建器直接读取工作簿、official-public、synthetic-demo或来源文档"
+  ],
+  "publishedPointers": {
+    "T019": "T019-S004-PUBLISHED-002",
+    "C008": "C008-S004-AUTHORITATIVE-FACTS-002"
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "ofw.s003.m06.report-template.v1",
+  "moduleId": "M06",
+  "moduleOwner": "报告中心",
+  "templateId": "S003-RPT-TPL-ENTERPRISE-RISK",
+  "templateVersion": "1.0.0",
+  "name": "企业债务风险评估报告模板",
+  "lifecycleStatus": "published",
+  "definitionId": "S003-RPT-DEF-DEBT-RISK",
+  "supportedFormats": [
+    "html",
+    "print-to-pdf"
+  ],
+  "layout": {
+    "density": "high",
+    "pageWidth": "A4-responsive",
+    "navigation": "section-tabs-and-anchor-index",
+    "printOptimized": true
+  },
+  "sections": [
+    {
+      "sectionId": "executive-summary",
+      "title": "整体评估结论",
+      "required": true,
+      "components": [
+        "enterprise-identity",
+        "assessment-context",
+        "conclusion-callout"
+      ]
+    },
+    {
+      "sectionId": "score-and-tier",
+      "title": "总体风险评分与等级",
+      "required": true,
+      "components": [
+        "score-card",
+        "risk-tier-badge",
+        "score-composition"
+      ]
+    },
+    {
+      "sectionId": "key-risk-diagnosis",
+      "title": "关键风险诊断",
+      "required": true,
+      "components": [
+        "lowest-three-indicators",
+        "negative-factor-summary",
+        "diagnosis-notes"
+      ]
+    },
+    {
+      "sectionId": "adjustment-factors",
+      "title": "调节因子明细",
+      "required": true,
+      "components": [
+        "factor-table",
+        "factor-state-summary",
+        "default-semantics"
+      ]
+    },
+    {
+      "sectionId": "financial-indicators",
+      "title": "财务指标评分明细",
+      "required": true,
+      "components": [
+        "indicator-table",
+        "weight-total",
+        "raw-score-summary"
+      ]
+    },
+    {
+      "sectionId": "disposition-status",
+      "title": "风险处置与行动状态",
+      "required": true,
+      "components": [
+        "trigger-classification",
+        "candidate-list",
+        "action-request-and-todo-status"
+      ]
+    },
+    {
+      "sectionId": "verification-and-evidence",
+      "title": "核验、版本与证据",
+      "required": true,
+      "components": [
+        "verification-summary",
+        "version-binding",
+        "evidence-index",
+        "artifact-downloads"
+      ]
+    }
+  ],
+  "download": {
+    "templateJson": true,
+    "exampleHtml": false,
+    "reasonExampleHtmlDisabled": "模板不携带旧场景数据，正式 HTML 由具体报告内容版本形成。"
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "ofw.s003.m02.data-contract.v1",
+  "moduleId": "M02",
+  "moduleOwner": "数据工程",
+  "businessInputOwner": "财务公司",
+  "contractId": "S003-M02-DATA-CONTRACT",
+  "contractVersion": "1.1.0",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1"
+  },
+  "assessmentAt": "2025-12-31",
+  "currency": "CNY",
+  "amountUnit": "元",
+  "logicalMembers": [
+    "财务数据",
+    "企业因子输入"
+  ],
+  "memberSources": {
+    "财务数据": {
+      "resourceId": "S003-M02-SOURCE-XLSX-20251231",
+      "sourceType": "manual-workbook",
+      "memberRange": "财务数据!A1:AA22"
+    },
+    "企业因子输入": {
+      "resourceId": "S003-T053-INPUT-20251231-v1",
+      "sourceType": "manual-business-input",
+      "separatedFromWorkbook": true,
+      "managementSurface": "M02 人工业务输入（T053）"
+    }
+  },
+  "sourceAttachmentHistory": [
+    {
+      "memberName": "调节因子",
+      "memberRange": "调节因子!A1:I22",
+      "role": "source-attachment-history-only",
+      "currentPipelineInput": false,
+      "modelConfigurationAuthority": false,
+      "note": "仅证明原始附件结构与企业因子初始取值来源；当前企业因子取值由独立人工输入快照维护，因子定义、系数、权重和风险阈值由 M01 Published 模型维护。"
+    }
+  ],
+  "currentPeriodColumn": "I",
+  "priorPeriodColumn": "AA",
+  "candidateResources": {
+    "sourceId": "S003-M02-SOURCE-XLSX-20251231",
+    "pipelineId": "S003-M02-PIPELINE-001",
+    "qualityRuleSetId": "S003-M02-QUALITY-001",
+    "humanInputSnapshotId": "S003-T053-INPUT-20251231-v1",
+    "formalCandidateDataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+    "qualityResultId": "S003-M02-QUALITY-20251231-v1",
+    "pipelineRunId": "S003-M02-PIPELINE-RUN-20260815-001"
+  },
+  "forbiddenCompatibilityAsset": {
+    "sha256": "dbdab9c870d7f2e456c3a9e0f91b340b372da6d40eb241551e0ee8848cac42a0",
+    "role": "authoritative-fixture-only",
+    "consumable": false,
+    "mayBePromotedInPlace": false
+  },
+  "humanInput": {
+    "name": "企业因子输入",
+    "mode": "controlled-online-entry",
+    "separatedFromWorkbook": true,
+    "managementSurface": "M02 人工业务输入（T053）",
+    "serviceOwner": "M02 数据工程",
+    "reviewerRequired": false,
+    "saveCreatesAssessment": false,
+    "publishCreatesImmutableSnapshot": true,
+    "changeCreatesNewSnapshot": true,
+    "fields": [
+      "产业板块",
+      "公司类别",
+      "融资能力（已用授信余额/授信总额）",
+      "担保情况",
+      "总部支持程度",
+      "电价波动率",
+      "是否存在重大诉讼",
+      "资金余缺预警"
+    ]
+  },
+  "applicability": {
+    "环保.电价波动率": "NOT_APPLICABLE",
+    "在建企业.电价波动率": "NOT_APPLICABLE",
+    "applicableMissing": "DEFAULTED_ZERO",
+    "invalidOrOutOfRange": "BLOCK"
+  },
+  "qualityOwns": [
+    "字段存在性",
+    "数据类型",
+    "枚举合法性",
+    "金额和日期格式",
+    "业务适用性状态",
+    "主体对齐",
+    "来源和版本完整性"
+  ],
+  "qualityDoesNotOwn": [
+    "风险评分",
+    "评分公式",
+    "因子系数",
+    "评分权重",
+    "风险阈值",
+    "风险分档命中",
+    "Action Type 命中"
+  ],
+  "contract": "C031",
+  "formedAt": "2026-08-15T13:04:23.000Z",
+  "resourceRefs": {
+    "source": "resources/m02/source-asset.v1.json",
+    "humanInputSnapshot": "resources/m02/human-input-snapshot.v1.json",
+    "formalCandidateDataAsset": "resources/m02/formal-candidate-data-asset.v1.json",
+    "qualityResult": "resources/m02/quality-result.v1.json",
+    "pipelineRun": "resources/m02/pipeline-run.v1.json"
+  }
+}

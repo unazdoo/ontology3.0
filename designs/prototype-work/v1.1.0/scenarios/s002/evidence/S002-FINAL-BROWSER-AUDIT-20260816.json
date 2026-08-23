@@ -1,0 +1,218 @@
+{
+  "schemaVersion": "ofw.s002.final-browser-audit.v3",
+  "scenarioId": "S002",
+  "scenarioVersion": "S002-v1",
+  "implementationDate": "2026-08-15",
+  "evidenceUpdatedAt": "2026-08-16",
+  "build": "S002-v1+db409ba60ad1",
+  "codeBinding": {
+    "workingTreeCodeSha256": "db409ba60ad1497747eb9ee5cd6d7c478a4092492956bcb1736686633832cf9b",
+    "checkpointCodeTreeSha256": "db409ba60ad1497747eb9ee5cd6d7c478a4092492956bcb1736686633832cf9b",
+    "checkpointBuildVersion": "S002-v1+db409ba60ad1",
+    "workingTreeDiffersFromCheckpoint": false,
+    "semantics": "当前交付代码树与权威 CP07 精确一致；evidence 目录不参与代码树摘要，证据更新不会改写不可变 Checkpoint。"
+  },
+  "baseline": {
+    "version": "1.0.3",
+    "snapshotId": "BSL-S001-V103-DE0119608E26",
+    "t056Sha256": "0a90f5f68dccaa7c18be71b4c82019616f19b0e359f931024652d95165ecd414",
+    "unchanged": true
+  },
+  "authoritativeCheckpoint": {
+    "scenarioRunId": "S002-RUN-20260815090000000-700f2219a4b3",
+    "checkpointId": "CP-S002-20260815090930000-d936b419bdf7",
+    "checkpointCatalogSha256": "89833e4998792434dbaa536189209d98dc3bb8770161abb725b0770dbe2346e3",
+    "scenarioPackageSha256": "4627e3d317aff1156244f5a4ad1b7d02158a23f6467d6c6e23b1f5b6b0d829a4",
+    "checkpointCodeTreeSha256": "db409ba60ad1497747eb9ee5cd6d7c478a4092492956bcb1736686633832cf9b",
+    "nodes": 8,
+    "ownerReceipts": 48,
+    "validation": "passed"
+  },
+  "checkpointRuntimeProjection": {
+    "progress": "13/13",
+    "actionRequests": 11,
+    "awaitingDecision": 3,
+    "confirmed": 6,
+    "rejected": 2,
+    "todos": 6,
+    "externalDispatch": false
+  },
+  "artifactIds": {
+    "reportDraftId": "RPT-S002-1786784870000",
+    "reportStatus": "draft",
+    "formalArtifactPublished": false,
+    "t049Ref": null,
+    "dashboardVersionId": "DASH-S002-1786784900000",
+    "dashboardStatus": "published"
+  },
+  "browserVerification": {
+    "status": "passed",
+    "finalDeliveryRun": {
+      "scenarioRunId": "S002-RUN-20260816134222396-ba4e8e788738",
+      "restoredFrom": "CP-S002-20260815090930000-d936b419bdf7",
+      "mode": "isolated-clone",
+      "historyOverwritten": false,
+      "externalDispatch": false
+    },
+    "moduleRouteChecks": {
+      "M01": "非空；进入 Published 预算本体画布，7 Object、6 Link、9 Metric、5 Rule、6 Action Type",
+      "M02": "非空；数据源、管道、质量、运行和资产版本均可用",
+      "M03": "非空；预算问数、结构化结果、Rule 结果和证据下钻可用",
+      "M04": "非空；待我决策、已处理、确认/拒绝和平台内待办可用",
+      "M05": "非空；预算异常分析 Agent、预算报告草稿 Agent 及运行结果可用",
+      "M06": "非空；报告草稿、预算驾驶舱、筛选、主题切换和下钻可用"
+    },
+    "m02SourceVerification": {
+      "uploadedSourceFiles": 8,
+      "logicalMembers": 14,
+      "canvasSourceNodes": 8,
+      "sourceGroups": [
+        "预算与实际 6 份工作簿",
+        "项目与采购 2 份工作簿"
+      ],
+      "fileDetailShows": [
+        "来源编号",
+        "业务范围",
+        "逻辑成员",
+        "敏感性",
+        "文件大小",
+        "SHA-256",
+        "ORIGINAL_SOURCE_COPY"
+      ],
+      "downloadEntryVisible": true,
+      "browserDownloadEvent": "passed",
+      "byteIdentityAndSha256": "8/8 passed",
+      "downloadChangesOwnerState": false,
+      "projectAndProcurementDetail": {
+        "overview": "completed Owner State projected",
+        "contentAndFields": "completed Owner State projected",
+        "snapshotHistory": "S002-SOURCE-SNAPSHOT-v1 shown as immutable current snapshot",
+        "references": "S002-PIPE-v1 and S002-DATA-v1 shown",
+        "identityModal": "source file identity and registration evidence shown",
+        "qualityModal": "20/20 quality and publication evidence shown",
+        "stalePendingRegistrationOrNotConsumableText": false
+      },
+      "latestBrowserDownload": {
+        "file": "2025年预算占用.XLSX",
+        "downloadedPath": "/Users/domi/Downloads/2025年预算占用 (2).XLSX",
+        "sizeBytes": 15900,
+        "sha256": "af94789f3ac8238ffd076c9006f5a29a096978ce182284efd5478994f249d20a"
+      }
+    },
+    "m04DecisionVerification": {
+      "actionRequests": 11,
+      "processed": 8,
+      "confirmed": 6,
+      "rejected": 2,
+      "awaitingDecision": 3,
+      "todos": 6,
+      "confirmedActionTypes": [
+        "预算调增",
+        "科目调剂",
+        "占用释放",
+        "供应商价格复核",
+        "申报退回",
+        "预算调减"
+      ],
+      "pendingItems": [
+        {
+          "actionType": "预算调增",
+          "subject": "安全运行部 · 2025预算滚动覆盖",
+          "owner": "安全运行部预算承接人"
+        },
+        {
+          "actionType": "占用释放",
+          "subject": "技术部 · 热能项目采购占用",
+          "owner": "技术部采购占用承接人"
+        },
+        {
+          "actionType": "供应商价格复核",
+          "subject": "安全运行部 · 供应商3补充报价",
+          "owner": "采购管理业务承接人"
+        }
+      ],
+      "humanDecisionOperator": "平台管理员",
+      "rejectedActionCreatesTodo": false,
+      "confirmedActionCanRepeatConfirm": false,
+      "externalDispatch": false
+    },
+    "m06DashboardVerification": {
+      "dashboardThemes": [
+        "经营概览",
+        "单位比较",
+        "结构与采购",
+        "Rule 与行动"
+      ],
+      "allThemeSwitchesPassed": true,
+      "businessCoverage": [
+        "预算执行",
+        "初始申报",
+        "项目余额与采购占用",
+        "异常事项与 Action",
+        "跨年趋势及单位对比"
+      ],
+      "alertActionTypes": [
+        "预算调增",
+        "占用释放",
+        "供应商价格复核"
+      ],
+      "filters": [
+        "年度",
+        "单位",
+        "科目",
+        "项目",
+        "期间",
+        "异常事项"
+      ],
+      "drilldown": "passed",
+      "duplicateAlertSubmission": "returned original Action Request; no duplicate created",
+      "duplicateResultMessage": "已幂等返回原决策事项，未重复创建。",
+      "externalDispatchMessage": "未派发",
+      "automaticApprovalOrPosting": false
+    },
+    "interactionBranches": {
+      "confirmPendingBudgetIncrease": "passed in isolated temporary clone; one platform todo created and persisted after refresh",
+      "rejectPendingSupplierPriceReview": "passed in isolated temporary clone; reason retained and no todo created",
+      "duplicateConfirm": "blocked",
+      "finalDeliveryRunPreservesThreePendingItems": true
+    },
+    "checkpointSemantics": {
+      "historicalViewReadOnly": "passed",
+      "cloneRestoreCreatesNewRun": "passed",
+      "isolatedRegressionDoesNotReplaySideEffects": "passed",
+      "resetCreatesNewRun": "passed"
+    },
+    "responsive": {
+      "1440x900": "passed",
+      "900x900": "passed",
+      "390x844": "passed",
+      "fullPageHorizontalOverflow": false,
+      "narrowViewportAutoCollapsesGlobalNav": true
+    },
+    "console": {
+      "productSourceErrors": 0,
+      "routeOrResourceErrors": 0,
+      "directEntryEvidence": "fresh direct M02 and M04 tabs produced zero error-level product logs; M04 only emitted the baseline Babel development warning",
+      "excludedToolNoise": [
+        "in-app browser DOM traversal MutationObserver error without product URL or source location",
+        "browser-client Statsig telemetry network/batch warning",
+        "baseline Babel development transformer warning"
+      ]
+    }
+  },
+  "automatedVerification": {
+    "nodeTests": "64/64 passed",
+    "checkpointValidation": "8 nodes / 48 Owner receipts passed",
+    "nonVendorJavascriptSyntax": "passed",
+    "baselineImmutability": "passed"
+  },
+  "moduleEntries": {
+    "M01": "baseline-adapters/ontology-management-review/canvas-first/index.html",
+    "M02": "baseline-adapters/data-engineering-prototype-review/review-v3/方案B2.html",
+    "M03": "baseline-adapters/intelligent-query-prototype/review-next/conversation-workspace/index.html",
+    "M04": "baseline-adapters/m04/decision-center-prototype/index.html",
+    "M05": "baseline-adapters/m05/agent-application/Agent应用.html",
+    "M06": "baseline-adapters/m06/report-center/review-lifecycle/index.html"
+  },
+  "boundary": "原型只生成决策草稿和平台内待办；不自动审批、过账、覆盖最终批准预算或调用外部预算系统。"
+}

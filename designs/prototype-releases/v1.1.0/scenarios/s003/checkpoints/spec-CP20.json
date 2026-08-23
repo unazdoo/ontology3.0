@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "ofw.c034.checkpoint-spec.v1",
+  "checkpointId": "CP-S003-20260817160000000-c03520000020",
+  "checkpointNode": "file-protocol-entry-fixed",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "sourceScenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+  },
+  "immutable": true,
+  "acceptanceReady": false,
+  "scope": "file:// entry guard and macOS HTTP launcher only; no business or module contract change",
+  "preserved": ["CP01", "CP02", "CP03", "CP04", "CP05", "CP06", "CP07", "CP08", "CP09", "CP10", "CP11", "CP12", "CP13", "CP14", "CP15", "CP16", "CP17", "CP18", "CP19", "v1.0.3 frozen tree"],
+  "tests": {
+    "fileEntry": "passed",
+    "fileEntryConsoleErrors": 0,
+    "nodeContracts": "296/296",
+    "browserChromium": "10/10",
+    "m02Static": "passed",
+    "frozenBaselineDiff": 0
+  },
+  "codeTreeSha256": "8bd9311563961f1cf1cddc0519f336c09c91ac6008aa6d42760210c0610fa55c",
+  "changedFiles": [
+    "s001-e2e-integration/index.html",
+    "scenarios/s003/index.html",
+    "启动S003.command",
+    "scenarios/s003/tests/workbench-shell.test.js",
+    "WORKSPACE.md",
+    "scenarios/s003/README.md",
+    "scenarios/s003/CHANGELOG.md",
+    "VERSION.json"
+  ]
+}

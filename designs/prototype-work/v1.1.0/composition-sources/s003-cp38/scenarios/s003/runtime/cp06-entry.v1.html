@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>S003 CP06 · 报告与工作台完成</title>
+    <style>
+      :root { color-scheme: light; font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif; }
+      body { margin: 0; color: #172538; background: #f3f5f7; }
+      main { width: min(960px, calc(100% - 32px)); margin: 48px auto; }
+      article { padding: 28px; background: #fff; border: 1px solid #d9dee5; border-radius: 8px; box-shadow: 0 10px 30px rgba(30, 45, 64, .07); }
+      h1 { margin: 0 0 8px; font-size: 24px; }
+      p { color: #5d6875; line-height: 1.7; }
+      .grid { margin-top: 24px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+      .card { padding: 14px; background: #f7f9fb; border: 1px solid #e1e6ec; border-radius: 6px; }
+      .card strong { display: block; font-size: 20px; }
+      .card small { color: #6b7784; }
+      .ok { color: #25725d; font-weight: 700; }
+      .links { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 10px; }
+      a { padding: 9px 13px; color: #fff; background: #163f68; border-radius: 5px; text-decoration: none; }
+      a.secondary { color: #163f68; background: #eef3f8; }
+      code { overflow-wrap: anywhere; }
+      @media (max-width: 620px) {
+        main { margin: 20px auto; }
+        article { padding: 20px; }
+        .grid { grid-template-columns: repeat(2, 1fr); }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <article>
+        <h1>S003 CP06：报告与场景工作台完成</h1>
+        <p><span class="ok">agent-report-dashboard-completed</span>。M06 工作台已串联风险总览、企业明细、因子填报、配置、重评、问数、人工确认与企业报告；M05 一期保持无专属 Agent。</p>
+        <p>权威运行：<code>S003-RUN-20260815133000000-c03503000001</code></p>
+        <div class="grid">
+          <div class="card"><strong>21</strong><small>企业正式报告</small></div>
+          <div class="card"><strong>21 / 21</strong><small>内容 / HTML 制品</small></div>
+          <div class="card"><strong>16 / 4 / 1 / 0</strong><small>绿 / 黄 / 红 / 黑</small></div>
+          <div class="card"><strong>0</strong><small>报告生成副作用</small></div>
+        </div>
+        <div class="links">
+          <a href="../index.html#runs">打开运行与报告</a>
+          <a class="secondary" href="../index.html#report/S003-ENT-020">穿透红灯企业报告</a>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "ofw.s002.owner-validation-receipt.v2",
+  "receiptId": "RECEIPT-M01-decision-chain-completed-6ff14955f72a",
+  "moduleId": "M01",
+  "owner": "本体管理",
+  "moduleVersion": "S002-M01-1.0.0",
+  "scenarioAdapterVersion": "S002-M01-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "baselineCheckpointBinding": {
+    "ref": "designs/scenario-checkpoints/baselines/v1.0.3/T056-baseline-checkpoint.json",
+    "sha256": "0a90f5f68dccaa7c18be71b4c82019616f19b0e359f931024652d95165ecd414"
+  },
+  "baselineModuleBinding": {
+    "baselineVersion": "1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "prototypePath": "designs/prototype-releases/v1.0.3/ontology-management-review",
+    "exactVersion": "v1.0.3#75870802dbcf5f3c",
+    "treeSha256": "75870802dbcf5f3ced2b8c6efaca41f01ae1e57fc34893ef44a14710633142fd",
+    "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+    "supportingPrototypeComponents": [
+      {
+        "prototypePath": "designs/prototype-releases/v1.0.3/ontology-management-prototype",
+        "treeSha256": "e0591568e3c52f464b53b295b8106056dea531c9f407c056bee6c21191645443",
+        "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)"
+      }
+    ]
+  },
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815090000000-700f2219a4b3",
+    "formedAt": "2026-08-15T09:00:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "decision-chain-completed",
+  "exportRef": "checkpoints/runs/S002-RUN-20260815090000000-700f2219a4b3/evidence/CP05-decision-chain-completed/M01-state-export.json",
+  "exportSha256": "6ff14955f72aa54fb2a4a79bb240db83f5d902fe4b95f47a8ffea46318a7ef5d",
+  "validatedAt": "2026-08-15T09:06:50.000Z",
+  "validationStatus": "verified",
+  "checks": {
+    "scenarioIdentity": "verified",
+    "baselineBinding": "verified",
+    "baselineModuleTreeDigest": "verified-by-deterministic-tree-digest",
+    "ownerBoundary": "verified",
+    "exportDigest": "verified",
+    "isolatedCloneShape": "verified-by-scenario-adapter",
+    "historicalSideEffectsDisabled": "verified"
+  },
+  "validationScope": "prototype-scenario-adapter",
+  "conclusionBoundary": "S002原型适配器导出与恢复校验通过，不代表生产模块部署或平台验收通过"
+}

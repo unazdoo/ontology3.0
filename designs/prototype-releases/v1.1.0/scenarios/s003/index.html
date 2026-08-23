@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <meta name="description" content="S003 债务风险监测统一场景入口" />
+    <title>S003 债务风险监测 · 智财问策</title>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; font-family: -apple-system, "SF Pro Text", "PingFang SC", "Noto Sans SC", sans-serif; color: #25344a; background: #f4f7fb; }
+      main { width: min(560px, calc(100vw - 48px)); padding: 32px; border: 1px solid #dfe6ef; background: #fff; box-shadow: 0 18px 50px rgba(42, 61, 87, .10); }
+      h1 { margin: 0 0 12px; font-size: 24px; }
+      p { margin: 0 0 20px; color: #66758a; line-height: 1.75; }
+      a { display: inline-flex; min-height: 40px; align-items: center; padding: 0 18px; color: #fff; background: #315f9b; text-decoration: none; }
+      a.secondary { margin-left: 8px; color: #315f9b; background: #edf3f9; }
+      .warning { display: none; margin: 0 0 18px; padding: 12px 14px; color: #7a4e10; background: #fff7e8; border: 1px solid #efcf9d; line-height: 1.65; }
+      .file-mode .warning { display: block; }
+      .file-mode h1 { color: #7a4e10; }
+      .file-mode .auto-entry { display: none; }
+      @media (max-width: 560px) { a.secondary { margin: 8px 0 0; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>正在进入 S003 统一场景</h1>
+      <div class="warning" id="file-warning">当前入口是本地文件，浏览器会阻止读取场景数据。请双击工作区中的“启动S003.command”，或先启动本地 HTTP 服务后再打开下面的地址。</div>
+      <p>S003 不再使用独立产品壳。系统将进入继承 v1.0.3 公共壳与六模块原功能的 v1.1.0 场景工作区。</p>
+      <a id="entry" href="../../s001-e2e-integration/index.html?scenarioId=S003#home">进入统一工作台</a>
+      <a id="launcher" class="secondary" href="../../启动S003.command">打开启动器</a>
+    </main>
+    <script>
+      (function () {
+        const isFile = window.location.protocol === "file:";
+        if (isFile) document.body.classList.add("file-mode");
+        const target = isFile
+          ? new URL("http://127.0.0.1:4333/s001-e2e-integration/index.html")
+          : new URL("../../s001-e2e-integration/index.html", window.location.href);
+        const incoming = new URLSearchParams(window.location.search);
+        target.searchParams.set("scenarioId", "S003");
+        ["scenarioVersion", "scenarioRunId", "formedAt", "status", "contextCreatedAt", "contextStatus", "scenarioFormedAt", "scenarioStatus"].forEach(function (name) {
+          const value = incoming.get(name);
+          if (value) target.searchParams.set(name, value);
+        });
+        target.hash = "#home";
+        document.getElementById("entry").href = target.href;
+        if (!isFile) window.location.replace(target.href);
+      })();
+    </script>
+  </body>
+</html>

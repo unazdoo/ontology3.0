@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "ofw.s002.browser-regression.v1",
+  "scenarioId": "S002",
+  "scenarioVersion": "S002-v1",
+  "scenarioRunId": "S002-RUN-20260815153000000-c5603f92c994",
+  "implementationDate": "2026-08-15",
+  "verifiedAt": "2026-08-16",
+  "build": "S002-20260815-baseline-adapters-r6",
+  "codeTreeSha256": "a22b1453ad3723b13bd5e41a411bf3222b926713d3502713caba9a4400122bee",
+  "baseline": {
+    "version": "v1.0.3",
+    "snapshotId": "BSL-S001-V103-DE0119608E26",
+    "checkpointSha256": "0a90f5f68dccaa7c18be71b4c82019616f19b0e359f931024652d95165ecd414",
+    "unchanged": true
+  },
+  "automation": {
+    "testsPassed": 27,
+    "testsTotal": 27,
+    "checkpointNodes": 8,
+    "ownerReceipts": 48,
+    "syntaxCheck": "passed"
+  },
+  "browser": {
+    "workflow": {
+      "initialProgress": "0/13",
+      "finalProgress": "13/13",
+      "executedActions": 12,
+      "note": "人工确认或拒绝同时形成负责人待办，因此13项状态由12次受控下一步操作完成。"
+    },
+    "desktop1440x900": {
+      "modules": ["M01", "M02", "M03", "M04", "M05", "M06"],
+      "platformRailVisible": false,
+      "appRailVisible": false,
+      "productNavigationVisible": true,
+      "horizontalOverflow": false
+    },
+    "narrow900x900": {
+      "modules": ["M01", "M02", "M03", "M04", "M05", "M06"],
+      "platformRailVisible": false,
+      "appRailVisible": false,
+      "productNavigationVisible": true,
+      "horizontalOverflow": false
+    },
+    "mobile390x844": {
+      "modules": ["M01", "M02", "M03", "M04", "M05", "M06"],
+      "outerNavigationVisible": true,
+      "productNavigationVisible": false,
+      "platformRailVisible": false,
+      "appRailVisible": false,
+      "horizontalOverflow": false
+    },
+    "intelligentQuery": {
+      "questionLoaded": true,
+      "actualTotalVisible": "2020.75",
+      "netInTransitVisible": "163.38",
+      "decemberPositivePrShareVisible": "8.59%",
+      "evidenceDrilldown": "passed"
+    },
+    "dashboard": {
+      "approvedExpenseBudget": "1097.70",
+      "actualExpense": "861.73",
+      "executionRate": "78.50%",
+      "costToRevenue": "74.35%",
+      "netInTransit": "163.38",
+      "filterAndDetailDrilldown": "passed",
+      "technicalDepartmentRuleState": "已评估无命中"
+    },
+    "console": {
+      "productErrors": 0,
+      "browserExtensionNoise": 1,
+      "extensionNoiseExcludedFromProductResult": true
+    },
+    "filePreview": {
+      "selfContainedFrameCssContract": "passed",
+      "directAutomatedNavigation": "blocked-by-browser-url-security-policy",
+      "productFailure": false
+    },
+    "screenshots": {
+      "moduleViewportSet": 18,
+      "decisionStableSet": 3,
+      "dashboardViewportSet": 3,
+      "total": 24
+    }
+  }
+}

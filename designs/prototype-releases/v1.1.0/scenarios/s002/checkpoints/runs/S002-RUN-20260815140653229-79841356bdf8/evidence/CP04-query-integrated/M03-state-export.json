@@ -1,0 +1,389 @@
+{
+  "schemaVersion": "ofw.s002.module-state-export.v1",
+  "moduleId": "M03",
+  "moduleName": "智能问数",
+  "owner": "智能问数",
+  "moduleVersion": "S002-M03-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815140653229-79841356bdf8",
+    "formedAt": "2026-08-15T14:06:53.229Z",
+    "status": "active"
+  },
+  "checkpointNode": "query-integrated",
+  "formedAt": "2026-08-15T14:11:53.229Z",
+  "stateDeclaration": "referenced",
+  "emptyReason": null,
+  "resources": [
+    {
+      "resourceId": "AGENT-S002-BUDGET-QUERY-v1",
+      "resourceType": "query-agent",
+      "version": "1.0.0",
+      "summary": "预算问数 Agent",
+      "authoritativeRef": "S002/S002-RUN-20260815140653229-79841356bdf8/M03/AGENT-S002-BUDGET-QUERY-v1",
+      "formedAt": "2026-08-15T14:11:53.229Z"
+    },
+    {
+      "resourceId": "PROMPT-S002-BUDGET-v1",
+      "resourceType": "prompt",
+      "version": "1.0.0",
+      "summary": "预算执行、申报、余额、采购占用与趋势问数 Prompt",
+      "authoritativeRef": "S002/S002-RUN-20260815140653229-79841356bdf8/M03/PROMPT-S002-BUDGET-v1",
+      "formedAt": "2026-08-15T14:11:53.229Z"
+    },
+    {
+      "resourceId": "SKILL-S002-BUDGET-v1",
+      "resourceType": "skill",
+      "version": "1.0.0",
+      "summary": "Published 语义约束与证据追溯 Skill",
+      "authoritativeRef": "S002/S002-RUN-20260815140653229-79841356bdf8/M03/SKILL-S002-BUDGET-v1",
+      "formedAt": "2026-08-15T14:11:53.229Z"
+    },
+    {
+      "resourceId": "C009-S002-v1",
+      "resourceType": "query-configuration",
+      "version": "1.0.0",
+      "summary": "固定问题、参数、双版本绑定和降级规则",
+      "authoritativeRef": "S002/S002-RUN-20260815140653229-79841356bdf8/M03/C009-S002-v1",
+      "formedAt": "2026-08-15T14:11:53.229Z"
+    },
+    {
+      "resourceId": "C018-S002-DEFINITION-v1",
+      "resourceType": "view-definition",
+      "version": "1.0.0",
+      "summary": "预算固定问数视图定义",
+      "authoritativeRef": "S002/S002-RUN-20260815140653229-79841356bdf8/M03/C018-S002-DEFINITION-v1",
+      "formedAt": "2026-08-15T14:11:53.229Z"
+    },
+    {
+      "resourceId": "RUN-S002-QUERY-001",
+      "resourceType": "query-run",
+      "version": "1.0.0",
+      "summary": "六项固定问数运行",
+      "authoritativeRef": "S002/S002-RUN-20260815140653229-79841356bdf8/M03/RUN-S002-QUERY-001",
+      "formedAt": "2026-08-15T14:11:53.229Z"
+    },
+    {
+      "resourceId": "C018-S002-v1",
+      "resourceType": "query-result",
+      "version": "1.0.0",
+      "summary": "预算固定问数视图与确定性结果",
+      "authoritativeRef": "S002/S002-RUN-20260815140653229-79841356bdf8/M03/C018-S002-v1",
+      "formedAt": "2026-08-15T14:11:53.229Z"
+    }
+  ],
+  "ownerBoundary": {
+    "ownsOnly": [
+      "query-agent",
+      "prompt",
+      "skill",
+      "query-configuration",
+      "view-definition",
+      "query-run",
+      "query-result"
+    ],
+    "consumesByReference": true,
+    "copiesOtherModuleTruth": false
+  },
+  "demoDataMarker": "SYNTHETIC_FOR_DEMO",
+  "sideEffectPolicy": {
+    "allowHistoricalReplay": false,
+    "allowExternalDispatch": false
+  },
+  "runtimeState": {
+    "moduleId": "M03",
+    "moduleVersion": "S002-M03-1.0.0",
+    "progress": {
+      "queryRun": true,
+      "rulesRun": true
+    },
+    "queryRuns": [
+      {
+        "runId": "QR-S002-1786803008229",
+        "questionId": "Q-EXECUTION",
+        "label": "2025年各部门费用预算执行率是多少？",
+        "result": [
+          {
+            "department": "设备管理部",
+            "expenseRate": 0.632,
+            "budget": 404.5,
+            "actual": 255.6557
+          },
+          {
+            "department": "技术部",
+            "expenseRate": 0.7797,
+            "budget": 379.3,
+            "actual": 295.7507
+          },
+          {
+            "department": "安全运行部",
+            "expenseRate": 0.9886,
+            "budget": 313.9,
+            "actual": 310.3201
+          }
+        ],
+        "configurationRef": "C009-S002-v1",
+        "viewContract": "C018-S002-v1",
+        "dataAssetVersion": "S002-DATA-v1",
+        "ontologyVersion": "S002-ONTO-v1",
+        "publishedPointer": "T019-S002-v1",
+        "evidence": [
+          "S002-DATA-v1",
+          "S002-ONTO-v1",
+          "T019-S002-v1"
+        ],
+        "at": "2026-08-15T14:10:08.229Z"
+      },
+      {
+        "runId": "QR-S002-1786803023229",
+        "questionId": "Q-SUBMISSION",
+        "label": "2025/2026初始申报中，哪个部门成本占收比最高？",
+        "result": [
+          {
+            "department": "技术部",
+            "costToRevenue": 3.103,
+            "grossMargin": -2.103
+          },
+          {
+            "department": "安全运行部",
+            "costToRevenue": 1.6298,
+            "grossMargin": -0.6298
+          },
+          {
+            "department": "设备管理部",
+            "costToRevenue": 0.3319,
+            "grossMargin": 0.6681
+          }
+        ],
+        "configurationRef": "C009-S002-v1",
+        "viewContract": "C018-S002-v1",
+        "dataAssetVersion": "S002-DATA-v1",
+        "ontologyVersion": "S002-ONTO-v1",
+        "publishedPointer": "T019-S002-v1",
+        "evidence": [
+          "S002-DATA-v1",
+          "S002-ONTO-v1",
+          "T019-S002-v1"
+        ],
+        "at": "2026-08-15T14:10:23.229Z"
+      },
+      {
+        "runId": "QR-S002-1786803038229",
+        "questionId": "Q-BALANCE",
+        "label": "哪些项目的可用立项余额已经为负？",
+        "result": [
+          {
+            "projectId": "PRJ-AQ-概率-2025-002",
+            "department": "安全运行部",
+            "name": "概率安全分析",
+            "availableBalance": -20.5038
+          }
+        ],
+        "configurationRef": "C009-S002-v1",
+        "viewContract": "C018-S002-v1",
+        "dataAssetVersion": "S002-DATA-v1",
+        "ontologyVersion": "S002-ONTO-v1",
+        "publishedPointer": "T019-S002-v1",
+        "evidence": [
+          "S002-DATA-v1",
+          "S002-ONTO-v1",
+          "T019-S002-v1"
+        ],
+        "at": "2026-08-15T14:10:38.229Z"
+      },
+      {
+        "runId": "QR-S002-1786803053229",
+        "questionId": "Q-COMMITMENT",
+        "label": "12月正向采购发起占比和净在途占用是多少？",
+        "result": {
+          "netInTransit": 163.38,
+          "positivePr": 273.09,
+          "decemberShare": 0.085869,
+          "budgetOccupancyDecemberShare": 0.0976,
+          "coverage": "3/21项目有源占用"
+        },
+        "configurationRef": "C009-S002-v1",
+        "viewContract": "C018-S002-v1",
+        "dataAssetVersion": "S002-DATA-v1",
+        "ontologyVersion": "S002-ONTO-v1",
+        "publishedPointer": "T019-S002-v1",
+        "evidence": [
+          "S002-DATA-v1",
+          "S002-ONTO-v1",
+          "T019-S002-v1"
+        ],
+        "at": "2026-08-15T14:10:53.229Z"
+      },
+      {
+        "runId": "QR-S002-1786803068229",
+        "questionId": "Q-TREND",
+        "label": "跨年趋势里，哪个部门收入和费用同时回落？",
+        "result": [
+          {
+            "department": "设备管理部",
+            "revenueYoY": 0.9558,
+            "expenseYoY": -0.3537,
+            "trend": "收入确认期抬升"
+          },
+          {
+            "department": "技术部",
+            "revenueYoY": -0.0846,
+            "expenseYoY": -0.1822,
+            "trend": "组合交付"
+          },
+          {
+            "department": "安全运行部",
+            "revenueYoY": -0.4898,
+            "expenseYoY": -0.1784,
+            "trend": "常态化组合"
+          }
+        ],
+        "configurationRef": "C009-S002-v1",
+        "viewContract": "C018-S002-v1",
+        "dataAssetVersion": "S002-DATA-v1",
+        "ontologyVersion": "S002-ONTO-v1",
+        "publishedPointer": "T019-S002-v1",
+        "evidence": [
+          "S002-DATA-v1",
+          "S002-ONTO-v1",
+          "T019-S002-v1"
+        ],
+        "at": "2026-08-15T14:11:08.229Z"
+      },
+      {
+        "runId": "QR-S002-1786803083229",
+        "questionId": "Q-ACTION",
+        "label": "当前异常最适合先发起什么类型的预算行动？",
+        "result": {
+          "topException": "PRJ-AQ-概率-2025-002",
+          "recommendedAction": "预算调增草稿",
+          "reason": "项目可用立项余额为 -20.50 万元，且净在途占用 62.09 万元。"
+        },
+        "configurationRef": "C009-S002-v1",
+        "viewContract": "C018-S002-v1",
+        "dataAssetVersion": "S002-DATA-v1",
+        "ontologyVersion": "S002-ONTO-v1",
+        "publishedPointer": "T019-S002-v1",
+        "evidence": [
+          "S002-DATA-v1",
+          "S002-ONTO-v1",
+          "T019-S002-v1"
+        ],
+        "at": "2026-08-15T14:11:23.229Z"
+      }
+    ],
+    "ruleHits": [
+      {
+        "id": "HIT-001",
+        "title": "概率安全分析项目可用立项余额为负",
+        "subject": "PRJ-AQ-概率-2025-002",
+        "department": "安全运行部",
+        "value": -20.5038,
+        "unit": "万元",
+        "priority": "高",
+        "ruleId": "RULE-001",
+        "metricId": "MET-006",
+        "actionTypeId": "ACT-BUDGET-INCREASE",
+        "actionType": "预算调增",
+        "ruleVersion": "S002-RULE-v1",
+        "evidence": [
+          "S002-DATA-v1",
+          "MET-006",
+          "T019-S002-v1"
+        ]
+      },
+      {
+        "id": "HIT-002",
+        "title": "2024安全运行部费用预算执行率超过100%",
+        "subject": "安全运行部|FY2024-APPROVED-FINAL-v1",
+        "department": "安全运行部",
+        "value": 125.48,
+        "unit": "%",
+        "priority": "高",
+        "ruleId": "RULE-002",
+        "metricId": "MET-007",
+        "actionTypeId": "ACT-SUBJECT-TRANSFER",
+        "actionType": "科目调剂",
+        "ruleVersion": "S002-RULE-v1",
+        "evidence": [
+          "S002-DATA-v1",
+          "MET-007",
+          "T019-S002-v1"
+        ]
+      },
+      {
+        "id": "HIT-003",
+        "title": "12月计提与实际确认差异超过关注线",
+        "subject": "计提凭证|ACCRUAL-2025-12-014",
+        "department": "技术部",
+        "value": 0.72,
+        "unit": "万元",
+        "priority": "中",
+        "dataMarker": "SYNTHETIC_FOR_DEMO",
+        "ruleId": "RULE-003",
+        "metricId": null,
+        "actionTypeId": "ACT-RELEASE-COMMITMENT",
+        "actionType": "占用释放",
+        "ruleVersion": "S002-RULE-v1",
+        "evidence": [
+          "S002-DATA-v1",
+          "计提与冲回/结算/实际确认金额绝对差异",
+          "T019-S002-v1"
+        ]
+      },
+      {
+        "id": "HIT-004",
+        "title": "设备项目年末预算占用集中度进入关注区间",
+        "subject": "PRJ-SB-设备-2025-002",
+        "department": "设备管理部",
+        "value": 11.24,
+        "unit": "%",
+        "priority": "中",
+        "component": "budgetOccupancyDecemberShare",
+        "dataMarker": "SYNTHETIC_FOR_DEMO",
+        "ruleId": "RULE-004",
+        "metricId": "MET-009",
+        "actionTypeId": "ACT-RELEASE-COMMITMENT",
+        "actionType": "占用释放",
+        "ruleVersion": "S002-RULE-v1",
+        "evidence": [
+          "S002-DATA-v1",
+          "MET-009",
+          "T019-S002-v1"
+        ]
+      },
+      {
+        "id": "HIT-005",
+        "title": "供应商可比价格达到同口径基准1.2倍",
+        "subject": "生产物料费|供应商A",
+        "department": "设备管理部",
+        "value": 1.24,
+        "unit": "倍",
+        "priority": "中",
+        "dataMarker": "SYNTHETIC_FOR_DEMO",
+        "ruleId": "RULE-005",
+        "metricId": null,
+        "actionTypeId": "ACT-PRICE-REVIEW",
+        "actionType": "供应商价格复核",
+        "ruleVersion": "S002-RULE-v1",
+        "evidence": [
+          "S002-DATA-v1",
+          "同供应商同级别单人月可比价格倍率",
+          "T019-S002-v1"
+        ]
+      }
+    ],
+    "viewContracts": [
+      {
+        "id": "C018-S002-v1",
+        "status": "active",
+        "pinnedDataVersion": "S002-DATA-v1",
+        "pinnedOntologyVersion": "S002-ONTO-v1",
+        "formedAt": "2026-08-15T14:10:08.229Z"
+      }
+    ]
+  }
+}

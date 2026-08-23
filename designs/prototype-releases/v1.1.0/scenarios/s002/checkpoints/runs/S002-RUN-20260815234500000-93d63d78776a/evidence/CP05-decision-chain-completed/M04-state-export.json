@@ -1,0 +1,1010 @@
+{
+  "schemaVersion": "ofw.s002.module-state-export.v2",
+  "moduleId": "M04",
+  "moduleName": "决策中心",
+  "owner": "决策中心",
+  "moduleVersion": "S002-M04-1.0.0",
+  "scenarioAdapterVersion": "S002-M04-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "baselineCheckpointBinding": {
+    "ref": "designs/scenario-checkpoints/baselines/v1.0.3/T056-baseline-checkpoint.json",
+    "sha256": "0a90f5f68dccaa7c18be71b4c82019616f19b0e359f931024652d95165ecd414"
+  },
+  "baselineModuleBinding": {
+    "baselineVersion": "1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "prototypePath": "designs/prototype-releases/v1.0.3/decision-center-prototype",
+    "exactVersion": "v1.0.3#243f7a8a779b1fb9",
+    "treeSha256": "243f7a8a779b1fb9dddb74996c5bc7d99ad51211f019a2991afb6c8916f7b66b",
+    "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+    "supportingPrototypeComponents": []
+  },
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815234500000-93d63d78776a",
+    "formedAt": "2026-08-15T23:45:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "decision-chain-completed",
+  "formedAt": "2026-08-15T23:51:50.000Z",
+  "stateDeclaration": "referenced",
+  "emptyReason": null,
+  "resources": [
+    {
+      "resourceId": "ALERT-S002-BUDGET-v1",
+      "resourceType": "decision-alert",
+      "version": "1.0.0",
+      "summary": "Rule命中和分析建议形成的决策提醒",
+      "authoritativeRef": "S002/S002-RUN-20260815234500000-93d63d78776a/M04/ALERT-S002-BUDGET-v1",
+      "formedAt": "2026-08-15T23:51:50.000Z"
+    },
+    {
+      "resourceId": "AR-S002-BUDGET-v1",
+      "resourceType": "action-request",
+      "version": "1.0.0",
+      "summary": "六类预算管理平台内 Action Request",
+      "authoritativeRef": "S002/S002-RUN-20260815234500000-93d63d78776a/M04/AR-S002-BUDGET-v1",
+      "formedAt": "2026-08-15T23:51:50.000Z"
+    },
+    {
+      "resourceId": "C011-S002-GATES-v1",
+      "resourceType": "c011-gate",
+      "version": "1.0.0",
+      "summary": "接收、确认、待办形成三次C017读取门",
+      "authoritativeRef": "S002/S002-RUN-20260815234500000-93d63d78776a/M04/C011-S002-GATES-v1",
+      "formedAt": "2026-08-15T23:51:50.000Z"
+    },
+    {
+      "resourceId": "CONFIRM-S002-BUDGET-v1",
+      "resourceType": "human-confirmation",
+      "version": "1.0.0",
+      "summary": "平台管理员逐Request人工确认记录",
+      "authoritativeRef": "S002/S002-RUN-20260815234500000-93d63d78776a/M04/CONFIRM-S002-BUDGET-v1",
+      "formedAt": "2026-08-15T23:51:50.000Z"
+    },
+    {
+      "resourceId": "REJECT-S002-BUDGET-v1",
+      "resourceType": "rejection",
+      "version": "1.0.0",
+      "summary": "拒绝路径与不形成待办证据",
+      "authoritativeRef": "S002/S002-RUN-20260815234500000-93d63d78776a/M04/REJECT-S002-BUDGET-v1",
+      "formedAt": "2026-08-15T23:51:50.000Z"
+    },
+    {
+      "resourceId": "TODO-S002-BUDGET-v1",
+      "resourceType": "owner-todo",
+      "version": "1.0.0",
+      "summary": "确认后逐Request幂等生成的平台内负责人待办",
+      "authoritativeRef": "S002/S002-RUN-20260815234500000-93d63d78776a/M04/TODO-S002-BUDGET-v1",
+      "formedAt": "2026-08-15T23:51:50.000Z"
+    },
+    {
+      "resourceId": "C019-S002-v1",
+      "resourceType": "decision-summary",
+      "version": "1.0.0",
+      "summary": "供Agent和报告中心只读消费的决策摘要",
+      "authoritativeRef": "S002/S002-RUN-20260815234500000-93d63d78776a/M04/C019-S002-v1",
+      "formedAt": "2026-08-15T23:51:50.000Z"
+    }
+  ],
+  "ownerBoundary": {
+    "ownsOnly": [
+      "decision-alert",
+      "action-request",
+      "c011-gate",
+      "human-confirmation",
+      "rejection",
+      "owner-todo",
+      "decision-summary"
+    ],
+    "consumesByReference": true,
+    "copiesOtherModuleTruth": false,
+    "externalBudgetSystemDispatch": false,
+    "automaticApproval": false,
+    "automaticPosting": false,
+    "approvedBudgetOverwrite": false,
+    "demoOutcome": "仅形成 Action Request 草稿、人工确认与平台内待办"
+  },
+  "demoDataMarker": "SYNTHETIC_FOR_DEMO",
+  "sideEffectPolicy": {
+    "allowHistoricalReplay": false,
+    "allowExternalDispatch": false
+  },
+  "runtimeState": {
+    "moduleId": "M04",
+    "moduleVersion": "S002-M04-1.0.0",
+    "progress": {
+      "actionsDrafted": true,
+      "actionConfirmed": true,
+      "todoCreated": true
+    },
+    "actionRequests": [
+      {
+        "requestId": "AR-S002-93d63d78776a-HIT-001",
+        "requestVersion": 1,
+        "idempotencyKey": "S002-RUN-20260815234500000-93d63d78776a:rule-hit:HIT-001:ACT-BUDGET-INCREASE",
+        "scenarioContext": {
+          "scenarioId": "S002",
+          "scenarioVersion": "S002-v1",
+          "scenarioRunId": "S002-RUN-20260815234500000-93d63d78776a",
+          "formedAt": "2026-08-15T23:45:00.000Z",
+          "status": "active"
+        },
+        "sourceType": "rule-hit",
+        "sourceId": "HIT-001",
+        "ruleId": "RULE-001",
+        "metricId": "MET-006",
+        "actionTypeId": "ACT-BUDGET-INCREASE",
+        "actionType": "预算调增",
+        "title": "概率安全分析项目可用立项余额为负",
+        "subject": "PRJ-AQ-概率-2025-002",
+        "department": "安全运行部",
+        "year": 2025,
+        "subjectCategories": [
+          "项目实施成本"
+        ],
+        "periods": [
+          "全年"
+        ],
+        "dataMarker": "DERIVED",
+        "amount": 20.51,
+        "status": "confirmed",
+        "externalStatus": "not-dispatched",
+        "owner": "平台管理员",
+        "semanticBinding": {
+          "dataAssetVersion": "S002-DATA-v1",
+          "ontologyVersion": "S002-ONTO-v1",
+          "actionTypeVersion": "S002-ACTION-TYPE-v1",
+          "publishedPointer": "T019-S002-v1"
+        },
+        "gates": {
+          "receive": {
+            "stage": "receive",
+            "status": "passed",
+            "decision": "continue",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:50:30.000Z"
+          },
+          "confirm": {
+            "stage": "confirm",
+            "status": "passed",
+            "decision": "confirmed",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:50:40.000Z"
+          },
+          "todo": {
+            "stage": "todo",
+            "status": "passed",
+            "decision": "create",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:50:40.000Z"
+          }
+        },
+        "evidence": [
+          "S002-DATA-v1",
+          "MET-006",
+          "T019-S002-v1"
+        ],
+        "createdAt": "2026-08-15T23:50:30.000Z",
+        "sideEffectPolicy": {
+          "allowHistoricalActionRequestReplay": false,
+          "allowHistoricalNotificationReplay": false,
+          "allowHistoricalApprovalReplay": false,
+          "allowHistoricalTodoReplay": false,
+          "allowExternalDispatch": false
+        },
+        "confirmedAt": "2026-08-15T23:50:40.000Z",
+        "confirmedBy": "平台管理员",
+        "regressionOnly": false
+      },
+      {
+        "requestId": "AR-S002-93d63d78776a-HIT-002",
+        "requestVersion": 1,
+        "idempotencyKey": "S002-RUN-20260815234500000-93d63d78776a:rule-hit:HIT-002:ACT-SUBJECT-TRANSFER",
+        "scenarioContext": {
+          "scenarioId": "S002",
+          "scenarioVersion": "S002-v1",
+          "scenarioRunId": "S002-RUN-20260815234500000-93d63d78776a",
+          "formedAt": "2026-08-15T23:45:00.000Z",
+          "status": "active"
+        },
+        "sourceType": "rule-hit",
+        "sourceId": "HIT-002",
+        "ruleId": "RULE-002",
+        "metricId": "MET-007",
+        "actionTypeId": "ACT-SUBJECT-TRANSFER",
+        "actionType": "科目调剂",
+        "title": "2024安全运行部费用预算执行率超过100%",
+        "subject": "安全运行部|FY2024-APPROVED-FINAL-v1",
+        "department": "安全运行部",
+        "year": 2024,
+        "subjectCategories": [
+          "项目实施成本",
+          "技术配置费",
+          "差旅及业务支持费",
+          "公共费用"
+        ],
+        "periods": [
+          "全年"
+        ],
+        "dataMarker": "DERIVED",
+        "amount": null,
+        "status": "confirmed",
+        "externalStatus": "not-dispatched",
+        "owner": "平台管理员",
+        "semanticBinding": {
+          "dataAssetVersion": "S002-DATA-v1",
+          "ontologyVersion": "S002-ONTO-v1",
+          "actionTypeVersion": "S002-ACTION-TYPE-v1",
+          "publishedPointer": "T019-S002-v1"
+        },
+        "gates": {
+          "receive": {
+            "stage": "receive",
+            "status": "passed",
+            "decision": "continue",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:50:30.000Z"
+          },
+          "confirm": {
+            "stage": "confirm",
+            "status": "passed",
+            "decision": "confirmed",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:50:50.000Z"
+          },
+          "todo": {
+            "stage": "todo",
+            "status": "passed",
+            "decision": "create",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:50:50.000Z"
+          }
+        },
+        "evidence": [
+          "S002-DATA-v1",
+          "MET-007",
+          "T019-S002-v1"
+        ],
+        "createdAt": "2026-08-15T23:50:30.000Z",
+        "sideEffectPolicy": {
+          "allowHistoricalActionRequestReplay": false,
+          "allowHistoricalNotificationReplay": false,
+          "allowHistoricalApprovalReplay": false,
+          "allowHistoricalTodoReplay": false,
+          "allowExternalDispatch": false
+        },
+        "confirmedAt": "2026-08-15T23:50:50.000Z",
+        "confirmedBy": "平台管理员",
+        "regressionOnly": false
+      },
+      {
+        "requestId": "AR-S002-93d63d78776a-HIT-002-2024-JS",
+        "requestVersion": 1,
+        "idempotencyKey": "S002-RUN-20260815234500000-93d63d78776a:rule-hit:HIT-002-2024-JS:ACT-SUBJECT-TRANSFER",
+        "scenarioContext": {
+          "scenarioId": "S002",
+          "scenarioVersion": "S002-v1",
+          "scenarioRunId": "S002-RUN-20260815234500000-93d63d78776a",
+          "formedAt": "2026-08-15T23:45:00.000Z",
+          "status": "active"
+        },
+        "sourceType": "rule-hit",
+        "sourceId": "HIT-002-2024-JS",
+        "ruleId": "RULE-002",
+        "metricId": "MET-007",
+        "actionTypeId": "ACT-SUBJECT-TRANSFER",
+        "actionType": "科目调剂",
+        "title": "2024技术部费用预算执行率达到关注线",
+        "subject": "技术部|FY2024-APPROVED-FINAL-v1",
+        "department": "技术部",
+        "year": 2024,
+        "subjectCategories": [
+          "项目实施成本",
+          "技术配置费",
+          "差旅及业务支持费",
+          "公共费用"
+        ],
+        "periods": [
+          "全年"
+        ],
+        "dataMarker": "DERIVED",
+        "amount": null,
+        "status": "rejected",
+        "externalStatus": "not-dispatched",
+        "owner": "平台管理员",
+        "semanticBinding": {
+          "dataAssetVersion": "S002-DATA-v1",
+          "ontologyVersion": "S002-ONTO-v1",
+          "actionTypeVersion": "S002-ACTION-TYPE-v1",
+          "publishedPointer": "T019-S002-v1"
+        },
+        "gates": {
+          "receive": {
+            "stage": "receive",
+            "status": "passed",
+            "decision": "continue",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:50:30.000Z"
+          },
+          "confirm": {
+            "stage": "confirm",
+            "status": "passed",
+            "decision": "rejected",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:51:00.000Z"
+          },
+          "todo": {
+            "stage": "todo",
+            "status": "not-created",
+            "reason": "request-rejected"
+          }
+        },
+        "evidence": [
+          "S002-DATA-v1",
+          "MET-007",
+          "T019-S002-v1"
+        ],
+        "createdAt": "2026-08-15T23:50:30.000Z",
+        "sideEffectPolicy": {
+          "allowHistoricalActionRequestReplay": false,
+          "allowHistoricalNotificationReplay": false,
+          "allowHistoricalApprovalReplay": false,
+          "allowHistoricalTodoReplay": false,
+          "allowExternalDispatch": false
+        },
+        "rejectedAt": "2026-08-15T23:51:00.000Z",
+        "rejectedBy": "平台管理员"
+      },
+      {
+        "requestId": "AR-S002-93d63d78776a-HIT-002-2025-AQ",
+        "requestVersion": 1,
+        "idempotencyKey": "S002-RUN-20260815234500000-93d63d78776a:rule-hit:HIT-002-2025-AQ:ACT-SUBJECT-TRANSFER",
+        "scenarioContext": {
+          "scenarioId": "S002",
+          "scenarioVersion": "S002-v1",
+          "scenarioRunId": "S002-RUN-20260815234500000-93d63d78776a",
+          "formedAt": "2026-08-15T23:45:00.000Z",
+          "status": "active"
+        },
+        "sourceType": "rule-hit",
+        "sourceId": "HIT-002-2025-AQ",
+        "ruleId": "RULE-002",
+        "metricId": "MET-007",
+        "actionTypeId": "ACT-SUBJECT-TRANSFER",
+        "actionType": "科目调剂",
+        "title": "2025安全运行部费用预算执行率接近上限",
+        "subject": "安全运行部|FY2025-APPROVED-FINAL-v1",
+        "department": "安全运行部",
+        "year": 2025,
+        "subjectCategories": [
+          "项目实施成本",
+          "技术配置费",
+          "差旅及业务支持费",
+          "公共费用"
+        ],
+        "periods": [
+          "全年"
+        ],
+        "dataMarker": "DERIVED",
+        "amount": null,
+        "status": "rejected",
+        "externalStatus": "not-dispatched",
+        "owner": "平台管理员",
+        "semanticBinding": {
+          "dataAssetVersion": "S002-DATA-v1",
+          "ontologyVersion": "S002-ONTO-v1",
+          "actionTypeVersion": "S002-ACTION-TYPE-v1",
+          "publishedPointer": "T019-S002-v1"
+        },
+        "gates": {
+          "receive": {
+            "stage": "receive",
+            "status": "passed",
+            "decision": "continue",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:50:30.000Z"
+          },
+          "confirm": {
+            "stage": "confirm",
+            "status": "passed",
+            "decision": "rejected",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:51:10.000Z"
+          },
+          "todo": {
+            "stage": "todo",
+            "status": "not-created",
+            "reason": "request-rejected"
+          }
+        },
+        "evidence": [
+          "S002-DATA-v1",
+          "MET-007",
+          "T019-S002-v1"
+        ],
+        "createdAt": "2026-08-15T23:50:30.000Z",
+        "sideEffectPolicy": {
+          "allowHistoricalActionRequestReplay": false,
+          "allowHistoricalNotificationReplay": false,
+          "allowHistoricalApprovalReplay": false,
+          "allowHistoricalTodoReplay": false,
+          "allowExternalDispatch": false
+        },
+        "rejectedAt": "2026-08-15T23:51:10.000Z",
+        "rejectedBy": "平台管理员"
+      },
+      {
+        "requestId": "AR-S002-93d63d78776a-HIT-004",
+        "requestVersion": 1,
+        "idempotencyKey": "S002-RUN-20260815234500000-93d63d78776a:rule-hit:HIT-004:ACT-RELEASE-COMMITMENT",
+        "scenarioContext": {
+          "scenarioId": "S002",
+          "scenarioVersion": "S002-v1",
+          "scenarioRunId": "S002-RUN-20260815234500000-93d63d78776a",
+          "formedAt": "2026-08-15T23:45:00.000Z",
+          "status": "active"
+        },
+        "sourceType": "rule-hit",
+        "sourceId": "HIT-004",
+        "ruleId": "RULE-004",
+        "metricId": "MET-009",
+        "actionTypeId": "ACT-RELEASE-COMMITMENT",
+        "actionType": "占用释放",
+        "title": "设备项目年末预算占用集中度达到高等级",
+        "subject": "PRJ-SB-设备-2025-002|2025净在途占用",
+        "department": "设备管理部",
+        "year": 2025,
+        "subjectCategories": [
+          "项目实施成本"
+        ],
+        "periods": [
+          "Q4"
+        ],
+        "dataMarker": "DERIVED",
+        "amount": null,
+        "status": "confirmed",
+        "externalStatus": "not-dispatched",
+        "owner": "平台管理员",
+        "semanticBinding": {
+          "dataAssetVersion": "S002-DATA-v1",
+          "ontologyVersion": "S002-ONTO-v1",
+          "actionTypeVersion": "S002-ACTION-TYPE-v1",
+          "publishedPointer": "T019-S002-v1"
+        },
+        "gates": {
+          "receive": {
+            "stage": "receive",
+            "status": "passed",
+            "decision": "continue",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:50:30.000Z"
+          },
+          "confirm": {
+            "stage": "confirm",
+            "status": "passed",
+            "decision": "confirmed",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:51:20.000Z"
+          },
+          "todo": {
+            "stage": "todo",
+            "status": "passed",
+            "decision": "create",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:51:20.000Z"
+          }
+        },
+        "evidence": [
+          "S002-DATA-v1",
+          "MET-009",
+          "T019-S002-v1"
+        ],
+        "createdAt": "2026-08-15T23:50:30.000Z",
+        "sideEffectPolicy": {
+          "allowHistoricalActionRequestReplay": false,
+          "allowHistoricalNotificationReplay": false,
+          "allowHistoricalApprovalReplay": false,
+          "allowHistoricalTodoReplay": false,
+          "allowExternalDispatch": false
+        },
+        "confirmedAt": "2026-08-15T23:51:20.000Z",
+        "confirmedBy": "平台管理员",
+        "regressionOnly": false
+      },
+      {
+        "requestId": "AR-S002-93d63d78776a-HIT-005",
+        "requestVersion": 1,
+        "idempotencyKey": "S002-RUN-20260815234500000-93d63d78776a:rule-hit:HIT-005:ACT-PRICE-REVIEW",
+        "scenarioContext": {
+          "scenarioId": "S002",
+          "scenarioVersion": "S002-v1",
+          "scenarioRunId": "S002-RUN-20260815234500000-93d63d78776a",
+          "formedAt": "2026-08-15T23:45:00.000Z",
+          "status": "active"
+        },
+        "sourceType": "rule-hit",
+        "sourceId": "HIT-005",
+        "ruleId": "RULE-005",
+        "metricId": null,
+        "actionTypeId": "ACT-PRICE-REVIEW",
+        "actionType": "供应商价格复核",
+        "title": "2026初级技术配置供应商3单价达到同口径中位基准1.2倍",
+        "subject": "PRJ-AQ-灾害-2025-002|供应商3|初级|FY2026-INITIAL-SUBMISSION-v1",
+        "department": "安全运行部",
+        "year": 2026,
+        "subjectCategories": [
+          "技术配置费"
+        ],
+        "periods": [
+          "全年"
+        ],
+        "dataMarker": "DERIVED",
+        "amount": null,
+        "status": "confirmed",
+        "externalStatus": "not-dispatched",
+        "owner": "平台管理员",
+        "semanticBinding": {
+          "dataAssetVersion": "S002-DATA-v1",
+          "ontologyVersion": "S002-ONTO-v1",
+          "actionTypeVersion": "S002-ACTION-TYPE-v1",
+          "publishedPointer": "T019-S002-v1"
+        },
+        "gates": {
+          "receive": {
+            "stage": "receive",
+            "status": "passed",
+            "decision": "continue",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:50:30.000Z"
+          },
+          "confirm": {
+            "stage": "confirm",
+            "status": "passed",
+            "decision": "confirmed",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:51:30.000Z"
+          },
+          "todo": {
+            "stage": "todo",
+            "status": "passed",
+            "decision": "create",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:51:30.000Z"
+          }
+        },
+        "evidence": [
+          "S002-DATA-v1",
+          "同年度、同服务类别、同级别、同单位、同税口径及可比服务月数的单价倍率",
+          "T019-S002-v1"
+        ],
+        "createdAt": "2026-08-15T23:50:30.000Z",
+        "sideEffectPolicy": {
+          "allowHistoricalActionRequestReplay": false,
+          "allowHistoricalNotificationReplay": false,
+          "allowHistoricalApprovalReplay": false,
+          "allowHistoricalTodoReplay": false,
+          "allowExternalDispatch": false
+        },
+        "confirmedAt": "2026-08-15T23:51:30.000Z",
+        "confirmedBy": "平台管理员",
+        "regressionOnly": false
+      },
+      {
+        "requestId": "AR-S002-93d63d78776a-SUG-001",
+        "requestVersion": 1,
+        "idempotencyKey": "S002-RUN-20260815234500000-93d63d78776a:analysis-suggestion:SUG-001:ACT-SUBMISSION-RETURN",
+        "scenarioContext": {
+          "scenarioId": "S002",
+          "scenarioVersion": "S002-v1",
+          "scenarioRunId": "S002-RUN-20260815234500000-93d63d78776a",
+          "formedAt": "2026-08-15T23:45:00.000Z",
+          "status": "active"
+        },
+        "sourceType": "analysis-suggestion",
+        "sourceId": "SUG-001",
+        "ruleId": null,
+        "metricId": "MET-001",
+        "actionTypeId": "ACT-SUBMISSION-RETURN",
+        "actionType": "申报退回",
+        "title": "技术部初始申报成本占收比显著偏高，建议退回补充说明",
+        "subject": "技术部|FY2025-INITIAL-SUBMISSION-v1",
+        "department": "技术部",
+        "year": 2025,
+        "subjectCategories": [
+          "项目实施成本",
+          "技术配置费",
+          "差旅及业务支持费",
+          "公共费用"
+        ],
+        "periods": [
+          "全年"
+        ],
+        "dataMarker": "DERIVED",
+        "amount": null,
+        "status": "confirmed",
+        "externalStatus": "not-dispatched",
+        "owner": "平台管理员",
+        "semanticBinding": {
+          "dataAssetVersion": "S002-DATA-v1",
+          "ontologyVersion": "S002-ONTO-v1",
+          "actionTypeVersion": "S002-ACTION-TYPE-v1",
+          "publishedPointer": "T019-S002-v1"
+        },
+        "gates": {
+          "receive": {
+            "stage": "receive",
+            "status": "passed",
+            "decision": "continue",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:50:30.000Z"
+          },
+          "confirm": {
+            "stage": "confirm",
+            "status": "passed",
+            "decision": "confirmed",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:51:40.000Z"
+          },
+          "todo": {
+            "stage": "todo",
+            "status": "passed",
+            "decision": "create",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:51:40.000Z"
+          }
+        },
+        "evidence": [
+          "S002-DATA-v1",
+          "MET-001",
+          "C018-S002-v1"
+        ],
+        "createdAt": "2026-08-15T23:50:30.000Z",
+        "sideEffectPolicy": {
+          "allowHistoricalActionRequestReplay": false,
+          "allowHistoricalNotificationReplay": false,
+          "allowHistoricalApprovalReplay": false,
+          "allowHistoricalTodoReplay": false,
+          "allowExternalDispatch": false
+        },
+        "confirmedAt": "2026-08-15T23:51:40.000Z",
+        "confirmedBy": "平台管理员",
+        "regressionOnly": false
+      },
+      {
+        "requestId": "AR-S002-93d63d78776a-SUG-002",
+        "requestVersion": 1,
+        "idempotencyKey": "S002-RUN-20260815234500000-93d63d78776a:analysis-suggestion:SUG-002:ACT-BUDGET-DECREASE",
+        "scenarioContext": {
+          "scenarioId": "S002",
+          "scenarioVersion": "S002-v1",
+          "scenarioRunId": "S002-RUN-20260815234500000-93d63d78776a",
+          "formedAt": "2026-08-15T23:45:00.000Z",
+          "status": "active"
+        },
+        "sourceType": "analysis-suggestion",
+        "sourceId": "SUG-002",
+        "ruleId": null,
+        "metricId": "MET-007",
+        "actionTypeId": "ACT-BUDGET-DECREASE",
+        "actionType": "预算调减",
+        "title": "设备管理部费用执行率偏低，建议复核可调减空间",
+        "subject": "设备管理部|FY2025-APPROVED-FINAL-v1",
+        "department": "设备管理部",
+        "year": 2025,
+        "subjectCategories": [
+          "项目实施成本",
+          "技术配置费",
+          "差旅及业务支持费",
+          "公共费用"
+        ],
+        "periods": [
+          "全年"
+        ],
+        "dataMarker": "DERIVED",
+        "amount": 148.84,
+        "status": "confirmed",
+        "externalStatus": "not-dispatched",
+        "owner": "平台管理员",
+        "semanticBinding": {
+          "dataAssetVersion": "S002-DATA-v1",
+          "ontologyVersion": "S002-ONTO-v1",
+          "actionTypeVersion": "S002-ACTION-TYPE-v1",
+          "publishedPointer": "T019-S002-v1"
+        },
+        "gates": {
+          "receive": {
+            "stage": "receive",
+            "status": "passed",
+            "decision": "continue",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:50:30.000Z"
+          },
+          "confirm": {
+            "stage": "confirm",
+            "status": "passed",
+            "decision": "confirmed",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:51:50.000Z"
+          },
+          "todo": {
+            "stage": "todo",
+            "status": "passed",
+            "decision": "create",
+            "c017SummaryId": "C017-S002-DATA-v1",
+            "dataAssetVersion": "S002-DATA-v1",
+            "ontologyVersion": "S002-ONTO-v1",
+            "readAt": "2026-08-15T23:51:50.000Z"
+          }
+        },
+        "evidence": [
+          "S002-DATA-v1",
+          "MET-007",
+          "C018-S002-v1"
+        ],
+        "createdAt": "2026-08-15T23:50:30.000Z",
+        "sideEffectPolicy": {
+          "allowHistoricalActionRequestReplay": false,
+          "allowHistoricalNotificationReplay": false,
+          "allowHistoricalApprovalReplay": false,
+          "allowHistoricalTodoReplay": false,
+          "allowExternalDispatch": false
+        },
+        "confirmedAt": "2026-08-15T23:51:50.000Z",
+        "confirmedBy": "平台管理员",
+        "regressionOnly": false
+      }
+    ],
+    "decisionAlerts": [
+      {
+        "alertId": "ALERT-AR-S002-93d63d78776a-HIT-001",
+        "requestId": "AR-S002-93d63d78776a-HIT-001",
+        "title": "概率安全分析项目可用立项余额为负",
+        "severity": "rule",
+        "status": "resolved",
+        "owner": "平台管理员",
+        "createdAt": "2026-08-15T23:50:30.000Z",
+        "resolvedAt": "2026-08-15T23:50:40.000Z"
+      },
+      {
+        "alertId": "ALERT-AR-S002-93d63d78776a-HIT-002",
+        "requestId": "AR-S002-93d63d78776a-HIT-002",
+        "title": "2024安全运行部费用预算执行率超过100%",
+        "severity": "rule",
+        "status": "resolved",
+        "owner": "平台管理员",
+        "createdAt": "2026-08-15T23:50:30.000Z",
+        "resolvedAt": "2026-08-15T23:50:50.000Z"
+      },
+      {
+        "alertId": "ALERT-AR-S002-93d63d78776a-HIT-002-2024-JS",
+        "requestId": "AR-S002-93d63d78776a-HIT-002-2024-JS",
+        "title": "2024技术部费用预算执行率达到关注线",
+        "severity": "rule",
+        "status": "rejected",
+        "owner": "平台管理员",
+        "createdAt": "2026-08-15T23:50:30.000Z",
+        "resolvedAt": "2026-08-15T23:51:00.000Z"
+      },
+      {
+        "alertId": "ALERT-AR-S002-93d63d78776a-HIT-002-2025-AQ",
+        "requestId": "AR-S002-93d63d78776a-HIT-002-2025-AQ",
+        "title": "2025安全运行部费用预算执行率接近上限",
+        "severity": "rule",
+        "status": "rejected",
+        "owner": "平台管理员",
+        "createdAt": "2026-08-15T23:50:30.000Z",
+        "resolvedAt": "2026-08-15T23:51:10.000Z"
+      },
+      {
+        "alertId": "ALERT-AR-S002-93d63d78776a-HIT-004",
+        "requestId": "AR-S002-93d63d78776a-HIT-004",
+        "title": "设备项目年末预算占用集中度达到高等级",
+        "severity": "rule",
+        "status": "resolved",
+        "owner": "平台管理员",
+        "createdAt": "2026-08-15T23:50:30.000Z",
+        "resolvedAt": "2026-08-15T23:51:20.000Z"
+      },
+      {
+        "alertId": "ALERT-AR-S002-93d63d78776a-HIT-005",
+        "requestId": "AR-S002-93d63d78776a-HIT-005",
+        "title": "2026初级技术配置供应商3单价达到同口径中位基准1.2倍",
+        "severity": "rule",
+        "status": "resolved",
+        "owner": "平台管理员",
+        "createdAt": "2026-08-15T23:50:30.000Z",
+        "resolvedAt": "2026-08-15T23:51:30.000Z"
+      },
+      {
+        "alertId": "ALERT-AR-S002-93d63d78776a-SUG-001",
+        "requestId": "AR-S002-93d63d78776a-SUG-001",
+        "title": "技术部初始申报成本占收比显著偏高，建议退回补充说明",
+        "severity": "analysis",
+        "status": "resolved",
+        "owner": "平台管理员",
+        "createdAt": "2026-08-15T23:50:30.000Z",
+        "resolvedAt": "2026-08-15T23:51:40.000Z"
+      },
+      {
+        "alertId": "ALERT-AR-S002-93d63d78776a-SUG-002",
+        "requestId": "AR-S002-93d63d78776a-SUG-002",
+        "title": "设备管理部费用执行率偏低，建议复核可调减空间",
+        "severity": "analysis",
+        "status": "resolved",
+        "owner": "平台管理员",
+        "createdAt": "2026-08-15T23:50:30.000Z",
+        "resolvedAt": "2026-08-15T23:51:50.000Z"
+      }
+    ],
+    "todos": [
+      {
+        "todoId": "TODO-AR-S002-93d63d78776a-HIT-001",
+        "requestId": "AR-S002-93d63d78776a-HIT-001",
+        "idempotencyKey": "S002-RUN-20260815234500000-93d63d78776a:rule-hit:HIT-001:ACT-BUDGET-INCREASE",
+        "title": "预算调增 · PRJ-AQ-概率-2025-002",
+        "owner": "平台管理员",
+        "status": "待处理",
+        "due": "演示确认后7日",
+        "deepLink": "#module/decision",
+        "scenarioContext": {
+          "scenarioId": "S002",
+          "scenarioVersion": "S002-v1",
+          "scenarioRunId": "S002-RUN-20260815234500000-93d63d78776a",
+          "formedAt": "2026-08-15T23:45:00.000Z",
+          "status": "active"
+        },
+        "createdAt": "2026-08-15T23:50:40.000Z",
+        "externalDispatch": false
+      },
+      {
+        "todoId": "TODO-AR-S002-93d63d78776a-HIT-002",
+        "requestId": "AR-S002-93d63d78776a-HIT-002",
+        "idempotencyKey": "S002-RUN-20260815234500000-93d63d78776a:rule-hit:HIT-002:ACT-SUBJECT-TRANSFER",
+        "title": "科目调剂 · 安全运行部|FY2024-APPROVED-FINAL-v1",
+        "owner": "平台管理员",
+        "status": "待处理",
+        "due": "演示确认后7日",
+        "deepLink": "#module/decision",
+        "scenarioContext": {
+          "scenarioId": "S002",
+          "scenarioVersion": "S002-v1",
+          "scenarioRunId": "S002-RUN-20260815234500000-93d63d78776a",
+          "formedAt": "2026-08-15T23:45:00.000Z",
+          "status": "active"
+        },
+        "createdAt": "2026-08-15T23:50:50.000Z",
+        "externalDispatch": false
+      },
+      {
+        "todoId": "TODO-AR-S002-93d63d78776a-HIT-004",
+        "requestId": "AR-S002-93d63d78776a-HIT-004",
+        "idempotencyKey": "S002-RUN-20260815234500000-93d63d78776a:rule-hit:HIT-004:ACT-RELEASE-COMMITMENT",
+        "title": "占用释放 · PRJ-SB-设备-2025-002|2025净在途占用",
+        "owner": "平台管理员",
+        "status": "待处理",
+        "due": "演示确认后7日",
+        "deepLink": "#module/decision",
+        "scenarioContext": {
+          "scenarioId": "S002",
+          "scenarioVersion": "S002-v1",
+          "scenarioRunId": "S002-RUN-20260815234500000-93d63d78776a",
+          "formedAt": "2026-08-15T23:45:00.000Z",
+          "status": "active"
+        },
+        "createdAt": "2026-08-15T23:51:20.000Z",
+        "externalDispatch": false
+      },
+      {
+        "todoId": "TODO-AR-S002-93d63d78776a-HIT-005",
+        "requestId": "AR-S002-93d63d78776a-HIT-005",
+        "idempotencyKey": "S002-RUN-20260815234500000-93d63d78776a:rule-hit:HIT-005:ACT-PRICE-REVIEW",
+        "title": "供应商价格复核 · PRJ-AQ-灾害-2025-002|供应商3|初级|FY2026-INITIAL-SUBMISSION-v1",
+        "owner": "平台管理员",
+        "status": "待处理",
+        "due": "演示确认后7日",
+        "deepLink": "#module/decision",
+        "scenarioContext": {
+          "scenarioId": "S002",
+          "scenarioVersion": "S002-v1",
+          "scenarioRunId": "S002-RUN-20260815234500000-93d63d78776a",
+          "formedAt": "2026-08-15T23:45:00.000Z",
+          "status": "active"
+        },
+        "createdAt": "2026-08-15T23:51:30.000Z",
+        "externalDispatch": false
+      },
+      {
+        "todoId": "TODO-AR-S002-93d63d78776a-SUG-001",
+        "requestId": "AR-S002-93d63d78776a-SUG-001",
+        "idempotencyKey": "S002-RUN-20260815234500000-93d63d78776a:analysis-suggestion:SUG-001:ACT-SUBMISSION-RETURN",
+        "title": "申报退回 · 技术部|FY2025-INITIAL-SUBMISSION-v1",
+        "owner": "平台管理员",
+        "status": "待处理",
+        "due": "演示确认后7日",
+        "deepLink": "#module/decision",
+        "scenarioContext": {
+          "scenarioId": "S002",
+          "scenarioVersion": "S002-v1",
+          "scenarioRunId": "S002-RUN-20260815234500000-93d63d78776a",
+          "formedAt": "2026-08-15T23:45:00.000Z",
+          "status": "active"
+        },
+        "createdAt": "2026-08-15T23:51:40.000Z",
+        "externalDispatch": false
+      },
+      {
+        "todoId": "TODO-AR-S002-93d63d78776a-SUG-002",
+        "requestId": "AR-S002-93d63d78776a-SUG-002",
+        "idempotencyKey": "S002-RUN-20260815234500000-93d63d78776a:analysis-suggestion:SUG-002:ACT-BUDGET-DECREASE",
+        "title": "预算调减 · 设备管理部|FY2025-APPROVED-FINAL-v1",
+        "owner": "平台管理员",
+        "status": "待处理",
+        "due": "演示确认后7日",
+        "deepLink": "#module/decision",
+        "scenarioContext": {
+          "scenarioId": "S002",
+          "scenarioVersion": "S002-v1",
+          "scenarioRunId": "S002-RUN-20260815234500000-93d63d78776a",
+          "formedAt": "2026-08-15T23:45:00.000Z",
+          "status": "active"
+        },
+        "createdAt": "2026-08-15T23:51:50.000Z",
+        "externalDispatch": false
+      }
+    ],
+    "decisionSummary": {
+      "id": "C019-S002-v1",
+      "status": "reviewing",
+      "requestCount": 8,
+      "confirmedCount": 6,
+      "rejectedCount": 2,
+      "todoCount": 6,
+      "formedAt": "2026-08-15T23:51:50.000Z"
+    }
+  }
+}

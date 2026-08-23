@@ -1,0 +1,236 @@
+{
+  "schemaVersion": "ofw.s003.m05.agent-position.v3",
+  "moduleId": "M05",
+  "moduleOwner": "Agent应用",
+  "exportId": "S003-M05-REPORT-COPILOT-SCENARIO-PROFILE",
+  "exportVersion": "1.3.0",
+  "status": "platform-agent-scenario-profile-active",
+  "supersedes": "resources/m05/agent-position.v2.json",
+  "dedicatedAgent": false,
+  "reason": "S003一期不新增评分或处置Agent；保留平台完整Agent目录，只在通用报告伴读Agent中增加债务风险报告场景Release。Evidence、Session、Run与Result只能由同轮真实C024进入基线生命周期后形成。",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "sourceScenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "lifecyclePolicy": {
+    "materializeFrom": "C024",
+    "profileCreatesEvidenceRunSession": false,
+    "requiresExactScenarioRunId": true,
+    "acceptanceSequence": [
+      "读取报告中心C024",
+      "校验scenarioId/scenarioVersion/scenarioRunId",
+      "创建Request与固定Evidence",
+      "用户开始处理后创建Binding、Session与Run",
+      "运行完成后形成Result"
+    ],
+    "historyPolicy": "旧C024、Evidence、Session、Run和Result保持只读；不得由配置文件预置或覆盖。"
+  },
+  "scenarioProfile": {
+    "baseAgentId": "report-copilot",
+    "baseReleaseVersion": "1.0",
+    "derivedReleaseVersion": "1.2",
+    "displayName": "债务风险报告伴读配置",
+    "agentType": "报告伴读 Agent",
+    "bindingMode": "request-context",
+    "bindingId": "AG-SB-REPORT-CONTEXT-S003",
+    "inputContract": "Report Context Binding v1",
+    "outputContract": "Report Copilot Answer v1",
+    "prompt": {
+      "id": "prompt-report-reading-s003",
+      "name": "债务风险报告固定上下文伴读边界",
+      "owner": "Agent应用",
+      "version": "1.1",
+      "status": "published",
+      "validatedAt": "2026-08-16 23:30",
+      "change": "绑定S003 v5正式企业债务风险报告、Published模型、13项确定性核验摘要和稳定证据引用。",
+      "variables": [
+        "问题",
+        "报告内容版本",
+        "稳定章节锚点",
+        "固定证据包",
+        "Published模型身份",
+        "确定性核验摘要"
+      ],
+      "contextBoundary": "只解释报告中心通过同轮C024提供的正式企业报告及固定证据；上下文变化时必须创建新的C024、会话和运行。",
+      "outputContracts": ["Report Copilot Answer v1"],
+      "sections": [
+        {
+          "title": "任务",
+          "body": "回答企业债务风险报告全文、章节或选区问题，解释已发布评分、风险分档、低分指标、调节因子与确定性核验摘要。"
+        },
+        {
+          "title": "证据边界",
+          "body": "每项结论必须回指当前C024固定的报告内容、C035结果、Published模型指针或报告核验摘要。"
+        },
+        {
+          "title": "输出要求",
+          "body": "输出结论、证据引用、场景运行身份、模型与数据版本、评估时点、限制和未确认状态。"
+        },
+        {
+          "title": "禁止事项",
+          "body": "不得重算评分、修改模型配置、替代确定性核验、创建行动申请、负责人待办、审批或通知。"
+        }
+      ]
+    },
+    "skills": [
+      {
+        "id": "skill-report-reading",
+        "version": "1.0",
+        "scenarioPurpose": "解释正式企业债务风险报告及稳定章节锚点"
+      },
+      {
+        "id": "skill-semantic-rule-explain",
+        "version": "1.0",
+        "scenarioPurpose": "忠实解释报告引用的Published指标、规则与模型口径"
+      },
+      {
+        "id": "skill-verification-explain",
+        "version": "1.0",
+        "scenarioPurpose": "解释报告中心提供的13项确定性核验摘要"
+      }
+    ],
+    "tools": [
+      {
+        "id": "tool-report-context",
+        "version": "1.0",
+        "purpose": "读取C024固定的报告、内容版本和稳定章节锚点"
+      },
+      {
+        "id": "tool-evidence-reader",
+        "version": "1.0",
+        "purpose": "读取包内结构化证据及稳定引用"
+      },
+      {
+        "id": "tool-ontology-reader",
+        "version": "1.0",
+        "purpose": "读取精确Published模型与历史定义"
+      },
+      {
+        "id": "tool-verification-reader",
+        "version": "1.0",
+        "purpose": "读取报告内容内的确定性核验摘要"
+      },
+      {
+        "id": "tool-citation-validator",
+        "version": "1.0",
+        "purpose": "校验回答中的证据引用可定位"
+      },
+      {
+        "id": "tool-output-validator",
+        "version": "1.0",
+        "purpose": "校验Report Copilot Answer v1输出合同"
+      },
+      {
+        "id": "tool-report-result-return",
+        "version": "1.0",
+        "purpose": "把伴读结果回传报告中心当前报告上下文"
+      }
+    ]
+  },
+  "publishedModel": {
+    "pointerId": "S003-M01-PUBLISHED-POINTER",
+    "pointerVersion": "1.0.0",
+    "pointerRef": "resources/m01/published-pointer.v1.json",
+    "pointerSha256": "d6f108423e2ae5010dfb1ebb2522fca0aa62f758ba99f31f4bf22b412b66767e",
+    "pointerJsonPointer": "#/activeTarget",
+    "packageId": "S003-M01-DEBT-RISK-PKG",
+    "packageVersion": "1.0.1",
+    "semanticVersionId": "S003-M01-DEBT-RISK-PKG@1.0.1",
+    "displayName": "债务风险评估模型 · Published 1.0.1",
+    "lifecycleStatus": "published"
+  },
+  "dataBinding": {
+    "dataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+    "dataAssetVersion": "1.0.0",
+    "dataAssetRef": "resources/m02/formal-candidate-data-asset.v1.json",
+    "humanInputSnapshotId": "S003-T053-INPUT-20251231-v1",
+    "humanInputVersion": "1.0.0",
+    "humanInputRef": "resources/m02/human-input-snapshot.v1.json",
+    "qualityResultId": "S003-M02-QUALITY-20251231-v1",
+    "qualityResultRef": "resources/m02/quality-result.v1.json",
+    "assessmentAt": "2025-12-31",
+    "currency": "CNY",
+    "amountUnit": "元"
+  },
+  "reportBinding": {
+    "manifestId": "S003-M06-REPORT-MANIFEST-20260816-004",
+    "manifestVersion": "1.3.0",
+    "manifestRef": "resources/m06/report-manifest.v5.json",
+    "manifestSha256": "9e95762728b86c83a31527ae34943c705ff8ae833ec193e231de2b9e685c5863",
+    "manifestJsonPointer": "#/reports/0",
+    "contentSetId": "S003-M06-REPORT-CONTENTS-20260816-004",
+    "contentSetVersion": "1.3.0",
+    "contentRef": "resources/m06/report-contents.v5.json",
+    "contentSetSha256": "92fd9b6f1f732a935395c54decdb33d693d10d14c3ab848ffde0bf7fc7c35588",
+    "contentJsonPointer": "#/reports/0/content",
+    "reportId": "S003-RPT-S003-RUN-20260815133000000-c03503000001-S003-ENT-001",
+    "reportVersion": "1.3.0",
+    "contentVersion": "1.3.0",
+    "contentSha256": "b58d862c48c3d65a08f71d28be2400444c41c5b81048a0f7636cecbb00822830",
+    "artifactSetId": "S003-M06-REPORT-ARTIFACTS-20260816-004",
+    "artifactSetVersion": "1.3.0",
+    "artifactRef": "resources/m06/report-artifacts.v5.json",
+    "artifactSetSha256": "545b5f5a9b6e7b3c257913af0ea0fd803c0c48e3a67fa34123804161fed33345",
+    "artifactJsonPointer": "#/artifacts/0",
+    "artifactId": "S003-RPT-S003-RUN-20260815133000000-c03503000001-S003-ENT-001-HTML-V5",
+    "artifactVersion": "html-print-v5",
+    "artifactSha256": "8d605afff36e2c84e6d7dea6d15195888bd02978789f45194d3af7599edb1bfe",
+    "formalReportDefinitionId": "S003-RPT-DEF-DEBT-RISK",
+    "formalReportDefinitionVersion": "1.1.0",
+    "formalReportDefinitionRef": "resources/m06/report-definition.v2.json",
+    "formalReportDefinitionSha256": "50351f630c7204be0fd7464eaddf932ddc4c110eeeb9514d6a71aabbeb76e4b0",
+    "formalReportTemplateId": "S003-RPT-TPL-ENTERPRISE-RISK",
+    "formalReportTemplateVersion": "1.1.0",
+    "formalReportTemplateRef": "resources/m06/report-template.v2.json",
+    "formalReportTemplateSha256": "37da9508359b0c78dc0f578e26ab00e085c4dfc71ae41a6c4b8120cfd5d6cb0b",
+    "assuranceProfileId": "S003-RPT-ASSURANCE-PROFILE",
+    "assuranceProfileVersion": "1.2.0",
+    "assuranceProfileRef": "resources/m06/report-assurance-profile.v3.json",
+    "assuranceProfileSha256": "53d87207c47523c34e1603c84ad85c2cfb70b75f16b8e1edb593c61116ab9299",
+    "verificationRef": "resources/m06/report-contents.v5.json#/reports/0/content/verificationSummary",
+    "verificationSummary": {
+      "deterministic": true,
+      "checkCount": 13,
+      "passedCount": 13,
+      "result": "passed",
+      "clientSideScoreRecalculation": false,
+      "noInternalEnumsInPublishedHtml": true,
+      "artifactMatchesContentVersion": true,
+      "nonVacuousDecisionEvidenceRequired": true,
+      "constructionIndicatorSemantics": "weighted-indicator-coverage"
+    },
+    "enterprise": {
+      "enterpriseId": "S003-ENT-001",
+      "name": "风电测试公司01",
+      "sector": "新能源",
+      "category": "新能源产业-风电"
+    },
+    "assessment": {
+      "finalScore": 59.08,
+      "riskTierId": "GREEN",
+      "riskTierName": "绿灯",
+      "factorSum": -0.3,
+      "lowestIndicators": ["总资产收益率", "应收账款周转率", "销售毛利率"],
+      "negativeFactors": [
+        "融资能力（已用授信余额/授信总额） -0.10",
+        "资金余缺预警 -0.20"
+      ]
+    },
+    "deepLink": "./?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&prototypeVersion=1.1.0&enterpriseId=S003-ENT-001&reportId=S003-RPT-S003-RUN-20260815133000000-c03503000001-S003-ENT-001#report/S003-ENT-001"
+  },
+  "allowedReuse": [
+    "解释正式企业债务风险报告",
+    "解释报告中心确定性核验摘要",
+    "按稳定锚点回指C024固定证据"
+  ],
+  "forbidden": [
+    "从配置文件预造Evidence、Run、Session或Result",
+    "重算C035结果",
+    "修改模型配置",
+    "自动创建Action Request",
+    "替代人工确认"
+  ]
+}

@@ -1,0 +1,232 @@
+{
+  "schemaVersion": "ofw.s004.official-public.v1",
+  "dataAssetId": "DA-S004-OFFICIAL-PUBLIC-001",
+  "dataAssetVersion": "1.0.0",
+  "owner": "M02",
+  "sourceTag": "official-public",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "borrower": {
+    "borrowerId": "BORR-CN-USCC-91440300093677087R",
+    "fullName": "中国广核电力股份有限公司",
+    "shortName": "中国广核",
+    "unifiedSocialCreditCode": "91440300093677087R",
+    "aShareCode": "003816.SZ",
+    "hShareCode": "1816.HK",
+    "establishedDate": "2014-03-25",
+    "registeredCapital": {
+      "value": "5049861.11",
+      "currency": "CNY",
+      "unit": "CNY_10K"
+    },
+    "legalRepresentative": "杨长利",
+    "registeredAddress": "广东省深圳市福田区深南大道2002号中广核大厦南楼18楼",
+    "controllingShareholder": "中国广核集团有限公司",
+    "ultimateController": "国务院国有资产监督管理委员会",
+    "businessBoundary": "以核能发电为核心的上市运营平台；集团风电、光伏业务不属于本借款人合并范围",
+    "asOfDate": "2025-12-31"
+  },
+  "ownership": [
+    {
+      "relationshipId": "REL-S004-CONTROL-001",
+      "shareholder": "中国广核集团有限公司",
+      "relationshipType": "CONTROLLING_SHAREHOLDER",
+      "shareholdingRatio": "0.5889",
+      "asOfDate": "2025-12-31",
+      "evidenceId": "EVD-AR2025-OWNERSHIP"
+    },
+    {
+      "relationshipId": "REL-S004-CONTROL-002",
+      "shareholder": "国务院国有资产监督管理委员会",
+      "relationshipType": "ULTIMATE_CONTROLLER",
+      "shareholdingRatio": null,
+      "asOfDate": "2025-12-31",
+      "evidenceId": "EVD-AR2025-OWNERSHIP"
+    }
+  ],
+  "operatingFacts": [
+    {
+      "factId": "FACT-S004-OPS-001",
+      "metric": "managedOperatingUnits",
+      "value": "28",
+      "unit": "UNIT",
+      "asOfDate": "2025-12-31",
+      "evidenceId": "EVD-AR2025-OPERATIONS"
+    },
+    {
+      "factId": "FACT-S004-OPS-002",
+      "metric": "managedOperatingCapacity",
+      "value": "31838",
+      "unit": "MW",
+      "asOfDate": "2025-12-31",
+      "evidenceId": "EVD-AR2025-OPERATIONS"
+    },
+    {
+      "factId": "FACT-S004-OPS-003",
+      "metric": "managedConstructionUnits",
+      "value": "20",
+      "unit": "UNIT",
+      "asOfDate": "2025-12-31",
+      "evidenceId": "EVD-AR2025-OPERATIONS"
+    },
+    {
+      "factId": "FACT-S004-OPS-004",
+      "metric": "managedConstructionCapacity",
+      "value": "24222",
+      "unit": "MW",
+      "asOfDate": "2025-12-31",
+      "evidenceId": "EVD-AR2025-OPERATIONS"
+    },
+    {
+      "factId": "FACT-S004-OPS-005",
+      "metric": "managedOnGridElectricity",
+      "value": "2326.48",
+      "unit": "100M_KWH",
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "evidenceId": "EVD-AR2025-OPERATIONS"
+    },
+    {
+      "factId": "FACT-S004-OPS-006",
+      "metric": "guangdongRevenueShare",
+      "value": "0.4938",
+      "unit": "RATIO",
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "evidenceId": "EVD-AR2025-REVENUE"
+    }
+  ],
+  "financialPeriodSets": [
+    {
+      "period": "2023",
+      "scopeVersion": "AR2023-AS-REPORTED",
+      "restatementStatus": "AS_REPORTED",
+      "comparabilityStatus": "LIMITED_AFTER_2025_COMMON_CONTROL_COMBINATION",
+      "sourceDocumentId": "DOC-CGN-AR-2023",
+      "headlineFacts": {
+        "revenue": "8254864.32",
+        "totalAssets": "41525035.68",
+        "netProfit": "1704577.16",
+        "operatingCashFlow": "3311989.43"
+      }
+    },
+    {
+      "period": "2023",
+      "scopeVersion": "AR2025-RESTATED-SUMMARY",
+      "restatementStatus": "RESTATED_SUMMARY_ONLY",
+      "comparabilityStatus": "DETAILED_LINE_ITEMS_INCOMPLETE",
+      "sourceDocumentId": "DOC-CGN-AR-2025",
+      "headlineFacts": {
+        "revenue": "7446025.82",
+        "totalAssets": "45088587.62",
+        "parentNetProfit": "1066285.56",
+        "parentEquity": "12038551.51",
+        "operatingCashFlow": "3751837.05"
+      }
+    },
+    {
+      "period": "2024",
+      "scopeVersion": "AR2025-RESTATED-COMPARATOR",
+      "restatementStatus": "RESTATED",
+      "comparabilityStatus": "COMPARABLE_WITH_2025",
+      "sourceDocumentId": "DOC-CGN-AR-2025",
+      "facts": {
+        "totalAssets": "47153259.85",
+        "totalLiabilities": "28858785.74",
+        "currentAssets": "7271136.99",
+        "currentLiabilities": "8270005.68",
+        "parentEquity": "12858513.07",
+        "totalEquity": "18294474.11",
+        "cashAndBank": "1702629.62",
+        "accountsReceivable": "910706.99",
+        "prepayments": "2007754.94",
+        "inventory": "2035016.38",
+        "accountsPayable": "2060085.47",
+        "contractLiabilities": "558332.03",
+        "revenue": "7894466.96",
+        "operatingCost": "4939583.61",
+        "taxAndSurcharges": "91507.43",
+        "interestExpense": "552469.19",
+        "profitBeforeTax": "2162761.68",
+        "netProfit": "1746813.06",
+        "parentNetProfit": "1083812.04",
+        "operatingCashFlow": "3750572.80"
+      }
+    },
+    {
+      "period": "2025",
+      "scopeVersion": "AR2025-CURRENT",
+      "restatementStatus": "CURRENT",
+      "comparabilityStatus": "COMPARABLE_WITH_AR2025_RESTATED_2024",
+      "sourceDocumentId": "DOC-CGN-AR-2025",
+      "facts": {
+        "totalAssets": "50565611.81",
+        "totalLiabilities": "32944179.09",
+        "currentAssets": "7789145.50",
+        "currentLiabilities": "11776215.54",
+        "parentEquity": "12318847.41",
+        "totalEquity": "17621432.72",
+        "cashAndBank": "2082672.08",
+        "accountsReceivable": "801224.72",
+        "prepayments": "2049288.02",
+        "inventory": "2242189.15",
+        "fixedAssets": "25243303.06",
+        "constructionInProgress": "11393091.07",
+        "shortTermBorrowings": "4215111.99",
+        "accountsPayable": "2023660.11",
+        "contractLiabilities": "639516.87",
+        "revenue": "7569655.90",
+        "operatingCost": "5147896.37",
+        "taxAndSurcharges": "90184.70",
+        "interestExpense": "480174.42",
+        "profitBeforeTax": "1860271.52",
+        "netProfit": "1473114.42",
+        "parentNetProfit": "976535.90",
+        "operatingCashFlow": "2997052.94",
+        "investingCashFlow": "-3233554.86",
+        "financingCashFlow": "667689.47",
+        "endingCashEquivalents": "1345001.55"
+      }
+    }
+  ],
+  "sourceDocuments": [
+    {
+      "documentId": "DOC-CGN-AR-2023",
+      "name": "中国广核2023年年度报告",
+      "documentType": "AUDITED_ANNUAL_REPORT",
+      "periodEnd": "2023-12-31",
+      "path": "/Users/domi/Public/Vibecoding/ontology2.0/ai 竞赛资料/贷前调查报告/贷前调查报告skill_20260812/输入材料/中国广核2023年报.pdf",
+      "sha256": "ad61895a8117b7c9129bb28483816f4f5d60b346245bd3a8a09d5c22e62f5d67",
+      "sensitivity": "PUBLIC"
+    },
+    {
+      "documentId": "DOC-CGN-AR-2024",
+      "name": "中国广核2024年年度报告",
+      "documentType": "AUDITED_ANNUAL_REPORT",
+      "periodEnd": "2024-12-31",
+      "path": "/Users/domi/Public/Vibecoding/ontology2.0/ai 竞赛资料/贷前调查报告/贷前调查报告skill_20260812/输入材料/中国广核2024年报.pdf",
+      "sha256": "c379d7a62bb0fb8c0c5ceeba34f1ca9c806ee2ceb1b53bfcbf6c6f22076f9d5e",
+      "sensitivity": "PUBLIC"
+    },
+    {
+      "documentId": "DOC-CGN-AR-2025",
+      "name": "中国广核2025年年度报告",
+      "documentType": "AUDITED_ANNUAL_REPORT",
+      "periodEnd": "2025-12-31",
+      "path": "/Users/domi/Public/Vibecoding/ontology2.0/ai 竞赛资料/贷前调查报告/贷前调查报告skill_20260812/输入材料/中国广核2025年报.pdf",
+      "sha256": "f1ae0b9f53db25faf937d38be0abcee756ea7c8b58c29635aee0335a87904206",
+      "sensitivity": "PUBLIC"
+    }
+  ],
+  "unitPolicy": {
+    "currency": "CNY",
+    "amountUnit": "CNY_10K",
+    "ratioStorage": "DECIMAL",
+    "periodTimezone": "Asia/Shanghai"
+  }
+}

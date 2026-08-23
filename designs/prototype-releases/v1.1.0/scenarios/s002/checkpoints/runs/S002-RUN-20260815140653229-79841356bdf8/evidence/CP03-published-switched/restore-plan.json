@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "ofw.s002.restore-plan.v1",
+  "checkpointNode": "published-switched",
+  "moduleAdapters": [
+    {
+      "moduleId": "M01",
+      "moduleVersion": "S002-M01-1.0.0",
+      "exportRef": "checkpoints/runs/S002-RUN-20260815140653229-79841356bdf8/evidence/CP03-published-switched/M01-state-export.json",
+      "restoreMode": "isolated-clone"
+    },
+    {
+      "moduleId": "M02",
+      "moduleVersion": "S002-M02-1.0.0",
+      "exportRef": "checkpoints/runs/S002-RUN-20260815140653229-79841356bdf8/evidence/CP03-published-switched/M02-state-export.json",
+      "restoreMode": "isolated-clone"
+    },
+    {
+      "moduleId": "M03",
+      "moduleVersion": "S002-M03-1.0.0",
+      "exportRef": "checkpoints/runs/S002-RUN-20260815140653229-79841356bdf8/evidence/CP03-published-switched/M03-state-export.json",
+      "restoreMode": "isolated-clone"
+    },
+    {
+      "moduleId": "M04",
+      "moduleVersion": "S002-M04-1.0.0",
+      "exportRef": "checkpoints/runs/S002-RUN-20260815140653229-79841356bdf8/evidence/CP03-published-switched/M04-state-export.json",
+      "restoreMode": "isolated-clone"
+    },
+    {
+      "moduleId": "M05",
+      "moduleVersion": "S002-M05-1.0.0",
+      "exportRef": "checkpoints/runs/S002-RUN-20260815140653229-79841356bdf8/evidence/CP03-published-switched/M05-state-export.json",
+      "restoreMode": "isolated-clone"
+    },
+    {
+      "moduleId": "M06",
+      "moduleVersion": "S002-M06-1.0.0",
+      "exportRef": "checkpoints/runs/S002-RUN-20260815140653229-79841356bdf8/evidence/CP03-published-switched/M06-state-export.json",
+      "restoreMode": "isolated-clone"
+    }
+  ],
+  "historicalReadOnly": true,
+  "cloneCreatesNewScenarioRunId": true,
+  "regressionClearsDownstreamSideEffects": true,
+  "formedAt": "2026-08-15T14:09:53.229Z"
+}

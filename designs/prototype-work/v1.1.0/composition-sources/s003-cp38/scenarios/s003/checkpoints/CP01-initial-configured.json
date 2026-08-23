@@ -1,0 +1,195 @@
+{
+  "schemaVersion": "ofw.c034.checkpoint.v1",
+  "checkpointId": "CP-S003-20260815124825000-f7e888094abe",
+  "checkpointNode": "initial-configured",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "parentVersion": "1.0.3",
+  "scenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815123937016-96a195ed3f4c",
+    "formedAt": "2026-08-15T12:39:37.016Z",
+    "status": "active"
+  },
+  "sourceScenarioRunId": "S003-RUN-20260815123937016-96a195ed3f4c",
+  "createdAt": "2026-08-15T12:48:25.000Z",
+  "immutable": true,
+  "code": {
+    "prototypeVersion": "1.1.0",
+    "buildVersion": "S003-CP01",
+    "entryRef": "index.html",
+    "treeSha256": "7256cb0d00c20598a6da1fa84cf12749d65970222a8b961b03d33370d453d99a"
+  },
+  "modules": {
+    "M01": {
+      "moduleId": "M01",
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M01-DEBT-RISK-PKG",
+      "exportRef": "resources/m01/model-package.v1.json",
+      "exportSha256": "f93933e8ecad32bf1f4acb481b8c9596210eb3b3eb8ed582daa8b337bc0c8850",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T12:48:25.000Z",
+        "evidenceRef": "evidence/CP01-initial-config-validation.md#M01"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M02": {
+      "moduleId": "M02",
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M02-DATA-CONTRACT",
+      "exportRef": "resources/m02/data-contract.v1.json",
+      "exportSha256": "c55ffb5b76c00918dc92ae6c292aa17cc31847396acd0987a428e96fd85da395",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T12:48:25.000Z",
+        "evidenceRef": "evidence/CP01-initial-config-validation.md#M02"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M03": {
+      "moduleId": "M03",
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M03-QUERY-CATALOG",
+      "exportRef": "resources/m03/query-catalog.v1.json",
+      "exportSha256": "1f6eb360ff5bcb5e4fd605ee6cccb0ba1509c86bdfe68d87703f9a58a70944bf",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T12:48:25.000Z",
+        "evidenceRef": "evidence/CP01-initial-config-validation.md#M03"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M04": {
+      "moduleId": "M04",
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M04-GENERIC-DECISION-BINDING",
+      "exportRef": "resources/m04/decision-binding.v1.json",
+      "exportSha256": "50d98198f2cbceb56a6eb34d81d982bbc28133743700eeae9b760878ae38e158",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T12:48:25.000Z",
+        "evidenceRef": "evidence/CP01-initial-config-validation.md#M04"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M05": {
+      "moduleId": "M05",
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M05-NO-DEDICATED-AGENT",
+      "exportRef": "resources/m05/agent-position.v1.json",
+      "exportSha256": "9332d85160efb29e637de41f796ec92fb259f5b4dabe8b0f8f1001ad52084703",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T12:48:25.000Z",
+        "evidenceRef": "evidence/CP01-initial-config-validation.md#M05"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M06": {
+      "moduleId": "M06",
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M06-REPORT-CONTRACT",
+      "exportRef": "resources/m06/report-contract.v1.json",
+      "exportSha256": "9e358adb6d1d308a04169d679bd94f848a8256ac782890eda572dd31d377f457",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T12:48:25.000Z",
+        "evidenceRef": "evidence/CP01-initial-config-validation.md#M06"
+      },
+      "restoreMode": "isolated-clone"
+    }
+  },
+  "stateSections": {
+    "data": {
+      "status": "empty",
+      "reason": "CP01 仅锁定初始配置，正式候选数据在 CP02 接入。",
+      "items": []
+    },
+    "semantics": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-M01-DEBT-RISK-PKG",
+          "version": "1.0.0",
+          "ref": "resources/m01/model-package.v1.json",
+          "sha256": "f93933e8ecad32bf1f4acb481b8c9596210eb3b3eb8ed582daa8b337bc0c8850",
+          "formedAt": "2026-08-15T12:48:25.000Z"
+        }
+      ]
+    },
+    "configurations": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "平台场景包",
+          "resourceId": "S003-SCENARIO-MANIFEST",
+          "version": "1.0.0",
+          "ref": "resources/scenario-manifest.json",
+          "sha256": "9610188ea98965ee18cd9f66a24fb32a0abfd07bb30483e759ddc29bd53c8d90",
+          "formedAt": "2026-08-15T12:48:25.000Z"
+        }
+      ]
+    },
+    "results": {
+      "status": "empty",
+      "reason": "尚未执行确定性评估。",
+      "items": []
+    },
+    "reports": {
+      "status": "empty",
+      "reason": "尚未生成企业报告。",
+      "items": []
+    },
+    "decisions": {
+      "status": "empty",
+      "reason": "尚未形成处置候选或 Action Request。",
+      "items": []
+    },
+    "testFixtures": {
+      "status": "empty",
+      "reason": "权威工作簿夹具将在 CP02 形成。",
+      "items": []
+    },
+    "featureFlags": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "平台场景包",
+          "resourceId": "S003-FEATURE-FLAGS",
+          "version": "1.0.0",
+          "ref": "resources/scenario-manifest.json",
+          "sha256": "9610188ea98965ee18cd9f66a24fb32a0abfd07bb30483e759ddc29bd53c8d90",
+          "formedAt": "2026-08-15T12:48:25.000Z"
+        }
+      ]
+    },
+    "evidence": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP01-VALIDATION",
+          "version": "1.0.0",
+          "ref": "evidence/CP01-initial-config-validation.md",
+          "sha256": "93f8e1bafdd2b186b64185b4347c0d054f24b4c1831fed47bf8d6752914290c5",
+          "formedAt": "2026-08-15T12:48:25.000Z"
+        }
+      ]
+    }
+  },
+  "restoreReadiness": {
+    "status": "verified",
+    "verifiedAt": "2026-08-15T12:48:25.000Z",
+    "evidenceRef": "evidence/CP01-initial-config-validation.md#恢复校验"
+  },
+  "sideEffectPolicy": {
+    "allowHistoricalActionRequestReplay": false,
+    "allowHistoricalNotificationReplay": false,
+    "allowHistoricalApprovalReplay": false,
+    "allowHistoricalTodoReplay": false,
+    "allowExternalDispatch": false
+  }
+}
