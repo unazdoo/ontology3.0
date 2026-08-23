@@ -199,6 +199,14 @@ function sameRunContext(left, right, options) {
   return compareScenarioContext(left, right, options);
 }
 
+function compareScenarioContextDetailed(left, right, options = {}) {
+  const a = contextInput(left);
+  const b = contextInput(right);
+  const fields = options.includeLifecycle === true ? CONTEXT_FIELDS : RUN_COMPARISON_FIELDS;
+  const mismatches = fields.filter((field) => a?.[field] !== b?.[field]).map((field) => ({ field, left: a?.[field], right: b?.[field] }));
+  return { same: mismatches.length === 0 && compareScenarioContext(left, right, options), mismatches };
+}
+
 function contextFingerprint(value, options = {}) {
   const context = normalizeScenarioContext(contextInput(value), options);
   // A fingerprint represents the serialized context by default, including
@@ -412,6 +420,7 @@ module.exports = Object.freeze({
   normalizeScenarioContext,
   normalizeContext: normalizeScenarioContext,
   compareScenarioContext,
+  compareScenarioContextDetailed,
   compareRunContext: compareScenarioContext,
   sameScenarioContext: compareScenarioContext,
   sameRunContext,
