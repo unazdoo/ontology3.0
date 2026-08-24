@@ -1,0 +1,98 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontology3.example/m02/data/draft-0.1.0",
+  "title": "M02 Data Spine Contract Registry",
+  "description": "Draft implementation registry for T001/T002/T003/T005/T006/T007/T008 and C001/C002/C003/C017. Business Metric, Rule, score and conclusion fields are intentionally outside this contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "status", "owner", "resources", "contracts", "events", "consumerProjection"],
+  "properties": {
+    "schemaVersion": { "const": "m02-data.draft.v1" },
+    "status": { "const": "draft" },
+    "owner": { "const": "M02 / services/data" },
+    "resources": {
+      "type": "array",
+      "minItems": 7,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "name", "immutable", "owner"],
+        "properties": {
+          "code": { "enum": ["T001", "T002", "T003", "T005", "T006", "T007", "T008"] },
+          "name": { "type": "string", "minLength": 1 },
+          "immutable": { "type": "boolean" },
+          "owner": { "const": "M02 / services/data" }
+        }
+      }
+    },
+    "contracts": {
+      "type": "array",
+      "minItems": 7,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "name", "owner"],
+        "properties": {
+          "code": { "enum": ["C001", "C002", "C003", "C017", "C032", "C028", "C029"] },
+          "name": { "type": "string", "minLength": 1 },
+          "owner": { "const": "M02 / services/data" }
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "name", "appendOnly"],
+        "properties": {
+          "code": { "enum": ["T002_READ", "T008_CONFIRMED", "T008_READ", "C017_READ"] },
+          "name": { "type": "string", "minLength": 1 },
+          "appendOnly": { "const": true }
+        }
+      }
+    },
+    "consumerProjection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "metadataOnly", "forbiddenKeys"],
+      "properties": {
+        "code": { "const": "C017" },
+        "metadataOnly": { "const": true },
+        "forbiddenKeys": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "schemaVersion": "m02-data.draft.v1",
+  "status": "draft",
+  "owner": "M02 / services/data",
+  "resources": [
+    { "code": "T001", "name": "Data Source", "immutable": false, "owner": "M02 / services/data" },
+    { "code": "T002", "name": "Raw Snapshot", "immutable": true, "owner": "M02 / services/data" },
+    { "code": "T003", "name": "Pipeline Definition Version", "immutable": true, "owner": "M02 / services/data" },
+    { "code": "T005", "name": "Data Quality Check", "immutable": true, "owner": "M02 / services/data" },
+    { "code": "T006", "name": "Data Asset", "immutable": false, "owner": "M02 / services/data" },
+    { "code": "T007", "name": "Data Asset Version", "immutable": true, "owner": "M02 / services/data" },
+    { "code": "T008", "name": "Data As-of Confirmation", "immutable": true, "owner": "M02 / services/data" }
+  ],
+  "contracts": [
+    { "code": "C001", "name": "Data source registration", "owner": "M02 / services/data" },
+    { "code": "C002", "name": "Raw snapshot", "owner": "M02 / services/data" },
+    { "code": "C003", "name": "Exact asset delivery and receipt", "owner": "M02 / services/data" },
+    { "code": "C017", "name": "Trust and reproducibility summary", "owner": "M02 / services/data" },
+    { "code": "C032", "name": "Refresh target discovery", "owner": "M02 / services/data" },
+    { "code": "C028", "name": "Ontology refresh request", "owner": "M02 / services/data" },
+    { "code": "C029", "name": "Ontology refresh result", "owner": "M02 / services/data" }
+  ],
+  "events": [
+    { "code": "T002_READ", "name": "Raw snapshot read", "appendOnly": true },
+    { "code": "T008_CONFIRMED", "name": "Explicit as-of confirmation", "appendOnly": true },
+    { "code": "T008_READ", "name": "As-of read", "appendOnly": true },
+    { "code": "C017_READ", "name": "Restricted trust summary read", "appendOnly": true }
+  ],
+  "consumerProjection": {
+    "code": "C017",
+    "metadataOnly": true,
+    "forbiddenKeys": ["rows", "records", "rawContent", "workbook", "sourceFields", "failureSamples", "metricFormula", "ruleThreshold", "pythonCode"]
+  }
+}
