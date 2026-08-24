@@ -33,3 +33,12 @@ runner is bound to an injected exact active Agent Release (including Prompt,
 Skill, Tool, Model, Published ontology, validity and resource whitelist) and a
 fixed port deadline; timed-out or unknown executions cannot be retried
 implicitly.
+
+The same adapter exposes the official M06 report-copilot boundary through
+`receiveReportCopilotRequest()`, `runReportCopilot()` and
+`readReportCopilotResult()`. A trusted `c017Resolver` supplies the full C017
+summary referenced by C024; T049 explanations additionally require a trusted
+`verificationResolver`. The formal v1 receipt and C025 Envelope retain only
+fixed references and the IDs of the single Runtime Binding/Session/Run/Result
+chain. The internal draft C025 remains unchanged and is never published as the
+cross-module response.

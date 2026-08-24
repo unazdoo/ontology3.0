@@ -3,6 +3,7 @@
 const foundationContracts = require('../contracts');
 const identity = require('../identity');
 const releaseBoundary = require('../agent-release');
+const copilotBoundary = require('./report-copilot-boundary');
 const {
   isRecord, isNonEmptyString, immutable, stableSerialize, sha256, issue,
   validation, fail, nowIso, findForbiddenKeys
@@ -492,13 +493,16 @@ class M05ReportPortStore {
   constructor() {
     this.generations = new Map();
     this.extractions = new Map();
+    this.copilot = new Map();
   }
 
   getGeneration(requestId) { return this.generations.get(requestId) || null; }
   putGeneration(requestId, record) { this.generations.set(requestId, immutable(record)); return this.generations.get(requestId); }
   getExtraction(requestId) { return this.extractions.get(requestId) || null; }
   putExtraction(requestId, record) { this.extractions.set(requestId, immutable(record)); return this.extractions.get(requestId); }
-  snapshot() { return immutable({ generations: [...this.generations.values()], extractions: [...this.extractions.values()] }); }
+  getCopilot(requestId) { return this.copilot.get(requestId) || null; }
+  putCopilot(requestId, record) { this.copilot.set(requestId, immutable(record)); return this.copilot.get(requestId); }
+  snapshot() { return immutable({ generations: [...this.generations.values()], extractions: [...this.extractions.values()], copilot: [...this.copilot.values()] }); }
 }
 
 function createM05ReportPortStore() { return new M05ReportPortStore(); }
@@ -510,6 +514,15 @@ function resolveRunner(options, operation) {
   const method = operation === 'report-generation' ? 'runReportGeneration' : 'extractReportClaims';
   if (runner && typeof runner[method] === 'function') return runner[method].bind(runner);
   if (typeof runner === 'function') return runner;
+  return null;
+}
+
+function resolveProvider(options, directNames, providerNames, methodNames) {
+  for (const name of directNames) if (typeof options[name] === 'function') return options[name];
+  for (const providerName of providerNames) {
+    const provider = options[providerName];
+    for (const methodName of methodNames) if (provider && typeof provider[methodName] === 'function') return provider[methodName].bind(provider);
+  }
   return null;
 }
 
@@ -529,12 +542,127 @@ class M06ReportPortAdapter {
     this.executionTimeoutMs = options.executionTimeoutMs === undefined ? 30_000 : options.executionTimeoutMs;
     if (!Number.isInteger(this.executionTimeoutMs) || this.executionTimeoutMs <= 0) fail('REPORT_PORT_CONFIG_INVALID', 'executionTimeoutMs must be a positive integer');
     this.responseEnvelope = options.responseEnvelope || null;
+    this.c017Resolver = resolveProvider(options,
+      ['c017Resolver', 'resolveC017Summary'],
+      ['c017Provider'],
+      ['readC017ForVersion', 'resolveC017Summary', 'readCredibilitySummary']);
+    this.verificationResolver = resolveProvider(options,
+      ['verificationResolver', 'resolveVerificationResult'],
+      ['verificationProvider', 'm06VerificationProvider'],
+      ['readVerificationResult', 'readT049Result', 'resolveVerificationResult']);
+    this.comparisonResolver = resolveProvider(options,
+      ['comparisonResolver', 'resolveComparisonResult'],
+      ['comparisonProvider', 'm06ComparisonProvider'],
+      ['readComparisonResult', 'readC027Result', 'resolveComparisonResult']);
+    this.copilotActor = options.copilotActor || null;
+    this.copilotActorResolver = typeof options.copilotActorResolver === 'function' ? options.copilotActorResolver : null;
+    this.allowStaleCopilot = options.allowStaleCopilot === true;
     this.pendingGenerations = new Map();
     this.pendingExtractions = new Map();
+    this.pendingCopilotReceives = new Map();
+    this.pendingCopilotRuns = new Map();
   }
 
   _now() { return nowIso(this.clock); }
   _id(prefix, seed) { return typeof this.idFactory === 'function' ? this.idFactory(prefix, seed) : `${prefix}-${sha256(seed).slice(0, 24)}`; }
+
+  _assertCopilotRuntime() {
+    if (!this.runtime || typeof this.runtime.receiveEnvelope !== 'function' || !this.runtime.store) fail('REPORT_COPILOT_RUNTIME_NOT_CONFIGURED', 'a real M05 Runtime and Store are required for the official report copilot port');
+    if (typeof this.store?.getCopilot !== 'function' || typeof this.store?.putCopilot !== 'function') fail('REPORT_COPILOT_STORE_NOT_CONFIGURED', 'M05 report port Store must support official copilot records');
+    return this.runtime;
+  }
+
+  _assertCopilotRelease(c024, options = {}) {
+    const runtime = this._assertCopilotRuntime();
+    let release;
+    try { release = releaseBoundary.assertAgentRelease(runtime.release, { requirePublished: true }); }
+    catch (error) { fail('AGENT_RELEASE_INVALID', 'official report copilot Runtime requires an exact active Agent Release', { code: error.code, details: error.details }); }
+    const fixed = c024.payload.fixedReportContext;
+    const expected = fixed.agentReleaseRef;
+    const mismatches = [];
+    if (release.agent.id !== expected.agentId || release.releaseVersion !== expected.version) mismatches.push({ field: 'agentReleaseRef', release: { agentId: release.agent.id, version: release.releaseVersion }, request: expected });
+    if (release.scenario.id !== fixed.scenarioContext.scenarioId || release.scenario.version !== fixed.scenarioContext.scenarioVersion) mismatches.push({ field: 'scenario', release: release.scenario, request: fixed.scenarioContext });
+    if (!release.publishedOntologies.some((ref) => ref.id === fixed.exactCombination.semanticVersionId && ref.version === fixed.exactCombination.semanticVersion)) mismatches.push({ field: 'publishedOntology', release: release.publishedOntologies, request: { id: fixed.exactCombination.semanticVersionId, version: fixed.exactCombination.semanticVersion } });
+    const times = [c024.payload.requestedAt, ...(options.checkCurrentTime === false ? [] : [this._now()])];
+    if (times.some((at) => !withinValidity(release.validity, at))) mismatches.push({ field: 'validity', release: release.validity, request: times });
+    if (mismatches.length) fail('AGENT_RELEASE_MISMATCH', 'official report copilot request does not match the Runtime Agent Release', { mismatches });
+    return immutable(release);
+  }
+
+  async _resolveCopilotC017(c024) {
+    if (!this.c017Resolver) fail('REPORT_COPILOT_C017_RESOLVER_REQUIRED', 'official C024 carries only a C017 reference; a trusted C017 resolver is required');
+    const fixed = c024.payload.fixedReportContext;
+    const value = await this.c017Resolver(immutable({
+      scenarioContext: fixed.scenarioContext,
+      c017Ref: fixed.c017Ref,
+      exactCombination: fixed.exactCombination,
+      purpose: 'M05-report-copilot-fixed-context',
+      readOnly: true
+    }));
+    return copilotBoundary.assertResolvedC017(value, c024);
+  }
+
+  async _resolveCopilotVerification(c024) {
+    const ref = c024.payload.fixedReportContext.deterministicResultRef;
+    if (!ref || ref.type !== 'T049') return null;
+    if (!this.verificationResolver) fail('REPORT_COPILOT_VERIFICATION_RESOLVER_REQUIRED', 'T049 explanation requires the exact M06 deterministic result resolver');
+    const value = await this.verificationResolver(immutable({
+      scenarioContext: c024.payload.scenarioContext,
+      verificationRef: ref,
+      reportRef: c024.payload.fixedReportContext.reportRef,
+      evidencePackRef: c024.payload.fixedReportContext.evidencePackRef,
+      readOnly: true
+    }));
+    return copilotBoundary.assertResolvedVerification(value, c024);
+  }
+
+  async _resolveCopilotComparison(c024) {
+    const ref = c024.payload.fixedReportContext.deterministicResultRef;
+    if (!ref || ref.type !== 'C027') return null;
+    if (!this.comparisonResolver) fail('REPORT_COPILOT_COMPARISON_RESOLVER_REQUIRED', 'C027 explanation requires the exact M06 comparison resolver');
+    const value = await this.comparisonResolver(immutable({ scenarioContext: c024.payload.scenarioContext, comparisonRef: ref, reportRef: c024.payload.fixedReportContext.reportRef, evidencePackRef: c024.payload.fixedReportContext.evidencePackRef, readOnly: true }));
+    return copilotBoundary.assertResolvedComparison(value, c024);
+  }
+
+  _copilotChain(requestId, storedRecord) {
+    const runtime = this._assertCopilotRuntime();
+    const storedRefs = storedRecord?.chainRefs;
+    const binding = runtime.store.getBinding(requestId);
+    let session = storedRefs?.sessionRef?.id ? runtime.store.getSession(storedRefs.sessionRef.id) : null;
+    let run = storedRefs?.runRef?.id ? runtime.store.getRun(storedRefs.runRef.id) : null;
+    let result = storedRefs?.resultRef?.id ? runtime.store.getResult(storedRefs.resultRef.id) : null;
+    if (!session || !run) {
+      const current = runtime.store.current();
+      const sessions = current.sessions.filter((item) => item.requestId === requestId || item.bindingId === binding?.bindingId);
+      if (sessions.length > 1) fail('REPORT_COPILOT_CHAIN_MISMATCH', 'official request has more than one M05 Session');
+      session = session || sessions[0] || null;
+      const runs = current.runs.filter((item) => item.requestId === requestId || item.sessionId === session?.sessionId);
+      if (runs.length > 1) fail('REPORT_COPILOT_CHAIN_MISMATCH', 'official request has more than one M05 Run');
+      run = run || runs[0] || null;
+      result = result || (run?.resultId ? runtime.store.getResult(run.resultId) : null);
+    }
+    return { binding, session, run, result };
+  }
+
+  _assertStoredCopilotChain(record) {
+    const chain = this._copilotChain(record.requestId, record);
+    const refs = record.chainRefs;
+    if (record.chainFingerprint !== sha256(refs) || record.resultFingerprint !== sha256(record.resultEnvelope)
+        || !chain.binding || !chain.session || !chain.run || !chain.result
+        || chain.binding.bindingId !== refs.bindingRef.id || chain.session.sessionId !== refs.sessionRef.id
+        || chain.run.runId !== refs.runRef.id || chain.result.resultId !== refs.resultRef.id
+        || chain.session.bindingId !== chain.binding.bindingId || chain.run.sessionId !== chain.session.sessionId
+        || chain.result.runId !== chain.run.runId) fail('REPORT_COPILOT_CHAIN_MISMATCH', 'stored formal C025 no longer references the same M05 Runtime chain');
+    return chain;
+  }
+
+  async _resolveCopilotActor(c024) {
+    const actor = this.copilotActorResolver
+      ? await this.copilotActorResolver(immutable({ requestedBy: c024.payload.requestedBy, authorizationRef: c024.payload.fixedReportContext.authorizationRef, scenarioContext: c024.payload.scenarioContext }))
+      : this.copilotActor;
+    if (!isRecord(actor)) fail('REPORT_COPILOT_ACTOR_REQUIRED', 'official report copilot execution requires an injected authorized actor');
+    return immutable(actor);
+  }
 
   _wrap(payload, kind, request) {
     if (!this.responseEnvelope) return payload;
@@ -732,6 +860,142 @@ class M06ReportPortAdapter {
     return pending;
   }
 
+  async receiveReportCopilotRequest(c024Envelope) {
+    this._assertCopilotRuntime();
+    const c024 = copilotBoundary.assertC024Envelope(c024Envelope);
+    let release = this._assertCopilotRelease(c024, { checkCurrentTime: false });
+    const requestId = c024.payload.requestId;
+    const sourceFingerprint = sha256(c024.envelope);
+    const existing = this.store.getCopilot(requestId);
+    if (existing) {
+      if (existing.sourceFingerprint !== sourceFingerprint || existing.idempotencyKey !== c024.envelope.idempotencyKey || existing.releaseDigest !== release.digest) fail('REPORT_COPILOT_IDEMPOTENCY_CONFLICT', 'official C024 identity was reused with different fixed input or Agent Release');
+      return existing.receiptEnvelope;
+    }
+    release = this._assertCopilotRelease(c024);
+    const pendingReceive = this.pendingCopilotReceives.get(requestId);
+    if (pendingReceive) {
+      if (pendingReceive.sourceFingerprint !== sourceFingerprint) fail('REPORT_COPILOT_IDEMPOTENCY_CONFLICT', 'concurrent official C024 requests differ');
+      return pendingReceive.promise;
+    }
+    const pending = Promise.resolve().then(async () => {
+      const c017Summary = await this._resolveCopilotC017(c024);
+      const verificationResult = await this._resolveCopilotVerification(c024);
+      const comparisonResult = await this._resolveCopilotComparison(c024);
+      const internalEnvelope = copilotBoundary.createRuntimeEnvelope(c024, c017Summary, verificationResult, comparisonResult);
+      const receivedRequest = this.runtime.receiveEnvelope(internalEnvelope, { expectedEventType: 'M06.C024' });
+      const receiptEnvelope = copilotBoundary.createReceiptEnvelope(c024, receivedRequest, { idFactory: this._id.bind(this) });
+      this.store.putCopilot(requestId, {
+        requestId,
+        sourceFingerprint,
+        idempotencyKey: c024.envelope.idempotencyKey,
+        releaseDigest: release.digest,
+        scenarioContext: c024.payload.scenarioContext,
+        fixedContextRef: { id: c024.payload.fixedReportContext.fixedContextId, version: c024.payload.fixedReportContext.version },
+        requestEnvelope: c024.envelope,
+        receiptEnvelope,
+        status: 'received',
+        chainRefs: null,
+        chainFingerprint: null,
+        resultEnvelope: null,
+        resultFingerprint: null,
+        error: null
+      });
+      return receiptEnvelope;
+    }).finally(() => this.pendingCopilotReceives.delete(requestId));
+    this.pendingCopilotReceives.set(requestId, { sourceFingerprint, promise: pending });
+    return pending;
+  }
+
+  async runReportCopilot(c024Envelope, receiptEnvelope) {
+    this._assertCopilotRuntime();
+    const c024 = copilotBoundary.assertC024Envelope(c024Envelope);
+    const release = this._assertCopilotRelease(c024, { checkCurrentTime: false });
+    const receipt = copilotBoundary.assertReceiptEnvelope(receiptEnvelope, c024);
+    const requestId = c024.payload.requestId;
+    let record = this.store.getCopilot(requestId);
+    if (!record) fail('REPORT_COPILOT_REQUEST_NOT_RECEIVED', 'official C024 must be received before it can run');
+    if (record.sourceFingerprint !== sha256(c024.envelope) || record.releaseDigest !== release.digest || stableSerialize(record.receiptEnvelope) !== stableSerialize(receipt.envelope)) fail('REPORT_COPILOT_RECEIPT_MISMATCH', 'run request, Agent Release or receipt differs from the accepted C024');
+    if (record.status === 'completed') {
+      this._assertStoredCopilotChain(record);
+      return record.resultEnvelope;
+    }
+    if (record.status === 'failed') fail('REPORT_COPILOT_FAILED', 'official report copilot Run previously failed', record.error);
+    if (record.status === 'unknown') fail('REPORT_COPILOT_EXECUTION_UNKNOWN', 'official report copilot Run outcome is unknown', record.error);
+    if (record.status === 'running') {
+      const pending = this.pendingCopilotRuns.get(requestId);
+      if (pending) return pending;
+      fail('REPORT_COPILOT_EXECUTION_UNKNOWN', 'official report copilot Run is marked running without a live execution handle');
+    }
+    if (record.status !== 'received') fail('REPORT_COPILOT_STATUS_UNKNOWN', 'official report copilot record has an unknown state', { status: record.status });
+    this._assertCopilotRelease(c024);
+    if (this.runtime.store.getBinding(requestId)) {
+      this.store.putCopilot(requestId, { ...record, status: 'unknown', error: { code: 'REPORT_COPILOT_EXECUTION_UNKNOWN', message: 'an unrecorded Runtime chain already exists' } });
+      fail('REPORT_COPILOT_EXECUTION_UNKNOWN', 'an unrecorded Runtime chain already exists; a second Run is forbidden');
+    }
+    record = this.store.putCopilot(requestId, { ...record, status: 'running', startedAt: this._now() });
+    const execution = Promise.resolve().then(async () => {
+      const actor = await this._resolveCopilotActor(c024);
+      const options = { actor, allowStale: this.allowStaleCopilot, at: this._now() };
+      return c024.payload.selectionIntent.purpose === 't049-explanation'
+        ? this.runtime.explainVerification(requestId, options)
+        : this.runtime.answer(requestId, options);
+    });
+    const pending = withExecutionTimeout(execution, this.executionTimeoutMs, 'official report copilot').then(() => {
+      const chain = this._copilotChain(requestId, record);
+      const resultEnvelope = copilotBoundary.createC025Envelope(c024, chain, { idFactory: this._id.bind(this) });
+      const chainRefs = copilotBoundary.formalChainRefs(resultEnvelope);
+      this.store.putCopilot(requestId, {
+        ...record,
+        status: 'completed',
+        chainRefs,
+        chainFingerprint: sha256(chainRefs),
+        resultEnvelope,
+        resultFingerprint: sha256(resultEnvelope),
+        completedAt: resultEnvelope.payload.formedAt,
+        error: null
+      });
+      return resultEnvelope;
+    }).catch((error) => {
+      const failure = error instanceof Error ? error : Object.assign(new Error('official report copilot runner rejected without a structured error'), { code: 'REPORT_COPILOT_EXECUTION_UNKNOWN', outcomeUnknown: true });
+      const unknown = failure.outcomeUnknown === true || ['TIMEOUT', 'ETIMEDOUT', 'REPORT_COPILOT_EXECUTION_UNKNOWN'].includes(failure.code);
+      const chain = this._copilotChain(requestId, record);
+      const partialRefs = {
+        ...(chain.binding ? { bindingRef: { id: chain.binding.bindingId, version: chain.binding.bindingVersion } } : {}),
+        ...(chain.session ? { sessionRef: { id: chain.session.sessionId, version: '1.0.0' } } : {}),
+        ...(chain.run ? { runRef: { id: chain.run.runId, version: '1.0.0', attempt: chain.run.attempt } } : {}),
+        ...(chain.result ? { resultRef: { id: chain.result.resultId, version: chain.result.resultVersion } } : {})
+      };
+      this.store.putCopilot(requestId, {
+        ...record,
+        status: unknown ? 'unknown' : 'failed',
+        chainRefs: Object.keys(partialRefs).length ? partialRefs : null,
+        error: { code: failure.code || 'REPORT_COPILOT_FAILED', message: failure.message },
+        completedAt: this._now()
+      });
+      throw failure;
+    }).finally(() => this.pendingCopilotRuns.delete(requestId));
+    this.pendingCopilotRuns.set(requestId, pending);
+    return pending;
+  }
+
+  async readReportCopilotResult(c025ReadEnvelope) {
+    this._assertCopilotRuntime();
+    const read = copilotBoundary.assertReadEnvelope(c025ReadEnvelope);
+    const record = this.store.getCopilot(read.payload.requestId);
+    if (!record) return null;
+    const c024 = copilotBoundary.assertC024Envelope(record.requestEnvelope);
+    const release = this._assertCopilotRelease(c024, { checkCurrentTime: false });
+    if (record.releaseDigest !== release.digest) fail('AGENT_RELEASE_MISMATCH', 'stored official C025 belongs to a different exact Agent Release');
+    if (record.status === 'received') return null;
+    if (record.status === 'running') fail('REPORT_COPILOT_EXECUTION_PENDING', 'official report copilot Run has not completed');
+    if (record.status === 'failed') fail('REPORT_COPILOT_FAILED', 'official report copilot Run failed', record.error);
+    if (record.status === 'unknown') fail('REPORT_COPILOT_EXECUTION_UNKNOWN', 'official report copilot Run outcome is unknown', record.error);
+    if (record.status !== 'completed' || !record.resultEnvelope || !record.chainRefs) fail('REPORT_COPILOT_STATUS_UNKNOWN', 'official report copilot record cannot be read as completed');
+    copilotBoundary.assertReadMatches(read, c024, record.resultEnvelope);
+    this._assertStoredCopilotChain(record);
+    return record.resultEnvelope;
+  }
+
   receiveEnvelope(value, options) {
     if (!this.runtime || typeof this.runtime.receiveEnvelope !== 'function') fail('C024_RUNTIME_NOT_CONFIGURED', 'M05 Runtime is required to receive C024 envelopes');
     return this.runtime.receiveEnvelope(value, options);
@@ -747,6 +1011,7 @@ class M06ReportPortAdapter {
 function createM06ReportPort(options) { return new M06ReportPortAdapter(options); }
 
 module.exports = Object.freeze({
+  ...copilotBoundary,
   EVIDENCE_PACK_SCHEMA_VERSION,
   C022_SCHEMA_VERSION,
   C023_SCHEMA_VERSION,
