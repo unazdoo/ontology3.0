@@ -1,0 +1,268 @@
+name: implementation-quality
+
+on:
+  pull_request:
+    branches:
+      - codex/implementation-quality-release
+      - implementation-quality-release
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Pull request number
+        required: true
+        type: string
+      candidate:
+        description: Require implementation-candidate eligibility
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: implementation-quality-${{ github.event.pull_request.number || inputs.pr_number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20.x'
+  QUALITY_GATE_MANIFEST: implementation/evidence/pr-quality.json
+  BASELINE_SNAPSHOT_ID: BSL-OFW-V110-94ABD0E991B7
+
+jobs:
+  foundation-and-contracts:
+    name: foundation-contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Run foundation tests
+        run: npm test
+      - name: Run syntax checks
+        run: npm run check
+      - name: Run quality-gate unit tests
+        run: node --test scripts/quality-gate/*.test.mjs scripts/quality-gate/*.test.cjs
+      - name: Verify migration and rollback runbook contract
+        run: node --test infra/runbook.test.cjs
+      - name: Verify redacted S001 golden data
+        run: node scripts/quality-gate/verify-golden-data.mjs --report artifacts/golden-data.json
+      - name: Verify immutable baselineSnapshotId
+        run: node scripts/quality-gate/verify-baseline-reference.mjs
+      - name: Generate and verify SPDX SBOM
+        run: |
+          node scripts/quality-gate/generate-sbom.mjs --output artifacts/sbom.spdx.json
+          node scripts/quality-gate/verify-sbom.mjs --sbom artifacts/sbom.spdx.json --report artifacts/sbom-verification.json
+      - name: Scan tracked files for secrets
+        run: node scripts/quality-gate/scan-security.mjs --output artifacts/security-scan.json
+      - name: Audit resolved production dependencies
+        run: npm audit --audit-level=high --package-lock=false --omit=dev --json > artifacts/npm-audit.json
+      - name: Upload gate artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: implementation-quality-foundation-${{ github.run_id }}
+          path: artifacts/
+          retention-days: 90
+          if-no-files-found: warn
+
+  scenario-regression:
+    name: s001-contract-regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Run C034 and S001 foundation regression
+        run: node --test designs/prototype-releases/v1.1.0/foundation/ofw-scenario-foundation.test.cjs packages/checkpoint/index.test.cjs
+      - name: Run contract compatibility tests
+        run: node --test packages/contracts/test/contracts.test.js packages/foundation-contract.test.cjs
+      - name: Record prototype boundary
+        run: |
+          node -e 'const fs=require("fs"); fs.mkdirSync("artifacts",{recursive:true}); fs.writeFileSync("artifacts/prototype-boundary.json", JSON.stringify({status:"passed",evidence:"artifact://prototype-boundary.json",productionEvidence:false},null,2));'
+      - name: Upload regression artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: implementation-quality-regression-${{ github.run_id }}
+          path: artifacts/
+          retention-days: 90
+          if-no-files-found: warn
+
+  named-quality-gates:
+    name: named-quality-gates (${{ matrix.gate }})
+    needs: foundation-and-contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        gate:
+          - golden-data
+          - contract-compatibility
+          - e2e
+          - permission-negative
+          - concurrency-idempotency
+          - performance
+          - accessibility
+          - security
+          - sbom
+          - observability
+          - c034-recovery
+          - migration
+          - rollback
+          - ci-cd
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Verify ${{ matrix.gate }} receipt
+        run: node scripts/quality-gate/verify-gate-receipt.mjs --manifest "$QUALITY_GATE_MANIFEST" --gate "${{ matrix.gate }}" --report "artifacts/${{ matrix.gate }}.json"
+      - name: Upload named gate receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: implementation-quality-${{ matrix.gate }}-${{ github.run_id }}
+          path: artifacts/
+          retention-days: 90
+          if-no-files-found: warn
+
+  isolated-pr-environment:
+    name: isolated-pr-environment
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      environment_id: ${{ steps.environment.outputs.id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Derive isolated namespaces
+        id: environment
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          test -n "$PR_NUMBER" || (echo 'A PR number is required; refusing shared environment' >&2; exit 1)
+          node scripts/quality-gate/provision-pr-environment.mjs \
+            --pr-number "$PR_NUMBER" --head-sha "$HEAD_SHA" \
+            --output artifacts/pr-environment.json --github-output
+          node scripts/quality-gate/fingerprint-object-storage.mjs \
+            --root quality-gates/golden/s001 \
+            --prefix "pr/${PR_NUMBER}/${HEAD_SHA:0:12}/" \
+            --output artifacts/object-storage-fingerprint.json
+          node -e 'const f=require("fs"); const value=JSON.parse(f.readFileSync("artifacts/object-storage-fingerprint.json")); const expected=`pr/${process.env.PR_NUMBER}/${process.env.HEAD_SHA.slice(0,12)}/`; if(value.prefix!==expected) throw new Error(`fingerprint prefix mismatch: ${value.prefix} != ${expected}`);'
+          echo "id=$(node -e 'process.stdout.write(JSON.parse(require("fs").readFileSync("artifacts/pr-environment.json")).id)' )" >> "$GITHUB_OUTPUT"
+      - name: Assert no shared process namespaces
+        env:
+          PR_DB_SCHEMA: ${{ steps.environment.outputs.databaseSchema }}
+          PR_OBJECT_STORAGE_PREFIX: ${{ steps.environment.outputs.objectStoragePrefix }}
+          PR_QUEUE_NAMESPACE: ${{ steps.environment.outputs.queueNamespace }}
+          PR_CREDENTIAL_REF: ${{ steps.environment.outputs.credentialRef }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          node scripts/quality-gate/provision-pr-environment.mjs \
+            --pr-number "$PR_NUMBER" --head-sha "$HEAD_SHA" --check-env
+      - name: Upload environment descriptor
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: implementation-quality-environment-${{ github.run_id }}
+          path: artifacts/
+          retention-days: 90
+      - name: Emit scoped cleanup receipt
+        if: always() && steps.environment.outcome == 'success'
+        run: node scripts/quality-gate/cleanup-pr-environment.mjs --descriptor artifacts/pr-environment.json --output artifacts/pr-environment-cleanup.json
+      - name: Upload cleanup receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: implementation-quality-environment-cleanup-${{ github.run_id }}
+          path: artifacts/pr-environment-cleanup.json
+          retention-days: 90
+          if-no-files-found: warn
+
+  pr-evidence:
+    name: pr-evidence-quality-gate
+    needs: [foundation-and-contracts, isolated-pr-environment]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Require canonical evidence manifest
+        run: |
+          test -f "$QUALITY_GATE_MANIFEST" || {
+            echo "Missing $QUALITY_GATE_MANIFEST; every implementation PR must attach real evidence." >&2
+            exit 1
+          }
+      - name: Validate baseline, Schema, Owner, storage, migration, audit, negative and recovery evidence
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          node scripts/quality-gate/verify-pr-evidence.mjs \
+            --manifest "$QUALITY_GATE_MANIFEST" \
+            --baseline "$BASELINE_SNAPSHOT_ID" \
+            --pr-number "$PR_NUMBER" --head-sha "$HEAD_SHA" \
+            --report artifacts/pr-quality-report.json --github-output
+      - name: Upload PR quality report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: implementation-quality-evidence-${{ github.run_id }}
+          path: artifacts/pr-quality-report.json
+          retention-days: 90
+          if-no-files-found: warn
+
+  implementation-candidate:
+    name: implementation-candidate-gate
+    needs: [pr-evidence, scenario-regression, named-quality-gates]
+    if: >-
+      (github.event_name == 'workflow_dispatch' && inputs.candidate == true) ||
+      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'implementation-candidate'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Re-evaluate candidate conditions
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          node scripts/quality-gate/verify-pr-evidence.mjs \
+            --manifest "$QUALITY_GATE_MANIFEST" \
+            --baseline "$BASELINE_SNAPSHOT_ID" \
+            --pr-number "$PR_NUMBER" --head-sha "$HEAD_SHA" \
+            --candidate --report artifacts/candidate-report.json
+      - name: Create implementation candidate manifest
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          node scripts/quality-gate/create-candidate-manifest.mjs \
+            --evidence "$QUALITY_GATE_MANIFEST" \
+            --pr-number "$PR_NUMBER" --head-sha "$HEAD_SHA" \
+            --output artifacts/implementation-candidate.json
+      - name: Upload candidate decision
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: implementation-candidate-${{ github.run_id }}
+          path: artifacts/
+          retention-days: 90
+          if-no-files-found: warn
