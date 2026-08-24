@@ -349,11 +349,55 @@ test('T019 atomically adopts a fully evidenced candidate and records previous tr
   assert.equal(adoption.status, 'adopted');
   const projection = service.readC008({ scenarioContext: CONTEXT });
   assert.equal(projection.readStatus, 'ready');
+  assert.equal(projection.current.status, 'current');
+  assert.equal(projection.current.lifecycleStatus, 'published');
+  assert.equal(projection.current.publicationStatus, 'published');
+  assert.equal(projection.current.bindingStatus, 'active');
+  assert.equal(projection.current.t019Status, 'active');
   assert.equal(projection.current.semanticVersionId, published.publishedId);
   assert.equal(projection.current.dataVersion, 'T007-FINANCE-v1');
   assert.equal(projection.current.t019.evidenceId, 'M03-CV-S001');
   assert.equal(duplicate.t019Id, adoption.t019Id);
   assert.equal(duplicate.t019Revision, adoption.t019Revision);
+});
+
+test('C008 consumer contract reads the published current projection as read-only', () => {
+  const service = makeService();
+  const published = buildPublished(service);
+  buildTargetAndRequest(service, published);
+  const result = service.completeC029({
+    requestId: 'C028-S001-1',
+    scenarioContext: CONTEXT,
+    status: 'succeeded',
+    objectChecks: [{ id: 'OBJ-CHECK', status: 'passed', evidenceRef: 'OBJ-CHECK-E' }],
+    relationChecks: [],
+    evidenceRefs: ['C029-EVIDENCE-S001']
+  });
+  service.commitT019({
+    scenarioContext: CONTEXT,
+    qualificationId: result.t018.qualificationId,
+    idempotencyKey: 'T019-S001-CONSUMER',
+    gates: { ontology: { status: 'passed', evidenceRefs: ['ONTO-GATE'] }, mapping: { status: 'passed', evidenceRefs: ['MAP-GATE'] } },
+    candidateValidation: {
+      sourceModule: 'M03',
+      semanticVersionId: published.publishedId,
+      dataVersion: 'T007-FINANCE-v1',
+      questionSetVersion: 'S001-FIXED-v1',
+      status: 'passed',
+      completedAt: '2026-08-24T00:00:30.000Z',
+      evidenceRefs: ['M03-CV-S001']
+    }
+  });
+  const consumer = ontology.createC008Consumer(() => [service.readC008({ scenarioContext: CONTEXT })]);
+  const snapshot = consumer.read(CONTEXT);
+  assert.equal(snapshot.readOnly, true);
+  assert.equal(snapshot.current.status, 'current');
+  assert.equal(snapshot.current.lifecycleStatus, 'published');
+  assert.equal(snapshot.current.publicationStatus, 'published');
+  assert.equal(snapshot.current.bindingStatus, 'active');
+  assert.equal(snapshot.current.t019Status, 'active');
+  assert.equal(snapshot.current.semanticVersionId, published.publishedId);
+  assert.equal(snapshot.current.dataVersion, 'T007-FINANCE-v1');
 });
 
 test('hard quality failure without a safe fallback yields failed C008', () => {
@@ -439,6 +483,11 @@ test('a second atomic adoption can roll back to the previous-trusted combination
   assert.equal(rolledBack.status, 'previous-trusted');
   const projection = service.readC008({ scenarioContext: CONTEXT });
   assert.equal(projection.readStatus, 'previous-trusted');
+  assert.equal(projection.current.status, 'current');
+  assert.equal(projection.current.lifecycleStatus, 'published');
+  assert.equal(projection.current.publicationStatus, 'published');
+  assert.equal(projection.current.bindingStatus, 'active');
+  assert.equal(projection.current.t019Status, 'active');
   assert.equal(projection.current.combinationId, first.combinationId);
   assert.equal(discovery.status, 'available');
 });
