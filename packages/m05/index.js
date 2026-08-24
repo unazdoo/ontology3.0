@@ -7,6 +7,7 @@ const security = require('./security');
 const gateway = require('./gateway');
 const audit = require('./audit');
 const report = require('./report');
+const reportPort = require('./report-port');
 const orchestration = require('./orchestration');
 const evaluation = require('./evaluation');
 const checkpoint = require('./checkpoint');
@@ -156,6 +157,7 @@ const api = {
   ...gateway,
   ...audit,
   ...report,
+  ...reportPort,
   ...orchestration,
   ...evaluation,
   ...checkpoint,
@@ -163,6 +165,7 @@ const api = {
   agentRelease: releaseBoundary,
   checkpoint,
   contracts,
+  reportPort,
   util,
   schemas,
   identity

@@ -23,3 +23,13 @@ const chain = store.start(request.requestId, exactAgentRelease);
 `packages/agent-release` is the canonical immutable resource and permission
 boundary. `packages/agent-runtime`, `packages/agent`, and
 `packages/agent-gateway` are compatibility entry points to this implementation.
+
+`createM06ReportPort()` exposes the production-facing M06 adapter. It validates
+and stores C022 generation requests before invoking an injected Agent runner,
+produces the existing C023 source-draft shape, resumes completed generations by
+request identity, and performs extraction-only C024/C025 claim binding. M06
+continues to own T044, HTML/PDF, review/publication and deterministic T049. Each
+runner is bound to an injected exact active Agent Release (including Prompt,
+Skill, Tool, Model, Published ontology, validity and resource whitelist) and a
+fixed port deadline; timed-out or unknown executions cannot be retried
+implicitly.
