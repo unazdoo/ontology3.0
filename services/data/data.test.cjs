@@ -465,6 +465,98 @@ test('C017 decision-center projection is smaller than the general consumer proje
   assert.equal('sourceFields' in read.projection, false);
 });
 
+test('C017 accepts exact stable module identities and preserves the caller identity', () => {
+  const { runtime, asset } = runAndPublish(setup().runtime);
+  const stableConsumers = ['M03', 'M04', 'M05', 'M06'];
+  const minimalKeys = [
+    'affectedScope', 'assetVersionId', 'contractCode', 'contractVersion',
+    'currentQualityStatus', 'discoveredAt', 'evidence', 'formedAt', 'qualityStatus', 'summaryFormedAt',
+    'hardQualityFailure', 'reason', 'recovery', 'scenarioContext',
+    'summaryId', 'summaryVersion', 't007Id', 't008', 'consumer'
+  ].sort();
+  for (const consumer of stableConsumers) {
+    const read = runtime.readC017({
+      assetVersionId: asset.assetVersionId,
+      scenarioContext: CONTEXT,
+      consumer,
+      purpose: `${consumer}-C017-read`,
+      requestedBy: consumer,
+      readId: `stable-${consumer}`
+    });
+    assert.equal(read.consumer, consumer);
+    assert.equal(read.readEvent.consumer, consumer);
+    assert.equal(read.projection.consumer, consumer);
+    assert.equal('members' in read.projection, false);
+    assert.equal('records' in read.projection, false);
+    if (consumer === 'M04') {
+      assert.deepEqual(Object.keys(read.projection).sort(), minimalKeys);
+      assert.equal('quality' in read.projection, false);
+      assert.equal(typeof read.projection.currentQualityStatus, 'string');
+    } else {
+      assert.equal('quality' in read.projection, true);
+      assert.equal('fiveDimensions' in read.projection, true);
+    }
+  }
+});
+
+test('C017 keeps exact business aliases while rejecting unknown or case-folded spellings', () => {
+  const { runtime, asset } = runAndPublish(setup().runtime);
+  for (const [alias, expectedConsumer] of [['m04', 'm04'], ['decision-center', 'decision-center'], ['决策中心', '决策中心'], ['intelligent-query', 'intelligent-query'], ['智能问数', '智能问数']]) {
+    const read = runtime.readC017({
+      assetVersionId: asset.assetVersionId,
+      scenarioContext: CONTEXT,
+      consumer: alias,
+      purpose: 'alias-read',
+      readId: `alias-${encodeURIComponent(alias)}`
+    });
+    assert.equal(read.consumer, expectedConsumer);
+    assert.equal(read.projection.consumer, expectedConsumer);
+    if (alias === 'm04' || alias === 'decision-center' || alias === '决策中心') {
+      assert.equal('quality' in read.projection, false);
+      assert.equal(typeof read.projection.currentQualityStatus, 'string');
+    }
+  }
+  for (const consumer of ['m04x', 'M04x', 'M04 ', 'm03 ', 'M07', 'm07', 'INTELLIGENT-QUERY', '决策中心 ']) {
+    assert.throws(
+      () => runtime.readC017({ assetVersionId: asset.assetVersionId, scenarioContext: CONTEXT, consumer, readId: `rejected-${consumer.length}-${consumer.codePointAt(0)}` }),
+      (error) => error.code === 'CONSUMER_NOT_ALLOWED',
+      consumer
+    );
+  }
+});
+
+test('C017 idempotency binds the exact consumer and cannot reuse another profile', () => {
+  const { runtime, asset } = runAndPublish(setup().runtime);
+  const first = runtime.readC017({
+    assetVersionId: asset.assetVersionId,
+    scenarioContext: CONTEXT,
+    consumer: 'M04',
+    purpose: 'decision-gate',
+    readId: 'consumer-bound-read'
+  });
+  assert.equal(first.projection.consumer, 'M04');
+  assert.throws(
+    () => runtime.readC017({
+      assetVersionId: asset.assetVersionId,
+      scenarioContext: CONTEXT,
+      consumer: 'M03',
+      purpose: 'query',
+      readId: 'consumer-bound-read'
+    }),
+    (error) => error.code === data.ERROR_CODES.IDEMPOTENCY_CONFLICT
+  );
+  assert.throws(
+    () => runtime.readC017({
+      assetVersionId: asset.assetVersionId,
+      scenarioContext: CONTEXT,
+      consumer: 'M04X',
+      purpose: 'decision-gate',
+      readId: 'consumer-bound-read'
+    }),
+    (error) => error.code === 'CONSUMER_NOT_ALLOWED'
+  );
+});
+
 test('C017 rejects unknown consumers instead of widening or silently downgrading the projection', () => {
   const { runtime, asset } = runAndPublish(setup().runtime);
   assert.throws(() => runtime.readC017({ assetVersionId: asset.assetVersionId, scenarioContext: CONTEXT, consumer: 'unregistered-consumer' }), (error) => error.code === 'CONSUMER_NOT_ALLOWED');

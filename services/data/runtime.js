@@ -2296,12 +2296,22 @@ class DataPipelineRuntime {
     const context = requireActiveContext(input.scenarioContext || version.scenarioContext);
     requireExactContext(version.scenarioContext, context, 'C017 read context mismatch');
     const purpose = nonEmpty(input.purpose || input.consumer || 'metadata', 'C017 purpose');
+    const consumer = input.consumer || (['decision-gate', 'decision', 'm04'].includes(purpose) ? 'M04' : 'report');
+    dataContracts.c017ConsumerProfile(consumer);
     const readId = nonEmpty(input.readId || input.requestId || this._id('C017-READ', { purpose, assetVersionId: version.assetVersionId, context }), 'C017 readId');
-    const request = { operation: 'C017-read', readId, purpose, assetVersionId: version.assetVersionId, scenarioContext: context };
+    const request = { operation: 'C017-read', readId, purpose, consumer, assetVersionId: version.assetVersionId, scenarioContext: context };
+    const existingRead = this.c017Reads.get(readId);
+    if (existingRead) {
+      if (existingRead.consumer !== consumer || existingRead.purpose !== purpose
+          || existingRead.assetVersionId !== version.assetVersionId
+          || !sameExactContext(existingRead.scenarioContext, context)) {
+        fail(ERROR_CODES.IDEMPOTENCY_CONFLICT, 'C017 read id identifies a different consumer, purpose, T007 or C033 context', { readId });
+      }
+      return existingRead;
+    }
     const idem = this._rememberIdempotent('c017', input.idempotencyKey || requestKey(request), request, readId);
     if (idem.duplicate) return this._get(this.c017Reads, idem.value, 'C017 read');
     const summaries = this.createC017Summaries({ ...input, scenarioContext: context });
-    const consumer = input.consumer || (['decision-gate', 'decision', 'm04'].includes(purpose) ? 'decision-center' : 'report');
     // Unknown consumers fail closed.  Falling back to a broader projection
     // would turn a caller typo or an unauthorized purpose into an escalation.
     const projection = dataContracts.projectC017(summaries.currentState, consumer, input);
