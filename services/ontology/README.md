@@ -19,6 +19,8 @@ Important boundaries:
   `previous-trusted`; it never falls back to a static pointer.
 - C034 export/validate/clone-restore/isolated-replay/migration-compare are
   exposed by `createM01CheckpointProvider`. Clone restore always targets a new
-  scenario run and starts without an authoritative T019.
+  `restored` scenario run and starts without an authoritative T019. Isolated
+  replay is a separate read-only plan targeting a new `regression` run; it
+  never materializes state and always carries the Foundation side-effect guard.
 
 The module intentionally does not encode Q001-Q004 or create new CRs.

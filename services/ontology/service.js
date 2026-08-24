@@ -2160,13 +2160,14 @@ class OntologyService {
         ...source,
         scenarioRunId: checkpoint.createScenarioRunId(source.scenarioId, { scenarioVersion: source.scenarioVersion, operation: 'isolated-replay' }),
         formedAt: this._now(),
-        status: 'restored'
+        status: 'regression'
       };
     }
     return require('./checkpoint').isolatedReplayModule(this, request);
   }
 
   applyCloneRestore(result) {
+    if (result.mode !== 'clone-restore') fail('REGRESSION_RESTORE_MIXED', 'isolated replay plans cannot be materialized as clone restores');
     if (!result?.restoredState?.scenarioContext) fail('INVALID_RESTORE_INPUT', 'clone restore result is missing a target state');
     const targetContext = assertScenarioContext(result.restoredState.scenarioContext, { write: true });
     if (this.repository.hasScenario(targetContext)) {

@@ -261,9 +261,15 @@ function isolatedState(service, checkpoint, targetContext, mode) {
 function cloneRestoreModule(service, request = {}) {
   const checkpoint = request.checkpoint || request.sourceCheckpoint;
   if (!checkpoint) fail('INVALID_RESTORE_INPUT', 'cloneRestore requires a checkpoint');
-  const targetContext = assertScenarioContext(request.targetScenarioContext || request.scenarioContext, { write: true });
+  const targetContext = assertScenarioContext(request.targetScenarioContext || request.scenarioContext);
+  if (targetContext.status !== 'restored') fail('RESTORED_CONTEXT_REQUIRED', 'cloneRestore requires a restored target C033 status');
   const sourceContext = assertScenarioContext(checkpoint.scenarioContext);
+  if (sourceContext.status === 'regression') fail('REGRESSION_SOURCE_INVALID', 'cloneRestore cannot use a regression run as its source');
   if (targetContext.scenarioRunId === sourceContext.scenarioRunId) fail('SCENARIO_RUN_REUSED', 'clone restore must create a new scenarioRunId');
+  if (targetContext.scenarioId !== sourceContext.scenarioId || targetContext.scenarioVersion !== sourceContext.scenarioVersion) {
+    fail('RESTORE_SCENARIO_MISMATCH', 'clone restore target must remain in the source scenario and version');
+  }
+  assertCheckpointBaseline(checkpoint, request, 'clone-restore');
   const validation = validateModuleCheckpoint(service, checkpoint);
   if (!validation.ok) fail('INVALID_CHECKPOINT', 'M01 checkpoint cannot be restored', validation.errors);
   const restoredState = isolatedState(service, checkpoint, targetContext, 'clone-restore');
@@ -273,6 +279,8 @@ function cloneRestoreModule(service, request = {}) {
     checkpointId: checkpoint.checkpointId,
     sourceScenarioRunId: sourceContext.scenarioRunId,
     targetScenarioRunId: targetContext.scenarioRunId,
+    sourceContextStatus: sourceContext.status,
+    targetContextStatus: targetContext.status,
     scenarioContext: cloneJson(targetContext),
     restoredState,
     currentT019: null,
@@ -285,9 +293,94 @@ function cloneRestoreModule(service, request = {}) {
   };
 }
 
+function assertCheckpointBaseline(checkpoint, request = {}, operation) {
+  const requestedBaselineVersion = request.baselineVersion || request.baseline?.version;
+  const requestedSnapshotId = request.baselineSnapshotId || request.baseline?.snapshotId;
+  if (requestedBaselineVersion && requestedBaselineVersion !== checkpoint.baselineVersion) {
+    fail('BASELINE_MISMATCH', `${operation} baselineVersion does not match the checkpoint`, {
+      expected: checkpoint.baselineVersion,
+      actual: requestedBaselineVersion
+    });
+  }
+  if (requestedSnapshotId && requestedSnapshotId !== checkpoint.baselineSnapshotId) {
+    fail('BASELINE_MISMATCH', `${operation} baselineSnapshotId does not match the checkpoint`, {
+      expected: checkpoint.baselineSnapshotId,
+      actual: requestedSnapshotId
+    });
+  }
+  if (!checkpoint.baselineVersion || !checkpoint.baselineSnapshotId) {
+    fail('BASELINE_MISSING', `${operation} requires checkpoint baseline identity`);
+  }
+}
+
 function isolatedReplayModule(service, request = {}) {
-  const result = cloneRestoreModule(service, request);
-  return { ...result, mode: 'isolated-replay', replayedSideEffects: [], externalCapabilitiesDefault: 'disabled' };
+  const checkpoint = request.checkpoint || request.sourceCheckpoint;
+  if (!checkpoint) fail('INVALID_REPLAY_INPUT', 'isolatedReplay requires a checkpoint');
+  const targetContext = assertScenarioContext(request.targetScenarioContext || request.scenarioContext);
+  const sourceContext = assertScenarioContext(checkpoint.scenarioContext);
+  if (targetContext.status !== 'regression') {
+    fail('REGRESSION_CONTEXT_REQUIRED', 'isolatedReplay requires a regression target C033 status', { status: targetContext.status });
+  }
+  if (sourceContext.status === 'regression') fail('REGRESSION_SOURCE_INVALID', 'isolatedReplay cannot use a regression run as its source');
+  if (targetContext.scenarioRunId === sourceContext.scenarioRunId) fail('SCENARIO_RUN_REUSED', 'isolatedReplay must create a new scenarioRunId');
+  if (targetContext.scenarioId !== sourceContext.scenarioId || targetContext.scenarioVersion !== sourceContext.scenarioVersion) {
+    fail('REGRESSION_SCENARIO_MISMATCH', 'isolatedReplay target must remain in the source scenario and version');
+  }
+  if (request.restoreMode === 'clone-restore' || request.mode === 'clone-restore' || request.applyRestore === true || request.materialize === true) {
+    fail('REGRESSION_RESTORE_MIXED', 'isolatedReplay cannot be combined with clone-restore/materialization options');
+  }
+  assertCheckpointBaseline(checkpoint, request, 'isolated-replay');
+  const validation = validateModuleCheckpoint(service, checkpoint);
+  if (!validation.ok) fail('INVALID_CHECKPOINT', 'M01 checkpoint cannot be replayed', validation.errors);
+
+  // This is deliberately a local plan. It never calls repository.importState,
+  // replaceState, or applyCloneRestore. The active collections are empty and
+  // the source state remains under read-only historical evidence.
+  const replayState = isolatedState(service, checkpoint, targetContext, 'isolated-replay');
+  const guard = foundationCheckpoint.createSideEffectGuard({
+    mode: 'isolated-replay',
+    sourceScenarioRunId: sourceContext.scenarioRunId,
+    targetScenarioRunId: targetContext.scenarioRunId
+  });
+  const forbiddenOperations = Object.freeze([
+    'action-request',
+    'notification',
+    'approval',
+    'todo',
+    'agent-run',
+    'report-publication'
+  ]);
+  return Object.freeze({
+    module: 'M01',
+    mode: 'isolated-replay',
+    replayMode: 'read-only',
+    operationId: `isolated-replay-${targetContext.scenarioRunId}`,
+    checkpointId: checkpoint.checkpointId,
+    sourceScenarioRunId: sourceContext.scenarioRunId,
+    targetScenarioRunId: targetContext.scenarioRunId,
+    sourceContextStatus: sourceContext.status,
+    targetContextStatus: targetContext.status,
+    scenarioContext: immutable(targetContext, 'regression scenario context'),
+    replayState: immutable(replayState, 'isolated replay state'),
+    restoredState: null,
+    currentT019: null,
+    appliedToSource: false,
+    applyRestore: false,
+    writesBusinessState: false,
+    writesM01State: false,
+    writesHistoricalProjection: false,
+    overwritesHistory: false,
+    overwritesSource: false,
+    replayHistoricalSideEffects: false,
+    replayedSideEffects: [],
+    sideEffectsSuppressed: true,
+    externalCapabilitiesDefault: 'disabled',
+    restoreMode: 'isolated-regression',
+    m01RestoreMode: 'isolated-regression',
+    sideEffectPolicy: foundationCheckpoint.SIDE_EFFECT_POLICY,
+    forbiddenOperations,
+    guard
+  });
 }
 
 function migrationCompareModule(service, request = {}) {

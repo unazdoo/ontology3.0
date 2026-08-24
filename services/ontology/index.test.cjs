@@ -499,3 +499,103 @@ test('C034 uses Foundation strict C033 validation after the compatibility merge'
   assert.equal(result.ok, false);
   assert.ok(result.errors.some((error) => error.code === 'UNKNOWN_SCENARIO_CONTEXT_FIELD'));
 });
+
+test('isolatedReplay creates a regression read-only plan without materializing a restore', () => {
+  const service = makeService();
+  const checkpoint = service.exportCheckpoint({ scenarioContext: CONTEXT });
+  const targetContext = { ...CONTEXT, scenarioRunId: 'S001-RUN-M01-REGRESSION', status: 'regression' };
+  const beforeRuns = service.repository.listScenarioContexts();
+  const replay = service.isolatedReplay(checkpoint, { targetScenarioContext: targetContext });
+  assert.equal(replay.mode, 'isolated-replay');
+  assert.equal(replay.replayMode, 'read-only');
+  assert.equal(replay.scenarioContext.status, 'regression');
+  assert.equal(replay.targetScenarioRunId, targetContext.scenarioRunId);
+  assert.equal(replay.sourceContextStatus, 'active');
+  assert.equal(replay.targetContextStatus, 'regression');
+  assert.equal(replay.applyRestore, false);
+  assert.equal(replay.writesM01State, false);
+  assert.equal(replay.restoredState, null);
+  assert.equal(replay.replayState.c008.readStatus, 'empty');
+  assert.equal(replay.replayState.scenarioContext.status, 'regression');
+  assert.equal(replay.overwritesSource, false);
+  assert.equal(replay.overwritesHistory, false);
+  assert.equal(replay.sideEffectsSuppressed, true);
+  assert.deepEqual(replay.replayedSideEffects, []);
+  assert.deepEqual(replay.forbiddenOperations, [
+    'action-request',
+    'notification',
+    'approval',
+    'todo',
+    'agent-run',
+    'report-publication'
+  ]);
+  assert.throws(() => replay.guard.createActionRequest({}), (error) => error.code === 'HISTORICAL_SIDE_EFFECT_REPLAY');
+  assert.throws(() => replay.guard.sendNotification({}), (error) => error.code === 'HISTORICAL_SIDE_EFFECT_REPLAY');
+  assert.throws(() => replay.guard.createApproval({}), (error) => error.code === 'HISTORICAL_SIDE_EFFECT_REPLAY');
+  assert.throws(() => replay.guard.createTodo({}), (error) => error.code === 'HISTORICAL_SIDE_EFFECT_REPLAY');
+  assert.deepEqual(service.repository.listScenarioContexts(), beforeRuns);
+});
+
+test('Foundation C034 isolatedReplay preserves regression status and public side-effect policy', () => {
+  const service = makeService();
+  const checkpoint = service.exportCheckpoint({ scenarioContext: CONTEXT });
+  const provider = ontology.createM01CheckpointProvider(service);
+  const replay = provider.isolatedReplay(checkpoint, {
+    targetScenarioRunId: 'S001-RUN-M01-PROVIDER-REGRESSION',
+    scenarioVersion: CONTEXT.scenarioVersion
+  });
+  assert.equal(replay.mode, 'isolated-replay');
+  assert.equal(replay.scenarioContext.status, 'regression');
+  assert.equal(replay.sideEffectsSuppressed, true);
+  assert.equal(replay.overwritesSource, false);
+  assert.equal(replay.overwritesHistory, false);
+  assert.equal(replay.externalCapabilitiesDefault, 'disabled');
+  assert.equal(replay.m01RestoreMode, 'isolated-regression');
+  assert.equal(service.repository.listScenarioContexts().length, 1);
+  assert.deepEqual(replay.sideEffectPolicy, {
+    allowHistoricalActionRequestReplay: false,
+    allowHistoricalNotificationReplay: false,
+    allowHistoricalApprovalReplay: false,
+    allowHistoricalTodoReplay: false,
+    allowExternalDispatch: false
+  });
+});
+
+test('isolatedReplay rejects wrong status, scenario, baseline, tampering, and restore mixing', () => {
+  const service = makeService();
+  const checkpoint = service.exportCheckpoint({ scenarioContext: CONTEXT });
+  assert.throws(() => service.isolatedReplay(checkpoint, {
+    targetScenarioContext: { ...CONTEXT, scenarioRunId: 'S001-RUN-RESTORED-MIX', status: 'restored' }
+  }), (error) => error.code === 'REGRESSION_CONTEXT_REQUIRED');
+  assert.throws(() => service.cloneRestore(checkpoint, {
+    targetScenarioContext: { ...CONTEXT, scenarioRunId: 'S001-RUN-REGRESSION-MIX', status: 'regression' }
+  }), (error) => error.code === 'RESTORED_CONTEXT_REQUIRED');
+  assert.throws(() => service.isolatedReplay(checkpoint, {
+    targetScenarioContext: { ...CONTEXT, scenarioId: 'S002', scenarioVersion: 'S002-v1', scenarioRunId: 'S002-RUN-REGRESSION', status: 'regression' }
+  }), (error) => error.code === 'REGRESSION_SCENARIO_MISMATCH');
+  assert.throws(() => service.isolatedReplay(checkpoint, {
+    targetScenarioContext: { ...CONTEXT, scenarioRunId: CONTEXT.scenarioRunId, status: 'regression' }
+  }), (error) => error.code === 'SCENARIO_RUN_REUSED');
+  assert.throws(() => service.isolatedReplay(checkpoint, {
+    targetScenarioContext: { ...CONTEXT, scenarioRunId: 'S001-RUN-REGRESSION-BASELINE', status: 'regression' },
+    baselineVersion: 'v0.0.0'
+  }), (error) => error.code === 'BASELINE_MISMATCH');
+  assert.throws(() => service.isolatedReplay(checkpoint, {
+    targetScenarioContext: { ...CONTEXT, scenarioRunId: 'S001-RUN-REGRESSION-TAMPER', status: 'regression' },
+    restoreMode: 'clone-restore'
+  }), (error) => error.code === 'REGRESSION_RESTORE_MIXED');
+  const tampered = JSON.parse(JSON.stringify(checkpoint));
+  tampered.integrity.digest = 'f'.repeat(64);
+  assert.throws(() => service.isolatedReplay(tampered, {
+    targetScenarioContext: { ...CONTEXT, scenarioRunId: 'S001-RUN-REGRESSION-TAMPER-2', status: 'regression' }
+  }), (error) => error.code === 'INVALID_CHECKPOINT');
+});
+
+test('cloneRestore does not accept an isolated regression plan for materialization', () => {
+  const service = makeService();
+  const checkpoint = service.exportCheckpoint({ scenarioContext: CONTEXT });
+  const replay = service.isolatedReplay(checkpoint, {
+    targetScenarioContext: { ...CONTEXT, scenarioRunId: 'S001-RUN-REGRESSION-APPLY', status: 'regression' }
+  });
+  assert.throws(() => service.applyCloneRestore(replay), (error) => error.code === 'REGRESSION_RESTORE_MIXED');
+});
