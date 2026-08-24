@@ -1,6 +1,7 @@
 'use strict';
 
 const identity = require('../../packages/identity');
+const foundation = require('./foundation-compat');
 const { fail } = require('./errors');
 const {
   isRecord,
@@ -548,6 +549,9 @@ function assertC011Request(value) {
 
 function submitC011(requestInput, submitter, seen) {
   const request = buildC011Request(requestInput);
+  const envelope = isRecord(requestInput) && (requestInput.includeEnvelope === true || requestInput.envelopeOptions)
+    ? foundation.createC011Envelope(request, requestInput.envelopeOptions || {})
+    : null;
   const duplicate = identity.identifyDuplicateRequest(request, seen, {
     fields: [
       'contractCode', 'schemaVersion', 'requestId', 'scenarioContext', 'scenarioRunId',
@@ -556,7 +560,7 @@ function submitC011(requestInput, submitter, seen) {
     ]
   });
   if (duplicate.conflict) fail('ERR_C011_IDEMPOTENCY_CONFLICT', 'C011 idempotency key conflicts with another request', duplicate);
-  if (duplicate.duplicate) return { status: 'duplicate', request, receipt: duplicate.existing || null, sideEffectAllowed: false };
+  if (duplicate.duplicate) return { status: 'duplicate', request, ...(envelope ? { envelope } : {}), receipt: duplicate.existing || null, sideEffectAllowed: false };
   if (typeof submitter !== 'function') fail('ERR_C011_SUBMITTER_REQUIRED', 'C011 submission requires an owner API function');
   let response;
   try {
@@ -572,33 +576,38 @@ function submitC011(requestInput, submitter, seen) {
       error: { code: error.code || 'C011_SUBMISSION_UNKNOWN', message: error.message },
       retryAllowed: false,
       queryOriginalRequest: false,
-      sideEffectAllowed: false
+      sideEffectAllowed: false,
+      ...(envelope ? { envelope } : {})
     };
   }
   if (response && typeof response.then === 'function') fail('ERR_C011_ASYNC_SUBMITTER', 'use an async owner API for asynchronous C011 submission');
   if (response === undefined || response === null) return {
     status: 'unknown', conditional: true, request, response: null,
     error: { code: 'C011_EMPTY_RECEIPT', message: 'owner API returned no receipt' },
-    retryAllowed: false, queryOriginalRequest: false, sideEffectAllowed: false
+    retryAllowed: false, queryOriginalRequest: false, sideEffectAllowed: false,
+    ...(envelope ? { envelope } : {})
   };
-  return { status: 'submitted', request, response: clone(response), sideEffectAllowed: true };
+  return { status: 'submitted', request, ...(envelope ? { envelope } : {}), response: clone(response), sideEffectAllowed: true };
 }
 
 async function submitC011Async(requestInput, submitter, seen) {
   const request = buildC011Request(requestInput);
+  const envelope = isRecord(requestInput) && (requestInput.includeEnvelope === true || requestInput.envelopeOptions)
+    ? foundation.createC011Envelope(request, requestInput.envelopeOptions || {})
+    : null;
   const duplicate = identity.identifyDuplicateRequest(request, seen, {
     fields: ['contractCode', 'schemaVersion', 'requestId', 'scenarioContext', 'scenarioRunId', 'sourceResultId', 'targetStableId', 'actionTypeId', 'rule', 'publishedOntologyVersion', 'dataVersion', 't019Id', 't019Version', 't008', 'quality', 'freshness', 'evidenceRefs']
   });
   if (duplicate.conflict) fail('ERR_C011_IDEMPOTENCY_CONFLICT', 'C011 idempotency key conflicts with another request', duplicate);
-  if (duplicate.duplicate) return { status: 'duplicate', request, receipt: duplicate.existing || null, sideEffectAllowed: false };
+  if (duplicate.duplicate) return { status: 'duplicate', request, ...(envelope ? { envelope } : {}), receipt: duplicate.existing || null, sideEffectAllowed: false };
   if (typeof submitter !== 'function') fail('ERR_C011_SUBMITTER_REQUIRED', 'C011 submission requires an owner API function');
   try {
     const response = await submitter(clone(request));
-    if (response === undefined || response === null) return { status: 'unknown', conditional: true, request, response: null, error: { code: 'C011_EMPTY_RECEIPT', message: 'owner API returned no receipt' }, retryAllowed: false, queryOriginalRequest: false, sideEffectAllowed: false };
-    return { status: 'submitted', request, response: clone(response), sideEffectAllowed: true };
+    if (response === undefined || response === null) return { status: 'unknown', conditional: true, request, response: null, error: { code: 'C011_EMPTY_RECEIPT', message: 'owner API returned no receipt' }, retryAllowed: false, queryOriginalRequest: false, sideEffectAllowed: false, ...(envelope ? { envelope } : {}) };
+    return { status: 'submitted', request, ...(envelope ? { envelope } : {}), response: clone(response), sideEffectAllowed: true };
   } catch (error) {
     if (requestInput.throwOnSubmitError === true) throw error;
-    return { status: 'unknown', conditional: true, request, error: { code: error.code || 'C011_SUBMISSION_UNKNOWN', message: error.message }, retryAllowed: false, queryOriginalRequest: false, sideEffectAllowed: false };
+    return { status: 'unknown', conditional: true, request, ...(envelope ? { envelope } : {}), error: { code: error.code || 'C011_SUBMISSION_UNKNOWN', message: error.message }, retryAllowed: false, queryOriginalRequest: false, sideEffectAllowed: false };
   }
 }
 

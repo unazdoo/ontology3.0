@@ -3,6 +3,7 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
 const evidence = require('./evidence');
+const foundation = require('./foundation-compat');
 
 const CONTEXT = Object.freeze({
   scenarioId: 'S001',
@@ -98,6 +99,10 @@ test('C018 separates query definition/display preference and C011 is one standar
   assert.equal(request.targetStableId, 'SUBJECT-1');
   assert.equal(request.createsDecision, false);
   assert.equal(request.createsTodo, false);
+  const enveloped = evidence.submitC011({ result, target: { stableId: 'SUBJECT-1' }, actionType: action, requestId: 'ACTION-ENVELOPE', includeEnvelope: true }, () => ({ requestId: 'EXT-ENVELOPE' }));
+  assert.equal(enveloped.status, 'submitted');
+  assert.equal(foundation.validateM03Envelope(enveloped.envelope, { contractCode: 'C011' }).valid, true);
+  assert.equal(enveloped.envelope.payload.contractCode, 'C011');
   const seen = new Map([[request.idempotencyKey, request]]);
   const duplicate = evidence.submitC011({ result, target: { stableId: 'SUBJECT-1', name: '主体' }, actionType: action, requestId: request.requestId }, () => { throw new Error('must not call owner on duplicate'); }, seen);
   assert.equal(duplicate.status, 'duplicate');

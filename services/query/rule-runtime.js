@@ -11,6 +11,7 @@
  */
 
 const crypto = require('node:crypto');
+const contracts = require('../../packages/contracts');
 
 let identity = null;
 try {
@@ -180,12 +181,22 @@ function hash(value) {
   return crypto.createHash('sha256').update(stable(value), 'utf8').digest('hex');
 }
 
+function contextInput(value) {
+  if (!isRecord(value)) return value;
+  const required = ['scenarioId', 'scenarioVersion', 'scenarioRunId', 'formedAt', 'status'];
+  if (required.some((key) => Object.prototype.hasOwnProperty.call(value, key))) return value;
+  if (isRecord(value.scenarioContext)) return value.scenarioContext;
+  if (isRecord(value.context)) return value.context;
+  return value;
+}
+
 function compareContext(left, right) {
-  const a = left && left.scenarioContext ? left.scenarioContext : left;
-  const b = right && right.scenarioContext ? right.scenarioContext : right;
-  if (identity && typeof identity.compareScenarioContext === 'function') {
-    return identity.compareScenarioContext(a, b, { skipValidation: true });
-  }
+  const a = contextInput(left);
+  const b = contextInput(right);
+  const leftValidation = contracts.validateScenarioContext(a, { allowUnknown: false });
+  const rightValidation = contracts.validateScenarioContext(b, { allowUnknown: false });
+  if (!leftValidation.valid || !rightValidation.valid) return false;
+  if (identity && typeof identity.compareScenarioContext === 'function') return identity.compareScenarioContext(a, b, { skipValidation: true });
   return Boolean(a && b && a.scenarioId === b.scenarioId
     && a.scenarioVersion === b.scenarioVersion && a.scenarioRunId === b.scenarioRunId);
 }
@@ -199,25 +210,21 @@ function contextTriple(context) {
 }
 
 function normalizeScenarioContext(value) {
-  const source = isRecord(value) && isRecord(value.scenarioContext) ? value.scenarioContext : value;
+  const source = contextInput(value);
   if (!isRecord(source)) return source;
-  const context = clone(source);
-  ['scenarioId', 'scenarioVersion', 'scenarioRunId', 'status'].forEach((key) => {
-    if (typeof context[key] === 'string') context[key] = context[key].trim();
-  });
-  return context;
+  try {
+    return contracts.assertScenarioContext(source, { allowUnknown: false });
+  } catch (_error) {
+    // Keep the invalid shape available for the fail-closed diagnostic; the
+    // run gate below returns CONTEXT_INCOMPLETE rather than accepting it.
+    return clone(source);
+  }
 }
 
 function validateScenarioContext(value) {
   const context = normalizeScenarioContext(value);
-  const errors = [];
-  if (!isRecord(context)) return [{ path: 'scenarioContext', code: 'required', message: 'must be an object' }];
-  ['scenarioId', 'scenarioVersion', 'scenarioRunId'].forEach((key) => {
-    if (!text(context[key])) errors.push({ path: `scenarioContext.${key}`, code: 'required', message: 'is required' });
-  });
-  if (!isDate(context.formedAt)) errors.push({ path: 'scenarioContext.formedAt', code: 'required', message: 'must be a timestamp' });
-  if (!text(context.status)) errors.push({ path: 'scenarioContext.status', code: 'required', message: 'is required' });
-  return errors;
+  const result = contracts.validateScenarioContext(context, { allowUnknown: false });
+  return result.valid ? [] : result.errors;
 }
 
 function normalizeToolList(value) {

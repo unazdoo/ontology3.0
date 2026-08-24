@@ -50,9 +50,11 @@ function readStatus(source) {
 }
 
 function adapterContext(value) {
-  return isRecord(value) && (value.scenarioContext || value.context)
-    ? (value.scenarioContext || value.context)
-    : value;
+  if (!isRecord(value)) return value;
+  const required = ['scenarioId', 'scenarioVersion', 'scenarioRunId', 'formedAt', 'status'];
+  if (required.some((key) => Object.prototype.hasOwnProperty.call(value, key))) return value;
+  return isRecord(value.scenarioContext) ? value.scenarioContext
+    : isRecord(value.context) ? value.context : value;
 }
 
 function assertReadableContext(context) {

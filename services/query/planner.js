@@ -195,11 +195,20 @@ function nowIso(clock, explicit) {
   return value;
 }
 
+function contextInput(value) {
+  if (!isRecord(value)) return value;
+  const required = ['scenarioId', 'scenarioVersion', 'scenarioRunId', 'formedAt', 'status'];
+  if (required.some((key) => Object.prototype.hasOwnProperty.call(value, key))) return value;
+  if (isRecord(value.scenarioContext)) return value.scenarioContext;
+  if (isRecord(value.context)) return value.context;
+  return value;
+}
+
 function assertContext(value) {
   try {
-    return identity.assertScenarioContext(value, { allowUnknown: false });
+    return contracts.assertScenarioContext(contextInput(value), { allowUnknown: false, enforcePrefix: true });
   } catch (error) {
-    fail(ERROR_CODES.INVALID_SCENARIO_CONTEXT, error.message, error.errors || null);
+    fail(ERROR_CODES.INVALID_SCENARIO_CONTEXT, error.message, error.errors || error.details || null);
   }
 }
 
@@ -212,7 +221,11 @@ function assertQueryContext(value) {
 }
 
 function sameRun(left, right) {
-  return Boolean(left && right && identity.compareScenarioContext(left, right));
+  const leftContext = contextInput(left);
+  const rightContext = contextInput(right);
+  const leftResult = contracts.validateScenarioContext(leftContext, { allowUnknown: false, enforcePrefix: true });
+  const rightResult = contracts.validateScenarioContext(rightContext, { allowUnknown: false, enforcePrefix: true });
+  return Boolean(leftResult.valid && rightResult.valid && identity.compareScenarioContext(leftContext, rightContext, { skipValidation: true }));
 }
 
 function requireSameRun(expected, actual, code = ERROR_CODES.SCENARIO_CONTEXT_MISMATCH) {

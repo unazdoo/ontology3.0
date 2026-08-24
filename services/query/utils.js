@@ -2,6 +2,7 @@
 
 const crypto = require('node:crypto');
 const identity = require('../../packages/identity');
+const contracts = require('../../packages/contracts');
 const { fail } = require('./errors');
 
 function isRecord(value) {
@@ -75,13 +76,30 @@ function assertDateTime(value, path) {
   return value;
 }
 
+function contextInput(value) {
+  if (!isRecord(value)) return value;
+  const required = ['scenarioId', 'scenarioVersion', 'scenarioRunId', 'formedAt', 'status'];
+  if (required.some((key) => Object.prototype.hasOwnProperty.call(value, key))) return value;
+  if (isRecord(value.scenarioContext)) return value.scenarioContext;
+  if (isRecord(value.context)) return value.context;
+  return value;
+}
+
 function contextTriple(context, path = 'scenarioContext') {
-  if (!isRecord(context)) fail('ERR_QUERY_CONTEXT_REQUIRED', `${path} is required`);
+  const source = contextInput(context);
+  if (!isRecord(source)) fail('ERR_QUERY_CONTEXT_REQUIRED', `${path} is required`);
   let normalized;
   try {
-    normalized = identity.assertScenarioContext(context, { allowUnknown: true });
+    // Foundation's strict C033 boundary is the source of truth for M03. An
+    // extension must be explicitly reconciled; it is never accepted by
+    // default merely because the draft identity helper can carry it.
+    normalized = contracts.assertScenarioContext(source, {
+      path,
+      allowUnknown: false,
+      enforcePrefix: true
+    });
   } catch (error) {
-    fail('ERR_QUERY_CONTEXT_INVALID', `${path} is invalid`, { path, cause: error.code, errors: error.errors });
+    fail('ERR_QUERY_CONTEXT_INVALID', `${path} is invalid`, { path, cause: error.code, errors: error.errors || error.details });
   }
   return {
     scenarioId: normalized.scenarioId,
@@ -93,18 +111,22 @@ function contextTriple(context, path = 'scenarioContext') {
 }
 
 function sameContext(left, right) {
-  return identity.compareScenarioContext(left, right, { skipValidation: true });
+  try {
+    const leftContext = contextTriple(left, 'leftScenarioContext');
+    const rightContext = contextTriple(right, 'rightScenarioContext');
+    return identity.compareScenarioContext(leftContext, rightContext, { skipValidation: true });
+  } catch (_error) {
+    return false;
+  }
 }
 
 function assertSameContext(expected, actual, path = 'scenarioContext') {
-  if (!sameContext(expected, actual)) {
+  const expectedContext = contextTriple(expected, `${path}.expected`);
+  const actualContext = contextTriple(actual, `${path}.actual`);
+  if (!identity.compareScenarioContext(expectedContext, actualContext, { skipValidation: true })) {
     fail('ERR_QUERY_CONTEXT_MISMATCH', `${path} does not match the active scenario run`, {
-      expected: contextTriple(expected),
-      actual: isRecord(actual) ? {
-        scenarioId: actual.scenarioId,
-        scenarioVersion: actual.scenarioVersion,
-        scenarioRunId: actual.scenarioRunId
-      } : null
+      expected: expectedContext,
+      actual: actualContext
     });
   }
 }

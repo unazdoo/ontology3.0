@@ -5,6 +5,7 @@ const config = require('./config');
 const planner = require('./planner');
 const rules = require('./rule-runtime');
 const evidence = require('./evidence');
+const foundation = require('./foundation-compat');
 const { QueryServiceError, fail } = require('./errors');
 const utils = require('./utils');
 
@@ -52,6 +53,12 @@ function createM03Runtime(options = {}) {
     buildC011(input) { return evidence.buildC011Request(input); },
     submitC011(input, submitter, seen) { return evidence.submitC011(input, submitter, seen); },
     submitC011Async(input, submitter, seen) { return evidence.submitC011Async(input, submitter, seen); },
+    createEnvelope(input, envelopeOptions) { return foundation.createM03Envelope(input, envelopeOptions); },
+    createC011Envelope(input, envelopeOptions) { return foundation.createC011Envelope(input, envelopeOptions); },
+    validateEnvelope(input, envelopeOptions) { return foundation.validateM03Envelope(input, envelopeOptions); },
+    createC034Provider(providerOptions) { return foundation.createM03C034Provider(providerOptions); },
+    createCheckpointProvider(providerOptions) { return foundation.createM03C034Provider(providerOptions); },
+    exportCheckpoint(provider, request) { return foundation.exportM03Checkpoint(provider, request); },
     runRules(input, ruleOptions) { return rules.evaluateRun({ ...input, scenarioContext: input?.scenarioContext || context }, ruleOptions); },
     safeRunRules(input, ruleOptions) { return rules.safeEvaluateRun({ ...input, scenarioContext: input?.scenarioContext || context }, ruleOptions); },
     createCandidate(input) { return queryPlanner.createCandidate(input); },
@@ -97,6 +104,9 @@ module.exports = Object.freeze({
   createRuleCandidate: rules.createCandidate,
   validateRuleCandidate: rules.validateCandidate,
   ...evidence,
+  ...foundation,
+  createC034Provider: foundation.createM03C034Provider,
+  exportCheckpoint: foundation.exportM03Checkpoint,
   buildC011: buildC011Compat,
   buildStandardC011: evidence.buildC011Request
 });
