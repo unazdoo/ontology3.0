@@ -75,6 +75,17 @@ test('C017 projection rejects forbidden business content and preserves C033', ()
   assert.throws(() => contract.projectC017({ ...summary, evidence: [{ rows: [{ secret: 1 }] }] }, 'intelligent-query'), (error) => error.code === 'INVALID_C017_EVIDENCE');
 });
 
+test('C017 stable consumer profile mapping is exact and M04 remains minimal', () => {
+  assert.equal(contract.C017_CONSUMER_PROFILES.M03, 'general');
+  assert.equal(contract.C017_CONSUMER_PROFILES.M04, 'decision-center');
+  assert.equal(contract.C017_CONSUMER_PROFILES.M05, 'general');
+  assert.equal(contract.C017_CONSUMER_PROFILES.M06, 'general');
+  assert.equal(contract.C017_CONSUMER_PROFILES['决策中心'], 'decision-center');
+  assert.equal(contract.C017_CONSUMER_PROFILES['m04'], 'decision-center');
+  assert.equal(Object.prototype.hasOwnProperty.call(contract.C017_CONSUMER_PROFILES, 'M04 '), false);
+  assert.equal(Object.prototype.hasOwnProperty.call(contract.C017_CONSUMER_PROFILES, 'INTELLIGENT-QUERY'), false);
+});
+
 test('S003 compatibility contract cannot be promoted or reused', () => {
   const quality = contract.makeQuality({ qualityId: 'T005-s3', status: 'passed', hardFailure: false, checks: [] });
   assert.throws(() => contract.makeAssetVersion({

@@ -242,6 +242,8 @@ test('C017 projection is restricted, five-dimensional, and blocks confirmed post
   runtime.recordPostPublishFinding({ findingId: 'F-1', assetVersionId: asset.assetVersionId, hard: true, status: 'pending', reason: 'late check' });
   runtime.confirmPostPublishFinding('F-1', { confirmedBy: 'user-1' });
   const blocked = runtime.readC017({ assetVersionId: asset.assetVersionId, scenarioContext: context(), purpose: 'decision', requestedBy: 'm04', readId: 'read-blocked' });
+  assert.equal(blocked.consumer, 'M04');
+  assert.equal(blocked.projection.consumer, 'M04');
   assert.equal(blocked.currentStateSummary.currentStateSummary.status, 'data-side-prohibited');
   assert.equal(blocked.projection.currentQualityStatus, 'hard-failed');
   assert.equal(runtime.currentTrusted('T006-ASSET').assetVersionId, asset.assetVersionId, 'historical trusted pointer is not silently rewritten');

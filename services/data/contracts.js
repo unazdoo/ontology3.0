@@ -75,6 +75,37 @@ const FIVE_DIMENSIONS = Object.freeze([
   'replayVerification'
 ]);
 
+// C017 consumer identities are deliberately exact.  Stable module IDs are
+// accepted alongside the historical business aliases, but case-folding or
+// trimming would turn an unknown caller into an authorized one.  The value is
+// the projection family; the caller-supplied identity is retained in output.
+const C017_CONSUMER_PROFILES = Object.freeze({
+  M03: 'general',
+  M04: 'decision-center',
+  M05: 'general',
+  M06: 'general',
+  m03: 'general',
+  m04: 'decision-center',
+  m05: 'general',
+  m06: 'general',
+  ontology: 'general',
+  'intelligent-query': 'general',
+  '智能问数': 'general',
+  '智能问数模块': 'general',
+  'decision-center': 'decision-center',
+  '决策中心': 'decision-center',
+  agent: 'general',
+  report: 'general'
+});
+
+function c017ConsumerProfile(consumer) {
+  const profile = Object.prototype.hasOwnProperty.call(C017_CONSUMER_PROFILES, consumer)
+    ? C017_CONSUMER_PROFILES[consumer]
+    : null;
+  if (!profile) throw new DataContractError('CONSUMER_NOT_ALLOWED', `consumer ${consumer} is not allowed to read C017`);
+  return profile;
+}
+
 const FORBIDDEN_CONSUMER_KEYS = new Set([
   'rows', 'records', 'data', 'rawContent', 'content', 'workbook', 'filePath',
   'sourceFields', 'physicalFields', 'failureSamples', 'samples', 'businessValues',
@@ -593,6 +624,7 @@ function createReadEvent({ eventId, consumer, requester, context, assetVersionId
   if (!text(assetVersionId) || !text(summaryId) || !text(summaryVersion)) {
     throw new DataContractError('INVALID_C017_READ', 'C017 read event must identify the exact T007 and both summary identities');
   }
+  c017ConsumerProfile(consumer);
   const event = {
     eventId: eventId || idFor('C017-READ', [consumer, requester, assetVersionId, summaryId, readAt || 'now']),
     eventType: 'C017_READ',
@@ -639,8 +671,7 @@ function createAsOfConfirmation(value) {
 
 function projectC017(summary, consumer, options = {}) {
   validateC017Summary(summary);
-  const allowedConsumers = new Set(['ontology', 'intelligent-query', 'decision-center', 'agent', 'report', 'm04', 'm03', 'm05', 'm06']);
-  if (!allowedConsumers.has(consumer)) throw new DataContractError('CONSUMER_NOT_ALLOWED', `consumer ${consumer} is not allowed to read C017`);
+  const projectionFamily = c017ConsumerProfile(consumer);
   const strictOptional = (value, fields, name) => {
     if (value !== null && value !== undefined) assertAllowedFields(value, fields, name);
   };
@@ -695,7 +726,7 @@ function projectC017(summary, consumer, options = {}) {
     consistency: clone(summary.consistency || 'unknown')
   };
   assertNoForbiddenKeys(base);
-  if (consumer === 'decision-center' || consumer === 'm04') {
+  if (projectionFamily === 'decision-center') {
     // C011 safety gates receive only the minimum quality projection.
     return deepFreeze({
       contractCode: base.contractCode,
@@ -704,11 +735,13 @@ function projectC017(summary, consumer, options = {}) {
       summaryId: base.summaryId,
       summaryVersion: base.summaryVersion,
       formedAt: base.formedAt,
+      summaryFormedAt: base.formedAt,
       scenarioContext: base.scenarioContext,
       assetVersionId: base.assetVersionId,
       t007Id: base.t007Id,
       t008: base.t008,
       currentQualityStatus: base.quality.status,
+      qualityStatus: base.quality.status,
       hardQualityFailure: Boolean(summary.hardQualityFailure),
       affectedScope: clone(summary.affectedScope || null),
       discoveredAt: summary.discoveredAt || null,
@@ -751,6 +784,8 @@ module.exports = Object.freeze({
   FIVE_DIMENSIONS,
   FORBIDDEN_CONSUMER_KEYS,
   FORBIDDEN_CONSUMER_KEYS_LOWER,
+  C017_CONSUMER_PROFILES,
+  c017ConsumerProfile,
   DataContractError,
   clone,
   deepFreeze,
