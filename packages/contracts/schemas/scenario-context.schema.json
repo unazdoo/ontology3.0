@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontology3.example/contracts/scenario-context/draft-0.1.0",
+  "title": "Foundation Scenario Context (C033)",
+  "description": "Minimum scenario identity carried by every public contract. This is a draft implementation schema, not a final platform contract.",
+  "type": "object",
+  "x-contract-status": "draft",
+  "x-contract-version": "draft-0.1.0",
+  "x-contract-owner": "Foundation / packages/contracts",
+  "x-field-owners": {
+    "scenarioId": "Foundation (identity supplied by scenario owner)",
+    "scenarioVersion": "Foundation (scenario owner declares version)",
+    "scenarioRunId": "Foundation",
+    "formedAt": "Foundation",
+    "status": "Foundation (scenario owner may define lifecycle values)"
+  },
+  "x-field-purposes": {
+    "scenarioId": "Identify the scenario family.",
+    "scenarioVersion": "Identify the scenario definition revision.",
+    "scenarioRunId": "Identify one isolated execution run.",
+    "formedAt": "Record when the context was formed.",
+    "status": "Carry the owner-defined lifecycle status."
+  },
+  "additionalProperties": true,
+  "required": [
+    "scenarioId",
+    "scenarioVersion",
+    "scenarioRunId",
+    "formedAt",
+    "status"
+  ],
+  "properties": {
+    "scenarioId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "description": "Stable scenario identity; must be shared by the version and run identifiers."
+    },
+    "scenarioVersion": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "description": "Scenario definition/version identifier, normally prefixed by scenarioId (for example S001-v1)."
+    },
+    "scenarioRunId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "description": "Unique execution/round identifier, normally prefixed by scenarioId."
+    },
+    "formedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC time at which this context was formed."
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Lifecycle status owned by the scenario/run owner."
+    }
+  }
+}

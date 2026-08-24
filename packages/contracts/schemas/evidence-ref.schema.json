@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontology3.example/contracts/evidence-ref/draft-0.1.0",
+  "title": "Foundation Evidence Reference",
+  "description": "Stable reference to immutable or append-only evidence. The reference is not the evidence payload itself.",
+  "type": "object",
+  "x-contract-status": "draft",
+  "x-contract-version": "draft-0.1.0",
+  "x-contract-owner": "Foundation / packages/contracts",
+  "x-field-owners": {
+    "evidenceType": "Evidence-producing owner",
+    "evidenceId": "Evidence-producing owner",
+    "evidenceVersion": "Evidence-producing owner",
+    "locator": "Evidence-producing owner",
+    "digest": "Evidence-producing owner",
+    "formedAt": "Evidence-producing owner",
+    "owner": "Evidence-producing owner"
+  },
+  "x-field-purposes": {
+    "evidenceType": "Classify the evidence item.",
+    "evidenceId": "Identify the evidence in its owner namespace.",
+    "evidenceVersion": "Pin an optional immutable evidence revision.",
+    "locator": "Provide an optional read-only evidence locator.",
+    "digest": "Bind the evidence reference to an optional fingerprint.",
+    "formedAt": "Record when the evidence was formed.",
+    "owner": "Identify the evidence-producing owner."
+  },
+  "additionalProperties": true,
+  "required": ["evidenceType", "evidenceId"],
+  "properties": {
+    "evidenceType": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "description": "Evidence kind, such as snapshot, validation, receipt, or run-log."
+    },
+    "evidenceId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^\\S+$"
+    },
+    "evidenceVersion": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "description": "Optional immutable evidence version."
+    },
+    "locator": { "type": "string", "minLength": 1, "description": "Optional read-only evidence locator." },
+    "digest": { "type": "string", "minLength": 1, "description": "Optional evidence content fingerprint." },
+    "formedAt": { "type": "string", "format": "date-time", "description": "Evidence formation time." },
+    "owner": { "type": "string", "minLength": 1, "description": "Evidence-producing owner." }
+  }
+}
