@@ -40,6 +40,10 @@ function combinationProjection(combination) {
     dataAsOf: combination.data.t008AsOf,
     asOf: combination.data.t008AsOf,
     status: 'current',
+    lifecycleStatus: 'published',
+    publicationStatus: 'published',
+    bindingStatus: 'active',
+    t019Status: 'active',
     consumptionStatus: 'available',
     switchedAt: combination.switchedAt,
     evidenceRefs: cloneJson(combination.evidenceRefs || []),
@@ -179,6 +183,13 @@ function validateC008Projection(value, expectedContext) {
   verifyIntegrity(value, { label: 'C008 projection', code: 'PROJECTION_CORRUPT' });
   if (['ready', 'previous-trusted'].includes(value.readStatus)) {
     validateCombination(value.current, 'current', context);
+    if (value.current.status !== 'current'
+        || value.current.lifecycleStatus !== 'published'
+        || value.current.publicationStatus !== 'published'
+        || value.current.bindingStatus !== 'active'
+        || value.current.t019Status !== 'active') {
+      fail('PROJECTION_STATUS_MISMATCH', 'current C008 projection fields do not match published/active semantics');
+    }
   } else if (value.current !== null) {
     fail('PROJECTION_STATUS_MISMATCH', `${value.readStatus} C008 projection cannot expose a current consumable combination`);
   }
