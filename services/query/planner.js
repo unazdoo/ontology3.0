@@ -21,7 +21,7 @@ const SOURCE_TAG = 'prototype-v1.1.0-frozen';
 const SCHEMA_VERSIONS = Object.freeze({
   C009: 'ofw.m03.c009.v1',
   C010: 'ofw.m03.c010.v1',
-  C011: 'ofw.m03.c011.request.v1',
+  C011: 'ofw.m03.c011.action-request.v1',
   C018: 'ofw.m03.c018.v1',
   QUERY_PLAN: 'ofw.m03.query-plan.v1',
   QUERY_RUN: 'ofw.m03.query-run.v1',
