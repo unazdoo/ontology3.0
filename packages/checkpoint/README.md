@@ -6,6 +6,11 @@ no module, database, queue, or workflow implementation. The public version is
 Both identifiers are implementation compatibility names under draft contract
 version `draft-0.1.0`; they are not a final platform contract.
 
+Checkpoint C033 validation requires all five context fields and rejects unknown
+context fields by default. An adapter may pass
+`contextOptions: { allowUnknown: true }` only when it owns an explicitly
+reconciled extension.
+
 ```js
 const {
   createProvider,
