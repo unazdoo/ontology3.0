@@ -13,6 +13,7 @@
 const crypto = require('node:crypto');
 const identity = require('../../packages/identity');
 const contracts = require('../../packages/contracts');
+const c011 = require('./c011-contract');
 
 const IMPLEMENTATION_VERSION = 'implementation-0.1.0';
 const BASELINE_SNAPSHOT_ID = 'BSL-OFW-V110-94ABD0E991B7';
@@ -1677,7 +1678,30 @@ class QueryPlanner {
       m03SendsNotification: false
     };
     if (!identity.validateIdempotencyKey(request.idempotencyKey).valid) fail(ERROR_CODES.C011_INVALID, 'C011 idempotency key is invalid');
-    return immutable(request);
+    try {
+      return c011.buildC011Request({
+        ...request,
+        generatedAt: run.result.generatedAt || run.completedAt || request.requestedAt,
+        sourceResultFingerprint: run.result.fingerprint,
+        resultId: run.result.resultId,
+        resultVersion: run.result.resultVersion,
+        semanticVersion: run.result.publishedVersionId || run.result.publishedVersion,
+        publishedOntologyVersion: run.result.publishedVersionId || run.result.publishedVersion,
+        t007: run.result.t007 || run.result.t007Version || run.result.dataVersion,
+        structuredMetrics: run.result.structuredResult.metrics || run.result.structuredResult.metricResults || [],
+        metricEvidenceRefs: (run.result.structuredResult.metrics || []).flatMap((metric) => metric.evidenceRefs || []),
+        ruleEvidenceRefs: rule.evidenceRefs || [],
+        evidenceSnapshotId: run.result.resultId,
+        dataCutoff: isRecord(run.result.t008) ? (run.result.t008.value || run.result.t008.asOf || run.result.t008.dataAsOf) : run.result.t008,
+        resourceWhitelist: run.plan.configuration.resourceAllowlist,
+        configuration: run.plan.configuration,
+        sourceType: 'rule',
+        sourceRef: rule.ruleId
+      });
+    } catch (error) {
+      if (error.code && String(error.code).startsWith('ERR_C011_')) fail(ERROR_CODES.C011_INVALID, error.message, error.details);
+      throw error;
+    }
   }
 
   createCandidate(input) { return this.candidateRegistry.create(input); }

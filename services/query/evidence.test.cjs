@@ -36,7 +36,7 @@ function fact(overrides = {}) {
     structuredResult: {
       rows: [{ resultItemId: 'SUBJECT-1', value: 4.2, unit: '%', evidenceRefs: [{ evidenceType: 'E-Object', evidenceId: 'ROW-E1' }] }],
       metrics: [{ metricId: 'MET-COST', value: 4.2, evidenceRefs: [{ evidenceType: 'E-Metric', evidenceId: 'MET-E1' }] }],
-      rules: [{ ruleId: 'RULE-COST', ruleVersion: '1', status: 'hit', evidenceRefs: [{ evidenceType: 'E-Rule', evidenceId: 'RULE-E1' }] }]
+      rules: [{ ruleId: 'RULE-COST', ruleVersion: '1', status: 'hit', branch: 'hit', evidenceRefs: [{ evidenceType: 'E-Rule', evidenceId: 'RULE-E1' }] }]
     },
     quality: { status: 'passed', evidenceRefs: [{ evidenceType: 'QUALITY', evidenceId: 'Q-E1' }] },
     freshness: { status: 'current', evidenceRefs: [{ evidenceType: 'FRESHNESS', evidenceId: 'F-E1' }] },
@@ -93,7 +93,7 @@ test('C018 separates query definition/display preference and C011 is one standar
   assert.equal(view.contractCode, 'C018');
   assert.deepEqual(view.queryDefinition, { objectId: 'SUBJECT-1', metricId: 'MET-COST' });
   assert.deepEqual(view.displayPreferences, { mode: 'table' });
-  const action = { actionTypeId: 'ACTION-OPTIMIZE', version: 'PUB-S001-v1' };
+  const action = { actionTypeId: 'ACTION-OPTIMIZE', version: 'PUB-S001-v1', status: 'published' };
   const request = evidence.buildC011Request({ result, target: { stableId: 'SUBJECT-1', name: '主体' }, actionType: action });
   assert.equal(request.contractCode, 'C011');
   assert.equal(request.targetStableId, 'SUBJECT-1');
@@ -102,21 +102,21 @@ test('C018 separates query definition/display preference and C011 is one standar
   assert.equal(evidence.validateC011Request(request).valid, true);
   assert.equal(evidence.validateC011Request({ ...request, schemaVersion: 'ofw.m03.c011.request.v1' }).valid, false);
   assert.equal(evidence.validateC011Request({ ...request, scenarioRunId: 'S001-RUN-OTHER' }).valid, false);
-  const enveloped = evidence.submitC011({ result, target: { stableId: 'SUBJECT-1' }, actionType: action, requestId: 'ACTION-ENVELOPE', includeEnvelope: true }, () => ({ requestId: 'EXT-ENVELOPE' }));
+  const enveloped = evidence.submitC011({ result, target: { stableId: 'SUBJECT-1', name: '主体' }, actionType: action, requestId: 'ACTION-ENVELOPE', includeEnvelope: true }, () => ({ requestId: 'EXT-ENVELOPE' }));
   assert.equal(enveloped.status, 'submitted');
   assert.equal(foundation.validateM03Envelope(enveloped.envelope, { contractCode: 'C011' }).valid, true);
   assert.equal(enveloped.envelope.payload.contractCode, 'C011');
   const seen = new Map([[request.idempotencyKey, request]]);
   const duplicate = evidence.submitC011({ result, target: { stableId: 'SUBJECT-1', name: '主体' }, actionType: action, requestId: request.requestId }, () => { throw new Error('must not call owner on duplicate'); }, seen);
   assert.equal(duplicate.status, 'duplicate');
-  assert.throws(() => evidence.submitC011({ result, target: { stableId: 'SUBJECT-2' }, actionType: action, requestId: request.requestId, idempotencyKey: request.idempotencyKey }, () => { throw new Error('must not call owner on conflict'); }, seen), (error) => error.code === 'ERR_C011_IDEMPOTENCY_CONFLICT');
-  const unknown = evidence.submitC011({ result, target: { stableId: 'SUBJECT-1' }, actionType: action, requestId: 'ACTION-UNKNOWN' }, () => { throw Object.assign(new Error('timeout'), { code: 'TIMEOUT' }); });
+  assert.throws(() => evidence.submitC011({ result, target: { stableId: 'SUBJECT-2', name: '另一个主体' }, actionType: action, requestId: request.requestId, idempotencyKey: request.idempotencyKey }, () => { throw new Error('must not call owner on conflict'); }, seen), (error) => error.code === 'ERR_C011_IDEMPOTENCY_CONFLICT');
+  const unknown = evidence.submitC011({ result, target: { stableId: 'SUBJECT-1', name: '主体' }, actionType: action, requestId: 'ACTION-UNKNOWN' }, () => { throw Object.assign(new Error('timeout'), { code: 'TIMEOUT' }); });
   assert.equal(unknown.status, 'unknown');
   assert.equal(unknown.retryAllowed, false);
   const ledger = evidence.createC011Submitter();
   let calls = 0;
-  const submitted = ledger.submit({ result, target: { stableId: 'SUBJECT-1' }, actionType: action, requestId: 'ACTION-LEDGER' }, () => { calls += 1; return { requestId: 'EXT-1' }; });
-  const repeated = ledger.submit({ result, target: { stableId: 'SUBJECT-1' }, actionType: action, requestId: 'ACTION-LEDGER' }, () => { calls += 1; return { requestId: 'EXT-2' }; });
+  const submitted = ledger.submit({ result, target: { stableId: 'SUBJECT-1', name: '主体' }, actionType: action, requestId: 'ACTION-LEDGER' }, () => { calls += 1; return { requestId: 'EXT-1' }; });
+  const repeated = ledger.submit({ result, target: { stableId: 'SUBJECT-1', name: '主体' }, actionType: action, requestId: 'ACTION-LEDGER' }, () => { calls += 1; return { requestId: 'EXT-2' }; });
   assert.equal(submitted.status, 'submitted');
   assert.equal(repeated.status, 'duplicate');
   assert.equal(calls, 1);
