@@ -29,6 +29,13 @@ Set `strictContract: true` at the boundary when the caller requires the full
 C011 evidence checklist (published status, subject name, metric snapshot,
 evidence snapshot, and cutoff) before the request is accepted.
 
+After the Foundation baseline is merged, any envelope-shaped C011 request
+(`payload` present) is checked with strict C033 and exact Foundation
+`draft-0.1.0` compatibility before M04 state changes.  Unknown envelope
+metadata, malformed contexts, and compatibility review/breaking versions are
+rejected.  Direct object calls remain an internal adapter convenience; the
+public `receiveContractEnvelope` path is available for module handoff.
+
 ## State and safety rules
 
 - `requests`, `reminders`, `confirmations`, and `todos` are separate facts in

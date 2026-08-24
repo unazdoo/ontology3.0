@@ -5,6 +5,6 @@
   "description": "Dependency-free v1.1.x Foundation public contracts",
   "scripts": {
     "test": "node --test packages/contracts/test/contracts.test.js packages/identity/index.test.cjs packages/checkpoint/index.test.cjs packages/foundation-contract.test.cjs services/decision/index.test.cjs",
-    "check": "node --check packages/contracts/index.js && node --check packages/contracts/validation.js && node --check packages/identity/index.js && node --check packages/checkpoint/index.js && node --check services/decision/index.js"
+    "check": "node --check packages/contracts/index.js && node --check packages/contracts/validation.js && node --check packages/identity/index.js && node --check packages/checkpoint/index.js && node --check services/decision/foundation-adapter.js && node --check services/decision/index.js"
   }
 }

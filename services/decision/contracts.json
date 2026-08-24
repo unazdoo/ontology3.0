@@ -5,6 +5,12 @@
   "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
   "ownedContracts": ["C011", "C012", "C013", "C019"],
   "consumerContract": "C017",
+  "foundationCompatibility": {
+    "envelopeSchemaVersion": "draft-0.1.0",
+    "checkpointSchemaVersion": "ofw.c034.checkpoint.v1",
+    "scenarioContextUnknownFields": "reject",
+    "schemaChangePolicy": "exact-only"
+  },
   "schemas": {
     "state": "ofw.m04.decision-state.v1",
     "actionRequest": "ofw.m04.c011.action-request.v1",

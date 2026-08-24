@@ -222,17 +222,69 @@ test('common contract envelopes are unwrapped without creating a second request 
   const reader = sequenceReader(['allowed']);
   const decision = service(reader);
   const payload = request({ requestId: 'AR-S001-ENVELOPE' });
-  const result = decision.receiveActionRequest({
+  const result = decision.receiveContractEnvelope({
+    eventId: 'evt-S001-ENVELOPE',
     eventType: 'C011.action-request.submitted',
+    schemaVersion: 'draft-0.1.0',
+    occurredAt: '2026-08-24T09:02:00.000Z',
+    correlationId: 'corr-envelope',
+    traceId: 'trace-envelope',
     idempotencyKey: 'caller-owned-key',
     scenarioContext: context,
     actorRef: 'source-module',
+    resourceRefs: [],
+    evidenceRefs: [],
     payload
   });
   assert.equal(result.outcome, 'accepted');
   assert.equal(result.request.requestId, 'AR-S001-ENVELOPE');
   assert.equal(result.request.callerIdempotencyKey, 'caller-owned-key');
   assert.equal(reader.calls.length, 1);
+});
+
+test('Foundation strict context and envelope mismatches fail closed before C017', () => {
+  const reader = sequenceReader(['allowed', 'allowed', 'allowed']);
+  assert.throws(() => service(reader, { scenarioContext: { ...context, futureField: true } }), (error) => error.code === 'INVALID_SCENARIO_CONTEXT');
+  const decision = service(reader);
+  const baseEnvelope = {
+    eventId: 'evt-S001-STRICT',
+    eventType: 'C011.action-request.submitted',
+    schemaVersion: 'draft-0.1.0',
+    occurredAt: '2026-08-24T09:02:00.000Z',
+    actorRef: 'source-module',
+    correlationId: 'corr-strict',
+    traceId: 'trace-strict',
+    idempotencyKey: 'idem-strict',
+    scenarioContext: context,
+    resourceRefs: [],
+    evidenceRefs: [],
+    payload: request({ requestId: 'AR-S001-STRICT-ENVELOPE' })
+  };
+  const unknown = decision.receiveActionRequest({ ...baseEnvelope, unexpected: true });
+  assert.equal(unknown.outcome, 'contract_rejected');
+  const wrongVersion = decision.receiveActionRequest({ ...baseEnvelope, eventId: 'evt-S001-WRONG', schemaVersion: 'draft-0.1.1' });
+  assert.equal(wrongVersion.outcome, 'contract_rejected');
+  assert.equal(reader.calls.length, 0);
+});
+
+test('M04 Foundation compatibility and envelope helpers are exact and normalized', () => {
+  const reader = sequenceReader(['allowed']);
+  const decision = service(reader);
+  assert.equal(decision.checkFoundationCompatibility('draft-0.1.0').result.status, 'exact');
+  assert.equal(decision.checkFoundationCompatibility('draft-0.1.1').ok, false);
+  const envelope = decision.createContractEnvelope('C011.receipt', { requestId: 'AR-S001-ENVELOPE-HELPER' }, { actorRef: { refType: 'module', refId: 'M03' } });
+  assert.equal(decision.validateContractEnvelope(envelope).valid, true);
+  assert.equal(envelope.schemaVersion, 'draft-0.1.0');
+  assert.equal(envelope.scenarioContext.scenarioRunId, context.scenarioRunId);
+});
+
+test('C017 strict context mismatch blocks the gate without using a cached result', () => {
+  const reader = (query, gate) => c017({ ...query.scenarioContext, futureField: true }, query.t007, gate, 'allowed');
+  const decision = service(reader);
+  const result = decision.receiveActionRequest(request({ requestId: 'AR-S001-C017-STRICT' }));
+  assert.equal(result.outcome, 'blocked');
+  assert.equal(result.request.requestStatus, 'unknown');
+  assert.equal(result.refs.reminder, null);
 });
 
 test('trace/correlation and actor context propagate across the three owned facts', () => {
@@ -325,6 +377,34 @@ test('C034 export/validate/clone restore keeps M04 ledger isolated and does not 
   assert.equal('notifications' in restored.delegateResult, false);
   assert.equal('todos' in restored.delegateResult, false);
   assert.equal('actionRequests' in restored.delegateResult, false);
+});
+
+test('C034 Foundation strict context and exact schema policy reject altered checkpoints', () => {
+  const reader = sequenceReader(['allowed']);
+  const decision = service(reader);
+  const exported = decision.exportCheckpoint({ checkpointId: 'CP-M04-STRICT' });
+  const unknownContext = JSON.parse(JSON.stringify(exported));
+  unknownContext.scenarioContext.futureField = true;
+  assert.equal(decision.validateCheckpoint(unknownContext).ok, false);
+  const wrongSchema = JSON.parse(JSON.stringify(exported));
+  wrongSchema.schemaVersion = 'ofw.c034.checkpoint.v2';
+  assert.equal(decision.validateCheckpoint(wrongSchema).ok, false);
+  const unknownField = JSON.parse(JSON.stringify(exported));
+  unknownField.futureField = true;
+  assert.equal(decision.validateCheckpoint(unknownField).ok, false);
+  assert.throws(() => decision.createCheckpointProvider().cloneRestore(unknownContext), (error) => error.code === 'INVALID_CHECKPOINT');
+});
+
+test('M04 owned state and C011 payload schema changes fail closed', () => {
+  const reader = sequenceReader(['allowed']);
+  assert.throws(() => new DecisionService({
+    scenarioContext: context,
+    c017Reader: reader,
+    initialState: { schemaVersion: 'ofw.m04.decision-state.v2', scenarioContext: context }
+  }), (error) => error.code === 'STATE_SCHEMA_INCOMPATIBLE');
+  const decision = service(reader);
+  assert.throws(() => decision.receiveActionRequest({ ...request({ requestId: 'AR-S001-WRONG-REQUEST-SCHEMA' }), schemaVersion: 'ofw.m04.c011.action-request.v2' }), (error) => error.code === 'REQUEST_SCHEMA_INCOMPATIBLE');
+  assert.equal(reader.calls.length, 0);
 });
 
 test('a shared state store preserves idempotency across service instances', () => {

@@ -22,6 +22,10 @@ gates.  The runtime is in `services/decision/index.js`; the package alias in
 - C034 provider export, validation, clone restore and isolated replay through
   the Foundation checkpoint SPI.  Recovery creates a new run and suppresses
   historical dispatches.
+- Foundation compatibility baseline is consumed at the M04 boundary: strict
+  C033 context validation, exact `draft-0.1.0` Contract Envelope checks, and
+  exact C034 checkpoint compatibility. Unknown fields and schema changes fail
+  closed before any M04 side effect.
 
 ## Deliberately deferred
 

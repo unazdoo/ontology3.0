@@ -13,6 +13,7 @@
 const crypto = require('node:crypto');
 const identity = require('../../packages/identity');
 const checkpoint = require('../../packages/checkpoint');
+const foundation = require('./foundation-adapter');
 
 const SERVICE_VERSION = 'implementation-0.1.0';
 const STATE_SCHEMA_VERSION = 'ofw.m04.decision-state.v1';
@@ -411,9 +412,9 @@ function immutableRequestSource(source) {
 function assertContext(context, expected) {
   let normalized;
   try {
-    normalized = identity.assertScenarioContext(context, { allowUnknown: true });
+    normalized = foundation.assertStrictScenarioContext(context);
   } catch (error) {
-    fail('INVALID_SCENARIO_CONTEXT', 'M04 requires a valid C033 scenario context', { cause: publicError(error) });
+    fail('INVALID_SCENARIO_CONTEXT', 'M04 requires a strict Foundation C033 scenario context', { cause: publicError(error) });
   }
   if (expected && !sameRun(normalized, expected)) {
     fail('SCENARIO_CONTEXT_MISMATCH', 'resource context does not match the active scenario run', {
@@ -473,6 +474,12 @@ function normalizeState(input, context) {
   if (!isObject(input)) fail('INVALID_STATE', 'M04 state must be an object');
   const forbidden = hasForbiddenC017Copy(input, '$');
   if (forbidden.length) fail('C017_COPY_FORBIDDEN', 'M04 state must not contain a C017 projection copy', { paths: forbidden });
+  if (input.schemaVersion !== STATE_SCHEMA_VERSION) {
+    fail('STATE_SCHEMA_INCOMPATIBLE', 'M04 state schema must match the exact registered implementation version', {
+      expected: STATE_SCHEMA_VERSION,
+      actual: input.schemaVersion || null
+    });
+  }
   const state = {
     ...initialState(context),
     ...clone(input),
@@ -481,6 +488,21 @@ function normalizeState(input, context) {
   assertContext(state.scenarioContext, context);
   ['requests', 'reminders', 'confirmations', 'todos', 'notifications', 'receipts', 'activities'].forEach((key) => {
     if (!Array.isArray(state[key])) fail('INVALID_STATE', `${key} must be an array`);
+  });
+  const ownedSchemas = {
+    requests: REQUEST_SCHEMA_VERSION,
+    reminders: REMINDER_SCHEMA_VERSION,
+    confirmations: CONFIRMATION_SCHEMA_VERSION,
+    todos: TASK_SCHEMA_VERSION
+  };
+  Object.entries(ownedSchemas).forEach(([key, expectedSchema]) => {
+    state[key].forEach((record, index) => {
+      if (record?.schemaVersion !== expectedSchema) {
+        fail('STATE_RECORD_SCHEMA_INCOMPATIBLE', `${key}[${index}] schema must match the exact M04 contract version`, {
+          path: `${key}[${index}].schemaVersion`, expected: expectedSchema, actual: record?.schemaVersion || null
+        });
+      }
+    });
   });
   syncStateAliases(state);
   return state;
@@ -521,6 +543,10 @@ function extractProjection(raw, record, gate) {
   if (!envelopeContext || (!envelopeContext.scenarioId && !envelopeContext.scenarioVersion && !envelopeContext.scenarioRunId)) {
     return { outcome: READ_OUTCOMES.UNKNOWN, reason: 'C017 返回缺少场景运行身份' };
   }
+  const strictEnvelopeContext = foundation.strictScenarioContextResult(envelopeContext);
+  if (!strictEnvelopeContext.valid) {
+    return { outcome: READ_OUTCOMES.UNKNOWN, reason: 'C017 场景运行身份未通过 Foundation strict 校验', validationErrors: strictEnvelopeContext.errors };
+  }
   if (envelopeContext && (envelopeContext.scenarioId || envelopeContext.scenarioVersion || envelopeContext.scenarioRunId)
       && !sameRun(envelopeContext, record.scenarioContext)) {
     return { outcome: READ_OUTCOMES.VERSION_CONFLICT, reason: 'C017 返回的场景轮次与请求不一致', conflict: true };
@@ -559,6 +585,12 @@ function extractProjection(raw, record, gate) {
     return { outcome: READ_OUTCOMES.VERSION_CONFLICT, reason: 'C017 返回了不同的数据版本', conflict: true };
   }
   const projectionContext = contextFrom(projection);
+  if (projectionContext && (projectionContext.scenarioId || projectionContext.scenarioVersion || projectionContext.scenarioRunId)) {
+    const strictProjectionContext = foundation.strictScenarioContextResult(projectionContext);
+    if (!strictProjectionContext.valid) {
+      return { outcome: READ_OUTCOMES.UNKNOWN, reason: 'C017 摘要场景身份未通过 Foundation strict 校验', validationErrors: strictProjectionContext.errors };
+    }
+  }
   if (projectionContext && (projectionContext.scenarioId || projectionContext.scenarioVersion || projectionContext.scenarioRunId)
       && !sameRun(projectionContext, record.scenarioContext)) {
     return { outcome: READ_OUTCOMES.VERSION_CONFLICT, reason: 'C017 摘要场景轮次与请求不一致', conflict: true };
@@ -741,12 +773,13 @@ class DecisionService {
 
   _audit(eventType, record, input, refs = {}) {
     const actorRef = valueText(input?.actorRef || input?.actor || input?.submittedBy || input?.operator) || 'm04-system';
-    const traceId = valueText(input?.traceId || input?.traceparent) || `tr-${digest({ eventType, requestId: record?.requestId || record?.id, context: triple(this.context) }, 24)}`;
+    const requestRef = record?.requestId || record?.id || null;
+    const traceId = valueText(input?.traceId || input?.traceparent) || `tr-${digest({ eventType, requestId: requestRef, context: triple(this.context) }, 24)}`;
     const correlationId = valueText(input?.correlationId) || traceId;
     return {
       schemaVersion: RECEIPT_SCHEMA_VERSION,
       eventType,
-      eventId: `EV-${digest({ eventType, traceId, at: this._now(), requestId: record?.requestId || record?.id }, 20).toUpperCase()}`,
+      eventId: `EV-${digest({ eventType, traceId, at: this._now(), requestId: requestRef }, 20).toUpperCase()}`,
       occurredAt: this._now(),
       actorRef,
       traceId,
@@ -761,19 +794,34 @@ class DecisionService {
 
   _normalizeRequest(input) {
     if (!isObject(input)) fail('REQUEST_CONTRACT_INVALID', 'Action Request must be an object');
-    const source = isObject(input.payload)
+    let envelope = null;
+    if (isObject(input.payload)) {
+      try {
+        envelope = foundation.assertContractEnvelope(input);
+      } catch (error) {
+        fail('CONTRACT_ENVELOPE_INVALID', 'M04 requires a strict Foundation Contract Envelope', { cause: publicError(error) });
+      }
+    }
+    const envelopeMetadata = envelope || input;
+    const source = envelope
       ? {
-        ...clone(input.payload),
-        scenarioContext: input.payload.scenarioContext || input.scenarioContext,
-        scenarioIdentity: input.payload.scenarioIdentity || input.scenarioIdentity,
-        traceId: input.payload.traceId || input.traceId,
-        correlationId: input.payload.correlationId || input.correlationId,
-        actorRef: input.payload.actorRef || input.actorRef,
-        evidenceRefs: input.payload.evidenceRefs || input.evidenceRefs
+        ...clone(envelope.payload),
+        scenarioContext: envelope.payload.scenarioContext || envelope.scenarioContext,
+        scenarioIdentity: envelope.payload.scenarioIdentity || envelope.scenarioIdentity,
+        traceId: envelope.payload.traceId || envelope.traceId,
+        correlationId: envelope.payload.correlationId || envelope.correlationId,
+        actorRef: envelope.payload.actorRef || envelope.actorRef,
+        evidenceRefs: envelope.payload.evidenceRefs || envelope.evidenceRefs
       }
       : clone(input);
     const forbidden = hasForbiddenC017Copy(source, '$');
     if (forbidden.length) fail('C017_COPY_FORBIDDEN', 'Action Request must not carry a C017 projection copy', { paths: forbidden });
+    if (source.schemaVersion !== undefined && source.schemaVersion !== REQUEST_SCHEMA_VERSION) {
+      fail('REQUEST_SCHEMA_INCOMPATIBLE', 'C011 Action Request schema must match the exact registered M04 version', {
+        expected: REQUEST_SCHEMA_VERSION,
+        actual: source.schemaVersion
+      });
+    }
     const requestContext = contextFrom(source);
     assertContext(requestContext, this.context);
     if (READ_ONLY_STATUSES.has(String(requestContext.status || '').toLowerCase())
@@ -844,7 +892,7 @@ class DecisionService {
       original: source
     };
     normalized.idempotencyKey = idempotencyKey(normalized);
-    normalized.callerIdempotencyKey = valueText(input.idempotencyKey) || null;
+    normalized.callerIdempotencyKey = valueText(envelopeMetadata.idempotencyKey) || null;
     normalized.contractFingerprint = contractFingerprint(normalized);
     if (problems.length) {
       const error = new DecisionError('REQUEST_CONTRACT_INVALID', 'C011 Action Request contract rejected', { problems });
@@ -1122,6 +1170,39 @@ class DecisionService {
     return normalizeState(clone(this._state), this.context);
   }
 
+  validateContractEnvelope(value) { return foundation.validateContractEnvelope(value); }
+  assertContractEnvelope(value) { return foundation.assertContractEnvelope(value); }
+  checkFoundationCompatibility(sourceVersion, targetVersion = foundation.FOUNDATION_SCHEMA_VERSION) {
+    return foundation.compatibilityResult(sourceVersion, targetVersion);
+  }
+
+  createContractEnvelope(eventType, payload, options = {}) {
+    if (!text(eventType)) fail('INVALID_EVENT_TYPE', 'eventType is required');
+    const traceId = valueText(options.traceId) || `tr-${digest({ eventType, requestId: payload?.requestId || payload?.id, context: triple(this.context) }, 24)}`;
+    const correlationId = valueText(options.correlationId) || traceId;
+    const idempotency = valueText(options.idempotencyKey) || idempotencyKey({
+      scenarioContext: this.context,
+      requestId: payload?.requestId || payload?.id || `event-${digest(payload || {}, 12)}`,
+      semanticVersion: payload?.semanticVersion || payload?.evidence?.semanticVersion || 'none',
+      dataVersion: payload?.dataVersion || payload?.evidence?.dataVersion || 'none'
+    });
+    const envelope = {
+      eventId: valueText(options.eventId) || `EVT-${digest({ eventType, traceId, at: this._now(), payload }, 20).toUpperCase()}`,
+      eventType,
+      schemaVersion: foundation.FOUNDATION_SCHEMA_VERSION,
+      occurredAt: valueText(options.occurredAt) || this._now(),
+      actorRef: options.actorRef || 'm04-system',
+      correlationId,
+      traceId,
+      idempotencyKey: idempotency,
+      scenarioContext: clone(this.context),
+      resourceRefs: Array.isArray(options.resourceRefs) ? clone(options.resourceRefs) : [],
+      evidenceRefs: Array.isArray(options.evidenceRefs) ? clone(options.evidenceRefs) : [],
+      payload: clone(payload)
+    };
+    return foundation.assertContractEnvelope(envelope);
+  }
+
   receiveActionRequest(input, options = {}) {
     if (this.readerIsAsync && options.allowAsync !== false) return this.receiveActionRequestAsync(input, options);
     this._assertWritable();
@@ -1151,22 +1232,22 @@ class DecisionService {
         if (options.throwOnConflict) throw error;
         return this._result({ ok: false, status: 'rejected', outcome: 'conflict', conflict: true, receipt, refs: receipt.resourceRefs, effects: receipt.sideEffects, error: publicError(error) });
       }
-      if (error instanceof DecisionError && error.code === 'C017_COPY_FORBIDDEN' && isObject(input)) {
+      if (error instanceof DecisionError && ['C017_COPY_FORBIDDEN', 'CONTRACT_ENVELOPE_INVALID'].includes(error.code) && isObject(input)) {
         const receipt = {
           schemaVersion: RECEIPT_SCHEMA_VERSION,
           kind: 'receive',
           outcome: 'contract_rejected',
           status: 'rejected',
-          requestId: valueText(input.requestId || input.id || input.actionRequestId) || null,
+          requestId: valueText(input.requestId || input.id || input.actionRequestId || input.payload?.requestId || input.payload?.id || input.payload?.actionRequestId) || null,
           idempotencyKey: null,
           scenarioContext: clone(this.context),
           occurredAt: this._now(),
           reason: error.message,
-          problems: clone(error.details?.paths || []),
+          problems: clone(error.details?.paths || error.details?.errors || error.details?.cause?.details?.errors || []),
           resourceRefs: { request: null, reminder: null, confirmation: null, task: null, trace: null },
           sideEffects: { requests: 0, reminders: 0, confirmations: 0, tasks: 0, notifications: 0 }
         };
-        this._commit((state) => { this._appendReceipt(state, receipt); this._appendActivity(state, 'C011_C017_COPY_REJECTED', { requestId: receipt.requestId }, input, {}); });
+        this._commit((state) => { this._appendReceipt(state, receipt); this._appendActivity(state, error.code === 'C017_COPY_FORBIDDEN' ? 'C011_C017_COPY_REJECTED' : 'C011_ENVELOPE_REJECTED', { requestId: receipt.requestId }, input, {}); });
         return this._result({ ok: false, status: 'rejected', outcome: 'contract_rejected', receipt, error: publicError(error), refs: receipt.resourceRefs, effects: receipt.sideEffects });
       }
       if (error instanceof DecisionError && error.normalized && options.persistInvalid !== false) {
@@ -1300,6 +1381,10 @@ class DecisionService {
   receive(input, options = {}) { return this.receiveActionRequest(input, options); }
   submitActionRequest(input, options = {}) { return this.receiveActionRequest(input, options); }
   ingestActionRequest(input, options = {}) { return this.receiveActionRequest(input, options); }
+  receiveContractEnvelope(envelope, options = {}) {
+    foundation.assertContractEnvelope(envelope);
+    return this.receiveActionRequest(envelope, options);
+  }
   receiveActionRequestOrThrow(input, options = {}) {
     const result = this.receiveActionRequest(input, { ...options, throwOnConflict: true });
     if (result && result.ok === false && result.error) fail(result.error.code || 'C011_REJECTED', result.error.message, result.error.details);
@@ -2155,7 +2240,7 @@ class DecisionService {
   export(options = {}) { return this.exportCheckpoint(options); }
 
   validateCheckpoint(value) {
-    const structural = checkpoint.validateCheckpoint(value, { requireSchemaVersion: true });
+    const structural = foundation.validateCheckpoint(value);
     const errors = [...structural.errors];
     if (value?.moduleId !== 'M04') errors.push({ code: 'MODULE_MISMATCH', path: 'moduleId', message: 'checkpoint moduleId must be M04' });
     const context = value?.scenarioContext;
@@ -2163,6 +2248,9 @@ class DecisionService {
       errors.push({ code: 'SCENARIO_CONTEXT_MISMATCH', path: 'scenarioContext', message: 'checkpoint belongs to a different scenario run' });
     }
     if (!value?.m04Ledger || !Array.isArray(value.m04Ledger.entries)) errors.push({ code: 'MISSING_M04_LEDGER', path: 'm04Ledger.entries', message: 'M04 checkpoint ledger is required' });
+    if (value?.m04Ledger?.schemaVersion && value.m04Ledger.schemaVersion !== STATE_SCHEMA_VERSION) {
+      errors.push({ code: 'M04_LEDGER_SCHEMA_INCOMPATIBLE', path: 'm04Ledger.schemaVersion', message: 'M04 ledger schema must match the exact registered version' });
+    }
     const forbidden = hasForbiddenC017Copy(value, '$');
     if (forbidden.length) errors.push({ code: 'C017_COPY_FORBIDDEN', path: '$', message: 'checkpoint must not contain a C017 projection copy', details: { paths: forbidden } });
     return { ok: errors.length === 0, valid: errors.length === 0, errors };
@@ -2291,6 +2379,10 @@ function restoreFromCheckpoint(source, options = {}) {
   if (source.moduleId !== 'M04') fail('MODULE_MISMATCH', 'checkpoint moduleId must be M04');
   const forbidden = hasForbiddenC017Copy(source, '$');
   if (forbidden.length) fail('C017_COPY_FORBIDDEN', 'checkpoint contains a forbidden C017 copy', { paths: forbidden });
+  foundation.assertCheckpoint(source);
+  if (!source.m04Ledger || source.m04Ledger.schemaVersion !== STATE_SCHEMA_VERSION || !Array.isArray(source.m04Ledger.entries)) {
+    fail('INVALID_CHECKPOINT', 'M04 checkpoint ledger is missing or uses an incompatible schema');
+  }
   const plan = checkpoint.cloneRestore(source, {
     ...options,
     runIdFactory: options.runIdFactory || ((scenarioId, details) => `${scenarioId}-RUN-${details.operation || 'restore'}-${digest({ source: source.checkpointId || null, at: Date.now() }, 12)}`)
