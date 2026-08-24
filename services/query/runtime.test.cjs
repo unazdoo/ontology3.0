@@ -18,7 +18,8 @@ function fixtures() {
     schemaVersion: '1',
     readStatus: 'ready',
     scenarioContext: CONTEXT,
-    t019: { bindingId: 'T019-1', publishedOntologyVersion: 'PUB-1', dataVersion: 'DATA-1', t007Id: 'DATA-1', evidenceRefs: [{ evidenceType: 'T019', evidenceId: 'T019-E1' }] },
+    current: { status: 'current', lifecycleStatus: 'published', bindingStatus: 'active', t019Id: 'T019-1', publishedOntologyVersion: 'PUB-1', dataVersion: 'DATA-1', t007Id: 'DATA-1', dataAsOf: '2026-08-23', evidenceRefs: [{ evidenceType: 'T019', evidenceId: 'T019-E1' }] },
+    t019: { bindingId: 'T019-1', status: 'active', lifecycleStatus: 'active', publishedOntologyVersion: 'PUB-1', dataVersion: 'DATA-1', t007Id: 'DATA-1', evidenceRefs: [{ evidenceType: 'T019', evidenceId: 'T019-E1' }] },
     publishedOntology: { version: 'PUB-1', status: 'PUBLISHED', resourceRefs: [{ resourceId: 'MET-COST', kind: 'Metric' }] },
     t008: { id: 'T008-1', value: '2026-08-23', evidenceRefs: [{ evidenceType: 'T008', evidenceId: 'T008-E1' }] }
   };

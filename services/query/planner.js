@@ -328,11 +328,28 @@ function normalizeC008(value, expectedContext) {
     fail(code, `C008 is not consumable (${readStatus || 'unknown'})`, { readStatus, reason: source.reason || null });
   }
   const current = source.current || {};
-  const bindingStatus = String(current.bindingStatus || current.t019Status || '').toLowerCase();
-  if (bindingStatus && ['failed', 'unknown', 'pending', 'processing', 'rejected'].includes(bindingStatus)) {
-    fail(ERROR_CODES.UNKNOWN_STATE, 'T019 binding state is not authoritative', { status: bindingStatus });
+  const binding = current.t019 || source.t019 || source.authoritativeBinding || source.consumptionBinding || {};
+  const bindingStatus = String(
+    firstText(current, ['bindingStatus', 't019Status', 'bindingLifecycleStatus'])
+      || firstText(binding, ['lifecycleStatus', 'publicationStatus', 'bindingStatus', 'status', 'state'])
+      || firstText(source, ['bindingStatus', 't019Status'])
+      || ''
+  ).toLowerCase();
+  const activeBindingStates = ['active', 'adopted', 'ready', 'published', 'succeeded', 'previous-trusted'];
+  if (!activeBindingStates.includes(bindingStatus)) {
+    fail(ERROR_CODES.C008_NOT_READY, 'T019 binding lifecycle is missing or not active', { status: bindingStatus || null });
   }
-  const semanticLifecycle = String(current.status || current.lifecycleStatus || source.publicationStatus || 'PUBLISHED').toLowerCase();
+  // `current.status` is the pointer state (normally "current"), not the
+  // Published semantic lifecycle. Only authoritative lifecycle fields count.
+  const semanticLifecycle = String(
+    firstText(current, ['lifecycleStatus', 'publicationStatus'])
+      || firstText(source, ['publicationStatus'])
+      || firstText(source.publishedOntology, ['lifecycleStatus', 'publicationStatus', 'status'])
+      || ''
+  ).toLowerCase();
+  if (!semanticLifecycle) {
+    fail(ERROR_CODES.C008_NOT_READY, 'C008 semantic lifecycle is missing; pointer status cannot establish Published truth', { pointerStatus: current.status || null });
+  }
   if (!['published', 'published-results', 'active', 'ready'].includes(semanticLifecycle)) {
     fail(ERROR_CODES.C008_NOT_READY, 'C008 does not point to an active Published semantic version', { status: semanticLifecycle });
   }
@@ -345,7 +362,8 @@ function normalizeC008(value, expectedContext) {
   const t008 = firstValue(current, ['dataAsOf', 'asOf', 't008'])
     || firstValue(source, ['dataAsOf', 'dataAsOfTime', 'asOf', 't008']);
   const t019Id = firstText(current, ['t019Id', 'publishedPointer']) || firstText(source, ['publishedPointer', 't019Id']);
-  if (!token(semanticVersionId) || !token(publishedVersion) || !token(dataVersion) || !token(t019Id)) {
+  const t007Id = firstText(current, ['t007Id', 't006Id', 'dataAssetId']) || firstText(source, ['t007Id', 't006Id', 'dataAssetId']) || dataVersion;
+  if (!token(semanticVersionId) || !token(publishedVersion) || !token(dataVersion) || !token(t019Id) || !token(t007Id) || !token(t008)) {
     fail(ERROR_CODES.C008_VERSION_MISSING, 'C008 ready projection must pin Published, T019 and exact T007 data version');
   }
   return immutable({
@@ -364,6 +382,7 @@ function normalizeC008(value, expectedContext) {
       publishedSemanticVersion: publishedVersion,
       dataVersion,
       consumableDataVersion: dataVersion,
+      t007Id,
       dataAsOf: t008 === null || t008 === undefined ? null : String(t008),
       t008: t008 === null || t008 === undefined ? null : String(t008),
       t006Id: firstText(current, ['t006Id', 'assetId']) || firstText(source, ['t006Id', 'assetId']),
