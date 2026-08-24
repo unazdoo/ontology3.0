@@ -17,6 +17,7 @@ const {
   nowIso
 } = require("./utils");
 const { assertFoundationCompatibility, assertStrictScenarioContext } = require("./boundary");
+const { assertStoredC019Reference, assertStoredC019ReadReceipt } = require("./decision-summary");
 
 const M06_CHECKPOINT_EXPORT_SCHEMA_VERSION = "ofw.m06.c034-export.v1";
 const M06_RESTORE_RECEIPT_SCHEMA_VERSION = "ofw.m06.c034-clone-restore-receipt.v1";
@@ -62,7 +63,7 @@ function filterStoreState(state, scenarioContext) {
 function exportCounts(moduleState) {
   const names = [
     "reportDefinitions", "reportTemplates", "fixedViews", "dashboardDefinitions", "dashboardVersions",
-    "generationRequests", "c022Requests", "evidencePacks", "sourceDrafts", "contentVersions", "anchors",
+    "generationRequests", "c019References", "c019ReadReceipts", "c022Requests", "evidencePacks", "sourceDrafts", "contentVersions", "anchors",
     "verificationExtractions", "verificationRuns", "comparisons", "comparisonAttempts", "comparisonStaleness", "qualityWarnings", "artifacts",
     "fixedReportContexts", "c024Requests", "c024Handoffs", "c025References", "copilotReadbacks"
   ];
@@ -72,6 +73,33 @@ function exportCounts(moduleState) {
 function exportHash(moduleExport) {
   const { contentHash: _ignored, ...hashable } = moduleExport;
   return sha256(hashable);
+}
+
+function validateC019Collections(state, scenarioContext, errors) {
+  const validReferences = new Map();
+  Object.entries(state.collections.c019References || {}).forEach(([id, value]) => {
+    try {
+      const reference = assertStoredC019Reference(value, scenarioContext);
+      if (reference.referenceId !== id) throw Object.assign(new Error("C019 reference key mismatch"), { code: "C019_STORED_REFERENCE_INVALID" });
+      validReferences.set(id, reference);
+    } catch (error) {
+      errors.push({ code: error.code || "C019_STORED_REFERENCE_INVALID", path: `moduleExport.state.collections.c019References.${id}`, message: error.message });
+    }
+  });
+  Object.entries(state.collections.c019ReadReceipts || {}).forEach(([id, value]) => {
+    const referenceId = value?.referenceRef?.referenceId;
+    const reference = validReferences.get(referenceId);
+    if (!reference) {
+      errors.push({ code: "C019_STORED_REFERENCE_MISSING", path: `moduleExport.state.collections.c019ReadReceipts.${id}.referenceRef`, message: "C019 receipt reference is missing or invalid" });
+      return;
+    }
+    try {
+      const receipt = assertStoredC019ReadReceipt(value, reference, scenarioContext);
+      if (receipt.receiptId !== id) throw Object.assign(new Error("C019 receipt key mismatch"), { code: "C019_STORED_RECEIPT_INVALID" });
+    } catch (error) {
+      errors.push({ code: error.code || "C019_STORED_RECEIPT_INVALID", path: `moduleExport.state.collections.c019ReadReceipts.${id}`, message: error.message });
+    }
+  });
 }
 
 function createM06Checkpoint(input) {
@@ -92,7 +120,7 @@ function createM06Checkpoint(input) {
     exportedAt: input.exportedAt || nowIso(input.clock),
     state: moduleState,
     recordCounts: exportCounts(moduleState),
-    includes: ["report-definitions", "templates", "C018-references", "dashboards", "C022-C023", "C024-C025-references", "T044", "T049", "C027", "HTML-PDF", "quality-warnings"],
+    includes: ["report-definitions", "templates", "C018-references", "C019-read-references", "dashboards", "C022-C023", "C024-C025-references", "T044", "T049", "C027", "HTML-PDF", "quality-warnings"],
     immutable: true
   };
   moduleExport.contentHash = exportHash(moduleExport);
@@ -142,9 +170,11 @@ function validateM06Checkpoint(value) {
     }
     if (moduleExport.checkpointSpiVersion !== checkpoint.PROVIDER_SPI_VERSION) errors.push({ code: "C034_SPI_VERSION_MISMATCH", path: "moduleExport.checkpointSpiVersion", message: "checkpoint SPI version mismatch" });
     if (moduleExport.checkpointSchemaVersion !== checkpoint.CHECKPOINT_SCHEMA_VERSION) errors.push({ code: "C034_SCHEMA_VERSION_MISMATCH", path: "moduleExport.checkpointSchemaVersion", message: "checkpoint schema version mismatch" });
-    try { normalizeState(moduleExport.state); } catch (error) {
+    let normalizedState = null;
+    try { normalizedState = normalizeState(moduleExport.state); } catch (error) {
       errors.push({ code: "M06_STATE_INVALID", path: "moduleExport.state", message: error.message });
     }
+    if (normalizedState) validateC019Collections(normalizedState, moduleExport.scenarioContext, errors);
     const expectedHash = exportHash(moduleExport);
     if (moduleExport.contentHash !== expectedHash) {
       errors.push({ code: "M06_EXPORT_HASH_MISMATCH", path: "moduleExport.contentHash", message: "module export content hash does not match" });

@@ -1,8 +1,8 @@
 # M06 Report Center
 
 `packages/report` is the storage- and framework-agnostic M06 implementation
-for C018, C022/C023, T044/T049, C027, report/dashboard persistence and C034
-module recovery.
+for C018, the M04-owned C019 read boundary, C022/C023, T044/T049, C027,
+report/dashboard persistence and C034 module recovery.
 
 `definition.js` contains the managed production contracts. `template.js`
 retains a small renderer-compatible normalization API for callers using the
@@ -13,6 +13,32 @@ uses strict C033 validation and rejects envelope/schema/context mismatches.
 `ReportService({ requireContractEnvelopes: true })` closes inbound M01/M02/M05
 responses to that envelope. The raw-object ports used by `service.test.cjs`
 are module fixtures only and are not Provider/Consumer integration evidence.
+
+`decision-summary.js` is the official M06 consumer for M04 C019. M04's real
+API returns a raw `ofw.m04.c019.read-model.v1` projection through
+`readC019()`/`getC019Summary()`; it does not return a Foundation Envelope or
+native C019 owner/version/idempotency fields. `createM04DecisionPort(owner)`
+binds that API, and `ReportService.receiveC019(input)` validates exact C033,
+`moduleId: M04`, known statuses, read-only navigation and stable request,
+reminder, decision, task and trace entries. M06 derives the immutable source
+version from `schemaVersion + stateRevision` and stores only:
+
+- `c019References`: M04-owned resource identifiers, exact semantic/data/T007
+  and data-cutoff references, safe stable detail entries and a stable evidence
+  locator;
+- `c019ReadReceipts`: M06 trace/correlation/idempotency, source formation time,
+  separate read time and the safe filter/return context.
+
+Action Type, Rule, Metric, task/decision business details and write capability
+are validated or discarded, never copied into M06 state. Same idempotency and
+source version returns `duplicate`; a changed request, version, owner, run or
+unrecognized/unresolved status fails closed. `readStoredC019()` reads the
+historical reference/receipt pair. `createC019EvidenceItem()` creates a
+governed `decision-summary` result reference for the normal C022 evidence-pack
+path. Its data cutoff must exactly match the fixed report T008; receipt alone
+never means report generation succeeded. A browser
+back-link must call `receiveC019()` again with a new read idempotency key rather
+than treating `readStoredC019()` as current M04 state.
 
 `copilot.js` is the official M06 C024/C025 adapter. The service APIs are:
 
@@ -64,9 +90,10 @@ old content or T049.
 
 `createM06CheckpointProvider()` implements the Foundation C034 SPI. Exports
 include report definitions/templates, C018 snapshots, dashboards, C022/C023,
-T044/T049, C027 and artifacts. Clone restore creates a new scenario run and
-keeps historical state read-only; it never replays side effects or auto-runs
-publication, recalculation or comparison.
+M04-owned C019 references/M06 read receipts, T044/T049, C027 and artifacts.
+Clone restore creates a new scenario run and keeps historical state read-only;
+it never replays side effects or auto-runs publication, recalculation or
+comparison.
 
 C034 exports also contain FixedReportContext, C024 handoff receipts, C025
 stable references and readback receipts. They remain historical/read-only on

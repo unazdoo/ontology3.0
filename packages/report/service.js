@@ -61,6 +61,13 @@ const {
   buildC025ReadEnvelope,
   expectedC025Context
 } = require("./copilot");
+const {
+  prepareC019Read,
+  acceptC019Summary,
+  buildC019EvidenceItem: buildDecisionSummaryEvidenceItem,
+  assertStoredC019Reference,
+  assertStoredC019Pair
+} = require("./decision-summary");
 
 const SERVICE_SCHEMA_VERSION = "ofw.m06.report-service.v1";
 const GENERATION_INTENT_SCHEMA_VERSION = "ofw.m06.report-generation-intent.v1";
@@ -95,6 +102,7 @@ class ReportService {
     this.c017Provider = options.c017Provider;
     this.m05Port = options.m05Port;
     this.m05CopilotPort = options.m05CopilotPort || options.m05Port;
+    this.m04DecisionPort = options.m04DecisionPort || options.decisionSummaryPort;
     this.authorizationPort = options.authorizationPort;
     this.clock = options.clock;
     this.idFactory = options.idFactory;
@@ -171,6 +179,84 @@ class ReportService {
     return this.store.appendMany([
       { collection: "fixedViews", id: snapshot.snapshotId, record: snapshot }
     ], pointerValue ? [{ namespace: "fixedViews", key: snapshot.viewId, value: pointerValue }] : [])[0];
+  }
+
+  async receiveC019(input) {
+    const prepared = prepareC019Read(input);
+    const read = requirePort(this.m04DecisionPort, "readC019", "M04");
+    const raw = await read({
+      scenarioContext: prepared.scenarioContext,
+      returnContext: prepared.returnContext
+    });
+    if (!raw) fail("C019_READ_UNAVAILABLE", "M04 did not return a C019 summary");
+    const accepted = acceptC019Summary(raw, { ...prepared, readAt: this._now() });
+    const storedReference = this.store.get("c019References", accepted.reference.referenceId);
+    const existingReference = storedReference ? assertStoredC019Reference(storedReference, prepared.scenarioContext) : null;
+    if (existingReference && existingReference.contentHash !== accepted.reference.contentHash) {
+      fail("C019_IMMUTABLE_VERSION_CONFLICT", "M04 returned different C019 references for the same source version", {
+        referenceId: accepted.reference.referenceId,
+        sourceVersion: accepted.reference.version
+      });
+    }
+    const existingReceipts = this.store.list("c019ReadReceipts", (receipt) => (
+      receipt.idempotencyKey === prepared.idempotencyKey
+      && sameScenarioRun(receipt.scenarioContext, prepared.scenarioContext)
+    ));
+    if (existingReceipts.length > 1) fail("C019_IDEMPOTENCY_STATE_INVALID", "multiple C019 read receipts share one idempotency key");
+    if (existingReceipts.length === 1) {
+      const existingReceipt = existingReceipts[0];
+      if (existingReceipt.requestFingerprint !== accepted.receipt.requestFingerprint) {
+        fail("C019_IDEMPOTENCY_CONFLICT", "C019 idempotency key was reused for another read request");
+      }
+      if (existingReceipt.referenceRef.version !== accepted.reference.version) {
+        fail("C019_IDEMPOTENCY_CONFLICT", "C019 idempotency key was reused for another source version", {
+          expected: existingReceipt.referenceRef.version,
+          actual: accepted.reference.version
+        });
+      }
+      const reference = existingReference || this.store.get("c019References", existingReceipt.referenceRef.referenceId);
+      if (!reference) fail("C019_STORED_REFERENCE_MISSING", "C019 read receipt points to a missing immutable reference");
+      const stored = assertStoredC019Pair(reference, existingReceipt, prepared.scenarioContext);
+      return immutableJson({ status: "duplicate", outcome: "duplicate", duplicate: true, ...stored });
+    }
+    const entries = [];
+    if (!existingReference) entries.push({ collection: "c019References", id: accepted.reference.referenceId, record: accepted.reference });
+    entries.push({ collection: "c019ReadReceipts", id: accepted.receipt.receiptId, record: accepted.receipt });
+    this.store.appendMany(entries);
+    return immutableJson({
+      status: "received",
+      outcome: "received",
+      duplicate: false,
+      reference: existingReference || accepted.reference,
+      receipt: accepted.receipt
+    });
+  }
+
+  readStoredC019(input) {
+    const request = typeof input === "string" ? { receiptId: input } : input;
+    assertObject(request, "stored C019 read input");
+    assertAllowedKeys(request, ["receiptId", "scenarioContext"], "stored C019 read input");
+    const receiptId = assertString(request.receiptId, "C019 receiptId");
+    const receipt = this.store.get("c019ReadReceipts", receiptId);
+    if (!receipt) return null;
+    if (request.scenarioContext) assertScenarioRun(receipt.scenarioContext, request.scenarioContext, "stored C019 scenarioContext");
+    const reference = this.store.get("c019References", receipt.referenceRef.referenceId);
+    if (!reference || reference.version !== receipt.referenceRef.version) {
+      fail("C019_STORED_REFERENCE_MISSING", "C019 read receipt points to a missing or mismatched immutable reference");
+    }
+    return assertStoredC019Pair(reference, receipt, request.scenarioContext || null);
+  }
+
+  createC019EvidenceItem(input) {
+    assertObject(input, "C019 evidence request");
+    assertAllowedKeys(input, [
+      "receiptId", "evidenceId", "evidenceSlotId", "fixedAt", "requestIds",
+      "exactCombination", "objectScope", "evidenceRefs"
+    ], "C019 evidence request");
+    const stored = this.readStoredC019(assertString(input.receiptId, "C019 evidence receiptId"));
+    if (!stored) fail("C019_READ_RECEIPT_NOT_FOUND", "C019 read receipt was not found");
+    const { receiptId: _receiptId, ...evidenceInput } = input;
+    return buildDecisionSummaryEvidenceItem({ ...evidenceInput, ...stored });
   }
 
   registerDashboardDefinition(input) {

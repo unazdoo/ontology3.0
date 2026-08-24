@@ -6,6 +6,7 @@ const checkpoint = require("../checkpoint");
 const contracts = require("../contracts");
 const identity = require("../identity");
 const { assertFoundationCompatibility, assertStrictScenarioContext } = require("./boundary");
+const { assertStoredC019Reference, assertStoredC019ReadReceipt } = require("./decision-summary");
 
 const REPORT_MODULE_EXPORT_SCHEMA_VERSION = "ofw.m06.report-module-export.v1";
 const REPORT_OWNER_RECEIPT_SCHEMA_VERSION = "ofw.m06.report-owner-receipt.v1";
@@ -89,6 +90,8 @@ function reportResourceType(kind) {
     case "reportTemplates": return "report-template";
     case "fixedViews": return "fixed-query-view";
     case "dashboardDefinitions": return "dashboard-definition";
+    case "c019References": return "decision-summary-reference";
+    case "c019ReadReceipts": return "decision-summary-read-receipt";
     case "c022Requests": return "report-generation-request";
     case "c023Receipts": return "agent-report-draft-receipt";
     case "fixedReportContexts": return "fixed-report-context";
@@ -111,14 +114,14 @@ function reportResourceType(kind) {
 
 function buildResourceSummaries(runtimeState) {
   const resources = [];
-  ["reportDefinitions", "reportTemplates", "fixedViews", "dashboardDefinitions", "c022Requests", "c023Receipts", "fixedReportContexts", "c024Requests", "c024Handoffs", "c025References", "copilotReadbacks", "anchors", "qualityWarnings", "artifacts"].forEach((collection) => {
+  ["reportDefinitions", "reportTemplates", "fixedViews", "dashboardDefinitions", "c019References", "c019ReadReceipts", "c022Requests", "c023Receipts", "fixedReportContexts", "c024Requests", "c024Handoffs", "c025References", "copilotReadbacks", "anchors", "qualityWarnings", "artifacts"].forEach((collection) => {
     ensureArray(runtimeState[collection]).forEach((item, index) => {
-      const resourceId = item.reportDefinitionId || item.templateId || item.snapshotId || item.dashboardId || item.fixedContextId || item.requestId || item.handoffId || item.c025ReferenceId || item.readbackId || item.receiptId || item.t044Id || item.warningId || item.reportId || item.id || `${collection}-${index + 1}`;
+      const resourceId = item.reportDefinitionId || item.templateId || item.snapshotId || item.dashboardId || item.referenceId || item.fixedContextId || item.requestId || item.handoffId || item.c025ReferenceId || item.readbackId || item.receiptId || item.t044Id || item.warningId || item.reportId || item.id || `${collection}-${index + 1}`;
       resources.push({
         resourceId,
         resourceType: reportResourceType(collection),
         version: item.version || item.contentVersionId || item.artifactVersion || resourceId,
-        status: item.status || item.reviewStatus || "immutable",
+        status: item.status || item.readStatus || item.sourceStatus || item.reviewStatus || "immutable",
         contentSnapshotRef: item.contentSnapshotRef || null
       });
     });
@@ -258,6 +261,28 @@ function validateReportModuleExport(exportValue) {
   ensureArray(runtimeState.comparisonRecords).forEach((item, index) => {
     if (item?.immutable === false) errors.push({ code: "COMPARISON_MUTABLE", path: `runtimeState.comparisonRecords[${index}]`, message: "historical C027 records may not be mutable" });
   });
+  const c019References = new Map();
+  ensureArray(runtimeState.c019References).forEach((item, index) => {
+    try {
+      const reference = assertStoredC019Reference(item, exportValue.scenarioContext);
+      if (c019References.has(reference.referenceId)) throw Object.assign(new Error("duplicate C019 referenceId"), { code: "C019_STORED_REFERENCE_INVALID" });
+      c019References.set(reference.referenceId, reference);
+    } catch (error) {
+      errors.push({ code: error.code || "C019_STORED_REFERENCE_INVALID", path: `runtimeState.c019References[${index}]`, message: error.message });
+    }
+  });
+  ensureArray(runtimeState.c019ReadReceipts).forEach((item, index) => {
+    const reference = c019References.get(item?.referenceRef?.referenceId);
+    if (!reference) {
+      errors.push({ code: "C019_STORED_REFERENCE_MISSING", path: `runtimeState.c019ReadReceipts[${index}].referenceRef`, message: "C019 receipt reference is missing or invalid" });
+      return;
+    }
+    try {
+      assertStoredC019ReadReceipt(item, reference, exportValue.scenarioContext);
+    } catch (error) {
+      errors.push({ code: error.code || "C019_STORED_RECEIPT_INVALID", path: `runtimeState.c019ReadReceipts[${index}]`, message: error.message });
+    }
+  });
   return { ok: errors.length === 0, errors };
 }
 
@@ -337,7 +362,9 @@ function buildReportRestorePlan(input) {
         reports: ensureArray(moduleExport.runtimeState.reports).length,
         dashboardVersions: ensureArray(moduleExport.runtimeState.dashboardVersions).length,
         evidencePackages: ensureArray(moduleExport.runtimeState.evidencePackages).length,
-        comparisonRecords: ensureArray(moduleExport.runtimeState.comparisonRecords).length
+        comparisonRecords: ensureArray(moduleExport.runtimeState.comparisonRecords).length,
+        c019References: ensureArray(moduleExport.runtimeState.c019References).length,
+        c019ReadReceipts: ensureArray(moduleExport.runtimeState.c019ReadReceipts).length
       }
     }],
     historicalReadOnly: true,
@@ -397,6 +424,8 @@ function cloneReportModuleState(input, options) {
     dashboardVersions: cloneJson(moduleExport.runtimeState.dashboardVersions || [], "dashboardVersions"),
     dashboardView: cloneJson(moduleExport.runtimeState.dashboardView || null, "dashboardView"),
     evidencePackages: cloneJson(moduleExport.runtimeState.evidencePackages || [], "evidencePackages"),
+    c019References: cloneJson(moduleExport.runtimeState.c019References || [], "c019References"),
+    c019ReadReceipts: cloneJson(moduleExport.runtimeState.c019ReadReceipts || [], "c019ReadReceipts"),
     verificationRuns: cloneJson(moduleExport.runtimeState.verificationRuns || [], "verificationRuns"),
     verificationResults: cloneJson(moduleExport.runtimeState.verificationResults || [], "verificationResults"),
     comparisonRecords: cloneJson(moduleExport.runtimeState.comparisonRecords || [], "comparisonRecords")
@@ -413,6 +442,8 @@ function historicalView(input) {
     dashboardVersions: cloneJson(moduleExport.runtimeState.dashboardVersions || [], "dashboardVersions"),
     dashboardView: cloneJson(moduleExport.runtimeState.dashboardView || null, "dashboardView"),
     evidencePackages: cloneJson(moduleExport.runtimeState.evidencePackages || [], "evidencePackages"),
+    c019References: cloneJson(moduleExport.runtimeState.c019References || [], "c019References"),
+    c019ReadReceipts: cloneJson(moduleExport.runtimeState.c019ReadReceipts || [], "c019ReadReceipts"),
     comparisonRecords: cloneJson(moduleExport.runtimeState.comparisonRecords || [], "comparisonRecords")
   }, "report historical view");
 }
