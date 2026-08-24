@@ -40,7 +40,6 @@ function sourceHash(root, paths) {
   const source = files.sort().map((file) => ({ path: path.relative(root, file).replaceAll(path.sep, "/"), sha256: sha256(fs.readFileSync(file)) }));
   return { source, sourceSha256: sha256(JSON.stringify(source)) };
 }
-
 let options;
 try {
   options = parse(process.argv.slice(2));
