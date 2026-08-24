@@ -2,6 +2,7 @@
 
 const identity = require('../../packages/identity');
 const foundation = require('./foundation-compat');
+const c011 = require('./c011-contract');
 const { fail } = require('./errors');
 const {
   isRecord,
@@ -427,129 +428,65 @@ class QueryViewRegistry {
 
 function buildC011Request(input = {}) {
   const fact = assertResultFact(input.result || input.fact || input.c010);
-  if (!['active', 'running', 'ready', 'pending', 'restored', 'regression'].includes(String(fact.scenarioContext.status || '').toLowerCase())) fail('ERR_C011_CONTEXT_INVALID', 'historical/closed results cannot create a new C011 request');
   if (!fact.answerable || fact.status !== 'completed') fail('ERR_C011_NOT_ELIGIBLE', 'C011 requires a completed answerable C010 result');
   const target = input.target || input.subject;
-  if (!isRecord(target)) fail('ERR_C011_TARGET_REQUIRED', 'C011 requires one stable target subject');
-  assertNoSourceFields(target, 'target');
-  const targetId = firstString(target, ['stableId', 'subjectId', 'objectId', 'id']);
-  if (!targetId) fail('ERR_C011_TARGET_REQUIRED', 'C011 target must have a stable identity');
-  const actionType = input.actionType || {};
-  assertNoSourceFields(actionType, 'actionType');
-  const actionTypeId = typeof actionType === 'string' ? actionType : firstString(actionType, ['actionTypeId', 'stableId', 'id']);
-  if (!actionTypeId) fail('ERR_C011_ACTION_TYPE_REQUIRED', 'C011 requires a stable Published Action Type');
-  if (isRecord(actionType)) {
-    const lifecycle = String(actionType.status || actionType.lifecycleStatus || actionType.publicationStatus || 'PUBLISHED').toUpperCase();
-    if (lifecycle !== 'PUBLISHED') fail('ERR_C011_ACTION_TYPE_NOT_PUBLISHED', 'C011 Action Type must be Published', { status: lifecycle });
-    const actionVersion = firstString(actionType, ['publishedOntologyVersion', 'semanticVersion', 'ontologyVersion']);
-    if (actionVersion && actionVersion !== fact.publishedOntologyVersion) fail('ERR_C011_VERSION_MISMATCH', 'Action Type does not belong to the fixed Published ontology version', { expected: fact.publishedOntologyVersion, actual: actionVersion });
-  }
-  const allowedActionTypes = Array.isArray(fact.configuration.resourceWhitelist) ? fact.configuration.resourceWhitelist.map((item) => typeof item === 'string' ? item : item.resourceId || item.id).filter(Boolean) : [];
-  if (!allowedActionTypes.length || !allowedActionTypes.includes(actionTypeId)) fail('ERR_C011_ACTION_TYPE_NOT_ALLOWED', 'Action Type is outside the C009 resource whitelist', { actionTypeId });
-  const configuredAction = Array.isArray(fact.configuration.resourceWhitelist)
-    ? fact.configuration.resourceWhitelist.find((item) => (typeof item === 'string' ? item : item.resourceId || item.id) === actionTypeId)
-    : null;
-  const configuredActionVersion = isRecord(configuredAction) ? firstString(configuredAction, ['version', 'resourceVersion', 'publishedVersion']) : null;
-  const actualActionVersion = isRecord(actionType) ? firstString(actionType, ['publishedVersionId', 'semanticVersionId', 'version']) : null;
-  if (configuredActionVersion && actualActionVersion !== configuredActionVersion) fail('ERR_C011_VERSION_MISMATCH', 'Action Type must pin its exact Published resource version', { expected: configuredActionVersion, actual: actualActionVersion || null });
+  if (isRecord(target)) assertNoSourceFields(target, 'target');
+  const actionType = input.actionType;
+  if (isRecord(actionType)) assertNoSourceFields(actionType, 'actionType');
   const rules = Array.isArray(fact.structuredResult.rules || fact.structuredResult.ruleResults) ? (fact.structuredResult.rules || fact.structuredResult.ruleResults) : [];
   const rule = input.rule || rules.find((candidate) => String(candidate.status || candidate.outcome || '').toLowerCase() === 'hit');
-  if (!isRecord(rule)) fail('ERR_C011_RULE_REQUIRED', 'C011 requires a Rule hit');
-  assertNoSourceFields(rule, 'rule');
-  const ruleStatus = String(rule.status || rule.outcome || '').toLowerCase();
-  if (!['hit', 'true'].includes(ruleStatus) || !firstString(rule, ['ruleVersion', 'version', 'publishedVersion'])) fail('ERR_C011_RULE_REQUIRED', 'C011 Rule must be a versioned hit');
-  const ruleSemanticVersion = firstString(rule, ['publishedOntologyVersion', 'semanticVersion', 'ontologyVersion']);
-  if (ruleSemanticVersion && ruleSemanticVersion !== fact.publishedOntologyVersion) fail('ERR_C011_VERSION_MISMATCH', 'Rule is not from the fixed Published ontology version', { expected: fact.publishedOntologyVersion, actual: ruleSemanticVersion });
-  const evidenceRefs = normalizeEvidenceRefs([
-    ...(input.evidenceRefs || []),
-    ...(rule.evidenceRefs || []),
-    ...fact.evidenceMapping.flatMap((entry) => entry.evidenceRefs || [])
-  ]);
-  if (!evidenceRefs.length) fail('ERR_C011_EVIDENCE_REQUIRED', 'C011 requires fixed evidence references');
-  const requestId = input.requestId || `ACTION-${fingerprint({ resultId: fact.resultId, targetId, actionTypeId, ruleId: itemId(rule, 'rule') }).slice(0, 24)}`;
-  const idempotencyInput = {
-    scenarioContext: {
-      scenarioId: fact.scenarioContext.scenarioId,
-      scenarioVersion: fact.scenarioContext.scenarioVersion,
-      scenarioRunId: fact.scenarioContext.scenarioRunId
-    },
-    requestId,
-    targetId,
-    actionTypeId,
-    ruleId: itemId(rule, 'rule'),
-    publishedOntologyVersion: fact.publishedOntologyVersion,
-    dataVersion: fact.dataVersion,
-    t019Version: fact.t019Version || null
-  };
-  const idempotencyKey = input.idempotencyKey || identity.generateIdempotencyKey(idempotencyInput, { fields: Object.keys(idempotencyInput) });
-  if (!identity.validateIdempotencyKey(idempotencyKey).valid) fail('ERR_C011_IDEMPOTENCY_INVALID', 'C011 idempotency key is invalid');
-  return deepFreeze({
-    schemaVersion: C011_SCHEMA_VERSION,
-    contractCode: 'C011',
-    requestId,
-    idempotencyKey,
+  if (isRecord(rule)) assertNoSourceFields(rule, 'rule');
+  return c011.buildC011Request({
     scenarioContext: fact.scenarioContext,
-    scenarioId: fact.scenarioContext.scenarioId,
-    scenarioVersion: fact.scenarioContext.scenarioVersion,
-    scenarioRunId: fact.scenarioRunId,
-    sourceModule: 'M03',
-    sourceResultId: fact.resultId,
+    generatedAt: fact.generatedAt,
+    requestedAt: input.requestedAt,
+    requestId: input.requestId,
+    idempotencyKey: input.idempotencyKey,
+    resultId: fact.resultId,
+    resultVersion: fact.resultVersion,
     sourceResultFingerprint: fact.fingerprint,
-    target: clone(target),
-    targetStableId: targetId,
-    actionType: clone(actionType),
-    actionTypeId,
-    rule: clone(rule),
-    metricSnapshot: clone(input.metricSnapshot || fact.structuredResult.metrics || fact.structuredResult.metricResults || []),
+    sourceRunId: input.sourceRunId || fact.sourceRunId || null,
+    target,
+    actionType,
+    actionTypeId: isRecord(actionType) ? firstString(actionType, ['actionTypeId', 'stableId', 'id']) : null,
+    actionTypeVersion: isRecord(actionType) ? firstString(actionType, ['version', 'publishedVersionId', 'semanticVersionId']) : null,
+    actionTypeStatus: isRecord(actionType) ? firstString(actionType, ['status', 'lifecycleStatus', 'publicationStatus']) : null,
+    resourceWhitelist: fact.configuration.resourceWhitelist,
+    rule,
+    structuredResult: fact.structuredResult,
+    structuredMetrics: fact.structuredResult.metrics || fact.structuredResult.metricResults || [],
+    metricSnapshot: input.metricSnapshot,
     publishedOntologyVersion: fact.publishedOntologyVersion,
     dataVersion: fact.dataVersion,
+    t007: input.t007 || fact.dataVersion,
     t019Id: fact.t019Id,
-    t019Version: fact.t019Version || null,
+    t019Version: fact.t019Version,
     t008: fact.t008,
-    configVersion: fact.configuration.configVersion,
-    promptVersion: fact.configuration.promptVersion,
-    skillVersions: clone(fact.configuration.skillVersions),
-    toolAllowlist: clone(fact.configuration.toolAllowlist),
-    toolAllowlistVersion: fact.configuration.toolAllowlistVersion || null,
-    quality: clone(fact.quality),
-    freshness: clone(fact.freshness),
-    evidenceRefs,
-    requestedAt: input.requestedAt || nowIso(),
-    status: 'pending',
-    createsDecision: false,
-    createsTodo: false,
-    sendsNotification: false,
-    m03CreatesDecision: false,
-    m03CreatesTodo: false,
-    m03SendsNotification: false
+    t008Evidence: fact.t008.evidenceRefs,
+    evidenceRefs: [
+      ...(input.evidenceRefs || []),
+      ...fact.evidenceMapping.flatMap((entry) => entry.evidenceRefs || []),
+      ...((fact.quality && fact.quality.evidenceRefs) || []),
+      ...((fact.freshness && fact.freshness.evidenceRefs) || [])
+    ],
+    quality: fact.quality,
+    freshness: fact.freshness,
+    configuration: fact.configuration,
+    evidenceSnapshotId: input.evidenceSnapshotId || fact.resultId,
+    dataCutoff: input.dataCutoff || fact.t008.value,
+    sourceType: 'rule',
+    sourceRef: input.sourceRef || (rule && firstString(rule, ['ruleId', 'id'])) || fact.resultId,
+    metricEvidenceRefs: input.metricEvidenceRefs,
+    ruleEvidenceRefs: input.ruleEvidenceRefs
   });
 }
 
 function validateC011Request(value) {
-  try {
-    if (!isRecord(value) || value.contractCode !== 'C011') fail('ERR_C011_INVALID', 'C011 request must be a standard C011 object');
-    if (value.schemaVersion !== C011_SCHEMA_VERSION) {
-      fail('ERR_C011_SCHEMA_MISMATCH', 'C011 request must use the canonical M03 action-request schema', {
-        expected: C011_SCHEMA_VERSION,
-        actual: value.schemaVersion || null
-      });
-    }
-    ['requestId', 'idempotencyKey', 'scenarioRunId', 'targetStableId', 'actionTypeId', 'publishedOntologyVersion', 'dataVersion', 't019Id', 'requestedAt'].forEach((key) => {
-      if (!firstString(value, [key])) fail('ERR_C011_INVALID', `C011.${key} is required`);
-    });
-    const context = contextTriple(value.scenarioContext);
-    if (context.scenarioRunId !== value.scenarioRunId) fail('ERR_C011_CONTEXT_MISMATCH', 'C011 scenarioRunId must match its C033 context');
-    if (!Array.isArray(value.evidenceRefs) || !value.evidenceRefs.length) fail('ERR_C011_EVIDENCE_REQUIRED', 'C011 requires evidence references');
-    if (value.createsDecision !== false || value.createsTodo !== false || value.sendsNotification !== false) fail('ERR_C011_INVALID', 'M03 C011 request cannot create decision side effects');
-    return { valid: true, errors: [] };
-  } catch (error) {
-    return { valid: false, errors: [{ code: error.code || 'ERR_C011_INVALID', message: error.message, details: error.details }] };
-  }
+  return c011.validateC011Request(value);
 }
 
 function assertC011Request(value) {
-  const result = validateC011Request(value);
-  if (!result.valid) fail(result.errors[0].code, result.errors[0].message, result.errors[0].details);
+  c011.assertC011Request(value);
   return deepFreeze(clone(value));
 }
 

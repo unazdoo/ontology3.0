@@ -253,12 +253,26 @@ test('only a fixed result with one hit Rule can produce standard C011', () => {
   const run = planner.execute({ plan, generatedAt: '2026-08-24T00:04:00.000Z' }, () => result());
   const request = planner.buildC011(run, {
     target: { stableId: 'SUBJECT-1', name: '示例主体' },
-    actionType: { actionTypeId: 'ACTION-OPTIMIZE', name: '优化建议' },
+    actionType: { actionTypeId: 'ACTION-OPTIMIZE', version: 'PUB-S001-v1', status: 'PUBLISHED', name: '优化建议' },
     metricSnapshot: { 'MET-COST': 4.2 }
   });
   assert.equal(request.contractCode, 'C011');
   assert.equal(request.schemaVersion, SCHEMA_VERSIONS.C011);
   assert.equal(request.schemaVersion, evidence.C011_SCHEMA_VERSION);
+  assert.equal(request.subjectId, 'SUBJECT-1');
+  assert.equal(request.subjectName, '示例主体');
+  assert.deepEqual(Object.keys(request.rule).sort(), ['branch', 'evaluatedAt', 'hitEvidence', 'id', 'version'].sort());
+  assert.equal(request.rule.branch, 'b1');
+  assert.equal(request.rule.hitEvidence, 'RULE-E1');
+  assert.equal(request.actionType.status, 'published');
+  assert.equal(request.actionType.version, 'PUB-S001-v1');
+  assert.equal(request.semanticVersion, C008.current.semanticVersionId);
+  assert.equal(request.dataVersion, C008.current.dataVersion);
+  assert.equal(request.t007, C008.current.dataVersion);
+  assert.equal(request.metric.id, 'MET-COST');
+  assert.equal(request.metric.value, 4.2);
+  assert.equal(request.evidence.snapshotId, request.sourceResultId);
+  assert.equal(request.evidence.cutoff, C008.current.dataAsOf);
   assert.equal(request.scenarioContext.scenarioRunId, CONTEXT.scenarioRunId);
   assert.equal(request.sourceRunId, run.runId);
   assert.equal(request.sourceResultId, run.result.resultId);
@@ -275,7 +289,7 @@ test('C011 rejects the retired request schema and a different scenario run', () 
   const run = planner.execute({ plan, generatedAt: '2026-08-24T00:04:30.000Z' }, () => result());
   const request = planner.buildC011(run, {
     target: { stableId: 'SUBJECT-1', name: '示例主体' },
-    actionType: { actionTypeId: 'ACTION-OPTIMIZE', name: '优化建议' }
+    actionType: { actionTypeId: 'ACTION-OPTIMIZE', version: 'PUB-S001-v1', status: 'PUBLISHED', name: '优化建议' }
   });
   const retired = { ...request, schemaVersion: 'ofw.m03.c011.request.v1' };
   assert.equal(evidence.validateC011Request(retired).valid, false);
@@ -284,6 +298,30 @@ test('C011 rejects the retired request schema and a different scenario run', () 
 
   const wrongRun = { ...request, scenarioRunId: 'S001-RUN-OTHER' };
   assert.equal(evidence.validateC011Request(wrongRun).valid, false);
+});
+
+test('C011 validator rejects missing Provider fields before delivery', () => {
+  const planner = makePlanner();
+  const run = planner.execute({ plan: planner.plan({ query: query() }), generatedAt: '2026-08-24T00:04:45.000Z' }, () => result());
+  const request = planner.buildC011(run, {
+    target: { stableId: 'SUBJECT-1', name: '示例主体' },
+    actionType: { actionTypeId: 'ACTION-OPTIMIZE', version: 'PUB-S001-v1', status: 'PUBLISHED' },
+    metricSnapshot: { id: 'MET-COST', value: 4.2 }
+  });
+  const cases = [
+    ['subjectId', (copy) => { delete copy.subjectId; }],
+    ['actionType.status', (copy) => { delete copy.actionType.status; }],
+    ['rule.evaluatedAt', (copy) => { delete copy.rule.evaluatedAt; }],
+    ['rule.hitEvidence', (copy) => { delete copy.rule.hitEvidence; }],
+    ['metric.id', (copy) => { delete copy.metric.id; }],
+    ['evidence.snapshotId', (copy) => { delete copy.evidence.snapshotId; }],
+    ['evidence.cutoff', (copy) => { delete copy.evidence.cutoff; }]
+  ];
+  cases.forEach(([field, mutate]) => {
+    const copy = JSON.parse(JSON.stringify(request));
+    mutate(copy);
+    assert.equal(evidence.validateC011Request(copy).valid, false, field);
+  });
 });
 
 test('candidate expiry remains conditional until an expiry is provided; expired candidate is rejected', () => {
