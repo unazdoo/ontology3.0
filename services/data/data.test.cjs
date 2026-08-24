@@ -191,6 +191,14 @@ test('same output publishes once and later run reports no data change', () => {
 test('C003 receipt is exact, append-only and idempotent', () => {
   const { runtime, asset } = runAndPublish(setup().runtime);
   const delivery = runtime.createDelivery({ assetVersionId: asset.assetVersionId, scenarioContext: CONTEXT });
+  assert.equal(asset.publicationState, 'published');
+  assert.equal(delivery.immutable, true);
+  assert.equal(delivery.publicationState, 'published');
+  assert.equal(delivery.qualityStatus, asset.quality.status);
+  assert.equal(delivery.assetVersionId, asset.assetVersionId);
+  assert.deepEqual(delivery.scenarioContext, asset.scenarioContext);
+  assert.equal(Object.isFrozen(delivery), true);
+  assert.throws(() => data.validateDelivery({ ...delivery, publicationState: 'candidate' }), (error) => error.code === 'C003_NOT_PUBLISHED');
   const rejectedInput = c003Receipt(delivery, 'rejected', { reason: 'mapping missing', targetDraftVersion: 'draft-1' });
   const rejected = runtime.recordDeliveryReceipt(delivery.deliveryId, rejectedInput);
   assert.equal(rejected.status, 'rejected');
@@ -198,6 +206,17 @@ test('C003 receipt is exact, append-only and idempotent', () => {
   assert.throws(() => runtime.recordDeliveryReceipt(delivery.deliveryId, c003Receipt(delivery, 'accepted')), (error) => error.code === data.ERROR_CODES.IMMUTABLE);
   assert.deepEqual(runtime.createDelivery({ assetVersionId: asset.assetVersionId, deliveryId: delivery.deliveryId, scenarioContext: CONTEXT }).receipt, rejected);
   assert.throws(() => runtime.createDelivery({ assetVersionId: asset.assetVersionId, deliveryId: 'new-attempt', scenarioContext: CONTEXT }), (error) => error.code === data.ERROR_CODES.C003_REACCEPTANCE_UNSPECIFIED);
+});
+
+test('C003 rejects tampered, unpublished, quality-failed and permanently non-consumable T007 inputs', () => {
+  const { asset } = runAndPublish(setup().runtime);
+  const client = new data.C003Client();
+  assert.throws(() => client.createDelivery({ ...asset, immutable: false }), (error) => ['INVALID_T007', 'C003_NOT_IMMUTABLE'].includes(error.code));
+  assert.throws(() => client.createDelivery({ ...asset, publicationState: 'candidate' }), (error) => error.code === 'C003_NOT_PUBLISHED');
+  assert.throws(() => client.createDelivery({ ...asset, publicationState: 'unpublished' }), (error) => error.code === 'C003_NOT_PUBLISHED');
+  assert.throws(() => client.createDelivery({ ...asset, quality: { ...asset.quality, status: 'failed', hardFailure: true } }), (error) => error.code === 'C003_QUALITY_BLOCKED');
+  assert.throws(() => client.createDelivery({ ...asset, quality: { ...asset.quality, status: 'unknown' } }), (error) => error.code === 'C003_QUALITY_BLOCKED');
+  assert.throws(() => client.createDelivery({ ...asset, purpose: 'non-consumable', consumption: { ...asset.consumption, status: 'permanently-non-consumable' } }), (error) => error.code === 'C003_NOT_CONSUMABLE');
 });
 
 test('C032 requires accepted C003 and C028 rejects stale pre-submit discovery', () => {
@@ -291,6 +310,7 @@ test('S003 compatibility T007 is permanently non-consumable and cannot enter C02
   assert.equal(asset.consumable, false);
   assert.equal(asset.reusable, false);
   assert.throws(() => runtime.createDelivery({ assetVersionId: asset.assetVersionId, scenarioContext: s003 }), (error) => error.code === data.ERROR_CODES.S003_NOT_CONSUMABLE);
+  assert.throws(() => runtime.createDelivery({ assetVersionId: asset.assetVersionId, scenarioContext: s003, purpose: 'compatibility-validation' }), (error) => error.code === data.ERROR_CODES.S003_NOT_CONSUMABLE);
   const summary = runtime.readC017({ assetVersionId: asset.assetVersionId, scenarioContext: s003, consumer: 'report' });
   assert.equal(summary.projection.dataSideQualification, 'prohibited');
 });

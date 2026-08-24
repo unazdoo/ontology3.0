@@ -36,7 +36,8 @@ function asset() {
     assetId: 'T006-1', assetVersionId: 'T007-1', scenarioContext: context,
     asOfTime: '2025-12-31', members: [{ memberId: 'member-1' }], relationships: [],
     quality: data.makeQuality({ qualityId: 'T005-1', status: 'passed', hardFailure: false, checks: [] }),
-    immutable: true, consumable: false, reusable: false
+    immutable: true, consumable: false, reusable: false,
+    publicationState: 'published', publishedAt: '2026-08-24T00:00:00.000Z'
   });
 }
 

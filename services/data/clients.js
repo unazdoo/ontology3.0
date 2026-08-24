@@ -24,6 +24,7 @@ const {
   assertEvidenceReferences,
   assertT018Qualification,
   assertC003Replacement,
+  assertC003DeliveryEligible,
   DATA_CONTRACT_VERSION,
   DATA_SCHEMA_VERSION,
   C032_STATES,
@@ -106,6 +107,7 @@ class C003Client {
 
   createDelivery(asset, options = {}) {
     validateAssetVersion(asset);
+    assertC003DeliveryEligible(asset);
     const context = assertActiveContext(options.scenarioContext || asset.scenarioContext);
     requireContextMatch(asset.scenarioContext, context);
     const sentAt = options.sentAt || nowIso(this.clock);
@@ -136,11 +138,15 @@ class C003Client {
       t007Id: asset.assetVersionId,
       asOfTime: asset.asOfTime,
       t008: asset.asOfTime,
+      immutable: asset.immutable === true,
+      publicationState: asset.publicationState,
+      qualityStatus: asset.quality.status,
       purpose: asset.purpose || options.purpose || 'semantic-refresh-candidate',
       consumptionStatus: asset.compatibilityOnly ? T007_S003_COMPATIBILITY_STATUS : (asset.consumptionStatus || 'candidate'),
       members: clone(asset.members),
       relationships: clone(asset.relationships),
       quality: clone(asset.quality),
+      t005Id: asset.qualityId || asset.quality.qualityId,
       sourceSnapshotIds: clone(asset.sourceSnapshotIds || []),
       pipelineVersionId: asset.pipelineVersionId,
       processingModuleVersion: asset.processingModuleVersion,

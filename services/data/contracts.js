@@ -387,7 +387,7 @@ function validatePipeline(value) {
 function validateDelivery(value) {
   required(value, [
     'deliveryId', 'contractCode', 'scenarioContext',
-    'status', 'sentAt'
+    'status', 'sentAt', 'immutable', 'publicationState', 'qualityStatus', 'quality', 't005Id'
   ], 'delivery');
   const assetId = value.assetId || value.t006Id;
   const assetVersionId = value.assetVersionId || value.t007Id;
@@ -396,7 +396,32 @@ function validateDelivery(value) {
       || !token(assetVersionId) || !text(asOfTime) || !DELIVERY_STATES.includes(value.status) || !dateTime(value.sentAt)) {
     throw new DataContractError('INVALID_C003', 'C003 delivery envelope is malformed');
   }
+  if (value.immutable !== true) throw new DataContractError('C003_NOT_IMMUTABLE', 'C003 delivery requires an immutable T007');
+  if (value.publicationState !== 'published') throw new DataContractError('C003_NOT_PUBLISHED', 'C003 delivery requires a published T007');
+  if (!['passed', 'warning'].includes(value.qualityStatus)) throw new DataContractError('C003_QUALITY_BLOCKED', 'C003 delivery requires an eligible formal T005 status');
+  validateQuality(value.quality);
+  if (value.t005Id !== value.quality.qualityId) throw new DataContractError('C003_QUALITY_MISMATCH', 'C003 t005Id must match the exact quality evidence');
+  if (value.quality && value.quality.status !== value.qualityStatus) throw new DataContractError('C003_QUALITY_MISMATCH', 'C003 qualityStatus must match the exact T005 evidence');
   assertContext(value.scenarioContext);
+  return value;
+}
+
+function assertC003DeliveryEligible(value) {
+  validateAssetVersion(value);
+  if (value.immutable !== true) throw new DataContractError('C003_NOT_IMMUTABLE', 'C003 requires the authoritative immutable T007');
+  if (value.publicationState !== 'published' || !dateTime(value.publishedAt)) {
+    throw new DataContractError('C003_NOT_PUBLISHED', 'C003 requires an authoritative published T007');
+  }
+  if (!value.quality || !['passed', 'warning'].includes(value.quality.status) || value.quality.hardFailure === true) {
+    throw new DataContractError('C003_QUALITY_BLOCKED', 'C003 requires passed or acknowledged-warning T005 evidence');
+  }
+  const consumptionState = value.consumption?.status || value.consumptionStatus || null;
+  if (value.compatibilityOnly === true || value.consumption?.compatibilityOnly === true
+      || consumptionState === T007_S003_COMPATIBILITY_STATUS
+      || consumptionState === 'permanently-non-consumable'
+      || value.purpose === 'non-consumable') {
+    throw new DataContractError('C003_NOT_CONSUMABLE', 'this T007 is permanently ineligible for C003 consumption delivery');
+  }
   return value;
 }
 
@@ -661,6 +686,7 @@ module.exports = Object.freeze({
   validateQuality,
   validateAssetVersion,
   validateDelivery,
+  assertC003DeliveryEligible,
   validateC017Summary,
   assertNoForbiddenKeys,
   immutableRecord,
