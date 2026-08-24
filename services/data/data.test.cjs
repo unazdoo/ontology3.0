@@ -30,6 +30,32 @@ function c029Result(resultId, requestId, assetVersionId, status, extra = {}) {
   return { schemaVersion: data.DATA_SCHEMA_VERSION, contractCode: 'C029', resultId, requestId, assetVersionId, status, scenarioContext: CONTEXT, ...extra };
 }
 
+function completeMembers() {
+  return [
+    {
+      memberId: 'member-a', name: 'Member A', grain: 'one-row-a', rowCount: 1,
+      primaryKey: 'field-a', qualityStatus: 'passed',
+      fields: [{ id: 'field-a', name: 'Field A', dataType: 'string', nullable: false }]
+    },
+    {
+      memberId: 'member-b', name: 'Member B', grain: 'one-row-b', rowCount: 1,
+      primaryKey: 'field-b', qualityStatus: 'passed',
+      fields: [{ id: 'field-b', name: 'Field B', dataType: 'string', nullable: false }]
+    }
+  ];
+}
+
+function completeRelations() {
+  return [{
+    relationId: 'relation-a', name: 'A to B', sourceMemberId: 'member-a', targetMemberId: 'member-b',
+    sourceFieldId: 'field-a', targetFieldId: 'field-b', endpointCheckStatus: 'passed'
+  }];
+}
+
+function mutable(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
 function setup(options = {}) {
   const runtime = data.createDataRuntime({ clock, ...options });
   runtime.registerSource({ sourceId: 'T001-S001', name: 'Finance workbook', category: 'manual-workbook', readMethod: 'upload' });
@@ -79,11 +105,8 @@ function runAndPublish(runtime, options = {}) {
   });
   return { runtime, run: completed, asset: runtime.publishAsset(completed.runId, {
     assetId: 'T006-FINANCE',
-    members: [
-      { memberId: 'member-a', grain: 'one-row' },
-      { memberId: 'member-b', grain: 'one-row' }
-    ],
-    relations: [{ relationId: 'relation-a' }],
+    members: completeMembers(),
+    relations: completeRelations(),
     reuseLicense: { allowed: true, fields: ['id'], grain: 'one-row', stableKeys: ['id'], quality: 'passed', retention: 'retained', access: 'authorized' },
     contentFingerprint: options.contentFingerprint || 'same-normalised-output'
   }) };
@@ -139,6 +162,18 @@ test('formal run locks exact T002/T008 at start and rejects input drift on retry
   assert.throws(() => runtime.retryRun('run-one', { scenarioContext: { ...CONTEXT, scenarioRunId: 'S001-RUN-other' } }), (error) => error.code === data.ERROR_CODES.RETRY_DRIFT || error.code === data.ERROR_CODES.INVALID_CONTEXT);
 });
 
+test('formal run rejects a T008 confirmation borrowed from another snapshot', () => {
+  const { runtime, snapshot } = setup();
+  const other = runtime.createSnapshot({ sourceId: 'T001-S001', content: 'other-content', scenarioContext: CONTEXT });
+  const otherConfirmation = runtime.confirmAsOf(other.snapshotId, { asOf: '2025-12-31', confirmedBy: 'demo-user', scenarioContext: CONTEXT });
+  runtime.createPipeline({
+    pipelineId: 'T003-T008-MISMATCH', name: 'bad evidence binding', outputAssetId: 'T006-T008-MISMATCH',
+    inputSlots: [{ slotId: 'raw', input: { kind: 'T002', snapshotId: snapshot.snapshotId, t008ConfirmationId: otherConfirmation.confirmationId } }]
+  });
+  runtime.publishPipeline('T003-T008-MISMATCH');
+  assert.throws(() => runtime.startRun('T003-T008-MISMATCH', { scenarioContext: CONTEXT }), (error) => error.code === data.ERROR_CODES.T008_CONTEXT_MISMATCH);
+});
+
 test('T003 definition revisions are append-only and a run can pin an exact published revision', () => {
   const { runtime, snapshot } = setup();
   runtime.createPipeline({ pipelineId: 'T003-S001', pipelineVersion: 'T003-S001-v2', name: 'revised', outputAssetId: 'T006-FINANCE', inputSlots: [{ slotId: 'raw-finance', input: { kind: 'T002', snapshotId: snapshot.snapshotId } }] });
@@ -171,6 +206,14 @@ test('warning quality requires explicit acknowledgement', () => {
   assert.throws(() => runtime.publishAsset(run.runId, { assetId: 'T006-FINANCE', members: ['m'] }), (error) => error.code === data.ERROR_CODES.WARNING_ACK_REQUIRED);
 });
 
+test('T005 identity cannot overwrite quality evidence from another run', () => {
+  const { runtime } = setup();
+  const first = runtime.startRun('T003-S001', { scenarioContext: CONTEXT, runId: 'RUN-quality-one', idempotencyKey: 'quality-run-one' });
+  runtime.recordQuality(first.runId, { qualityId: 'T005-shared', checks: [{ checkId: 'shape', status: 'passed', hard: true }] });
+  const second = runtime.startRun('T003-S001', { scenarioContext: CONTEXT, runId: 'RUN-quality-two', idempotencyKey: 'quality-run-two' });
+  assert.throws(() => runtime.recordQuality(second.runId, { qualityId: 'T005-shared', checks: [{ checkId: 'shape', status: 'passed', hard: true }] }), (error) => error.code === data.ERROR_CODES.IMMUTABLE);
+});
+
 test('cycle detection rejects direct and indirect T007 reuse', () => {
   const { runtime } = setup();
   const { asset } = runAndPublish(runtime);
@@ -183,19 +226,33 @@ test('same output publishes once and later run reports no data change', () => {
   const first = runAndPublish(runtime);
   const secondRun = runtime.startRun('T003-S001', { scenarioContext: CONTEXT, runNonce: 'second' });
   runtime.executeRun(secondRun.runId, () => ({ normalised: true }), { qualityChecks: [{ checkId: 'structure', status: 'passed', hard: true, checkedCount: 1 }] });
-  const second = runtime.publishAsset(secondRun.runId, { assetId: 'T006-FINANCE', members: [{ memberId: 'member-a', grain: 'one-row' }, { memberId: 'member-b', grain: 'one-row' }], relations: [{ relationId: 'relation-a' }], reuseLicense: first.asset.reuseLicense, contentFingerprint: 'same-normalised-output' });
+  const second = runtime.publishAsset(secondRun.runId, { assetId: 'T006-FINANCE', members: completeMembers(), relations: completeRelations(), reuseLicense: first.asset.reuseLicense, contentFingerprint: 'same-normalised-output' });
   assert.equal(second.status, 'no-data-change');
   assert.equal(runtime.listAssetVersions('T006-FINANCE').length, 1);
 });
 
 test('C003 receipt is exact, append-only and idempotent', () => {
-  const { runtime, asset } = runAndPublish(setup().runtime);
+  const prepared = setup();
+  const { runtime, asset } = runAndPublish(prepared.runtime);
   const delivery = runtime.createDelivery({ assetVersionId: asset.assetVersionId, scenarioContext: CONTEXT });
   assert.equal(asset.publicationState, 'published');
   assert.equal(delivery.immutable, true);
   assert.equal(delivery.publicationState, 'published');
   assert.equal(delivery.qualityStatus, asset.quality.status);
   assert.equal(delivery.assetVersionId, asset.assetVersionId);
+  assert.deepEqual(delivery.members, completeMembers());
+  assert.deepEqual(delivery.relations, completeRelations());
+  assert.deepEqual(delivery.expectedScope, { memberIds: ['member-a', 'member-b'], relationIds: ['relation-a'] });
+  assert.equal(delivery.t008EvidenceRef, prepared.confirmation.confirmationId);
+  assert.deepEqual(delivery.sourceFingerprint, {
+    algorithm: 'SHA-256', value: prepared.snapshot.contentFingerprint, sizeBytes: prepared.snapshot.byteLength
+  });
+  assert.equal(delivery.t005Id, asset.quality.qualityId);
+  assert.equal(delivery.quality.formedAt, asset.quality.formedAt);
+  assert.equal(delivery.lineageCheckStatus, 'passed');
+  assert.equal(delivery.lineageEvidenceRef, asset.sourceRunId);
+  assert.equal(delivery.cycleDetected, false);
+  assert.equal(delivery.sourceChain[0].snapshotId, prepared.snapshot.snapshotId);
   assert.deepEqual(delivery.scenarioContext, asset.scenarioContext);
   assert.equal(Object.isFrozen(delivery), true);
   assert.throws(() => data.validateDelivery({ ...delivery, publicationState: 'candidate' }), (error) => error.code === 'C003_NOT_PUBLISHED');
@@ -217,6 +274,134 @@ test('C003 rejects tampered, unpublished, quality-failed and permanently non-con
   assert.throws(() => client.createDelivery({ ...asset, quality: { ...asset.quality, status: 'failed', hardFailure: true } }), (error) => error.code === 'C003_QUALITY_BLOCKED');
   assert.throws(() => client.createDelivery({ ...asset, quality: { ...asset.quality, status: 'unknown' } }), (error) => error.code === 'C003_QUALITY_BLOCKED');
   assert.throws(() => client.createDelivery({ ...asset, purpose: 'non-consumable', consumption: { ...asset.consumption, status: 'permanently-non-consumable' } }), (error) => error.code === 'C003_NOT_CONSUMABLE');
+});
+
+test('C003 rejects every required member field and missing publish-time stable keys', () => {
+  const { runtime } = setup();
+  const run = runtime.startRun('T003-S001', { scenarioContext: CONTEXT });
+  runtime.executeRun(run.runId, () => ({ normalised: true }), { qualityChecks: [{ checkId: 'shape', status: 'passed', hard: true }] });
+  const missingMemberId = completeMembers();
+  delete missingMemberId[0].memberId;
+  assert.throws(() => runtime.publishAsset(run.runId, { members: missingMemberId }), (error) => error.code === data.ERROR_CODES.INVALID_ARGUMENT);
+  const missingRelationId = completeRelations();
+  delete missingRelationId[0].relationId;
+  assert.throws(() => runtime.publishAsset(run.runId, { members: completeMembers(), relations: missingRelationId }), (error) => error.code === data.ERROR_CODES.INVALID_ARGUMENT);
+  const incomplete = runtime.publishAsset(run.runId, { members: [{ memberId: 'incomplete-member' }] });
+  assert.throws(() => runtime.createC003Delivery({ assetVersionId: incomplete.assetVersionId, scenarioContext: CONTEXT }), (error) => error.code === 'C003_MEMBER_INVALID');
+
+  const { asset } = runAndPublish(setup().runtime);
+  const cases = [
+    ['memberId', (value) => { delete value.members[0].memberId; }, 'C003_MEMBER_INVALID'],
+    ['name', (value) => { delete value.members[0].name; }, 'C003_MEMBER_INVALID'],
+    ['grain', (value) => { delete value.members[0].grain; }, 'C003_MEMBER_INVALID'],
+    ['rowCount', (value) => { delete value.members[0].rowCount; }, 'C003_MEMBER_INVALID'],
+    ['primaryKey', (value) => { delete value.members[0].primaryKey; }, 'C003_PRIMARY_KEY_REQUIRED'],
+    ['qualityStatus', (value) => { delete value.members[0].qualityStatus; }, 'C003_MEMBER_QUALITY_BLOCKED'],
+    ['fields', (value) => { delete value.members[0].fields; }, 'C003_FIELDS_REQUIRED'],
+    ['field.id', (value) => { delete value.members[0].fields[0].id; }, 'C003_FIELD_INVALID'],
+    ['field.name', (value) => { delete value.members[0].fields[0].name; }, 'C003_FIELD_INVALID'],
+    ['field.dataType', (value) => { delete value.members[0].fields[0].dataType; }, 'C003_FIELD_INVALID'],
+    ['field.nullable', (value) => { delete value.members[0].fields[0].nullable; }, 'C003_FIELD_INVALID'],
+    ['primaryKey mismatch', (value) => { value.members[0].primaryKey = 'field-unknown'; }, 'C003_PRIMARY_KEY_MISMATCH']
+  ];
+  for (const [label, mutate, code] of cases) {
+    const candidate = mutable(asset);
+    mutate(candidate);
+    const deliveryId = `missing-${label}`.replace(/[^a-zA-Z0-9.-]/g, '-');
+    assert.throws(() => new data.C003Client().createDelivery(candidate, { deliveryId }), (error) => error.code === code, label);
+  }
+});
+
+test('C003 rejects incomplete relations and endpoints outside the locked member fields', () => {
+  const { asset } = runAndPublish(setup().runtime);
+  const cases = [
+    ['relationId', (value) => { delete value.relationships[0].relationId; }, 'C003_RELATION_INVALID'],
+    ['name', (value) => { delete value.relationships[0].name; }, 'C003_RELATION_INVALID'],
+    ['sourceMemberId', (value) => { delete value.relationships[0].sourceMemberId; }, 'C003_RELATION_INVALID'],
+    ['targetMemberId', (value) => { delete value.relationships[0].targetMemberId; }, 'C003_RELATION_INVALID'],
+    ['sourceFieldId', (value) => { delete value.relationships[0].sourceFieldId; }, 'C003_RELATION_INVALID'],
+    ['targetFieldId', (value) => { delete value.relationships[0].targetFieldId; }, 'C003_RELATION_INVALID'],
+    ['endpointCheckStatus', (value) => { delete value.relationships[0].endpointCheckStatus; }, 'C003_RELATION_INVALID'],
+    ['source member mismatch', (value) => { value.relationships[0].sourceMemberId = 'member-unknown'; }, 'C003_RELATION_ENDPOINT_MISMATCH'],
+    ['target field mismatch', (value) => { value.relationships[0].targetFieldId = 'field-unknown'; }, 'C003_RELATION_ENDPOINT_MISMATCH']
+  ];
+  for (const [label, mutate, code] of cases) {
+    const candidate = mutable(asset);
+    mutate(candidate);
+    const deliveryId = `relation-${label}`.replace(/[^a-zA-Z0-9.-]/g, '-');
+    assert.throws(() => new data.C003Client().createDelivery(candidate, { deliveryId }), (error) => error.code === code, label);
+  }
+});
+
+test('C003 rejects incomplete scope, T008, fingerprint, quality and lineage evidence', () => {
+  const { asset } = runAndPublish(setup().runtime);
+  const cases = [
+    ['scope', (value) => { delete value.expectedScope; }, 'C003_SCOPE_REQUIRED'],
+    ['member scope', (value) => { value.expectedScope.memberIds.pop(); }, 'C003_MEMBER_SCOPE_MISMATCH'],
+    ['relation scope', (value) => { value.expectedScope.relationIds = []; }, 'C003_RELATION_SCOPE_MISMATCH'],
+    ['T008 evidence', (value) => { delete value.t008EvidenceRef; }, 'C003_T008_EVIDENCE_REQUIRED'],
+    ['T008 mismatch', (value) => { value.t008ConfirmationId = 'T008-other'; }, 'C003_T008_EVIDENCE_MISMATCH'],
+    ['fingerprint', (value) => { delete value.sourceFingerprint; }, 'C003_SOURCE_FINGERPRINT_INVALID'],
+    ['fingerprint hash', (value) => { value.sourceFingerprint.value = 'not-a-hash'; }, 'C003_SOURCE_FINGERPRINT_INVALID'],
+    ['fingerprint size', (value) => { value.sourceFingerprint.sizeBytes = 0; }, 'C003_SOURCE_FINGERPRINT_INVALID'],
+    ['quality formedAt', (value) => { delete value.quality.formedAt; }, 'C003_QUALITY_EVIDENCE_INVALID'],
+    ['quality id', (value) => { value.qualityId = 'T005-other'; }, 'C003_QUALITY_MISMATCH'],
+    ['warning acknowledgement', (value) => { value.quality.status = 'warning'; }, 'C003_QUALITY_WARNING_ACK_REQUIRED'],
+    ['lineage status', (value) => { value.lineageCheckStatus = 'unknown'; }, 'C003_LINEAGE_BLOCKED'],
+    ['lineage evidence', (value) => { delete value.lineageEvidenceRef; }, 'C003_LINEAGE_BLOCKED'],
+    ['lineage nodes', (value) => { value.sourceChain = []; }, 'C003_LINEAGE_BLOCKED'],
+    ['lineage locator', (value) => { value.sourceChain = [{}]; }, 'C003_LINEAGE_BLOCKED'],
+    ['cycle result', (value) => { value.cycleDetected = true; }, 'C003_LINEAGE_BLOCKED']
+  ];
+  for (const [label, mutate, code] of cases) {
+    const candidate = mutable(asset);
+    mutate(candidate);
+    const deliveryId = `evidence-${label}`.replace(/[^a-zA-Z0-9.-]/g, '-');
+    assert.throws(() => new data.C003Client().createDelivery(candidate, { deliveryId }), (error) => error.code === code, label);
+  }
+});
+
+test('runtime C003 rejects structurally valid evidence tampering before delivery state is written', () => {
+  const { runtime, asset } = runAndPublish(setup().runtime);
+  const cases = [
+    ['T008', (value) => { value.t008EvidenceRef = 'T008-structurally-valid'; }, 'C003_T008_EVIDENCE_REQUIRED'],
+    ['source hash', (value) => { value.sourceFingerprint.value = 'b'.repeat(64); }, 'C003_SOURCE_FINGERPRINT_INVALID'],
+    ['source size', (value) => { value.sourceFingerprint.sizeBytes += 1; }, 'C003_SOURCE_FINGERPRINT_INVALID'],
+    ['source snapshot', (value) => { value.sourceSnapshotIds = ['T002-other']; }, 'C003_SOURCE_FINGERPRINT_INVALID'],
+    ['quality', (value) => { value.quality.formedAt = '2026-08-24T02:00:00.000Z'; }, 'C003_QUALITY_MISMATCH'],
+    ['lineage', (value) => { value.sourceChain[0].snapshotId = 'T002-other'; }, 'C003_LINEAGE_BLOCKED']
+  ];
+  for (const [label, mutate, code] of cases) {
+    const candidate = mutable(asset);
+    mutate(candidate);
+    runtime.assetVersions.set(asset.assetVersionId, candidate);
+    assert.throws(() => runtime.createDelivery({ assetVersionId: asset.assetVersionId, scenarioContext: CONTEXT, deliveryId: `tampered-${label}` }), (error) => error.code === code, label);
+    runtime.assetVersions.set(asset.assetVersionId, asset);
+  }
+  assert.equal(runtime.deliveryRecords.size, 0);
+  runtime.recordPostPublishFinding({ findingId: 'C003-hard-finding', assetVersionId: asset.assetVersionId, hard: true, reason: 'confirmed integrity failure' });
+  runtime.confirmPostPublishFinding('C003-hard-finding', { confirmedBy: 'owner' });
+  assert.throws(() => runtime.createDelivery({ assetVersionId: asset.assetVersionId, scenarioContext: CONTEXT }), (error) => error.code === data.ERROR_CODES.QUALITY_HARD_FAILURE);
+});
+
+test('C003 fails closed when multiple raw inputs cannot fit the existing singular evidence contract', () => {
+  const { runtime, snapshot } = setup();
+  runtime.registerSource({ sourceId: 'T001-SECOND', name: 'Second source' });
+  const second = runtime.createSnapshot({ sourceId: 'T001-SECOND', content: 'second-source', scenarioContext: CONTEXT });
+  runtime.confirmAsOf(second.snapshotId, { asOf: '2025-12-31', confirmedBy: 'demo-user', scenarioContext: CONTEXT });
+  runtime.createPipeline({
+    pipelineId: 'T003-MULTI', name: 'multi source', outputAssetId: 'T006-MULTI',
+    inputSlots: [
+      { slotId: 'first', input: { kind: 'T002', snapshotId: snapshot.snapshotId } },
+      { slotId: 'second', input: { kind: 'T002', snapshotId: second.snapshotId } }
+    ]
+  });
+  runtime.publishPipeline('T003-MULTI');
+  const run = runtime.runPipeline('T003-MULTI', { scenarioContext: CONTEXT, executor: () => ({ ok: true }), qualityChecks: [{ checkId: 'shape', status: 'passed', hard: true }] });
+  const asset = runtime.publishAsset(run.runId, { members: completeMembers(), relations: completeRelations() });
+  assert.equal(asset.t008EvidenceRef, null);
+  assert.equal(asset.sourceFingerprint, null);
+  assert.throws(() => runtime.createDelivery({ assetVersionId: asset.assetVersionId, scenarioContext: CONTEXT }), (error) => error.code === 'C003_SOURCE_FINGERPRINT_INVALID');
 });
 
 test('C032 requires accepted C003 and C028 rejects stale pre-submit discovery', () => {
@@ -295,7 +480,7 @@ test('confirmed post-publish hard finding blocks C017 but leaves T005/T007 immut
   assert.equal(runtime.getAssetVersion(asset.assetVersionId).quality.status, 'passed');
 });
 
-test('S003 compatibility T007 is permanently non-consumable and cannot enter C028', () => {
+test('S003 compatibility-validation T007 is permanently non-consumable and cannot enter C028', () => {
   const runtime = data.createDataRuntime({ clock });
   const s003 = { ...CONTEXT, scenarioId: 'S003', scenarioVersion: 'S003-v1', scenarioRunId: 'S003-RUN-1' };
   runtime.registerSource({ sourceId: 'T001-S003', name: 'Compatibility workbook', category: 'manual-workbook', readMethod: 'upload' });
@@ -305,7 +490,7 @@ test('S003 compatibility T007 is permanently non-consumable and cannot enter C02
   runtime.publishPipeline('T003-S003');
   const run = runtime.startRun('T003-S003', { scenarioContext: s003 });
   runtime.executeRun(run.runId, () => ({ compatibility: true }), { qualityChecks: [{ checkId: 'structure', status: 'passed', hard: true }] });
-  const asset = runtime.publishAsset(run.runId, { assetId: 'T006-S003', purpose: 'compatibility', compatibilityOnly: true, members: [{ memberId: 'financial-data' }, { memberId: 'adjustment-factors' }], relations: [] });
+  const asset = runtime.publishAsset(run.runId, { assetId: 'T006-S003', purpose: 'compatibility-validation', members: [{ memberId: 'financial-data' }, { memberId: 'adjustment-factors' }], relations: [] });
   assert.equal(asset.compatibilityOnly, true);
   assert.equal(asset.consumable, false);
   assert.equal(asset.reusable, false);
