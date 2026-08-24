@@ -101,3 +101,12 @@ duplicate behavior. Those pure functions live in `packages/identity`.
 configuration snapshot. They do not persist flags, implement rollout or
 targeting, or make an authorization decision; a later owner must supply those
 platform capabilities if they are approved.
+
+## Schema compatibility
+
+`classifySchemaCompatibility(sourceVersion, targetVersion)` is a pure,
+conservative classifier. Exact versions are accepted; higher versions return
+`review` by default; malformed, downgraded, draft/final-mixed, or breaking
+versions are rejected. A reconciled additive change may be explicitly enabled
+with `{ changeKind: 'additive', allowAdditive: true }`; this does not register
+or migrate any stored data.

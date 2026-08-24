@@ -160,6 +160,15 @@ function validateScenarioContext(value, options) {
     errors.push(errorRecord("INVALID_CONTEXT_STATUS", "status", "status must be a non-empty string"));
   }
 
+  if (config.allowUnknown !== true) {
+    const allowed = new Set(["scenarioId", "scenarioVersion", "scenarioRunId", "formedAt", "status"]);
+    Object.keys(value).forEach((field) => {
+      if (!allowed.has(field)) {
+        errors.push(errorRecord("UNKNOWN_SCENARIO_CONTEXT_FIELD", field, "scenarioContext field is not allowed"));
+      }
+    });
+  }
+
   /* Enforce an explicitly recognizable `<scenario>-v...` or
    * `<scenario>-RUN-...` prefix while retaining generic owner formats. */
   if (nonEmptyString(value.scenarioId) && nonEmptyString(value.scenarioVersion)) {
