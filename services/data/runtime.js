@@ -1515,6 +1515,7 @@ class DataPipelineRuntime {
       quality: quality,
       qualityId: quality.qualityId,
       contentFingerprint,
+      publicationState: 'published',
       publishedAt: this._now(input.publishedAt),
       publishedBy: input.publishedBy || null,
       releaseNote: input.releaseNote || input.versionNote || null,
@@ -1710,8 +1711,11 @@ class DataPipelineRuntime {
     const version = this.getAssetVersion(input.assetVersionId || input.t007Id);
     const context = requireActiveContext(input.scenarioContext || version.scenarioContext);
     requireExactContext(version.scenarioContext, context, 'C003 delivery context must match the exact T007 context');
-    if (version.consumption?.compatibilityOnly === true && input.purpose !== 'compatibility-validation') {
+    if (version.compatibilityOnly === true || version.consumption?.compatibilityOnly === true) {
       fail(ERROR_CODES.S003_NOT_CONSUMABLE, 'S003 compatibility T007 cannot be delivered for consumption');
+    }
+    try { dataContracts.assertC003DeliveryEligible(version); } catch (error) {
+      fail(error.code || ERROR_CODES.DELIVERY_BLOCKED, error.message, error.details || error.errors || null);
     }
     const deliveryId = nonEmpty(input.deliveryId || input.c003Id || this._id('C003', { assetVersionId: version.assetVersionId, context }), 'deliveryId');
     const existingDelivery = this.deliveryRecords.get(deliveryId);
@@ -1740,6 +1744,9 @@ class DataPipelineRuntime {
       t007Id: version.assetVersionId,
       t008: version.t008,
       asOfTime: version.t008,
+      immutable: version.immutable === true,
+      publicationState: version.publicationState,
+      qualityStatus: version.quality.status,
       t008ConfirmationIds: clone((version.inputLocks || []).map((lock) => lock.t008ConfirmationId).filter(Boolean)),
       members: clone(version.members),
       relations: clone(version.relations),

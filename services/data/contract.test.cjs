@@ -33,12 +33,14 @@ test('immutable constructors validate canonical T002/T005/T007/C003 shapes', () 
   const asset = contract.makeAssetVersion({
     assetId: 'T006-1', assetVersionId: 'T007-1', scenarioContext: context,
     asOfTime: '2025-12-31', members: [{ memberId: 'm' }], relationships: [],
-    quality, immutable: true, consumable: true
+    quality, immutable: true, consumable: true,
+    publicationState: 'published', publishedAt: '2026-08-24T00:00:00.000Z'
   });
   assert.equal(asset.assetVersionId, 'T007-1');
   const delivery = contract.makeDelivery({
     deliveryId: 'C003-1', contractCode: 'C003', assetId: 'T006-1', assetVersionId: 'T007-1',
-    asOfTime: '2025-12-31', scenarioContext: context, status: 'pending', sentAt: '2026-08-24T00:00:00.000Z'
+    asOfTime: '2025-12-31', scenarioContext: context, status: 'pending', sentAt: '2026-08-24T00:00:00.000Z',
+    immutable: true, publicationState: 'published', qualityStatus: 'passed', quality, t005Id: quality.qualityId
   });
   assert.equal(delivery.contractCode, 'C003');
 });
