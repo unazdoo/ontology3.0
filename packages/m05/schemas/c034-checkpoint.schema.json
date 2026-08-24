@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontology3.example/contracts/c034/m05-checkpoint/draft-0.1.0",
+  "title": "M05 C034 Checkpoint",
+  "x-contract-status": "draft",
+  "x-contract-version": "ofw.m05.c034.checkpoint.v1",
+  "x-contract-owner": "M05 / Agent Application",
+  "type": "object",
+  "required": ["schemaVersion", "providerVersion", "checkpointId", "scenarioContext", "agentRelease", "sideEffectsSuppressed", "autoRun", "autoToolInvocation", "overwritesSource", "digest"],
+  "properties": {
+    "schemaVersion": { "const": "ofw.m05.c034.checkpoint.v1" },
+    "providerVersion": { "const": "c034.provider.v1" },
+    "checkpointId": { "type": "string", "minLength": 1 },
+    "scenarioContext": { "type": "object" },
+    "agentRelease": { "type": "object" },
+    "sideEffectsSuppressed": { "const": true },
+    "autoRun": { "const": false },
+    "autoToolInvocation": { "const": false },
+    "overwritesSource": { "const": false },
+    "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+  },
+  "additionalProperties": true
+}

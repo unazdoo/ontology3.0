@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontology3.example/contracts/c014-orchestration/draft-0.1.0",
+  "title": "C014 M05 Orchestration Definition",
+  "x-contract-status": "draft",
+  "x-contract-version": "ofw.c014.orchestration.draft.v1",
+  "x-contract-owner": "M05 / Agent Application",
+  "type": "object",
+  "required": ["definitionId", "definitionVersion", "steps", "connections", "outputContract"],
+  "properties": {
+    "definitionId": { "type": "string", "minLength": 1 },
+    "definitionVersion": { "type": "string", "minLength": 1 },
+    "steps": { "type": "array", "minItems": 1 },
+    "connections": { "type": "array" },
+    "outputContract": {}
+  },
+  "additionalProperties": true
+}
