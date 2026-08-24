@@ -137,3 +137,18 @@ test('strict envelope validation also closes the nested C033 context', () => {
   assert.equal(contracts.validateContractEnvelope(envelope).valid, true);
   assert.equal(contracts.validateContractEnvelope(envelope, { allowUnknown: false }).valid, false);
 });
+
+test('schema compatibility is exact by default and fail-closed for changes', () => {
+  assert.equal(contracts.COMPATIBILITY_SCHEMA_VERSION, 'draft-0.1.0');
+  assert.equal(contracts.COMPATIBILITY_CONTRACT_STATUS, 'draft');
+  assert.equal(contracts.classifySchemaCompatibility('draft-0.1.0', 'draft-0.1.0').status, 'exact');
+  assert.equal(contracts.classifySchemaCompatibility('ofw.c034.checkpoint.v1', 'ofw.c034.checkpoint.v1').status, 'exact');
+  assert.equal(contracts.classifySchemaCompatibility('draft-0.1.0', 'draft-0.1.1').status, 'review');
+  assert.equal(contracts.classifySchemaCompatibility('draft-0.2.0', 'draft-0.1.0').status, 'incompatible');
+  assert.equal(contracts.classifySchemaCompatibility('draft-0.1.0', '1.0.0').status, 'incompatible');
+  assert.equal(contracts.classifySchemaCompatibility('draft-0.1.0', 'draft-0.2.0', { changeKind: 'additive', allowAdditive: true }).compatible, true);
+  assert.equal(contracts.classifySchemaCompatibility({ sourceVersion: 'draft-0.1.0', targetVersion: 'draft-0.2.0', options: { changeKind: 'additive', allowAdditive: true } }).compatible, true);
+  assert.equal(contracts.classifySchemaCompatibility('draft-0.1.0', 'draft-1.0.0').status, 'breaking');
+  assert.throws(() => contracts.assertSchemaCompatibility('draft-0.1.0', 'draft-0.1.1'), (error) => error.code === 'ERR_SCHEMA_COMPATIBILITY');
+  assert.equal(contracts.validateSchemaVersion('not-a-version').valid, false);
+});

@@ -9,6 +9,7 @@ const featureFlagConfigSchema = require('./schemas/feature-flag-config.schema.js
 const schemaRegistry = require('./schemas/registry.json');
 const validation = require('./validation');
 const config = require('./config');
+const compatibility = require('./compatibility');
 
 const SCHEMA_DRAFT = 'http://json-schema.org/draft-07/schema#';
 const SCHEMA_VERSION = 'draft-0.1.0';
@@ -54,4 +55,4 @@ module.exports = Object.assign({
   AUDIT_FIELDS_SCHEMA: auditFieldsSchema,
   featureFlagConfigSchema,
   FEATURE_FLAG_CONFIG_SCHEMA: featureFlagConfigSchema
-}, validation, config);
+}, validation, config, compatibility);
