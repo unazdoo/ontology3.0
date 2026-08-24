@@ -1,0 +1,46 @@
+# M06 Report Center
+
+`packages/report` is the storage- and framework-agnostic M06 implementation
+for C018, C022/C023, T044/T049, C027, report/dashboard persistence and C034
+module recovery.
+
+`definition.js` contains the managed production contracts. `template.js`
+retains a small renderer-compatible normalization API for callers using the
+foundation prototype shape; the service uses the managed definitions/templates.
+
+The service deliberately accepts live owner ports instead of static C008,
+C017, T019 or T008 values:
+
+- `c008Provider.readCurrentC008(request)` is the M01 authoritative read.
+- `c017Provider.readCurrentC017(request)` is the M02 current summary read.
+- `c017Provider.readC017ForVersion(request)` is the bound-version quality read.
+- `m05Port.submitReportGeneration(c022)` returns the immutable C023 source draft.
+- `m05Port.extractReportClaims(request)` returns extraction-only claims; it may
+  not return T049 statuses.
+- `authorizationPort.authorizeReportComparison(request)` is the platform
+  authorization decision used by explicit C027 requests.
+
+`ReportService.generateReport()` reads C008/C017 at three ordered gates. A
+fixed context and evidence pack are created only when all three reads are
+fresh, authoritative, consumable and exactly compatible. M06 then accepts
+C023, forms the review copy, immutable content version and T044 anchors.
+
+`verifyContent()` first accepts the M05 extraction and then runs five
+deterministic rule groups. It stores T049 with item-level four-state results,
+anchors, evidence references and report/section/group coverage. Explanations
+are intentionally outside this package and cannot alter T049.
+
+`compareWithCurrent()` is C027. It requires `explicitUserAction: true`, reads a
+fresh C008/C017 pair, fixes the five comparison gates and appends staleness
+events later; it never edits the original report or comparison record.
+
+`publishReport()` renders one immutable source into controlled HTML and a
+real PDF byte stream. A post-publication hard quality failure adds a warning
+to the old report and blocks new generation/publication without changing the
+old content or T049.
+
+`createM06CheckpointProvider()` implements the Foundation C034 SPI. Exports
+include report definitions/templates, C018 snapshots, dashboards, C022/C023,
+T044/T049, C027 and artifacts. Clone restore creates a new scenario run and
+keeps historical state read-only; it never replays side effects or auto-runs
+publication, recalculation or comparison.

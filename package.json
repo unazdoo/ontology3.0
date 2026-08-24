@@ -4,7 +4,7 @@
   "private": true,
   "description": "Dependency-free v1.1.x Foundation public contracts",
   "scripts": {
-    "test": "node --test packages/contracts/test/contracts.test.js packages/identity/index.test.cjs packages/checkpoint/index.test.cjs packages/foundation-contract.test.cjs",
-    "check": "node --check packages/contracts/index.js && node --check packages/contracts/validation.js && node --check packages/identity/index.js && node --check packages/checkpoint/index.js"
+    "test": "node --test packages/contracts/test/contracts.test.js packages/identity/index.test.cjs packages/checkpoint/index.test.cjs packages/report/index.test.cjs packages/report/service.test.cjs services/report/index.test.cjs packages/foundation-contract.test.cjs",
+    "check": "node --check packages/contracts/index.js && node --check packages/contracts/validation.js && node --check packages/identity/index.js && node --check packages/checkpoint/index.js && node --check services/report/index.js && node --check packages/report/index.js && node --check packages/report/template.js && node --check packages/report/render.js && node --check packages/report/export.js && node --check packages/report/store.js && node --check packages/report/definition.js && node --check packages/report/fixed-view.js && node --check packages/report/gate.js && node --check packages/report/handoff.js && node --check packages/report/verification.js && node --check packages/report/comparison.js && node --check packages/report/checkpoint.js && node --check packages/report/service.js"
   }
 }
