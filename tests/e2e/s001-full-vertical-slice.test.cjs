@@ -121,9 +121,20 @@ async function setup() {
   };
   let c017ReadCounter = 0;
   const reportC017 = (input = {}) => {
-    const readId = `M06-C017-${++c017ReadCounter}`;
-    const raw = readC017({ ...input, consumer: 'report', purpose: input.purpose || 'report', currentSummaryId: 'C017-S001-REPORT-CURRENT', summaryVersion: '1', formedAt: '2026-08-25T01:00:00.000Z', observedAt: '2026-08-25T01:00:00.000Z', readId, idempotencyKey: `idem-${readId}` });
     const c008 = front.service.readC008({ scenarioContext: front.scenarioContext });
+    const { t008: ignoredT008, binding: ignoredBinding, semanticVersionId: ignoredSemanticId,
+      semanticVersion: ignoredSemanticVersion, dataVersionId: ignoredDataVersion, ...ownerRequest } = input;
+    const readId = `M06-C017-${++c017ReadCounter}`;
+    const raw = readC017({ ...ownerRequest, consumer: 'report', purpose: input.purpose || 'report',
+      binding: {
+        semanticVersionId: c008.current.semanticVersionId,
+        semanticVersion: c008.current.publishedSemanticVersion,
+        dataVersionId: front.asset.assetVersionId,
+        t008: front.asset.t008
+      },
+      currentSummaryId: 'C017-S001-REPORT-CURRENT', summaryVersion: '1',
+      formedAt: '2026-08-25T01:00:00.000Z', observedAt: '2026-08-25T01:00:00.000Z',
+      readId, idempotencyKey: `idem-${readId}` });
     // C017 owns data quality; the M06 adapter only joins the read-only C008
     // semantic observation needed to prove one exact report combination.
     return {
