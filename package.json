@@ -11,7 +11,7 @@
     "test:m03": "node --test services/query/*.test.cjs",
     "test:m04": "node --test services/decision/index.test.cjs",
     "test:m06": "node --test packages/report/boundary.test.cjs packages/report/index.test.cjs packages/report/service.test.cjs services/report/index.test.cjs",
-    "test:m05": "node --test packages/agent-release/index.test.cjs packages/m05/index.test.cjs",
+    "test:m05": "node --test packages/agent-release/index.test.cjs packages/m05/index.test.cjs packages/m05/report-port.test.cjs",
     "check": "npm run check:foundation && npm run check:m02 && npm run check:m01 && npm run check:m03 && npm run check:m04 && npm run check:m06 && npm run check:m05",
     "check:foundation": "node --check packages/contracts/index.js && node --check packages/contracts/validation.js && node --check packages/contracts/compatibility.js && node --check packages/identity/index.js && node --check packages/checkpoint/index.js",
     "check:m02": "node --check services/data/index.js && node --check services/data/contracts.js && node --check services/data/runtime.js && node --check services/data/clients.js && node --check services/data/envelope.js && node --check services/data/checkpoint.js",
@@ -19,6 +19,6 @@
     "check:m03": "node --check services/query/*.js",
     "check:m04": "node --check services/decision/foundation-adapter.js && node --check services/decision/index.js",
     "check:m06": "node --check services/report/index.js && node --check packages/report/index.js && node --check packages/report/boundary.js && node --check packages/report/copilot.js && node --check packages/report/template.js && node --check packages/report/render.js && node --check packages/report/export.js && node --check packages/report/store.js && node --check packages/report/definition.js && node --check packages/report/fixed-view.js && node --check packages/report/gate.js && node --check packages/report/handoff.js && node --check packages/report/verification.js && node --check packages/report/comparison.js && node --check packages/report/checkpoint.js && node --check packages/report/service.js",
-    "check:m05": "node --check packages/agent-release/index.js && node --check packages/m05/index.js && node --check packages/m05/schema.js && node --check packages/m05/contracts.js && node --check packages/m05/report.js && node --check packages/m05/gateway.js && node --check packages/m05/orchestration.js && node --check packages/m05/evaluation.js && node --check packages/m05/checkpoint.js"
+    "check:m05": "node --check packages/agent-release/index.js && node --check packages/m05/index.js && node --check packages/m05/schema.js && node --check packages/m05/contracts.js && node --check packages/m05/report.js && node --check packages/m05/report-port.js && node --check packages/m05/gateway.js && node --check packages/m05/orchestration.js && node --check packages/m05/evaluation.js && node --check packages/m05/checkpoint.js"
   }
 }
