@@ -739,6 +739,13 @@ function commonVersion(chains, field) {
   return values[0];
 }
 
+function sameCutoff(left, right) {
+  const normalize = (value) => typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value)
+    ? `${value}T00:00:00.000Z`
+    : value;
+  return normalize(left) === normalize(right);
+}
+
 function buildC019EvidenceItem(input) {
   assertAllowedKeys(input, [
     "reference", "receipt", "evidenceId", "evidenceSlotId", "fixedAt", "requestIds",
@@ -765,7 +772,7 @@ function buildC019EvidenceItem(input) {
   const dataCutoff = commonVersion(selected, "dataCutoff");
   if (exactCombination.semanticVersionId !== semanticVersion
     || exactCombination.dataVersionId !== dataVersion
-    || dataCutoff !== t008) {
+    || !sameCutoff(dataCutoff, t008)) {
     fail("C019_EVIDENCE_VERSION_MISMATCH", "C019 evidence does not match the fixed report semantic/data versions");
   }
   const stableEntries = selected.flatMap((chain) => Object.values(chain.resourceRefs)
