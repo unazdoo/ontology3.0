@@ -32,12 +32,21 @@ function envelope(overrides = {}) {
 }
 
 function asset() {
+  const source = 'foundation-source';
   return data.makeAssetVersion({
     assetId: 'T006-1', assetVersionId: 'T007-1', scenarioContext: context,
-    asOfTime: '2025-12-31', members: [{ memberId: 'member-1' }], relationships: [],
-    quality: data.makeQuality({ qualityId: 'T005-1', status: 'passed', hardFailure: false, checks: [] }),
+    asOfTime: '2025-12-31', members: [{
+      memberId: 'member-1', name: 'Member', grain: 'one-row', rowCount: 1,
+      primaryKey: 'field-1', qualityStatus: 'passed',
+      fields: [{ id: 'field-1', name: 'Field', dataType: 'string', nullable: false }]
+    }], relationships: [], expectedScope: { memberIds: ['member-1'], relationIds: [] },
+    quality: data.makeQuality({ qualityId: 'T005-1', status: 'passed', hardFailure: false, checks: [], formedAt: '2026-08-24T00:00:00.000Z' }),
     immutable: true, consumable: false, reusable: false,
-    publicationState: 'published', publishedAt: '2026-08-24T00:00:00.000Z'
+    publicationState: 'published', publishedAt: '2026-08-24T00:00:00.000Z',
+    t008EvidenceRef: 'T008-1',
+    sourceFingerprint: { algorithm: 'SHA-256', value: data.contentFingerprint(source), sizeBytes: Buffer.byteLength(source) },
+    sourceChain: [{ kind: 'T002', snapshotId: 'T002-1' }], lineageCheckStatus: 'passed',
+    lineageEvidenceRef: 'RUN-1', cycleDetected: false
   });
 }
 
@@ -49,7 +58,11 @@ function runtimeWithAcceptedDelivery() {
   runtime.createPipeline({ pipelineId: 'pipeline-boundary', name: 'pipeline', outputAssetId: 'asset-boundary', inputSlots: [{ slotId: 'input', input: { kind: 'T002', snapshotId: snapshot.snapshotId } }] });
   runtime.publishPipeline('pipeline-boundary');
   const run = runtime.runPipeline('pipeline-boundary', { scenarioContext: context, executor: () => ({ ok: true }), qualityChecks: [{ checkId: 'shape', status: 'passed', hard: true }] });
-  const version = runtime.publishAsset(run.runId, { assetId: 'asset-boundary', members: ['member'] });
+  const version = runtime.publishAsset(run.runId, { assetId: 'asset-boundary', members: [{
+    memberId: 'member', name: 'Member', grain: 'one-row', rowCount: 1,
+    primaryKey: 'field', qualityStatus: 'passed',
+    fields: [{ id: 'field', name: 'Field', dataType: 'string', nullable: false }]
+  }], relations: [] });
   const delivery = runtime.createDelivery({ assetVersionId: version.assetVersionId, scenarioContext: context, deliveryId: 'delivery-boundary' });
   runtime.recordDeliveryReceipt(delivery.deliveryId, {
     schemaVersion: data.DATA_SCHEMA_VERSION, contractCode: 'C003', deliveryId: delivery.deliveryId,

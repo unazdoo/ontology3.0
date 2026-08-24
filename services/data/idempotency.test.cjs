@@ -26,7 +26,16 @@ test('formal run and C003/C028/C029 repeated identifiers are side-effect free', 
   const duplicate = runtime.startRun('pipeline-idem', { scenarioContext: context, idempotencyKey: 'run-key' });
   assert.equal(duplicate.runId, first.runId);
   runtime.executeRun(first.runId, () => ({ stable: true }), { qualityChecks: [{ checkId: 'shape', status: 'passed', hard: true }] });
-  const asset = runtime.publishAsset(first.runId, { assetId: 'asset-idem', members: ['m'], contentFingerprint: 'stable' });
+  const asset = runtime.publishAsset(first.runId, {
+    assetId: 'asset-idem',
+    members: [{
+      memberId: 'member-idem', name: 'Member', grain: 'one-row', rowCount: 1,
+      primaryKey: 'field-idem', qualityStatus: 'passed',
+      fields: [{ id: 'field-idem', name: 'Field', dataType: 'string', nullable: false }]
+    }],
+    relations: [],
+    contentFingerprint: 'stable'
+  });
   const delivery = runtime.createDelivery({ assetVersionId: asset.assetVersionId, scenarioContext: context, deliveryId: 'delivery-idem' });
   runtime.recordDeliveryReceipt(delivery.deliveryId, { schemaVersion, contractCode: 'C003', deliveryId: delivery.deliveryId, assetVersionId: asset.assetVersionId, status: 'accepted', scenarioContext: context });
   const discovery = runtime.discoverC032({ deliveryId: delivery.deliveryId, response: { schemaVersion, contractCode: 'C032', responseId: 'response-idem', responseVersion: '1', assetId: asset.assetId, status: 'available', scenarioContext: context, candidates: [{ t054Id: 'target', bindingVersion: '1', allowSubmit: true, status: 'available' }] } });

@@ -301,6 +301,10 @@ function normalizeMembers(value) {
   return members;
 }
 
+function sortedUnique(values) {
+  return [...new Set((values || []).filter(Boolean))].sort();
+}
+
 // `lockedAt` is an audit timestamp, not an input identity. Retries resolve the
 // same immutable sources again and must compare semantic locks only.
 function semanticLocks(locks) {
@@ -1089,6 +1093,7 @@ class DataPipelineRuntime {
         || snapshot.t008ConfirmationId;
       if (!confirmationId) fail(ERROR_CODES.T008_REQUIRED, `input slot ${slot.slotId} has no explicit T008 confirmation`, { slotId: slot.slotId, snapshotId: id });
       const confirmation = this.getT008Confirmation(confirmationId);
+      if (confirmation.snapshotId !== snapshot.snapshotId) fail(ERROR_CODES.T008_CONTEXT_MISMATCH, 'T008 confirmation belongs to another T002 snapshot', { slotId: slot.slotId, snapshotId: snapshot.snapshotId, confirmationId });
       if (!sameRunContext(confirmation.scenarioContext, context)) fail(ERROR_CODES.T008_CONTEXT_MISMATCH, 'T008 confirmation belongs to another scenario run', { slotId: slot.slotId, confirmationId });
       return {
         slotId: slot.slotId,
@@ -1265,6 +1270,7 @@ class DataPipelineRuntime {
       return existing;
     }
     const result = evaluateQualityChecks(input.checks || input.results || [], { ...input, runId, formedAt: this._now(input.formedAt) });
+    if (this.quality.has(result.qualityId)) fail(ERROR_CODES.IMMUTABLE, 'T005 quality identity already belongs to another immutable result', { qualityId: result.qualityId });
     this.quality.set(result.qualityId, result);
     let nextStatus = STATUS.COMPLETED;
     let failure = null;
@@ -1388,11 +1394,21 @@ class DataPipelineRuntime {
     if (!Array.isArray(inputMembers) || inputMembers.length === 0) fail(ERROR_CODES.INVALID_ARGUMENT, 'T007 requires a non-empty members array');
     const seen = new Set();
     return inputMembers.map((member, index) => {
-      const value = isRecord(member) ? { ...member } : { memberId: String(member) };
-      const memberId = nonEmpty(value.memberId || value.id || value.name || `member-${index + 1}`, 'memberId');
+      const value = isRecord(member) ? { ...clone(member) } : { memberId: String(member) };
+      const memberId = nonEmpty(value.memberId, `member ${index} memberId`);
       if (seen.has(memberId)) fail(ERROR_CODES.INVALID_ARGUMENT, 'T007 member IDs must be unique');
       seen.add(memberId);
       return { ...value, memberId };
+    });
+  }
+
+  _buildAssetRelations(inputRelations) {
+    if (inputRelations === undefined) return [];
+    if (!Array.isArray(inputRelations)) fail(ERROR_CODES.INVALID_ARGUMENT, 'T007 relations must be an array');
+    return inputRelations.map((relation, index) => {
+      if (!isRecord(relation)) fail(ERROR_CODES.INVALID_ARGUMENT, `T007 relation ${index} must be an object`);
+      const relationId = nonEmpty(relation.relationId, `relation ${index} relationId`);
+      return { ...clone(relation), relationId };
     });
   }
 
@@ -1427,11 +1443,12 @@ class DataPipelineRuntime {
     const quality = this._get(this.quality, run.qualityId, 'T005');
     if (quality.status === QUALITY_STATUS.FAILED) fail(ERROR_CODES.QUALITY_HARD_FAILURE, 'hard quality failure blocks T007 publication');
     if (quality.status === QUALITY_STATUS.UNKNOWN) fail(ERROR_CODES.QUALITY_UNKNOWN, 'unknown quality blocks T007 publication');
-    if (quality.status === QUALITY_STATUS.WARNING && input.warningAcknowledgement !== true && !text(input.warningAcknowledgement || input.warningReason)) fail(ERROR_CODES.WARNING_ACK_REQUIRED, 'publishing a warning result requires an explicit acknowledgement');
+    const warningAcknowledgement = input.warningAcknowledgement || input.warningReason;
+    if (quality.status === QUALITY_STATUS.WARNING && !text(warningAcknowledgement)) fail(ERROR_CODES.WARNING_ACK_REQUIRED, 'publishing a warning result requires an explicit acknowledgement');
     this._contextMatchesRun(run.scenarioContext, run.scenarioContext);
     const assetId = nonEmpty(input.assetId || run.outputAssetId, 'assetId');
     const members = this._buildAssetMembers(input.members || input.memberList);
-    const relations = input.relations ? clone(input.relations) : [];
+    const relations = this._buildAssetRelations(input.relations || input.relationships);
     const t008 = input.t008 || input.asOf || (run.inputLocks.find((lock) => lock.t008)?.t008);
     if (!text(t008)) fail(ERROR_CODES.T008_REQUIRED, 'T007 publication requires T008');
     const lockedT008 = run.inputLocks.find((lock) => lock.t008)?.t008;
@@ -1461,7 +1478,8 @@ class DataPipelineRuntime {
         pipelineId: run.pipelineId,
         pipelineVersion: run.pipelineVersion
       }),
-      compatibilityOnly: input.compatibilityOnly === true || run.scenarioContext.scenarioId === 'S003' && input.purpose === 'compatibility'
+      compatibilityOnly: input.compatibilityOnly === true
+        || run.scenarioContext.scenarioId === 'S003' && ['compatibility', 'compatibility-validation'].includes(input.purpose)
     };
     const contentFingerprint = fingerprint(versionContent);
     const priorIds = this.assetVersionOrder.get(assetId) || [];
@@ -1491,6 +1509,24 @@ class DataPipelineRuntime {
       : (input.reuseLicense ? clone(input.reuseLicense) : { allowed: false });
     if (compatibilityOnly && relations.length > 0) fail(ERROR_CODES.INVALID_ARGUMENT, 'S003 compatibility T007 must not declare ontology relationships');
     if (compatibilityOnly && members.length !== 2) fail(ERROR_CODES.INVALID_ARGUMENT, 'S003 compatibility T007 must contain exactly two logical members');
+    const t008ConfirmationIds = sortedUnique(run.inputLocks.map((lock) => lock.t008ConfirmationId));
+    const t008EvidenceRef = t008ConfirmationIds.length === 1 ? t008ConfirmationIds[0] : null;
+    const rawSnapshotLocks = run.inputLocks.filter((lock) => lock.kind === 'T002');
+    let sourceFingerprint = null;
+    if (rawSnapshotLocks.length === 1) {
+      const snapshot = this.snapshots.get(rawSnapshotLocks[0].snapshotId);
+      if (snapshot && snapshot.contentFingerprint === rawSnapshotLocks[0].contentHash) {
+        sourceFingerprint = {
+          algorithm: 'SHA-256',
+          value: snapshot.contentFingerprint,
+          sizeBytes: snapshot.byteLength
+        };
+      }
+    }
+    const expectedScope = {
+      memberIds: members.map((member) => member.memberId),
+      relationIds: relations.map((relation) => relation.relationId)
+    };
     const version = {
       schemaVersion: SCHEMA_VERSION,
       resourceType: 'T007',
@@ -1505,6 +1541,7 @@ class DataPipelineRuntime {
       members,
       relations,
       relationships: relations,
+      expectedScope,
       inputs: run.inputLocks,
       inputLocks: run.inputLocks,
       pipelineId: run.pipelineId,
@@ -1514,6 +1551,7 @@ class DataPipelineRuntime {
       processingModuleVersion: input.processingModuleVersion || input.processingModule?.version || run.processingModule?.version || null,
       quality: quality,
       qualityId: quality.qualityId,
+      warningAcknowledgement: text(warningAcknowledgement) ? warningAcknowledgement : null,
       contentFingerprint,
       publicationState: 'published',
       publishedAt: this._now(input.publishedAt),
@@ -1524,8 +1562,15 @@ class DataPipelineRuntime {
       immutable: true,
       purpose: input.purpose || 'formal-data-asset',
       versionDescription: input.versionDescription || input.releaseNote || input.versionNote || null,
-      sourceSnapshotIds: run.inputLocks.filter((lock) => lock.kind === 'T002').map((lock) => lock.snapshotId),
-      sourceChain: clone(input.sourceChain || this._sourceChain(run.inputLocks)),
+      sourceSnapshotIds: rawSnapshotLocks.map((lock) => lock.snapshotId),
+      sourceFingerprint,
+      t008ConfirmationIds,
+      t008EvidenceRef,
+      sourceRunId: run.runId,
+      lineageCheckStatus: 'passed',
+      lineageEvidenceRef: run.runId,
+      cycleDetected: false,
+      sourceChain: clone(this._sourceChain(run.inputLocks)),
       consumption: {
         // S003 compatibility assets are permanently non-consumable.  No API
         // below can promote this flag in place.
@@ -1711,8 +1756,60 @@ class DataPipelineRuntime {
     const version = this.getAssetVersion(input.assetVersionId || input.t007Id);
     const context = requireActiveContext(input.scenarioContext || version.scenarioContext);
     requireExactContext(version.scenarioContext, context, 'C003 delivery context must match the exact T007 context');
-    if (version.compatibilityOnly === true || version.consumption?.compatibilityOnly === true) {
+    if (version.compatibilityOnly === true || version.consumption?.compatibilityOnly === true
+        || version.scenarioContext?.scenarioId === 'S003' && ['compatibility', 'compatibility-validation'].includes(version.purpose)) {
       fail(ERROR_CODES.S003_NOT_CONSUMABLE, 'S003 compatibility T007 cannot be delivered for consumption');
+    }
+    if (this._isVersionBlocked(version.assetVersionId)) {
+      fail(ERROR_CODES.QUALITY_HARD_FAILURE, 'a confirmed post-publish hard quality finding blocks C003 delivery');
+    }
+    const sourceRun = version.sourceRunId ? this.runs.get(version.sourceRunId) : null;
+    if (!sourceRun || sourceRun.candidateAssetVersionId !== version.assetVersionId
+        || sourceRun.qualityId !== version.qualityId
+        || sourceRun.pipelineId !== version.pipelineId
+        || sourceRun.pipelineVersion !== version.pipelineVersion
+        || !Array.isArray(version.inputLocks)
+        || !sameExactContext(sourceRun.scenarioContext, version.scenarioContext)
+        || fingerprint(sourceRun.inputLocks) !== fingerprint(version.inputLocks)) {
+      fail(ERROR_CODES.INPUT_DRIFT, 'C003 T007 is not bound to its authoritative formal run');
+    }
+    const authoritativeQuality = this.quality.get(version.qualityId);
+    if (!authoritativeQuality || authoritativeQuality.runId !== sourceRun.runId
+        || fingerprint(authoritativeQuality) !== fingerprint(version.quality)) {
+      fail('C003_QUALITY_MISMATCH', 'C003 quality evidence does not match the authoritative T005');
+    }
+    if (authoritativeQuality.status === QUALITY_STATUS.WARNING && !text(version.warningAcknowledgement)) {
+      fail(ERROR_CODES.WARNING_ACK_REQUIRED, 'warning-quality C003 requires the acknowledgement locked into T007');
+    }
+    const rawSnapshotLocks = version.inputLocks.filter((lock) => lock.kind === 'T002');
+    if (rawSnapshotLocks.length !== 1) {
+      fail('C003_SOURCE_FINGERPRINT_INVALID', 'C003 requires one exact raw source fingerprint under the existing contract');
+    }
+    const rawLock = rawSnapshotLocks[0];
+    const confirmation = version.t008EvidenceRef ? this.t008Confirmations.get(version.t008EvidenceRef) : null;
+    if (!confirmation || version.t008ConfirmationIds?.length !== 1
+        || version.t008ConfirmationIds[0] !== confirmation.confirmationId
+        || rawLock.t008ConfirmationId !== confirmation.confirmationId
+        || confirmation.snapshotId !== rawLock.snapshotId
+        || !sameExactContext(confirmation.scenarioContext, version.scenarioContext)
+        || confirmation.asOf !== rawLock.t008 || confirmation.asOf !== version.t008) {
+      fail('C003_T008_EVIDENCE_REQUIRED', 'T007 T008 evidence is missing or does not match the exact run and as-of time');
+    }
+    const snapshot = this.snapshots.get(rawLock.snapshotId);
+    const authoritativeSourceFingerprint = snapshot && snapshot.immutable === true
+      && snapshot.contentFingerprint === rawLock.contentHash
+      ? { algorithm: 'SHA-256', value: snapshot.contentFingerprint, sizeBytes: snapshot.byteLength }
+      : null;
+    if (!authoritativeSourceFingerprint
+        || version.sourceSnapshotIds?.length !== 1 || version.sourceSnapshotIds[0] !== rawLock.snapshotId
+        || fingerprint(authoritativeSourceFingerprint) !== fingerprint(version.sourceFingerprint)) {
+      fail('C003_SOURCE_FINGERPRINT_INVALID', 'C003 source fingerprint does not match the locked immutable T002 bytes');
+    }
+    const authoritativeSourceChain = this._sourceChain(version.inputLocks);
+    if (version.lineageCheckStatus !== 'passed' || version.cycleDetected !== false
+        || version.lineageEvidenceRef !== sourceRun.runId
+        || fingerprint(authoritativeSourceChain) !== fingerprint(version.sourceChain)) {
+      fail('C003_LINEAGE_BLOCKED', 'C003 lineage evidence does not match the authoritative run input locks');
     }
     try { dataContracts.assertC003DeliveryEligible(version); } catch (error) {
       fail(error.code || ERROR_CODES.DELIVERY_BLOCKED, error.message, error.details || error.errors || null);
@@ -1747,13 +1844,18 @@ class DataPipelineRuntime {
       immutable: version.immutable === true,
       publicationState: version.publicationState,
       qualityStatus: version.quality.status,
-      t008ConfirmationIds: clone((version.inputLocks || []).map((lock) => lock.t008ConfirmationId).filter(Boolean)),
+      t008ConfirmationIds: clone(version.t008ConfirmationIds || []),
+      t008ConfirmationId: version.t008EvidenceRef,
+      t008EvidenceRef: version.t008EvidenceRef,
       members: clone(version.members),
       relations: clone(version.relations),
+      expectedScope: clone(version.expectedScope),
       quality: clone(version.quality),
       t005Id: version.qualityId,
+      warningAcknowledgement: version.warningAcknowledgement || null,
       sourceChain: clone(version.sourceChain),
       sourceSnapshotIds: clone(version.sourceSnapshotIds || []),
+      sourceFingerprint: clone(version.sourceFingerprint),
       pipelineId: version.pipelineId,
       pipelineVersionId: version.pipelineVersionId,
       pipelineVersion: version.pipelineVersion,
@@ -1762,13 +1864,19 @@ class DataPipelineRuntime {
       publishedAt: version.publishedAt,
       versionDescription: version.versionDescription || version.releaseNote || null,
       scenarioContext: context,
+      lineageCheckStatus: version.lineageCheckStatus,
+      lineageEvidenceRef: version.lineageEvidenceRef,
+      cycleDetected: version.cycleDetected,
       sentAt: this._now(input.sentAt),
       status: 'awaiting-receipt',
-      purpose: input.purpose || version.purpose || 'semantic-refresh-candidate',
+      purpose: version.purpose || 'semantic-refresh-candidate',
       consumptionStatus: version.consumption?.compatibilityOnly ? 'compatibility-only-non-consumable' : 'candidate',
       receipt: null
     };
     dataContracts.assertNoForbiddenKeys({ members: delivery.members, relationships: delivery.relations, sourceChain: delivery.sourceChain });
+    try { dataContracts.validateDelivery(delivery); } catch (error) {
+      fail(error.code || ERROR_CODES.DELIVERY_BLOCKED, error.message, error.details || error.errors || null);
+    }
     return this._put(this.deliveryRecords, deliveryId, delivery);
   }
   createC003Delivery(input) { return this.createDelivery(input); }

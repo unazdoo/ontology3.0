@@ -402,7 +402,95 @@ function validateDelivery(value) {
   validateQuality(value.quality);
   if (value.t005Id !== value.quality.qualityId) throw new DataContractError('C003_QUALITY_MISMATCH', 'C003 t005Id must match the exact quality evidence');
   if (value.quality && value.quality.status !== value.qualityStatus) throw new DataContractError('C003_QUALITY_MISMATCH', 'C003 qualityStatus must match the exact T005 evidence');
+  validateC003ContractShape(value);
   assertContext(value.scenarioContext);
+  return value;
+}
+
+function validateC003ContractShape(value) {
+  const members = value.members;
+  const relationships = value.relationships === undefined
+    ? (value.relations === undefined ? [] : value.relations)
+    : value.relationships;
+  if (!Array.isArray(members) || members.length === 0) throw new DataContractError('C003_MEMBERS_REQUIRED', 'C003 members must not be empty');
+  if (!Array.isArray(relationships)) throw new DataContractError('C003_RELATIONS_INVALID', 'C003 relations must be an array');
+  const memberIds = new Set();
+  const memberFields = new Map();
+  members.forEach((member, memberIndex) => {
+    const path = `members[${memberIndex}]`;
+    if (!isRecord(member)) throw new DataContractError('C003_MEMBER_INVALID', `${path} must be an object`);
+    const memberId = member.memberId;
+    if (!token(memberId) || !text(member.name) || !text(member.grain)) throw new DataContractError('C003_MEMBER_INVALID', `${path} requires stable memberId, name and grain`);
+    if (memberIds.has(memberId)) throw new DataContractError('C003_MEMBER_DUPLICATE', `${path}.memberId must be unique`);
+    memberIds.add(memberId);
+    if (!Number.isSafeInteger(member.rowCount) || member.rowCount < 0) throw new DataContractError('C003_MEMBER_INVALID', `${path}.rowCount must be a non-negative integer`);
+    if (!token(member.primaryKey)) throw new DataContractError('C003_PRIMARY_KEY_REQUIRED', `${path}.primaryKey must be a stable field id`);
+    if (!Array.isArray(member.fields) || member.fields.length === 0) throw new DataContractError('C003_FIELDS_REQUIRED', `${path}.fields must not be empty`);
+    if (!['passed', 'warning'].includes(member.qualityStatus)) throw new DataContractError('C003_MEMBER_QUALITY_BLOCKED', `${path}.qualityStatus must be passed or warning`);
+    const fields = new Set();
+    member.fields.forEach((field, fieldIndex) => {
+      const fieldPath = `${path}.fields[${fieldIndex}]`;
+      if (!isRecord(field) || !token(field.id) || !text(field.name) || !text(field.dataType) || typeof field.nullable !== 'boolean') {
+        throw new DataContractError('C003_FIELD_INVALID', `${fieldPath} requires id, name, dataType and boolean nullable`);
+      }
+      if (fields.has(field.id)) throw new DataContractError('C003_FIELD_DUPLICATE', `${fieldPath}.id must be unique`);
+      fields.add(field.id);
+    });
+    if (!fields.has(member.primaryKey)) throw new DataContractError('C003_PRIMARY_KEY_MISMATCH', `${path}.primaryKey must identify a locked field id`);
+    memberFields.set(memberId, fields);
+  });
+  const relationIds = new Set();
+  relationships.forEach((relation, relationIndex) => {
+    const path = `relations[${relationIndex}]`;
+    if (!isRecord(relation)) throw new DataContractError('C003_RELATION_INVALID', `${path} must be an object`);
+    const relationId = relation.relationId;
+    if (!token(relationId) || !text(relation.name) || !token(relation.sourceMemberId) || !token(relation.targetMemberId)
+        || !token(relation.sourceFieldId) || !token(relation.targetFieldId) || relation.endpointCheckStatus !== 'passed') {
+      throw new DataContractError('C003_RELATION_INVALID', `${path} requires stable identities and endpointCheckStatus=passed`);
+    }
+    if (relationIds.has(relationId)) throw new DataContractError('C003_RELATION_DUPLICATE', `${path}.relationId must be unique`);
+    relationIds.add(relationId);
+    if (!memberFields.get(relation.sourceMemberId)?.has(relation.sourceFieldId)
+        || !memberFields.get(relation.targetMemberId)?.has(relation.targetFieldId)) {
+      throw new DataContractError('C003_RELATION_ENDPOINT_MISMATCH', `${path} endpoints must reference locked member fields`);
+    }
+  });
+  if (!isRecord(value.expectedScope) || !Array.isArray(value.expectedScope.memberIds) || !Array.isArray(value.expectedScope.relationIds)) {
+    throw new DataContractError('C003_SCOPE_REQUIRED', 'C003 requires expectedScope memberIds and relationIds');
+  }
+  const expectedMembers = value.expectedScope.memberIds;
+  const expectedRelations = value.expectedScope.relationIds;
+  if (expectedMembers.some((id) => !token(id)) || new Set(expectedMembers).size !== expectedMembers.length || expectedMembers.length !== memberIds.size
+      || expectedMembers.some((id) => !memberIds.has(id))) throw new DataContractError('C003_MEMBER_SCOPE_MISMATCH', 'expectedScope.memberIds must exactly match members');
+  if (expectedRelations.some((id) => !token(id)) || new Set(expectedRelations).size !== expectedRelations.length || expectedRelations.length !== relationIds.size
+      || expectedRelations.some((id) => !relationIds.has(id))) throw new DataContractError('C003_RELATION_SCOPE_MISMATCH', 'expectedScope.relationIds must exactly match relations');
+  if (!token(value.t008EvidenceRef)) throw new DataContractError('C003_T008_EVIDENCE_REQUIRED', 'C003 requires an exact T008 evidence reference');
+  if (value.t008ConfirmationId !== undefined && value.t008ConfirmationId !== value.t008EvidenceRef) {
+    throw new DataContractError('C003_T008_EVIDENCE_MISMATCH', 'C003 T008 evidence fields must identify the same confirmation');
+  }
+  if (value.t008ConfirmationIds !== undefined
+      && (!Array.isArray(value.t008ConfirmationIds) || value.t008ConfirmationIds.length !== 1 || value.t008ConfirmationIds[0] !== value.t008EvidenceRef)) {
+    throw new DataContractError('C003_T008_EVIDENCE_MISMATCH', 'C003 requires one exact T008 confirmation for the delivered source');
+  }
+  if (!isRecord(value.sourceFingerprint) || value.sourceFingerprint.algorithm !== 'SHA-256'
+      || !/^[a-f0-9]{64}$/.test(value.sourceFingerprint.value || '')
+      || !Number.isSafeInteger(value.sourceFingerprint.sizeBytes) || value.sourceFingerprint.sizeBytes <= 0) {
+    throw new DataContractError('C003_SOURCE_FINGERPRINT_INVALID', 'C003 requires a real SHA-256 source fingerprint and positive sizeBytes');
+  }
+  if (!dateTime(value.quality?.formedAt)) throw new DataContractError('C003_QUALITY_EVIDENCE_INVALID', 'C003 requires timestamped T005 quality evidence');
+  if (value.quality?.status === 'warning' && !text(value.warningAcknowledgement || value.quality.warningAcknowledgement)) {
+    throw new DataContractError('C003_QUALITY_WARNING_ACK_REQUIRED', 'C003 warning quality requires the publish-time acknowledgement');
+  }
+  if (value.lineageCheckStatus !== 'passed' || value.cycleDetected !== false || !token(value.lineageEvidenceRef)
+      || !Array.isArray(value.sourceChain) || value.sourceChain.length === 0) {
+    throw new DataContractError('C003_LINEAGE_BLOCKED', 'C003 requires passed lineage evidence and an explicit no-cycle result');
+  }
+  const validLineageNode = (node) => {
+    if (token(node)) return true;
+    if (!isRecord(node) || !token(node.snapshotId || node.assetVersionId || node.sourceId || node.id)) return false;
+    return node.upstream === undefined || Array.isArray(node.upstream) && node.upstream.every(validLineageNode);
+  };
+  if (!value.sourceChain.every(validLineageNode)) throw new DataContractError('C003_LINEAGE_BLOCKED', 'C003 sourceChain must contain locatable lineage nodes');
   return value;
 }
 
@@ -417,11 +505,13 @@ function assertC003DeliveryEligible(value) {
   }
   const consumptionState = value.consumption?.status || value.consumptionStatus || null;
   if (value.compatibilityOnly === true || value.consumption?.compatibilityOnly === true
+      || value.scenarioContext?.scenarioId === 'S003' && ['compatibility', 'compatibility-validation'].includes(value.purpose)
       || consumptionState === T007_S003_COMPATIBILITY_STATUS
       || consumptionState === 'permanently-non-consumable'
       || value.purpose === 'non-consumable') {
     throw new DataContractError('C003_NOT_CONSUMABLE', 'this T007 is permanently ineligible for C003 consumption delivery');
   }
+  validateC003ContractShape(value);
   return value;
 }
 
@@ -686,6 +776,7 @@ module.exports = Object.freeze({
   validateQuality,
   validateAssetVersion,
   validateDelivery,
+  validateC003ContractShape,
   assertC003DeliveryEligible,
   validateC017Summary,
   assertNoForbiddenKeys,

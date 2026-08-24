@@ -24,15 +24,21 @@ test('M02 registry covers only the requested T/C ownership surface', () => {
 });
 
 test('immutable constructors validate canonical T002/T005/T007/C003 shapes', () => {
+  const member = {
+    memberId: 'm', name: 'Member', grain: 'one-row', rowCount: 1,
+    primaryKey: 'field-m', qualityStatus: 'passed',
+    fields: [{ id: 'field-m', name: 'Field', dataType: 'string', nullable: false }]
+  };
+  const fingerprint = contract.contentFingerprint('contract-source');
   const snapshot = contract.makeSnapshot({
     snapshotId: 'T002-1', sourceId: 'T001-1', contentFingerprint: 'a'.repeat(64),
     readAt: '2026-08-24T00:00:00.000Z', status: 'registered', immutable: true
   });
   assert.equal(Object.isFrozen(snapshot), true);
-  const quality = contract.makeQuality({ qualityId: 'T005-1', status: 'passed', hardFailure: false, checks: [] });
+  const quality = contract.makeQuality({ qualityId: 'T005-1', status: 'passed', hardFailure: false, checks: [], formedAt: '2026-08-24T00:00:00.000Z' });
   const asset = contract.makeAssetVersion({
     assetId: 'T006-1', assetVersionId: 'T007-1', scenarioContext: context,
-    asOfTime: '2025-12-31', members: [{ memberId: 'm' }], relationships: [],
+    asOfTime: '2025-12-31', members: [member], relationships: [],
     quality, immutable: true, consumable: true,
     publicationState: 'published', publishedAt: '2026-08-24T00:00:00.000Z'
   });
@@ -40,7 +46,11 @@ test('immutable constructors validate canonical T002/T005/T007/C003 shapes', () 
   const delivery = contract.makeDelivery({
     deliveryId: 'C003-1', contractCode: 'C003', assetId: 'T006-1', assetVersionId: 'T007-1',
     asOfTime: '2025-12-31', scenarioContext: context, status: 'pending', sentAt: '2026-08-24T00:00:00.000Z',
-    immutable: true, publicationState: 'published', qualityStatus: 'passed', quality, t005Id: quality.qualityId
+    immutable: true, publicationState: 'published', qualityStatus: 'passed', quality, t005Id: quality.qualityId,
+    members: [member], relationships: [], expectedScope: { memberIds: ['m'], relationIds: [] },
+    t008EvidenceRef: 'T008-1', sourceFingerprint: { algorithm: 'SHA-256', value: fingerprint, sizeBytes: Buffer.byteLength('contract-source') },
+    sourceChain: [{ kind: 'T002', snapshotId: 'T002-1' }], lineageCheckStatus: 'passed',
+    lineageEvidenceRef: 'RUN-1', cycleDetected: false
   });
   assert.equal(delivery.contractCode, 'C003');
 });
