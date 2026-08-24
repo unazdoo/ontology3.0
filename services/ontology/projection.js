@@ -126,6 +126,10 @@ function refreshC008Projection(state, now, options = {}) {
     projectionVersion: state.counters.projection,
     formedAt: now,
     readStatus,
+    c008Id: state.projectionId,
+    version: String(state.counters.projection),
+    status: readStatus === 'ready' || readStatus === 'previous-trusted' ? 'ready' : readStatus,
+    consumptionReadiness: { status: readStatus === 'ready' || readStatus === 'previous-trusted' ? 'ready' : 'blocked' },
     // Public read aliases consumed by generation gates. `readStatus` remains
     // the normative C008 state; these fields are a one-to-one read mapping.
     status: readStatus,
@@ -137,6 +141,12 @@ function refreshC008Projection(state, now, options = {}) {
     legacyReadStatus: readStatus === 'ready' || readStatus === 'previous-trusted' ? 'available' : readStatus,
     scenarioContext: cloneJson(state.scenarioContext),
     current,
+    currentAuthority: current ? {
+      t019: { id: current.t019Id, version: String(state.t019.revision), status: current.t019Status },
+      publishedSemanticVersion: { id: current.semanticVersionId, version: current.publishedSemanticVersion },
+      dataVersion: { id: current.dataVersion, versionId: current.dataVersion, t008: current.dataAsOf },
+      facts: []
+    } : null,
     publishedPointer: current?.t019Id || null,
     semanticVersionId: current?.semanticVersionId || null,
     semanticVersion: current?.semanticVersion || null,
