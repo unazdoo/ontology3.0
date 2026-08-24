@@ -446,6 +446,25 @@ test('C017 creates two immutable summaries, five dimensions and restricted consu
   assert.equal(read.versionBindingSummary.summaryType, 'version-bound');
   assert.equal(read.currentStateSummary.summaryType, 'current-state');
   assert.equal(read.projection.assetVersionId, asset.assetVersionId);
+  assert.equal(read.summaryId, read.currentStateSummary.summaryId);
+  assert.equal(read.version, read.currentStateSummary.summaryVersion);
+  assert.equal(read.summaryType, 'current-state');
+  assert.equal(read.status, 'ready');
+  assert.equal(read.consumptionReadiness.status, 'ready');
+  assert.deepEqual(read.authoritativeRead, {
+    receiptId: read.readEvent.eventId,
+    owner: 'M02',
+    source: 'owner-api',
+    mode: 'authoritative-current-read',
+    readAt: read.readEvent.occurredAt,
+    static: false
+  });
+  assert.equal(read.assetVersionId, asset.assetVersionId);
+  assert.equal(read.t007Id, asset.assetVersionId);
+  assert.equal(read.t008, asset.t008);
+  assert.deepEqual(read.fiveDimensions, read.currentStateSummary.fiveDimensions);
+  assert.equal(read.freshness.status, 'unknown');
+  assert.equal(read.freshness.reason, 'no external freshness threshold supplied');
   assert.equal(read.projection.fiveDimensions.replayVerification.status, 'not-executed');
   assert.equal('rows' in read.projection, false);
   assert.equal('records' in read.projection, false);
@@ -454,6 +473,70 @@ test('C017 creates two immutable summaries, five dimensions and restricted consu
   const second = runtime.readC017({ assetVersionId: asset.assetVersionId, scenarioContext: CONTEXT, consumer: 'intelligent-query', purpose: 'intelligent-query', requestedBy: 'm03', readId: 'read-second' });
   assert.equal(second.versionBindingSummary.summaryId, read.versionBindingSummary.summaryId);
   assert.notEqual(second.currentStateSummary.summaryId, read.currentStateSummary.summaryId);
+});
+
+test('C017 wrapper preserves an exact supplied binding and does not invent freshness', () => {
+  const { runtime, asset } = runAndPublish(setup().runtime);
+  const binding = {
+    semanticVersionId: 'SEM-S001-v1',
+    semanticVersion: '1.0.0',
+    dataVersionId: asset.assetVersionId,
+    t008: asset.t008
+  };
+  const read = runtime.readC017({
+    assetVersionId: asset.assetVersionId,
+    scenarioContext: CONTEXT,
+    consumer: 'M06',
+    purpose: 'M06-report-generation',
+    binding,
+    freshness: { status: 'unknown', reason: 'external freshness was not supplied' },
+    readId: 'c017-binding-exact'
+  });
+  assert.deepEqual(read.binding, binding);
+  assert.deepEqual(read.freshness, { status: 'unknown', reason: 'external freshness was not supplied' });
+  assert.equal(read.status, 'ready');
+  assert.equal(read.consumptionReadiness.status, 'ready');
+  assert.throws(() => runtime.readC017({
+    assetVersionId: asset.assetVersionId,
+    scenarioContext: CONTEXT,
+    consumer: 'M06',
+    purpose: 'M06-report-generation',
+    binding: { ...binding, dataVersionId: 'T007-other' },
+    readId: 'c017-binding-drift'
+  }), (error) => error.code === data.ERROR_CODES.INPUT_DRIFT);
+});
+
+test('C017 wrapper reports failed, blocked and unknown states without upgrading them', () => {
+  const hardRuntime = setup().runtime;
+  const hard = runAndPublish(hardRuntime).asset;
+  hardRuntime.recordPostPublishFinding({ findingId: 'c017-hard', assetVersionId: hard.assetVersionId, hard: true, reason: 'confirmed hard finding' });
+  hardRuntime.confirmPostPublishFinding('c017-hard', { confirmedBy: 'owner' });
+  const failed = hardRuntime.readC017({ assetVersionId: hard.assetVersionId, scenarioContext: CONTEXT, consumer: 'M06', purpose: 'M06-report-generation', readId: 'c017-failed' });
+  assert.equal(failed.status, 'failed');
+  assert.equal(failed.consumptionReadiness.status, 'failed');
+
+  const unknownRuntime = setup().runtime;
+  const unknownAsset = runAndPublish(unknownRuntime).asset;
+  unknownRuntime.assetVersions.set(unknownAsset.assetVersionId, Object.freeze({
+    ...unknownAsset,
+    quality: Object.freeze({ ...unknownAsset.quality, status: 'unknown', hardFailure: false })
+  }));
+  const unknown = unknownRuntime.readC017({ assetVersionId: unknownAsset.assetVersionId, scenarioContext: CONTEXT, consumer: 'M06', purpose: 'M06-report-generation', readId: 'c017-unknown' });
+  assert.equal(unknown.status, 'unknown');
+  assert.equal(unknown.consumptionReadiness.status, 'unknown');
+
+  const s003Runtime = data.createDataRuntime({ clock });
+  const s003 = { ...CONTEXT, scenarioId: 'S003', scenarioVersion: 'S003-v1', scenarioRunId: 'S003-RUN-C017-STATUS' };
+  s003Runtime.registerSource({ sourceId: 'T001-C017-S003', name: 'compatibility source' });
+  const snapshot = s003Runtime.createSnapshot({ sourceId: 'T001-C017-S003', content: 'compatibility', scenarioContext: s003 });
+  s003Runtime.confirmAsOf(snapshot.snapshotId, { asOf: '2025-12-31', confirmedBy: 'owner', scenarioContext: s003 });
+  s003Runtime.createPipeline({ pipelineId: 'T003-C017-S003', name: 'compatibility', outputAssetId: 'T006-C017-S003', inputSlots: [{ slotId: 'source', input: { kind: 'T002', snapshotId: snapshot.snapshotId } }] });
+  s003Runtime.publishPipeline('T003-C017-S003');
+  const s003Run = s003Runtime.runPipeline('T003-C017-S003', { scenarioContext: s003, executor: () => ({ ok: true }), qualityChecks: [{ checkId: 'shape', status: 'passed', hard: true }] });
+  const s003Asset = s003Runtime.publishAsset(s003Run.runId, { assetId: 'T006-C017-S003', purpose: 'compatibility-validation', members: [{ memberId: 'financial-data' }, { memberId: 'adjustment-factors' }], relations: [] });
+  const blocked = s003Runtime.readC017({ assetVersionId: s003Asset.assetVersionId, scenarioContext: s003, consumer: 'M06', purpose: 'M06-report-generation', readId: 'c017-blocked' });
+  assert.equal(blocked.status, 'blocked');
+  assert.equal(blocked.consumptionReadiness.status, 'blocked');
 });
 
 test('C017 decision-center projection is smaller than the general consumer projection', () => {

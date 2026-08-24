@@ -305,6 +305,48 @@ function sortedUnique(values) {
   return [...new Set((values || []).filter(Boolean))].sort();
 }
 
+function deriveC017Status(version, summary) {
+  const qualityStatus = summary.quality?.status;
+  const hardFailure = summary.hardQualityFailure === true
+    || summary.quality?.hardFailure === true
+    || qualityStatus === QUALITY_STATUS.FAILED
+    || qualityStatus === 'hard-failed';
+  if (hardFailure) return 'failed';
+  if (qualityStatus === QUALITY_STATUS.UNKNOWN || ![QUALITY_STATUS.PASSED, QUALITY_STATUS.WARNING].includes(qualityStatus)) {
+    return 'unknown';
+  }
+  const compatibilityLocked = version.compatibilityOnly === true || version.consumption?.compatibilityOnly === true;
+  if (compatibilityLocked || summary.dataSideQualification === 'prohibited') return 'blocked';
+  if (['allowed', 'allowed-with-warning'].includes(summary.dataSideQualification)) return 'ready';
+  return 'blocked';
+}
+
+function deriveC017Binding(version, input = {}) {
+  const source = isRecord(input.binding) ? input.binding
+    : isRecord(input.versionBinding) ? input.versionBinding : {};
+  const semanticVersionId = input.semanticVersionId || source.semanticVersionId || version.semanticVersionId || null;
+  const semanticVersion = input.semanticVersion || source.semanticVersion || version.semanticVersion || null;
+  const dataVersionId = source.dataVersionId || input.dataVersionId || version.dataVersionId || version.assetVersionId;
+  const t008 = source.t008 || input.t008 || version.t008;
+  if (dataVersionId !== version.assetVersionId) fail(ERROR_CODES.INPUT_DRIFT, 'C017 binding dataVersionId must match the exact T007', { expected: version.assetVersionId, supplied: dataVersionId });
+  if (t008 !== version.t008) fail(ERROR_CODES.INPUT_DRIFT, 'C017 binding t008 must match the exact T007 T008', { expected: version.t008, supplied: t008 });
+  return { semanticVersionId: semanticVersionId || null, semanticVersion: semanticVersion || null, dataVersionId, t008 };
+}
+
+function c017AuthoritativeRead(readEvent) {
+  if (!isRecord(readEvent) || !text(readEvent.eventId || readEvent.readEventId) || !text(readEvent.occurredAt || readEvent.readAt)) {
+    fail(ERROR_CODES.DELIVERY_BLOCKED, 'C017 authoritativeRead requires a real append-only read event');
+  }
+  return {
+    receiptId: readEvent.eventId || readEvent.readEventId,
+    owner: 'M02',
+    source: 'owner-api',
+    mode: 'authoritative-current-read',
+    readAt: readEvent.occurredAt || readEvent.readAt,
+    static: false
+  };
+}
+
 // `lockedAt` is an audit timestamp, not an input identity. Retries resolve the
 // same immutable sources again and must compare semantic locks only.
 function semanticLocks(locks) {
@@ -2298,12 +2340,14 @@ class DataPipelineRuntime {
     const purpose = nonEmpty(input.purpose || input.consumer || 'metadata', 'C017 purpose');
     const consumer = input.consumer || (['decision-gate', 'decision', 'm04'].includes(purpose) ? 'M04' : 'report');
     dataContracts.c017ConsumerProfile(consumer);
+    const binding = deriveC017Binding(version, input);
     const readId = nonEmpty(input.readId || input.requestId || this._id('C017-READ', { purpose, assetVersionId: version.assetVersionId, context }), 'C017 readId');
-    const request = { operation: 'C017-read', readId, purpose, consumer, assetVersionId: version.assetVersionId, scenarioContext: context };
+    const request = { operation: 'C017-read', readId, purpose, consumer, binding, assetVersionId: version.assetVersionId, scenarioContext: context };
     const existingRead = this.c017Reads.get(readId);
     if (existingRead) {
       if (existingRead.consumer !== consumer || existingRead.purpose !== purpose
           || existingRead.assetVersionId !== version.assetVersionId
+          || fingerprint(existingRead.binding || null) !== fingerprint(binding)
           || !sameExactContext(existingRead.scenarioContext, context)) {
         fail(ERROR_CODES.IDEMPOTENCY_CONFLICT, 'C017 read id identifies a different consumer, purpose, T007 or C033 context', { readId });
       }
@@ -2326,19 +2370,8 @@ class DataPipelineRuntime {
       status: 'ok',
       readAt: input.readAt || this._now()
     });
-    const qualityStatus = String(projection.quality?.status || '').toLowerCase();
-    const qualification = String(projection.dataSideQualification || '').toLowerCase();
-    const consumable = ['allowed', 'allowed-with-warning'].includes(qualification)
-      && !projection.quality?.hardFailure
-      && !['unknown', 'failed', 'hard-failed', 'hard-fail'].includes(qualityStatus);
-    const authoritativeRead = {
-      receiptId: readEvent.eventId,
-      owner: 'M02',
-      source: 'owner-api',
-      mode: 'authoritative-current-read',
-      readAt: readEvent.occurredAt,
-      static: false
-    };
+    const c017Status = deriveC017Status(version, summaries.currentState);
+    const authoritativeRead = c017AuthoritativeRead(readEvent);
     const payload = {
       schemaVersion: SCHEMA_VERSION,
       contractCode: 'C017',
@@ -2348,16 +2381,29 @@ class DataPipelineRuntime {
       requestedBy: input.requestedBy || input.actorRef || null,
       readAt: readEvent.occurredAt,
       scenarioContext: context,
+      summaryId: summaries.currentState.summaryId,
+      version: summaries.currentState.summaryVersion,
+      summaryType: summaries.currentState.summaryType,
+      formedAt: summaries.currentState.formedAt,
+      status: c017Status,
+      consumptionReadiness: { status: c017Status === 'ready' ? 'ready' : c017Status },
+      authoritativeRead,
+      binding,
+      assetVersionId: version.assetVersionId,
+      t007Id: version.assetVersionId,
+      t008: version.t008,
+      asOfTime: version.t008,
+      fiveDimensions: clone(summaries.currentState.fiveDimensions),
+      quality: clone(summaries.currentState.quality),
+      freshness: clone(summaries.currentState.freshness),
+      dataSideQualification: summaries.currentState.dataSideQualification,
       versionBindingSummary: summaries.versionBound,
       currentStateSummary: summaries.currentState,
       versionBoundSummary: summaries.versionBound,
       currentSummary: summaries.currentState,
       projection,
       readEvent,
-      authoritativeRead,
       readReceipt: authoritativeRead,
-      status: consumable ? 'ready' : (qualityStatus === 'unknown' ? 'unknown' : 'blocked'),
-      consumptionReadiness: { status: consumable ? 'ready' : 'blocked' },
       restricted: true
     };
     const stored = this._put(this.c017Reads, readId, payload);
