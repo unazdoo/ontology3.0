@@ -1,6 +1,7 @@
 "use strict";
 
 const crypto = require("node:crypto");
+const contracts = require("../contracts");
 const { fail } = require("./errors");
 
 function isPlainObject(value) {
@@ -95,22 +96,31 @@ function sameScenarioRun(left, right) {
 }
 
 function assertScenarioRun(value, expected, label = "scenarioContext") {
-  assertObject(value, label);
-  ["scenarioId", "scenarioVersion", "scenarioRunId"].forEach((field) => assertString(value[field], `${label}.${field}`));
-  assertString(value.formedAt, `${label}.formedAt`);
-  if (Number.isNaN(Date.parse(value.formedAt))) fail("INVALID_SCENARIO_CONTEXT", `${label}.formedAt must be an RFC 3339 date-time`);
-  assertString(value.status, `${label}.status`);
-  const versionPrefix = /^([A-Za-z][A-Za-z0-9_-]*)-v/.exec(value.scenarioVersion);
-  const runPrefix = /^([A-Za-z][A-Za-z0-9_-]*)-RUN-/.exec(value.scenarioRunId);
-  if (versionPrefix && versionPrefix[1] !== value.scenarioId) fail("SCENARIO_CONTEXT_MISMATCH", `${label}.scenarioVersion must belong to scenarioId`);
-  if (runPrefix && runPrefix[1] !== value.scenarioId) fail("SCENARIO_CONTEXT_MISMATCH", `${label}.scenarioRunId must belong to scenarioId`);
-  if (expected && !sameScenarioRun(value, expected)) {
-    fail("SCENARIO_CONTEXT_MISMATCH", `${label} does not belong to the expected scenario run`, {
-      expected,
-      actual: value
+  let context;
+  try {
+    context = contracts.assertScenarioContext(value, { allowUnknown: false });
+  } catch (error) {
+    fail("STRICT_SCENARIO_CONTEXT_INVALID", `${label} failed strict Foundation validation`, {
+      errors: error.errors || null
     });
   }
-  return value;
+  let expectedContext = null;
+  if (expected) {
+    try {
+      expectedContext = contracts.assertScenarioContext(expected, { allowUnknown: false });
+    } catch (error) {
+      fail("STRICT_SCENARIO_CONTEXT_INVALID", `expected ${label} failed strict Foundation validation`, {
+        errors: error.errors || null
+      });
+    }
+  }
+  if (expectedContext && !sameScenarioRun(context, expectedContext)) {
+    fail("SCENARIO_CONTEXT_MISMATCH", `${label} does not belong to the expected scenario run`, {
+      expected: expectedContext,
+      actual: context
+    });
+  }
+  return immutableJson(context);
 }
 
 module.exports = Object.freeze({

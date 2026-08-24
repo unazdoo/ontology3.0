@@ -1,6 +1,7 @@
 "use strict";
 
 const { fail } = require("./errors");
+const { assertAllowedKeys } = require("./handoff");
 const {
   assertObject,
   assertString,
@@ -58,6 +59,11 @@ function forbiddenClaimDecision(claim) {
 
 function acceptM05Extraction(raw, input) {
   assertObject(raw, "M05 verification extraction");
+  assertAllowedKeys(raw, [
+    "schemaVersion", "contractId", "extractionResultId", "resultId", "extractionRunId", "runId",
+    "scenarioContext", "contentVersionId", "evidencePackId", "agentReleaseVersion", "status",
+    "claims", "extractedClaims", "completedAt", "verificationResults", "deterministicResults", "t049"
+  ], "M05 verification extraction");
   if (raw.verificationResults || raw.deterministicResults || raw.t049) {
     fail("EXTRACTION_DETERMINISTIC_RESULT_FORBIDDEN", "M05 extraction response may not carry deterministic verification results");
   }
@@ -77,6 +83,10 @@ function acceptM05Extraction(raw, input) {
   const anchorIds = new Set(input.anchors.map((anchor) => anchor.t044Id));
   const claims = assertArray(raw.claims || raw.extractedClaims, "M05 extraction claims").map((claim, index) => {
     assertObject(claim, `M05 extraction claims[${index}]`);
+    assertAllowedKeys(claim, [
+      "claimId", "id", "sourceContentItemId", "contentItemId", "factId", "t044Id", "anchorId",
+      "observedValue", "observedUnit", "evidenceRefs", "semanticRef", "claimKind"
+    ], `M05 extraction claims[${index}]`);
     const forbidden = forbiddenClaimDecision(claim);
     if (forbidden.length) {
       fail("EXTRACTION_DETERMINISTIC_RESULT_FORBIDDEN", "M05 extraction may identify claims but may not decide T049 outcomes", { forbidden });

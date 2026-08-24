@@ -3,6 +3,7 @@
 const crypto = require("node:crypto");
 
 const identity = require("../identity");
+const { assertStrictScenarioContext } = require("./boundary");
 const {
   REPORT_DEFINITION_SCHEMA_VERSION,
   REPORT_TEMPLATE_SCHEMA_VERSION,
@@ -384,7 +385,7 @@ function renderSameSourceBundle(input) {
 
 function createFrozenReportRecord(input, options) {
   if (!isPlainObject(input)) fail("INVALID_REPORT_RECORD_INPUT", "report record input must be an object");
-  const scenarioContext = identity.assertScenarioContext(input.scenarioContext);
+  const scenarioContext = assertStrictScenarioContext(input.scenarioContext);
   const reportId = nonEmptyString(input.reportId) ? input.reportId.trim() : fail("MISSING_REPORT_ID", "reportId is required");
   const createdAt = nonEmptyString(input.createdAt) ? new Date(input.createdAt).toISOString() : new Date(options && options.now || Date.now()).toISOString();
   const bundle = renderSameSourceBundle(input);

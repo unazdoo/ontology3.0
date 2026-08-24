@@ -34,11 +34,13 @@ const {
 const {
   buildEvidencePack,
   buildC022Request,
+  C023_SCHEMA_VERSION,
   acceptC023Draft,
   createReviewArtifacts
 } = require("./handoff");
 const {
   acceptM05Extraction,
+  EXTRACTION_RESULT_SCHEMA_VERSION,
   runDeterministicVerification,
   canConfirmOrPublish
 } = require("./verification");
@@ -48,6 +50,7 @@ const {
   materializeComparison
 } = require("./comparison");
 const { createFrozenReportRecord } = require("./render");
+const { isContractEnvelope, unwrapStrictContractEnvelope } = require("./boundary");
 
 const SERVICE_SCHEMA_VERSION = "ofw.m06.report-service.v1";
 const GENERATION_INTENT_SCHEMA_VERSION = "ofw.m06.report-generation-intent.v1";
@@ -82,6 +85,7 @@ class ReportService {
     this.authorizationPort = options.authorizationPort;
     this.clock = options.clock;
     this.idFactory = options.idFactory;
+    this.requireContractEnvelopes = options.requireContractEnvelopes === true;
     this.sequence = 0;
     this.pendingGenerations = new Map();
   }
@@ -122,6 +126,16 @@ class ReportService {
       occurredAt,
       details
     });
+  }
+
+  _externalPayload(value, options) {
+    if (isContractEnvelope(value)) {
+      return unwrapStrictContractEnvelope(value, options);
+    }
+    if (this.requireContractEnvelopes) {
+      fail("CONTRACT_ENVELOPE_REQUIRED", `${options?.label || "external response"} must use the strict Foundation Contract Envelope`);
+    }
+    return value;
   }
 
   registerReportDefinition(input) {
@@ -247,7 +261,7 @@ class ReportService {
     try {
       const first = await readGenerationGate({
         stage: GATE_STAGES[0], scenarioContext, requestId, idempotencyKey: intent.requestFingerprint, c008Provider: this.c008Provider, c017Provider: this.c017Provider,
-        clock: this.clock, seenReceiptIds
+        clock: this.clock, seenReceiptIds, requireContractEnvelope: this.requireContractEnvelopes
       });
       gateReads.push(first);
       this.store.append("generationGateReads", first.gateReadId, { ...first, requestId });
@@ -262,13 +276,13 @@ class ReportService {
       }));
       const second = await readGenerationGate({
         stage: GATE_STAGES[1], scenarioContext, requestId, idempotencyKey: intent.requestFingerprint, c008Provider: this.c008Provider, c017Provider: this.c017Provider,
-        clock: this.clock, seenReceiptIds
+        clock: this.clock, seenReceiptIds, requireContractEnvelope: this.requireContractEnvelopes
       });
       gateReads.push(second);
       this.store.append("generationGateReads", second.gateReadId, { ...second, requestId });
       const third = await readGenerationGate({
         stage: GATE_STAGES[2], scenarioContext, requestId, idempotencyKey: intent.requestFingerprint, c008Provider: this.c008Provider, c017Provider: this.c017Provider,
-        clock: this.clock, seenReceiptIds
+        clock: this.clock, seenReceiptIds, requireContractEnvelope: this.requireContractEnvelopes
       });
       gateReads.push(third);
       this.store.append("generationGateReads", third.gateReadId, { ...third, requestId });
@@ -305,7 +319,10 @@ class ReportService {
     const lookup = this.m05Port && this.m05Port.readReportGeneration;
     if (typeof lookup === "function") {
       const existing = await lookup.call(this.m05Port, immutableJson({ requestId: c022.requestId, scenarioContext: c022.scenarioContext }));
-      if (existing) return this._acceptC023(existing, c022, definition, template, this._id("C022RESUME", c022.requestId));
+      if (existing) {
+        const payload = this._externalPayload(existing, { scenarioContext: c022.scenarioContext, payloadSchemaVersion: C023_SCHEMA_VERSION, label: "M05 C023 response" });
+        return this._acceptC023(payload, c022, definition, template, this._id("C022RESUME", c022.requestId));
+      }
     }
     return this._submitC022(c022, definition, template, this._id("C022RETRY", c022.requestId));
   }
@@ -321,7 +338,8 @@ class ReportService {
       });
       throw error;
     }
-    return this._acceptC023(response, c022, definition, template, handoffId);
+    const payload = this._externalPayload(response, { scenarioContext: c022.scenarioContext, payloadSchemaVersion: C023_SCHEMA_VERSION, label: "M05 C023 response" });
+    return this._acceptC023(payload, c022, definition, template, handoffId);
   }
 
   _acceptC023(response, c022, definition, template, handoffId) {
@@ -396,13 +414,15 @@ class ReportService {
       fixedContext: { exactCombination: evidencePack.exactCombination, generationBindingSummary: evidencePack.generationBindingSummary },
       purpose: "claim-extraction-only-no-deterministic-outcome"
     }));
-    const extraction = acceptM05Extraction(rawExtraction, { contentVersion, anchors });
+    const extractionPayload = this._externalPayload(rawExtraction, { scenarioContext: contentVersion.scenarioContext, payloadSchemaVersion: EXTRACTION_RESULT_SCHEMA_VERSION, label: "M05 extraction response" });
+    const extraction = acceptM05Extraction(extractionPayload, { contentVersion, anchors });
     const currentContext = await readCurrentComparisonContext({
       scenarioContext: contentVersion.scenarioContext,
       c008Provider: this.c008Provider,
       c017Provider: this.c017Provider,
       purpose: "M06-T049-current-status",
-      clock: this.clock
+      clock: this.clock,
+      requireContractEnvelope: this.requireContractEnvelopes
     });
     const completedAt = this._now();
     const t049 = runDeterministicVerification({
@@ -437,7 +457,7 @@ class ReportService {
       t008: evidencePack.exactCombination.t008,
       requestedAt: this._now()
     }));
-    const summary = normalizeC017(raw, contentVersion.scenarioContext, { allowHardFailure: true });
+    const summary = normalizeC017(raw, contentVersion.scenarioContext, { allowHardFailure: true, requireContractEnvelope: this.requireContractEnvelopes });
     const fixed = evidencePack.exactCombination;
     if (summary.semanticVersionId !== fixed.semanticVersionId || summary.dataVersionId !== fixed.dataVersionId || summary.t008 !== fixed.t008) {
       fail("BOUND_QUALITY_SUMMARY_MISMATCH", "C017 bound-version response does not match the exact report content binding");
@@ -644,7 +664,8 @@ class ReportService {
       c008Provider: this.c008Provider,
       c017Provider: this.c017Provider,
       purpose: "M06-C027-explicit-user-comparison",
-      clock: this.clock
+      clock: this.clock,
+      requireContractEnvelope: this.requireContractEnvelopes
     });
     const authorize = requirePort(this.authorizationPort, "authorizeReportComparison", "platform authorization");
     const comparisonRunId = input.comparisonRunId || this._id("C027RUN", { contentVersionId: contentVersion.contentVersionId, initiatedBy: input.initiatedBy });
@@ -706,7 +727,8 @@ class ReportService {
       c008Provider: this.c008Provider,
       c017Provider: this.c017Provider,
       purpose: "M06-C027-staleness-observation",
-      clock: this.clock
+      clock: this.clock,
+      requireContractEnvelope: this.requireContractEnvelopes
     });
     const event = createComparisonStalenessEvent(comparison, currentContext, input.observedAt || this._now());
     if (event) this.store.append("comparisonStaleness", event.stalenessEventId, event);

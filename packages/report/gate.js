@@ -1,6 +1,7 @@
 "use strict";
 
 const { fail } = require("./errors");
+const { isContractEnvelope, unwrapStrictContractEnvelope } = require("./boundary");
 const {
   assertObject,
   assertString,
@@ -25,6 +26,24 @@ function resolveReader(provider, method, owner) {
   return reader.bind(provider);
 }
 
+function ownerPayload(value, scenarioContext, options = {}) {
+  if (isContractEnvelope(value)) {
+    return unwrapStrictContractEnvelope(value, { scenarioContext });
+  }
+  if (options.requireContractEnvelope === true) {
+    fail("CONTRACT_ENVELOPE_REQUIRED", `${options.label || "owner response"} must use the strict Foundation Contract Envelope`);
+  }
+  return value;
+}
+
+function isBoundaryFailure(error) {
+  return [
+    "CONTRACT_ENVELOPE_REQUIRED", "FOUNDATION_SCHEMA_INCOMPATIBLE", "FOUNDATION_SCHEMA_NOT_EXACT",
+    "STRICT_CONTRACT_ENVELOPE_INVALID", "STRICT_SCENARIO_CONTEXT_INVALID", "SCENARIO_CONTEXT_MISMATCH",
+    "CONTRACT_EVENT_TYPE_MISMATCH", "PAYLOAD_SCHEMA_MISMATCH", "PAYLOAD_VALIDATION_FAILED"
+  ].includes(error?.code);
+}
+
 function normalizeReceipt(value, expectedOwner, label) {
   const source = value?.authoritativeRead || value?.readReceipt || value?.payload?.authoritativeRead || value?.payload?.readReceipt;
   assertObject(source, `${label}.authoritativeRead`);
@@ -47,9 +66,10 @@ function normalizeReceipt(value, expectedOwner, label) {
 
 function normalizeC008(value, scenarioContext, options = {}) {
   assertObject(value, "C008");
-  const source = value.payload && typeof value.payload === "object" && !Array.isArray(value.payload)
-    ? { ...value.payload, scenarioContext: value.payload.scenarioContext || value.scenarioContext, authoritativeRead: value.payload.authoritativeRead || value.authoritativeRead, readReceipt: value.payload.readReceipt || value.readReceipt }
-    : value;
+  const incoming = ownerPayload(value, scenarioContext, { ...options, label: "C008 response" });
+  const source = incoming.payload && typeof incoming.payload === "object" && !Array.isArray(incoming.payload)
+    ? { ...incoming.payload, scenarioContext: incoming.payload.scenarioContext || incoming.scenarioContext, authoritativeRead: incoming.payload.authoritativeRead || incoming.authoritativeRead, readReceipt: incoming.payload.readReceipt || incoming.readReceipt }
+    : incoming;
   assertScenarioRun(source.scenarioContext, scenarioContext, "C008.scenarioContext");
   const receipt = normalizeReceipt(source, "M01", "C008");
   const authority = source.currentAuthority || source.authoritativeCombination || source;
@@ -81,9 +101,10 @@ function normalizeC008(value, scenarioContext, options = {}) {
 
 function normalizeC017(value, scenarioContext, options = {}) {
   assertObject(value, "C017");
-  const source = value.payload && typeof value.payload === "object" && !Array.isArray(value.payload)
-    ? { ...value.payload, scenarioContext: value.payload.scenarioContext || value.scenarioContext, authoritativeRead: value.payload.authoritativeRead || value.authoritativeRead, readReceipt: value.payload.readReceipt || value.readReceipt }
-    : value;
+  const incoming = ownerPayload(value, scenarioContext, { ...options, label: "C017 response" });
+  const source = incoming.payload && typeof incoming.payload === "object" && !Array.isArray(incoming.payload)
+    ? { ...incoming.payload, scenarioContext: incoming.payload.scenarioContext || incoming.scenarioContext, authoritativeRead: incoming.payload.authoritativeRead || incoming.authoritativeRead, readReceipt: incoming.payload.readReceipt || incoming.readReceipt }
+    : incoming;
   assertScenarioRun(source.scenarioContext, scenarioContext, "C017.scenarioContext");
   const receipt = normalizeReceipt(source, "M02", "C017");
   const binding = source.binding || source.versionBinding || {};
@@ -162,8 +183,8 @@ async function readGenerationGate(input) {
   const c008Reader = resolveReader(input.c008Provider, "readCurrentC008", "M01");
   const c017Reader = resolveReader(input.c017Provider, "readCurrentC017", "M02");
   const [rawC008, rawC017] = await Promise.all([c008Reader(request), c017Reader(request)]);
-  const c008 = normalizeC008(rawC008, scenarioContext);
-  const c017 = normalizeC017(rawC017, scenarioContext);
+  const c008 = normalizeC008(rawC008, scenarioContext, { requireContractEnvelope: input.requireContractEnvelope });
+  const c017 = normalizeC017(rawC017, scenarioContext, { requireContractEnvelope: input.requireContractEnvelope });
   assertExactBinding(c008, c017);
   const seenReceipts = input.seenReceiptIds || new Set();
   [c008.receipt.receiptId, c017.receipt.receiptId].forEach((receiptId) => {
@@ -241,15 +262,17 @@ async function readCurrentComparisonContext(input) {
   let c008;
   let c017;
   try {
-    c008 = normalizeC008(rawC008, scenarioContext, { allowUnavailable: true });
+    c008 = normalizeC008(rawC008, scenarioContext, { allowUnavailable: true, requireContractEnvelope: input.requireContractEnvelope });
   } catch (error) {
+    if (isBoundaryFailure(error)) throw error;
     const source = rawC008?.payload && typeof rawC008.payload === "object" ? { ...rawC008.payload, scenarioContext: rawC008.payload.scenarioContext || rawC008.scenarioContext, authoritativeRead: rawC008.payload.authoritativeRead || rawC008.authoritativeRead } : rawC008;
     assertScenarioRun(source?.scenarioContext, scenarioContext, "C008.scenarioContext");
     c008 = { c008Id: source?.c008Id || source?.id || "C008-UNAVAILABLE", version: source?.version || "unknown", status: source?.status || "unavailable", consumptionStatus: source?.consumptionReadiness?.status || "unavailable", t019Id: null, t019Version: null, t019Status: source?.t019Status || "unavailable", semanticVersionId: null, semanticVersion: null, dataVersionId: null, t008: null, facts: [], previousAuthority: source?.previousAuthority || null, candidates: Array.isArray(source?.candidates) ? source.candidates : [], receipt: normalizeReceipt(source, "M01", "C008") };
   }
   try {
-    c017 = normalizeC017(rawC017, scenarioContext, { allowHardFailure: true, allowUnavailable: true });
+    c017 = normalizeC017(rawC017, scenarioContext, { allowHardFailure: true, allowUnavailable: true, requireContractEnvelope: input.requireContractEnvelope });
   } catch (error) {
+    if (isBoundaryFailure(error)) throw error;
     const source = rawC017?.payload && typeof rawC017.payload === "object" ? { ...rawC017.payload, scenarioContext: rawC017.payload.scenarioContext || rawC017.scenarioContext, authoritativeRead: rawC017.payload.authoritativeRead || rawC017.authoritativeRead } : rawC017;
     assertScenarioRun(source?.scenarioContext, scenarioContext, "C017.scenarioContext");
     c017 = { summaryId: source?.summaryId || source?.id || "C017-UNAVAILABLE", version: source?.version || "unknown", summaryType: source?.summaryType || "current-status", formedAt: source?.formedAt || nowIso(input.clock), status: source?.status || "unavailable", consumptionStatus: source?.consumptionReadiness?.status || "unavailable", semanticVersionId: null, semanticVersion: null, dataVersionId: null, t008: null, qualityStatus: "unknown", hardFailure: false, failureId: null, affectedScope: null, qualityFactAt: null, confirmedAt: null, freshness: null, reproducibility: null, candidates: [], previousDataVersion: null, receipt: normalizeReceipt(source, "M02", "C017") };

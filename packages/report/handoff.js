@@ -24,6 +24,11 @@ const T044_SCHEMA_VERSION = "ofw.t044.stable-report-anchor.v1";
 const FORBIDDEN_RAW_KEYS = /^(?:rawRows?|rows?|workbook|worksheet|filePath|sourceFile|sql|prompt|promptBody|t002|t007Members?|businessRows?)$/i;
 const FORBIDDEN_C023_KEYS = /^(?:html|pdf|script|javascript|t044|anchorId|domPath|pdfPage|formula|calculation)$/i;
 
+function assertAllowedKeys(value, allowed, label) {
+  const unknownFields = Object.keys(value).filter((field) => !allowed.includes(field));
+  if (unknownFields.length) fail("UNKNOWN_CONTRACT_FIELD", `${label} contains unknown fields`, { unknownFields });
+}
+
 function findForbiddenKeys(value, pattern, path = "$", findings = [], seen = new WeakSet()) {
   if (!value || typeof value !== "object" || seen.has(value)) return findings;
   seen.add(value);
@@ -155,6 +160,10 @@ function buildC022Request(input) {
 
 function normalizeC023ContentItem(item, index, c022, definition, template) {
   assertObject(item, `C023.contentItems[${index}]`);
+  assertAllowedKeys(item, [
+    "sourceContentItemId", "contentItemId", "parentContentItemId", "order", "templateSlotId",
+    "templateSlot", "contentType", "structuredContent", "evidenceRefs", "facts", "warnings"
+  ], `C023.contentItems[${index}]`);
   const forbidden = findForbiddenKeys(item, FORBIDDEN_C023_KEYS);
   if (forbidden.length) fail("C023_OWNER_BOUNDARY_VIOLATION", "M05 C023 cannot contain T044, HTML/PDF, scripts or formal calculations", { paths: forbidden });
   const slotId = assertString(item.templateSlotId || item.templateSlot, `C023.contentItems[${index}].templateSlotId`);
@@ -178,6 +187,10 @@ function normalizeC023ContentItem(item, index, c022, definition, template) {
   if (invalidEvidenceRefs.length) fail("C023_EVIDENCE_OUT_OF_PACK", "C023 content item references evidence outside the fixed pack", { invalidEvidenceRefs });
   const facts = Array.isArray(item.facts) ? item.facts.map((fact, factIndex) => {
     assertObject(fact, `C023.contentItems[${index}].facts[${factIndex}]`);
+    assertAllowedKeys(fact, [
+      "factId", "kind", "value", "unit", "evidenceRefs", "semanticRef", "resultRef",
+      "tolerance", "required", "humanConfirmationRequired", "agentCalculated"
+    ], `C023.contentItems[${index}].facts[${factIndex}]`);
     const factEvidenceRefs = assertArray(fact.evidenceRefs, `fact ${fact.factId} evidenceRefs`, { nonEmpty: true });
     const invalid = factEvidenceRefs.filter((ref) => !packEvidenceIds.has(ref));
     if (invalid.length) fail("C023_EVIDENCE_OUT_OF_PACK", `fact ${fact.factId} references evidence outside the fixed pack`, { invalid });
@@ -211,6 +224,13 @@ function normalizeC023ContentItem(item, index, c022, definition, template) {
 
 function acceptC023Draft(raw, c022, definition, template) {
   assertObject(raw, "C023");
+  assertAllowedKeys(raw, [
+    "schemaVersion", "contractId", "requestId", "c022RequestId", "request", "scenarioContext",
+    "reportContext", "evidencePackId", "evidencePackVersion", "evidencePack", "generationRun",
+    "generationRunId", "generationStatus", "agentId", "agentReleaseVersion", "agentVersion",
+    "generatedAt", "sourceDraftId", "version", "contentItems", "missingSections", "warnings",
+    "handoffReceipt", "handoffReceiptId", "receivedAt"
+  ], "C023");
   if (raw.schemaVersion !== C023_SCHEMA_VERSION) fail("C023_SCHEMA_MISMATCH", `C023 schemaVersion must be ${C023_SCHEMA_VERSION}`);
   const requestId = raw.requestId || raw.c022RequestId || raw.request?.requestId;
   const scenarioContext = raw.scenarioContext || raw.reportContext?.scenarioContext;
@@ -228,6 +248,8 @@ function acceptC023Draft(raw, c022, definition, template) {
     releaseVersion: raw.agentReleaseVersion || raw.agentVersion,
     completedAt: raw.generatedAt
   }, "C023.generationRun");
+  assertAllowedKeys(run, ["runId", "status", "agentId", "releaseVersion", "completedAt"], "C023.generationRun");
+  if (raw.handoffReceipt) assertAllowedKeys(raw.handoffReceipt, ["receiptId", "acceptedAt"], "C023.handoffReceipt");
   const generationRunId = assertString(run.runId, "C023.generationRun.runId");
   const generationAgentId = assertString(run.agentId, "C023.generationRun.agentId");
   const generationReleaseVersion = assertString(run.releaseVersion, "C023.generationRun.releaseVersion");
@@ -378,5 +400,6 @@ module.exports = Object.freeze({
   buildC022Request,
   acceptC023Draft,
   createReviewArtifacts,
-  findForbiddenKeys
+  findForbiddenKeys,
+  assertAllowedKeys
 });

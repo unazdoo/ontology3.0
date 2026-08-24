@@ -48,6 +48,21 @@ C022/C023, T044/T049, C027, evidence and HTML/PDF artifacts. Clone restore
 creates a new scenario run and retains historical state as read-only; it does
 not publish, recalculate, compare or replay historical side effects.
 
+## Foundation Compatibility
+
+M06 is pinned to the merged Foundation `draft-0.1.0` baseline. Public inbound
+Envelope validation is strict and exact: unknown envelope/C033 fields,
+scenario-run mismatch, malformed/downgraded/upgraded schema versions and
+unregistered payload versions fail closed. C034 exports record the exact
+Foundation contract, checkpoint schema and SPI versions; unknown module state
+cannot pass validation or clone restore.
+
+The current M05 implementation in tests remains a fixture. This stage proves
+the M06 consumer boundary can validate a strict Foundation Envelope; it does
+not prove that M01/M02/M05 providers emit those envelopes or that M06 outbound
+C022/C024 requests are jointly accepted. Those exchanges remain for the next
+Provider/Consumer integration stage.
+
 Verification commands:
 
 ```text
@@ -56,6 +71,6 @@ npm test
 node --test designs/prototype-work/v1.1.0/scenarios/s004-runtime-v2.1.0/tests/baseline-module-runtime-m06.test.cjs
 ```
 
-The current package/service tests pass with 55 tests; the prototype regression suite
+The current package/service tests pass with 60 tests; the prototype regression suite
 passes 40 tests. Real deployment still requires wiring the M01, M02, M05 and
 platform authorization ports to their owning runtime APIs.

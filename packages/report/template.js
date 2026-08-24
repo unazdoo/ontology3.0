@@ -1,6 +1,6 @@
 "use strict";
 
-const identity = require("../identity");
+const contracts = require("../contracts");
 
 const REPORT_DEFINITION_SCHEMA_VERSION = "ofw.c022.report-definition.v1";
 const REPORT_TEMPLATE_SCHEMA_VERSION = "ofw.c023.report-template.v1";
@@ -133,8 +133,8 @@ function createReportTemplate(input, options) {
   }, "report template");
 }
 
-function assertScenarioContext(value, options) {
-  return identity.assertScenarioContext(value, options || {});
+function assertScenarioContext(value) {
+  return contracts.assertScenarioContext(value, { allowUnknown: false });
 }
 
 module.exports = Object.freeze({

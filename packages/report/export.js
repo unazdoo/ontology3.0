@@ -3,7 +3,9 @@
 const crypto = require("node:crypto");
 
 const checkpoint = require("../checkpoint");
+const contracts = require("../contracts");
 const identity = require("../identity");
+const { assertFoundationCompatibility, assertStrictScenarioContext } = require("./boundary");
 
 const REPORT_MODULE_EXPORT_SCHEMA_VERSION = "ofw.m06.report-module-export.v1";
 const REPORT_OWNER_RECEIPT_SCHEMA_VERSION = "ofw.m06.report-owner-receipt.v1";
@@ -11,6 +13,12 @@ const REPORT_RESTORE_PLAN_SCHEMA_VERSION = "ofw.m06.restore-plan.v1";
 const REPORT_EVIDENCE_INDEX_SCHEMA_VERSION = "ofw.m06.evidence-index.v1";
 const REPORT_CLONE_RESTORE_SCHEMA_VERSION = "ofw.m06.clone-restore.v1";
 const REPORT_HISTORICAL_VIEW_SCHEMA_VERSION = "ofw.m06.historical-view.v1";
+const REPORT_MODULE_EXPORT_FIELDS = Object.freeze([
+  "schemaVersion", "moduleId", "moduleName", "owner", "moduleVersion",
+  "foundationContractVersion", "checkpointSpiVersion", "checkpointSchemaVersion",
+  "scenarioContext", "checkpointNode", "formedAt", "stateDeclaration", "emptyReason",
+  "ownerBoundary", "sideEffectPolicy", "resources", "runtimeState"
+]);
 
 function fail(code, message, details) {
   const error = new Error(message);
@@ -179,11 +187,14 @@ function buildResourceSummaries(runtimeState) {
 function validateReportModuleExport(exportValue) {
   const errors = [];
   if (!isPlainObject(exportValue)) return { ok: false, errors: [{ code: "INVALID_EXPORT", path: "$", message: "module export must be an object" }] };
+  Object.keys(exportValue).filter((field) => !REPORT_MODULE_EXPORT_FIELDS.includes(field)).forEach((field) => {
+    errors.push({ code: "UNKNOWN_EXPORT_FIELD", path: field, message: "report module export field is not allowed" });
+  });
   if (exportValue.schemaVersion !== REPORT_MODULE_EXPORT_SCHEMA_VERSION) {
     errors.push({ code: "SCHEMA_VERSION_MISMATCH", path: "schemaVersion", message: "schemaVersion must match report module export" });
   }
   try {
-    identity.assertScenarioContext(exportValue.scenarioContext);
+    assertStrictScenarioContext(exportValue.scenarioContext);
   } catch (error) {
     errors.push({ code: "INVALID_SCENARIO_CONTEXT", path: "scenarioContext", message: error.message });
   }
@@ -197,8 +208,23 @@ function validateReportModuleExport(exportValue) {
   if (exportValue.ownerBoundary?.historicalVerificationPersisted !== true) {
     errors.push({ code: "HISTORICAL_VERIFICATION_MISSING", path: "ownerBoundary.historicalVerificationPersisted", message: "M06 must persist its immutable historical T049 records" });
   }
-  if (exportValue.sideEffectPolicy?.allowHistoricalReplay !== false || exportValue.sideEffectPolicy?.allowExternalDispatch !== false) {
-    errors.push({ code: "SIDE_EFFECT_POLICY_OPENED", path: "sideEffectPolicy", message: "historical replay and external dispatch must remain false" });
+  try {
+    assertFoundationCompatibility(exportValue.foundationContractVersion);
+  } catch (error) {
+    errors.push({ code: error.code || "FOUNDATION_SCHEMA_INCOMPATIBLE", path: "foundationContractVersion", message: error.message });
+  }
+  if (exportValue.checkpointSpiVersion !== checkpoint.PROVIDER_SPI_VERSION) errors.push({ code: "C034_SPI_VERSION_MISMATCH", path: "checkpointSpiVersion", message: "checkpoint SPI version mismatch" });
+  if (exportValue.checkpointSchemaVersion !== checkpoint.CHECKPOINT_SCHEMA_VERSION) errors.push({ code: "C034_SCHEMA_VERSION_MISMATCH", path: "checkpointSchemaVersion", message: "checkpoint schema version mismatch" });
+  const policy = exportValue.sideEffectPolicy;
+  if (!isPlainObject(policy)) {
+    errors.push({ code: "SIDE_EFFECT_POLICY_INVALID", path: "sideEffectPolicy", message: "Foundation side-effect policy is required" });
+  } else {
+    Object.keys(checkpoint.SIDE_EFFECT_POLICY).forEach((field) => {
+      if (policy[field] !== false) errors.push({ code: "SIDE_EFFECT_POLICY_OPENED", path: `sideEffectPolicy.${field}`, message: `${field} must remain false` });
+    });
+    Object.keys(policy).filter((field) => !Object.prototype.hasOwnProperty.call(checkpoint.SIDE_EFFECT_POLICY, field)).forEach((field) => {
+      errors.push({ code: "SIDE_EFFECT_POLICY_UNKNOWN_FIELD", path: `sideEffectPolicy.${field}`, message: "side-effect policy field is not allowed" });
+    });
   }
   const runtimeState = exportValue.runtimeState || {};
   const reportIds = new Set();
@@ -232,7 +258,7 @@ function validateReportModuleExport(exportValue) {
 
 function buildReportModuleExport(input) {
   if (!isPlainObject(input)) fail("INVALID_MODULE_EXPORT_INPUT", "module export input must be an object");
-  const scenarioContext = identity.assertScenarioContext(input.scenarioContext);
+  const scenarioContext = assertStrictScenarioContext(input.scenarioContext);
   const runtimeState = cloneJson(stateFromExport(input.runtimeState || input.state || {}), "runtimeState");
   const resources = buildResourceSummaries(runtimeState);
   const exportValue = {
@@ -241,6 +267,9 @@ function buildReportModuleExport(input) {
     moduleName: "报告中心",
     owner: "报告中心",
     moduleVersion: nonEmptyString(input.moduleVersion) ? input.moduleVersion.trim() : "M06-report-package.v1",
+    foundationContractVersion: contracts.CONTRACT_SCHEMA_VERSION,
+    checkpointSpiVersion: checkpoint.PROVIDER_SPI_VERSION,
+    checkpointSchemaVersion: checkpoint.CHECKPOINT_SCHEMA_VERSION,
     scenarioContext,
     checkpointNode: nonEmptyString(input.checkpointNode) ? input.checkpointNode.trim() : "agent-report-dashboard-completed",
     formedAt: nonEmptyString(input.formedAt) ? new Date(input.formedAt).toISOString() : scenarioContext.formedAt,
@@ -253,10 +282,7 @@ function buildReportModuleExport(input) {
       historicalVerificationPersisted: true,
       overwritesHistoricalReports: false
     },
-    sideEffectPolicy: {
-      allowHistoricalReplay: false,
-      allowExternalDispatch: false
-    },
+    sideEffectPolicy: checkpoint.SIDE_EFFECT_POLICY,
     resources,
     runtimeState
   };
@@ -345,7 +371,7 @@ function cloneReportModuleState(input, options) {
     sourceScenarioRunId: moduleExport.scenarioContext.scenarioRunId,
     operation: "report-clone-restore"
   });
-  const restoredContext = identity.assertScenarioContext({
+  const restoredContext = assertStrictScenarioContext({
     ...moduleExport.scenarioContext,
     scenarioRunId: targetScenarioRunId,
     formedAt: now,

@@ -8,6 +8,10 @@ const test = require("node:test");
 
 const report = require("./index.js");
 
+function jsonClone(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
 const CONTEXT = Object.freeze({
   scenarioId: "S001",
   scenarioVersion: "S001-v1.1.0",
@@ -332,6 +336,12 @@ test("generation performs three fresh C008/C017 reads and a real C022/C023 hando
   assert.ok(result.anchors.every((anchor) => anchor.schemaVersion === report.T044_SCHEMA_VERSION));
   assert.equal(result.sourceDraft.contentItems.some((item) => Object.hasOwn(item, "anchorId")), false);
   assert.equal(Object.isFrozen(result.contentVersion), true);
+  const unknownC023 = await harness.m05.port.submitReportGeneration(result.c022);
+  unknownC023.futureField = true;
+  assert.throws(
+    () => report.acceptC023Draft(unknownC023, result.c022, harness.service.getReportDefinition("RDEF-S001-FINANCE", "1.0.0"), harness.service.getReportTemplate("RT-S001-FINANCE", "1.0.0")),
+    (error) => error.code === "UNKNOWN_CONTRACT_FIELD"
+  );
   const gateReads = harness.store.list("generationGateReads");
   assert.deepEqual(gateReads.map((gate) => gate.stage), report.GATE_STAGES);
   assert.equal(new Set(gateReads.flatMap((gate) => [gate.c008.receipt.receiptId, gate.c017.receipt.receiptId])).size, 6);
@@ -511,6 +521,34 @@ test("C034 exports report/evidence/T049/C027 state and clone restore creates a n
   assert.equal(exported.moduleExport.recordCounts.evidencePacks, 1);
   assert.equal(exported.moduleExport.recordCounts.verificationRuns, 1);
   assert.equal(exported.moduleExport.recordCounts.comparisons, 1);
+  const invalidModuleContext = jsonClone(exported);
+  invalidModuleContext.moduleExport.scenarioContext.futureField = true;
+  assert.equal(provider.validate(invalidModuleContext).ok, false);
+  assert.ok(provider.validate(invalidModuleContext).errors.some((error) => error.code === "STRICT_SCENARIO_CONTEXT_INVALID"));
+
+  const mismatchedLifecycle = jsonClone(exported);
+  mismatchedLifecycle.moduleExport.scenarioContext.formedAt = "2026-08-24T10:59:59.000Z";
+  assert.ok(provider.validate(mismatchedLifecycle).errors.some((error) => error.code === "SCENARIO_CONTEXT_MISMATCH"));
+
+  const unknownCollection = jsonClone(exported);
+  unknownCollection.moduleExport.state.collections.futureCollection = {};
+  assert.equal(provider.validate(unknownCollection).ok, false);
+  assert.throws(
+    () => provider.cloneRestore({ checkpoint: unknownCollection, targetScenarioRunId: "S001-RUN-20260824110000000-invalid", now: "2026-08-24T11:00:00.000Z" }),
+    (error) => error.code === "INVALID_M06_CHECKPOINT"
+  );
+
+  const unknownPointer = jsonClone(exported);
+  unknownPointer.moduleExport.state.pointers.futurePointer = {};
+  assert.equal(provider.validate(unknownPointer).ok, false);
+
+  const incompatibleFoundation = jsonClone(exported);
+  incompatibleFoundation.moduleExport.foundationContractVersion = "draft-0.1.1";
+  assert.ok(provider.validate(incompatibleFoundation).errors.some((error) => error.code === "FOUNDATION_SCHEMA_INCOMPATIBLE"));
+
+  const unknownExportField = jsonClone(exported);
+  unknownExportField.moduleExport.futureField = true;
+  assert.ok(provider.validate(unknownExportField).errors.some((error) => error.code === "M06_EXPORT_UNKNOWN_FIELD"));
   const sourceHash = report.reportUtils.sha256(exported);
   const restored = provider.cloneRestore({
     checkpoint: exported,

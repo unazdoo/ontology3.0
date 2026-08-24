@@ -54,22 +54,35 @@ function emptyState() {
 function normalizeState(value) {
   const source = value || emptyState();
   assertObject(source, "report store state");
+  const allowedRootFields = new Set(["schemaVersion", "revision", "collections", "pointers"]);
+  const unknownRootFields = Object.keys(source).filter((field) => !allowedRootFields.has(field));
+  if (unknownRootFields.length) fail("STORE_UNKNOWN_FIELD", "report store contains unknown root fields", { unknownRootFields });
   if (source.schemaVersion !== STORE_SCHEMA_VERSION) {
     fail("STORE_SCHEMA_MISMATCH", `store schemaVersion must be ${STORE_SCHEMA_VERSION}`);
   }
   const result = cloneJson(source);
   result.revision = Number.isInteger(result.revision) && result.revision >= 0 ? result.revision : 0;
   result.collections = result.collections || {};
+  const unknownCollections = Object.keys(result.collections).filter((name) => !COLLECTIONS.includes(name));
+  if (unknownCollections.length) fail("STORE_UNKNOWN_COLLECTION", "report store contains unknown collections", { unknownCollections });
   COLLECTIONS.forEach((name) => {
     if (!result.collections[name] || typeof result.collections[name] !== "object" || Array.isArray(result.collections[name])) {
       result.collections[name] = {};
     }
   });
   result.pointers = result.pointers || {};
-  ["reports", "dashboards", "fixedViews", "verifications", "comparisons"].forEach((name) => {
+  const pointerNamespaces = ["reports", "dashboards", "fixedViews", "verifications", "comparisons"];
+  const unknownPointerNamespaces = Object.keys(result.pointers).filter((name) => !pointerNamespaces.includes(name));
+  if (unknownPointerNamespaces.length) fail("STORE_UNKNOWN_POINTER_NAMESPACE", "report store contains unknown pointer namespaces", { unknownPointerNamespaces });
+  pointerNamespaces.forEach((name) => {
     if (!result.pointers[name] || typeof result.pointers[name] !== "object" || Array.isArray(result.pointers[name])) {
       result.pointers[name] = {};
     }
+    Object.entries(result.pointers[name]).forEach(([key, pointer]) => {
+      if (!pointer || typeof pointer !== "object" || Array.isArray(pointer)) {
+        fail("STORE_INVALID_POINTER", `report store pointer ${name}.${key} must be an object`);
+      }
+    });
   });
   return result;
 }

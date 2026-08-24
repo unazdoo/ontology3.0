@@ -4,6 +4,7 @@ const assert = require("node:assert/strict");
 const test = require("node:test");
 
 const report = require("./index.js");
+const foundationCheckpoint = require("../checkpoint");
 
 function scenarioContext() {
   return {
@@ -160,7 +161,13 @@ test("module export carries reports, evidence, dashboards and comparison records
   });
   assert.equal(exported.stateDeclaration, "referenced");
   assert.equal(exported.ownerBoundary.ownsDecisionState, false);
-  assert.equal(exported.sideEffectPolicy.allowHistoricalReplay, false);
+  assert.deepEqual(exported.sideEffectPolicy, foundationCheckpoint.SIDE_EFFECT_POLICY);
+  assert.equal(exported.foundationContractVersion, report.FOUNDATION_CONTRACT_VERSION);
+  assert.equal(exported.checkpointSpiVersion, foundationCheckpoint.PROVIDER_SPI_VERSION);
+  const legacyPolicy = JSON.parse(JSON.stringify(exported));
+  legacyPolicy.sideEffectPolicy.allowHistoricalReplay = false;
+  assert.equal(report.validateReportModuleExport(legacyPolicy).ok, false);
+  assert.ok(report.validateReportModuleExport(legacyPolicy).errors.some((error) => error.code === "SIDE_EFFECT_POLICY_UNKNOWN_FIELD"));
   assert.ok(exported.resources.some((item) => item.resourceType === "report-draft"));
   assert.ok(exported.resources.some((item) => item.resourceType === "dashboard-version"));
   assert.ok(exported.resources.some((item) => item.resourceType === "evidence-package"));

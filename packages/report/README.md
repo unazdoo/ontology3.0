@@ -8,6 +8,12 @@ module recovery.
 retains a small renderer-compatible normalization API for callers using the
 foundation prototype shape; the service uses the managed definitions/templates.
 
+`boundary.js` pins the Foundation Contract Envelope to exact `draft-0.1.0`,
+uses strict C033 validation and rejects envelope/schema/context mismatches.
+`ReportService({ requireContractEnvelopes: true })` closes inbound M01/M02/M05
+responses to that envelope. The raw-object ports used by `service.test.cjs`
+are module fixtures only and are not Provider/Consumer integration evidence.
+
 The service deliberately accepts live owner ports instead of static C008,
 C017, T019 or T008 values:
 
@@ -44,3 +50,7 @@ include report definitions/templates, C018 snapshots, dashboards, C022/C023,
 T044/T049, C027 and artifacts. Clone restore creates a new scenario run and
 keeps historical state read-only; it never replays side effects or auto-runs
 publication, recalculation or comparison.
+
+The C034 adapter records the exact Foundation contract, checkpoint schema and
+SPI versions. Unknown module-export fields, store collections, pointer
+namespaces and ScenarioContext fields fail validation before clone restore.

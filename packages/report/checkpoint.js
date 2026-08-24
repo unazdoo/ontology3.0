@@ -1,6 +1,7 @@
 "use strict";
 
 const checkpoint = require("../checkpoint");
+const contracts = require("../contracts");
 const { fail } = require("./errors");
 const { emptyState, normalizeState, STORE_SCHEMA_VERSION } = require("./store");
 const {
@@ -15,9 +16,19 @@ const {
   contentId,
   nowIso
 } = require("./utils");
+const { assertFoundationCompatibility, assertStrictScenarioContext } = require("./boundary");
 
 const M06_CHECKPOINT_EXPORT_SCHEMA_VERSION = "ofw.m06.c034-export.v1";
 const M06_RESTORE_RECEIPT_SCHEMA_VERSION = "ofw.m06.c034-clone-restore-receipt.v1";
+const CHECKPOINT_FIELDS = Object.freeze([
+  "schemaVersion", "checkpointId", "scenarioContext", "sourceScenarioRunId",
+  "immutable", "restoreReadiness", "sideEffectPolicy", "overwritesHistory", "moduleExport"
+]);
+const MODULE_EXPORT_FIELDS = Object.freeze([
+  "schemaVersion", "contractId", "moduleId", "owner", "moduleVersion",
+  "foundationContractVersion", "checkpointSpiVersion", "checkpointSchemaVersion",
+  "scenarioContext", "exportedAt", "state", "recordCounts", "includes", "immutable", "contentHash"
+]);
 
 function recordScenarioContext(record) {
   return record?.scenarioContext || record?.contentVersion?.scenarioContext || null;
@@ -25,7 +36,7 @@ function recordScenarioContext(record) {
 
 function belongsToRun(record, scenarioContext) {
   const context = recordScenarioContext(record);
-  if (context) return sameScenarioRun(context, scenarioContext);
+  if (context) return sameScenarioRun(assertStrictScenarioContext(context), scenarioContext);
   if (record?.scenarioId) return record.scenarioId === scenarioContext.scenarioId;
   return true;
 }
@@ -73,6 +84,9 @@ function createM06Checkpoint(input) {
     moduleId: "M06",
     owner: "报告中心",
     moduleVersion: input.moduleVersion || "packages/report.v1",
+    foundationContractVersion: contracts.CONTRACT_SCHEMA_VERSION,
+    checkpointSpiVersion: checkpoint.PROVIDER_SPI_VERSION,
+    checkpointSchemaVersion: checkpoint.CHECKPOINT_SCHEMA_VERSION,
     scenarioContext,
     exportedAt: input.exportedAt || nowIso(input.clock),
     state: moduleState,
@@ -98,14 +112,35 @@ function createM06Checkpoint(input) {
 function validateM06Checkpoint(value) {
   const structural = checkpoint.validateCheckpoint(value, { requireSchemaVersion: true });
   const errors = [...structural.errors];
+  if (value && typeof value === "object" && !Array.isArray(value)) {
+    Object.keys(value).filter((field) => !CHECKPOINT_FIELDS.includes(field)).forEach((field) => {
+      errors.push({ code: "M06_CHECKPOINT_UNKNOWN_FIELD", path: field, message: "M06 checkpoint field is not allowed" });
+    });
+  }
   const moduleExport = value?.moduleExport;
   if (!moduleExport || moduleExport.schemaVersion !== M06_CHECKPOINT_EXPORT_SCHEMA_VERSION) {
     errors.push({ code: "M06_EXPORT_MISSING", path: "moduleExport", message: "M06 module export is required" });
   } else {
+    Object.keys(moduleExport).filter((field) => !MODULE_EXPORT_FIELDS.includes(field)).forEach((field) => {
+      errors.push({ code: "M06_EXPORT_UNKNOWN_FIELD", path: `moduleExport.${field}`, message: "M06 module export field is not allowed" });
+    });
     if (moduleExport.moduleId !== "M06") errors.push({ code: "MODULE_ID_MISMATCH", path: "moduleExport.moduleId", message: "moduleId must be M06" });
-    if (!sameScenarioRun(moduleExport.scenarioContext, value.scenarioContext)) {
-      errors.push({ code: "SCENARIO_CONTEXT_MISMATCH", path: "moduleExport.scenarioContext", message: "module export and checkpoint context must match" });
+    try {
+      const moduleContext = assertStrictScenarioContext(moduleExport.scenarioContext, value.scenarioContext, "moduleExport.scenarioContext");
+      const checkpointContext = assertStrictScenarioContext(value.scenarioContext, null, "checkpoint.scenarioContext");
+      if (stableSerialize(moduleContext) !== stableSerialize(checkpointContext)) {
+        errors.push({ code: "SCENARIO_CONTEXT_MISMATCH", path: "moduleExport.scenarioContext", message: "module export and checkpoint contexts must match exactly" });
+      }
+    } catch (error) {
+      errors.push({ code: error.code || "STRICT_SCENARIO_CONTEXT_INVALID", path: "moduleExport.scenarioContext", message: error.message });
     }
+    try {
+      assertFoundationCompatibility(moduleExport.foundationContractVersion);
+    } catch (error) {
+      errors.push({ code: error.code || "FOUNDATION_SCHEMA_INCOMPATIBLE", path: "moduleExport.foundationContractVersion", message: error.message });
+    }
+    if (moduleExport.checkpointSpiVersion !== checkpoint.PROVIDER_SPI_VERSION) errors.push({ code: "C034_SPI_VERSION_MISMATCH", path: "moduleExport.checkpointSpiVersion", message: "checkpoint SPI version mismatch" });
+    if (moduleExport.checkpointSchemaVersion !== checkpoint.CHECKPOINT_SCHEMA_VERSION) errors.push({ code: "C034_SCHEMA_VERSION_MISMATCH", path: "moduleExport.checkpointSchemaVersion", message: "checkpoint schema version mismatch" });
     try { normalizeState(moduleExport.state); } catch (error) {
       errors.push({ code: "M06_STATE_INVALID", path: "moduleExport.state", message: error.message });
     }
