@@ -21,6 +21,7 @@ const C008 = Object.freeze({
   current: {
     t019Id: 'T019-C011-1', semanticVersionId: 'PUB-S001-v1',
     publishedSemanticVersion: 'S001-ONTO-v1', dataVersion: 'T007-S001-v1',
+    lifecycleStatus: 'published', publicationStatus: 'published', bindingStatus: 'active', t019Status: 'active',
     consumableDataVersion: 'T007-S001-v1', dataAsOf: '2026-08-23', t008: '2026-08-23',
     evidenceRefs: [{ evidenceType: 'T019', evidenceId: 'T019-C011-E1' }]
   }

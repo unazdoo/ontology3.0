@@ -4,7 +4,7 @@
   "private": true,
   "description": "Ontology Financial World v1.1.x integrated implementation",
   "scripts": {
-    "test": "npm run test:foundation && npm run test:m02 && npm run test:m01 && npm run test:m03 && npm run test:m04 && npm run test:m06 && npm run test:m05 && npm run test:integration",
+    "test": "npm run test:foundation && npm run test:m02 && npm run test:m01 && npm run test:m03 && npm run test:m04 && npm run test:m06 && npm run test:m05 && npm run test:integration && npm run test:e2e",
     "test:foundation": "node --test packages/contracts/test/contracts.test.js packages/identity/index.test.cjs packages/checkpoint/index.test.cjs packages/foundation-contract.test.cjs infra/runbook.test.cjs",
     "test:m02": "node --test services/data/data.test.cjs services/data/runtime.test.cjs services/data/contract.test.cjs services/data/idempotency.test.cjs services/data/foundation-compat.test.cjs services/data/checkpoint.test.cjs",
     "test:m01": "node --test services/ontology/index.test.cjs",
@@ -13,6 +13,7 @@
     "test:m06": "node --test packages/report/boundary.test.cjs packages/report/decision-summary.test.cjs packages/report/index.test.cjs packages/report/service.test.cjs services/report/index.test.cjs",
     "test:m05": "node --test packages/agent-release/index.test.cjs packages/m05/index.test.cjs packages/m05/report-port.test.cjs",
     "test:integration": "node --test tests/integration/*.test.cjs",
+    "test:e2e": "node --test tests/e2e/*.test.cjs",
     "test:quality": "node --test scripts/quality-gate/*.test.mjs scripts/quality-gate/*.test.cjs",
     "quality:golden": "node scripts/quality-gate/verify-golden-data.mjs",
     "quality:baseline": "node scripts/quality-gate/verify-baseline-reference.mjs",
@@ -27,7 +28,7 @@
     "check:m04": "node --check services/decision/foundation-adapter.js && node --check services/decision/index.js",
     "check:m06": "node --check services/report/index.js && node --check packages/report/index.js && node --check packages/report/boundary.js && node --check packages/report/copilot.js && node --check packages/report/decision-summary.js && node --check packages/report/template.js && node --check packages/report/render.js && node --check packages/report/export.js && node --check packages/report/store.js && node --check packages/report/definition.js && node --check packages/report/fixed-view.js && node --check packages/report/gate.js && node --check packages/report/handoff.js && node --check packages/report/verification.js && node --check packages/report/comparison.js && node --check packages/report/checkpoint.js && node --check packages/report/service.js",
     "check:m05": "node --check packages/agent-release/index.js && node --check packages/m05/index.js && node --check packages/m05/schema.js && node --check packages/m05/contracts.js && node --check packages/m05/report.js && node --check packages/m05/report-copilot-boundary.js && node --check packages/m05/report-port.js && node --check packages/m05/gateway.js && node --check packages/m05/orchestration.js && node --check packages/m05/evaluation.js && node --check packages/m05/checkpoint.js",
-    "check:integration": "node --check tests/integration/*.test.cjs",
+    "check:integration": "node --check tests/integration/*.test.cjs && node --check tests/e2e/*.test.cjs && node --check tests/e2e/helpers/*.cjs",
     "check:quality": "node --check scripts/quality-gate/lib/quality-gate.mjs && node --check scripts/quality-gate/verify-pr-evidence.mjs"
   }
 }
