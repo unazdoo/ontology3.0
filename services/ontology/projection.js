@@ -85,6 +85,21 @@ function candidateProjection(candidateValidation) {
   };
 }
 
+function consumptionReadinessStatus(readStatus) {
+  return readStatus === 'ready' || readStatus === 'previous-trusted' ? 'ready' : readStatus;
+}
+
+function authoritativeRead(projectionId, formedAt) {
+  return {
+    receiptId: projectionId,
+    owner: 'M01',
+    source: 'owner-api',
+    mode: 'authoritative-current-read',
+    readAt: formedAt,
+    static: false
+  };
+}
+
 function refreshC008Projection(state, now, options = {}) {
   state.counters.projection += 1;
   // A failed projection must not advertise the invalidated combination as a
@@ -111,6 +126,11 @@ function refreshC008Projection(state, now, options = {}) {
     projectionVersion: state.counters.projection,
     formedAt: now,
     readStatus,
+    // Public read aliases consumed by generation gates. `readStatus` remains
+    // the normative C008 state; these fields are a one-to-one read mapping.
+    status: readStatus,
+    authoritativeRead: authoritativeRead(state.projectionId, now),
+    consumptionReadiness: { status: consumptionReadinessStatus(readStatus) },
     // Compatibility aliases for older read-only consumers. `readStatus` is
     // the normative C008 state; these fields never create a second source.
     availabilityStatus: readStatus === 'ready' || readStatus === 'previous-trusted' ? 'available' : readStatus === 'empty' ? 'empty' : 'failed',
@@ -163,6 +183,28 @@ function validateCombination(value, path, expectedContext) {
   return true;
 }
 
+function validatePublicReadFields(value) {
+  if (value.status !== value.readStatus) {
+    fail('PROJECTION_STATUS_MISMATCH', 'C008 status must mirror readStatus');
+  }
+  if (!isRecord(value.authoritativeRead)) fail('PROJECTION_CORRUPT', 'authoritativeRead must be an object');
+  if (value.authoritativeRead.receiptId !== value.projectionId
+      || value.authoritativeRead.owner !== 'M01'
+      || value.authoritativeRead.source !== 'owner-api'
+      || value.authoritativeRead.mode !== 'authoritative-current-read'
+      || value.authoritativeRead.static !== false
+      || value.authoritativeRead.readAt !== value.formedAt) {
+    fail('PROJECTION_STATUS_MISMATCH', 'C008 authoritativeRead is not the M01 current read receipt');
+  }
+  assertText(value.authoritativeRead.receiptId, 'authoritativeRead.receiptId', { code: 'PROJECTION_CORRUPT' });
+  assertDateTime(value.authoritativeRead.readAt, 'authoritativeRead.readAt', 'PROJECTION_CORRUPT');
+  if (!isRecord(value.consumptionReadiness)
+      || value.consumptionReadiness.status !== consumptionReadinessStatus(value.readStatus)) {
+    fail('PROJECTION_STATUS_MISMATCH', 'C008 consumptionReadiness does not match readStatus');
+  }
+  return true;
+}
+
 function validateC008Projection(value, expectedContext) {
   if (!isRecord(value)) fail('PROJECTION_CORRUPT', 'C008 projection must be an object');
   if (value.schemaVersion !== SCHEMA_VERSIONS.C008) {
@@ -181,6 +223,7 @@ function validateC008Projection(value, expectedContext) {
   const context = assertScenarioContext(value.scenarioContext);
   if (expectedContext) assertSameContext(expectedContext, context, { code: 'PROJECTION_CONTEXT_MISMATCH', allowReadOnlyLifecycle: true });
   verifyIntegrity(value, { label: 'C008 projection', code: 'PROJECTION_CORRUPT' });
+  validatePublicReadFields(value);
   if (['ready', 'previous-trusted'].includes(value.readStatus)) {
     validateCombination(value.current, 'current', context);
     if (value.current.status !== 'current'
