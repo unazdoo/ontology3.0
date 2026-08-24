@@ -253,6 +253,7 @@ function validateC008(raw, context, options = {}) {
     sourceModule: 'M01',
     producer: firstString(raw, ['producer', 'owner', 'moduleId']) || 'M01',
     readStatus: status,
+    publicationStatus: published.status ? published.status.toLowerCase() : null,
     consumable,
     scenarioContext: contextTriple(context),
     t019,

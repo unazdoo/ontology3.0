@@ -344,7 +344,6 @@ function normalizeC008(value, expectedContext) {
   const semanticLifecycle = String(
     firstText(current, ['lifecycleStatus', 'publicationStatus'])
       || firstText(source, ['publicationStatus'])
-      || firstText(source.publishedOntology, ['lifecycleStatus', 'publicationStatus', 'status'])
       || ''
   ).toLowerCase();
   if (!semanticLifecycle) {
