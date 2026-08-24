@@ -806,7 +806,7 @@ function buildC019EvidenceItem(input) {
       evidenceLocator: reference.evidenceLocator,
       formedAt: receipt.sourceFormedAt,
       readAt: receipt.readAt,
-      t007: commonVersion(selected, "t007"),
+      dataVersion: dataVersion,
       t008,
       readOnly: true
     },
