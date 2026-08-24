@@ -412,6 +412,41 @@ test('C034 Foundation strict context and exact schema policy reject altered chec
   assert.throws(() => decision.createCheckpointProvider().cloneRestore(unknownContext), (error) => error.code === 'INVALID_CHECKPOINT');
 });
 
+test('C034 export pins the platform baseline identity and rejects baseline/tamper changes on every recovery path', () => {
+  const reader = sequenceReader(['allowed']);
+  const decision = service(reader);
+  decision.receiveActionRequest(request({ requestId: 'AR-S001-BASELINE' }));
+  const exported = decision.exportCheckpoint({
+    sourceTag: 'WRONG',
+    parentVersion: 'v0.0.0',
+    baselineVersion: 'implementation-0.1.0',
+    baselineSnapshotId: 'WRONG'
+  });
+  assert.equal(exported.sourceTag, 'prototype-v1.1.0-frozen');
+  assert.equal(exported.sourceVersion, 'v1.1.0');
+  assert.equal(exported.parentVersion, 'v1.1.0');
+  assert.equal(exported.baselineVersion, 'v1.1.0');
+  assert.equal(exported.baselineSnapshotId, 'BSL-OFW-V110-94ABD0E991B7');
+  assert.equal(typeof exported.stateFingerprint, 'string');
+  assert.equal(typeof exported.ledgerFingerprint, 'string');
+  assert.equal(typeof exported.checkpointFingerprint, 'string');
+  assert.equal(decision.validateCheckpoint(exported).ok, true);
+
+  for (const field of ['sourceTag', 'parentVersion', 'baselineVersion', 'baselineSnapshotId']) {
+    const altered = JSON.parse(JSON.stringify(exported));
+    altered[field] = 'WRONG';
+    assert.equal(decision.validateCheckpoint(altered).ok, false, `${field} mismatch must fail closed`);
+    assert.throws(() => decision.createCheckpointProvider().cloneRestore(altered), (error) => error.code === 'INVALID_CHECKPOINT');
+    assert.throws(() => decision.createCheckpointProvider().isolatedReplay(altered), (error) => error.code === 'INVALID_CHECKPOINT');
+  }
+
+  const tampered = JSON.parse(JSON.stringify(exported));
+  tampered.m04Ledger.entries[0].record.subjectName = 'tampered';
+  assert.equal(decision.validateCheckpoint(tampered).ok, false);
+  assert.throws(() => decision.createCheckpointProvider().cloneRestore(tampered), (error) => error.code === 'INVALID_CHECKPOINT');
+  assert.throws(() => decision.createCheckpointProvider().isolatedReplay(tampered), (error) => error.code === 'INVALID_CHECKPOINT');
+});
+
 test('M04 owned state and C011 payload schema changes fail closed', () => {
   const reader = sequenceReader(['allowed']);
   assert.throws(() => new DecisionService({

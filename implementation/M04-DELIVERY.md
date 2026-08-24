@@ -31,6 +31,10 @@ M03-shaped variant are rejected at the consumer boundary.
   C033 context validation, exact `draft-0.1.0` Contract Envelope checks, and
   exact C034 checkpoint compatibility. Unknown fields and schema changes fail
   closed before any M04 side effect.
+- C034 exports pin `sourceTag=prototype-v1.1.0-frozen`,
+  `parentVersion=v1.1.0`, and
+  `baselineSnapshotId=BSL-OFW-V110-94ABD0E991B7`; state, ledger, and checkpoint
+  fingerprints are recomputed during validation and recovery.
 
 ## Deliberately deferred
 

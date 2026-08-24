@@ -7,14 +7,37 @@
  * explicitly registers an additive reader.
  */
 
+const crypto = require('node:crypto');
 const contracts = require('../../packages/contracts');
+const identity = require('../../packages/identity');
 const checkpoint = require('../../packages/checkpoint');
 
 const FOUNDATION_SCHEMA_VERSION = contracts.SCHEMA_VERSION;
 const CHECKPOINT_SCHEMA_VERSION = checkpoint.CHECKPOINT_SCHEMA_VERSION;
+const SOURCE_TAG = 'prototype-v1.1.0-frozen';
+const PARENT_VERSION = 'v1.1.0';
+const BASELINE_SNAPSHOT_ID = 'BSL-OFW-V110-94ABD0E991B7';
 
 function errorRecord(code, path, message, details) {
   return { code, path, message, ...(details ? { details } : {}) };
+}
+
+function clone(value) {
+  return value === undefined ? undefined : JSON.parse(JSON.stringify(value));
+}
+
+function stableDigest(value) {
+  return crypto.createHash('sha256').update(identity.stableSerialize(value), 'utf8').digest('hex');
+}
+
+function ledgerFingerprint(entries) {
+  return stableDigest(entries);
+}
+
+function checkpointFingerprint(value) {
+  const copy = clone(value);
+  if (copy && typeof copy === 'object') delete copy.checkpointFingerprint;
+  return stableDigest(copy);
 }
 
 function strictScenarioContextResult(value) {
@@ -94,11 +117,55 @@ function validateCheckpoint(value) {
     contextOptions: { allowUnknown: false }
   });
   const errors = [...(compatibility.ok ? [] : compatibility.errors), ...structural.errors];
+  const requiredBaseline = [
+    ['sourceTag', SOURCE_TAG],
+    ['parentVersion', PARENT_VERSION],
+    ['baselineSnapshotId', BASELINE_SNAPSHOT_ID]
+  ];
+  requiredBaseline.forEach(([field, expected]) => {
+    if (value?.[field] !== expected) {
+      errors.push(errorRecord('BASELINE_IDENTITY_MISMATCH', field, `M04 checkpoint must use ${expected}`, {
+        expected,
+        actual: value?.[field] ?? null
+      }));
+    }
+  });
+  if (value?.baselineVersion !== PARENT_VERSION) {
+    errors.push(errorRecord('BASELINE_VERSION_MISMATCH', 'baselineVersion', `M04 checkpoint must use ${PARENT_VERSION}`, {
+      expected: PARENT_VERSION,
+      actual: value?.baselineVersion ?? null
+    }));
+  }
+  if (!value?.stateFingerprint) errors.push(errorRecord('MISSING_STATE_FINGERPRINT', 'stateFingerprint', 'stateFingerprint is required'));
+  if (!value?.ledgerFingerprint) errors.push(errorRecord('MISSING_LEDGER_FINGERPRINT', 'ledgerFingerprint', 'ledgerFingerprint is required'));
+  if (!value?.checkpointFingerprint) errors.push(errorRecord('MISSING_CHECKPOINT_FINGERPRINT', 'checkpointFingerprint', 'checkpointFingerprint is required'));
+  if (Array.isArray(value?.m04Ledger?.entries)) {
+    const expectedLedgerFingerprint = ledgerFingerprint(value.m04Ledger.entries);
+    if (value.stateFingerprint && value.stateFingerprint !== expectedLedgerFingerprint) {
+      errors.push(errorRecord('STATE_FINGERPRINT_MISMATCH', 'stateFingerprint', 'stateFingerprint does not match the M04 ledger', {
+        expected: expectedLedgerFingerprint,
+        actual: value.stateFingerprint
+      }));
+    }
+    if (value.ledgerFingerprint && value.ledgerFingerprint !== expectedLedgerFingerprint) {
+      errors.push(errorRecord('LEDGER_FINGERPRINT_MISMATCH', 'ledgerFingerprint', 'ledgerFingerprint does not match the M04 ledger', {
+        expected: expectedLedgerFingerprint,
+        actual: value.ledgerFingerprint
+      }));
+    }
+  }
+  if (value?.checkpointFingerprint && value.checkpointFingerprint !== checkpointFingerprint(value)) {
+    errors.push(errorRecord('CHECKPOINT_FINGERPRINT_MISMATCH', 'checkpointFingerprint', 'checkpoint content fingerprint does not match the checkpoint body', {
+      expected: checkpointFingerprint(value),
+      actual: value.checkpointFingerprint
+    }));
+  }
   if (value && typeof value === 'object' && !Array.isArray(value)) {
     const allowed = new Set([
       'schemaVersion', 'checkpointId', 'immutable', 'moduleId', 'moduleVersion',
       'contractCode', 'scenarioContext', 'sourceScenarioRunId', 'restoreReadiness',
-      'baselineVersion', 'baselineSnapshotId', 'stateFingerprint', 'c019SummaryAtExport',
+      'sourceTag', 'sourceVersion', 'parentVersion', 'implementationVersion',
+      'baselineVersion', 'baselineSnapshotId', 'stateFingerprint', 'ledgerFingerprint', 'checkpointFingerprint', 'c019SummaryAtExport',
       'm04Ledger', 'sideEffectPolicy', 'overwritesHistory', 'overwritesSource'
     ]);
     Object.keys(value).forEach((key) => {
@@ -128,6 +195,12 @@ function assertCheckpoint(value) {
 module.exports = Object.freeze({
   FOUNDATION_SCHEMA_VERSION,
   CHECKPOINT_SCHEMA_VERSION,
+  SOURCE_TAG,
+  PARENT_VERSION,
+  BASELINE_SNAPSHOT_ID,
+  stableDigest,
+  ledgerFingerprint,
+  checkpointFingerprint,
   strictScenarioContextResult,
   assertStrictScenarioContext,
   compatibilityResult,
