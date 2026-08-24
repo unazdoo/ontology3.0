@@ -795,7 +795,7 @@ function buildC019EvidenceItem(input) {
     precision: null,
     rounding: null,
     objectScope: input.objectScope || null,
-    semanticRef: null,
+    semanticRef: { resourceId: exactCombination.semanticVersionId, version: semanticVersion },
     resultRef: {
       type: C019_EVIDENCE_TYPE,
       contractId: "C019",
