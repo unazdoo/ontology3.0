@@ -3,8 +3,9 @@
   "implementationVersion": "implementation-0.1.0",
   "sourceTag": "prototype-v1.1.0-frozen",
   "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
-  "ownedContracts": ["C011", "C012", "C013", "C019"],
-  "consumerContract": "C017",
+  "ownedContracts": ["C012", "C013", "C019"],
+  "consumedContracts": ["C011", "C017"],
+  "c011Provider": "M03",
   "foundationCompatibility": {
     "envelopeSchemaVersion": "draft-0.1.0",
     "checkpointSchemaVersion": "ofw.c034.checkpoint.v1",
@@ -13,7 +14,7 @@
   },
   "schemas": {
     "state": "ofw.m04.decision-state.v1",
-    "actionRequest": "ofw.m04.c011.action-request.v1",
+    "actionRequest": "ofw.m03.c011.action-request.v1",
     "reminder": "ofw.m04.c012.decision-reminder.v1",
     "humanDecision": "ofw.m04.c012.human-decision.v1",
     "ownerTask": "ofw.m04.c013.owner-task.v1",

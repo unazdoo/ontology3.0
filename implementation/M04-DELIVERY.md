@@ -1,8 +1,13 @@
 # M04 Implementation Delivery
 
-This implementation window owns C011-C013, C019, and the three C017 safety
-gates.  The runtime is in `services/decision/index.js`; the package alias in
+This implementation window consumes M03-owned C011, owns C012-C013/C019, and
+owns the three C017 safety gates.  The runtime is in
+`services/decision/index.js`; the package alias in
 `packages/decision` is a re-export and does not own state.
+
+C011 is provider-owned by M03. M04 accepts only
+`ofw.m03.c011.action-request.v1`; the former local M04 schema and any other
+M03-shaped variant are rejected at the consumer boundary.
 
 ## Delivered
 

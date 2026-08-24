@@ -22,6 +22,7 @@ const context = {
 function request(overrides = {}) {
   return {
     requestId: 'AR-S001-001',
+    schemaVersion: 'ofw.m03.c011.action-request.v1',
     scenarioContext: context,
     subjectId: 'UNIT-001',
     subjectName: '演示单位001',
@@ -95,6 +96,7 @@ test('acceptance, human decision and task are separate facts and each gate rerea
   const accepted = decision.receiveActionRequest(request());
   assert.equal(accepted.outcome, 'accepted');
   assert.equal(accepted.request.requestStatus, 'received');
+  assert.equal(accepted.request.schemaVersion, 'ofw.m03.c011.action-request.v1');
   assert.equal(accepted.request.reminderStatus, 'awaiting_confirmation');
   assert.equal(accepted.request.confirmationStatus, 'pending');
   assert.equal(accepted.request.taskStatus, 'not_created');
@@ -159,6 +161,21 @@ test('same scene/run/double-version duplicate is side-effect free; same id misma
   assert.equal(contextConflict.outcome, 'conflict');
   assert.equal(contextConflict.conflict, true);
   assert.equal(decision.listRequests().length, 1, 'context conflict must not create a request');
+});
+
+test('canonical M03 delivery repeated through the Contract Envelope creates one Action Request', () => {
+  const reader = sequenceReader(['allowed']);
+  const decision = service(reader);
+  const payload = request({ requestId: 'AR-S001-CANONICAL-DUP' });
+  const envelope = decision.createContractEnvelope('C011.action-request.submitted', payload, {
+    eventId: 'evt-canonical-1', idempotencyKey: 'idem-canonical-1', traceId: 'trace-canonical', correlationId: 'corr-canonical'
+  });
+  const first = decision.receiveContractEnvelope(envelope);
+  const second = decision.receiveContractEnvelope({ ...envelope, eventId: 'evt-canonical-2' });
+  assert.equal(first.outcome, 'accepted');
+  assert.equal(second.outcome, 'duplicate');
+  assert.equal(decision.listRequests().filter((item) => item.requestId === 'AR-S001-CANONICAL-DUP').length, 1);
+  assert.equal(reader.calls.length, 1);
 });
 
 test('hard quality failure is retained and cannot be retried on the same fixed version', () => {
@@ -403,7 +420,8 @@ test('M04 owned state and C011 payload schema changes fail closed', () => {
     initialState: { schemaVersion: 'ofw.m04.decision-state.v2', scenarioContext: context }
   }), (error) => error.code === 'STATE_SCHEMA_INCOMPATIBLE');
   const decision = service(reader);
-  assert.throws(() => decision.receiveActionRequest({ ...request({ requestId: 'AR-S001-WRONG-REQUEST-SCHEMA' }), schemaVersion: 'ofw.m04.c011.action-request.v2' }), (error) => error.code === 'REQUEST_SCHEMA_INCOMPATIBLE');
+  assert.throws(() => decision.receiveActionRequest({ ...request({ requestId: 'AR-S001-WRONG-REQUEST-SCHEMA' }), schemaVersion: 'ofw.m04.c011.action-request.v1' }), (error) => error.code === 'REQUEST_SCHEMA_INCOMPATIBLE');
+  assert.throws(() => decision.receiveActionRequest({ ...request({ requestId: 'AR-S001-WRONG-M03-SCHEMA' }), schemaVersion: 'ofw.m03.c011.request.v1' }), (error) => error.code === 'REQUEST_SCHEMA_INCOMPATIBLE');
   assert.equal(reader.calls.length, 0);
 });
 
