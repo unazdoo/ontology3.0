@@ -2,9 +2,15 @@
   "name": "ontology3-foundation-implementation",
   "version": "0.1.0",
   "private": true,
-  "description": "Dependency-free v1.1.x Foundation contracts and M02 data spine",
+  "description": "Ontology Financial World v1.1.x integrated implementation",
   "scripts": {
-    "test": "node --test packages/contracts/test/contracts.test.js packages/identity/index.test.cjs packages/checkpoint/index.test.cjs packages/foundation-contract.test.cjs infra/runbook.test.cjs services/data/data.test.cjs services/data/runtime.test.cjs services/data/contract.test.cjs services/data/idempotency.test.cjs services/data/foundation-compat.test.cjs services/data/checkpoint.test.cjs",
-    "check": "node --check packages/contracts/index.js && node --check packages/contracts/validation.js && node --check packages/contracts/compatibility.js && node --check packages/identity/index.js && node --check packages/checkpoint/index.js && node --check services/data/index.js && node --check services/data/contracts.js && node --check services/data/runtime.js && node --check services/data/clients.js && node --check services/data/envelope.js && node --check services/data/checkpoint.js"
+    "test": "npm run test:foundation && npm run test:m02 && npm run test:m01",
+    "test:foundation": "node --test packages/contracts/test/contracts.test.js packages/identity/index.test.cjs packages/checkpoint/index.test.cjs packages/foundation-contract.test.cjs infra/runbook.test.cjs",
+    "test:m02": "node --test services/data/data.test.cjs services/data/runtime.test.cjs services/data/contract.test.cjs services/data/idempotency.test.cjs services/data/foundation-compat.test.cjs services/data/checkpoint.test.cjs",
+    "test:m01": "node --test services/ontology/index.test.cjs",
+    "check": "npm run check:foundation && npm run check:m02 && npm run check:m01",
+    "check:foundation": "node --check packages/contracts/index.js && node --check packages/contracts/validation.js && node --check packages/contracts/compatibility.js && node --check packages/identity/index.js && node --check packages/checkpoint/index.js",
+    "check:m02": "node --check services/data/index.js && node --check services/data/contracts.js && node --check services/data/runtime.js && node --check services/data/clients.js && node --check services/data/envelope.js && node --check services/data/checkpoint.js",
+    "check:m01": "node --check services/ontology/domain.js && node --check services/ontology/repository.js && node --check services/ontology/validation.js && node --check services/ontology/projection.js && node --check services/ontology/service.js && node --check services/ontology/checkpoint.js && node --check services/ontology/contracts.js && node --check services/ontology/index.js && node --check services/ontology/runtime.js"
   }
 }
