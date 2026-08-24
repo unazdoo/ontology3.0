@@ -46,6 +46,12 @@ test("checkpoint C033 validation rejects missing formedAt and status", () => {
   assert.equal(checkpoint.validateCheckpoint(withoutStatus).ok, false);
 });
 
+test("checkpoint C033 validation rejects unknown context fields by default", () => {
+  const value = manifest({ scenarioContext: { ...context(), undeclared: true } });
+  assert.equal(checkpoint.validateCheckpoint(value).ok, false);
+  assert.equal(checkpoint.validateCheckpoint(value, { contextOptions: { allowUnknown: true } }).ok, true);
+});
+
 test("cloneRestore creates a new run and leaves the source immutable", () => {
   const source = manifest({
     actionRequests: [{ id: "AR-1" }],
