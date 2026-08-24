@@ -528,6 +528,12 @@ function buildC011Request(input = {}) {
 function validateC011Request(value) {
   try {
     if (!isRecord(value) || value.contractCode !== 'C011') fail('ERR_C011_INVALID', 'C011 request must be a standard C011 object');
+    if (value.schemaVersion !== C011_SCHEMA_VERSION) {
+      fail('ERR_C011_SCHEMA_MISMATCH', 'C011 request must use the canonical M03 action-request schema', {
+        expected: C011_SCHEMA_VERSION,
+        actual: value.schemaVersion || null
+      });
+    }
     ['requestId', 'idempotencyKey', 'scenarioRunId', 'targetStableId', 'actionTypeId', 'publishedOntologyVersion', 'dataVersion', 't019Id', 'requestedAt'].forEach((key) => {
       if (!firstString(value, [key])) fail('ERR_C011_INVALID', `C011.${key} is required`);
     });

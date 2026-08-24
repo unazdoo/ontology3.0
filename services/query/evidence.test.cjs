@@ -99,6 +99,9 @@ test('C018 separates query definition/display preference and C011 is one standar
   assert.equal(request.targetStableId, 'SUBJECT-1');
   assert.equal(request.createsDecision, false);
   assert.equal(request.createsTodo, false);
+  assert.equal(evidence.validateC011Request(request).valid, true);
+  assert.equal(evidence.validateC011Request({ ...request, schemaVersion: 'ofw.m03.c011.request.v1' }).valid, false);
+  assert.equal(evidence.validateC011Request({ ...request, scenarioRunId: 'S001-RUN-OTHER' }).valid, false);
   const enveloped = evidence.submitC011({ result, target: { stableId: 'SUBJECT-1' }, actionType: action, requestId: 'ACTION-ENVELOPE', includeEnvelope: true }, () => ({ requestId: 'EXT-ENVELOPE' }));
   assert.equal(enveloped.status, 'submitted');
   assert.equal(foundation.validateM03Envelope(enveloped.envelope, { contractCode: 'C011' }).valid, true);

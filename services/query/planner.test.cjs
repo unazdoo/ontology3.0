@@ -7,8 +7,10 @@ const {
   CandidateRegistry,
   ERROR_CODES,
   evaluateRule,
-  candidateValidity
+  candidateValidity,
+  SCHEMA_VERSIONS
 } = require('./planner');
+const evidence = require('./evidence');
 
 const CONTEXT = Object.freeze({
   scenarioId: 'S001',
@@ -255,6 +257,8 @@ test('only a fixed result with one hit Rule can produce standard C011', () => {
     metricSnapshot: { 'MET-COST': 4.2 }
   });
   assert.equal(request.contractCode, 'C011');
+  assert.equal(request.schemaVersion, SCHEMA_VERSIONS.C011);
+  assert.equal(request.schemaVersion, evidence.C011_SCHEMA_VERSION);
   assert.equal(request.scenarioContext.scenarioRunId, CONTEXT.scenarioRunId);
   assert.equal(request.sourceRunId, run.runId);
   assert.equal(request.sourceResultId, run.result.resultId);
@@ -263,6 +267,23 @@ test('only a fixed result with one hit Rule can produce standard C011', () => {
   assert.equal(request.m03SendsNotification, false);
   assert.equal(request.evidenceRefs.length > 0, true);
   assert.throws(() => planner.buildC011(run, { target: { stableId: 'SUBJECT-1' } }), (error) => error.code === ERROR_CODES.C011_INVALID);
+});
+
+test('C011 rejects the retired request schema and a different scenario run', () => {
+  const planner = makePlanner();
+  const plan = planner.plan({ query: query() });
+  const run = planner.execute({ plan, generatedAt: '2026-08-24T00:04:30.000Z' }, () => result());
+  const request = planner.buildC011(run, {
+    target: { stableId: 'SUBJECT-1', name: '示例主体' },
+    actionType: { actionTypeId: 'ACTION-OPTIMIZE', name: '优化建议' }
+  });
+  const retired = { ...request, schemaVersion: 'ofw.m03.c011.request.v1' };
+  assert.equal(evidence.validateC011Request(retired).valid, false);
+  assert.equal(evidence.validateC011Request(retired).errors[0].code, 'ERR_C011_SCHEMA_MISMATCH');
+  assert.throws(() => evidence.assertC011Request(retired), (error) => error.code === 'ERR_C011_SCHEMA_MISMATCH');
+
+  const wrongRun = { ...request, scenarioRunId: 'S001-RUN-OTHER' };
+  assert.equal(evidence.validateC011Request(wrongRun).valid, false);
 });
 
 test('candidate expiry remains conditional until an expiry is provided; expired candidate is rejected', () => {
