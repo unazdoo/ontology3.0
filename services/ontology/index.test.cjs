@@ -153,6 +153,16 @@ test('initial C008 is an honest empty projection', () => {
   const service = makeService();
   const projection = service.readC008({ scenarioContext: CONTEXT });
   assert.equal(projection.readStatus, 'empty');
+  assert.equal(projection.status, 'empty');
+  assert.deepEqual(projection.consumptionReadiness, { status: 'empty' });
+  assert.deepEqual(projection.authoritativeRead, {
+    receiptId: projection.projectionId,
+    owner: 'M01',
+    source: 'owner-api',
+    mode: 'authoritative-current-read',
+    readAt: projection.formedAt,
+    static: false
+  });
   assert.equal(projection.current, null);
   assert.equal(projection.previousTrusted, null);
   assert.equal(projection.scenarioContext.scenarioRunId, CONTEXT.scenarioRunId);
@@ -349,6 +359,11 @@ test('T019 atomically adopts a fully evidenced candidate and records previous tr
   assert.equal(adoption.status, 'adopted');
   const projection = service.readC008({ scenarioContext: CONTEXT });
   assert.equal(projection.readStatus, 'ready');
+  assert.equal(projection.status, 'ready');
+  assert.equal(projection.consumptionReadiness.status, 'ready');
+  assert.equal(projection.authoritativeRead.receiptId, projection.projectionId);
+  assert.equal(projection.authoritativeRead.readAt, projection.formedAt);
+  assert.equal(projection.authoritativeRead.static, false);
   assert.equal(projection.current.status, 'current');
   assert.equal(projection.current.lifecycleStatus, 'published');
   assert.equal(projection.current.publicationStatus, 'published');
@@ -400,6 +415,16 @@ test('C008 consumer contract reads the published current projection as read-only
   assert.equal(snapshot.current.dataVersion, 'T007-FINANCE-v1');
 });
 
+test('C008 rejects contradictory public read aliases', () => {
+  const service = makeService();
+  const projection = service.readC008({ scenarioContext: CONTEXT });
+  const tampered = ontology.sealIntegrity({ ...JSON.parse(JSON.stringify(projection)), status: 'ready' });
+  assert.throws(
+    () => service.readC008({ scenarioContext: CONTEXT, sources: [tampered] }),
+    (error) => error.code === 'PROJECTION_STATUS_MISMATCH'
+  );
+});
+
 test('hard quality failure without a safe fallback yields failed C008', () => {
   const service = makeService();
   const published = buildPublished(service);
@@ -412,8 +437,12 @@ test('hard quality failure without a safe fallback yields failed C008', () => {
   // first combination to exercise the no-safe-combination failure path.
   const failed = service.markQualityFailure({ scenarioContext: CONTEXT, combinationId: adopted.combinationId, reason: 'hard quality failure', callerModule: 'M02' });
   assert.equal(failed.readStatus, 'failed');
-  assert.equal(service.readC008({ scenarioContext: CONTEXT }).readStatus, 'failed');
-  assert.equal(service.readC008({ scenarioContext: CONTEXT }).current, null);
+  const failedProjection = service.readC008({ scenarioContext: CONTEXT });
+  assert.equal(failedProjection.readStatus, 'failed');
+  assert.equal(failedProjection.status, 'failed');
+  assert.deepEqual(failedProjection.consumptionReadiness, { status: 'failed' });
+  assert.equal(failedProjection.authoritativeRead.readAt, failedProjection.formedAt);
+  assert.equal(failedProjection.current, null);
   assert.equal(second.t018.status, 'eligible');
 });
 
@@ -483,6 +512,9 @@ test('a second atomic adoption can roll back to the previous-trusted combination
   assert.equal(rolledBack.status, 'previous-trusted');
   const projection = service.readC008({ scenarioContext: CONTEXT });
   assert.equal(projection.readStatus, 'previous-trusted');
+  assert.equal(projection.status, 'previous-trusted');
+  assert.deepEqual(projection.consumptionReadiness, { status: 'ready' });
+  assert.equal(projection.authoritativeRead.receiptId, projection.projectionId);
   assert.equal(projection.current.status, 'current');
   assert.equal(projection.current.lifecycleStatus, 'published');
   assert.equal(projection.current.publicationStatus, 'published');
