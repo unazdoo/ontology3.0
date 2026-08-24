@@ -4,7 +4,7 @@
   "private": true,
   "description": "Dependency-free v1.1.x Foundation public contracts",
   "scripts": {
-    "test": "node --test packages/contracts/test/contracts.test.js packages/identity/index.test.cjs packages/checkpoint/index.test.cjs packages/foundation-contract.test.cjs services/ontology/index.test.cjs",
+    "test": "node --test packages/contracts/test/contracts.test.js packages/identity/index.test.cjs packages/checkpoint/index.test.cjs packages/foundation-contract.test.cjs infra/runbook.test.cjs services/ontology/index.test.cjs",
     "check": "node --check packages/contracts/index.js && node --check packages/contracts/validation.js && node --check packages/identity/index.js && node --check packages/checkpoint/index.js && node --check services/ontology/domain.js && node --check services/ontology/repository.js && node --check services/ontology/validation.js && node --check services/ontology/projection.js && node --check services/ontology/service.js && node --check services/ontology/checkpoint.js && node --check services/ontology/contracts.js && node --check services/ontology/index.js && node --check services/ontology/runtime.js"
   }
 }

@@ -100,8 +100,7 @@ function validateModuleCheckpoint(service, checkpoint, options = {}) {
   const errors = [];
   try {
     const structural = foundationCheckpoint.validateCheckpoint(checkpoint, {
-      requireSchemaVersion: true,
-      contextOptions: { allowUnknown: true }
+      requireSchemaVersion: true
     });
     if (!structural.ok) errors.push(...structural.errors);
   } catch (error) {

@@ -192,6 +192,41 @@ test('C003 accepts the Foundation versioned envelope without inferring C033', ()
   assert.deepEqual(receipt.scenarioContext, CONTEXT);
 });
 
+test('Foundation Envelope compatibility and strict unknown-field policy fail closed', () => {
+  const service = makeService();
+  const canonical = delivery();
+  delete canonical.contractCode;
+  delete canonical.scenarioContext;
+  const envelope = {
+    eventId: 'EV-C003-S001-STRICT',
+    eventType: ontology.EVENT_TYPES.C003_DELIVERY,
+    schemaVersion: ontology.SCHEMA_VERSIONS.C003,
+    occurredAt: '2026-08-24T00:00:01.000Z',
+    actorRef: 'M02',
+    correlationId: 'CORR-C003-S001-STRICT',
+    traceId: 'TRACE-C003-S001-STRICT',
+    idempotencyKey: 'C003-S001-IDEM-STRICT',
+    scenarioContext: CONTEXT,
+    resourceRefs: [],
+    evidenceRefs: [],
+    payload: canonical
+  };
+  assert.throws(
+    () => service.receiveC003({ ...envelope, undeclared: true }),
+    (error) => error.code === 'INVALID_CONTRACT_ENVELOPE'
+  );
+  assert.throws(
+    () => service.receiveC003({ ...envelope, scenarioContext: { ...CONTEXT, undeclared: true } }),
+    (error) => error.code === 'INVALID_CONTRACT_ENVELOPE'
+  );
+  assert.throws(
+    () => service.receiveC003({ ...envelope, schemaVersion: 'ofw.m01.c003.v2' }),
+    (error) => error.code === 'SCHEMA_VERSION_MISMATCH'
+      && error.details.compatibility.status === 'incompatible'
+  );
+  assert.equal(service.listDrafts({ scenarioContext: CONTEXT }).length, 0);
+});
+
 test('C003 accepts a direct canonical payload whose integrity includes the nested C033', () => {
   const service = makeService();
   const canonical = delivery();
@@ -451,4 +486,16 @@ test('C034 validates a checkpoint containing an accepted delivery and Published 
   assert.equal(service.validateCheckpoint(checkpoint).ok, true);
   const restored = service.cloneRestore(checkpoint);
   assert.equal(restored.restoredState.historicalState.published[published.publishedId].t017Id, published.t017Id);
+});
+
+test('C034 uses Foundation strict C033 validation after the compatibility merge', () => {
+  const service = makeService();
+  const checkpoint = service.exportCheckpoint({ scenarioContext: CONTEXT });
+  const withUnknownContext = JSON.parse(JSON.stringify(checkpoint));
+  withUnknownContext.scenarioContext.undeclared = true;
+  delete withUnknownContext.integrity;
+  withUnknownContext.integrity = { algorithm: 'SHA-256', digest: digest(withUnknownContext) };
+  const result = service.validateCheckpoint(withUnknownContext);
+  assert.equal(result.ok, false);
+  assert.ok(result.errors.some((error) => error.code === 'UNKNOWN_SCENARIO_CONTEXT_FIELD'));
 });

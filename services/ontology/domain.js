@@ -251,11 +251,16 @@ function assertEnvelope(value, expected) {
       errors: error.errors || [{ message: error.message }]
     });
   }
-  if (expected.schemaVersion && envelope.schemaVersion !== expected.schemaVersion) {
-    fail('SCHEMA_VERSION_MISMATCH', 'contract schemaVersion is not supported', {
-      expected: expected.schemaVersion,
-      actual: envelope.schemaVersion
-    });
+  if (expected.schemaVersion) {
+    try {
+      contracts.assertSchemaCompatibility(expected.schemaVersion, envelope.schemaVersion);
+    } catch (error) {
+      fail('SCHEMA_VERSION_MISMATCH', 'contract schemaVersion is not exactly compatible', {
+        expected: expected.schemaVersion,
+        actual: envelope.schemaVersion,
+        compatibility: error.result || null
+      });
+    }
   }
   if (expected.eventType && envelope.eventType !== expected.eventType) {
     fail('EVENT_TYPE_MISMATCH', 'contract eventType is not supported', {
