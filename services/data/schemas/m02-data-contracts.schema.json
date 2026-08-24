@@ -5,9 +5,10 @@
   "description": "Draft implementation registry for T001/T002/T003/T005/T006/T007/T008 and C001/C002/C003/C017. Business Metric, Rule, score and conclusion fields are intentionally outside this contract.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "status", "owner", "resources", "contracts", "events", "consumerProjection"],
+  "required": ["schemaVersion", "contractVersion", "status", "owner", "resources", "contracts", "events", "consumerProjection"],
   "properties": {
-    "schemaVersion": { "const": "m02-data.draft.v1" },
+    "schemaVersion": { "const": "draft-0.1.0" },
+    "contractVersion": { "const": "m02-data.draft.v1" },
     "status": { "const": "draft" },
     "owner": { "const": "M02 / services/data" },
     "resources": {
@@ -63,7 +64,8 @@
       }
     }
   },
-  "schemaVersion": "m02-data.draft.v1",
+  "schemaVersion": "draft-0.1.0",
+  "contractVersion": "m02-data.draft.v1",
   "status": "draft",
   "owner": "M02 / services/data",
   "resources": [

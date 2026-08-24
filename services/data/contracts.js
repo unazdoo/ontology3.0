@@ -13,7 +13,10 @@ const contracts = require('../../packages/contracts');
 const identity = require('../../packages/identity');
 
 const DATA_CONTRACT_VERSION = 'm02-data.draft.v1';
-const EVENT_SCHEMA_VERSION = 'm02-data-event.draft.v1';
+const DATA_SCHEMA_VERSION = contracts.SCHEMA_VERSION;
+const DATA_SPINE_CONTRACT_ID = 'ofw.m02.data-spine.v1';
+const EVENT_SCHEMA_VERSION = contracts.SCHEMA_VERSION;
+const EVENT_CONTRACT_ID = 'ofw.m02.data-event.v1';
 const T007_S003_COMPATIBILITY_STATUS = 'compatibility-only-non-consumable';
 const CONTRACT_CODES = Object.freeze(['C001', 'C002', 'C003', 'C017', 'C032', 'C028', 'C029']);
 
@@ -36,6 +39,33 @@ const C028_STATES = Object.freeze([
   'not-sent-superseded'
 ]);
 const C029_STATES = Object.freeze(['processing', 'succeeded', 'failed', 'incompatible', 'unknown']);
+const C003_RECEIPT_FIELDS = Object.freeze([
+  'schemaVersion', 'contractCode', 'receiptId', 'idempotencyKey', 'deliveryId',
+  'assetVersionId', 't007Id', 'status', 'receivedAt', 'reasonCode', 'reason',
+  'targetDraftVersion', 'replacement', 'scenarioContext', 'uncertainty'
+]);
+const C032_RESPONSE_FIELDS = Object.freeze([
+  'schemaVersion', 'contractCode', 'responseId', 'responseVersion', 'idempotencyKey',
+  'assetId', 't006Id', 'status', 'formedAt', 'readAt', 'scenarioContext',
+  'candidates', 'reasonCode', 'reason', 'recovery', 'requestId', 'uncertainty'
+]);
+const C032_CANDIDATE_FIELDS = Object.freeze([
+  't054Id', 'targetId', 'bindingId', 'bindingVersion', 'bindingName', 'name',
+  'status', 'allowSubmit', 't017Id', 'mappingVersion', 'assetId', 't006Id',
+  'memberCoverage', 'relationshipCoverage', 'owner', 'lastVerifiedAt',
+  'reasonCode', 'reason', 'recovery', 'evidence'
+]);
+const C028_RECEIPT_FIELDS = Object.freeze([
+  'schemaVersion', 'contractCode', 'requestId', 'idempotencyKey', 'deliveryId',
+  'assetVersionId', 't007Id', 'status', 'receivedAt', 'reasonCode', 'reason',
+  'target', 'scenarioContext', 'uncertainty'
+]);
+const C029_RESULT_FIELDS = Object.freeze([
+  'schemaVersion', 'contractCode', 'resultId', 'idempotencyKey', 'requestId',
+  'deliveryId', 'assetId', 'assetVersionId', 't006Id', 't007Id', 'status',
+  'formedAt', 'reasonCode', 'reason', 'recovery', 'evidence',
+  't018Qualification', 't019Snapshot', 'target', 'discovery', 'scenarioContext'
+]);
 
 const FIVE_DIMENSIONS = Object.freeze([
   'versionLocation',
@@ -184,10 +214,77 @@ function sameRunContext(left, right) {
   return identity.compareScenarioContext(left, right);
 }
 
+function sameExactContext(left, right) {
+  return identity.compareScenarioContext(left, right, { includeLifecycle: true });
+}
+
 function requireContextMatch(expected, actual) {
-  if (!expected || !actual || !sameRunContext(expected, actual)) {
-    throw new DataContractError('SCENARIO_CONTEXT_MISMATCH', 'records must use the same C033 scenario run');
+  const normalizedExpected = assertContext(expected);
+  const normalizedActual = assertContext(actual);
+  if (!sameExactContext(normalizedExpected, normalizedActual)) {
+    throw new DataContractError('SCENARIO_CONTEXT_MISMATCH', 'records must echo the exact five-field C033 context');
   }
+}
+
+function assertAllowedFields(value, fields, contract, options = {}) {
+  if (!isRecord(value)) throw new DataContractError(`INVALID_${contract}`, `${contract} must be an object`);
+  const allowed = new Set(fields);
+  const requiredFields = new Set(options.required || []);
+  const unknown = Object.keys(value).filter((field) => !allowed.has(field));
+  const missing = [...requiredFields].filter((field) => !hasOwn(value, field) || value[field] === undefined || value[field] === null || value[field] === '');
+  if (unknown.length || missing.length) {
+    throw new DataContractError(`INVALID_${contract}`, `${contract} shape is not exact`, { unknown, missing });
+  }
+  return value;
+}
+
+function assertExactSchemaVersion(actual, expected = DATA_SCHEMA_VERSION) {
+  const version = contracts.validateSchemaVersion(actual);
+  if (!version.valid) throw new DataContractError('SCHEMA_VERSION_INVALID', 'schemaVersion is not recognized by Foundation', version.errors);
+  let result;
+  try { result = contracts.assertSchemaCompatibility(expected, actual); } catch (error) {
+    throw new DataContractError('SCHEMA_VERSION_INCOMPATIBLE', error.message, error.result || []);
+  }
+  if (result.status !== contracts.COMPATIBILITY_STATUS.EXACT) {
+    throw new DataContractError('SCHEMA_VERSION_NOT_EXACT', 'M02 accepts only the registered exact schema version', result);
+  }
+  return result;
+}
+
+function assertC032Candidate(value) {
+  assertAllowedFields(value, C032_CANDIDATE_FIELDS, 'C032_CANDIDATE');
+  for (const field of ['memberCoverage', 'relationshipCoverage']) {
+    if (isRecord(value[field])) assertAllowedFields(value[field], ['status', 'required', 'covered', 'missing', 'total'], 'C032_COVERAGE');
+  }
+  if (isRecord(value.owner)) assertAllowedFields(value.owner, ['refType', 'refId'], 'C032_OWNER', { required: ['refType', 'refId'] });
+  for (const evidence of Array.isArray(value.evidence) ? value.evidence : []) {
+    assertAllowedFields(evidence, ['evidenceType', 'evidenceId', 'evidenceVersion', 'refType', 'refId', 'refVersion', 'locator', 'fingerprint'], 'C032_EVIDENCE', { required: ['evidenceType', 'evidenceId'] });
+  }
+  return value;
+}
+
+function assertT019Snapshot(value) {
+  if (value === null || value === undefined) return value;
+  return assertAllowedFields(value, ['t019Id', 'status', 'semanticVersion', 'assetVersionId', 't007Id', 'asOfTime', 't008', 'observedAt', 'evidenceId'], 'C029_T019_SNAPSHOT');
+}
+
+function assertEvidenceReferences(values, contract = 'M02_EVIDENCE') {
+  if (values === null || values === undefined) return values;
+  if (!Array.isArray(values)) throw new DataContractError(`INVALID_${contract}`, `${contract} must be an array`);
+  for (const evidence of values) {
+    assertAllowedFields(evidence, ['evidenceType', 'evidenceId', 'evidenceVersion', 'refType', 'refId', 'refVersion', 'locator', 'fingerprint'], contract, { required: ['evidenceType', 'evidenceId'] });
+  }
+  return values;
+}
+
+function assertT018Qualification(value) {
+  if (value === null || value === undefined || typeof value === 'string') return value;
+  return assertAllowedFields(value, ['status', 'reason', 'evidenceId', 'formedAt'], 'C029_T018_QUALIFICATION', { required: ['status'] });
+}
+
+function assertC003Replacement(value) {
+  if (value === null || value === undefined) return value;
+  return assertAllowedFields(value, ['previousAssetVersionId', 'newAssetVersionId', 'relation', 'formedAt', 'evidenceId'], 'C003_REPLACEMENT');
 }
 
 function required(value, fields, kind) {
@@ -318,6 +415,13 @@ function validateC017Summary(value) {
       throw new DataContractError('INVALID_C017', `C017 five-dimensional status is missing ${dimension}`);
     }
   });
+  const dimensionKeys = Object.keys(value.fiveDimensions);
+  if (dimensionKeys.length !== FIVE_DIMENSIONS.length || dimensionKeys.some((key) => !FIVE_DIMENSIONS.includes(key))) {
+    throw new DataContractError('INVALID_C017', 'C017 must contain exactly the registered five dimensions');
+  }
+  for (const dimension of Object.values(value.fiveDimensions)) {
+    assertAllowedFields(dimension, ['status', 'reason', 'formedAt', 'evidenceRef'], 'C017_DIMENSION', { required: ['status'] });
+  }
   assertContext(value.scenarioContext);
   return value;
 }
@@ -422,6 +526,23 @@ function projectC017(summary, consumer, options = {}) {
   validateC017Summary(summary);
   const allowedConsumers = new Set(['ontology', 'intelligent-query', 'decision-center', 'agent', 'report', 'm04', 'm03', 'm05', 'm06']);
   if (!allowedConsumers.has(consumer)) throw new DataContractError('CONSUMER_NOT_ALLOWED', `consumer ${consumer} is not allowed to read C017`);
+  const strictOptional = (value, fields, name) => {
+    if (value !== null && value !== undefined) assertAllowedFields(value, fields, name);
+  };
+  strictOptional(summary.quality, ['status', 'qualityId', 'checkCount', 'failedCount', 'warningCount', 'hardFailure', 'reason'], 'C017_QUALITY');
+  strictOptional(summary.freshness, ['status', 'reason', 'asOfTime', 't008', 'evaluatedAt', 'age', 'thresholdRef', 'thresholdVersion', 'owner', 'scope', 'gate'], 'C017_FRESHNESS');
+  strictOptional(summary.candidate, ['assetVersionId', 't007Id', 'status', 'stage', 'asOfTime', 't008', 'reason', 'recovery', 'formedAt'], 'C017_CANDIDATE');
+  strictOptional(summary.currentAuthority, ['t019Id', 'evidenceId', 'status', 'observedAt', 'semanticVersion', 'assetVersionId', 't007Id', 'asOfTime', 't008', 'formedAt'], 'C017_AUTHORITY');
+  strictOptional(summary.previousAuthority, ['t019Id', 'evidenceId', 'status', 'observedAt', 'semanticVersion', 'assetVersionId', 't007Id', 'asOfTime', 't008', 'formedAt'], 'C017_AUTHORITY');
+  strictOptional(summary.delivery, ['deliveryId', 'status', 'receiptStatus', 'receivedAt'], 'C017_DELIVERY');
+  strictOptional(summary.discovery, ['responseId', 'responseVersion', 'status', 't054Id', 'bindingVersion', 't017Id', 'mappingVersion', 'readAt', 'reason', 'recovery'], 'C017_DISCOVERY');
+  strictOptional(summary.refresh, ['requestId', 'status', 'requestedAt', 'result'], 'C017_REFRESH');
+  if (summary.refresh?.result) assertAllowedFields(summary.refresh.result, ['resultId', 'status', 'formedAt', 't018Qualification'], 'C017_REFRESH_RESULT');
+  strictOptional(summary.retention, ['status', 'until', 'policyId', 'policyVersion', 'reason', 'lastCheckedAt'], 'C017_RETENTION');
+  strictOptional(summary.reproducibility, ['status', 'reason', 'verificationId', 'verifiedAt'], 'C017_REPRODUCIBILITY');
+  for (const evidence of summary.evidence || []) {
+    assertAllowedFields(evidence, ['evidenceId', 'evidenceType', 'evidenceVersion', 'type', 'assetVersionId', 't007Id', 'scope', 'locationStatus', 'formedAt', 'lastConfirmedAt', 'owner', 'recovery'], 'C017_EVIDENCE', { required: ['evidenceId'] });
+  }
   const base = {
     contractCode: 'C017',
     contractVersion: DATA_CONTRACT_VERSION,
@@ -495,7 +616,10 @@ function validationResult(validator, value, options) {
 
 module.exports = Object.freeze({
   DATA_CONTRACT_VERSION,
+  DATA_SCHEMA_VERSION,
+  DATA_SPINE_CONTRACT_ID,
   EVENT_SCHEMA_VERSION,
+  EVENT_CONTRACT_ID,
   CONTRACT_CODES,
   T007_S003_COMPATIBILITY_STATUS,
   EXECUTION_STATES,
@@ -504,6 +628,11 @@ module.exports = Object.freeze({
   C032_STATES,
   C028_STATES,
   C029_STATES,
+  C003_RECEIPT_FIELDS,
+  C032_RESPONSE_FIELDS,
+  C032_CANDIDATE_FIELDS,
+  C028_RECEIPT_FIELDS,
+  C029_RESULT_FIELDS,
   FIVE_DIMENSIONS,
   FORBIDDEN_CONSUMER_KEYS,
   FORBIDDEN_CONSUMER_KEYS_LOWER,
@@ -516,7 +645,15 @@ module.exports = Object.freeze({
   assertContext,
   assertActiveContext,
   sameRunContext,
+  sameExactContext,
   requireContextMatch,
+  assertAllowedFields,
+  assertExactSchemaVersion,
+  assertC032Candidate,
+  assertT019Snapshot,
+  assertEvidenceReferences,
+  assertT018Qualification,
+  assertC003Replacement,
   validateSource,
   validateSnapshot,
   validateAsOfConfirmation,

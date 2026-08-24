@@ -14,7 +14,8 @@ const context = {
 };
 
 test('M02 registry covers only the requested T/C ownership surface', () => {
-  assert.equal(schema.schemaVersion, contract.DATA_CONTRACT_VERSION);
+  assert.equal(schema.schemaVersion, contract.DATA_SCHEMA_VERSION);
+  assert.equal(schema.contractVersion, contract.DATA_CONTRACT_VERSION);
   assert.deepEqual(schema.resources.map((item) => item.code), ['T001', 'T002', 'T003', 'T005', 'T006', 'T007', 'T008']);
   assert.deepEqual(schema.contracts.map((item) => item.code), contract.CONTRACT_CODES);
   assert.deepEqual(schema.events.map((item) => item.code), ['T002_READ', 'T008_CONFIRMED', 'T008_READ', 'C017_READ']);
@@ -59,7 +60,7 @@ test('C017 projection rejects forbidden business content and preserves C033', ()
   const projection = contract.projectC017(summary, 'intelligent-query');
   assert.deepEqual(projection.scenarioContext, context);
   assert.equal('rows' in projection, false);
-  assert.throws(() => contract.projectC017({ ...summary, evidence: [{ rows: [{ secret: 1 }] }] }, 'intelligent-query'), (error) => error.code === 'CONSUMER_DATA_LEAK');
+  assert.throws(() => contract.projectC017({ ...summary, evidence: [{ rows: [{ secret: 1 }] }] }, 'intelligent-query'), (error) => error.code === 'INVALID_C017_EVIDENCE');
 });
 
 test('S003 compatibility contract cannot be promoted or reused', () => {

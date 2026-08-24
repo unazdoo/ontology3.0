@@ -11,6 +11,15 @@ append-only persistence boundary for a production store.
 
 `C003Client`, `C032Client`, `C028Client` and `C029Client` are provider/consumer adapters. They validate echoed identifiers and C033 context, preserve unknown outcomes, and make duplicate calls side-effect free. `projectC017` exposes metadata and stable evidence references only; it rejects business rows, source content, implementation details, Metric/Rule fields and failure samples.
 
+`envelope.js` binds M02 events to the Foundation Contract Envelope and accepts
+only the registered `draft-0.1.0` schema version. Envelope, payload, provider
+response and five-field C033 shapes fail closed on unknown or missing fields.
+`checkpoint.js` supplies the M02 C034 owner adapter as a reference-only export;
+Foundation still owns protected clone/replay plans and side-effect suppression.
+Because this in-memory implementation has no persistence/hydration resolver,
+restore readiness defaults to `not-verified` and no recovery call materializes
+or executes module state.
+
 The S003 compatibility version is represented with `compatibilityOnly: true`, `consumable: false`, and `reusable: false`. No method promotes it in place or submits it to C028/C029. A future formal S003 build must create a new T003/T007 chain.
 
 A rejected or uncertain C003 attempt can only be queried by its original

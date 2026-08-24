@@ -17,11 +17,24 @@ const {
   validateDelivery,
   createReadEvent,
   assertNoForbiddenKeys,
+  assertAllowedFields,
+  assertExactSchemaVersion,
+  assertC032Candidate,
+  assertT019Snapshot,
+  assertEvidenceReferences,
+  assertT018Qualification,
+  assertC003Replacement,
+  DATA_CONTRACT_VERSION,
+  DATA_SCHEMA_VERSION,
   C032_STATES,
   C028_STATES,
   C029_STATES,
   DELIVERY_STATES,
-  T007_S003_COMPATIBILITY_STATUS
+  T007_S003_COMPATIBILITY_STATUS,
+  C003_RECEIPT_FIELDS,
+  C032_RESPONSE_FIELDS,
+  C028_RECEIPT_FIELDS,
+  C029_RESULT_FIELDS
 } = require('./contracts');
 
 function nowIso(clock) {
@@ -66,6 +79,12 @@ function digest(value) {
 
 function assertExactReceipt(receipt, delivery) {
   if (!receipt || typeof receipt !== 'object') throw new DataContractError('INVALID_C003_RECEIPT', 'provider returned no C003 receipt');
+  assertAllowedFields(receipt, C003_RECEIPT_FIELDS, 'C003_RECEIPT', {
+    required: ['schemaVersion', 'contractCode', 'deliveryId', 'assetVersionId', 'status', 'scenarioContext']
+  });
+  assertExactSchemaVersion(receipt.schemaVersion);
+  if (receipt.contractCode !== 'C003') throw new DataContractError('C003_RECEIPT_MISMATCH', 'receipt must identify C003');
+  assertC003Replacement(receipt.replacement);
   if (receipt.deliveryId !== delivery.deliveryId || receipt.assetVersionId !== delivery.assetVersionId) {
     throw new DataContractError('C003_RECEIPT_MISMATCH', 'receipt must echo the exact delivery and T007 identifiers');
   }
@@ -101,12 +120,16 @@ class C003Client {
     if (!existingDelivery && priorRejected) {
       throw new DataContractError('C003_REACCEPTANCE_UNSPECIFIED', 'a rejected/unknown C003 delivery cannot be silently re-submitted before contract clarification');
     }
+    if (options.contractVersion && options.contractVersion !== DATA_CONTRACT_VERSION) {
+      throw new DataContractError('C003_VERSION_MISMATCH', 'C003 contractVersion is fixed by the M02 registry');
+    }
     const delivery = {
+      schemaVersion: DATA_SCHEMA_VERSION,
       deliveryId,
       sourceModule: 'data-engineering',
       targetModule: options.targetModule || 'ontology-management',
       contractCode: 'C003',
-      contractVersion: options.contractVersion || 'm02-c003.draft.v1',
+      contractVersion: DATA_CONTRACT_VERSION,
       assetId: asset.assetId,
       assetVersionId: asset.assetVersionId,
       t006Id: asset.assetId,
@@ -154,16 +177,11 @@ class C003Client {
       result = invoke(this.provider, ['receiveC003', 'receiveDelivery', 'acceptDelivery', 'deliver'], sending);
     } catch (error) {
       if (options.onProviderError === 'unknown') {
-        result = { status: 'unknown', reasonCode: 'PROVIDER_UNCERTAIN', reason: error.message, scenarioContext: sending.scenarioContext, uncertainty: true };
+        result = { schemaVersion: DATA_SCHEMA_VERSION, contractCode: 'C003', deliveryId: sending.deliveryId, assetVersionId: sending.assetVersionId, status: 'unknown', reasonCode: 'PROVIDER_UNCERTAIN', reason: error.message, scenarioContext: sending.scenarioContext, uncertainty: true };
       } else throw error;
     }
     const finish = (providerResult) => {
-      const receipt = assertExactReceipt({
-        ...providerResult,
-        deliveryId: providerResult?.deliveryId || sending.deliveryId,
-        assetVersionId: providerResult?.assetVersionId || sending.assetVersionId,
-        receivedAt: providerResult?.receivedAt || nowIso(this.clock)
-      }, sending);
+      const receipt = assertExactReceipt(providerResult, sending);
       this.receipts.set(sending.deliveryId, receipt);
       this.deliveries.set(sending.deliveryId, deepFreeze({
         ...clone(sending),
@@ -211,21 +229,29 @@ class C032Client {
     try {
       response = invoke(this.provider, ['discoverC032', 'discoverRefreshTarget', 'discover'], request);
     } catch (error) {
-      response = { status: 'read-failed', reasonCode: 'PROVIDER_ERROR', reason: error.message, candidates: [], scenarioContext: context, uncertainty: true };
+      response = { schemaVersion: DATA_SCHEMA_VERSION, contractCode: 'C032', responseId: idFor('C032', [request.requestId, 'read-failed']), responseVersion: '1', assetId, status: 'read-failed', reasonCode: 'PROVIDER_ERROR', reason: error.message, candidates: [], scenarioContext: context, uncertainty: true };
     }
-    response = response || { status: 'unknown', candidates: [] };
+    if (!response) throw new DataContractError('INVALID_C032', 'provider returned no C032 response');
+    assertAllowedFields(response, C032_RESPONSE_FIELDS, 'C032_RESPONSE', {
+      required: ['schemaVersion', 'contractCode', 'responseId', 'responseVersion', 'assetId', 'status', 'scenarioContext', 'candidates']
+    });
+    assertExactSchemaVersion(response.schemaVersion);
+    if (response.contractCode !== 'C032') throw new DataContractError('INVALID_C032', 'response must identify C032');
+    if (!Array.isArray(response.candidates)) throw new DataContractError('INVALID_C032', 'C032 candidates must be an array');
     if (!C032_STATES.includes(response.status)) throw new DataContractError('INVALID_C032', `invalid C032 status ${response.status}`);
     if (optionsStrict(strict) && response.status === 'available') {
       for (const candidate of response.candidates || []) {
         if (!candidate.t054Id && !candidate.targetId && !candidate.bindingId) throw new DataContractError('INVALID_C032', 'strict C032 candidate lacks T054 identity');
       }
     }
+    for (const candidate of response.candidates || []) assertC032Candidate(candidate);
     if (response.scenarioContext) requireContextMatch(context, response.scenarioContext);
     else throw new DataContractError('C032_CONTEXT_MISSING', 'C032 response must echo C033 context');
     if (response.assetId !== undefined && response.assetId !== assetId) throw new DataContractError('C032_ASSET_MISMATCH', 'C032 response identifies another T006');
     const normalized = deepFreeze({
-      responseId: response.responseId || idFor('C032', [request.requestId, response.status]),
-      responseVersion: response.responseVersion || '1',
+      schemaVersion: response.schemaVersion,
+      responseId: response.responseId,
+      responseVersion: response.responseVersion,
       contractCode: 'C032',
       assetId,
       t006Id: assetId,
@@ -326,13 +352,19 @@ class C028Client {
     try {
       result = invoke(this.provider, ['submitC028', 'submitRefreshRequest', 'submit'], frozen);
     } catch (error) {
-      result = { status: 'unknown', reasonCode: 'PROVIDER_UNCERTAIN', reason: error.message, scenarioContext: frozen.scenarioContext, uncertainty: true };
+      result = { schemaVersion: DATA_SCHEMA_VERSION, contractCode: 'C028', requestId: frozen.requestId, assetVersionId: frozen.assetVersionId, status: 'unknown', reasonCode: 'PROVIDER_UNCERTAIN', reason: error.message, scenarioContext: frozen.scenarioContext, uncertainty: true };
     }
+    assertAllowedFields(result, C028_RECEIPT_FIELDS, 'C028_RECEIPT', {
+      required: ['schemaVersion', 'contractCode', 'requestId', 'assetVersionId', 'status', 'scenarioContext']
+    });
+    assertExactSchemaVersion(result.schemaVersion);
+    if (result.contractCode !== 'C028') throw new DataContractError('INVALID_C028_RECEIPT', 'receipt must identify C028');
     if (!C028_STATES.includes(result?.status)) throw new DataContractError('INVALID_C028_RECEIPT', 'provider returned an invalid C028 status');
     if (!result.scenarioContext) throw new DataContractError('C028_RECEIPT_MISSING_CONTEXT', 'C028 receipt must echo C033 context');
     requireContextMatch(context, result.scenarioContext);
     if (result.requestId && result.requestId !== request.requestId) throw new DataContractError('C028_RECEIPT_MISMATCH', 'C028 receipt must echo requestId');
     if (result.target) {
+      assertC032Candidate(result.target);
       const returnedTarget = result.target.t054Id || result.target.targetId || result.target.bindingId;
       if (returnedTarget !== targetId || (result.target.bindingVersion || null) !== (target.bindingVersion || null)) throw new DataContractError('C028_RECEIPT_MISMATCH', 'C028 receipt target differs from the submitted C032 target');
     }
@@ -365,16 +397,25 @@ class C029Client {
 
   accept({ result, request, delivery, context } = {}) {
     if (!result || !C029_STATES.includes(result.status)) throw new DataContractError('INVALID_C029', 'invalid C029 result status');
+    assertAllowedFields(result, C029_RESULT_FIELDS, 'C029_RESULT', {
+      required: ['schemaVersion', 'contractCode', 'resultId', 'requestId', 'assetVersionId', 'status', 'scenarioContext']
+    });
+    assertExactSchemaVersion(result.schemaVersion);
+    if (result.contractCode !== 'C029') throw new DataContractError('INVALID_C029', 'result must identify C029');
     const expectedContext = context || request?.scenarioContext || delivery?.scenarioContext;
     requireContextMatch(expectedContext, result.scenarioContext);
     if (request && result.requestId !== request.requestId) throw new DataContractError('C029_REQUEST_MISMATCH', 'C029 must reference the exact C028 request');
     if (request && result.assetVersionId !== request.assetVersionId) throw new DataContractError('C029_ASSET_MISMATCH', 'C029 must echo the exact T007 from C028');
     if (delivery && result.assetVersionId !== delivery.assetVersionId) throw new DataContractError('C029_ASSET_MISMATCH', 'C029 must reference the exact delivered T007');
     if (result.target && request?.target) {
+      assertC032Candidate(result.target);
       const left = result.target.t054Id || result.target.targetId || result.target.bindingId;
       const right = request.target.t054Id || request.target.targetId || request.target.bindingId;
       if (left !== right || result.target.bindingVersion !== request.target.bindingVersion) throw new DataContractError('C029_TARGET_MISMATCH', 'C029 target differs from C028');
     }
+    assertT019Snapshot(result.t019Snapshot);
+    assertT018Qualification(result.t018Qualification);
+    assertEvidenceReferences(result.evidence, 'C029_EVIDENCE');
     const key = result.resultId || idFor('C029', [result.requestId, result.assetVersionId, result.status]);
     const frozen = deepFreeze({ ...clone(result), contractCode: 'C029', resultId: key });
     const existing = this.results.get(key);

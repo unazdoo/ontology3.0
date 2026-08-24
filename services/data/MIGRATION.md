@@ -16,6 +16,13 @@ Migration rules:
    previous code/schema registration. Never promote a rejected/unknown receipt
    or a S003 compatibility T007 during rollback.
 
+Foundation compatibility is exact-only at the M02 boundary. A higher patch or
+minor remains review-required and is rejected until separately registered;
+major, downgrade, malformed, and draft/final changes are rejected. C034 export
+contains stable references and fingerprints only. A later persistent adapter
+must verify those references before setting `restoreReadiness=verified`; it
+must not replay C003/C028/C029 or reuse the source idempotency index.
+
 Adapters should implement up/down migrations transactionally. A down migration
 may remove only newly created empty structures; it must refuse to delete
 historical records or overwrite source/asset versions.

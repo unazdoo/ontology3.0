@@ -24,7 +24,8 @@ try {
   identity = null;
 }
 
-const SCHEMA_VERSION = 'ofw.m02.data-spine.v1';
+const SCHEMA_VERSION = dataContracts.DATA_SCHEMA_VERSION;
+const DATA_SPINE_CONTRACT_ID = dataContracts.DATA_SPINE_CONTRACT_ID;
 const RUNTIME_VERSION = 'implementation-0.1.0';
 
 const STATUS = Object.freeze({
@@ -240,6 +241,18 @@ function sameRunContext(left, right) {
   const b = contextFrom(right);
   return Boolean(a && b && a.scenarioId === b.scenarioId
     && a.scenarioVersion === b.scenarioVersion && a.scenarioRunId === b.scenarioRunId);
+}
+
+function sameExactContext(left, right) {
+  const a = validateContext(left);
+  const b = validateContext(right);
+  return ['scenarioId', 'scenarioVersion', 'scenarioRunId', 'formedAt', 'status']
+    .every((field) => a[field] === b[field]);
+}
+
+function requireExactContext(expected, actual, message) {
+  if (!sameExactContext(expected, actual)) fail(ERROR_CODES.CONTEXT_MISMATCH, message || 'C033 context must match exactly');
+  return validateContext(actual);
 }
 
 function sameScenarioDefinition(left, right) {
@@ -1696,14 +1709,14 @@ class DataPipelineRuntime {
   createDelivery(input = {}) {
     const version = this.getAssetVersion(input.assetVersionId || input.t007Id);
     const context = requireActiveContext(input.scenarioContext || version.scenarioContext);
-    if (!sameRunContext(context, version.scenarioContext)) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C003 delivery context must match the exact T007 context');
+    requireExactContext(version.scenarioContext, context, 'C003 delivery context must match the exact T007 context');
     if (version.consumption?.compatibilityOnly === true && input.purpose !== 'compatibility-validation') {
       fail(ERROR_CODES.S003_NOT_CONSUMABLE, 'S003 compatibility T007 cannot be delivered for consumption');
     }
     const deliveryId = nonEmpty(input.deliveryId || input.c003Id || this._id('C003', { assetVersionId: version.assetVersionId, context }), 'deliveryId');
     const existingDelivery = this.deliveryRecords.get(deliveryId);
     if (existingDelivery) {
-      if (existingDelivery.assetVersionId !== version.assetVersionId || !sameRunContext(existingDelivery.scenarioContext, context)) {
+      if (existingDelivery.assetVersionId !== version.assetVersionId || !sameExactContext(existingDelivery.scenarioContext, context)) {
         fail(ERROR_CODES.IDEMPOTENCY_CONFLICT, 'delivery id identifies a different exact T007 or C033 context', { deliveryId });
       }
       return existingDelivery;
@@ -1755,10 +1768,18 @@ class DataPipelineRuntime {
 
   recordDeliveryReceipt(deliveryId, input = {}) {
     const delivery = this._get(this.deliveryRecords, deliveryId, 'C003 delivery');
+    dataContracts.assertAllowedFields(input, dataContracts.C003_RECEIPT_FIELDS, 'C003_RECEIPT', {
+      required: ['schemaVersion', 'contractCode', 'deliveryId', 'assetVersionId', 'status', 'scenarioContext']
+    });
+    dataContracts.assertExactSchemaVersion(input.schemaVersion);
+    if (input.contractCode !== 'C003') fail(ERROR_CODES.CONTEXT_MISMATCH, 'C003 receipt contractCode mismatch');
+    dataContracts.assertC003Replacement(input.replacement);
     const status = input.status || input.outcome;
     if (!['accepted', 'rejected', 'unknown'].includes(status)) fail(ERROR_CODES.INVALID_ARGUMENT, 'C003 receipt status must be accepted, rejected, or unknown');
     if (!input.scenarioContext) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C003 receipt must echo C033 scenario context');
     const receipt = {
+      schemaVersion: SCHEMA_VERSION,
+      contractCode: 'C003',
       receiptId: input.receiptId || this._id('C003-RECEIPT', { deliveryId, status }),
       idempotencyKey: input.idempotencyKey || `c003-receipt:${fingerprint({ deliveryId, status, scenarioContext: delivery.scenarioContext })}`,
       deliveryId,
@@ -1770,9 +1791,9 @@ class DataPipelineRuntime {
       scenarioContext: validateContext(input.scenarioContext || delivery.scenarioContext),
       assetVersionId: delivery.assetVersionId
     };
-    if (input.deliveryId && input.deliveryId !== deliveryId) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C003 receipt deliveryId mismatch');
-    if (input.assetVersionId && input.assetVersionId !== delivery.assetVersionId) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C003 receipt T007 mismatch');
-    if (!sameRunContext(receipt.scenarioContext, delivery.scenarioContext)) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C003 receipt context mismatch');
+    if (input.deliveryId !== deliveryId) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C003 receipt deliveryId mismatch');
+    if (input.assetVersionId !== delivery.assetVersionId) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C003 receipt T007 mismatch');
+    requireExactContext(delivery.scenarioContext, receipt.scenarioContext, 'C003 receipt context mismatch');
     if (delivery.receipt) {
       const comparable = (value) => ({
         deliveryId: value.deliveryId,
@@ -1805,13 +1826,22 @@ class DataPipelineRuntime {
     if (delivery && delivery.status !== 'accepted') fail(ERROR_CODES.DELIVERY_BLOCKED, 'C032 discovery requires an accepted C003 receipt');
     const assetId = nonEmpty(input.assetId || delivery?.assetId || delivery?.t006Id, 'assetId');
     const context = requireActiveContext(input.scenarioContext || delivery?.scenarioContext);
-    if (delivery && !sameRunContext(context, delivery.scenarioContext)) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C032 context does not match C003');
+    if (delivery) requireExactContext(delivery.scenarioContext, context, 'C032 context does not match C003');
     const responseId = nonEmpty(input.responseId || this._id('C032', { assetId, context, at: input.readAt, sequence: ++this.c032Sequence }), 'responseId');
     const readAt = this._now(input.readAt);
+    const externalResponse = Boolean(input.response || typeof input.provider === 'function');
     let response = input.response || null;
     if (typeof input.provider === 'function') response = input.provider({ assetId, scenarioContext: context, delivery, responseId, readAt });
-    response = response || { status: 'not-established', candidates: [] };
-    if (response.status === 'available' && !Array.isArray(response.candidates)) fail(ERROR_CODES.INVALID_ARGUMENT, 'available C032 response requires candidates');
+    response = response || { schemaVersion: SCHEMA_VERSION, contractCode: 'C032', responseId, responseVersion: '1', assetId, status: 'not-established', candidates: [], scenarioContext: context };
+    if (!Array.isArray(response.candidates)) fail(ERROR_CODES.INVALID_ARGUMENT, 'C032 candidates must be an array');
+    if (externalResponse) {
+      dataContracts.assertAllowedFields(response, dataContracts.C032_RESPONSE_FIELDS, 'C032_RESPONSE', {
+        required: ['schemaVersion', 'contractCode', 'responseId', 'responseVersion', 'assetId', 'status', 'scenarioContext', 'candidates']
+      });
+      dataContracts.assertExactSchemaVersion(response.schemaVersion);
+      if (response.contractCode !== 'C032') fail(ERROR_CODES.CONTEXT_MISMATCH, 'C032 response contractCode mismatch');
+      for (const candidate of response.candidates || []) dataContracts.assertC032Candidate(candidate);
+    }
     if (input.strict === true && response.status === 'available') {
       for (const candidate of response.candidates) {
         if (!text(candidate.t054Id || candidate.targetId || candidate.bindingId)
@@ -1821,20 +1851,21 @@ class DataPipelineRuntime {
     }
     const allowedStatuses = new Set(['not-read', 'reading', 'available', 'not-established', 'draft', 'inactive', 'asset-mismatch', 'coverage-insufficient', 't017-unlocatable', 'mapping-unlocatable', 'context-invalid', 'unknown', 'read-failed']);
     if (!allowedStatuses.has(response.status)) fail(ERROR_CODES.INVALID_ARGUMENT, `invalid C032 status ${response.status}`);
-    if (response.assetId && response.assetId !== assetId) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C032 response T006 mismatch');
-    if (response.scenarioContext && !sameRunContext(response.scenarioContext, context)) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C032 response context mismatch');
+    if (!response.assetId || response.assetId !== assetId) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C032 response must echo the exact T006');
+    if (!response.scenarioContext) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C032 response must echo C033 scenario context');
+    const responseContext = requireExactContext(context, response.scenarioContext, 'C032 response context mismatch');
     const normalized = immutable({
       schemaVersion: SCHEMA_VERSION,
       contractCode: 'C032',
-      responseId,
-      responseVersion: String(response.responseVersion || '1'),
+      responseId: response.responseId,
+      responseVersion: String(response.responseVersion),
       idempotencyKey: `c032:${fingerprint({ assetId, context, responseId })}`,
       assetId,
       t006Id: assetId,
       status: response.status,
       formedAt: this._now(response.formedAt || readAt),
       readAt,
-      scenarioContext: context,
+      scenarioContext: responseContext,
       candidates: clone(response.candidates || []),
       reasonCode: response.reasonCode || null,
       reason: response.reason || null,
@@ -1857,7 +1888,7 @@ class DataPipelineRuntime {
 
   _sameC032Selection(left, right) {
     if (!left || !right || left.assetId !== right.assetId || left.status !== right.status || left.responseVersion !== right.responseVersion) return false;
-    if (!sameRunContext(left.scenarioContext, right.scenarioContext)) return false;
+    if (!sameExactContext(left.scenarioContext, right.scenarioContext)) return false;
     const project = (value) => (value.candidates || []).map((candidate) => ({
       t054Id: candidate.t054Id || candidate.targetId || candidate.bindingId || null,
       bindingVersion: candidate.bindingVersion || null,
@@ -1875,11 +1906,11 @@ class DataPipelineRuntime {
     if (!delivery || delivery.status !== 'accepted') fail(ERROR_CODES.DELIVERY_BLOCKED, 'C028 requires an accepted C003 receipt');
     if (delivery.consumptionStatus === 'compatibility-only-non-consumable' || delivery.compatibilityOnly === true) fail(ERROR_CODES.S003_NOT_CONSUMABLE, 'S003 compatibility T007 cannot enter C028');
     const context = requireActiveContext(input.scenarioContext || delivery.scenarioContext);
-    if (!sameRunContext(context, delivery.scenarioContext)) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C028 context mismatch');
+    requireExactContext(delivery.scenarioContext, context, 'C028 context mismatch');
     const discovery = input.discoveryId ? this.getC032(input.discoveryId) : input.discovery;
     const reread = input.rereadId ? this.getC032(input.rereadId) : input.reread;
     if (!discovery || discovery.status !== 'available') fail(ERROR_CODES.INPUT_UNAVAILABLE, 'C028 requires an available C032 response');
-    if (!sameRunContext(discovery.scenarioContext, context)) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C032 discovery context mismatch');
+    requireExactContext(context, discovery.scenarioContext, 'C032 discovery context mismatch');
     if (reread && !this._sameC032Selection(discovery, reread)) fail(ERROR_CODES.INPUT_DRIFT, 'C032 target or mapping drifted before C028 submission');
     const candidates = (reread || discovery).candidates || [];
     const targetId = input.targetId || input.t054Id || input.bindingId;
@@ -1912,22 +1943,31 @@ class DataPipelineRuntime {
       if (fingerprint(semantic(existing.request)) !== fingerprint(semantic(request))) fail(ERROR_CODES.IDEMPOTENCY_CONFLICT, 'C028 request id conflict');
       return existing.receipt;
     }
+    const externalReceipt = Boolean(input.receipt || typeof input.provider === 'function');
     let receipt = input.receipt || null;
     if (typeof input.provider === 'function') receipt = input.provider(immutable(request));
-    if (!receipt) receipt = { status: 'pending' };
+    if (!receipt) receipt = { schemaVersion: SCHEMA_VERSION, contractCode: 'C028', requestId, assetVersionId: delivery.assetVersionId, status: 'pending', scenarioContext: context };
+    if (externalReceipt) {
+      dataContracts.assertAllowedFields(receipt, dataContracts.C028_RECEIPT_FIELDS, 'C028_RECEIPT', {
+        required: ['schemaVersion', 'contractCode', 'requestId', 'assetVersionId', 'status', 'scenarioContext']
+      });
+      dataContracts.assertExactSchemaVersion(receipt.schemaVersion);
+      if (receipt.contractCode !== 'C028') fail(ERROR_CODES.CONTEXT_MISMATCH, 'C028 receipt contractCode mismatch');
+    }
     const allowed = new Set(['pending', 'queued', 'sent', 'accepted', 'rejected', 'unknown', 'not-sent-superseded']);
     if (!allowed.has(receipt.status)) fail(ERROR_CODES.INVALID_ARGUMENT, 'invalid C028 receipt status');
     if (['accepted', 'rejected', 'unknown'].includes(receipt.status) && !receipt.scenarioContext) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C028 receipt must echo C033 scenario context');
-    if (receipt.requestId && receipt.requestId !== requestId) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C028 receipt requestId mismatch');
-    if (receipt.assetVersionId && receipt.assetVersionId !== delivery.assetVersionId) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C028 receipt T007 mismatch');
+    if (receipt.requestId !== requestId) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C028 receipt requestId mismatch');
+    if (receipt.assetVersionId !== delivery.assetVersionId) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C028 receipt T007 mismatch');
     if (receipt.target) {
+      dataContracts.assertC032Candidate(receipt.target);
       const returnedTarget = receipt.target.t054Id || receipt.target.targetId || receipt.target.bindingId;
       const submittedTarget = target.t054Id || target.targetId || target.bindingId;
       if (returnedTarget !== submittedTarget || (receipt.target.bindingVersion || null) !== (target.bindingVersion || null)) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C028 receipt target mismatch');
     }
-    if (!receipt.scenarioContext && ['accepted', 'rejected', 'unknown'].includes(receipt.status)) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C028 receipt must echo C033 scenario context');
-    if (receipt.scenarioContext && !sameRunContext(receipt.scenarioContext, context)) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C028 receipt context mismatch');
-    const normalizedReceipt = immutable({ ...clone(receipt), contractCode: 'C028', requestId, deliveryId: delivery.deliveryId, assetVersionId: delivery.assetVersionId, scenarioContext: context, receivedAt: this._now(receipt.receivedAt) });
+    if (!receipt.scenarioContext) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C028 receipt must echo C033 scenario context');
+    const receiptContext = requireExactContext(context, receipt.scenarioContext, 'C028 receipt context mismatch');
+    const normalizedReceipt = immutable({ ...clone(receipt), contractCode: 'C028', requestId, deliveryId: delivery.deliveryId, assetVersionId: delivery.assetVersionId, scenarioContext: receiptContext, receivedAt: this._now(receipt.receivedAt) });
     const record = immutable({ request: immutable(request), receipt: normalizedReceipt });
     this.refreshRequests.set(requestId, record);
     this.events.set(requestId, normalizedReceipt);
@@ -1945,21 +1985,30 @@ class DataPipelineRuntime {
     const request = record.request;
     if (!['accepted', 'sent', 'queued'].includes(record.receipt.status)) fail(ERROR_CODES.DELIVERY_BLOCKED, 'C029 cannot enter the projection before a C028 request is accepted');
     const result = input.result || input;
+    dataContracts.assertAllowedFields(result, dataContracts.C029_RESULT_FIELDS, 'C029_RESULT', {
+      required: ['schemaVersion', 'contractCode', 'resultId', 'requestId', 'assetVersionId', 'status', 'scenarioContext']
+    });
+    dataContracts.assertExactSchemaVersion(result.schemaVersion);
+    if (result.contractCode !== 'C029') fail(ERROR_CODES.CONTEXT_MISMATCH, 'C029 result contractCode mismatch');
     const status = result.status;
     if (!['processing', 'succeeded', 'failed', 'incompatible', 'unknown'].includes(status)) fail(ERROR_CODES.INVALID_ARGUMENT, 'invalid C029 result status');
-    if (result.requestId && result.requestId !== requestId) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C029 request mismatch');
-    if (result.assetVersionId && result.assetVersionId !== request.assetVersionId) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C029 T007 mismatch');
+    if (result.requestId !== requestId) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C029 request mismatch');
+    if (result.assetVersionId !== request.assetVersionId) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C029 T007 mismatch');
     if (!result.scenarioContext) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C029 result must echo C033 scenario context');
     const context = validateContext(result.scenarioContext);
-    if (!sameRunContext(context, request.scenarioContext)) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C029 context mismatch');
+    requireExactContext(request.scenarioContext, context, 'C029 context mismatch');
     if (result.target) {
+      dataContracts.assertC032Candidate(result.target);
       const resultTargetId = result.target.t054Id || result.target.targetId || result.target.bindingId;
       const requestTargetId = request.target.t054Id || request.target.targetId || request.target.bindingId;
       if (resultTargetId !== requestTargetId || (result.target.bindingVersion || null) !== (request.target.bindingVersion || null)) {
         fail(ERROR_CODES.CONTEXT_MISMATCH, 'C029 target binding mismatch');
       }
     }
-    const resultId = nonEmpty(result.resultId || result.c029Id || this._id('C029', { requestId, status, context }), 'resultId');
+    dataContracts.assertT019Snapshot(result.t019Snapshot);
+    dataContracts.assertT018Qualification(result.t018Qualification);
+    dataContracts.assertEvidenceReferences(result.evidence, 'C029_EVIDENCE');
+    const resultId = nonEmpty(result.resultId, 'resultId');
     const normalized = immutable({
       schemaVersion: SCHEMA_VERSION,
       contractCode: 'C029',
@@ -2032,7 +2081,7 @@ class DataPipelineRuntime {
 
   _makeC017Summary(version, type, input = {}) {
     const context = validateContext(input.scenarioContext || version.scenarioContext);
-    if (!sameRunContext(context, version.scenarioContext)) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C017 summary context mismatch');
+    requireExactContext(version.scenarioContext, context, 'C017 summary context mismatch');
     const blockedFinding = [...this.postPublishFindings.values()].find((finding) => finding.assetVersionId === version.assetVersionId && finding.status === 'confirmed' && finding.hard === true);
     const qualityStatus = blockedFinding ? 'failed' : version.quality?.status || QUALITY_STATUS.UNKNOWN;
     const compatibilityLocked = version.compatibilityOnly === true || version.consumption?.compatibilityOnly === true;
@@ -2130,7 +2179,7 @@ class DataPipelineRuntime {
   readC017(input = {}) {
     const version = this.getAssetVersion(input.assetVersionId || input.t007Id);
     const context = requireActiveContext(input.scenarioContext || version.scenarioContext);
-    if (!sameRunContext(context, version.scenarioContext)) fail(ERROR_CODES.CONTEXT_MISMATCH, 'C017 read context mismatch');
+    requireExactContext(version.scenarioContext, context, 'C017 read context mismatch');
     const purpose = nonEmpty(input.purpose || input.consumer || 'metadata', 'C017 purpose');
     const readId = nonEmpty(input.readId || input.requestId || this._id('C017-READ', { purpose, assetVersionId: version.assetVersionId, context }), 'C017 readId');
     const request = { operation: 'C017-read', readId, purpose, assetVersionId: version.assetVersionId, scenarioContext: context };
@@ -2203,6 +2252,7 @@ function createDataRuntime(options) { return new DataPipelineRuntime(options); }
 
 module.exports = Object.freeze({
   SCHEMA_VERSION,
+  DATA_SPINE_CONTRACT_ID,
   RUNTIME_VERSION,
   STATUS,
   QUALITY_STATUS,
@@ -2222,5 +2272,6 @@ module.exports = Object.freeze({
   runQualityChecks,
   validateScenarioContext: validateContext,
   sameRunContext,
+  sameExactContext,
   sameScenarioDefinition
 });

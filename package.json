@@ -4,7 +4,7 @@
   "private": true,
   "description": "Dependency-free v1.1.x Foundation contracts and M02 data spine",
   "scripts": {
-    "test": "node --test packages/contracts/test/contracts.test.js packages/identity/index.test.cjs packages/checkpoint/index.test.cjs packages/foundation-contract.test.cjs services/data/data.test.cjs services/data/runtime.test.cjs services/data/contract.test.cjs services/data/idempotency.test.cjs",
-    "check": "node --check packages/contracts/index.js && node --check packages/contracts/validation.js && node --check packages/identity/index.js && node --check packages/checkpoint/index.js && node --check services/data/index.js && node --check services/data/contracts.js && node --check services/data/runtime.js && node --check services/data/clients.js"
+    "test": "node --test packages/contracts/test/contracts.test.js packages/identity/index.test.cjs packages/checkpoint/index.test.cjs packages/foundation-contract.test.cjs infra/runbook.test.cjs services/data/data.test.cjs services/data/runtime.test.cjs services/data/contract.test.cjs services/data/idempotency.test.cjs services/data/foundation-compat.test.cjs services/data/checkpoint.test.cjs",
+    "check": "node --check packages/contracts/index.js && node --check packages/contracts/validation.js && node --check packages/contracts/compatibility.js && node --check packages/identity/index.js && node --check packages/checkpoint/index.js && node --check services/data/index.js && node --check services/data/contracts.js && node --check services/data/runtime.js && node --check services/data/clients.js && node --check services/data/envelope.js && node --check services/data/checkpoint.js"
   }
 }
