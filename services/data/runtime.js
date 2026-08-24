@@ -2326,6 +2326,19 @@ class DataPipelineRuntime {
       status: 'ok',
       readAt: input.readAt || this._now()
     });
+    const qualityStatus = String(projection.quality?.status || '').toLowerCase();
+    const qualification = String(projection.dataSideQualification || '').toLowerCase();
+    const consumable = ['allowed', 'allowed-with-warning'].includes(qualification)
+      && !projection.quality?.hardFailure
+      && !['unknown', 'failed', 'hard-failed', 'hard-fail'].includes(qualityStatus);
+    const authoritativeRead = {
+      receiptId: readEvent.eventId,
+      owner: 'M02',
+      source: 'owner-api',
+      mode: 'authoritative-current-read',
+      readAt: readEvent.occurredAt,
+      static: false
+    };
     const payload = {
       schemaVersion: SCHEMA_VERSION,
       contractCode: 'C017',
@@ -2341,6 +2354,10 @@ class DataPipelineRuntime {
       currentSummary: summaries.currentState,
       projection,
       readEvent,
+      authoritativeRead,
+      readReceipt: authoritativeRead,
+      status: consumable ? 'ready' : (qualityStatus === 'unknown' ? 'unknown' : 'blocked'),
+      consumptionReadiness: { status: consumable ? 'ready' : 'blocked' },
       restricted: true
     };
     const stored = this._put(this.c017Reads, readId, payload);
