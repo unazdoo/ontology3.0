@@ -17,7 +17,9 @@ const foundation = require('./foundation-adapter');
 
 const SERVICE_VERSION = 'implementation-0.1.0';
 const STATE_SCHEMA_VERSION = 'ofw.m04.decision-state.v1';
-const REQUEST_SCHEMA_VERSION = 'ofw.m04.c011.action-request.v1';
+// C011 is owned and published by M03. M04 is a strict consumer of this
+// canonical provider schema and must not silently accept a local variant.
+const REQUEST_SCHEMA_VERSION = 'ofw.m03.c011.action-request.v1';
 const REMINDER_SCHEMA_VERSION = 'ofw.m04.c012.decision-reminder.v1';
 const CONFIRMATION_SCHEMA_VERSION = 'ofw.m04.c012.human-decision.v1';
 const TASK_SCHEMA_VERSION = 'ofw.m04.c013.owner-task.v1';
@@ -816,8 +818,8 @@ class DecisionService {
       : clone(input);
     const forbidden = hasForbiddenC017Copy(source, '$');
     if (forbidden.length) fail('C017_COPY_FORBIDDEN', 'Action Request must not carry a C017 projection copy', { paths: forbidden });
-    if (source.schemaVersion !== undefined && source.schemaVersion !== REQUEST_SCHEMA_VERSION) {
-      fail('REQUEST_SCHEMA_INCOMPATIBLE', 'C011 Action Request schema must match the exact registered M04 version', {
+    if (source.schemaVersion !== REQUEST_SCHEMA_VERSION) {
+      fail('REQUEST_SCHEMA_INCOMPATIBLE', 'C011 Action Request schema must match the exact M03 provider-owned version', {
         expected: REQUEST_SCHEMA_VERSION,
         actual: source.schemaVersion
       });

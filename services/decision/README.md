@@ -4,6 +4,10 @@ This service is the implementation boundary for M04: C011 Action Request
 receipt, C012 reminder and human decision, C013 owner task formation, C019
 read-only summaries, and the three C017 safety gates.
 
+C011 is a M03-owned provider contract. The only accepted Action Request schema
+is `ofw.m03.c011.action-request.v1`; M04-local or other legacy schema names are
+not compatibility aliases.
+
 ```js
 const { createDecisionService, GATES } = require('./index.js');
 
