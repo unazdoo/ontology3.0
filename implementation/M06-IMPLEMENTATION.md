@@ -63,6 +63,25 @@ not prove that M01/M02/M05 providers emit those envelopes or that M06 outbound
 C022/C024 requests are jointly accepted. Those exchanges remain for the next
 Provider/Consumer integration stage.
 
+## C024/C025 Official Adapter
+
+M06 now exposes `createReportCopilotRequest`, `requestReportCopilot`,
+`readReportCopilotResult` and `getReportCopilotReference`. C024 is built only
+from an exact published report/content version, evidence pack, selected T044
+snapshot, generation C017 reference, authorization result, purpose/question
+and Agent Release. The outbound request is a strict Foundation Envelope.
+
+The injected M05 port must implement `receiveReportCopilotRequest`,
+`runReportCopilot` and `readReportCopilotResult`, returning strict C024/C025
+Envelopes. M06 validates one C033 run and exact report/content/evidence,
+semantic/data/T008, anchor snapshot and Agent Release identities across the
+Binding, Session, Run and Result. It persists only stable M05 references and
+M06 handoff/readback receipts; no answer body or M05 state is copied.
+
+The contract fixture proves the M06 consumer path and idempotency behavior but
+is not M05 joint evidence. Real M05 receive/run/read receipts and negative
+cross-module runs remain required.
+
 Verification commands:
 
 ```text
@@ -71,6 +90,6 @@ npm test
 node --test designs/prototype-work/v1.1.0/scenarios/s004-runtime-v2.1.0/tests/baseline-module-runtime-m06.test.cjs
 ```
 
-The current package/service tests pass with 60 tests; the prototype regression suite
+The current package/service tests pass with 66 tests; the prototype regression suite
 passes 40 tests. Real deployment still requires wiring the M01, M02, M05 and
 platform authorization ports to their owning runtime APIs.

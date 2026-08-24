@@ -4,6 +4,7 @@ const { fail, ReportError } = require("./errors");
 const {
   assertObject,
   assertString,
+  assertArray,
   assertScenarioRun,
   immutableJson,
   stableSerialize,
@@ -36,7 +37,8 @@ const {
   buildC022Request,
   C023_SCHEMA_VERSION,
   acceptC023Draft,
-  createReviewArtifacts
+  createReviewArtifacts,
+  assertAllowedKeys
 } = require("./handoff");
 const {
   acceptM05Extraction,
@@ -51,11 +53,21 @@ const {
 } = require("./comparison");
 const { createFrozenReportRecord } = require("./render");
 const { isContractEnvelope, unwrapStrictContractEnvelope } = require("./boundary");
+const {
+  buildC024Envelope,
+  acceptC024ReceiptEnvelope,
+  observeC025ResourceChain,
+  acceptC025Envelope,
+  buildC025ReadEnvelope,
+  expectedC025Context
+} = require("./copilot");
 
 const SERVICE_SCHEMA_VERSION = "ofw.m06.report-service.v1";
 const GENERATION_INTENT_SCHEMA_VERSION = "ofw.m06.report-generation-intent.v1";
 const REVIEW_DECISION_SCHEMA_VERSION = "ofw.m06.report-review-decision.v1";
 const QUALITY_WARNING_SCHEMA_VERSION = "ofw.m06.report-quality-warning.v1";
+const C024_REQUEST_RECORD_SCHEMA_VERSION = "ofw.m06.c024-request-record.v1";
+const COPILOT_READBACK_SCHEMA_VERSION = "ofw.m06.c025-readback-record.v1";
 
 function requirePort(port, method, owner) {
   if (!port || typeof port[method] !== "function") fail("PORT_NOT_CONFIGURED", `${owner} port method ${method} is required`);
@@ -82,12 +94,14 @@ class ReportService {
     this.c008Provider = options.c008Provider;
     this.c017Provider = options.c017Provider;
     this.m05Port = options.m05Port;
+    this.m05CopilotPort = options.m05CopilotPort || options.m05Port;
     this.authorizationPort = options.authorizationPort;
     this.clock = options.clock;
     this.idFactory = options.idFactory;
     this.requireContractEnvelopes = options.requireContractEnvelopes === true;
     this.sequence = 0;
     this.pendingGenerations = new Map();
+    this.pendingCopilotRequests = new Map();
   }
 
   _now() {
@@ -391,6 +405,385 @@ class ReportService {
     const anchors = this.store.list("anchors", (anchor) => anchor.sourceDraftId === sourceDraft.sourceDraftId);
     const c022 = this.store.get("c022Requests", sourceDraft.requestId);
     return immutableJson({ c022, sourceDraft, reviewCopy, contentVersion, anchors });
+  }
+
+  _resolveReportCopilotRequest(input) {
+    assertObject(input, "report copilot request input");
+    assertAllowedKeys(input, [
+      "reportId", "reportNumber", "artifactVersion", "contentVersionId", "anchorIds", "selectionScope",
+      "purpose", "question", "c017Ref", "agentReleaseRef", "semanticEvidenceRefs",
+      "t049RunId", "comparisonRecordId", "requestedBy", "requestedAt", "correlationId", "traceId",
+      "requestId", "eventId"
+    ], "report copilot request input");
+    const reportId = assertString(input.reportId, "reportId");
+    const artifact = this.store.get("artifacts", reportId);
+    if (!artifact) fail("PUBLISHED_REPORT_NOT_FOUND", "official C024 requires an existing published report");
+    if (input.reportNumber && input.reportNumber !== artifact.reportNo) fail("REPORT_NUMBER_MISMATCH", "requested report number does not match the published artifact");
+    if (input.artifactVersion && input.artifactVersion !== artifact.artifactVersion) fail("ARTIFACT_VERSION_MISMATCH", "requested artifact version does not match the published artifact");
+    if (input.contentVersionId && input.contentVersionId !== artifact.contentVersionId) fail("CONTENT_VERSION_MISMATCH", "requested content version does not match the published artifact");
+    const contentVersion = this.store.get("contentVersions", artifact.contentVersionId);
+    if (!contentVersion) fail("CONTENT_VERSION_NOT_FOUND", "published content version was not found");
+    const evidencePack = this.store.get("evidencePacks", contentVersion.evidencePackRef.evidencePackId);
+    if (!evidencePack) fail("EVIDENCE_PACK_NOT_FOUND", "published report evidence pack was not found");
+    const anchorIds = assertArray(input.anchorIds, "anchorIds", { nonEmpty: true });
+    const uniqueAnchorIds = [...new Set(anchorIds.map((id) => assertString(id, "anchorId")))];
+    const anchors = uniqueAnchorIds.map((anchorId) => {
+      const anchor = this.store.get("anchors", anchorId);
+      if (!anchor) fail("T044_NOT_FOUND", `stable anchor ${anchorId} was not found`);
+      return anchor;
+    });
+    const t049 = input.t049RunId ? this.store.get("verificationRuns", input.t049RunId) : null;
+    if (input.t049RunId && !t049) fail("T049_NOT_FOUND", "specified T049 result was not found");
+    const comparison = input.comparisonRecordId ? this.store.get("comparisons", input.comparisonRecordId) : null;
+    if (input.comparisonRecordId && !comparison) fail("COMPARISON_NOT_FOUND", "specified C027 comparison was not found");
+    return {
+      artifact,
+      contentVersion,
+      evidencePack,
+      anchors,
+      c017Ref: input.c017Ref || evidencePack.generationBindingSummary,
+      agentReleaseRef: input.agentReleaseRef,
+      semanticEvidenceRefs: input.semanticEvidenceRefs || [],
+      t049,
+      comparison,
+      purpose: input.purpose,
+      question: input.question,
+      selectionScope: input.selectionScope,
+      requestedBy: input.requestedBy,
+      requestedAt: input.requestedAt || this._now(),
+      correlationId: input.correlationId,
+      traceId: input.traceId,
+      requestId: input.requestId,
+      eventId: input.eventId,
+      intentFingerprint: sha256({
+        reportId: artifact.reportId,
+        contentVersionId: contentVersion.contentVersionId,
+        evidencePackId: evidencePack.evidencePackId,
+        anchorIds: uniqueAnchorIds,
+        purpose: input.purpose,
+        question: input.question,
+        agentReleaseRef: input.agentReleaseRef,
+        t049RunId: input.t049RunId || null,
+        comparisonRecordId: input.comparisonRecordId || null,
+        requestedBy: input.requestedBy
+      }),
+      authorizationScopeRef: contentId("C024-AUTH-SCOPE", {
+        reportId: artifact.reportId,
+        contentVersionId: contentVersion.contentVersionId,
+        evidencePackId: evidencePack.evidencePackId,
+        anchorIds: uniqueAnchorIds,
+        purpose: input.purpose
+      })
+    };
+  }
+
+  async createReportCopilotRequest(input) {
+    const resolved = this._resolveReportCopilotRequest(input);
+    const priorById = input.requestId ? this.store.get("c024Requests", input.requestId) : null;
+    const priorByIntent = this.store.list("c024Requests", (record) => record.intentFingerprint === resolved.intentFingerprint)[0];
+    const priorIntent = priorById || priorByIntent;
+    if (priorIntent) {
+      if (priorIntent.intentFingerprint !== resolved.intentFingerprint) {
+        fail("C024_IDEMPOTENCY_CONFLICT", "C024 requestId already belongs to a different report copilot intent");
+      }
+      return immutableJson({
+        fixedReportContext: this.store.get("fixedReportContexts", priorIntent.fixedContextId),
+        request: priorIntent,
+        envelope: priorIntent.envelope
+      });
+    }
+    const authorize = requirePort(this.authorizationPort, "authorizeReportCopilotContext", "platform authorization");
+    const decision = await authorize(immutableJson({
+      scenarioContext: resolved.artifact.scenarioContext,
+      actorRef: resolved.requestedBy,
+      scopeRef: resolved.authorizationScopeRef,
+      reportId: resolved.artifact.reportId,
+      contentVersionId: resolved.contentVersion.contentVersionId,
+      evidencePackId: resolved.evidencePack.evidencePackId,
+      anchorIds: resolved.anchors.map((anchor) => anchor.t044Id),
+      purpose: resolved.purpose
+    }));
+    assertObject(decision, "report copilot authorization decision");
+    assertAllowedKeys(decision, [
+      "decisionId", "version", "status", "decidedAt", "scopeRef", "scenarioContext", "owner", "source"
+    ], "report copilot authorization decision");
+    assertScenarioRun(decision.scenarioContext, resolved.artifact.scenarioContext, "report copilot authorization scenarioContext");
+    if (decision.owner !== "platform" || decision.source !== "authorization-api"
+        || decision.scopeRef !== resolved.authorizationScopeRef || decision.status !== "allowed") {
+      fail("COPILOT_NOT_AUTHORIZED", "platform authorization did not allow the exact report copilot context", {
+        decisionId: decision.decisionId || null,
+        status: decision.status || null,
+        expectedScopeRef: resolved.authorizationScopeRef,
+        actualScopeRef: decision.scopeRef || null
+      });
+    }
+    const built = buildC024Envelope({
+      ...resolved,
+      authorizationRef: {
+        decisionId: decision.decisionId,
+        version: decision.version,
+        status: decision.status,
+        decidedAt: decision.decidedAt,
+        scopeRef: decision.scopeRef
+      }
+    });
+    const priorByBuiltId = this.store.get("c024Requests", built.payload.requestId);
+    const priorByIdempotency = this.store.list("c024Requests", (record) => record.idempotencyKey === built.envelope.idempotencyKey)[0];
+    const prior = priorByBuiltId || priorByIdempotency;
+    if (prior) {
+      if (prior.requestFingerprint !== built.payload.requestFingerprint) {
+        fail("C024_IDEMPOTENCY_CONFLICT", "C024 request identity already belongs to a different fixed report context or intent");
+      }
+      return immutableJson({
+        fixedReportContext: this.store.get("fixedReportContexts", prior.fixedContextId),
+        request: prior,
+        envelope: prior.envelope
+      });
+    }
+    const request = immutableJson({
+      schemaVersion: C024_REQUEST_RECORD_SCHEMA_VERSION,
+      contractId: "C024",
+      requestId: built.payload.requestId,
+      requestFingerprint: built.payload.requestFingerprint,
+      intentFingerprint: resolved.intentFingerprint,
+      idempotencyKey: built.envelope.idempotencyKey,
+      scenarioContext: built.payload.scenarioContext,
+      fixedContextId: built.fixedReportContext.fixedContextId,
+      fixedContextVersion: built.fixedReportContext.version,
+      reportRef: built.fixedReportContext.reportRef,
+      evidencePackRef: built.fixedReportContext.evidencePackRef,
+      anchorSnapshotRef: {
+        id: built.fixedReportContext.anchorSnapshot.anchorSnapshotId,
+        version: built.fixedReportContext.anchorSnapshot.version
+      },
+      agentReleaseRef: built.fixedReportContext.agentReleaseRef,
+      purpose: built.payload.selectionIntent.purpose,
+      requestedAt: built.payload.requestedAt,
+      requestedBy: built.payload.requestedBy,
+      envelope: built.envelope,
+      immutable: true
+    });
+    this.store.appendMany([
+      { collection: "fixedReportContexts", id: built.fixedReportContext.fixedContextId, record: built.fixedReportContext },
+      { collection: "c024Requests", id: request.requestId, record: request }
+    ], [{ namespace: "copilot", key: request.reportRef.reportId, value: { requestId: request.requestId, fixedContextId: request.fixedContextId } }]);
+    return immutableJson({ fixedReportContext: built.fixedReportContext, request, envelope: built.envelope });
+  }
+
+  async requestReportCopilot(input) {
+    const prepared = await this.createReportCopilotRequest(input);
+    const key = prepared.request.idempotencyKey;
+    if (this.pendingCopilotRequests.has(key)) return this.pendingCopilotRequests.get(key);
+    const pending = this._requestReportCopilot(prepared).finally(() => this.pendingCopilotRequests.delete(key));
+    this.pendingCopilotRequests.set(key, pending);
+    return pending;
+  }
+
+  async _requestReportCopilot(prepared) {
+    const existing = this.store.list("c025References", (reference) => reference.requestId === prepared.request.requestId)[0];
+    if (existing) return this._readReportCopilotReference(prepared, existing);
+    const received = this.store.list("c024Handoffs", (handoff) => handoff.requestId === prepared.request.requestId && handoff.status === "accepted")[0];
+    if (received) {
+      // A prior receive/run may have completed even if M06 lost the response.
+      // Read by the same idempotent request; never start a second M05 Run.
+      const observation = this.store.list("copilotReadbacks", (item) => item.requestId === prepared.request.requestId && item.stage === "run-observed")[0];
+      if (!observation) {
+        fail("C025_IDEMPOTENCY_CHAIN_UNKNOWN", "M06 cannot prove the original M05 resource chain; a retry may not start or accept another Run");
+      }
+      return this._readReportCopilotReference(prepared, observation);
+    }
+    const receive = requirePort(this.m05CopilotPort, "receiveReportCopilotRequest", "M05 report copilot");
+    const run = requirePort(this.m05CopilotPort, "runReportCopilot", "M05 report copilot");
+    let receiptEnvelope;
+    try {
+      receiptEnvelope = await receive(prepared.envelope);
+      if (!receiptEnvelope) fail("C024_RECEIPT_NOT_FOUND", "M05 did not return a strict C024 receipt");
+      const receipt = acceptC024ReceiptEnvelope(receiptEnvelope, {
+        requestId: prepared.request.requestId,
+        idempotencyKey: prepared.request.idempotencyKey,
+        scenarioContext: prepared.request.scenarioContext,
+        fixedContextId: prepared.request.fixedContextId,
+        fixedContextVersion: prepared.request.fixedContextVersion
+      });
+      const handoff = immutableJson({
+        handoffId: contentId("C024-HANDOFF", { requestId: receipt.requestId, receivedAt: receipt.receivedAt }),
+        requestId: receipt.requestId,
+        idempotencyKey: receipt.idempotencyKey,
+        scenarioContext: receipt.scenarioContext,
+        fixedContextRef: receipt.fixedContextRef,
+        status: "accepted",
+        receivedAt: receipt.receivedAt,
+        owner: "M05",
+        immutable: true
+      });
+      this.store.append("c024Handoffs", handoff.handoffId, handoff);
+    } catch (error) {
+      this._recordCopilotFailure(prepared.request, "receive", error);
+      throw error;
+    }
+    let runEnvelope;
+    try {
+      runEnvelope = await run(prepared.envelope, receiptEnvelope);
+      if (!runEnvelope) fail("C025_NOT_FOUND", "M05 did not return a strict C025 result after the Run");
+      const observation = observeC025ResourceChain(runEnvelope, expectedC025Context(prepared.envelope));
+      this._storeC025ChainObservation(prepared, observation, runEnvelope);
+      const acceptedRun = acceptC025Envelope(runEnvelope, expectedC025Context(prepared.envelope));
+      return this._readReportCopilotReference(prepared, {
+        ...acceptedRun.reference,
+        referenceFingerprint: acceptedRun.referenceFingerprint,
+        resourceChainFingerprint: acceptedRun.resourceChainFingerprint
+      });
+    } catch (error) {
+      this._recordCopilotFailure(prepared.request, "run", error);
+      throw error;
+    }
+  }
+
+  async _readReportCopilotReference(prepared, expectedReference) {
+    const read = requirePort(this.m05CopilotPort, "readReportCopilotResult", "M05 report copilot");
+    const readIdempotencyKey = `idem-v1:${sha256({
+      operation: "C025-read",
+      requestId: prepared.request.requestId,
+      resultId: expectedReference?.resultRef?.id || null
+    })}`;
+    const readEnvelope = buildC025ReadEnvelope({
+      requestId: prepared.request.requestId,
+      idempotencyKey: readIdempotencyKey,
+      sourceIdempotencyKey: prepared.request.idempotencyKey,
+      scenarioContext: prepared.request.scenarioContext,
+      fixedContextRef: { id: prepared.request.fixedContextId, version: prepared.request.fixedContextVersion },
+      bindingRef: expectedReference?.bindingRef || null,
+      sessionRef: expectedReference?.sessionRef || null,
+      runRef: expectedReference?.runRef || null,
+      resultRef: expectedReference?.resultRef || null,
+      requestedAt: this._now(),
+      actorRef: prepared.request.requestedBy,
+      correlationId: prepared.envelope.correlationId,
+      traceId: prepared.envelope.traceId
+    });
+    let resultEnvelope;
+    try {
+      resultEnvelope = await read(readEnvelope);
+      if (!resultEnvelope) fail("C025_NOT_FOUND", "M05 did not return the C025 result for the fixed request context");
+      const accepted = acceptC025Envelope(resultEnvelope, expectedC025Context(prepared.envelope));
+      if (expectedReference?.resourceChainFingerprint && accepted.resourceChainFingerprint !== expectedReference.resourceChainFingerprint) {
+        fail("C025_IDEMPOTENT_REFERENCE_MISMATCH", "M05 changed Binding/Session/Run/Result for an idempotent C024 request");
+      }
+      if (expectedReference?.referenceFingerprint && accepted.referenceFingerprint !== expectedReference.referenceFingerprint) {
+        fail("C025_IDEMPOTENT_REFERENCE_MISMATCH", "M05 changed Binding/Session/Run/Result for an idempotent C024 request");
+      }
+      return this._storeC025Reference(prepared, accepted, resultEnvelope);
+    } catch (error) {
+      this._recordCopilotFailure(prepared.request, "read", error);
+      throw error;
+    }
+  }
+
+  _storeC025Reference(prepared, accepted, resultEnvelope) {
+    const existing = this.store.list("c025References", (reference) => reference.requestId === prepared.request.requestId)[0];
+    if (existing && existing.referenceFingerprint !== accepted.referenceFingerprint) {
+      fail("C025_IDEMPOTENT_REFERENCE_MISMATCH", "M05 returned a different C025 resource chain for the same request");
+    }
+    const reference = existing || immutableJson({
+      ...accepted.reference,
+      referenceFingerprint: accepted.referenceFingerprint,
+      sourceEnvelopeRef: { eventId: resultEnvelope.eventId, eventType: resultEnvelope.eventType },
+      recordedAt: this._now()
+    });
+    const readback = immutableJson({
+      schemaVersion: COPILOT_READBACK_SCHEMA_VERSION,
+      readbackId: this._id("C025-READBACK", { requestId: reference.requestId, resultId: reference.resultRef.id }),
+      requestId: reference.requestId,
+      c025ReferenceId: reference.c025ReferenceId,
+      referenceFingerprint: reference.referenceFingerprint,
+      sourceEnvelopeRef: { eventId: resultEnvelope.eventId, eventType: resultEnvelope.eventType },
+      outcome: reference.outcome,
+      successful: reference.successful,
+      readAt: this._now(),
+      owner: "M06",
+      readOnly: true,
+      immutable: true
+    });
+    this.store.appendMany([
+      { collection: "c025References", id: reference.c025ReferenceId, record: reference },
+      { collection: "copilotReadbacks", id: readback.readbackId, record: readback }
+    ], [{ namespace: "copilot", key: reference.reportRef.reportId, value: { requestId: reference.requestId, c025ReferenceId: reference.c025ReferenceId } }]);
+    this._audit("c024-c025-readback", reference.requestId, {
+      bindingId: reference.bindingRef.id,
+      sessionId: reference.sessionRef.id,
+      runId: reference.runRef.id,
+      resultId: reference.resultRef.id,
+      outcome: reference.outcome
+    });
+    return reference;
+  }
+
+  _storeC025ChainObservation(prepared, observation, resultEnvelope) {
+    const existing = this.store.list("copilotReadbacks", (item) => item.requestId === prepared.request.requestId && item.stage === "run-observed")[0];
+    if (existing) {
+      if (existing.resourceChainFingerprint !== observation.resourceChainFingerprint) {
+        fail("C025_IDEMPOTENT_REFERENCE_MISMATCH", "M05 exposed a second resource chain for the same C024 request");
+      }
+      return existing;
+    }
+    const record = immutableJson({
+      schemaVersion: COPILOT_READBACK_SCHEMA_VERSION,
+      readbackId: this._id("C025-CHAIN", { requestId: prepared.request.requestId, fingerprint: observation.resourceChainFingerprint }),
+      requestId: prepared.request.requestId,
+      c025ReferenceId: null,
+      bindingRef: observation.bindingRef,
+      sessionRef: observation.sessionRef,
+      runRef: observation.runRef,
+      resultRef: observation.resultRef,
+      resourceChainFingerprint: observation.resourceChainFingerprint,
+      referenceFingerprint: null,
+      sourceEnvelopeRef: { eventId: resultEnvelope.eventId, eventType: resultEnvelope.eventType },
+      stage: "run-observed",
+      outcome: "observed",
+      successful: false,
+      readAt: this._now(),
+      owner: "M06",
+      readOnly: true,
+      immutable: true
+    });
+    this.store.append("copilotReadbacks", record.readbackId, record);
+    return record;
+  }
+
+  _recordCopilotFailure(request, stage, error) {
+    const readback = immutableJson({
+      schemaVersion: COPILOT_READBACK_SCHEMA_VERSION,
+      readbackId: this._id("C025-FAIL", { requestId: request.requestId, stage, code: error.code || "ERROR" }),
+      requestId: request.requestId,
+      c025ReferenceId: null,
+      referenceFingerprint: null,
+      sourceEnvelopeRef: null,
+      stage,
+      outcome: "failed",
+      successful: false,
+      error: { code: error.code || "M05_COPILOT_ERROR", message: error.message },
+      readAt: this._now(),
+      owner: "M06",
+      readOnly: true,
+      immutable: true
+    });
+    this.store.append("copilotReadbacks", readback.readbackId, readback);
+  }
+
+  async readReportCopilotResult(input) {
+    assertObject(input, "report copilot read input");
+    assertAllowedKeys(input, ["requestId"], "report copilot read input");
+    const request = this.store.get("c024Requests", assertString(input.requestId, "requestId"));
+    if (!request) fail("C024_REQUEST_NOT_FOUND", "C024 request was not found");
+    const fixedReportContext = this.store.get("fixedReportContexts", request.fixedContextId);
+    const prepared = immutableJson({ fixedReportContext, request, envelope: request.envelope });
+    const existing = this.store.list("c025References", (reference) => reference.requestId === request.requestId)[0] || null;
+    return this._readReportCopilotReference(prepared, existing);
+  }
+
+  getReportCopilotReference(requestId) {
+    const reference = this.store.list("c025References", (item) => item.requestId === requestId)[0];
+    return reference || null;
   }
 
   async verifyContent(input) {

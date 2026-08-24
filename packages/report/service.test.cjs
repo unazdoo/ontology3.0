@@ -267,9 +267,191 @@ function m05Fixture(clock) {
   };
 }
 
+function m05CopilotContractFixture(clock) {
+  const state = {
+    receiveCount: 0,
+    runCount: 0,
+    readCount: 0,
+    mode: "complete",
+    requests: new Map(),
+    results: new Map()
+  };
+
+  function strictEnvelope(eventType, payload, idempotencyKey, sequence) {
+    return report.createStrictContractEnvelope({
+      eventId: `EVT-M05-COPILOT-${sequence}`,
+      eventType,
+      occurredAt: clock(),
+      actorRef: "M05",
+      correlationId: `CORR-M05-COPILOT-${payload.requestId}`,
+      traceId: `TRACE-M05-COPILOT-${payload.requestId}`,
+      idempotencyKey,
+      scenarioContext: payload.scenarioContext,
+      resourceRefs: [],
+      evidenceRefs: [],
+      payload,
+      payloadSchemaVersion: payload.schemaVersion
+    });
+  }
+
+  function c025Payload(c024Envelope) {
+    const c024 = report.unwrapStrictContractEnvelope(c024Envelope, {
+      eventType: report.C024_EVENT_TYPE,
+      payloadSchemaVersion: report.C024_SCHEMA_VERSION
+    });
+    const context = c024.fixedReportContext;
+    const suffix = c024.requestId.slice(-12);
+    const bindingId = `BIND-COPILOT-${suffix}`;
+    const sessionId = `SESSION-COPILOT-${suffix}`;
+    const runId = `RUN-COPILOT-${suffix}`;
+    const resultId = `RESULT-COPILOT-${suffix}`;
+    const reportRef = context.reportRef;
+    const evidencePackRef = context.evidencePackRef;
+    const agentReleaseRef = context.agentReleaseRef;
+    const scenarioContext = context.scenarioContext;
+    const anchorSnapshotRef = { id: context.anchorSnapshot.anchorSnapshotId, version: context.anchorSnapshot.version };
+    const firstAnchor = context.anchorSnapshot.anchors[0];
+    const evidenceRef = firstAnchor.evidenceRefs[0] || context.allowedEvidenceRefs[0];
+    const payload = {
+      schemaVersion: report.C025_SCHEMA_VERSION,
+      contractId: "C025",
+      requestId: c024.requestId,
+      idempotencyKey: c024Envelope.idempotencyKey,
+      scenarioContext,
+      fixedContextRef: { id: context.fixedContextId, version: context.version },
+      reportRef,
+      evidencePackRef,
+      anchorSnapshotRef,
+      agentReleaseRef,
+      exactCombination: context.exactCombination,
+      c017Ref: context.c017Ref,
+      deterministicResultRef: context.deterministicResultRef,
+      binding: {
+        bindingId,
+        bindingVersion: "1.0.0",
+        status: "active",
+        scenarioContext,
+        fixedContextRef: { id: context.fixedContextId, version: context.version },
+        reportRef,
+        evidencePackRef,
+        anchorSnapshotRef,
+        agentReleaseRef,
+        authorizationRef: context.authorizationRef,
+        exactCombination: context.exactCombination,
+        c017Ref: context.c017Ref,
+        deterministicResultRef: context.deterministicResultRef
+      },
+      session: {
+        sessionId,
+        sessionVersion: "1.0.0",
+        status: "active",
+        scenarioContext,
+        bindingId,
+        bindingVersion: "1.0.0",
+        reportRef,
+        agentReleaseRef,
+        exactCombination: context.exactCombination
+      },
+      run: {
+        runId,
+        runVersion: "1.0.0",
+        status: "complete",
+        attempt: 1,
+        scenarioContext,
+        requestId: c024.requestId,
+        sessionId,
+        bindingId,
+        agentReleaseRef,
+        reportRef,
+        evidencePackRef,
+        exactCombination: context.exactCombination,
+        startedAt: clock(),
+        completedAt: clock()
+      },
+      result: {
+        resultId,
+        resultVersion: "1.0.0",
+        status: "complete",
+        type: c024.selectionIntent.purpose === "report-question" ? "report-copilot-answer" : "report-copilot-explanation",
+        scenarioContext,
+        runId,
+        sessionId,
+        bindingId,
+        agentReleaseRef,
+        reportRef,
+        evidencePackRef,
+        exactCombination: context.exactCombination,
+        deterministicResultRef: context.deterministicResultRef,
+        anchorRefs: [firstAnchor.t044Id],
+        evidenceRefs: [evidenceRef],
+        generatedAt: clock(),
+        limitations: "Fixed report evidence only; no report, T049 or C027 mutation."
+      },
+      formedAt: clock(),
+      owner: "M05"
+    };
+    if (state.mode === "content-mismatch") payload.reportRef = { ...reportRef, contentVersionId: "CV-OTHER" };
+    if (state.mode === "evidence-mismatch") payload.evidencePackRef = { ...evidencePackRef, evidencePackId: "EP-OTHER" };
+    if (state.mode === "agent-mismatch") payload.agentReleaseRef = { ...agentReleaseRef, version: "other" };
+    if (state.mode === "data-mismatch") payload.exactCombination = { ...context.exactCombination, dataVersionId: "DATA-OTHER" };
+    if (state.mode === "scenario-mismatch") payload.scenarioContext = { ...scenarioContext, scenarioRunId: "S001-RUN-20260824235959000-other" };
+    if (state.mode === "unknown-status") payload.result.status = "mystery";
+    if (state.mode === "unknown-field") payload.futureField = true;
+    return payload;
+  }
+
+  return {
+    state,
+    port: {
+      receiveReportCopilotRequest(c024Envelope) {
+        state.receiveCount += 1;
+        const c024 = report.unwrapStrictContractEnvelope(c024Envelope, {
+          eventType: report.C024_EVENT_TYPE,
+          payloadSchemaVersion: report.C024_SCHEMA_VERSION
+        });
+        state.requests.set(c024.requestId, c024Envelope);
+        const payload = {
+          schemaVersion: report.C024_RECEIPT_SCHEMA_VERSION,
+          contractId: "C024",
+          requestId: c024.requestId,
+          idempotencyKey: c024Envelope.idempotencyKey,
+          scenarioContext: c024.scenarioContext,
+          fixedContextRef: { id: c024.fixedReportContext.fixedContextId, version: c024.fixedReportContext.version },
+          status: "accepted",
+          receivedAt: clock(),
+          owner: "M05"
+        };
+        return strictEnvelope(report.C024_RECEIPT_EVENT_TYPE, payload, c024Envelope.idempotencyKey, `RECEIVE-${state.receiveCount}`);
+      },
+      runReportCopilot(c024Envelope) {
+        state.runCount += 1;
+        const c024 = report.unwrapStrictContractEnvelope(c024Envelope, {
+          eventType: report.C024_EVENT_TYPE,
+          payloadSchemaVersion: report.C024_SCHEMA_VERSION
+        });
+        const payload = c025Payload(c024Envelope);
+        const result = strictEnvelope(report.C025_EVENT_TYPE, payload, c024Envelope.idempotencyKey, `RUN-${state.runCount}`);
+        state.results.set(c024.requestId, result);
+        return result;
+      },
+      readReportCopilotResult(readEnvelope) {
+        state.readCount += 1;
+        const read = report.unwrapStrictContractEnvelope(readEnvelope, {
+          eventType: report.C025_READ_EVENT_TYPE,
+          payloadSchemaVersion: report.C025_READ_SCHEMA_VERSION
+        });
+        if (state.mode === "read-missing") return null;
+        return state.results.get(read.requestId) || null;
+      }
+    }
+  };
+}
+
 function authorizationFixture(clock) {
   let calls = 0;
+  const state = { copilotStatus: "allowed", copilotScopeMode: "exact", copilotCalls: 0 };
   return {
+    state,
     authorizeReportComparison(request) {
       calls += 1;
       return {
@@ -280,6 +462,19 @@ function authorizationFixture(clock) {
         decidedAt: clock(),
         allowed: true,
         deniedFactIds: []
+      };
+    },
+    authorizeReportCopilotContext(request) {
+      state.copilotCalls += 1;
+      return {
+        decisionId: `AUTH-C024-${state.copilotCalls}`,
+        version: "1.0.0",
+        status: state.copilotStatus,
+        decidedAt: clock(),
+        scopeRef: state.copilotScopeMode === "exact" ? request.scopeRef : "wrong-scope",
+        scenarioContext: request.scenarioContext,
+        owner: "platform",
+        source: "authorization-api"
       };
     }
   };
@@ -323,6 +518,53 @@ async function generate(harness, overrides = {}) {
     collectEvidence: async () => evidenceItems(),
     ...overrides
   });
+}
+
+async function publishForCopilot(harness, reportId) {
+  const generated = await generate(harness, { requestId: `RGEN-${reportId}` });
+  const t049 = await harness.service.verifyContent({
+    contentVersionId: generated.contentVersion.contentVersionId,
+    verificationRunId: `T049-${reportId}`,
+    initiatedBy: "reviewer-001"
+  });
+  const decision = await harness.service.confirmReview({
+    contentVersionId: generated.contentVersion.contentVersionId,
+    reviewCopyId: generated.reviewCopy.reviewCopyId,
+    verificationRunId: t049.verificationRunId,
+    reviewer: "reviewer-001",
+    conclusion: "confirmed for copilot contract test"
+  });
+  const artifact = await harness.service.publishReport({
+    reportId,
+    reportNo: `${reportId}-NO`,
+    artifactVersion: "1.0.0",
+    contentVersionId: generated.contentVersion.contentVersionId,
+    verificationRunId: t049.verificationRunId,
+    reviewDecisionId: decision.reviewDecisionId,
+    publishedBy: "publisher-001"
+  });
+  return { generated, t049, decision, artifact };
+}
+
+function copilotInput(published, overrides = {}) {
+  return {
+    reportId: published.artifact.reportId,
+    reportNumber: published.artifact.reportNo,
+    artifactVersion: published.artifact.artifactVersion,
+    contentVersionId: published.generated.contentVersion.contentVersionId,
+    anchorIds: published.generated.anchors.map((anchor) => anchor.t044Id),
+    selectionScope: "whole-report",
+    purpose: "report-question",
+    question: "请解释本报告的固定证据与人工判断边界。",
+    c017Ref: published.generated.c022.evidencePack.generationBindingSummary,
+    agentReleaseRef: { agentId: "report-copilot", version: "2.0.0" },
+    semanticEvidenceRefs: [],
+    requestedBy: "reader-001",
+    requestedAt: "2026-08-24T09:31:00.000Z",
+    correlationId: "CORR-C024-001",
+    traceId: "TRACE-C024-001",
+    ...overrides
+  };
 }
 
 test("generation performs three fresh C008/C017 reads and a real C022/C023 handoff before M06 forms T044", async () => {
@@ -508,6 +750,210 @@ test("post-publication hard quality failure only appends a warning to the old re
   assert.equal(harness.store.list("evidencePacks").length, evidenceCount);
   assert.equal(harness.m05.state.submitCount, submitCount);
   assert.equal(harness.service.getPublishedReport(artifact.reportId).warnings.length, 1);
+});
+
+test("official C024/C025 adapter performs strict receive/run/read and retries by read only", async () => {
+  const harness = buildHarness();
+  const copilot = m05CopilotContractFixture(harness.clock);
+  harness.service.m05CopilotPort = copilot.port;
+  const published = await publishForCopilot(harness, "RPT-S001-COPILOT-001");
+  const comparison = await harness.service.compareWithCurrent({
+    contentVersionId: published.generated.contentVersion.contentVersionId,
+    initiatedBy: "reader-001",
+    explicitUserAction: true,
+    comparisonRunId: "C027-COPILOT-UNCHANGED"
+  });
+  const reportHash = report.reportUtils.sha256(harness.store.get("artifacts", published.artifact.reportId));
+  const t049Hash = report.reportUtils.sha256(harness.store.get("verificationRuns", published.t049.verificationRunId));
+  const comparisonHash = report.reportUtils.sha256(harness.store.get("comparisons", comparison.comparisonRecordId));
+  const input = copilotInput(published);
+  const created = await harness.service.createReportCopilotRequest(input);
+  assert.equal(created.envelope.schemaVersion, report.FOUNDATION_CONTRACT_VERSION);
+  assert.equal(created.envelope.eventType, report.C024_EVENT_TYPE);
+  assert.equal(created.fixedReportContext.reportRef.reportNumber, published.artifact.reportNo);
+  assert.equal(created.fixedReportContext.evidencePackRef.evidencePackId, published.generated.c022.evidencePack.evidencePackId);
+  assert.equal(created.fixedReportContext.anchorSnapshot.anchors.length, published.generated.anchors.length);
+
+  const first = await harness.service.requestReportCopilot(input);
+  assert.equal(first.successful, true);
+  assert.equal(first.outcome, "complete");
+  assert.equal(first.agentReleaseRef.version, "2.0.0");
+  assert.equal(Object.hasOwn(first, "answer"), false);
+  assert.equal(copilot.state.receiveCount, 1);
+  assert.equal(copilot.state.runCount, 1);
+  assert.equal(copilot.state.readCount, 1);
+
+  const retry = await harness.service.requestReportCopilot(input);
+  assert.equal(retry.c025ReferenceId, first.c025ReferenceId);
+  assert.equal(retry.bindingRef.id, first.bindingRef.id);
+  assert.equal(retry.sessionRef.id, first.sessionRef.id);
+  assert.equal(retry.runRef.id, first.runRef.id);
+  assert.equal(retry.resultRef.id, first.resultRef.id);
+  assert.equal(copilot.state.receiveCount, 1);
+  assert.equal(copilot.state.runCount, 1);
+  assert.equal(copilot.state.readCount, 2);
+  assert.equal(harness.service.authorizationPort.state.copilotCalls, 1);
+  assert.equal(harness.store.list("c025References").length, 1);
+  assert.equal(harness.store.list("copilotReadbacks").filter((item) => item.successful).length, 2);
+  const checkpointProvider = report.createM06CheckpointProvider({ store: harness.store, clock: harness.clock });
+  const checkpointExport = checkpointProvider.export({ scenarioContext: CONTEXT, checkpointId: "CP-M06-COPILOT-001" });
+  assert.equal(checkpointExport.moduleExport.recordCounts.fixedReportContexts, 1);
+  assert.equal(checkpointExport.moduleExport.recordCounts.c024Requests, 1);
+  assert.equal(checkpointExport.moduleExport.recordCounts.c024Handoffs, 1);
+  assert.equal(checkpointExport.moduleExport.recordCounts.c025References, 1);
+  assert.equal(checkpointExport.moduleExport.recordCounts.copilotReadbacks, 3);
+
+  assert.equal(report.reportUtils.sha256(harness.store.get("artifacts", published.artifact.reportId)), reportHash);
+  assert.equal(report.reportUtils.sha256(harness.store.get("verificationRuns", published.t049.verificationRunId)), t049Hash);
+  assert.equal(report.reportUtils.sha256(harness.store.get("comparisons", comparison.comparisonRecordId)), comparisonHash);
+});
+
+test("official C024 authorization comes from the platform port and rejects forged, denied or wrong-scope decisions", async () => {
+  const harness = buildHarness();
+  const published = await publishForCopilot(harness, "RPT-S001-COPILOT-AUTH");
+  const input = copilotInput(published, { requestId: "C024-AUTH" });
+  await assert.rejects(
+    () => harness.service.createReportCopilotRequest({
+      ...input,
+      authorizationRef: {
+        decisionId: "FORGED",
+        version: "1.0.0",
+        status: "allowed",
+        decidedAt: "2026-08-24T09:31:00.000Z",
+        scopeRef: "forged"
+      }
+    }),
+    (error) => error.code === "UNKNOWN_CONTRACT_FIELD"
+  );
+
+  harness.service.authorizationPort.state.copilotStatus = "denied";
+  await assert.rejects(
+    () => harness.service.createReportCopilotRequest(input),
+    (error) => error.code === "COPILOT_NOT_AUTHORIZED"
+  );
+  harness.service.authorizationPort.state.copilotStatus = "allowed";
+  harness.service.authorizationPort.state.copilotScopeMode = "wrong";
+  await assert.rejects(
+    () => harness.service.createReportCopilotRequest(input),
+    (error) => error.code === "COPILOT_NOT_AUTHORIZED"
+  );
+  assert.equal(harness.store.list("c024Requests").length, 0);
+});
+
+test("official C024 fixes a completed T049 explanation context without changing T049", async () => {
+  const harness = buildHarness();
+  const copilot = m05CopilotContractFixture(harness.clock);
+  harness.service.m05CopilotPort = copilot.port;
+  const published = await publishForCopilot(harness, "RPT-S001-COPILOT-T049");
+  const t049Hash = report.reportUtils.sha256(published.t049);
+  const input = copilotInput(published, {
+    requestId: "C024-T049-EXPLANATION",
+    purpose: "t049-explanation",
+    t049RunId: published.t049.verificationRunId,
+    question: "请解释指定 T049 的失败、警告与人工处理边界。",
+    correlationId: "CORR-C024-T049",
+    traceId: "TRACE-C024-T049"
+  });
+  const created = await harness.service.createReportCopilotRequest(input);
+  assert.equal(created.fixedReportContext.deterministicResultRef.type, "T049");
+  assert.equal(created.fixedReportContext.deterministicResultRef.id, published.t049.verificationRunId);
+  const reference = await harness.service.requestReportCopilot(input);
+  assert.equal(reference.resultRef.type, "report-copilot-explanation");
+  assert.equal(report.reportUtils.sha256(harness.store.get("verificationRuns", published.t049.verificationRunId)), t049Hash);
+});
+
+test("C025 report, evidence, Agent Release, data and scenario mismatches never become successful references", async () => {
+  for (const mode of ["content-mismatch", "evidence-mismatch", "agent-mismatch", "data-mismatch", "scenario-mismatch"]) {
+    const harness = buildHarness();
+    const copilot = m05CopilotContractFixture(harness.clock);
+    copilot.state.mode = mode;
+    harness.service.m05CopilotPort = copilot.port;
+    const published = await publishForCopilot(harness, `RPT-S001-COPILOT-${mode.toUpperCase()}`);
+    const reportHash = report.reportUtils.sha256(published.artifact);
+    await assert.rejects(
+      () => harness.service.requestReportCopilot(copilotInput(published, {
+        requestId: `C024-${mode}`,
+        correlationId: `CORR-${mode}`,
+        traceId: `TRACE-${mode}`
+      })),
+      (error) => ["C025_CONTEXT_MISMATCH", "C025_AGENT_RELEASE_MISMATCH", "SCENARIO_CONTEXT_MISMATCH"].includes(error.code)
+    );
+    assert.equal(harness.store.list("c025References").length, 0);
+    assert.equal(harness.store.list("copilotReadbacks").some((item) => item.successful), false);
+    assert.equal(report.reportUtils.sha256(harness.store.get("artifacts", published.artifact.reportId)), reportHash);
+  }
+});
+
+test("unknown or missing C025 result fails closed and retry does not start a second M05 Run", async () => {
+  for (const mode of ["unknown-status", "unknown-field", "read-missing"]) {
+    const harness = buildHarness();
+    const copilot = m05CopilotContractFixture(harness.clock);
+    copilot.state.mode = mode;
+    harness.service.m05CopilotPort = copilot.port;
+    const published = await publishForCopilot(harness, `RPT-S001-COPILOT-${mode.toUpperCase()}`);
+    const input = copilotInput(published, {
+      requestId: `C024-${mode}`,
+      correlationId: `CORR-${mode}`,
+      traceId: `TRACE-${mode}`
+    });
+    await assert.rejects(
+      () => harness.service.requestReportCopilot(input),
+      (error) => ["C025_STATUS_UNKNOWN", "UNKNOWN_CONTRACT_FIELD", "C025_NOT_FOUND"].includes(error.code)
+    );
+    assert.equal(copilot.state.receiveCount, 1);
+    assert.equal(copilot.state.runCount, 1);
+    assert.equal(harness.store.list("c025References").length, 0);
+    await assert.rejects(
+      () => harness.service.requestReportCopilot(input),
+      (error) => ["C025_STATUS_UNKNOWN", "UNKNOWN_CONTRACT_FIELD", "C025_NOT_FOUND"].includes(error.code)
+    );
+    assert.equal(copilot.state.receiveCount, 1);
+    assert.equal(copilot.state.runCount, 1);
+    assert.equal(copilot.state.readCount, mode === "read-missing" ? 2 : 1);
+  }
+});
+
+test("a rejected first C025 still pins the observed resource chain before any retry read", async () => {
+  const harness = buildHarness();
+  const copilot = m05CopilotContractFixture(harness.clock);
+  copilot.state.mode = "unknown-status";
+  harness.service.m05CopilotPort = copilot.port;
+  const published = await publishForCopilot(harness, "RPT-S001-COPILOT-CHAIN");
+  const input = copilotInput(published, {
+    requestId: "C024-CHAIN-PIN",
+    correlationId: "CORR-CHAIN-PIN",
+    traceId: "TRACE-CHAIN-PIN"
+  });
+  await assert.rejects(
+    () => harness.service.requestReportCopilot(input),
+    (error) => error.code === "C025_STATUS_UNKNOWN"
+  );
+  const observation = harness.store.list("copilotReadbacks", (item) => item.stage === "run-observed")[0];
+  assert.ok(observation.resourceChainFingerprint);
+
+  const changed = jsonClone(copilot.state.results.get(input.requestId));
+  changed.payload.result.status = "complete";
+  changed.payload.binding.bindingId = "BIND-SECOND";
+  changed.payload.session.bindingId = "BIND-SECOND";
+  changed.payload.session.sessionId = "SESSION-SECOND";
+  changed.payload.run.bindingId = "BIND-SECOND";
+  changed.payload.run.sessionId = "SESSION-SECOND";
+  changed.payload.run.runId = "RUN-SECOND";
+  changed.payload.result.bindingId = "BIND-SECOND";
+  changed.payload.result.sessionId = "SESSION-SECOND";
+  changed.payload.result.runId = "RUN-SECOND";
+  changed.payload.result.resultId = "RESULT-SECOND";
+  copilot.state.results.set(input.requestId, changed);
+  copilot.state.mode = "complete";
+
+  await assert.rejects(
+    () => harness.service.requestReportCopilot(input),
+    (error) => error.code === "C025_IDEMPOTENT_REFERENCE_MISMATCH"
+  );
+  assert.equal(copilot.state.receiveCount, 1);
+  assert.equal(copilot.state.runCount, 1);
+  assert.equal(copilot.state.readCount, 1);
+  assert.equal(harness.store.list("c025References").length, 0);
 });
 
 test("C034 exports report/evidence/T049/C027 state and clone restore creates a new read-only run", async () => {

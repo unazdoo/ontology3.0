@@ -91,6 +91,11 @@ function reportResourceType(kind) {
     case "dashboardDefinitions": return "dashboard-definition";
     case "c022Requests": return "report-generation-request";
     case "c023Receipts": return "agent-report-draft-receipt";
+    case "fixedReportContexts": return "fixed-report-context";
+    case "c024Requests": return "report-copilot-request";
+    case "c024Handoffs": return "report-copilot-handoff";
+    case "c025References": return "report-copilot-result-reference";
+    case "copilotReadbacks": return "report-copilot-readback";
     case "anchors": return "stable-report-anchor";
     case "qualityWarnings": return "report-quality-warning";
     case "artifacts": return "published-report-artifact";
@@ -106,9 +111,9 @@ function reportResourceType(kind) {
 
 function buildResourceSummaries(runtimeState) {
   const resources = [];
-  ["reportDefinitions", "reportTemplates", "fixedViews", "dashboardDefinitions", "c022Requests", "c023Receipts", "anchors", "qualityWarnings", "artifacts"].forEach((collection) => {
+  ["reportDefinitions", "reportTemplates", "fixedViews", "dashboardDefinitions", "c022Requests", "c023Receipts", "fixedReportContexts", "c024Requests", "c024Handoffs", "c025References", "copilotReadbacks", "anchors", "qualityWarnings", "artifacts"].forEach((collection) => {
     ensureArray(runtimeState[collection]).forEach((item, index) => {
-      const resourceId = item.reportDefinitionId || item.templateId || item.snapshotId || item.dashboardId || item.requestId || item.receiptId || item.t044Id || item.warningId || item.reportId || item.id || `${collection}-${index + 1}`;
+      const resourceId = item.reportDefinitionId || item.templateId || item.snapshotId || item.dashboardId || item.fixedContextId || item.requestId || item.handoffId || item.c025ReferenceId || item.readbackId || item.receiptId || item.t044Id || item.warningId || item.reportId || item.id || `${collection}-${index + 1}`;
       resources.push({
         resourceId,
         resourceType: reportResourceType(collection),
