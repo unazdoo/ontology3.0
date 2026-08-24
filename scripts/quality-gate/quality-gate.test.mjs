@@ -128,12 +128,37 @@ test("SBOM generator emits a verifiable SPDX document", () => {
   const temp = fs.mkdtempSync(path.join(os.tmpdir(), "implementation-sbom-"));
   try {
     fs.writeFileSync(path.join(temp, "package.json"), JSON.stringify({ name: "fixture-package", version: "1.2.3", dependencies: { "example-dependency": "^1.0.0" } }), "utf8");
+    const components = [
+      ["foundation", ["packages/contracts"]], ["m01", ["services/ontology"]], ["m02", ["services/data"]],
+      ["m03", ["services/query"]], ["m04", ["services/decision"]], ["m05", ["packages/m05"]],
+      ["m06", ["packages/report"]], ["integration-contract-tests", ["tests/integration"]], ["quality-gates", ["quality-gates", "scripts/quality-gate"]]
+    ];
+    for (const [, paths] of components) for (const componentPath of paths) {
+      const directory = path.join(temp, componentPath);
+      fs.mkdirSync(directory, { recursive: true });
+      fs.writeFileSync(path.join(directory, "source.js"), `// ${componentPath}\n`, "utf8");
+    }
+    fs.writeFileSync(path.join(temp, "quality-gates", "component-inventory.json"), JSON.stringify({ schemaVersion: "implementation-component-inventory.v1", components: components.map(([id, paths]) => ({ id, name: id, version: "1.0.0", paths })) }), "utf8");
     const output = path.join(temp, "sbom.json");
     const generated = spawnSync(process.execPath, [sbomScript, "--root", temp, "--output", "sbom.json"], { encoding: "utf8" });
     assert.equal(generated.status, 0, generated.stderr);
-    const verified = spawnSync(process.execPath, [verifySbomScript, "--sbom", output, "--package", path.join(temp, "package.json")], { encoding: "utf8" });
+    const verified = spawnSync(process.execPath, [verifySbomScript, "--root", temp, "--sbom", output, "--package", path.join(temp, "package.json")], { encoding: "utf8" });
     assert.equal(verified.status, 0, verified.stderr);
-    assert.ok(JSON.parse(fs.readFileSync(output, "utf8")).packages.length >= 2);
+    assert.ok(JSON.parse(fs.readFileSync(output, "utf8")).packages.length >= 11);
+  } finally {
+    fs.rmSync(temp, { recursive: true, force: true });
+  }
+});
+
+test("SBOM component inventory fails closed for duplicate paths and missing source directories", () => {
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), "implementation-sbom-invalid-"));
+  try {
+    fs.writeFileSync(path.join(temp, "package.json"), JSON.stringify({ name: "fixture-package", version: "1.2.3" }), "utf8");
+    fs.mkdirSync(path.join(temp, "quality-gates"), { recursive: true });
+    fs.writeFileSync(path.join(temp, "quality-gates", "component-inventory.json"), JSON.stringify({ schemaVersion: "implementation-component-inventory.v1", components: [{ id: "one", name: "one", version: "1", paths: ["missing"] }, { id: "two", name: "two", version: "1", paths: ["missing"] }] }), "utf8");
+    const failure = spawnSync(process.execPath, [sbomScript, "--root", temp, "--output", "sbom.json"], { encoding: "utf8" });
+    assert.notEqual(failure.status, 0);
+    assert.match(`${failure.stdout}\n${failure.stderr}`, /component path does not exist|duplicate component path/i);
   } finally {
     fs.rmSync(temp, { recursive: true, force: true });
   }
