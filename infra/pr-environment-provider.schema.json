@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontology3.example/contracts/pr-environment-provider.v1.json",
+  "title": "PR environment provider receipt",
+  "type": "object",
+  "required": ["schemaVersion", "environmentId", "resources", "credentialLease", "provisionedAt", "expiresAt", "cleanupPlan"],
+  "properties": {
+    "schemaVersion": { "const": "implementation-pr-environment-provider.v1" },
+    "environmentId": { "type": "string", "pattern": "^pr-[1-9][0-9]*-[a-f0-9]{12}$" },
+    "resources": {
+      "type": "object",
+      "required": ["databaseSchema", "objectStoragePrefix", "queueNamespace"],
+      "properties": {
+        "databaseSchema": { "type": "string", "minLength": 1 },
+        "objectStoragePrefix": { "type": "string", "minLength": 1 },
+        "queueNamespace": { "type": "string", "minLength": 1 }
+      }
+    },
+    "credentialLease": {
+      "type": "object",
+      "required": ["reference", "mode", "expiresAt"],
+      "properties": {
+        "reference": { "type": "string", "minLength": 1 },
+        "mode": { "const": "short-lived-least-privilege" },
+        "expiresAt": { "type": "string", "minLength": 1 }
+      }
+    },
+    "provisionedAt": { "type": "string", "minLength": 1 },
+    "expiresAt": { "type": "string", "minLength": 1 },
+    "cleanupPlan": { "type": "string", "minLength": 1 }
+  }
+}

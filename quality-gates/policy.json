@@ -1,0 +1,58 @@
+{
+  "gateVersion": "implementation-quality-gate.v1",
+  "policyVersion": "implementation-quality-gate.v1",
+  "branch": "codex/implementation-quality-release",
+  "baseline": {
+    "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+    "sourceTag": "prototype-v1.1.0-frozen",
+    "sourceVersion": "v1.1.0",
+    "rollbackVersion": "1.0.3"
+  },
+  "schema": {
+    "requiredVersion": "draft-0.1.0",
+    "versionPattern": "^(draft-[0-9]+\\.[0-9]+\\.[0-9]+|v?[0-9]+\\.[0-9]+\\.[0-9]+)$",
+    "compatibilityStatuses": ["exact", "compatible", "approved-additive", "review"]
+  },
+  "firstVerticalSlice": {
+    "scenarioId": "S001",
+    "order": ["M02", "M01", "M03", "M04", "M06", "M05", "M06"],
+    "requiredCandidateGates": ["s001VerticalSlice", "security", "recovery"]
+  },
+  "requiredChecks": [
+    "goldenData",
+    "contractCompatibility",
+    "e2e",
+    "permissionNegative",
+    "concurrencyIdempotency",
+    "performance",
+    "accessibility",
+    "security",
+    "sbom",
+    "observability",
+    "c034Recovery",
+    "migration",
+    "rollback",
+    "ciCd"
+  ],
+  "nonWaivable": [
+    "baselineSnapshotId",
+    "schemaVersion",
+    "owner",
+    "prEnvironment",
+    "permissionNegative",
+    "security",
+    "c034Recovery",
+    "rollback",
+    "audit"
+  ],
+  "environment": {
+    "idPattern": "^pr-[1-9][0-9]*-[a-f0-9]{7,40}$",
+    "resourcePattern": "must contain the PR environment isolation token",
+    "forbiddenWords": ["prod", "production", "shared", "default", "main"],
+    "credentialPolicy": "short-lived-reference-only"
+  },
+  "evidenceRetention": {
+    "minimumDays": 90,
+    "mustInclude": ["commitSha", "environmentId", "realRunIds", "auditReceipt", "recoveryReceipt"]
+  }
+}
