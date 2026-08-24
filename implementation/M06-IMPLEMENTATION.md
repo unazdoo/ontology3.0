@@ -24,6 +24,30 @@ alone creates the review copy, immutable content version and T044 stable
 anchors. M05 extraction is accepted only as claims; it cannot return a T049
 decision.
 
+## C019 Read Boundary
+
+M06 consumes M04's real `readC019()`/`getC019Summary()` shape through the
+injected `m04DecisionPort`. The official public helpers are
+`createM04DecisionPort`, `ReportService.receiveC019`, `readStoredC019` and
+`createC019EvidenceItem`.
+
+The ingress validates the exact M04 C019 schema, Owner (`moduleId: M04`), C033
+run, `schemaVersion + stateRevision` source version, known resolved statuses,
+read-only detail entries, and an exact safe return context. M06 fixes its own
+trace, correlation, idempotency and read time separately from M04's summary
+formation time. It stores immutable resource references and read receipts,
+not Action Type, Rule, Metric, confirmation/task business details or a second
+decision-state projection. Reusing an idempotency key for another request or
+C019 version fails closed; the same request/version returns `duplicate`
+without another record.
+
+A stored C019 reference can be selected as a governed `decision-summary`
+evidence item during the existing C022 evidence collection only when its
+semantic version, data version and data cutoff match the fixed report's exact
+semantic/data/T008 combination. It remains an M04 result reference and does
+not set generation, C023, T049, publication or C027 success. Back-link return
+requires a fresh M04 read; stored receipts are only historical/audit records.
+
 ## Verification And Comparison
 
 T049 runs five deterministic groups and stores item-level `pass`, `warning`,
@@ -43,10 +67,11 @@ stream from the same source hash. Published artifacts are append-only. A
 post-publication hard quality failure appends a warning to the old artifact and
 blocks new generation/publication for the failed exact data version.
 
-The C034 provider exports definitions, templates, C018 snapshots, dashboards,
-C022/C023, T044/T049, C027, evidence and HTML/PDF artifacts. Clone restore
-creates a new scenario run and retains historical state as read-only; it does
-not publish, recalculate, compare or replay historical side effects.
+The C034 provider exports definitions, templates, C018 snapshots, M04-owned
+C019 references and M06 read receipts, dashboards, C022/C023, T044/T049, C027,
+evidence and HTML/PDF artifacts. Clone restore creates a new scenario run and
+retains historical state as read-only; it does not publish, recalculate,
+compare or replay historical side effects.
 
 ## Foundation Compatibility
 
@@ -90,6 +115,7 @@ npm test
 node --test designs/prototype-work/v1.1.0/scenarios/s004-runtime-v2.1.0/tests/baseline-module-runtime-m06.test.cjs
 ```
 
-The current package/service tests pass with 66 tests; the prototype regression suite
-passes 40 tests. Real deployment still requires wiring the M01, M02, M05 and
-platform authorization ports to their owning runtime APIs.
+The current package/service tests pass with 79 tests; the prototype regression
+suite passes 40 tests. C019 tests are M06 consumer contract fixtures, not M04
+joint evidence. Real deployment still requires wiring and jointly validating
+the M01, M02, M04, M05 and platform authorization owner ports.

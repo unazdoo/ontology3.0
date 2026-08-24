@@ -14,6 +14,8 @@ const COLLECTIONS = Object.freeze([
   "dashboardVersions",
   "generationRequests",
   "generationGateReads",
+  "c019References",
+  "c019ReadReceipts",
   "c022Requests",
   "c023Receipts",
   "fixedReportContexts",
