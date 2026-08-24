@@ -7,6 +7,7 @@ const {
 } = require('./util');
 const { validateAgentRelease, assertAgentRelease } = require('../agent-release');
 const strictReleaseBoundary = require('../agent-release');
+const foundationCheckpoint = require('../checkpoint');
 
 const C034_SCHEMA_VERSION = 'ofw.m05.c034.checkpoint.v1';
 const C034_PROVIDER_VERSION = 'c034.provider.v1';
@@ -28,12 +29,9 @@ function scenarioContext(value) {
 }
 
 function validateContext(value, path = 'scenarioContext') {
-  const context = scenarioContext(value);
-  const errors = [];
-  if (!context) return [issue(path, 'type', 'scenario context must be an object')];
-  ['scenarioId', 'scenarioVersion', 'scenarioRunId', 'formedAt', 'status'].forEach((field) => { if (!isNonEmptyString(context[field])) errors.push(issue(`${path}.${field}`, 'required', `${field} is required`)); });
-  if (context.formedAt && Number.isNaN(Date.parse(context.formedAt))) errors.push(issue(`${path}.formedAt`, 'format', 'formedAt must be RFC 3339'));
-  return errors;
+  const rawContext = isRecord(value?.scenarioContext) ? value.scenarioContext : value;
+  const result = foundationCheckpoint.validateScenarioContext(rawContext);
+  return result.ok ? [] : result.errors.map((error) => issue(`${path}.${error.path === '$' ? '' : error.path}`.replace(/\.$/, ''), String(error.code || 'invalid').toLowerCase(), error.message, error.details));
 }
 
 function safeState(state = {}) {
@@ -65,9 +63,10 @@ function safeState(state = {}) {
 
 function exportM05Checkpoint(input = {}, options = {}) {
   const release = assertAgentRelease(input.release || input.agentRelease);
-  const context = scenarioContext(input.scenarioContext || input.context || input);
-  const errors = validateContext(context);
+  const rawContext = input.scenarioContext || input.context;
+  const errors = validateContext(rawContext);
   if (errors.length) fail('INVALID_CHECKPOINT_CONTEXT', 'checkpoint scenario context is invalid', errors);
+  const context = scenarioContext(rawContext);
   if (context.scenarioId !== release.scenario.id || context.scenarioVersion !== release.scenario.version) fail('CONTEXT_MISMATCH', 'checkpoint context does not match Agent Release scenario');
   const checkpoint = {
     schemaVersion: C034_SCHEMA_VERSION,
@@ -122,6 +121,109 @@ function validateM05Checkpoint(value) {
   delete copy.digest;
   if (!isNonEmptyString(digest) || sha256(copy) !== digest) errors.push(issue('digest', 'integrity', 'checkpoint digest mismatch'));
   return validation(errors.length === 0, errors);
+}
+
+function toFoundationCheckpoint(value) {
+  const checked = validateM05Checkpoint(value);
+  if (!checked.valid) fail('INVALID_CHECKPOINT', 'M05 checkpoint cannot enter the Foundation C034 SPI', checked.errors);
+  const release = value.agentRelease;
+  const converted = {
+    schemaVersion: foundationCheckpoint.CHECKPOINT_SCHEMA_VERSION,
+    checkpointId: value.checkpointId,
+    immutable: true,
+    scenarioContext: clone(value.scenarioContext),
+    sourceScenarioRunId: value.scenarioContext.scenarioRunId,
+    restoreReadiness: { status: 'verified' },
+    baselineVersion: release.releaseVersion || release.version,
+    baselineSnapshotId: value.digest,
+    moduleId: 'M05',
+    m05CheckpointRef: {
+      refType: 'm05-checkpoint',
+      refId: value.checkpointId,
+      refVersion: value.digest,
+      digest: value.digest,
+      owner: 'M05'
+    },
+    sideEffectPolicy: foundationCheckpoint.SIDE_EFFECT_POLICY,
+    overwritesHistory: false,
+    overwritesSource: false
+  };
+  const foundationValidation = foundationCheckpoint.validateCheckpoint(converted, { requireSchemaVersion: true });
+  if (!foundationValidation.ok) fail('FOUNDATION_CHECKPOINT_INVALID', 'converted M05 checkpoint failed the Foundation C034 contract', foundationValidation.errors);
+  return immutable(converted);
+}
+
+function validateFoundationM05Checkpoint(checkpoint) {
+  const base = foundationCheckpoint.validateCheckpoint(checkpoint, { requireSchemaVersion: true });
+  const errors = base.ok ? [] : base.errors.map((error) => issue(error.path, String(error.code || 'invalid').toLowerCase(), error.message, error.details));
+  if (!isRecord(checkpoint)) return validation(false, errors);
+  if (checkpoint.moduleId !== 'M05') errors.push(issue('moduleId', 'mismatch', 'Foundation checkpoint must identify M05'));
+  const ref = checkpoint.m05CheckpointRef;
+  if (!isRecord(ref) || ref.refType !== 'm05-checkpoint' || !isNonEmptyString(ref.refId) || !isNonEmptyString(ref.refVersion)) {
+    errors.push(issue('m05CheckpointRef', 'required', 'Foundation checkpoint must pin an exact M05 checkpoint reference'));
+  } else {
+    if (ref.refId !== checkpoint.checkpointId) errors.push(issue('m05CheckpointRef.refId', 'mismatch', 'must match checkpointId'));
+    if (ref.refVersion !== checkpoint.baselineSnapshotId) errors.push(issue('m05CheckpointRef.refVersion', 'mismatch', 'must match baselineSnapshotId'));
+    if (ref.digest !== checkpoint.baselineSnapshotId) errors.push(issue('m05CheckpointRef.digest', 'integrity', 'must match baselineSnapshotId'));
+    if (ref.owner !== 'M05') errors.push(issue('m05CheckpointRef.owner', 'owner-mismatch', 'must remain owned by M05'));
+  }
+  if (!isNonEmptyString(checkpoint.baselineVersion) || !isNonEmptyString(checkpoint.baselineSnapshotId)) errors.push(issue('baseline', 'required', 'Foundation checkpoint must pin M05 baseline version and snapshot'));
+  return validation(errors.length === 0, errors);
+}
+
+function assertFoundationM05Checkpoint(checkpoint) {
+  const result = validateFoundationM05Checkpoint(checkpoint);
+  if (!result.valid) fail('FOUNDATION_M05_CHECKPOINT_INVALID', 'Foundation C034 checkpoint failed M05 reference validation', result.errors);
+  return immutable(checkpoint);
+}
+
+function createFoundationC034Provider(options = {}) {
+  const moduleProvider = options.moduleProvider || createM05CheckpointProvider(options);
+  const mapMaybe = (value, mapper) => value && typeof value.then === 'function' ? Promise.resolve(value).then(mapper) : mapper(value);
+  const implementation = {
+    export(request) {
+      return mapMaybe(moduleProvider.export(request), toFoundationCheckpoint);
+    },
+    validate(checkpoint) {
+      return validateFoundationM05Checkpoint(checkpoint);
+    },
+    cloneRestore(request) {
+      assertFoundationM05Checkpoint(request.checkpoint);
+      return { moduleId: 'M05', operation: 'clone-restore', m05CheckpointRef: request.checkpoint.m05CheckpointRef, planOnly: true, autoRun: false, autoToolInvocation: false };
+    },
+    isolatedReplay(request) {
+      assertFoundationM05Checkpoint(request.checkpoint);
+      return { moduleId: 'M05', operation: 'isolated-replay', m05CheckpointRef: request.checkpoint.m05CheckpointRef, planOnly: true, autoRun: false, autoToolInvocation: false };
+    },
+    migrationCompare() {
+      return { moduleId: 'M05', operation: 'migration-compare', planOnly: true };
+    }
+  };
+  const provider = foundationCheckpoint.createProvider(implementation, { requireSchemaVersion: true });
+  return Object.freeze({
+    spiVersion: provider.spiVersion,
+    schemaVersion: provider.schemaVersion,
+    export: provider.export,
+    validate: provider.validate,
+    cloneRestore(input, restoreOptions) {
+      const checkpoint = isRecord(input) && (input.checkpoint || input.sourceCheckpoint) ? (input.checkpoint || input.sourceCheckpoint) : input;
+      assertFoundationM05Checkpoint(checkpoint);
+      return provider.cloneRestore(input, restoreOptions);
+    },
+    isolatedReplay(input, replayOptions) {
+      const checkpoint = isRecord(input) && (input.checkpoint || input.sourceCheckpoint) ? (input.checkpoint || input.sourceCheckpoint) : input;
+      assertFoundationM05Checkpoint(checkpoint);
+      return provider.isolatedReplay(input, replayOptions);
+    },
+    migrationCompare(sourceOrRequest, targetOrOptions, maybeOptions) {
+      const isRequest = isRecord(sourceOrRequest) && (sourceOrRequest.source || sourceOrRequest.sourceCheckpoint);
+      const source = isRequest ? (sourceOrRequest.source || sourceOrRequest.sourceCheckpoint) : sourceOrRequest;
+      const target = isRequest ? (sourceOrRequest.target || sourceOrRequest.targetCheckpoint) : targetOrOptions;
+      assertFoundationM05Checkpoint(source);
+      assertFoundationM05Checkpoint(target);
+      return provider.migrationCompare(sourceOrRequest, targetOrOptions, maybeOptions);
+    }
+  });
 }
 
 function cloneRestoreM05Checkpoint(checkpoint, options = {}) {
@@ -204,6 +306,12 @@ function assertSafeAdapterResult(value) {
 
 function createM05CheckpointProvider(options = {}) {
   const owner = options.owner || {};
+  const normalizeOwnerValidation = (value) => {
+    if (typeof value === 'boolean') return { valid: value, errors: value ? [] : [issue('$', 'owner-validation', 'owner validation failed')] };
+    if (isRecord(value) && typeof value.valid === 'boolean') return { valid: value.valid, errors: Array.isArray(value.errors) ? value.errors : [] };
+    if (isRecord(value) && typeof value.ok === 'boolean') return { valid: value.ok, errors: Array.isArray(value.errors) ? value.errors : [] };
+    fail('INVALID_PROVIDER_VALIDATION_RESULT', 'M05 checkpoint owner validate() must return boolean, { valid, errors }, or { ok, errors }');
+  };
   return Object.freeze({
     schemaVersion: C034_SCHEMA_VERSION,
     providerVersion: C034_PROVIDER_VERSION,
@@ -214,7 +322,12 @@ function createM05CheckpointProvider(options = {}) {
       if (!checked.valid) fail('INVALID_EXPORT', 'C034 owner export returned an invalid checkpoint', checked.errors);
       return immutable(value);
     },
-    validate(checkpoint) { const base = validateM05Checkpoint(checkpoint); if (!base.valid || typeof owner.validate !== 'function') return base; const extra = owner.validate(checkpoint); return validation(base.valid && extra?.valid !== false, [...base.errors, ...(extra?.errors || [])]); },
+    validate(checkpoint) {
+      const base = validateM05Checkpoint(checkpoint);
+      if (!base.valid || typeof owner.validate !== 'function') return base;
+      const extra = normalizeOwnerValidation(owner.validate(checkpoint));
+      return validation(base.valid && extra.valid, [...base.errors, ...extra.errors]);
+    },
     cloneRestore(request) { const base = cloneRestoreM05Checkpoint(request, options); if (typeof owner.cloneRestore !== 'function') return base; const providerResult = assertSafeAdapterResult(owner.cloneRestore({ checkpoint: base, sideEffectPolicy: SIDE_EFFECT_POLICY, autoRun: false, autoToolInvocation: false })); return immutable({ ...base, providerResult }); },
     isolatedReplay(request) { const base = isolatedReplayM05Checkpoint(request, options); if (typeof owner.isolatedReplay !== 'function') return base; const providerResult = assertSafeAdapterResult(owner.isolatedReplay({ checkpoint: request, replay: base, sideEffectPolicy: SIDE_EFFECT_POLICY })); return immutable({ ...base, providerResult }); },
     migrationCompare(source, target) { const base = migrationCompareM05(source, target); if (typeof owner.migrationCompare !== 'function') return base; const providerResult = assertSafeAdapterResult(owner.migrationCompare({ source, target, comparison: base, sideEffectPolicy: SIDE_EFFECT_POLICY })); return immutable({ ...base, providerResult }); }
@@ -224,6 +337,7 @@ function createM05CheckpointProvider(options = {}) {
 module.exports = Object.freeze({
   C034_SCHEMA_VERSION, C034_PROVIDER_VERSION, C034_CONTRACT_VERSION, SIDE_EFFECT_POLICY,
   exportM05Checkpoint, exportCheckpoint: exportM05Checkpoint, validateM05Checkpoint, validateCheckpoint: validateM05Checkpoint,
+  toFoundationCheckpoint, validateFoundationM05Checkpoint, assertFoundationM05Checkpoint, createFoundationC034Provider,
   cloneRestoreM05Checkpoint, cloneRestore: cloneRestoreM05Checkpoint, isolatedReplayM05Checkpoint, isolatedReplay: isolatedReplayM05Checkpoint,
   migrationCompareM05, migrationCompare: migrationCompareM05, createM05CheckpointProvider, createProvider: createM05CheckpointProvider,
   assertC034ReplaySafe: (value) => { assertNoForbiddenPayload(value, 'C034 replay'); assertSafeAdapterResult(value); return true; },

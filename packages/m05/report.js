@@ -68,6 +68,10 @@ function validateC024Request(value, options = {}) {
   const errors = [];
   const path = options.path || 'c024';
   if (!isRecord(value)) return validation(false, [issue(path, 'type', 'C024 request must be an object')]);
+  if (value.schemaVersion !== undefined) {
+    const compatibility = contracts.validateM05SchemaCompatibility(C024_SCHEMA_VERSION, value.schemaVersion);
+    if (!compatibility.valid) errors.push(issue(`${path}.schemaVersion`, 'version', `must equal ${C024_SCHEMA_VERSION}`, compatibility));
+  }
   const forbidden = findForbiddenKeys(value);
   if (forbidden.length) errors.push(issue(`${path}`, 'forbidden', 'C024 request contains prohibited business detail or side-effect fields', { fields: forbidden }));
   let source;
@@ -578,6 +582,10 @@ function validateInsight(value, options = {}) {
   const errors = [];
   const path = options.path || 'insight';
   if (!isRecord(value)) return validation(false, [issue(path, 'type', 'AI Insight must be an object')]);
+  if (value.schemaVersion !== undefined) {
+    const compatibility = contracts.validateM05SchemaCompatibility(C020_SCHEMA_VERSION, value.schemaVersion);
+    if (!compatibility.valid) errors.push(issue(`${path}.schemaVersion`, 'version', `must equal ${C020_SCHEMA_VERSION}`, compatibility));
+  }
   const forbidden = findForbiddenKeys(value);
   if (forbidden.length) errors.push(issue(`${path}`, 'forbidden', 'C020 insight contains prohibited business detail or side-effect fields', { fields: forbidden }));
   for (const field of ['insightId', 'insightVersion', 'runId', 'title']) if (!isNonEmptyString(value[field])) errors.push(issue(`${path}.${field}`, 'required', `${field} is required`));

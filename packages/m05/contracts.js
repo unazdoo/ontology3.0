@@ -1,6 +1,7 @@
 'use strict';
 
 const identity = require('../identity');
+const foundationContracts = require('../contracts');
 const {
   isRecord, isNonEmptyString, clone, immutable, sha256, issue, validation, assertValid, fail,
   assertNoForbiddenPayload, findForbiddenKeys, getRef, normalizeRef, identityFromContext, compareIdentity,
@@ -11,6 +12,7 @@ const CONTRACT_VERSION = 'ofw.m05.contracts.draft.v1';
 const ALLOWED_VERIFICATION_STATES = Object.freeze(['passed', 'warning', 'failed', 'not-verifiable', 'not_verifiable', 'unknown']);
 const ALLOWED_CREDIBILITY_STATES = Object.freeze(['passed', 'warning', 'failed', 'unknown', 'not-verifiable', 'not_verifiable']);
 const EXACT_VERSION_RE = /^(?!latest$)(?!current$)(?!head$)(?!tip$)(?!main$)(?!master$)\S+$/i;
+const M05_ENVELOPE_SCHEMA_VERSION = foundationContracts.CONTRACT_ENVELOPE_SCHEMA_VERSION;
 
 function pathValue(value, names) {
   for (const name of names) {
@@ -24,12 +26,58 @@ function contextOf(value) {
 }
 
 function validateContext(context, path = 'scenarioContext') {
-  const result = identity.validateScenarioContext(context, {
+  const explicit = isRecord(context) && isRecord(context.scenarioContext);
+  const source = explicit ? context.scenarioContext : context;
+  const strictContext = explicit ? source : (isRecord(source) ? {
+    scenarioId: source.scenarioId,
+    scenarioVersion: source.scenarioVersion,
+    scenarioRunId: source.scenarioRunId,
+    formedAt: source.formedAt,
+    status: source.status
+  } : source);
+  const result = identity.validateScenarioContext(strictContext, {
     path,
-    allowUnknown: true,
+    allowUnknown: false,
     enforcePrefix: true
   });
   return result.errors || [];
+}
+
+function validateM05SchemaCompatibility(sourceVersion, targetVersion) {
+  const result = foundationContracts.classifySchemaCompatibility(sourceVersion, targetVersion);
+  const recognized = (value) => Boolean(foundationContracts.parseSchemaVersion(value)) || (typeof value === 'string' && /^ofw\.[A-Za-z0-9.-]+\.v\d+$/.test(value));
+  const valid = recognized(sourceVersion) && recognized(targetVersion) && result.status === foundationContracts.COMPATIBILITY_STATUS.EXACT;
+  const reason = recognized(sourceVersion) && recognized(targetVersion) ? result.reason : 'unrecognized schema version';
+  return { valid, errors: valid ? [] : [issue('schemaVersion', 'incompatible', `M05 requires an exact recognized schema version: ${reason}`, result)], compatibility: result };
+}
+
+function assertM05SchemaCompatibility(sourceVersion, targetVersion) {
+  const result = validateM05SchemaCompatibility(sourceVersion, targetVersion);
+  if (!result.valid) fail('M05_SCHEMA_INCOMPATIBLE', 'M05 rejects non-exact schema compatibility', result);
+  return result.compatibility;
+}
+
+function validateM05Envelope(value, options = {}) {
+  const path = options.path || 'envelope';
+  const base = foundationContracts.validateContractEnvelope(value, {
+    path,
+    allowUnknown: false,
+    enforcePrefix: true
+  });
+  const errors = [...base.errors];
+  if (isRecord(value)) {
+    const compatibility = validateM05SchemaCompatibility(M05_ENVELOPE_SCHEMA_VERSION, value.schemaVersion);
+    errors.push(...compatibility.errors.map((error) => ({ ...error, path: `${path}.${error.path}` })));
+    if (!isNonEmptyString(options.expectedEventType)) errors.push(issue(`${path}.eventType`, 'policy', 'M05 requires one expected eventType at the consumer boundary'));
+    else if (value.eventType !== options.expectedEventType) errors.push(issue(`${path}.eventType`, 'mismatch', `must equal ${options.expectedEventType}`));
+  }
+  return validation(errors.length === 0, errors);
+}
+
+function assertM05Envelope(value, options = {}) {
+  const result = validateM05Envelope(value, options);
+  if (!result.valid) fail('M05_ENVELOPE_INVALID', 'Foundation Contract Envelope was rejected by M05', result.errors);
+  return immutable(foundationContracts.normalizeContractEnvelope(value));
 }
 
 function refErrors(value, path, type, required = true) {
@@ -49,8 +97,7 @@ function validateReportContext(value, options = {}) {
   if (!isRecord(value)) return validation(false, [issue(path, 'type', 'must be an object')]);
   const forbidden = findForbiddenKeys(value);
   if (forbidden.length) errors.push(issue(`${path}`, 'forbidden', 'M06 report context may contain metadata references only', { fields: forbidden }));
-  const context = contextOf(value);
-  errors.push(...validateContext(context, `${path}.scenarioContext`));
+  errors.push(...validateContext(value, `${path}.scenarioContext`));
 
   const reportId = pathValue(value, ['reportId', 'reportNumber', 'documentId', 'reportRef', 'draftId']);
   const contentVersion = pathValue(value, ['contentVersion', 'reportContentVersion', 'draftVersion', 'version']);
@@ -364,7 +411,8 @@ function compareFixedContext(reportContext, credibilitySummary, verificationResu
 }
 
 module.exports = Object.freeze({
-  CONTRACT_VERSION, ALLOWED_VERIFICATION_STATES, ALLOWED_CREDIBILITY_STATES,
+  CONTRACT_VERSION, M05_ENVELOPE_SCHEMA_VERSION, ALLOWED_VERIFICATION_STATES, ALLOWED_CREDIBILITY_STATES,
+  validateM05SchemaCompatibility, assertM05SchemaCompatibility, validateM05Envelope, assertM05Envelope,
   validateReportContext, normalizeReportContext, assertReportContext,
   validateCredibilitySummary, normalizeCredibilitySummary, assertCredibilitySummary,
   validateVerificationResult, normalizeVerificationResult, assertVerificationResult,

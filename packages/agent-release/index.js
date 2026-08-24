@@ -619,10 +619,11 @@ function normalizeScenarioContext(value) {
 }
 
 function validateScenario(value, path = 'scenarioContext') {
-  const context = normalizeScenarioContext(value);
+  const rawContext = isRecord(value?.scenarioContext) ? value.scenarioContext : value;
+  const context = normalizeScenarioContext(rawContext);
   if (!context) return [issue(path, 'type', 'C033 scenario context must be an object')];
   if (identity && typeof identity.validateScenarioContext === 'function') {
-    const result = identity.validateScenarioContext(context);
+    const result = identity.validateScenarioContext(rawContext, { allowUnknown: false, enforcePrefix: true, path });
     return result.valid ? [] : result.errors.map((item) => ({ ...item, path: item.path || path }));
   }
   const errors = [];
@@ -630,6 +631,8 @@ function validateScenario(value, path = 'scenarioContext') {
     if (!text(context[field])) errors.push(issue(`${path}.${field}`, 'required', 'is required'));
   });
   if (context.formedAt && !isDateTime(context.formedAt)) errors.push(issue(`${path}.formedAt`, 'format', 'must be RFC 3339 date-time'));
+  const allowed = new Set(['scenarioId', 'scenarioVersion', 'scenarioRunId', 'formedAt', 'status']);
+  Object.keys(rawContext).forEach((field) => { if (!allowed.has(field)) errors.push(issue(`${path}.${field}`, 'unknown', 'is not allowed')); });
   return errors;
 }
 
@@ -694,7 +697,14 @@ function validateFixedReportContext(input, options = {}) {
   if (summaryFields && findForbiddenContractFields(summaryFields, 'credibilitySummary', SUMMARY_FORBIDDEN_KEY_RE).length) errors.push(issue('credibilitySummary', 'forbidden-input', 'C017 input must be a metadata summary, not business detail'));
   const verificationFields = first(source, ['verificationResult', 'deterministicVerificationResult', 'm06Verification']);
   if (verificationFields && findForbiddenContractFields(verificationFields, 'verificationResult', VERIFICATION_FORBIDDEN_KEY_RE).length) errors.push(issue('verificationResult', 'forbidden-input', 'M06 input must preserve deterministic states and references only'));
-  validateScenario(context).forEach((item) => errors.push(item));
+  const scenarioCandidate = isRecord(source.scenarioContext) ? source.scenarioContext : {
+    scenarioId: context.scenarioId,
+    scenarioVersion: context.scenarioVersion,
+    scenarioRunId: context.scenarioRunId,
+    formedAt: context.formedAt,
+    status: context.status
+  };
+  validateScenario(scenarioCandidate).forEach((item) => errors.push(item));
   if (['disabled', 'paused', 'retired', 'revoked', 'unknown'].includes(String(context.status || '').toLowerCase())) errors.push(issue('status', 'inactive', 'scenario context is not active for a new Agent run'));
   REQUIRED_REPORT_CONTEXT_FIELDS.forEach((field) => {
     const value = context[field];
@@ -911,7 +921,7 @@ function createAuditEntry(event, state) {
   if (!isDateTime(formedAt)) fail('INVALID_AUDIT_TIME', 'audit formedAt must be RFC 3339 date-time');
   const context = source.scenarioContext ? normalizeScenarioContext(source.scenarioContext) : null;
   if (context) {
-    const contextErrors = validateScenario(context);
+    const contextErrors = validateScenario(source.scenarioContext);
     if (contextErrors.length) fail('INVALID_AUDIT_CONTEXT', 'audit scenario context is invalid', contextErrors);
   }
   const safe = {
@@ -1154,7 +1164,7 @@ function exportAgentReleaseCheckpoint(release, options = {}) {
   const formedAt = nowIso(options.clock || options.now);
   const scenarioContext = options.scenarioContext ? normalizeScenarioContext(options.scenarioContext) : null;
   if (!scenarioContext) fail('CHECKPOINT_CONTEXT_REQUIRED', 'Agent Release checkpoint export requires a C033 scenario context');
-  const contextErrors = validateScenario(scenarioContext);
+  const contextErrors = validateScenario(options.scenarioContext);
   if (contextErrors.length) fail('INVALID_CHECKPOINT_CONTEXT', 'checkpoint scenario context is invalid', contextErrors);
   if (scenarioContext.scenarioId !== source.scenario.id || scenarioContext.scenarioVersion !== source.scenario.version) fail('CONTEXT_MISMATCH', 'checkpoint context does not match release scenario');
   const stateRefs = Array.isArray(options.stateRefs) ? options.stateRefs.map((ref) => cloneJson(ref)) : [];
@@ -1193,7 +1203,8 @@ function validateAgentReleaseCheckpoint(value) {
     const expectedReleaseDigest = value.agentRelease.digest || digestRelease(value.agentRelease);
     if (value.releaseRef.id !== value.agentRelease.releaseId || value.releaseRef.version !== value.agentRelease.releaseVersion || (value.releaseRef.digest && value.releaseRef.digest !== expectedReleaseDigest)) errors.push(issue('releaseRef', 'mismatch', 'checkpoint releaseRef must match the embedded immutable Agent Release'));
   }
-  if (value.scenarioContext) {
+  if (!value.scenarioContext) errors.push(issue('scenarioContext', 'required', 'checkpoint must carry a strict C033 scenario context'));
+  else {
     errors.push(...validateScenario(value.scenarioContext));
     const releaseScenario = value.agentRelease?.scenario;
     const checkpointScenario = normalizeScenarioContext(value.scenarioContext);

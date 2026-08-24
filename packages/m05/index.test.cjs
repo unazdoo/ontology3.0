@@ -3,6 +3,8 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
 const m05 = require('./index.js');
+const foundationContracts = require('../contracts');
+const foundationCheckpoint = require('../checkpoint');
 
 const context = (overrides = {}) => ({
   scenarioId: 'S001', scenarioVersion: 'S001-v1', scenarioRunId: 'S001-RUN-1',
@@ -188,6 +190,11 @@ test('C034 export/restore creates a new run and never auto-runs or dispatches', 
   assert.equal(restored.autoRun, false);
   assert.equal(restored.autoToolInvocation, false);
   assert.equal(restored.overwritesSource, false);
+  const missingContext = { ...checkpoint };
+  delete missingContext.scenarioContext;
+  delete missingContext.digest;
+  missingContext.digest = m05.releaseBoundary.sha256(missingContext);
+  assert.equal(m05.validateAgentReleaseCheckpoint(missingContext).valid, false);
 });
 
 test('C034 provider rejects adapter-reported historical side effects', () => {
@@ -210,4 +217,83 @@ test('M05Runtime completes a C024 answer chain through the fixed gateway', async
   const result = await runtime.answer('Q-runtime', { actor: { roles: ['operator'] } });
   assert.equal(result.resultType, 'answer');
   assert.equal(runtime.store.current().results.length, 1);
+});
+
+test('Foundation strict ScenarioContext rejects nested unknown fields across M05 boundaries', () => {
+  const nested = {
+    scenarioId: 'S001', scenarioVersion: 'S001-v1', scenarioRunId: 'S001-RUN-1',
+    formedAt: '2026-08-24T00:00:00.000Z', status: 'active', undeclared: true
+  };
+  const reportContext = { ...context(), scenarioContext: nested };
+  assert.equal(m05.validateReportContext(reportContext).valid, false);
+  assert.equal(m05.releaseBoundary.validateFixedReportContext(reportContext).valid, false);
+  const release = m05.publishAgentRelease(m05.createAgentRelease(releaseInput()), { now: '2026-08-24T01:00:00.000Z' });
+  assert.throws(() => m05.exportM05Checkpoint({ release, scenarioContext: nested }), (error) => error.code === 'INVALID_CHECKPOINT_CONTEXT');
+});
+
+test('M05 schema versions are exact and fail closed when supplied', () => {
+  const c024 = { requestId: 'Q-version', question: '解释', reportContext: context(), credibilitySummary: summary(), permission: { allowed: true } };
+  assert.equal(m05.validateC024Request({ ...c024, schemaVersion: 'draft-0.1.1' }).valid, false);
+  assert.equal(m05.validateInsight({ schemaVersion: 'future', insightId: 'I-1', insightVersion: 'I-1-v1', runId: 'RUN-1', title: 'T', scope: 'S001', observation: 'O', evidenceRefs: [{ id: 'E-1' }] }).valid, false);
+  assert.equal(m05.validateOrchestrationDefinition({ schemaVersion: 'future', definitionId: 'D-1', definitionVersion: 'D-1-v1', outputContract: 'C025', steps: [{ id: 'start', type: 'start' }, { id: 'end', type: 'end' }], connections: [{ from: 'start', to: 'end' }] }).valid, false);
+  assert.equal(m05.validateM05SchemaCompatibility('draft-0.1.0', 'draft-0.1.0').valid, true);
+  assert.equal(m05.validateM05SchemaCompatibility(m05.C024_SCHEMA_VERSION, m05.C024_SCHEMA_VERSION).valid, true);
+  assert.equal(m05.validateM05SchemaCompatibility('garbage', 'garbage').valid, false);
+  assert.equal(m05.validateM05SchemaCompatibility('draft-0.1.0', 'draft-0.1.1').valid, false);
+  assert.throws(() => m05.assertM05SchemaCompatibility('draft-0.1.0', '1.0.0'), (error) => error.code === 'M05_SCHEMA_INCOMPATIBLE');
+});
+
+test('M05 consumes Foundation Contract Envelopes strictly and preserves C033 identity', () => {
+  const scenarioContext = {
+    scenarioId: 'S001', scenarioVersion: 'S001-v1', scenarioRunId: 'S001-RUN-1',
+    formedAt: '2026-08-24T00:00:00.000Z', status: 'active'
+  };
+  const payload = { requestId: 'Q-envelope', idempotencyKey: 'idem-envelope', question: '解释', reportContext: context(), credibilitySummary: summary(), permission: { allowed: true } };
+  const envelope = {
+    eventId: 'EV-1', eventType: 'M06.C024', schemaVersion: foundationContracts.CONTRACT_ENVELOPE_SCHEMA_VERSION,
+    occurredAt: '2026-08-24T00:00:00.000Z', actorRef: 'actor-1', correlationId: 'corr-1', traceId: 'trace-1',
+    idempotencyKey: 'idem-envelope', scenarioContext, resourceRefs: [], evidenceRefs: [], payload
+  };
+  assert.equal(m05.validateM05Envelope(envelope, { expectedEventType: 'M06.C024' }).valid, true);
+  assert.equal(m05.validateM05Envelope({ ...envelope, unknown: true }, { expectedEventType: 'M06.C024' }).valid, false);
+  assert.equal(m05.validateM05Envelope({ ...envelope, schemaVersion: 'draft-0.1.1' }, { expectedEventType: 'M06.C024' }).valid, false);
+  assert.equal(m05.validateM05Envelope({ ...envelope, scenarioContext: { ...scenarioContext, unknown: true } }, { expectedEventType: 'M06.C024' }).valid, false);
+  assert.equal(m05.validateM05Envelope(envelope).valid, false);
+  const runtime = m05.createM05Runtime();
+  assert.equal(runtime.receiveEnvelope(envelope, { expectedEventType: 'M06.C024' }).requestId, 'Q-envelope');
+  assert.throws(() => runtime.receiveEnvelope({ ...envelope, eventId: 'EV-2', idempotencyKey: 'idem-other', payload: { ...payload, requestId: 'Q-other', idempotencyKey: 'idem-other', reportContext: context({ scenarioRunId: 'S001-RUN-other' }) } }, { expectedEventType: 'M06.C024' }), (error) => error.code === 'CONTEXT_MISMATCH');
+  assert.throws(() => m05.createM05Runtime().receiveEnvelope({ ...envelope, eventId: 'EV-3', payload: { ...payload, requestId: 'Q-formed-at', reportContext: context({ formedAt: '2026-08-24T00:00:01.000Z' }) } }, { expectedEventType: 'M06.C024' }), (error) => error.code === 'CONTEXT_MISMATCH');
+  assert.throws(() => m05.createM05Runtime().receiveEnvelope({ ...envelope, eventId: 'EV-4', payload: { ...payload, requestId: 'Q-actor', actorRef: 'other-actor' } }, { expectedEventType: 'M06.C024' }), (error) => error.code === 'M05_ENVELOPE_MISMATCH');
+});
+
+test('M05 exposes a strict Foundation C034 provider bridge', () => {
+  const release = m05.publishAgentRelease(m05.createAgentRelease(releaseInput()), { now: '2026-08-24T01:00:00.000Z' });
+  const scenarioContext = {
+    scenarioId: 'S001', scenarioVersion: 'S001-v1', scenarioRunId: 'S001-RUN-1',
+    formedAt: '2026-08-24T00:00:00.000Z', status: 'active'
+  };
+  const provider = m05.createFoundationC034Provider();
+  assert.equal(foundationCheckpoint.assertProvider(provider), true);
+  assert.equal(provider.spiVersion, foundationCheckpoint.PROVIDER_SPI_VERSION);
+  assert.equal(provider.schemaVersion, foundationCheckpoint.CHECKPOINT_SCHEMA_VERSION);
+  const exported = provider.export({ release, scenarioContext, state: {} });
+  assert.equal(foundationCheckpoint.validateCheckpoint(exported, { requireSchemaVersion: true }).ok, true);
+  assert.equal(provider.validate(exported).ok, true);
+  const tampered = { ...exported, m05CheckpointRef: { ...exported.m05CheckpointRef, refVersion: 'other' } };
+  assert.equal(provider.validate(tampered).ok, false);
+  assert.throws(() => provider.cloneRestore(tampered), (error) => error.code === 'FOUNDATION_M05_CHECKPOINT_INVALID');
+  const restored = provider.cloneRestore(exported, { runIdFactory: (scenarioId) => `${scenarioId}-RUN-foundation-restored`, now: '2026-08-24T03:00:00.000Z' });
+  assert.notEqual(restored.scenarioRunId, scenarioContext.scenarioRunId);
+  assert.equal(restored.overwritesSource, false);
+  assert.equal(restored.sideEffectsSuppressed, true);
+  assert.throws(() => provider.export({ release, scenarioContext: { ...scenarioContext, unknown: true }, state: {} }), (error) => error.code === 'INVALID_CHECKPOINT_CONTEXT');
+});
+
+test('M05 checkpoint owner validation accepts common shapes and preserves rejection', () => {
+  const release = m05.publishAgentRelease(m05.createAgentRelease(releaseInput()), { now: '2026-08-24T01:00:00.000Z' });
+  const checkpoint = m05.exportM05Checkpoint({ release, scenarioContext: { scenarioId: 'S001', scenarioVersion: 'S001-v1', scenarioRunId: 'S001-RUN-1', formedAt: '2026-08-24T00:00:00.000Z', status: 'active' }, state: {} });
+  assert.equal(m05.createM05CheckpointProvider({ owner: { validate: () => false } }).validate(checkpoint).valid, false);
+  assert.equal(m05.createM05CheckpointProvider({ owner: { validate: () => ({ ok: false, errors: [{ code: 'NO' }] }) } }).validate(checkpoint).valid, false);
+  assert.equal(m05.createM05CheckpointProvider({ owner: { validate: () => ({ valid: false, errors: [{ code: 'NO' }] }) } }).validate(checkpoint).valid, false);
+  assert.throws(() => m05.createM05CheckpointProvider({ owner: { validate: () => ({ status: 'unknown' }) } }).validate(checkpoint), (error) => error.code === 'INVALID_PROVIDER_VALIDATION_RESULT');
 });

@@ -185,7 +185,9 @@ function identityFromContext(context) {
   return {
     scenarioId: source.scenarioId,
     scenarioVersion: source.scenarioVersion,
-    scenarioRunId: source.scenarioRunId
+    scenarioRunId: source.scenarioRunId,
+    formedAt: source.formedAt,
+    status: source.status
   };
 }
 

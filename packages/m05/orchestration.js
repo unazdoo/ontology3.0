@@ -4,7 +4,7 @@ const {
   isRecord, isNonEmptyString, clone, immutable, sha256, issue, validation, assertValid, fail, uuid, list, assertNoForbiddenPayload, nowIso
 } = require('./util');
 const { assertAgentRelease, scopeSubset, allowlistContains } = require('./resources');
-const { assertAgentInput, fixedInputFingerprint } = require('./contracts');
+const { assertAgentInput, fixedInputFingerprint, validateM05SchemaCompatibility } = require('./contracts');
 const strictReleaseBoundary = require('../agent-release');
 
 const ORCHESTRATION_SCHEMA_VERSION = 'ofw.m05.c014.draft.v1';
@@ -71,6 +71,7 @@ function validateOrchestrationDefinition(value, options = {}) {
   const errors = [];
   const path = options.path || 'orchestrationDefinition';
   if (!isRecord(value)) return validation(false, [issue(path, 'type', 'orchestration definition must be an object')]);
+  if (value.schemaVersion !== undefined && !validateM05SchemaCompatibility(ORCHESTRATION_SCHEMA_VERSION, value.schemaVersion).valid) errors.push(issue(`${path}.schemaVersion`, 'version', `must equal ${ORCHESTRATION_SCHEMA_VERSION}`));
   const id = value.definitionId || value.id;
   const version = value.definitionVersion || value.version;
   if (!isNonEmptyString(id)) errors.push(issue(`${path}.definitionId`, 'required', 'definition identity is required'));

@@ -35,3 +35,15 @@ stored in the Release checkpoint state.
 All contracts are draft implementation contracts. Real M06 C024, C017 and M06
 verification exchanges, persistent storage and production provider evidence
 remain integration gates rather than being represented by fixtures.
+
+## Foundation Compatibility Baseline
+
+The module consumes Foundation compatibility baseline `17ea7c7` fail closed:
+nested C033 ScenarioContext objects reject unknown fields, public envelopes use
+the exact Foundation `draft-0.1.0` schema and an explicitly expected event type,
+and non-exact schema changes are rejected until separately reconciled. The M05
+C034 adapter exposes a Foundation `c034.provider.v1` bridge with the canonical
+checkpoint schema and side-effect guard; real Provider/Consumer exchange is a
+later integration stage. The current adapter maps the immutable Agent Release
+version/digest into Foundation baseline fields for structural recovery tests;
+their production baseline semantics still require that joint validation.

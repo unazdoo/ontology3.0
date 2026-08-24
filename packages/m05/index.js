@@ -48,6 +48,30 @@ class M05Runtime {
 
   receiveC024(value, options) { return this.store.receiveC024(value, options); }
 
+  receiveEnvelope(value, options = {}) {
+    const envelope = contracts.assertM05Envelope(value, { expectedEventType: options.expectedEventType });
+    if (!util.isRecord(envelope.payload)) util.fail('M05_ENVELOPE_INVALID', 'M05 Contract Envelope payload must be an object');
+    const payloadContext = envelope.payload.reportContext || envelope.payload.fixedReportContext || envelope.payload.contextBinding;
+    const contextComparison = util.compareIdentity(envelope.scenarioContext, payloadContext, ['scenarioId', 'scenarioVersion', 'scenarioRunId', 'formedAt', 'status']);
+    if (!contextComparison.same) util.fail('CONTEXT_MISMATCH', 'Envelope and C024 payload scenario identities differ', contextComparison);
+    for (const [field, envelopeField] of [['idempotencyKey', 'idempotencyKey'], ['traceId', 'traceId'], ['correlationId', 'correlationId']]) {
+      if (envelope.payload[field] !== undefined && envelope.payload[field] !== envelope[envelopeField]) {
+        util.fail('M05_ENVELOPE_MISMATCH', `${field} differs between Envelope and payload`);
+      }
+    }
+    const payloadActor = envelope.payload.actorRef === undefined ? envelope.payload.actor : envelope.payload.actorRef;
+    if (payloadActor !== undefined && util.stableSerialize(payloadActor) !== util.stableSerialize(envelope.actorRef)) {
+      util.fail('M05_ENVELOPE_MISMATCH', 'actorRef differs between Envelope and payload');
+    }
+    return this.store.receiveC024({
+      ...envelope.payload,
+      actorRef: envelope.actorRef,
+      idempotencyKey: envelope.idempotencyKey,
+      traceId: envelope.traceId,
+      correlationId: envelope.correlationId
+    }, options);
+  }
+
   bindC024(requestId, options = {}) {
     const request = this.store.getRequest(requestId);
     if (!request) util.fail('C024_NOT_FOUND', 'C024 request has not been received');
@@ -201,6 +225,7 @@ Object.assign(api, {
 api.validateC024 = contracts.validateAgentInput;
 api.assertC024 = report.assertC024Request;
 api.receiveC024 = (store, request, options) => store.receiveC024(request, options);
+api.receiveC024Envelope = (runtime, envelope, options) => runtime.receiveEnvelope(envelope, options);
 api.createC025Answer = report.createAnswerResult;
 api.createC025VerificationExplanation = report.createVerificationExplanationResult;
 api.validateC025 = report.validateC025Result;
@@ -219,7 +244,7 @@ api.C014 = Object.freeze({ schemaVersion: api.C014_SCHEMA_VERSION, validate: orc
 api.C020 = Object.freeze({ schemaVersion: api.C020_SCHEMA_VERSION, validate: report.validateInsight, create: report.createInsight });
 api.C024 = Object.freeze({ schemaVersion: api.C024_SCHEMA_VERSION, validate: report.validateC024Request, assert: report.assertC024Request, store: report.ReportCopilotStore });
 api.C025 = Object.freeze({ schemaVersion: api.C025_SCHEMA_VERSION, validate: report.validateC025Result, answer: report.createAnswerResult, verificationExplanation: report.createVerificationExplanationResult });
-api.C034 = Object.freeze({ schemaVersion: checkpoint.C034_SCHEMA_VERSION, providerVersion: checkpoint.C034_PROVIDER_VERSION, export: checkpoint.exportM05Checkpoint, validate: checkpoint.validateM05Checkpoint, cloneRestore: checkpoint.cloneRestoreM05Checkpoint, isolatedReplay: checkpoint.isolatedReplayM05Checkpoint, migrationCompare: checkpoint.migrationCompareM05 });
+api.C034 = Object.freeze({ schemaVersion: checkpoint.C034_SCHEMA_VERSION, providerVersion: checkpoint.C034_PROVIDER_VERSION, export: checkpoint.exportM05Checkpoint, validate: checkpoint.validateM05Checkpoint, cloneRestore: checkpoint.cloneRestoreM05Checkpoint, isolatedReplay: checkpoint.isolatedReplayM05Checkpoint, migrationCompare: checkpoint.migrationCompareM05, toFoundation: checkpoint.toFoundationCheckpoint, foundationProvider: checkpoint.createFoundationC034Provider });
 api.C017 = Object.freeze({ validate: contracts.validateCredibilitySummary, assert: contracts.assertCredibilitySummary, gate: contracts.evaluateCredibilityGate, assertGate: contracts.assertCredibilityGate });
 api.M06 = Object.freeze({ validateReportContext: contracts.validateReportContext, validateVerificationResult: contracts.validateVerificationResult, assertReportContext: contracts.assertReportContext, assertVerificationResult: contracts.assertVerificationResult });
 
