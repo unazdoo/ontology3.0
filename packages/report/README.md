@@ -14,6 +14,23 @@ uses strict C033 validation and rejects envelope/schema/context mismatches.
 responses to that envelope. The raw-object ports used by `service.test.cjs`
 are module fixtures only and are not Provider/Consumer integration evidence.
 
+`copilot.js` is the official M06 C024/C025 adapter. The service APIs are:
+
+- `createReportCopilotRequest(input)` resolves a published report, exact
+  content version, evidence pack, selected T044 anchors and generation C017
+  reference into an immutable FixedReportContext and strict C024 Envelope.
+- `requestReportCopilot(input)` calls the injected M05
+  `receiveReportCopilotRequest`, `runReportCopilot` and
+  `readReportCopilotResult` ports.
+- `readReportCopilotResult({ requestId })` re-reads the M05-owned C025 chain.
+- `getReportCopilotReference(requestId)` returns only M06's stored read-only
+  Binding/Session/Run/Result references.
+
+C025 must return the exact report/content/evidence/anchor/C017/semantic/data/
+T008/Agent Release identity. M06 never stores the answer body and never uses
+C025 to modify report content, T049 or C027. Once M05 has accepted a request,
+an idempotent retry only performs a read and cannot start another Run.
+
 The service deliberately accepts live owner ports instead of static C008,
 C017, T019 or T008 values:
 
@@ -50,6 +67,10 @@ include report definitions/templates, C018 snapshots, dashboards, C022/C023,
 T044/T049, C027 and artifacts. Clone restore creates a new scenario run and
 keeps historical state read-only; it never replays side effects or auto-runs
 publication, recalculation or comparison.
+
+C034 exports also contain FixedReportContext, C024 handoff receipts, C025
+stable references and readback receipts. They remain historical/read-only on
+clone restore.
 
 The C034 adapter records the exact Foundation contract, checkpoint schema and
 SPI versions. Unknown module-export fields, store collections, pointer

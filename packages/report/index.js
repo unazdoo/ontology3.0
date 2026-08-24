@@ -15,6 +15,7 @@ const comparison = require("./comparison");
 const reportCheckpoint = require("./checkpoint");
 const service = require("./service");
 const boundary = require("./boundary");
+const copilot = require("./copilot");
 
 module.exports = Object.freeze({
   ...template,
@@ -32,6 +33,7 @@ module.exports = Object.freeze({
   ...reportCheckpoint,
   ...service,
   ...boundary,
+  ...copilot,
   createReportCenterService: service.createReportService,
   createM06Service: service.createReportService,
   createManagedDefinition: definition.createManagedReportDefinition,

@@ -16,6 +16,11 @@ const COLLECTIONS = Object.freeze([
   "generationGateReads",
   "c022Requests",
   "c023Receipts",
+  "fixedReportContexts",
+  "c024Requests",
+  "c024Handoffs",
+  "c025References",
+  "copilotReadbacks",
   "evidencePacks",
   "handoffAttempts",
   "sourceDrafts",
@@ -46,7 +51,8 @@ function emptyState() {
       dashboards: {},
       fixedViews: {},
       verifications: {},
-      comparisons: {}
+      comparisons: {},
+      copilot: {}
     }
   };
 }
@@ -71,7 +77,7 @@ function normalizeState(value) {
     }
   });
   result.pointers = result.pointers || {};
-  const pointerNamespaces = ["reports", "dashboards", "fixedViews", "verifications", "comparisons"];
+  const pointerNamespaces = ["reports", "dashboards", "fixedViews", "verifications", "comparisons", "copilot"];
   const unknownPointerNamespaces = Object.keys(result.pointers).filter((name) => !pointerNamespaces.includes(name));
   if (unknownPointerNamespaces.length) fail("STORE_UNKNOWN_POINTER_NAMESPACE", "report store contains unknown pointer namespaces", { unknownPointerNamespaces });
   pointerNamespaces.forEach((name) => {

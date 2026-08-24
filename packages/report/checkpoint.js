@@ -63,7 +63,8 @@ function exportCounts(moduleState) {
   const names = [
     "reportDefinitions", "reportTemplates", "fixedViews", "dashboardDefinitions", "dashboardVersions",
     "generationRequests", "c022Requests", "evidencePacks", "sourceDrafts", "contentVersions", "anchors",
-    "verificationExtractions", "verificationRuns", "comparisons", "comparisonAttempts", "comparisonStaleness", "qualityWarnings", "artifacts"
+    "verificationExtractions", "verificationRuns", "comparisons", "comparisonAttempts", "comparisonStaleness", "qualityWarnings", "artifacts",
+    "fixedReportContexts", "c024Requests", "c024Handoffs", "c025References", "copilotReadbacks"
   ];
   return Object.fromEntries(names.map((name) => [name, Object.keys(moduleState.collections[name] || {}).length]));
 }
@@ -91,7 +92,7 @@ function createM06Checkpoint(input) {
     exportedAt: input.exportedAt || nowIso(input.clock),
     state: moduleState,
     recordCounts: exportCounts(moduleState),
-    includes: ["report-definitions", "templates", "C018-references", "dashboards", "C022-C023", "T044", "T049", "C027", "HTML-PDF", "quality-warnings"],
+    includes: ["report-definitions", "templates", "C018-references", "dashboards", "C022-C023", "C024-C025-references", "T044", "T049", "C027", "HTML-PDF", "quality-warnings"],
     immutable: true
   };
   moduleExport.contentHash = exportHash(moduleExport);
