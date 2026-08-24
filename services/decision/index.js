@@ -26,6 +26,9 @@ const TASK_SCHEMA_VERSION = 'ofw.m04.c013.owner-task.v1';
 const C019_SCHEMA_VERSION = 'ofw.m04.c019.read-model.v1';
 const RECEIPT_SCHEMA_VERSION = 'ofw.m04.receipt.v1';
 const C017_RECEIPT_SCHEMA_VERSION = 'ofw.m04.c017-safety-receipt.v1';
+const SOURCE_TAG = foundation.SOURCE_TAG;
+const PARENT_VERSION = foundation.PARENT_VERSION;
+const BASELINE_SNAPSHOT_ID = foundation.BASELINE_SNAPSHOT_ID;
 
 const GATES = Object.freeze({
   REQUEST_RECEIPT: 'request_receipt',
@@ -407,6 +410,31 @@ function immutableRequestSource(source) {
       return;
     }
     output[key] = clone(source[key]);
+  });
+  return output;
+}
+
+function checkpointSafeHistory(value) {
+  if (Array.isArray(value)) return value.map(checkpointSafeHistory);
+  if (!isObject(value)) return value;
+  const output = {};
+  const safeKeys = {
+    sideEffects: 'effectCounts',
+    task: 'taskFact',
+    todo: 'todoFact',
+    tasks: 'taskFacts',
+    notifications: 'notificationFacts',
+    notification: 'notificationFact',
+    actionRequests: 'actionRequestFacts',
+    approvals: 'approvalFacts'
+  };
+  Object.keys(value).forEach((key) => {
+    // Foundation's C034 sanitizer intentionally removes `sideEffects` from
+    // historical restore input. Preserve its audit counts under a neutral
+    // fact name so the source and sanitized checkpoint hash remain identical;
+    // this is never an executable dispatch instruction.
+    const targetKey = safeKeys[key] || key;
+    output[targetKey] = checkpointSafeHistory(value[key]);
   });
   return output;
 }
@@ -2205,7 +2233,7 @@ class DecisionService {
   exportCheckpoint(options = {}) {
     const checkpointId = valueText(options.checkpointId) || `CP-M04-${this.context.scenarioRunId}-${digest(this._state, 12).toUpperCase()}`;
     const entries = [];
-    const add = (kind, items) => items.forEach((record) => entries.push({ kind, record: clone(record) }));
+    const add = (kind, items) => items.forEach((record) => entries.push({ kind, record: checkpointSafeHistory(record) }));
     add('request', this._state.requests);
     add('reminder', this._state.reminders);
     add('confirmation', this._state.confirmations);
@@ -2213,6 +2241,8 @@ class DecisionService {
     add('notificationReceipt', this._state.notifications);
     add('receipt', this._state.receipts);
     add('activity', this._state.activities);
+    const ledger = { schemaVersion: STATE_SCHEMA_VERSION, context: clone(this.context), entries };
+    const ledgerHash = foundation.ledgerFingerprint(entries);
     const value = {
       schemaVersion: checkpoint.CHECKPOINT_SCHEMA_VERSION,
       checkpointId,
@@ -2220,20 +2250,26 @@ class DecisionService {
       moduleId: 'M04',
       moduleVersion: SERVICE_VERSION,
       contractCode: 'C034',
+      sourceTag: SOURCE_TAG,
+      sourceVersion: PARENT_VERSION,
+      parentVersion: PARENT_VERSION,
+      implementationVersion: SERVICE_VERSION,
       scenarioContext: clone(this.context),
       sourceScenarioRunId: this.context.scenarioRunId,
       restoreReadiness: { status: 'verified', verifiedAt: this._now(), owner: 'M04' },
-      baselineVersion: options.baselineVersion || 'implementation-0.1.0',
-      baselineSnapshotId: options.baselineSnapshotId || 'BSL-OFW-V110-94ABD0E991B7',
-      stateFingerprint: digest(this._state, 64),
-      c019SummaryAtExport: clone(this.getC019Summary()),
+      baselineVersion: PARENT_VERSION,
+      baselineSnapshotId: BASELINE_SNAPSHOT_ID,
+      stateFingerprint: ledgerHash,
+      ledgerFingerprint: ledgerHash,
+      c019SummaryAtExport: checkpointSafeHistory(this.getC019Summary()),
       // Generic ledger names are intentional: C034 recovery may carry
       // historical evidence, but it must never replay a dispatch collection.
-      m04Ledger: { schemaVersion: STATE_SCHEMA_VERSION, context: clone(this.context), entries },
+      m04Ledger: ledger,
       sideEffectPolicy: checkpoint.SIDE_EFFECT_POLICY,
       overwritesHistory: false,
       overwritesSource: false
     };
+    value.checkpointFingerprint = foundation.checkpointFingerprint(value);
     const forbidden = hasForbiddenC017Copy(value, '$');
     if (forbidden.length) fail('C017_COPY_FORBIDDEN', 'checkpoint contains a forbidden C017 copy', { paths: forbidden });
     return freeze(value);
@@ -2252,6 +2288,14 @@ class DecisionService {
     if (!value?.m04Ledger || !Array.isArray(value.m04Ledger.entries)) errors.push({ code: 'MISSING_M04_LEDGER', path: 'm04Ledger.entries', message: 'M04 checkpoint ledger is required' });
     if (value?.m04Ledger?.schemaVersion && value.m04Ledger.schemaVersion !== STATE_SCHEMA_VERSION) {
       errors.push({ code: 'M04_LEDGER_SCHEMA_INCOMPATIBLE', path: 'm04Ledger.schemaVersion', message: 'M04 ledger schema must match the exact registered version' });
+    }
+    if (value?.m04Ledger?.schemaVersion === STATE_SCHEMA_VERSION && Array.isArray(value.m04Ledger.entries)) {
+      const expectedLedgerHash = foundation.ledgerFingerprint(value.m04Ledger.entries);
+      if (value.stateFingerprint !== expectedLedgerHash) errors.push({ code: 'STATE_FINGERPRINT_MISMATCH', path: 'stateFingerprint', message: 'state fingerprint does not match M04 ledger' });
+      if (value.ledgerFingerprint !== expectedLedgerHash) errors.push({ code: 'LEDGER_FINGERPRINT_MISMATCH', path: 'ledgerFingerprint', message: 'ledger fingerprint does not match M04 ledger' });
+    }
+    if (value?.checkpointFingerprint && value.checkpointFingerprint !== foundation.checkpointFingerprint(value)) {
+      errors.push({ code: 'CHECKPOINT_FINGERPRINT_MISMATCH', path: 'checkpointFingerprint', message: 'checkpoint fingerprint does not match checkpoint content' });
     }
     const forbidden = hasForbiddenC017Copy(value, '$');
     if (forbidden.length) errors.push({ code: 'C017_COPY_FORBIDDEN', path: '$', message: 'checkpoint must not contain a C017 projection copy', details: { paths: forbidden } });
@@ -2282,6 +2326,9 @@ class DecisionService {
         };
       },
       isolatedReplay(request = {}) {
+        const source = request.checkpoint || request.sourceCheckpoint;
+        const validation = service.validateCheckpoint(source);
+        if (!validation.ok) fail('INVALID_CHECKPOINT', 'M04 checkpoint validation failed', validation.errors);
         return {
           moduleId: 'M04',
           replayedFacts: [],
@@ -2382,6 +2429,8 @@ function restoreFromCheckpoint(source, options = {}) {
   const forbidden = hasForbiddenC017Copy(source, '$');
   if (forbidden.length) fail('C017_COPY_FORBIDDEN', 'checkpoint contains a forbidden C017 copy', { paths: forbidden });
   foundation.assertCheckpoint(source);
+  const sourceValidation = foundation.validateCheckpoint(source);
+  if (!sourceValidation.ok) fail('INVALID_CHECKPOINT', 'M04 checkpoint validation failed', sourceValidation.errors);
   if (!source.m04Ledger || source.m04Ledger.schemaVersion !== STATE_SCHEMA_VERSION || !Array.isArray(source.m04Ledger.entries)) {
     fail('INVALID_CHECKPOINT', 'M04 checkpoint ledger is missing or uses an incompatible schema');
   }

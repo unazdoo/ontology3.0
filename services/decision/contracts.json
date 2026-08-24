@@ -12,6 +12,13 @@
     "scenarioContextUnknownFields": "reject",
     "schemaChangePolicy": "exact-only"
   },
+  "checkpointIntegrity": {
+    "sourceTag": "prototype-v1.1.0-frozen",
+    "parentVersion": "v1.1.0",
+    "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+    "requiredHashes": ["stateFingerprint", "ledgerFingerprint", "checkpointFingerprint"],
+    "tamperPolicy": "recompute-and-reject"
+  },
   "schemas": {
     "state": "ofw.m04.decision-state.v1",
     "actionRequest": "ofw.m03.c011.action-request.v1",

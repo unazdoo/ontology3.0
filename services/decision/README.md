@@ -68,7 +68,9 @@ public `receiveContractEnvelope` path is available for module handoff.
 - C034 is exposed through `createCheckpointProvider()`.  Export contains an
   immutable M04 ledger and safety receipts, not a C017 projection.  Clone
   restore creates a new run through the Foundation SPI and suppresses all
-  historical dispatches.
+  historical dispatches.  The export pins the Foundation baseline identity
+  and carries state, ledger, and checkpoint fingerprints; any mismatch is
+  rejected by validate, clone restore, and isolated replay.
 
 Q003 due-date calculation and CR008-CR010 extended lifecycle semantics are
 intentionally outside this minimum state machine.  `dueDate` is an explicit
