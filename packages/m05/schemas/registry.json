@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontology3.example/contracts/m05/registry/draft-0.1.0",
+  "title": "M05 Draft Contract Registry",
+  "x-contract-status": "draft",
+  "x-contract-version": "ofw.m05.runtime.draft.v1",
+  "x-contract-owner": "M05 / Agent Application",
+  "type": "object",
+  "required": ["schemaVersion", "status", "contracts"],
+  "properties": {
+    "schemaVersion": { "const": "ofw.m05.runtime.draft.v1" },
+    "status": { "const": "draft" },
+    "contracts": { "type": "array", "items": { "type": "string" } }
+  },
+  "schemaVersion": "ofw.m05.runtime.draft.v1",
+  "status": "draft",
+  "contracts": ["c014-orchestration", "c020-ai-insight", "c024-report-copilot-request", "c025-report-copilot-result", "c034-checkpoint"]
+}

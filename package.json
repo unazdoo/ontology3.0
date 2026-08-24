@@ -4,7 +4,7 @@
   "private": true,
   "description": "Dependency-free v1.1.x Foundation public contracts",
   "scripts": {
-    "test": "node --test packages/contracts/test/contracts.test.js packages/identity/index.test.cjs packages/checkpoint/index.test.cjs packages/foundation-contract.test.cjs",
-    "check": "node --check packages/contracts/index.js && node --check packages/contracts/validation.js && node --check packages/identity/index.js && node --check packages/checkpoint/index.js"
+    "test": "node --test packages/contracts/test/contracts.test.js packages/identity/index.test.cjs packages/checkpoint/index.test.cjs packages/foundation-contract.test.cjs packages/agent-release/index.test.cjs packages/m05/index.test.cjs",
+    "check": "node --check packages/contracts/index.js && node --check packages/contracts/validation.js && node --check packages/identity/index.js && node --check packages/checkpoint/index.js && node --check packages/agent-release/index.js && node --check packages/m05/index.js && node --check packages/m05/schema.js && node --check packages/m05/contracts.js && node --check packages/m05/report.js && node --check packages/m05/gateway.js && node --check packages/m05/orchestration.js && node --check packages/m05/evaluation.js && node --check packages/m05/checkpoint.js"
   }
 }

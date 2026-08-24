@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ontology3.example/contracts/c024-report-copilot-request/draft-0.1.0",
+  "title": "C024 Report Copilot Request",
+  "x-contract-status": "draft",
+  "x-contract-version": "ofw.c024.report-copilot-request.draft.v1",
+  "x-contract-owner": "M05 / Agent Application",
+  "type": "object",
+  "required": ["requestId", "requestType", "reportContext", "credibilitySummary", "permission"],
+  "properties": {
+    "schemaVersion": { "const": "ofw.c024.report-copilot-request.draft.v1" },
+    "requestId": { "type": "string", "minLength": 1 },
+    "requestType": { "enum": ["question", "verification-explanation", "answer", "copilot", "report-reading"] },
+    "question": { "type": ["string", "null"] },
+    "reportContext": { "type": "object", "additionalProperties": true },
+    "credibilitySummary": { "type": "object", "additionalProperties": true },
+    "verificationResult": { "type": ["object", "null"], "additionalProperties": true },
+    "permission": { "type": "object", "required": ["allowed"], "properties": { "allowed": { "type": "boolean" } }, "additionalProperties": true }
+  },
+  "additionalProperties": true
+}
