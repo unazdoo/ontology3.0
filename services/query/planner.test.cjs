@@ -33,6 +33,9 @@ const C008 = Object.freeze({
   current: {
     combinationId: 'T019-S001-1',
     t019Id: 'T019-S001-1',
+    status: 'current',
+    lifecycleStatus: 'published',
+    bindingStatus: 'active',
     semanticVersionId: 'PUB-S001-v1',
     publishedSemanticVersion: 'S001-ONTO-v1',
     t017Id: 'T017-S001-v1',
@@ -41,6 +44,7 @@ const C008 = Object.freeze({
     dataAsOf: '2025-12-31',
     t008: '2025-12-31',
     t006Id: 'T006-S001',
+    t007Id: 'T007-S001-v1',
     evidenceRefs: [{ evidenceType: 'T019', evidenceId: 'T019-E1' }]
   },
   candidateValidation: null,
@@ -131,6 +135,28 @@ test('plan fixes all seven run context groups and is deterministic', () => {
   assert.notEqual(first.planFingerprint, second.planFingerprint, 'changing query scope must make a new plan');
   assert.equal(Object.isFrozen(first), true);
   assert.equal(Object.isFrozen(first.query), true);
+});
+
+test('C008 pointer status is not a semantic lifecycle fallback', () => {
+  const planner = makePlanner();
+  assert.equal(planner.plan({ query: query() }).status, 'executable');
+  const missingLifecycle = {
+    ...C008,
+    current: { ...C008.current }
+  };
+  delete missingLifecycle.current.lifecycleStatus;
+  assert.throws(
+    () => makePlanner({ c008Reader: () => missingLifecycle }).plan({ query: query() }),
+    (error) => error.code === ERROR_CODES.C008_NOT_READY
+  );
+  const draftLifecycle = {
+    ...C008,
+    current: { ...C008.current, lifecycleStatus: 'draft' }
+  };
+  assert.throws(
+    () => makePlanner({ c008Reader: () => draftLifecycle }).plan({ query: query() }),
+    (error) => error.code === ERROR_CODES.C008_NOT_READY
+  );
 });
 
 test('execution produces a fixed C010 result and repeated idempotent call returns the same run', () => {

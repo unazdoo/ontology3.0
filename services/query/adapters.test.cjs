@@ -20,10 +20,22 @@ function c008(status = 'ready', extra = {}) {
     scenarioContext: CONTEXT,
     t019: {
       bindingId: 'T019-S001-1',
+      status: 'active',
+      lifecycleStatus: 'active',
       publishedOntologyVersion: 'PUB-S001-1',
       dataVersion: 'DATA-S001-1',
       t007Id: 'T007-S001-1',
       evidenceRefs: [{ evidenceType: 'T019', evidenceId: 'T019-E1' }]
+    },
+    current: {
+      status: 'current',
+      lifecycleStatus: 'published',
+      bindingStatus: 'active',
+      t019Id: 'T019-S001-1',
+      semanticVersionId: 'PUB-S001-1',
+      publishedSemanticVersion: 'PUB-S001-1',
+      dataVersion: 'DATA-S001-1',
+      dataAsOf: '2026-08-23'
     },
     publishedOntology: { version: 'PUB-S001-1', status: 'PUBLISHED', resourceRefs: [] },
     t008: { id: 'T008-S001-1', value: '2026-08-23', evidenceRefs: [{ evidenceType: 'T008', evidenceId: 'T008-E1' }] },
@@ -72,6 +84,19 @@ test('C008 adapter rejects unknown/legacy/partial states and context drift', () 
   assert.throws(() => adapters.createC008T019Adapter(() => c008('ready', { v16: {} })).read(CONTEXT), (error) => error.code === 'ERR_C008_LEGACY_STATE');
   assert.throws(() => adapters.createC008T019Adapter(() => c008('ready', { scenarioContext: { ...CONTEXT, scenarioRunId: 'S001-RUN-OTHER' } })).read(CONTEXT), (error) => error.code === 'ERR_QUERY_CONTEXT_MISMATCH');
   assert.throws(() => adapters.createC008T019Adapter(() => c008('empty', { t019: { dataVersion: 'DATA-S001-1' } })).read(CONTEXT), (error) => error.code === 'ERR_C008_EMPTY_HAS_BINDING');
+});
+
+test('C008 real M01 pointer shape requires an explicit semantic lifecycle', () => {
+  const positive = adapters.createC008T019Adapter(() => c008()).read(CONTEXT);
+  assert.equal(positive.current.status, 'current');
+  assert.equal(positive.current.lifecycleStatus, 'published');
+  const missing = c008();
+  delete missing.current.lifecycleStatus;
+  delete missing.publishedOntology;
+  assert.throws(
+    () => adapters.createC008T019Adapter(() => missing).read(CONTEXT),
+    (error) => error.code === 'ERR_C008_NOT_PUBLISHED'
+  );
 });
 
 test('C017 adapter exposes only restricted quality/freshness projection and blocks permission/details', () => {

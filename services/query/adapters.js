@@ -93,7 +93,9 @@ function rejectLegacyState(raw) {
 }
 
 function normalizeT019(raw, context) {
-  const source = firstObject(raw, ['t019', 'T019', 'authoritativeBinding', 'consumptionBinding', 'currentBinding', 'current']) || {};
+  const explicitBinding = firstObject(raw, ['t019', 'T019', 'authoritativeBinding', 'consumptionBinding', 'currentBinding']);
+  const pointer = firstObject(raw, ['current']) || {};
+  const source = explicitBinding ? { ...pointer, ...explicitBinding } : pointer;
   const published = firstObject(raw, ['publishedOntology', 'published', 'ontology', 'semanticVersion']) || {};
   const semanticVersionId = firstString(source, ['semanticVersionId', 'publishedSemanticVersionId', 'publishedOntologyVersion'])
     || firstString(published, ['semanticVersionId', 'publishedSemanticVersionId', 'version', 'publishedVersion']);
@@ -110,7 +112,10 @@ function normalizeT019(raw, context) {
     || firstString(firstObject(raw, ['t008', 'T008']), ['id', 't008Id', 'evidenceId']);
   const bindingVersion = firstString(source, ['bindingVersion', 'version', 't019Version'])
     || firstString(raw, ['t019Version']);
-  const bindingStatus = firstString(source, ['status', 'state', 'lifecycleStatus']) || null;
+  const bindingStatus = firstString(explicitBinding || {}, ['lifecycleStatus', 'publicationStatus', 'bindingStatus', 'status', 'state'])
+    || firstString(source, ['bindingStatus', 't019Status', 'bindingLifecycleStatus'])
+    || firstString(raw, ['bindingStatus', 't019Status'])
+    || null;
   const bindingContext = source.scenarioContext || source.scenarioIdentity || raw.scenarioContext || raw.scenarioIdentity;
   if (bindingContext) assertSameContext(context, bindingContext, 'C008.T019.scenarioContext');
   return {
@@ -122,6 +127,7 @@ function normalizeT019(raw, context) {
     dataVersion,
     t007Id,
     t008Id,
+    lifecycleStatus: firstString(source, ['lifecycleStatus', 'publicationStatus']) || null,
     scenarioContext: contextTriple(context),
     evidenceRefs: normalizeEvidenceRefs(source.evidenceRefs || published.evidenceRefs || raw.evidenceRefs || (source.evidenceLocator ? [{ evidenceType: 'T019', evidenceId: source.evidenceLocator }] : []), 'C008.T019.evidenceRefs')
   };
@@ -140,7 +146,11 @@ function normalizePublished(raw, context, t019) {
   const source = firstObject(raw, ['publishedOntology', 'published', 'ontology', 'semantic']) || {};
   const version = firstString(source, ['version', 'publishedVersion', 'semanticVersion', 'ontologyVersion'])
     || t019.publishedOntologyVersion;
-  const status = upper(firstString(source, ['status', 'lifecycleStatus', 'state']) || 'PUBLISHED');
+  const lifecycle = firstString(firstObject(raw, ['current']) || {}, ['lifecycleStatus', 'publicationStatus'])
+    || firstString(raw, ['publicationStatus'])
+    || firstString(source, ['lifecycleStatus', 'publicationStatus', 'status'])
+    || null;
+  const status = upper(lifecycle);
   const resources = pick(source, ['resources', 'resourceRefs', 'allowedResources', 'catalog'])
     || pick(raw, ['resources', 'resourceRefs', 'allowedResources']);
   if (resources !== undefined && !Array.isArray(resources) && !isRecord(resources)) {
@@ -200,7 +210,7 @@ function validateC008(raw, context, options = {}) {
     if (!t019.t007Id) fail('ERR_C008_T019_INCOMPLETE', 'ready C008 must identify the exact T007 asset');
     if (options.requireEvidence !== false && !t019.evidenceRefs.length) fail('ERR_C008_EVIDENCE_INCOMPLETE', 'ready C008/T019 must have a stable evidence reference');
     if (published.status !== 'PUBLISHED') fail('ERR_C008_NOT_PUBLISHED', 'C008 can only expose a Published ontology');
-    if (t019.status && !['adopted', 'active', 'ready', 'published', 'current', 'succeeded', 'previous-trusted'].includes(String(t019.status).toLowerCase())) {
+    if (!t019.status || !['adopted', 'active', 'ready', 'published', 'succeeded', 'previous-trusted'].includes(String(t019.status).toLowerCase())) {
       fail('ERR_C008_T019_NOT_ACTIVE', 'T019 binding is not an active authoritative combination', { status: t019.status });
     }
     if (published.version && t019.publishedSemanticVersion && published.version !== t019.publishedSemanticVersion && published.version !== t019.publishedOntologyVersion) {
@@ -220,6 +230,8 @@ function validateC008(raw, context, options = {}) {
   const current = {
     combinationId: t019.bindingId,
     bindingStatus: t019.status,
+    status: firstString(firstObject(raw, ['current']) || {}, ['status']) || null,
+    lifecycleStatus: firstString(firstObject(raw, ['current']) || {}, ['lifecycleStatus', 'publicationStatus']) || (published.status ? published.status.toLowerCase() : null),
     bindingVersion: t019.bindingVersion,
     t019Id: t019.bindingId,
     semanticVersionId: t019.publishedOntologyVersion,
@@ -229,6 +241,7 @@ function validateC008(raw, context, options = {}) {
     dataAsOf: normalizedAsOf(raw),
     t008: normalizedAsOf(raw),
     t006Id: t019.t007Id,
+    t007Id: t019.t007Id,
     t017Id: null,
     evidenceRefs: t019.evidenceRefs,
     resources: Array.isArray(published.resourceRefs) ? published.resourceRefs : []
@@ -240,6 +253,7 @@ function validateC008(raw, context, options = {}) {
     sourceModule: 'M01',
     producer: firstString(raw, ['producer', 'owner', 'moduleId']) || 'M01',
     readStatus: status,
+    publicationStatus: published.status ? published.status.toLowerCase() : null,
     consumable,
     scenarioContext: contextTriple(context),
     t019,
