@@ -693,7 +693,7 @@ async function main(options) {
     const crossScenarioDenied = await crossScenarioProbe(stores.get("M01"), d003.delivered, m01, runtime);
     const raceCovered = await concurrentCasProbe(stores.get("M01"), runtime);
     if (!appendOnly || !ownerDenied || !casRejected || !missingContextDenied || !unknownSchemaDenied || !crossScenarioDenied || !raceCovered) {
-      throw new Error("persistence negative probes did not fail closed");
+      throw new Error(`persistence negative probes did not fail closed: ${JSON.stringify({ appendOnly, ownerDenied, casRejected, missingContextDenied, unknownSchemaDenied, crossScenarioDenied, raceCovered })}`);
     }
 
     const runtimeBytes = Buffer.from(JSON.stringify(runtime));
