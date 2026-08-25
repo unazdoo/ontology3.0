@@ -104,6 +104,7 @@ function natsPermissions(queueNamespace, jetStreamName) {
   return Object.freeze({
     publish: Object.freeze([
       `${queueNamespace}.>`,
+      "$JS.API.INFO",
       `$JS.API.STREAM.INFO.${jetStreamName}`,
       `$JS.API.CONSUMER.CREATE.${jetStreamName}`,
       `$JS.API.CONSUMER.CREATE.${jetStreamName}.>`,
