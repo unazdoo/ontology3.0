@@ -730,6 +730,8 @@ async function main(options) {
     });
     const negative = baseReceipt("NEGATIVE", state, {
       runtimeRunId: runtime.runtimeRunId,
+      traceId: runtime.audit.traceId,
+      correlationId: runtime.audit.correlationId,
       cases: ["missing-context", "unknown-schema", "unauthorized-owner", "cross-scenario", "duplicate-idempotency", "recovery-side-effect"],
       deniedCases: ["module-owner-permission-denied", "stale-cas-write", "cross-scenario-mismatch", "append-only-update", "privilege-scope-resource-denied"],
       ownerDenied,
