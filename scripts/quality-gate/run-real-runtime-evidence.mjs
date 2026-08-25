@@ -450,6 +450,7 @@ async function checkpointAndRestore({ stores, pool, minio, provider, descriptor,
       audit: {
         ...auditFor({ ...runtime, scenarioContext: restoredContext }, moduleId, 1, "c034.cloneRestore"),
         auditId: `AUD-${moduleId}-C034-${restoredRunId.slice(-18)}`,
+        idempotencyKey: `${runtime.audit.idempotencyKey}:C034:${moduleId}:${restoredRunId}`,
         record: { sourceScenarioRunId: runtime.runtimeRunId, restoredScenarioRunId: restoredRunId, sideEffectsSuppressed: true }
       },
       outbox: []
