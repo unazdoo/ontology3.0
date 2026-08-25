@@ -512,7 +512,7 @@ function cloneOwnerCheckpoint(moduleId, ownerState, allStates, targetContext) {
   }
   if (moduleId === "M05") {
     const validation = agentApi.C034.validate(checkpoint);
-    if (!checkpointValid(validation)) throw new Error("M05 owner checkpoint validation failed");
+    if (!checkpointValid(validation)) throw new Error(`M05 owner checkpoint validation failed: ${JSON.stringify(validation?.errors || validation)}`);
     return agentApi.C034.cloneRestore(checkpoint, { scenarioContext: targetContext, runIdFactory: () => targetContext.scenarioRunId, now: targetContext.formedAt });
   }
   const store = reportApi.createReportStore({ initialState: ownerState.domainState });
