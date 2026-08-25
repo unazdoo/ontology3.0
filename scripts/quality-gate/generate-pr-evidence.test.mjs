@@ -106,3 +106,41 @@ test("generator rejects a receipt from another head or implementation round", ()
     }
   }
 });
+
+test("diagnostic blocked/deferred receipts do not block candidate eligibility when hard gates pass", () => {
+  const root = temporary();
+  try {
+    const generated = generateEvidence(root, {
+      deferredAccessibility: true,
+      mutate(receipts) {
+        receipts.checks.performance.status = "blocked";
+        receipts.checks.performance.reason = "performance environment is not yet representative";
+        receipts.checks.observability.status = "not-applicable";
+        receipts.checks.observability.reason = "telemetry backend is outside this backend slice";
+      }
+    });
+    assert.equal(generated.result.status, 0, generated.result.stderr);
+    const result = spawnSync(process.execPath, [verify, "--manifest", generated.output, "--receipt-root", root, "--candidate"], { encoding: "utf8" });
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(generated.manifest.checks.accessibility.status, "not-applicable");
+    assert.equal(generated.manifest.checks.accessibility.nextGate, "first-ui-candidate");
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("hard gates cannot be blocked and diagnostic dispositions require a reason", () => {
+  for (const mutate of [
+    (receipts) => { receipts.checks.e2e.status = "blocked"; receipts.checks.e2e.reason = "not ready"; },
+    (receipts) => { receipts.checks.performance.status = "blocked"; delete receipts.checks.performance.reason; }
+  ]) {
+    const root = temporary();
+    try {
+      const generated = generateEvidence(root, { mutate });
+      assert.notEqual(generated.result.status, 0);
+      assert.match(`${generated.result.stdout}\n${generated.result.stderr}`, /status must be passed|requires a reason|CHECK_(?:STATUS|DIAGNOSTIC)/i);
+    } finally {
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  }
+});

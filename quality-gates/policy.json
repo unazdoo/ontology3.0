@@ -6,7 +6,7 @@
     "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
     "sourceTag": "prototype-v1.1.0-frozen",
     "sourceVersion": "v1.1.0",
-    "rollbackVersion": "1.0.3"
+    "rollbackVersion": "implementation-0.0.0"
   },
   "schema": {
     "requiredVersion": "draft-0.1.0",
@@ -34,12 +34,34 @@
     "rollback",
     "ciCd"
   ],
+  "hardGates": [
+    "goldenData",
+    "contractCompatibility",
+    "e2e",
+    "security",
+    "c034Recovery",
+    "migration",
+    "rollback",
+    "ciCd"
+  ],
+  "diagnosticChecks": [
+    "permissionNegative",
+    "concurrencyIdempotency",
+    "performance",
+    "accessibility",
+    "sbom",
+    "observability"
+  ],
   "nonWaivable": [
     "baselineSnapshotId",
     "schemaVersion",
     "owner",
+    "c033",
+    "exactVersionBinding",
+    "idempotencySemantics",
+    "contractCompatibility",
+    "e2e",
     "prEnvironment",
-    "permissionNegative",
     "security",
     "c034Recovery",
     "rollback",

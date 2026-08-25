@@ -77,6 +77,8 @@ try {
     valid: result.valid,
     candidateEligible: result.candidateEligible,
     requiredChecks: result.requiredChecks,
+    hardRequiredChecks: result.hardRequiredChecks,
+    diagnosticChecks: result.diagnosticChecks,
     candidateGates: result.candidateGates,
     receiptVerification: result.receiptVerification,
     manifestSha256,

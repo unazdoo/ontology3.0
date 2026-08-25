@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "ofw.implementation.release.v1",
+  "version": "implementation-0.0.0",
+  "releaseType": "first-release-rollback-target",
+  "deploymentMode": "disabled",
+  "sourceVersion": "implementation-0.1.0",
+  "foundationOnly": true,
+  "capabilities": {
+    "health": "enabled",
+    "readOnlyAudit": "enabled",
+    "businessWrite": "disabled",
+    "consumerDispatch": "disabled"
+  },
+  "rollbackPolicy": {
+    "downMigrationAllowed": false,
+    "historyDeletionAllowed": false,
+    "restoreTarget": "implementation-0.1.0",
+    "appendOnlySwitchReceiptRequired": true
+  },
+  "acceptanceReady": false
+}

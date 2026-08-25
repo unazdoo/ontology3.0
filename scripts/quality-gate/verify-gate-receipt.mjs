@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import process from "node:process";
-import { formatValidationErrors, nonEmpty, readJson, writeJson } from "./lib/quality-gate.mjs";
+import { DIAGNOSTIC_CHECKS, formatValidationErrors, nonEmpty, readJson, writeJson } from "./lib/quality-gate.mjs";
 
 const GATE_KEYS = Object.freeze({
   "golden-data": "goldenData",
@@ -52,11 +52,20 @@ function required(value, path, errors) {
 
 function validateGateDetails(key, receipt, errors) {
   if (key === "goldenData") required(receipt.sha256 || receipt.hash || receipt.manifestSha256, "sha256", errors);
-  if (key === "contractCompatibility") required(receipt.compatibility || receipt.schemaCompatibility, "compatibility", errors);
+  if (key === "contractCompatibility") {
+    required(receipt.compatibility || receipt.schemaCompatibility, "compatibility", errors);
+    for (const field of ["idempotencyContractVerified", "c033ContractVerified", "ownerBoundaryVerified", "exactVersionContractVerified"]) {
+      if (receipt[field] !== true) errors.push({ code: "CONTRACT_SAFETY_SUBEVIDENCE_MISSING", path: field, message: `${field} must be true` });
+    }
+  }
   if (key === "e2e") {
     required(receipt.scenarioId, "scenarioId", errors);
     required(receipt.runtimeRunId || receipt.runId, "runtimeRunId", errors);
     if (receipt.scenarioId !== "S001") errors.push({ code: "E2E_SCENARIO_INVALID", path: "scenarioId", message: "E2E gate must cover S001" });
+    for (const field of ["sameKeySameContentOnce", "sameKeyDifferentContentRejected", "casConflictRejected", "outboxDuplicateSuppressed", "inboxDuplicateSuppressed", "retryNoDuplicateSideEffects"]) {
+      if (receipt.idempotency?.[field] !== true) errors.push({ code: "E2E_IDEMPOTENCY_SUBEVIDENCE_MISSING", path: `idempotency.${field}`, message: `${field} must be true` });
+    }
+    for (const field of ["c033Verified", "ownerBoundaryVerified", "exactVersionsVerified"]) if (receipt[field] !== true) errors.push({ code: "E2E_AUTHORITY_SUBEVIDENCE_MISSING", path: field, message: `${field} must be true` });
   }
   if (key === "permissionNegative") {
     if (!Array.isArray(receipt.deniedCases || receipt.negativeCases) || (receipt.deniedCases || receipt.negativeCases).length === 0) errors.push({ code: "PERMISSION_CASES_MISSING", path: "deniedCases", message: "permission-denied cases are required" });
@@ -78,6 +87,8 @@ function validateGateDetails(key, receipt, errors) {
   if (key === "security") {
     if (Number(receipt.unresolvedCritical ?? receipt.findings?.critical ?? 0) !== 0) errors.push({ code: "SECURITY_CRITICAL_FINDINGS", path: "unresolvedCritical", message: "unresolved critical findings must be zero" });
     if (Number(receipt.unresolvedHigh ?? receipt.findings?.high ?? 0) !== 0) errors.push({ code: "SECURITY_HIGH_FINDINGS", path: "unresolvedHigh", message: "unresolved high findings must be zero" });
+    if (receipt.secretScan?.status !== "passed" || Number(receipt.secretScan?.findingCount) !== 0) errors.push({ code: "SECURITY_SECRET_SCAN_MISSING", path: "secretScan", message: "a clean secret scan receipt is required" });
+    if (receipt.dependencyAudit?.status !== "verified" || Number(receipt.dependencyAudit?.vulnerabilities?.high) !== 0 || Number(receipt.dependencyAudit?.vulnerabilities?.critical) !== 0) errors.push({ code: "SECURITY_DEPENDENCY_AUDIT_MISSING", path: "dependencyAudit", message: "npm audit must prove zero high/critical vulnerabilities" });
   }
   if (key === "sbom") { required(receipt.format, "format", errors); required(receipt.sha256 || receipt.sbomSha256, "sha256", errors); }
   if (key === "observability") for (const field of ["logs", "metrics", "traces", "alerts"]) if (receipt[field] !== true && receipt[field]?.status !== "verified") errors.push({ code: "OBSERVABILITY_DETAIL_MISSING", path: field, message: `${field} evidence is required` });
@@ -91,6 +102,16 @@ function validateGateDetails(key, receipt, errors) {
   if (key === "ciCd") required(receipt.workflowRunId || receipt.pipelineRunId, "workflowRunId", errors);
 }
 
+function validateDiagnosticDisposition(key, receipt, errors) {
+  if (!["blocked", "not-applicable"].includes(receipt.status)) return;
+  if (!nonEmpty(receipt.reason)) errors.push({ code: "DIAGNOSTIC_REASON_MISSING", path: "reason", message: `${receipt.status} diagnostic requires a reason` });
+  if (key === "accessibility" && receipt.status === "not-applicable") {
+    if (receipt.scope !== "backend-only" || receipt.uiChangesDetected !== false || receipt.nextGate !== "first-ui-candidate" || !receipt.findingEvidence) {
+      errors.push({ code: "ACCESSIBILITY_DEFER_INVALID", path: "checks.accessibility", message: "backend-only deferral requires scope, no UI changes, real findingEvidence, and nextGate=first-ui-candidate" });
+    }
+  }
+}
+
 let options;
 try {
   options = parse(process.argv.slice(2));
@@ -102,9 +123,10 @@ try {
   if (!receipt || typeof receipt !== "object" || Array.isArray(receipt)) {
     errors.push({ code: "GATE_RECEIPT_MISSING", path: `checks.${key}`, message: `${options.gate} receipt is required` });
   } else {
-    const migrationWaiver = key === "migration" && receipt.status === "not-applicable" && nonEmpty(receipt.reason);
-    if (!['passed', 'verified'].includes(receipt.status) && !migrationWaiver) {
-      errors.push({ code: "GATE_RECEIPT_NOT_PASSED", path: `checks.${key}.status`, message: "status must be passed or verified; only migration may be explicitly not-applicable with a reason" });
+    const diagnostic = DIAGNOSTIC_CHECKS.includes(key);
+    const allowedStatuses = diagnostic ? ["passed", "verified", "blocked", "not-applicable"] : ["passed", "verified"];
+    if (!allowedStatuses.includes(receipt.status)) {
+      errors.push({ code: "GATE_RECEIPT_NOT_PASSED", path: `checks.${key}.status`, message: diagnostic ? "diagnostic status must be passed, verified, blocked, or not-applicable" : "hard gate status must be passed or verified" });
     }
     const evidence = receipt.evidence || receipt.evidenceUri || receipt.receiptUri;
     if (!nonEmpty(evidence)) errors.push({ code: "GATE_RECEIPT_EVIDENCE_MISSING", path: `checks.${key}.evidence`, message: "durable evidence URI/path is required" });
@@ -114,7 +136,8 @@ try {
     if (receipt.runId && /(?:example|fixture|fake|historical|prototype)/i.test(String(receipt.runId))) {
       errors.push({ code: "GATE_RECEIPT_RUN_INVALID", path: `checks.${key}.runId`, message: "real runtime ID is required" });
     }
-    validateGateDetails(key, receipt, errors);
+    validateDiagnosticDisposition(key, receipt, errors);
+    if (["passed", "verified"].includes(receipt.status)) validateGateDetails(key, receipt, errors);
   }
   if (errors.length) fail(errors);
   const report = {

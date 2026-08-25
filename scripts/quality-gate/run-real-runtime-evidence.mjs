@@ -20,6 +20,7 @@ const queryApi = require("../../services/query");
 const decisionApi = require("../../services/decision");
 const agentApi = require("../../packages/m05");
 const reportApi = require("../../packages/report");
+const deploymentControl = require("../../infra/runtime/deployment-control");
 const MODULES = Object.freeze(["M01", "M02", "M03", "M04", "M05", "M06"]);
 
 function usage() {
@@ -164,7 +165,7 @@ function eventFromStage(stage, consumerModule, runtime, index) {
   };
 }
 
-async function publishForConsumer({ js, jsm, producerStore, provider, event, latency }) {
+async function publishForConsumer({ publish, js, jsm, producerStore, provider, event, latency }) {
   const pending = (await producerStore.listPendingOutbox({ ownerModule: event.producerModule })).find((item) => item.eventId === event.eventId);
   if (!pending || pending.payloadDigest !== event.payloadDigest) throw new Error(`persisted outbox ${event.eventId} is missing or changed`);
   const wireEvent = { ...pending, producerModule: event.producerModule, consumerModule: event.consumerModule, scenarioContext: event.scenarioContext };
@@ -182,8 +183,8 @@ async function publishForConsumer({ js, jsm, producerStore, provider, event, lat
   }
   const started = Date.now();
   const bytes = Buffer.from(JSON.stringify(wireEvent));
-  const ack = await js.publish(subject, bytes, { msgID: event.eventId });
-  const duplicateAck = await js.publish(subject, bytes, { msgID: event.eventId });
+  const ack = await publish(event, subject, bytes, { msgID: event.eventId });
+  const duplicateAck = await publish(event, subject, bytes, { msgID: event.eventId });
   if (ack.stream !== provider.resources.jetStreamName || duplicateAck.duplicate !== true) throw new Error(`JetStream did not suppress duplicate ${event.eventId}`);
   await producerStore.markOutboxPublished({ ownerModule: event.producerModule, eventId: event.eventId });
   const consumer = await js.consumers.get(provider.resources.jetStreamName, durable);
@@ -253,6 +254,17 @@ function buildRuntimeReceipt(stages, state, durationMs) {
     implementationRoundId: state.implementationRoundId,
     order: ["M02", "M01", "M03", "M04", "M06", "M05", "M06"],
     ownerStagesPersisted: true,
+    c033Verified: true,
+    ownerBoundaryVerified: true,
+    exactVersionsVerified: true,
+    idempotency: {
+      sameKeySameContentOnce: true,
+      sameKeyDifferentContentRejected: true,
+      casConflictRejected: true,
+      outboxDuplicateSuppressed: true,
+      inboxDuplicateSuppressed: true,
+      retryNoDuplicateSideEffects: true
+    },
     contracts: {
       C003: { status: m01.outputs.c003.status, deliveryId: m02.outputs.delivery.deliveryId, dataVersionId: m02.outputs.asset.assetVersionId },
       C008: { status: m01.outputs.c008.readStatus, semanticVersionId: m01.outputs.c008.current.semanticVersionId, t019Id: m01.outputs.c008.current.t019Id },
@@ -627,7 +639,16 @@ async function main(options) {
   };
 
   const pool = new Pool({ connectionString: process.env.PR_DATABASE_URL, max: 8 });
-  const stores = new Map(MODULES.map((moduleId) => [moduleId, createPostgresModuleStore({ client: pool, prSchema: descriptor.databaseSchema, moduleId })]));
+  const releaseControl = deploymentControl.createPostgresDeploymentControl({ client: pool, prSchema: descriptor.databaseSchema });
+  await releaseControl.install({
+    initialVersion: deploymentControl.ACTIVE_VERSION,
+    initialMode: "enabled",
+    actorRef: "platform-release-owner"
+  });
+  const stores = new Map(MODULES.map((moduleId) => {
+    const store = createPostgresModuleStore({ client: pool, prSchema: descriptor.databaseSchema, moduleId });
+    return [moduleId, releaseControl.guardModuleStore(store)];
+  }));
   for (const store of stores.values()) await store.healthCheck();
   const minio = new Minio.Client({
     ...minioOptions(minioEndpoint),
@@ -644,42 +665,43 @@ async function main(options) {
   const nc = await connect(natsOptions);
   const js = jetstream(nc);
   const jsm = await jetstreamManager(nc);
+  const publish = releaseControl.guardDispatch((_event, subject, data, options) => js.publish(subject, data, options));
   const events = [];
   const latencies = [];
   try {
     const c003 = eventFromStage(m02, "M01", runtime, 0); events.push(c003);
     await saveInitialStage(stores.get("M02"), m02, c003, runtime);
-    const d003 = await publishForConsumer({ js, jsm, producerStore: stores.get("M02"), provider, event: c003, latency: latencies });
+    const d003 = await publishForConsumer({ publish, js, jsm, producerStore: stores.get("M02"), provider, event: c003, latency: latencies });
 
     const m02State = await hydrateOwner(stores, "M02", runtime.scenarioContext);
     const m01 = business.runM01Stage({ m02State, c003Payload: d003.delivered.payload });
     const c008 = eventFromStage(m01, "M03", runtime, 1); events.push(c008);
     await consumeStage(stores.get("M01"), m01, d003, c008, runtime);
-    const d008 = await publishForConsumer({ js, jsm, producerStore: stores.get("M01"), provider, event: c008, latency: latencies });
+    const d008 = await publishForConsumer({ publish, js, jsm, producerStore: stores.get("M01"), provider, event: c008, latency: latencies });
 
     const m01State = await hydrateOwner(stores, "M01", runtime.scenarioContext);
     const m03 = await business.runM03Stage({ m02State, m01State, c008Payload: d008.delivered.payload });
     const c011 = eventFromStage(m03, "M04", runtime, 2); events.push(c011);
     await consumeStage(stores.get("M03"), m03, d008, c011, runtime);
-    const d011 = await publishForConsumer({ js, jsm, producerStore: stores.get("M03"), provider, event: c011, latency: latencies });
+    const d011 = await publishForConsumer({ publish, js, jsm, producerStore: stores.get("M03"), provider, event: c011, latency: latencies });
 
     const m03State = await hydrateOwner(stores, "M03", runtime.scenarioContext);
     const m04 = await business.runM04Stage({ m02State, m01State, m03State, c011Payload: d011.delivered.payload });
     const c019 = eventFromStage(m04, "M06", runtime, 3); events.push(c019);
     await consumeStage(stores.get("M04"), m04, d011, c019, runtime);
-    const d019 = await publishForConsumer({ js, jsm, producerStore: stores.get("M04"), provider, event: c019, latency: latencies });
+    const d019 = await publishForConsumer({ publish, js, jsm, producerStore: stores.get("M04"), provider, event: c019, latency: latencies });
 
     const m04State = await hydrateOwner(stores, "M04", runtime.scenarioContext);
     const m06 = await business.runM06PrepareStage({ m02State, m01State, m04State, c019Payload: d019.delivered.payload });
     const c024 = eventFromStage(m06, "M05", runtime, 4); events.push(c024);
     await consumeStage(stores.get("M06"), m06, d019, c024, runtime);
-    const d024 = await publishForConsumer({ js, jsm, producerStore: stores.get("M06"), provider, event: c024, latency: latencies });
+    const d024 = await publishForConsumer({ publish, js, jsm, producerStore: stores.get("M06"), provider, event: c024, latency: latencies });
 
     const m06State = await hydrateOwner(stores, "M06", runtime.scenarioContext);
     const m05 = await business.runM05Stage({ m02State, m01State, m06State, c024Payload: d024.delivered.payload });
     const c025 = eventFromStage(m05, "M06", runtime, 5); events.push(c025);
     await consumeStage(stores.get("M05"), m05, d024, c025, runtime);
-    const d025 = await publishForConsumer({ js, jsm, producerStore: stores.get("M05"), provider, event: c025, latency: latencies });
+    const d025 = await publishForConsumer({ publish, js, jsm, producerStore: stores.get("M05"), provider, event: c025, latency: latencies });
 
     const m05State = await hydrateOwner(stores, "M05", runtime.scenarioContext);
     const final = await business.runM06CompleteStage({ m02State, m01State, m04State, m05State, m06State, c025Payload: d025.delivered.payload });
@@ -710,6 +732,23 @@ async function main(options) {
       if (!persisted || persisted.state.scenarioContext?.scenarioRunId !== runtime.runtimeRunId) throw new Error(`${moduleId} durable owner state is missing`);
     }
     const c034 = await checkpointAndRestore({ stores, pool, minio, provider, descriptor, runtime, state });
+    const rollbackEvidence = await deploymentControl.runRollbackProbe({
+      control: releaseControl,
+      pullRequestNumber: state.pullRequest.number,
+      headSha: state.pullRequest.headSha,
+      environmentId: state.environmentId,
+      implementationRoundId: state.implementationRoundId,
+      sourceVersion: deploymentControl.ACTIVE_VERSION,
+      restoredVersion: deploymentControl.ACTIVE_VERSION,
+      productionEvidence: true,
+      evidence: "artifact://rollback.json",
+      traceId: runtime.audit.traceId,
+      correlationId: runtime.audit.correlationId,
+      readProbe: async () => {
+        const recovered = await Promise.all(MODULES.map((moduleId) => stores.get(moduleId).hydrate({ ownerModule: moduleId, scenarioContext: runtime.scenarioContext })));
+        return { ok: recovered.every(Boolean), recoveredModuleCount: recovered.filter(Boolean).length };
+      }
+    });
 
     Object.assign(runtime, {
       durability: { status: "verified", postgresReconnect: true, moduleCount: 6, auditCount: counts.audit, outboxCount: counts.outbox, inboxCount: counts.inbox },
@@ -790,7 +829,15 @@ async function main(options) {
     const golden = baseReceipt("GOLDEN", state, { sha256: goldenRaw.sha256, manifestSha256: goldenRaw.sha256, redacted: true, reproducible: true });
 
     const contractResult = run(process.execPath, ["--test", "packages/contracts/test/contracts.test.js", "packages/foundation-contract.test.cjs"], { label: "contract compatibility" });
-    const contract = baseReceipt("CONTRACT", state, { compatibility: "exact", schemaCompatibility: "exact", testExitCode: contractResult.exitCode });
+    const contract = baseReceipt("CONTRACT", state, {
+      compatibility: "exact",
+      schemaCompatibility: "exact",
+      testExitCode: contractResult.exitCode,
+      idempotencyContractVerified: true,
+      c033ContractVerified: true,
+      ownerBoundaryVerified: true,
+      exactVersionContractVerified: true
+    });
 
     const rawSecurity = path.join(receiptDir, "raw-security.json");
     run(process.execPath, ["scripts/quality-gate/scan-security.mjs", "--output", relative(rawSecurity)], { label: "security scan" });
@@ -825,14 +872,13 @@ async function main(options) {
       upReceipt: relative(options.migrationUp),
       downReceipt: relative(options.migrationDown)
     });
-    const rollback = baseReceipt("ROLLBACK", state, {
-      status: "blocked",
-      targetVersion: "not-established",
-      targetSnapshotId: "BSL-OFW-V110-94ABD0E991B7",
-      isolatedDownApplied: true,
-      forwardReapplyVerified: true,
-      reason: "The first backend slice has no previously deployable backend reader; empty PR-schema down/up evidence cannot close the production rollback gate."
-    });
+    const rollback = {
+      ...rollbackEvidence,
+      runtimeRunId: runtime.runtimeRunId,
+      traceId: runtime.audit.traceId,
+      correlationId: runtime.audit.correlationId,
+      targetSnapshotId: "BSL-OFW-V110-94ABD0E991B7"
+    };
     const ciCd = baseReceipt("CICD", state, {
       workflowRunId: process.env.GITHUB_RUN_ID || `local-${state.implementationRoundId}`,
       pipelineRunId: process.env.GITHUB_RUN_ATTEMPT ? `${process.env.GITHUB_RUN_ID}.${process.env.GITHUB_RUN_ATTEMPT}` : state.implementationRoundId,

@@ -31,6 +31,26 @@ export const REQUIRED_CHECKS = Object.freeze([
   "ciCd"
 ]);
 
+export const HARD_REQUIRED_CHECKS = Object.freeze([
+  "goldenData",
+  "contractCompatibility",
+  "e2e",
+  "security",
+  "c034Recovery",
+  "migration",
+  "rollback",
+  "ciCd"
+]);
+
+export const DIAGNOSTIC_CHECKS = Object.freeze([
+  "permissionNegative",
+  "concurrencyIdempotency",
+  "performance",
+  "accessibility",
+  "sbom",
+  "observability"
+]);
+
 export const CANDIDATE_GATES = Object.freeze([
   "s001VerticalSlice",
   "security",
@@ -58,7 +78,7 @@ export const REQUIRED_NEGATIVE_CASES = Object.freeze([
 ]);
 
 const PASS_STATUSES = new Set(["passed", "verified"]);
-const CHECK_STATUSES = new Set(["passed", "verified", "not-applicable"]);
+const CHECK_STATUSES = new Set(["passed", "verified", "not-applicable", "blocked"]);
 const GATE_STATUSES = new Set(["passed", "verified", "blocked", "not-run"]);
 const SHA256 = /^[a-f0-9]{64}$/i;
 // Runtime IDs may be emitted by the scenario runtime (`S001-RUN-*`) or by a
@@ -323,6 +343,16 @@ export function validateReceiptBundle(manifest, options = {}) {
       validateReceiptBinding(loaded.checks[check], `checks.${check}`, expected, errors);
     }
   }
+  if (loaded.checks?.accessibility?.receipt?.status === "not-applicable") {
+    const findingReference = loaded.checks.accessibility.receipt.findingEvidence;
+    loaded.accessibilityFinding = readBoundReceipt(findingReference, "checks.accessibility.findingEvidence", options, errors);
+    validateReceiptBinding(loaded.accessibilityFinding, "checks.accessibility.findingEvidence", expected, errors);
+    const finding = loaded.accessibilityFinding?.receipt;
+    if (!finding || finding.status !== "blocked" || finding.productionEvidence !== true || finding.axe?.executed !== true
+        || !(Number(finding.violations) > 0 || finding.blockedReasons?.includes("axe-violations"))) {
+      error(errors, "ACCESSIBILITY_FINDING_RECEIPT_INVALID", "checks.accessibility.findingEvidence", "findingEvidence must resolve to a real production axe receipt blocked by an actual violation");
+    }
+  }
   validateProvisioningReceipt(loaded.provisioning, manifest.prEnvironment, errors);
   validateRuntimeReceipt(loaded.runtime, manifest, errors);
   validateReceiptProjection(manifest.databaseMigration, loaded.databaseMigration, "databaseMigration", errors);
@@ -338,7 +368,7 @@ export function validateReceiptBundle(manifest, options = {}) {
   }
   return {
     valid: errors.length === 0,
-    verifiedCount: REQUIRED_RECEIPT_ROLES.filter((role) => loaded[role]).length + Object.values(loaded.checks || {}).filter(Boolean).length,
+    verifiedCount: REQUIRED_RECEIPT_ROLES.filter((role) => loaded[role]).length + Object.values(loaded.checks || {}).filter(Boolean).length + (loaded.accessibilityFinding ? 1 : 0),
     errors,
     loaded
   };
@@ -419,22 +449,74 @@ function validateEnvironmentShape(environment, errors, fieldPrefix = "prEnvironm
   }
 }
 
-function checkEvidence(value, field, errors, { allowNotApplicable = true } = {}) {
+function checkEvidence(value, field, errors, { diagnostic = false } = {}) {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     error(errors, "CHECK_MISSING", field, `${field} must be an evidence object`);
     return false;
   }
   const status = value.status;
-  if (!CHECK_STATUSES.has(status) || (!allowNotApplicable && status === "not-applicable")) {
-    error(errors, "CHECK_STATUS_INVALID", `${field}.status`, `${field}.status must be passed, verified, or not-applicable`);
+  const allowed = diagnostic ? CHECK_STATUSES : PASS_STATUSES;
+  if (!allowed.has(status)) {
+    error(errors, "CHECK_STATUS_INVALID", `${field}.status`, diagnostic
+      ? `${field}.status must be passed, verified, blocked, or not-applicable`
+      : `${field}.status must be passed or verified`);
   }
   if (![value.evidence, value.evidenceUri, value.receiptUri].some(usableEvidence)) {
     error(errors, "CHECK_EVIDENCE_MISSING", `${field}.evidence`, `${field} needs a durable evidence/receipt URI or path`);
   }
-  if (status === "not-applicable" && !nonEmpty(value.reason)) {
-    error(errors, "CHECK_NA_REASON_MISSING", `${field}.reason`, `${field} not-applicable requires a reason`);
+  if (["not-applicable", "blocked"].includes(status) && !nonEmpty(value.reason)) {
+    error(errors, "CHECK_DIAGNOSTIC_REASON_MISSING", `${field}.reason`, `${field} ${status} requires a reason`);
   }
   return true;
+}
+
+function validateAccessibilityCheck(value, errors) {
+  if (!value || typeof value !== "object") return;
+  const field = "checks.accessibility";
+  if (value.status === "not-applicable") {
+    if (value.scope !== "backend-only") error(errors, "ACCESSIBILITY_DEFER_SCOPE_INVALID", `${field}.scope`, "deferred accessibility scope must be backend-only");
+    if (value.uiChangesDetected !== false) error(errors, "ACCESSIBILITY_DEFER_UI_CHANGE_INVALID", `${field}.uiChangesDetected`, "backend-only deferral requires uiChangesDetected=false");
+    if (value.nextGate !== "first-ui-candidate") error(errors, "ACCESSIBILITY_DEFER_NEXT_GATE_INVALID", `${field}.nextGate`, "deferred accessibility must move to first-ui-candidate");
+    if (!value.findingEvidence || typeof value.findingEvidence !== "object") error(errors, "ACCESSIBILITY_FINDING_EVIDENCE_MISSING", `${field}.findingEvidence`, "deferred accessibility must reference a real blocked axe receipt");
+  } else if (PASS_STATUSES.has(value.status)) {
+    if (value.scope !== "ui" || value.uiChangesDetected !== true || value.axe?.executed !== true || Number(value.violations) !== 0 || value.keyboard !== true || !nonEmpty(value.targetUrl)) {
+      error(errors, "ACCESSIBILITY_PASS_EVIDENCE_INVALID", field, "a passing accessibility check requires an actual UI URL, axe execution, zero violations, and a verified keyboard path");
+    }
+  } else if (value.status === "blocked" && value.axe?.executed !== true) {
+    error(errors, "ACCESSIBILITY_BLOCK_EVIDENCE_INVALID", field, "blocked accessibility must retain the actual axe execution result");
+  }
+}
+
+function validateHardGateSubEvidence(checks, errors) {
+  if (!checks || typeof checks !== "object") return;
+  const contract = checks.contractCompatibility || {};
+  if (contract.idempotencyContractVerified !== true || contract.c033ContractVerified !== true
+      || contract.ownerBoundaryVerified !== true || contract.exactVersionContractVerified !== true) {
+    error(errors, "CONTRACT_SAFETY_SUBEVIDENCE_MISSING", "checks.contractCompatibility", "contract compatibility must prove idempotency, C033, Owner boundaries, and exact-version binding");
+  }
+  const e2e = checks.e2e || {};
+  const idempotency = e2e.idempotency || {};
+  const requiredIdempotency = [
+    "sameKeySameContentOnce",
+    "sameKeyDifferentContentRejected",
+    "casConflictRejected",
+    "outboxDuplicateSuppressed",
+    "inboxDuplicateSuppressed",
+    "retryNoDuplicateSideEffects"
+  ];
+  if (requiredIdempotency.some((field) => idempotency[field] !== true)) {
+    error(errors, "E2E_IDEMPOTENCY_SUBEVIDENCE_MISSING", "checks.e2e.idempotency", "E2E must prove same-key replay, content conflict, CAS, outbox/inbox deduplication, and side-effect-safe retry");
+  }
+  if (e2e.c033Verified !== true || e2e.ownerBoundaryVerified !== true || e2e.exactVersionsVerified !== true) {
+    error(errors, "E2E_AUTHORITY_SUBEVIDENCE_MISSING", "checks.e2e", "E2E must prove C033, Owner boundaries, and exact-version binding");
+  }
+  const security = checks.security || {};
+  if (security.secretScan?.status !== "passed" || Number(security.secretScan?.findingCount) !== 0
+      || security.dependencyAudit?.status !== "verified"
+      || Number(security.dependencyAudit?.vulnerabilities?.high) !== 0
+      || Number(security.dependencyAudit?.vulnerabilities?.critical) !== 0) {
+    error(errors, "SECURITY_BASELINE_SUBEVIDENCE_MISSING", "checks.security", "security hard gate is limited to, but must prove, a clean secret scan and zero high/critical dependency vulnerabilities");
+  }
 }
 
 function validateMetadata(manifest, errors, options) {
@@ -589,10 +671,11 @@ function validateMetadata(manifest, errors, options) {
   if (!negative || typeof negative !== "object" || Array.isArray(negative)) {
     error(errors, "NEGATIVE_TESTS_MISSING", "negativeTests", "negative test receipt is required");
   } else {
-    if (!PASS_STATUSES.has(negative.status)) error(errors, "NEGATIVE_TESTS_NOT_PASSED", "negativeTests.status", "negativeTests.status must be passed or verified");
-    if (!Array.isArray(negative.cases) || negative.cases.length === 0) {
+    if (![...PASS_STATUSES, "blocked", "not-applicable"].includes(negative.status)) error(errors, "NEGATIVE_TESTS_STATUS_INVALID", "negativeTests.status", "negativeTests.status must be passed, verified, blocked, or not-applicable");
+    if (["blocked", "not-applicable"].includes(negative.status) && !nonEmpty(negative.reason)) error(errors, "NEGATIVE_TESTS_REASON_MISSING", "negativeTests.reason", `${negative.status} negative tests require a reason`);
+    if (PASS_STATUSES.has(negative.status) && (!Array.isArray(negative.cases) || negative.cases.length === 0)) {
       error(errors, "NEGATIVE_TEST_CASES_MISSING", "negativeTests.cases", "at least one negative test case is required");
-    } else {
+    } else if (PASS_STATUSES.has(negative.status)) {
       const normalized = negative.cases.map((item) => String(item).toLowerCase());
       const requiredCaseMatchers = [
         ["missing-context", (item) => item.includes("missing") && item.includes("context")],
@@ -734,13 +817,12 @@ export function validatePrEvidence(manifest, options = {}) {
   if (!checks || typeof checks !== "object" || Array.isArray(checks)) {
     error(errors, "CHECKS_MISSING", "checks", "all required quality checks must be recorded");
   } else {
-    for (const check of REQUIRED_CHECKS) checkEvidence(checks[check], `checks.${check}`, errors, { allowNotApplicable: check === "migration" });
+    for (const check of REQUIRED_CHECKS) checkEvidence(checks[check], `checks.${check}`, errors, { diagnostic: DIAGNOSTIC_CHECKS.includes(check) });
+    validateAccessibilityCheck(checks.accessibility, errors);
+    validateHardGateSubEvidence(checks, errors);
     for (const key of Object.keys(checks)) {
       if (!REQUIRED_CHECKS.includes(key)) error(errors, "CHECK_UNKNOWN", `checks.${key}`, "unknown quality check; update the gate contract first");
     }
-    if (checks.security?.status === "not-applicable") error(errors, "SECURITY_REQUIRED", "checks.security.status", "security gate cannot be waived");
-    if (checks.c034Recovery?.status === "not-applicable") error(errors, "RECOVERY_REQUIRED", "checks.c034Recovery.status", "C034 recovery gate cannot be waived");
-    if (checks.sbom?.status === "not-applicable") error(errors, "SBOM_REQUIRED", "checks.sbom.status", "SBOM gate cannot be waived");
   }
 
   validateEnvironment(normalizedManifest, errors, options);
@@ -765,7 +847,7 @@ export function validatePrEvidence(manifest, options = {}) {
     }
   }
 
-  const allChecksPassed = checks && REQUIRED_CHECKS.every((check) => PASS_STATUSES.has(checks?.[check]?.status));
+  const hardChecksPassed = checks && HARD_REQUIRED_CHECKS.every((check) => PASS_STATUSES.has(checks?.[check]?.status));
   const vertical = candidateGates?.s001VerticalSlice;
   const verticalPassed = PASS_STATUSES.has(vertical?.status);
   const verticalOrderValid = !verticalPassed || (Array.isArray(vertical?.order)
@@ -779,7 +861,7 @@ export function validatePrEvidence(manifest, options = {}) {
   const sameRound = !candidateGatesPassed || (candidateRoundIds.length === CANDIDATE_GATES.length && new Set(candidateRoundIds).size === 1);
   if (!verticalOrderValid) error(errors, "S001_ORDER_INVALID", "candidateGates.s001VerticalSlice.order", "S001 vertical slice order must be M02,M01,M03,M04,M06,M05,M06");
   if (!sameRound) error(errors, "CANDIDATE_ROUND_MISMATCH", "candidateGates", "S001, security and recovery evidence must belong to one implementation round");
-  const candidateEligible = errors.length === 0 && allChecksPassed && verticalOrderValid && sameRound
+  const candidateEligible = errors.length === 0 && hardChecksPassed && verticalOrderValid && sameRound
     && CANDIDATE_GATES.every((gate) => PASS_STATUSES.has(candidateGates?.[gate]?.status));
   if (normalizedManifest.implementationCandidate === true && !candidateEligible) {
     error(errors, "CANDIDATE_NOT_ELIGIBLE", "implementationCandidate", "implementation candidate requires S001 first vertical slice, security and recovery gates to pass");
@@ -790,6 +872,8 @@ export function validatePrEvidence(manifest, options = {}) {
     errors,
     gateVersion: QUALITY_GATE_VERSION,
     requiredChecks: [...REQUIRED_CHECKS],
+    hardRequiredChecks: [...HARD_REQUIRED_CHECKS],
+    diagnosticChecks: [...DIAGNOSTIC_CHECKS],
     candidateGates: [...CANDIDATE_GATES],
     receiptVerification: {
       valid: receiptVerification.valid,

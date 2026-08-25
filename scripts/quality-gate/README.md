@@ -46,9 +46,16 @@ with a real runner or `--evidence` with a durable receipt; omitting both is an
 error. The GitHub workflow keeps all these checks required and retains their
 artifacts for 90 days.
 
-The active baseline is `BSL-OFW-V110-94ABD0E991B7`. A valid manifest can still
-be `candidateEligible: false`: candidate formation additionally requires the
-same-round S001 first vertical slice, security and C034 recovery gates.
+The active baseline is `BSL-OFW-V110-94ABD0E991B7`. Candidate eligibility uses
+the eight hard gates declared in `quality-gates/policy.json`. Diagnostics remain
+fully indexed but a well-formed `blocked`/`not-applicable` diagnostic does not
+block the candidate. Hard E2E/contract receipts retain idempotency, C033, Owner
+and exact-version sub-evidence; moving the standalone concurrency check does not
+waive those invariants.
+
+Backend-only accessibility must defer to `first-ui-candidate` and retain a
+digest-bound `findingEvidence` reference to the actual blocked axe receipt. Do
+not infer an accessibility pass from an unchanged frozen prototype.
 
 The generator accepts only a complete index: eight primary receipts plus one
 receipt for every required check. Each file is parsed and bound by `receiptId`,

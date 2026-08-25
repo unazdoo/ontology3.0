@@ -3,6 +3,7 @@ import test from "node:test";
 import { runAccessibilityProbe } from "./run-accessibility-evidence.mjs";
 import { evaluateObservabilityEvidence } from "./run-observability-evidence.mjs";
 import { evaluateSecurityEvidence } from "./run-security-evidence.mjs";
+import { createBackendAccessibilityDeferral } from "./defer-accessibility-evidence.mjs";
 
 const binding = Object.freeze({
   pullRequest: { number: 42, headSha: "a".repeat(40) },
@@ -68,6 +69,27 @@ test("accessibility probe requires a real browser path and blocks axe violations
   const blocked = await runAccessibilityProbe(options, { playwright: fakePlaywright([{ id: "color-contrast", impact: "serious", description: "contrast", help: "fix", nodes: [] }]), axeSource: "x".repeat(200) });
   assert.equal(blocked.status, "blocked");
   assert.deepEqual(blocked.blockedReasons, ["axe-violations"]);
+});
+
+test("backend accessibility deferral retains a digest-bound real axe finding", () => {
+  const finding = {
+    receiptId: "ACCESSIBILITY-FINDING-42", status: "blocked", productionEvidence: true,
+    runtimeRunId: binding.runtimeRunId, environmentId: binding.environmentId,
+    implementationRoundId: binding.implementationRoundId, traceId: binding.traceId,
+    correlationId: binding.correlationId, axe: { executed: true }, violations: 1,
+    blockedReasons: ["axe-violations"]
+  };
+  const receipt = createBackendAccessibilityDeferral({
+    runtime: runtime(), env: {}, output: "artifacts/accessibility.json", uiChangePaths: [],
+    finding: { path: "artifacts/accessibility-finding.json", sha256: "e".repeat(64), value: finding }
+  });
+  assert.equal(receipt.status, "not-applicable");
+  assert.equal(receipt.nextGate, "first-ui-candidate");
+  assert.equal(receipt.findingEvidence.receiptId, finding.receiptId);
+  assert.throws(() => createBackendAccessibilityDeferral({
+    runtime: runtime(), env: {}, output: "artifacts/accessibility.json", uiChangePaths: ["apps/web/page.tsx"],
+    finding: { path: "artifacts/accessibility-finding.json", sha256: "e".repeat(64), value: finding }
+  }), /forbidden for UI changes/);
 });
 
 test("observability receipt validates actual logs, metrics, spans and fail-closed alert correlation", () => {

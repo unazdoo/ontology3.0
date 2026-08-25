@@ -149,7 +149,23 @@
         "permissionNegative": { "$ref": "#/definitions/check" },
         "concurrencyIdempotency": { "$ref": "#/definitions/check" },
         "performance": { "$ref": "#/definitions/check" },
-        "accessibility": { "$ref": "#/definitions/check" },
+        "accessibility": {
+          "allOf": [
+            { "$ref": "#/definitions/check" },
+            {
+              "if": { "properties": { "status": { "const": "not-applicable" } } },
+              "then": {
+                "required": ["reason", "scope", "uiChangesDetected", "findingEvidence", "nextGate"],
+                "properties": {
+                  "scope": { "const": "backend-only" },
+                  "uiChangesDetected": { "const": false },
+                  "findingEvidence": { "$ref": "#/definitions/receiptReference" },
+                  "nextGate": { "const": "first-ui-candidate" }
+                }
+              }
+            }
+          ]
+        },
         "security": { "$ref": "#/definitions/check" },
         "sbom": { "$ref": "#/definitions/check" },
         "observability": { "$ref": "#/definitions/check" },
@@ -222,13 +238,24 @@
       "type": "object",
       "required": ["status", "evidence", "receiptId", "receiptSha256"],
       "properties": {
-        "status": { "type": "string", "enum": ["passed", "verified", "not-applicable"] },
+        "status": { "type": "string", "enum": ["passed", "verified", "blocked", "not-applicable"] },
         "evidence": { "type": "string", "minLength": 1 },
         "evidenceUri": { "type": "string", "minLength": 1 },
         "receiptUri": { "type": "string", "minLength": 1 },
         "receiptId": { "type": "string", "minLength": 1 },
-        "receiptSha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" }
-      }
+        "receiptSha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" },
+        "reason": { "type": "string", "minLength": 1 },
+        "scope": { "type": "string", "minLength": 1 },
+        "uiChangesDetected": { "type": "boolean" },
+        "findingEvidence": { "$ref": "#/definitions/receiptReference" },
+        "nextGate": { "type": "string", "minLength": 1 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "enum": ["blocked", "not-applicable"] } } },
+          "then": { "required": ["reason"] }
+        }
+      ]
     },
     "candidateGate": {
       "type": "object",

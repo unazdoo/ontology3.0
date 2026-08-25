@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { spawnSync } from "node:child_process";
-import { buildPrEnvironment } from "../lib/quality-gate.mjs";
+import { buildPrEnvironment, sha256 } from "../lib/quality-gate.mjs";
 
 export const TEST_BINDING = Object.freeze({
   pullRequestNumber: 42,
@@ -33,13 +33,26 @@ function common(id, environment, extra = {}) {
 function checkReceipts(environment, runtimeRunId) {
   const values = {
     goldenData: { sha256: "1".repeat(64) },
-    contractCompatibility: { compatibility: "exact" },
-    e2e: { scenarioId: "S001", runtimeRunId },
+    contractCompatibility: {
+      compatibility: "exact", idempotencyContractVerified: true, c033ContractVerified: true,
+      ownerBoundaryVerified: true, exactVersionContractVerified: true
+    },
+    e2e: {
+      scenarioId: "S001", runtimeRunId, c033Verified: true, ownerBoundaryVerified: true, exactVersionsVerified: true,
+      idempotency: {
+        sameKeySameContentOnce: true, sameKeyDifferentContentRejected: true, casConflictRejected: true,
+        outboxDuplicateSuppressed: true, inboxDuplicateSuppressed: true, retryNoDuplicateSideEffects: true
+      }
+    },
     permissionNegative: { deniedCases: ["cross-scenario"] },
     concurrencyIdempotency: { duplicateSuppressed: true, raceCovered: true, retryCovered: true },
     performance: { p95Ms: 120, sloMs: 500 },
-    accessibility: { standard: "WCAG 2.2 AA", violations: 0, keyboard: true },
-    security: { unresolvedCritical: 0, unresolvedHigh: 0 },
+    accessibility: { standard: "WCAG 2.2 AA", scope: "ui", uiChangesDetected: true, targetUrl: "http://127.0.0.1/app", axe: { executed: true }, violations: 0, keyboard: true },
+    security: {
+      unresolvedCritical: 0, unresolvedHigh: 0,
+      secretScan: { status: "passed", findingCount: 0 },
+      dependencyAudit: { status: "verified", vulnerabilities: { high: 0, critical: 0 } }
+    },
     sbom: { format: "SPDX-2.3", sha256: "2".repeat(64) },
     observability: { logs: true, metrics: true, traces: true, alerts: true },
     c034Recovery: { receiptId: "RCPT-CHECK-C034", sideEffectsSuppressed: true, newScenarioRunId: true },
@@ -96,6 +109,29 @@ export function createReceiptInputs(root, options = {}) {
   };
   receipts.checks = checkReceipts(environment, runtimeRunId);
   if (typeof options.mutate === "function") options.mutate(receipts, environment);
+
+  if (options.deferredAccessibility) {
+    const finding = common("RCPT-ACCESSIBILITY-FINDING", environment, {
+      status: "blocked", scope: "ui", uiChangesDetected: true, targetUrl: "http://127.0.0.1/app",
+      standard: "WCAG 2.2 AA", axe: { executed: true }, violations: 1, keyboard: true,
+      blockedReasons: ["axe-violations"], reason: "axe found a real color contrast violation"
+    });
+    const findingRelative = "artifacts/receipts/accessibility-finding.json";
+    writeJson(path.join(root, findingRelative), finding);
+    const findingDigest = sha256(fs.readFileSync(path.join(root, findingRelative)));
+    receipts.checks.accessibility = common("RCPT-CHECK-accessibility", environment, {
+      status: "not-applicable",
+      reason: "current implementation slice is backend-only; the actual frozen UI finding remains open",
+      scope: "backend-only",
+      uiChangesDetected: false,
+      nextGate: "first-ui-candidate",
+      findingEvidence: {
+        path: findingRelative, sha256: findingDigest, receiptId: finding.receiptId,
+        pullRequestNumber: TEST_BINDING.pullRequestNumber, headSha: TEST_BINDING.headSha,
+        environmentId: environment.id, implementationRoundId: TEST_BINDING.implementationRoundId
+      }
+    });
+  }
 
   const index = {};
   for (const [role, receipt] of Object.entries(receipts)) {

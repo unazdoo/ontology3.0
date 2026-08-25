@@ -7,6 +7,8 @@ import { spawnSync } from "node:child_process";
 import test from "node:test";
 import {
   DEFAULT_BASELINE_SNAPSHOT_ID,
+  DIAGNOSTIC_CHECKS,
+  HARD_REQUIRED_CHECKS,
   REQUIRED_NEGATIVE_CASES,
   REQUIRED_CHECKS,
   buildPrEnvironment,
@@ -44,6 +46,13 @@ test("valid evidence is accepted and candidate eligibility is computed", () => {
 test("negative case policy is represented by the validator", () => {
   const policy = JSON.parse(fs.readFileSync(path.join(here, "../../quality-gates/required-negative-cases.json"), "utf8"));
   assert.deepEqual(REQUIRED_NEGATIVE_CASES, policy.required.map((item) => item.id));
+});
+
+test("policy hard and diagnostic checks form one exact partition", () => {
+  const policy = JSON.parse(fs.readFileSync(path.join(here, "../../quality-gates/policy.json"), "utf8"));
+  assert.deepEqual(HARD_REQUIRED_CHECKS, policy.hardGates);
+  assert.deepEqual(DIAGNOSTIC_CHECKS, policy.diagnosticChecks);
+  assert.deepEqual([...HARD_REQUIRED_CHECKS, ...DIAGNOSTIC_CHECKS].sort(), [...REQUIRED_CHECKS].sort());
 });
 
 test("missing mandatory metadata fails closed", () => {
