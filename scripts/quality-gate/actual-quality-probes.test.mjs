@@ -56,7 +56,7 @@ function fakePlaywright(violations = [], focus = [{ matched: true, visible: true
 
 test("accessibility probe requires a real browser path and blocks axe violations", async () => {
   const options = {
-    runtime: runtime(), browser: "chromium", url: "http://127.0.0.1/app", timeoutMs: 5000,
+    runtime: runtime(), env: {}, browser: "chromium", url: "http://127.0.0.1/app", timeoutMs: 5000,
     output: "artifacts/accessibility.json", focusSteps: [{ selector: "#nav" }, { selector: "#action" }],
     sources: { runtime: { path: "runtime.json", sha256: "a".repeat(64) }, focusPath: { path: "focus.json", sha256: "c".repeat(64) } }
   };
@@ -85,7 +85,7 @@ test("observability receipt validates actual logs, metrics, spans and fail-close
     alertId: "ALERT-PROBE-42", probe: { triggered: true, detected: true, blocked: true }
   };
   const receipt = evaluateObservabilityEvidence({
-    runtime: runtime(), output: "artifacts/observability.json", runtimeSource: { path: "runtime.json", sha256: "a".repeat(64) },
+    runtime: runtime(), env: {}, output: "artifacts/observability.json", runtimeSource: { path: "runtime.json", sha256: "a".repeat(64) },
     logs: source(logs, "logs"), metrics: source(metrics, "metrics"), traces: source(spans, "spans"),
     alerts: { path: "artifacts/alerts.json", sha256: "d".repeat(64), value: alert }
   });
@@ -95,7 +95,7 @@ test("observability receipt validates actual logs, metrics, spans and fail-close
 
   logs[0].correlationId = "other";
   const blocked = evaluateObservabilityEvidence({
-    runtime: runtime(), output: "artifacts/observability.json", runtimeSource: { path: "runtime.json", sha256: "a".repeat(64) },
+    runtime: runtime(), env: {}, output: "artifacts/observability.json", runtimeSource: { path: "runtime.json", sha256: "a".repeat(64) },
     logs: source(logs, "logs"), metrics: source(metrics, "metrics"), traces: source(spans, "spans"),
     alerts: { path: "artifacts/alerts.json", sha256: "d".repeat(64), value: alert }
   });
@@ -111,7 +111,7 @@ test("security receipt aggregates secret scan, npm audit and runtime permission 
     deniedCases: ["unauthorized-owner", "cross-scenario", "privilege-escalation"]
   };
   const inputs = {
-    runtime: runtime(), output: "artifacts/security.json", runtimeSource: { path: "runtime.json", sha256: "a".repeat(64) },
+    runtime: runtime(), env: {}, output: "artifacts/security.json", runtimeSource: { path: "runtime.json", sha256: "a".repeat(64) },
     secretScan: { path: "secret.json", sha256: "b".repeat(64), value: { status: "passed", findings: [] } },
     npmAudit: { path: "audit.json", sha256: "c".repeat(64), value: { auditReportVersion: 2, metadata: { vulnerabilities: { info: 0, low: 0, moderate: 0, high: 0, critical: 0, total: 0 } } } },
     permissionNegative: { path: "permission.json", sha256: "d".repeat(64), value: permission }
