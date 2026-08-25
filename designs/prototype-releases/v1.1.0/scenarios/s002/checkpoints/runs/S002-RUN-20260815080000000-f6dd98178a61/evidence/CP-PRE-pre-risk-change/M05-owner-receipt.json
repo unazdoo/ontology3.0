@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "ofw.s002.owner-validation-receipt.v2",
+  "receiptId": "RECEIPT-M05-pre-risk-change-625d6ec07b4f",
+  "moduleId": "M05",
+  "owner": "Agent 应用",
+  "moduleVersion": "S002-M05-1.0.0",
+  "scenarioAdapterVersion": "S002-M05-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "baselineCheckpointBinding": {
+    "ref": "designs/scenario-checkpoints/baselines/v1.0.3/T056-baseline-checkpoint.json",
+    "sha256": "0a90f5f68dccaa7c18be71b4c82019616f19b0e359f931024652d95165ecd414"
+  },
+  "baselineModuleBinding": {
+    "baselineVersion": "1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "prototypePath": "designs/prototype-releases/v1.0.3/agent-application",
+    "exactVersion": "v1.0.3#027d9f20c7d7ebd7",
+    "treeSha256": "027d9f20c7d7ebd753eb8e36b4475a5c271c91d979feda8e0d57c39b3cb9bcb2",
+    "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+    "supportingPrototypeComponents": []
+  },
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815080000000-f6dd98178a61",
+    "formedAt": "2026-08-15T08:00:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "pre-risk-change",
+  "exportRef": "checkpoints/runs/S002-RUN-20260815080000000-f6dd98178a61/evidence/CP-PRE-pre-risk-change/M05-state-export.json",
+  "exportSha256": "625d6ec07b4f351dc7260642ff6180bffeca1da388ac6a3b982e7ab4c33f5e7f",
+  "validatedAt": "2026-08-15T17:20:30.000Z",
+  "validationStatus": "verified",
+  "checks": {
+    "scenarioIdentity": "verified",
+    "baselineBinding": "verified",
+    "baselineModuleTreeDigest": "verified-by-deterministic-tree-digest",
+    "ownerBoundary": "verified",
+    "exportDigest": "verified",
+    "isolatedCloneShape": "verified-by-scenario-adapter",
+    "historicalSideEffectsDisabled": "verified"
+  },
+  "validationScope": "prototype-scenario-adapter",
+  "conclusionBoundary": "S002原型适配器导出与恢复校验通过，不代表生产模块部署或平台验收通过"
+}

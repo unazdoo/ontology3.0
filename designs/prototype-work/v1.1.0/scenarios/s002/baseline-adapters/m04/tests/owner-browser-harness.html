@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>S002 M04 零事项浏览器夹具</title>
+    <style>
+      html, body { width: 100%; height: 100%; margin: 0; font-family: Arial, sans-serif; background: #eef2f7; }
+      body { display: grid; grid-template-rows: 44px minmax(0, 1fr); }
+      header { display: flex; align-items: center; gap: 18px; padding: 0 16px; color: #eef6ff; background: #16324f; font-size: 13px; }
+      header strong { font-size: 15px; }
+      iframe { width: 100%; height: 100%; border: 0; background: #fff; }
+    </style>
+  </head>
+  <body>
+    <header><strong>M04 零事项浏览器夹具</strong><span>实施基准日 2026-08-15</span><span>0 行动申请 · 0 决策事项 · 0 待办</span></header>
+    <iframe id="m04" title="S002 M04 零事项完成态"></iframe>
+    <script>
+      (function () {
+        const context = {
+          scenarioId: "S002",
+          scenarioVersion: "S002-v1",
+          scenarioRunId: "S002-RUN-20260815-M04-ZERO-FIXTURE",
+          formedAt: "2026-08-15T16:00:00.000Z",
+          status: "active"
+        };
+        const snapshot = {
+          context,
+          progress: { actionsDrafted: false, actionConfirmed: false, todoCreated: false },
+          actionPolicy: "disabled-for-s002-current-scope",
+          actionRequests: [],
+          decisionAlerts: [],
+          todos: [],
+          decisionSummary: {
+            id: "C019-S002-NOT-APPLICABLE",
+            status: "no-runtime-actions",
+            requestCount: 0,
+            pendingCount: 0,
+            awaitingCount: 0,
+            confirmedCount: 0,
+            rejectedCount: 0,
+            todoCount: 0,
+            formedAt: context.formedAt
+          }
+        };
+        window.S002_STORE = Object.freeze({ get: function () { return JSON.parse(JSON.stringify(snapshot)); } });
+        const params = new URLSearchParams({
+          scenarioId: context.scenarioId,
+          scenarioVersion: context.scenarioVersion,
+          scenarioRunId: context.scenarioRunId,
+          formedAt: context.formedAt,
+          status: context.status,
+          build: "S002-20260815-m04-zero-browser-test-01"
+        });
+        document.getElementById("m04").src = `../decision-center-prototype/index.html?${params}#workbench`;
+      })();
+    </script>
+  </body>
+</html>

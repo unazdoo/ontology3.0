@@ -1,0 +1,472 @@
+{
+  "schemaVersion": "ofw.s003.published-risk-fact-set.v1",
+  "factSetId": "S003-PUBLISHED-RISK-FACTS-20251231-v1",
+  "factSetVersion": "1.0.0",
+  "status": "published",
+  "immutable": true,
+  "formedAt": "2026-08-15T13:30:00.000Z",
+  "owner": "M01 本体管理",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "assessmentAt": "2025-12-31",
+  "contracts": {
+    "semanticPublication": "C008",
+    "authoritativeDistribution": "T019",
+    "resultContract": "C035"
+  },
+  "sourceResultSet": {
+    "resultSetId": "S003-C035-RISK-RESULTS-20251231-v1",
+    "resultSetVersion": "1.0.0",
+    "resourceRef": "resources/m01/c035-risk-results.v1.json",
+    "sha256": "10e8ca2284abaaf680b549b6da3c5374ac6168a5e9b4bbe6d0abbcdb864b6153"
+  },
+  "factCount": 21,
+  "facts": [
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-001",
+      "subjectId": "S003-ENT-001",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 84.4,
+        "factorSum": -0.3,
+        "finalScore": 59.08,
+        "riskTierId": "GREEN",
+        "riskTierName": "绿灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-001",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-002",
+      "subjectId": "S003-ENT-002",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 84.2,
+        "factorSum": 0.05,
+        "finalScore": 88.41,
+        "riskTierId": "GREEN",
+        "riskTierName": "绿灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-002",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-003",
+      "subjectId": "S003-ENT-003",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 84.2,
+        "factorSum": -0.15,
+        "finalScore": 71.57,
+        "riskTierId": "GREEN",
+        "riskTierName": "绿灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-003",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-004",
+      "subjectId": "S003-ENT-004",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 84.6,
+        "factorSum": -0.05,
+        "finalScore": 80.37,
+        "riskTierId": "GREEN",
+        "riskTierName": "绿灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-004",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-005",
+      "subjectId": "S003-ENT-005",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 76.4,
+        "factorSum": -0.25,
+        "finalScore": 57.3,
+        "riskTierId": "GREEN",
+        "riskTierName": "绿灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-005",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-006",
+      "subjectId": "S003-ENT-006",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 75.8,
+        "factorSum": -0.2,
+        "finalScore": 60.64,
+        "riskTierId": "GREEN",
+        "riskTierName": "绿灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-006",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-007",
+      "subjectId": "S003-ENT-007",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 75.5,
+        "factorSum": -0.5,
+        "finalScore": 37.75,
+        "riskTierId": "YELLOW",
+        "riskTierName": "黄灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-007",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-008",
+      "subjectId": "S003-ENT-008",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 75.5,
+        "factorSum": -0.25,
+        "finalScore": 56.62,
+        "riskTierId": "GREEN",
+        "riskTierName": "绿灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-008",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-009",
+      "subjectId": "S003-ENT-009",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 72.8,
+        "factorSum": -0.35,
+        "finalScore": 47.32,
+        "riskTierId": "GREEN",
+        "riskTierName": "绿灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-009",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-010",
+      "subjectId": "S003-ENT-010",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 60,
+        "factorSum": -0.1,
+        "finalScore": 54,
+        "riskTierId": "GREEN",
+        "riskTierName": "绿灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-010",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-011",
+      "subjectId": "S003-ENT-011",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 60,
+        "factorSum": -0.1,
+        "finalScore": 54,
+        "riskTierId": "GREEN",
+        "riskTierName": "绿灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-011",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-012",
+      "subjectId": "S003-ENT-012",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 60,
+        "factorSum": -0.1,
+        "finalScore": 54,
+        "riskTierId": "GREEN",
+        "riskTierName": "绿灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-012",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-013",
+      "subjectId": "S003-ENT-013",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 62.8,
+        "factorSum": -0.3,
+        "finalScore": 43.96,
+        "riskTierId": "GREEN",
+        "riskTierName": "绿灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-013",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-014",
+      "subjectId": "S003-ENT-014",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 64.2,
+        "factorSum": -0.15,
+        "finalScore": 54.57,
+        "riskTierId": "GREEN",
+        "riskTierName": "绿灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-014",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-015",
+      "subjectId": "S003-ENT-015",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 62.4,
+        "factorSum": -0.2,
+        "finalScore": 49.92,
+        "riskTierId": "GREEN",
+        "riskTierName": "绿灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-015",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-016",
+      "subjectId": "S003-ENT-016",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 63.7,
+        "factorSum": -0.1,
+        "finalScore": 57.33,
+        "riskTierId": "GREEN",
+        "riskTierName": "绿灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-016",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-017",
+      "subjectId": "S003-ENT-017",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 43.6,
+        "factorSum": -0.3,
+        "finalScore": 30.52,
+        "riskTierId": "YELLOW",
+        "riskTierName": "黄灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-017",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-018",
+      "subjectId": "S003-ENT-018",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 42.4,
+        "factorSum": -0.2,
+        "finalScore": 33.92,
+        "riskTierId": "YELLOW",
+        "riskTierName": "黄灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-018",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-019",
+      "subjectId": "S003-ENT-019",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 43.9,
+        "factorSum": -0.15,
+        "finalScore": 37.31,
+        "riskTierId": "YELLOW",
+        "riskTierName": "黄灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-019",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-020",
+      "subjectId": "S003-ENT-020",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 41.9,
+        "factorSum": -0.45,
+        "finalScore": 23.05,
+        "riskTierId": "RED",
+        "riskTierName": "红灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-020",
+      "sourceResultVersion": "1.0.0"
+    },
+    {
+      "schemaVersion": "ofw.s003.published-debt-risk-fact.v1",
+      "factId": "S003-FACT-S003-RUN-20260815133000000-c03503000001-S003-ENT-021",
+      "subjectId": "S003-ENT-021",
+      "predicate": "debtRiskAssessment",
+      "object": {
+        "rawScore": 45.1,
+        "factorSum": 0,
+        "finalScore": 45.1,
+        "riskTierId": "GREEN",
+        "riskTierName": "绿灯"
+      },
+      "validAt": "2025-12-31",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-021",
+      "sourceResultVersion": "1.0.0"
+    }
+  ]
+}

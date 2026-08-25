@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "ofw.s002.v103-baseline-adaptation-map.m04-m06.v1",
+  "adaptationDate": "2026-08-15",
+  "verificationDate": "2026-08-17",
+  "baselineVersion": "v1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioId": "S002",
+  "scenarioVersion": "S002-v1",
+  "entries": {
+    "M04": {
+      "source": "designs/prototype-releases/v1.0.3/decision-center-prototype/index.html",
+      "runtimeEntry": "baseline-adapters/m04/decision-center-prototype/index.html",
+      "runtimeTarget": "baseline-adapters/m04/decision-center-prototype/review-v2/action-portfolio.html",
+      "sourceTreeSha256": "243f7a8a779b1fb9dddb74996c5bc7d99ad51211f019a2991afb6c8916f7b66b",
+      "sourceEntrySha256": "1a7426373763497bd834351c1182fbadfd9e932f9f6f655fdaa1bc4304db1e46",
+      "adapter": "baseline-adapters/m04/s002-adapter.js",
+      "preservedDomAnchors": [".decision-app", ".app-rail", ".product-nav", ".app-workspace", "#screen-stage", ".workbench-summary", ".record-table-wrap", ".two-column-detail", ".trace-flow", ".dc-modal"],
+      "sceneProjection": ["8 条基础 Action Request（3确认/1拒绝/4待决策/3待办）", "预算执行整改/下一年度预算合理性复核/费用管理优化核查/预算申报依据补充/采购占用清理/供应商价格复核", "驾驶舱发布不自动增项、点击幂等", "C017 三道门", "人工确认/拒绝/平台内待办", "外部派发关闭"]
+    },
+    "M05": {
+      "source": "designs/prototype-releases/v1.0.3/agent-application/Agent应用.html",
+      "runtimeEntry": "baseline-adapters/m05/agent-application/Agent应用.html",
+      "sourceTreeSha256": "027d9f20c7d7ebd753eb8e36b4475a5c271c91d979feda8e0d57c39b3cb9bcb2",
+      "sourceEntrySha256": "696fc45f13f9dc0d516aaf7132f262d50859940ad9d1335d098c1c65a36a4f33",
+      "adapter": "baseline-adapters/m05/agent-application/s002-adapter.js",
+      "preservedDomAnchors": [".app-shell.variant-catalog", ".platform-rail", ".product-nav", ".workspace", ".topbar", ".main", ".page", ".tabs", ".panel", ".data-table-wrap", ".debug-rail", ".orchestration-grid"],
+      "sceneProjection": ["预算异常分析 Agent", "预算报告草稿 Agent", "Prompt/Skill/Tool 资源", "固定证据包", "两条完成运行", "confirm-result 完成门", "运行/结果/轻量编排"]
+    },
+    "M06": {
+      "source": "designs/prototype-releases/v1.0.3/report-center/review-lifecycle/index.html",
+      "runtimeEntry": "baseline-adapters/m06/report-center/review-lifecycle/index.html",
+      "sourceTreeSha256": "8be8533ca1583f9135c76acf3bfab844d1431abc0e4807ec301e2f63d1dad0ad",
+      "sourceEntrySha256": "b0bd7099d759a3ffa43e7cbaa62d350c7f1782fc50909394cf37f9304b9dd58a",
+      "adapter": "baseline-adapters/m06/report-center/review-lifecycle/s002-adapter.js",
+      "preservedDomAnchors": [".app-shell", ".platform-rail", ".product-nav", ".app-workspace", ".main", ".trust-strip", ".dashboard-shell", ".metric-grid", ".data-table-wrap", ".reader-shell", ".report-paper", ".modal-backdrop", ".drawer-backdrop"],
+      "sceneProjection": ["五个监督主题：执行总览/跨年与单位/初始申报/项目与采购/预警与整改", "六类分类预警与整改行动", "六章预算报告正文", "58项事实/66个锚点/426项自动核验", "年度/单位/科目/项目/期间/异常事项筛选与下钻", "报告草稿与 Dashboard Version 分离"],
+      "retiredHistoricalAdapters": ["baseline-adapters/m06/s002-adapter.js"]
+    }
+  },
+  "nonGoals": [
+    "不改变 v1.0.3 冻结目录或其哈希",
+    "不把驾驶舱迁移到决策中心",
+    "不新增通用 Agent 编排或审批引擎",
+    "不自动审批、过账、反写外部预算系统或覆盖最终批准预算"
+  ]
+}

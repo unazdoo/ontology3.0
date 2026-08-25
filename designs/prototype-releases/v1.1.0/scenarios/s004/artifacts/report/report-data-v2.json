@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "ofw.s004.report-data.v2",
+  "reportId": "RPT-S004-20260815-0001",
+  "reportNumber": "S004-PLR-2026-0001",
+  "contentVersion": "2.0.0",
+  "publicationStatus": "PUBLISHED",
+  "publishedAt": "2026-08-15T15:12:00+08:00",
+  "scenarioContext": {
+    "baselineVersion": "v1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v2",
+    "scenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+    "formedAt": "2026-08-15T23:30:00.000Z"
+  },
+  "applicationId": "APP-S004-20260815-0001",
+  "borrowerId": "BORR-CN-USCC-91440300093677087R",
+  "reportDefinitionId": "RDEF-S004-PREFLIGHT-002",
+  "publishedOntologyId": "ONTO-S004-LOAN-PREFLIGHT-002",
+  "c008BundleId": "C008-S004-AUTHORITATIVE-FACTS-002",
+  "evidencePackageId": "EVID-S004-20260815-0002",
+  "agentRunId": "ARUN-S004-20260815-0002",
+  "verificationRunId": "VER-S004-20260815-V2-001",
+  "humanConfirmationId": "HCONF-S004-20260815-0002",
+  "stableAnchors": [
+    "report-cover",
+    "sec-01-borrower-evaluation",
+    "sec-02-operations",
+    "sec-03-financial",
+    "sec-04-risk",
+    "sec-05-credit-conclusion",
+    "sec-06-data-sources"
+  ],
+  "factBindings": {
+    "sec-01-borrower-evaluation": [
+      "FACT-S004-V2-BORROWER-001",
+      "FACT-S004-V2-OWNERSHIP-001"
+    ],
+    "sec-02-operations": [
+      "FACT-S004-V2-OPERATIONS-001"
+    ],
+    "sec-03-financial": [
+      "facts.financialStatements",
+      "metricRun.results",
+      "FACT-S004-V2-WORKING-CAPITAL-001"
+    ],
+    "sec-04-risk": [
+      "RISK-S004-V2-001",
+      "RISK-S004-V2-002",
+      "RISK-S004-V2-003",
+      "RISK-S004-V2-004"
+    ],
+    "sec-05-credit-conclusion": [
+      "HCONF-S004-20260815-0002"
+    ],
+    "sec-06-data-sources": [
+      "SRC-CGN-AR-SET",
+      "SRC-CGN-DISCLOSURES",
+      "SRC-CGN-RATINGS",
+      "SRC-CGN-BRIEFING",
+      "SRC-NUCLEAR-POLICY",
+      "SRC-CUSTOMER-SPECIFIC-NOTICE"
+    ]
+  },
+  "sourceClasses": [
+    "official-document",
+    "synthetic-demo",
+    "human-input"
+  ],
+  "sameSource": {
+    "htmlRef": "artifacts/report/RPT-S004-CGNPC-20260815-v2.0.html",
+    "pdfRef": "artifacts/report/RPT-S004-CGNPC-20260815-v2.0.pdf",
+    "generatedFromSameHtml": true,
+    "pageSystem": "A4_PORTRAIT",
+    "pdfMetadataPolicy": {
+      "creationDate": "2026-08-15T15:55:00.000Z",
+      "modificationDate": "2026-08-15T15:55:00.000Z",
+      "reproducible": true
+    }
+  },
+  "automationBoundary": {
+    "agentGeneratedInvestigationOpinion": false,
+    "agentGeneratedRiskControllability": false,
+    "agentGeneratedCreditDecision": false,
+    "ruleGeneratedCreditDecision": false,
+    "agentGeneratedAmountRateOrConditions": false,
+    "actionRequestCreated": false,
+    "todoCreated": false
+  }
+}

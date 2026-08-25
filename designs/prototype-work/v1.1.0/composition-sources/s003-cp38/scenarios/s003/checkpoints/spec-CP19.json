@@ -1,0 +1,206 @@
+{
+  "outputRef": "checkpoints/CP19-v103-native-full-scene-browser-validated.json",
+  "checkpointId": "CP-S003-20260817072400000-c03519000019",
+  "checkpointNode": "e2e-integrated",
+  "createdAt": "2026-08-17T07:24:00.000Z",
+  "buildVersion": "S003-CP19",
+  "entryRef": "runtime/cp19-entry.v1.html",
+  "baseline": {
+    "baselineVersion": "1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "parentVersion": "1.0.3"
+  },
+  "scenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "codeRefs": [
+    "README.md",
+    "CHANGELOG.md",
+    "index.html",
+    "styles.css",
+    "integration-config.js",
+    "data.js",
+    "state.js",
+    "app.js",
+    "domain/config-service.js",
+    "domain/score-engine.js",
+    "domain/query-service.js",
+    "domain/decision-service.js",
+    "domain/report-service-v5.js",
+    "domain/checkpoint-service.js",
+    "domain/checkpoint-projection.js",
+    "scripts/build-baseline-extension-inventory.cjs",
+    "scripts/browser-cp19.cjs",
+    "scripts/create-checkpoint-v2.cjs",
+    "tests/config-service.test.js",
+    "tests/data-assets.test.js",
+    "tests/navigation-assembly.test.js",
+    "tests/state-persistence.test.js",
+    "tests/workbench-shell.test.js",
+    "resources/scenario-manifest.json",
+    "resources/integration/v103-baseline-extension-inventory.v11.json",
+    "resources/m01/model-package.v1.json",
+    "resources/m01/model-configuration.v2.json",
+    "resources/m01/published-pointer.v1.json",
+    "resources/m01/action-type-catalog.v1.json",
+    "resources/m01/c035-risk-results.v1.json",
+    "resources/m01/published-risk-facts.v1.json",
+    "resources/m01/runtime-export.v1.json",
+    "resources/m02/data-contract.v1.1.json",
+    "resources/m02/source-asset.v1.json",
+    "resources/m02/source-registry.v3.json",
+    "resources/m02/pipeline-run.v2.json",
+    "resources/m02/pipeline-current-projection.v3.json",
+    "resources/m02/formal-candidate-data-asset.v1.json",
+    "resources/m02/quality-result.v1.json",
+    "resources/m02/c017-decision-projection.v1.json",
+    "resources/m03/query-catalog.v2.json",
+    "resources/m03/query-runtime.v1.json",
+    "resources/m03/query-results.v1.json",
+    "resources/m04/decision-runtime.v1.json",
+    "resources/m04/decision-inbox.v2.json",
+    "resources/m04/decision-inbox.v2.json.sha256",
+    "resources/m04/decision-results.v2.json",
+    "resources/m05/agent-position.v4.json",
+    "resources/m06/report-contract.v2.json",
+    "resources/m06/report-definition.v2.json",
+    "resources/m06/report-template.v2.json",
+    "resources/m06/report-manifest.v6.json",
+    "resources/m06/report-contents.v6.json",
+    "resources/m06/report-artifacts.v6.json",
+    "resources/m06/report-assurance-profile.v3.json",
+    "resources/m06/report-history-index.v1.json",
+    "evidence/CP19-v103-native-full-scene-browser-validation.md",
+    "evidence/CP19-v103-native-full-scene-browser-validation.md.sha256",
+    "evidence/browser-cp19/20260817T072044625Z-aa26b562/browser-cp19-results.json",
+    "evidence/browser-cp19/20260817T072044625Z-aa26b562/shell-and-modules.png",
+    "evidence/browser-cp19/20260817T072044625Z-aa26b562/m01-published-canvas.png",
+    "evidence/browser-cp19/20260817T072044625Z-aa26b562/dashboard-enterprise-report.png",
+    "evidence/browser-cp19/20260817T072044625Z-aa26b562/formal-report-v6.html",
+    "evidence/browser-cp19/20260817T072044625Z-aa26b562/s003-report-template.json",
+    "evidence/browser-cp19/20260817T072044625Z-aa26b562/quick-rerun-current-projection.png",
+    "runtime/cp19-entry.v1.html",
+    "checkpoints/spec-CP19.json"
+  ],
+  "modules": {
+    "M01": {
+      "moduleVersion": "1.0.1",
+      "exportId": "S003-M01-RUNTIME-EXPORT-20260815-001",
+      "exportRef": "resources/m01/runtime-export.v1.json",
+      "evidenceRef": "evidence/CP19-v103-native-full-scene-browser-validation.md"
+    },
+    "M02": {
+      "moduleVersion": "1.1.0",
+      "exportId": "S003-M02-DATA-CONTRACT",
+      "exportRef": "resources/m02/data-contract.v1.1.json",
+      "evidenceRef": "evidence/CP19-v103-native-full-scene-browser-validation.md"
+    },
+    "M03": {
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M03-QUERY-RUNTIME",
+      "exportRef": "resources/m03/query-runtime.v1.json",
+      "evidenceRef": "evidence/CP19-v103-native-full-scene-browser-validation.md"
+    },
+    "M04": {
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M04-DECISION-RUNTIME",
+      "exportRef": "resources/m04/decision-runtime.v1.json",
+      "evidenceRef": "evidence/CP19-v103-native-full-scene-browser-validation.md"
+    },
+    "M05": {
+      "moduleVersion": "1.4.0",
+      "exportId": "S003-M05-REPORT-COPILOT-SCENARIO-PROFILE",
+      "exportRef": "resources/m05/agent-position.v4.json",
+      "evidenceRef": "evidence/CP19-v103-native-full-scene-browser-validation.md"
+    },
+    "M06": {
+      "moduleVersion": "1.4.0",
+      "exportId": "S003-M06-REPORT-MANIFEST-20260817-005",
+      "exportRef": "resources/m06/report-manifest.v6.json",
+      "evidenceRef": "evidence/CP19-v103-native-full-scene-browser-validation.md"
+    }
+  },
+  "stateSections": {
+    "data": {
+      "status": "referenced",
+      "items": [
+        { "owner": "M02 数据工程", "resourceId": "S003-M02-SOURCE-REGISTRY", "version": "3.0.0", "ref": "resources/m02/source-registry.v3.json" },
+        { "owner": "M02 数据工程", "resourceId": "S003-M02-PIPELINE-RUN-20260815-002", "version": "2.0.0", "ref": "resources/m02/pipeline-run.v2.json" },
+        { "owner": "M02 数据工程", "resourceId": "S003-M02-PIPELINE-CURRENT-PROJECTION", "version": "3.0.0", "ref": "resources/m02/pipeline-current-projection.v3.json" },
+        { "owner": "M02 数据工程", "resourceId": "S003-T007-FORMAL-CANDIDATE-20251231-v1", "version": "1.0.0", "ref": "resources/m02/formal-candidate-data-asset.v1.json" }
+      ]
+    },
+    "semantics": {
+      "status": "referenced",
+      "items": [
+        { "owner": "M01 本体管理", "resourceId": "S003-M01-DEBT-RISK-PKG", "version": "1.0.0", "ref": "resources/m01/model-package.v1.json" },
+        { "owner": "M01 本体管理", "resourceId": "S003-M01-MODEL-CONFIGURATION", "version": "2.0.0", "ref": "resources/m01/model-configuration.v2.json" },
+        { "owner": "M01 本体管理", "resourceId": "S003-M01-PUBLISHED-POINTER", "version": "1.0.1", "ref": "resources/m01/published-pointer.v1.json" },
+        { "owner": "M01 本体管理", "resourceId": "S003-M01-ACTION-TYPE-CATALOG", "version": "1.0.1", "ref": "resources/m01/action-type-catalog.v1.json" }
+      ]
+    },
+    "configurations": {
+      "status": "referenced",
+      "items": [
+        { "owner": "平台场景包", "resourceId": "S003-SCENARIO-MANIFEST", "version": "1.0.0", "ref": "resources/scenario-manifest.json" },
+        { "owner": "平台公共层与 S003 总装", "resourceId": "S003-V103-BASELINE-MODULE-INTEGRATION-20260817-CP19-FINAL", "version": "11.0.0", "ref": "resources/integration/v103-baseline-extension-inventory.v11.json" },
+        { "owner": "S003 总装", "resourceId": "S003-CP19-INTEGRATION-CONFIG", "version": "1.2.3", "ref": "integration-config.js" },
+        { "owner": "S003 总装", "resourceId": "S003-CP19-RUNTIME-CONFIG", "version": "1.2.3", "ref": "data.js" },
+        { "owner": "M02 数据工程", "resourceId": "S003-M02-C017-DECISION-PROJECTION-20260815-001", "version": "1.0.0", "ref": "resources/m02/c017-decision-projection.v1.json" }
+      ]
+    },
+    "results": {
+      "status": "referenced",
+      "items": [
+        { "owner": "M01 本体管理", "resourceId": "S003-C035-RISK-RESULTS-20251231-v1", "version": "1.0.0", "ref": "resources/m01/c035-risk-results.v1.json" },
+        { "owner": "M01 本体管理", "resourceId": "S003-PUBLISHED-RISK-FACTS-20251231-v1", "version": "1.0.0", "ref": "resources/m01/published-risk-facts.v1.json" },
+        { "owner": "M03 智能问数", "resourceId": "S003-M03-QUERY-RESULTS-20260815-001", "version": "1.0.0", "ref": "resources/m03/query-results.v1.json" }
+      ]
+    },
+    "reports": {
+      "status": "referenced",
+      "items": [
+        { "owner": "M06 报告中心", "resourceId": "S003-M06-REPORT-MANIFEST-20260817-005", "version": "1.4.0", "ref": "resources/m06/report-manifest.v6.json" },
+        { "owner": "M06 报告中心", "resourceId": "S003-M06-REPORT-CONTENTS-20260817-005", "version": "1.4.0", "ref": "resources/m06/report-contents.v6.json" },
+        { "owner": "M06 报告中心", "resourceId": "S003-M06-REPORT-ARTIFACTS-20260817-005", "version": "1.4.0", "ref": "resources/m06/report-artifacts.v6.json" },
+        { "owner": "M06 报告中心", "resourceId": "S003-RPT-TPL-ENTERPRISE-RISK", "version": "1.1.0", "ref": "resources/m06/report-template.v2.json" },
+        { "owner": "M06 报告中心", "resourceId": "S003-RPT-ASSURANCE-PROFILE", "version": "1.2.0", "ref": "resources/m06/report-assurance-profile.v3.json" }
+      ]
+    },
+    "decisions": {
+      "status": "referenced",
+      "items": [
+        { "owner": "M04 决策中心", "resourceId": "S003-M04-MANUAL-ACTION-INBOX-20260817-002", "version": "1.1.0", "ref": "resources/m04/decision-inbox.v2.json" },
+        { "owner": "M04 决策中心", "resourceId": "S003-M04-DECISION-RESULTS-20260817-002", "version": "1.1.0", "ref": "resources/m04/decision-results.v2.json" }
+      ]
+    },
+    "evidence": {
+      "status": "referenced",
+      "items": [
+        { "owner": "S003 总装", "resourceId": "S003-CP19-VALIDATION-EVIDENCE", "version": "1.0.0", "ref": "evidence/CP19-v103-native-full-scene-browser-validation.md" },
+        { "owner": "S003 总装", "resourceId": "S003-CP19-BROWSER-RESULT", "version": "1.0.0", "ref": "evidence/browser-cp19/20260817T072044625Z-aa26b562/browser-cp19-results.json" },
+        { "owner": "平台公共层与 S003 总装", "resourceId": "S003-CP19-DERIVED-TREE-INVENTORY", "version": "11.0.0", "ref": "resources/integration/v103-baseline-extension-inventory.v11.json" }
+      ]
+    },
+    "testFixtures": {
+      "status": "referenced",
+      "items": [
+        { "owner": "M02 数据工程", "resourceId": "S003-AUTHORITATIVE-WORKBOOK-FIXTURE", "version": "1.0.0", "ref": "resources/m02/企业债务风险评估模版_S003兼容版.xlsx" },
+        { "owner": "S003 总装测试", "resourceId": "S003-ENTERPRISE-FIXTURE", "version": "1.0.0", "ref": "fixtures/enterprise-fixture.v1.json" },
+        { "owner": "M03 智能问数", "resourceId": "S003-M03-QUERY-CATALOG", "version": "2.0.0", "ref": "resources/m03/query-catalog.v2.json" }
+      ]
+    },
+    "featureFlags": {
+      "status": "referenced",
+      "items": [
+        { "owner": "平台场景包", "resourceId": "S003-FEATURE-FLAGS", "version": "1.0.0", "ref": "resources/scenario-manifest.json" },
+        { "owner": "S003 总装", "resourceId": "S003-CONDITIONAL-INTEGRATION", "version": "1.2.3", "ref": "integration-config.js" }
+      ]
+    }
+  },
+  "restoreEvidenceRef": "evidence/CP19-v103-native-full-scene-browser-validation.md"
+}

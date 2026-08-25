@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "ofw.s003.m02.source-registry.v4",
+  "registryId": "S003-M02-SOURCE-REGISTRY",
+  "registryVersion": "4.0.0",
+  "status": "published-registration",
+  "moduleOwner": "M02 数据工程",
+  "formedAt": "2026-08-17T16:31:00.000Z",
+  "supersedes": "resources/m02/source-registry.v3.json",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+    "formedAt": "2026-08-17T16:30:00.000Z",
+    "status": "active"
+  },
+  "sources": [
+    {
+      "nativeResourceId": "s003-workbook",
+      "sourceId": "S003-M02-SOURCE-XLSX-20251231",
+      "name": "企业债务风险评估模版",
+      "sourceType": "manual-workbook",
+      "acquisitionStrategy": "按需上传完整工作簿",
+      "pipelineMemberScope": [
+        "财务数据"
+      ],
+      "visibleInDataSourceDirectory": true,
+      "managementSurface": "M02 数据资源目录",
+      "snapshotId": "S003-M02-SOURCE-XLSX-20251231",
+      "assessmentAt": "2025-12-31"
+    }
+  ],
+  "runInputsNotDataSources": [
+    {
+      "name": "企业当期因子输入快照",
+      "owner": "M02 数据工程",
+      "resourceId": "S003-T053-INPUT-20251231-v1",
+      "resourceRef": "resources/m02/human-input-snapshot.v1.json",
+      "reason": "属于已版本化的人工业务输入，不是数据源、模型配置页、Python 管道参数或数据质量规则。"
+    }
+  ],
+  "excludedFromDataSources": [
+    {
+      "name": "调节因子配置",
+      "currentOwner": "M01 本体管理",
+      "reason": "属于 Published 模型定义，不是数据源。"
+    },
+    {
+      "name": "评分权重",
+      "currentOwner": "M01 本体管理",
+      "reason": "属于 Published 模型定义，不是数据源或管道参数。"
+    },
+    {
+      "name": "风险分档配置",
+      "currentOwner": "M01 本体管理",
+      "reason": "属于 Published 模型阈值定义，不是数据源。"
+    },
+    {
+      "name": "固定计算语义",
+      "currentOwner": "M01 本体管理",
+      "reason": "在建企业固定 60 分、盈利历史不足按 A、适用因子缺失按 0 档属于模型计算语义，不是普通 Rule 或数据源。"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "ofw.s003.m06.report-assurance-profile.v2",
+  "moduleId": "M06",
+  "moduleOwner": "报告中心",
+  "profileId": "S003-RPT-ASSURANCE-PROFILE",
+  "profileVersion": "1.1.0",
+  "supersedes": "resources/m06/report-assurance-profile.v1.json",
+  "lifecycleStatus": "published",
+  "verificationChecks": [
+    { "checkId": "scenario-identity", "label": "场景运行身份一致", "severity": "blocking" },
+    { "checkId": "published-binding", "label": "Published 模型与结果绑定一致", "severity": "blocking" },
+    { "checkId": "score-record", "label": "报告评分与 C035 记录一致", "severity": "blocking" },
+    { "checkId": "indicator-coverage", "label": "财务指标明细与权重覆盖完整", "severity": "blocking" },
+    { "checkId": "factor-coverage", "label": "调节因子与默认语义完整", "severity": "blocking" },
+    { "checkId": "evidence-coverage", "label": "必需证据类型完整", "severity": "blocking" },
+    { "checkId": "artifact-identity", "label": "正式产物与内容版本一致", "severity": "blocking" },
+    { "checkId": "side-effect-boundary", "label": "报告生成未产生决策副作用", "severity": "blocking" },
+    { "checkId": "localized-business-status", "label": "正文与下载产物未暴露内部状态枚举", "severity": "blocking" },
+    { "checkId": "structured-trigger", "label": "风险触发依据已结构化展示", "severity": "blocking" },
+    { "checkId": "diagnosis-value-format", "label": "诊断实际值与明细格式一致", "severity": "blocking" },
+    { "checkId": "decision-status-alignment", "label": "行动状态与决策中心同轮记录一致", "severity": "blocking" },
+    { "checkId": "construction-semantics", "label": "在建企业固定分与建设资金专题完整", "severity": "blocking" }
+  ],
+  "companionQuestions": [
+    { "questionId": "risk-summary", "label": "这家企业为什么是当前风险等级？" },
+    { "questionId": "weakness", "label": "最需要关注的三项指标是什么？" },
+    { "questionId": "adjustment", "label": "哪些调节因子影响了最终评分？" },
+    { "questionId": "strategy", "label": "风险应对策略与改善重点是什么？" },
+    { "questionId": "three-month-plan", "label": "未来三个月建议如何推进？" },
+    { "questionId": "defaults", "label": "本报告采用了哪些默认或不适用语义？" },
+    { "questionId": "disposition", "label": "当前需要什么风险行动？" },
+    { "questionId": "evidence", "label": "这份报告引用了哪些正式证据？" }
+  ]
+}

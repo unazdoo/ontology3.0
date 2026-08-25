@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "ofw.s003.m02.pipeline-current-projection.v3",
+  "projectionId": "S003-M02-PIPELINE-CURRENT-PROJECTION",
+  "projectionVersion": "3.0.0",
+  "status": "consumption-ready",
+  "formedAt": "2026-08-15T13:30:00.000Z",
+  "sourcePipelineRunId": "S003-M02-PIPELINE-RUN-20260815-002",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "inputSources": [
+    {
+      "nodeId": "node-source-workbook",
+      "slotId": "financialWorkbook",
+      "nativeResourceId": "s003-workbook",
+      "sourceId": "S003-M02-SOURCE-XLSX-20251231",
+      "name": "企业债务风险评估模版 · 财务数据",
+      "version": "S003-M02-SOURCE-XLSX-20251231",
+      "contentMode": "full-data",
+      "passContentToPython": true
+    }
+  ],
+  "modelConfigurationRef": {
+    "owner": "M01 本体管理",
+    "resource": "resources/m01/model-configuration.v2.json",
+    "pipelineInput": false,
+    "note": "企业因子配置和模型参数随 Published 模型版本生效，不是 M02 数据源或管道输入。"
+  },
+  "adoptionEvidence": {
+    "status": "adopted",
+    "publishedPointerId": "S003-M01-PUBLISHED-POINTER",
+    "publishedSemanticVersionId": "S003-M01-DEBT-RISK-V1",
+    "dataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+    "assessmentAt": "2025-12-31",
+    "adoptedAt": "2026-08-15T13:30:00.000Z",
+    "owner": "M01 本体管理"
+  },
+  "derivation": [
+    "resources/m02/pipeline-run.v2.json",
+    "resources/m01/published-pointer.v1.json"
+  ],
+  "historicalEvidenceMutated": false
+}

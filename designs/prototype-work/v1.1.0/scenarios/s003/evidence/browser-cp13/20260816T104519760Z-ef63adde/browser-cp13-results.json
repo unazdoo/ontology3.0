@@ -1,0 +1,233 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp13-result.v1",
+  "runId": "20260816T104519760Z-ef63adde",
+  "formedAt": "2026-08-16T10:45:19.766Z",
+  "origin": "http://127.0.0.1:4333",
+  "formalScenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "gitHead": "5620618386b1427cbf0a19877ff00b1b44dd249e",
+  "playwrightNodeModules": "/Users/domi/.codex/skills/baoyu-design/agents/gen-pptx/node_modules",
+  "headless": true,
+  "cases": [
+    {
+      "id": "health-gating",
+      "label": "首页初始 checking；逐个真实打开 M01—M06 后才健康",
+      "status": "passed",
+      "startedAt": "2026-08-16T10:45:20.177Z",
+      "durationMs": 4694,
+      "details": {
+        "initialStatus": "checking",
+        "finalStatus": "healthy",
+        "moduleHealth": [
+          {
+            "moduleId": "M01",
+            "status": "healthy",
+            "url": "http://127.0.0.1:4333/ontology-management-review/canvas-first/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#modeling"
+          },
+          {
+            "moduleId": "M02",
+            "status": "healthy",
+            "url": "http://127.0.0.1:4333/data-engineering-prototype-review/review-v3/%E6%96%B9%E6%A1%88B2.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/resources"
+          },
+          {
+            "moduleId": "M03",
+            "status": "healthy",
+            "url": "http://127.0.0.1:4333/intelligent-query-prototype/review-next/conversation-workspace/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/ask"
+          },
+          {
+            "moduleId": "M04",
+            "status": "healthy",
+            "url": "http://127.0.0.1:4333/decision-center-prototype/review-v2/action-portfolio.html?prototypeBuild=20260814-02&scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#workbench"
+          },
+          {
+            "moduleId": "M05",
+            "status": "healthy",
+            "url": "http://127.0.0.1:4333/agent-application/Agent%E5%BA%94%E7%94%A8.html?prototypeBuild=20260814-17&scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/agents"
+          },
+          {
+            "moduleId": "M06",
+            "status": "healthy",
+            "url": "http://127.0.0.1:4333/report-center/review-lifecycle/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/lifecycle"
+          }
+        ]
+      },
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": null,
+      "error": null,
+      "completedAt": "2026-08-16T10:45:24.871Z"
+    },
+    {
+      "id": "m04-incompatible-projections",
+      "label": "M04 state/view/projection 不兼容记录隔离与 React 重建",
+      "status": "failed",
+      "startedAt": "2026-08-16T10:45:24.928Z",
+      "durationMs": 2479,
+      "details": {
+        "primaryKeys": {
+          "state": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m04:decision-center.portfolio.state.v6",
+          "view": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m04:decision-center.portfolio.view.v2",
+          "projection": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m04:decision-center.c019.projection.v1"
+        },
+        "recoveryKeys": {
+          "state": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m04:decision-center.portfolio.state.recovered.v1",
+          "view": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m04:decision-center.portfolio.view.recovered.v1",
+          "projection": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m04:decision-center.c019.projection.recovered.v1"
+        },
+        "recoveredPresence": {
+          "state": true,
+          "view": false,
+          "projection": true
+        }
+      },
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": "evidence/browser-cp13/20260816T104519760Z-ef63adde/m04-incompatible-projections.png",
+      "error": {
+        "name": "AssertionError",
+        "message": "M04 view 未形成独立恢复键",
+        "stack": "AssertionError [ERR_ASSERTION]: M04 view 未形成独立恢复键\n    at Object.caseM04IncompatibleProjections [as m04-incompatible-projections] (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:379:12)\n    at async executeCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:694:5)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:751:22)"
+      },
+      "completedAt": "2026-08-16T10:45:27.407Z"
+    },
+    {
+      "id": "m01-legacy-bootstrap-projection",
+      "label": "M01 旧 S001 启动投影显式隔离并重建",
+      "status": "failed",
+      "startedAt": "2026-08-16T10:45:27.452Z",
+      "durationMs": 1808,
+      "details": {
+        "c008Key": "ontology3-c008-authoritative-projection-v1:S003:S003-v1:S003-RUN-20260815133000000-c03503000001",
+        "workspaceKey": "ontology3-canvas-first-review-v17:S003:S003-v1:S003-RUN-20260815133000000-c03503000001",
+        "matchingKeys": [
+          "ontology3-c008-authoritative-projection-v1:S003:S003-v1:S003-RUN-20260815133000000-c03503000001",
+          "ontology3-canvas-first-review-v17:S003:S003-v1:S003-RUN-20260815133000000-c03503000001"
+        ],
+        "projection": {
+          "projectionId": "ontology3-c008-authoritative-projection-v1:S003:S003-v1:S003-RUN-20260815133000000-c03503000001",
+          "projectionVersion": "5",
+          "schemaVersion": 1,
+          "formedAt": "2026-08-16 18:45:27",
+          "sourceModule": "本体管理",
+          "contractCode": "C008",
+          "readStatus": "unavailable",
+          "scenarioContext": {
+            "scenarioId": "S003",
+            "scenarioVersion": "S003-v1",
+            "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+            "scenarioName": "债务风险监测",
+            "formedAt": "2026-08-15T13:30:00.000Z",
+            "status": "active"
+          },
+          "scenarioId": "S003",
+          "scenarioVersion": "S003-v1",
+          "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+          "scenarioName": "债务风险监测",
+          "scenarioFormedAt": "2026-08-15T13:30:00.000Z",
+          "scenarioStatus": "active",
+          "publishedSemanticVersionId": "S003-M01-DEBT-RISK-V1",
+          "publishedSemanticVersion": "V1.0.1",
+          "consumableDataVersion": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "dataAsOf": "2025-12-31",
+          "switchedAt": "2026-08-15T13:30:00.000Z",
+          "previousTrustedCombination": null,
+          "candidate": null,
+          "validationReference": null,
+          "consumptionState": "等待智能问数候选固定题验证",
+          "reason": "当前正式组合尚未收到同一场景、精确双版本的智能问数 C008 验证引用",
+          "recoverySuggestion": "按阻断原因完成受控更新或回退；当前不得推断为可消费。",
+          "ontologyStableId": "S003-M01-DEBT-RISK-PKG",
+          "current": {
+            "ontologyStableId": "S003-M01-DEBT-RISK-PKG",
+            "semanticVersionId": "S003-M01-DEBT-RISK-V1",
+            "semanticVersion": "V1.0.1",
+            "dataVersion": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+            "asOf": "2025-12-31",
+            "switchedAt": "2026-08-15T13:30:00.000Z",
+            "t019": {
+              "recordId": "S003-M01-RECORD-ADOPT",
+              "evidenceId": "S003-M01-PUBLISHED-POINTER"
+            }
+          },
+          "evidenceLocator": "S003-M01-PUBLISHED-POINTER"
+        },
+        "recoveryHistory": []
+      },
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": "evidence/browser-cp13/20260816T104519760Z-ef63adde/m01-legacy-bootstrap-projection.png",
+      "error": {
+        "name": "AssertionError",
+        "message": "未形成 known-legacy-s003-bootstrap-context 恢复记录",
+        "stack": "AssertionError [ERR_ASSERTION]: 未形成 known-legacy-s003-bootstrap-context 恢复记录\n    at Object.caseM01LegacyBootstrapProjection [as m01-legacy-bootstrap-projection] (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:423:10)\n    at async executeCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:694:5)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:751:22)"
+      },
+      "completedAt": "2026-08-16T10:45:29.260Z"
+    },
+    {
+      "id": "m06-reset-new-run",
+      "label": "M06 重置只请求统一壳创建新 scenarioRunId",
+      "status": "passed",
+      "startedAt": "2026-08-16T10:45:29.305Z",
+      "durationMs": 1223,
+      "details": {
+        "request": {
+          "operation": "requestScenarioRerun",
+          "sourceModule": "M06",
+          "oldRunId": "S003-RUN-20260815133000000-c03503000001"
+        },
+        "newRunId": "S003-RUN-20260816104529938-c094d11021fd",
+        "oldProjectionRetained": true
+      },
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": null,
+      "error": null,
+      "completedAt": "2026-08-16T10:45:30.528Z"
+    }
+  ],
+  "totals": {
+    "cases": 4,
+    "passed": 2,
+    "failed": 2,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "httpErrors": 0,
+    "ignoredAbortedRequests": 0
+  },
+  "errorBudget": {
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "httpErrors": 0
+  },
+  "checkpointCreated": false,
+  "acceptanceReady": false,
+  "browserVersion": "149.0.7827.55",
+  "completedAt": "2026-08-16T10:45:30.560Z"
+}

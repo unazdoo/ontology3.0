@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "workspaceId": "implementation-v1.1.x",
+  "branch": "codex/implementation-v1.1.x-integration",
+  "worktree": "/Users/domi/Public/Vibecoding/ontology3.0-worktrees/implementation-v1.1.x",
+  "sourceTag": "prototype-v1.1.0-frozen",
+  "sourceVersion": "1.1.0",
+  "parentVersion": "1.1.0",
+  "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+  "implementationVersion": "implementation-0.1.0",
+  "acceptanceReady": false,
+  "prototypeWritePolicy": "read-only",
+  "integrationBranch": "codex/implementation-v1.1.x-integration",
+  "laneBranches": [
+    "codex/implementation-foundation",
+    "codex/implementation-m02-data",
+    "codex/implementation-m01-ontology",
+    "codex/implementation-m03-query",
+    "codex/implementation-m04-decision",
+    "codex/implementation-m06-report",
+    "codex/implementation-m05-agent",
+    "codex/implementation-quality-release"
+  ],
+  "firstVerticalSlice": ["M02", "M01", "M03", "M04", "M06", "M05", "M06"],
+  "scenarioPolicy": {
+    "firstScenario": "S001",
+    "newRunRequired": true,
+    "historicalRunsReadOnly": true,
+    "researchMigrationRequired": ["S005", "M07", "M08"]
+  },
+  "truthStores": {
+    "metadata": "module-owned relational schemas",
+    "rawAndArtifacts": "versioned object storage",
+    "events": "durable queue/event log",
+    "audit": "append-only audit store",
+    "browserStorage": "never-authoritative"
+  }
+}

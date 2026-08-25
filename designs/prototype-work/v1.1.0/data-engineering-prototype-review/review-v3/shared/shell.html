@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="data:," />
+  <title>{{VARIANT_TITLE}}</title>
+  <script>window.addEventListener("error",event=>console.error("[M02 source]",event.filename,event.lineno,event.colno,event.error?.stack||event.message));</script>
+  <link rel="stylesheet" href="../../shared-type-scale.css?v=1" />
+  <link rel="stylesheet" href="./portfolio-integration.css?v=20260822-02" />
+  <script src="../../composite-resource-registry.js?v=20260823-09"></script>
+  <style>{{APP_CSS}}</style>
+</head>
+<body data-variant="{{VARIANT}}">
+  <div id="app"></div>
+  <script>window.DE_VARIANT={{VARIANT_JSON}};window.DE_MANIFEST={{MANIFEST_JSON}};</script>
+  <script>{{FIXTURES_JS}}</script>
+  <script>window.OFW_DE_BASE_DATA=structuredClone(window.DE_DATA);</script>
+  <script src="../../scenarios/s002/baseline-adapters/data-engineering-prototype-review/review-v3/s002-core-data.js?v=20260822-01"></script>
+  <script src="./portfolio-s001-flow-seed.js?v=20260822-01"></script>
+  <script src="./portfolio-integration.js?v=20260822-08"></script>
+  <script>{{APP_JS}}</script>
+</body>
+</html>

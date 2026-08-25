@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "ofw.composite-regression.v2",
+  "candidateVersion": "v1.1.0-rc.10",
+  "reviewEntry": "http://127.0.0.1:4342/s001-e2e-integration/index.html?rev=closure-rc10-review#home",
+  "browserRegressionObservedAt": "2026-08-23T16:40:35Z",
+  "acceptanceReady": false,
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "implementationBaselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+  "implementationBaselineFreeze": {
+    "status": "authorized-and-materialized",
+    "releaseVersion": "1.1.0",
+    "releasePath": "designs/prototype-releases/v1.1.0",
+    "runtimeSnapshotIncluded": false,
+    "acceptanceReady": false
+  },
+  "invalidatedRun": "COMPOSITE-RUN-202608211618.json",
+  "moduleResourceRegression": {
+    "M01": { "status": "passed", "result": "4 current Published ontologies; exact versions, canvas and revision Draft creation available" },
+    "M02": { "status": "passed", "result": "15 completed sources with downloads, 5 successful pipelines, 5 exact production canvases and 5 consumable assets" },
+    "M03": { "status": "passed", "result": "55 semantic resources; one query assistant identity with three exact C009 domain bindings; 34 curated questions, evidence and CSV gates; S004 remains not applicable" },
+    "M04": { "status": "passed", "result": "S001 and S003 share one requests/tasks store; clean state has 5 pending decisions, a new S003 dashboard C011 becomes the sixth only after explicit submission; C017 exact registered alias, idempotency and progressed decision preservation passed" },
+    "M05": { "status": "passed", "result": "Report copilot and report verification are separate Agents; report-verification-agent returns claims, anchors, evidence refs and not-evaluated comparison requests without formal pass/fail" },
+    "M06": { "status": "passed", "result": "Report assistant defaults to 440px with compact horizontal recommendation chips; QA and verification update in place; real M05 verification extraction precedes 5 deterministic rule groups and N verification items" },
+    "Dashboard": { "status": "passed", "result": "S003 presents 3 industries, 2 operating stages and exactly 5 risk disposition items; new-data and model-change are the only rerun triggers; model changes validate, publish and rerun the deterministic score engine" }
+  },
+  "sourceScenarioEvidence": {
+    "S001": { "status": "read-only-source-evidence", "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a" },
+    "S002": { "status": "read-only-source-evidence", "scenarioRunId": "S002-RUN-20260815080000000-6ef5d0ef82f9" },
+    "S003": { "status": "read-only-source-evidence", "scenarioRunId": "S003-RUN-20260817163000000-c02200000001", "checkpointId": "CP-S003-20260819141420000-c03838000038" },
+    "S004": { "status": "read-only-source-evidence", "scenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6", "publicCheckpoint": "not-created" }
+  },
+  "tests": {
+    "M01": "42 facts / 42 anchors / 42 content items passed",
+    "M02": "verify-static and verify-portfolio passed",
+    "M03": "static build, one assistant / three domain bindings, 34 question evidence mappings, exact context and CSV gates 9/9 passed",
+    "M04": "static build and CP38 adapter 41/41; portfolio v8 work store, C011 v3/action-request v2 intake, C017 alias gate and idempotency test passed",
+    "M05": "static build 5/5, report runtime including report-verification extraction and contract verification passed",
+    "M06": "contract verification, 440px assistant, recommendation rail, stable iframe, real Agent extraction, five deterministic groups and mobile overflow passed",
+    "ReportReader": "1440 body 755px / assistant 440px; QA answer 413px; one Agent extraction batch → five rule groups → exact verification items; stable document iframe passed",
+    "DashboardUX": "3 industries / 2 operating stages, 5-item disposition workflow, C011 idempotency, new-data/model-change rerun gates and deterministic score-engine rerun passed",
+    "CompositeClosure": "4 scenarios, 7 workbenches, 24 HTML/PDF reports and cross-module identities passed",
+    "UnifiedEntry": "three visible home arrows, one semantic active path, M01-M06, dashboard and breadcrumbs passed; report QA and verification keep document iframe stable; ordinary Chrome application console errors 0"
+  },
+  "viewports": {
+    "moduleAdapters": ["1440x900", "1280x720", "390x844"],
+    "unifiedEntry": ["1440x900", "1280x720", "390x844"],
+    "pageOverflow": 0,
+    "scrolling": "all long module pages and formal report documents passed",
+    "formalReportMobile": "outer 326/326, S004 inner 324/324; wide tables retain isolated horizontal scrolling",
+    "consoleErrors": 0
+  },
+  "requiredBeforeFrozenV1_1_0": [
+    "用户已明确授权将当前最新 v1.1.0 原型冻结为实施参考基线",
+    "形成独立不可变发布目录、完整文件清单、T056 标识和 v1.0.3 回退指针",
+    "保持 acceptanceReady=false，生产技术联调与一期正式验收继续独立执行"
+  ],
+  "remainingBeforeAcceptanceReady": [
+    "完成 v1.1.0 冻结入口的用户实际走查并明确作出通过裁决",
+    "由 S004 Owner 形成正式 public Checkpoint，并由 M01—M06 提供 C034 导出、校验和恢复证据",
+    "关闭模块评审、真实数据、生产技术、安全、性能、运维和验收证据缺口"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "implementation-negative-cases.v1",
+  "required": [
+    { "id": "missing-context", "description": "缺失 C033 场景上下文必须拒绝" },
+    { "id": "unknown-schema", "description": "未知或错版 Schema 必须拒绝" },
+    { "id": "unauthorized-owner", "description": "未授权 Owner/越权访问必须拒绝并审计" },
+    { "id": "cross-scenario", "description": "跨场景或跨轮次引用必须拒绝" },
+    { "id": "duplicate-idempotency", "description": "重复/冲突幂等键不得产生第二个副作用" },
+    { "id": "recovery-side-effect", "description": "C034 恢复不得重放历史副作用" }
+  ],
+  "failClosed": true
+}

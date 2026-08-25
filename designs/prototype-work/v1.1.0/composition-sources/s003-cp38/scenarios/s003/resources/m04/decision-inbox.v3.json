@@ -1,0 +1,545 @@
+{
+  "schemaVersion": "ofw.s003.m04.manual-action-inbox.v2",
+  "moduleId": "M04",
+  "moduleOwner": "决策中心",
+  "inboxId": "S003-M04-MANUAL-ACTION-INBOX-20260817-003",
+  "inboxVersion": "1.2.0",
+  "status": "received-awaiting-human-decision",
+  "immutable": true,
+  "formedAt": "2026-08-17T16:36:00.000Z",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+    "formedAt": "2026-08-17T16:30:00.000Z",
+    "status": "active"
+  },
+  "submissionPolicy": {
+    "source": "M06 仪表盘人工提交",
+    "manualOnly": true,
+    "automaticCreation": false,
+    "requiresHumanConfirmation": true,
+    "multiLevelApproval": false,
+    "externalDispatch": false,
+    "recipientRoutingRequired": true,
+    "recipientRole": "成员单位债务风险接口人",
+    "todoCreatedOnlyAfterRecipientConfirmation": true
+  },
+  "requests": [
+    {
+      "id": "AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-007-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "reminderId": "DR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-007-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "candidateId": "S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-007-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "sourceCandidateId": "S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-007-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001"
+      },
+      "subjectId": "S003-ENT-007",
+      "subjectName": "风电测试公司07",
+      "scenario": "债务风险监测",
+      "sourceType": "report",
+      "sourceRef": "债务风险驾驶舱 · S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-007",
+      "requester": "集团债务风险管理人员",
+      "submittedBy": "集团债务风险管理人员",
+      "requestTime": "2026-08-17 16:30:00",
+      "generatedTime": "2026-08-17 16:30:00",
+      "actionType": {
+        "id": "S003_RISK_FOLLOW_UP",
+        "name": "风险分档跟踪",
+        "description": "黄灯企业按亮灯直接形成预警入口，由集团债务风险管理人员显式提交后送达对应成员单位接口人。",
+        "version": "1.0.2",
+        "status": "已发布"
+      },
+      "rule": null,
+      "ruleApplicability": "不适用；本次按黄灯、红灯或黑灯当前亮灯形成一企一预警",
+      "metric": {
+        "id": "MET-S003-FINAL-RISK-SCORE",
+        "name": "企业最终风险评分",
+        "value": "37.75 分",
+        "explanation": "本次评估为黄灯，已按当前亮灯形成预警并送达风电测试公司07接口人。",
+        "evaluatedAt": "2025-12-31",
+        "scope": "风电测试公司07 · 新能源产业-风电"
+      },
+      "owner": null,
+      "ownerId": null,
+      "recommendation": "黄灯企业按亮灯直接形成预警入口，由集团债务风险管理人员显式提交后送达对应成员单位接口人。 补充关注：重大诉讼。",
+      "banks": [],
+      "loans": [],
+      "loanCount": 0,
+      "evidence": {
+        "semanticVersion": "S003-M01-DEBT-RISK-PKG 1.0.2",
+        "dataVersion": "1.0.0",
+        "dataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "resultVersion": "1.1.0",
+        "cutoff": "2025-12-31",
+        "quality": "允许推进",
+        "availability": "完整可用",
+        "ready": "C017 接收安全门通过",
+        "snapshotId": "S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-007",
+        "freshness": "固定运行证据",
+        "qualitySource": {
+          "contractCode": "C017",
+          "consumer": "决策中心",
+          "gate": "request_receipt",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+          "summaryVersion": "current-2",
+          "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt"
+        }
+      },
+      "status": "awaiting",
+      "requestGate": {
+        "status": "accepted",
+        "checkedAt": "2026-08-17 16:36:00",
+        "reason": "C011 标准行动申请已接收，当前 C017 安全门允许推进",
+        "reminderCreated": true
+      },
+      "formation": {
+        "requestGateStatus": "accepted",
+        "requestGateCheckedAt": "2026-08-17 16:36:00",
+        "requestGateReason": "C011 标准行动申请已接收",
+        "reminderCreated": true,
+        "confirmationGateStatus": "not_reached",
+        "confirmationGateReason": "等待风电测试公司07债务风险接口人核实确认并选择实际负责人"
+      },
+      "confirmationEligibility": {
+        "allowed": true,
+        "requiresAcknowledgement": false,
+        "reason": "已送达风电测试公司07债务风险接口人，待成员单位接口人核实确认后分办"
+      },
+      "c017SafetyReads": [
+        {
+          "gate": "request_receipt",
+          "gateLabel": "行动申请接收前",
+          "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+          "summaryVersion": "current-2",
+          "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+          "readAt": "2026-08-17T16:36:00.000Z",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "财务来源、企业当期因子输入版本",
+          "reason": "当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败。",
+          "recovery": "无需恢复",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt",
+          "outcome": "allowed"
+        }
+      ],
+      "c017ReadAttempts": {
+        "request_receipt": 1,
+        "confirmation_submit": 0,
+        "task_formation": 0
+      },
+      "sourceEvents": [
+        {
+          "type": "驾驶舱人工提交",
+          "time": "2026-08-17 16:36:00",
+          "reason": "集团债务风险管理人员从仪表盘提交标准 Action Request，并送达风电测试公司07债务风险接口人"
+        }
+      ],
+      "supplementRequests": [],
+      "duplicateRequests": [],
+      "taskId": null,
+      "taskCreating": false,
+      "decision": null,
+      "automatic": false,
+      "actionRequestImmutable": false,
+      "projectionOnly": false,
+      "requestId": "AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-007-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "scenarioContext": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "decisionRecipient": {
+        "enterpriseId": "S003-ENT-007",
+        "memberUnitId": "S003-UNIT-007",
+        "memberUnitName": "风电测试公司07",
+        "recipientId": "S003-CONTACT-007",
+        "recipientName": "风电测试公司07债务风险接口人",
+        "role": "成员单位债务风险接口人"
+      },
+      "routingTarget": {
+        "type": "member-unit-decision-center",
+        "organizationId": "S003-UNIT-007",
+        "organizationName": "风电测试公司07"
+      },
+      "recipientRole": "成员单位债务风险接口人",
+      "recommendedTaskOwner": "风电测试公司07债务风险责任人",
+      "recommendedTaskOwnerId": "S003-ENT-007-DEBT-RISK-OWNER",
+      "idempotencyKey": "S003-RUN-20260817163000000-c02200000001|S003-ENT-007|S003_RISK_FOLLOW_UP|2025-12-31|1.1.0",
+      "sourceResultId": "S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-007",
+      "sourceResultVersion": "1.1.0",
+      "c017ReceiptRead": {
+        "gate": "request_receipt",
+        "gateLabel": "行动申请接收前",
+        "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+        "summaryVersion": "current-2",
+        "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+        "readAt": "2026-08-17T16:36:00.000Z",
+        "qualityStatus": "允许推进",
+        "hardFailure": "否",
+        "detectedAt": "不适用",
+        "impactScope": "无硬质量失败影响",
+        "businessFieldCategories": "财务来源、企业当期因子输入版本",
+        "reason": "当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败。",
+        "recovery": "无需恢复",
+        "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt",
+        "outcome": "allowed"
+      }
+    },
+    {
+      "id": "AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-017-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "reminderId": "DR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-017-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "candidateId": "S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-017-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "sourceCandidateId": "S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-017-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001"
+      },
+      "subjectId": "S003-ENT-017",
+      "subjectName": "环保测试公司1",
+      "scenario": "债务风险监测",
+      "sourceType": "report",
+      "sourceRef": "债务风险驾驶舱 · S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-017",
+      "requester": "集团债务风险管理人员",
+      "submittedBy": "集团债务风险管理人员",
+      "requestTime": "2026-08-17 16:30:00",
+      "generatedTime": "2026-08-17 16:30:00",
+      "actionType": {
+        "id": "S003_RISK_FOLLOW_UP",
+        "name": "风险分档跟踪",
+        "description": "黄灯企业按亮灯直接形成预警入口，由集团债务风险管理人员显式提交后送达对应成员单位接口人。",
+        "version": "1.0.2",
+        "status": "已发布"
+      },
+      "rule": null,
+      "ruleApplicability": "不适用；本次按黄灯、红灯或黑灯当前亮灯形成一企一预警",
+      "metric": {
+        "id": "MET-S003-FINAL-RISK-SCORE",
+        "name": "企业最终风险评分",
+        "value": "30.52 分",
+        "explanation": "本次评估为黄灯，已按当前亮灯形成预警并送达环保测试公司1接口人。",
+        "evaluatedAt": "2025-12-31",
+        "scope": "环保测试公司1 · 环保"
+      },
+      "owner": null,
+      "ownerId": null,
+      "recommendation": "黄灯企业按亮灯直接形成预警入口，由集团债务风险管理人员显式提交后送达对应成员单位接口人。 补充关注：重大诉讼。",
+      "banks": [],
+      "loans": [],
+      "loanCount": 0,
+      "evidence": {
+        "semanticVersion": "S003-M01-DEBT-RISK-PKG 1.0.2",
+        "dataVersion": "1.0.0",
+        "dataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "resultVersion": "1.1.0",
+        "cutoff": "2025-12-31",
+        "quality": "允许推进",
+        "availability": "完整可用",
+        "ready": "C017 接收安全门通过",
+        "snapshotId": "S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-017",
+        "freshness": "固定运行证据",
+        "qualitySource": {
+          "contractCode": "C017",
+          "consumer": "决策中心",
+          "gate": "request_receipt",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+          "summaryVersion": "current-2",
+          "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt"
+        }
+      },
+      "status": "awaiting",
+      "requestGate": {
+        "status": "accepted",
+        "checkedAt": "2026-08-17 16:36:00",
+        "reason": "C011 标准行动申请已接收，当前 C017 安全门允许推进",
+        "reminderCreated": true
+      },
+      "formation": {
+        "requestGateStatus": "accepted",
+        "requestGateCheckedAt": "2026-08-17 16:36:00",
+        "requestGateReason": "C011 标准行动申请已接收",
+        "reminderCreated": true,
+        "confirmationGateStatus": "not_reached",
+        "confirmationGateReason": "等待环保测试公司1债务风险接口人核实确认并选择实际负责人"
+      },
+      "confirmationEligibility": {
+        "allowed": true,
+        "requiresAcknowledgement": false,
+        "reason": "已送达环保测试公司1债务风险接口人，待成员单位接口人核实确认后分办"
+      },
+      "c017SafetyReads": [
+        {
+          "gate": "request_receipt",
+          "gateLabel": "行动申请接收前",
+          "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+          "summaryVersion": "current-2",
+          "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+          "readAt": "2026-08-17T16:36:00.000Z",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "财务来源、企业当期因子输入版本",
+          "reason": "当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败。",
+          "recovery": "无需恢复",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt",
+          "outcome": "allowed"
+        }
+      ],
+      "c017ReadAttempts": {
+        "request_receipt": 1,
+        "confirmation_submit": 0,
+        "task_formation": 0
+      },
+      "sourceEvents": [
+        {
+          "type": "驾驶舱人工提交",
+          "time": "2026-08-17 16:36:00",
+          "reason": "集团债务风险管理人员从仪表盘提交标准 Action Request，并送达环保测试公司1债务风险接口人"
+        }
+      ],
+      "supplementRequests": [],
+      "duplicateRequests": [],
+      "taskId": null,
+      "taskCreating": false,
+      "decision": null,
+      "automatic": false,
+      "actionRequestImmutable": false,
+      "projectionOnly": false,
+      "requestId": "AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-017-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "scenarioContext": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "decisionRecipient": {
+        "enterpriseId": "S003-ENT-017",
+        "memberUnitId": "S003-UNIT-017",
+        "memberUnitName": "环保测试公司1",
+        "recipientId": "S003-CONTACT-017",
+        "recipientName": "环保测试公司1债务风险接口人",
+        "role": "成员单位债务风险接口人"
+      },
+      "routingTarget": {
+        "type": "member-unit-decision-center",
+        "organizationId": "S003-UNIT-017",
+        "organizationName": "环保测试公司1"
+      },
+      "recipientRole": "成员单位债务风险接口人",
+      "recommendedTaskOwner": "环保测试公司1债务风险责任人",
+      "recommendedTaskOwnerId": "S003-ENT-017-DEBT-RISK-OWNER",
+      "idempotencyKey": "S003-RUN-20260817163000000-c02200000001|S003-ENT-017|S003_RISK_FOLLOW_UP|2025-12-31|1.1.0",
+      "sourceResultId": "S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-017",
+      "sourceResultVersion": "1.1.0",
+      "c017ReceiptRead": {
+        "gate": "request_receipt",
+        "gateLabel": "行动申请接收前",
+        "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+        "summaryVersion": "current-2",
+        "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+        "readAt": "2026-08-17T16:36:00.000Z",
+        "qualityStatus": "允许推进",
+        "hardFailure": "否",
+        "detectedAt": "不适用",
+        "impactScope": "无硬质量失败影响",
+        "businessFieldCategories": "财务来源、企业当期因子输入版本",
+        "reason": "当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败。",
+        "recovery": "无需恢复",
+        "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt",
+        "outcome": "allowed"
+      }
+    },
+    {
+      "id": "AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "reminderId": "DR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "candidateId": "S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "sourceCandidateId": "S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001"
+      },
+      "subjectId": "S003-ENT-018",
+      "subjectName": "环保测试公司2",
+      "scenario": "债务风险监测",
+      "sourceType": "report",
+      "sourceRef": "债务风险驾驶舱 · S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-018",
+      "requester": "集团债务风险管理人员",
+      "submittedBy": "集团债务风险管理人员",
+      "requestTime": "2026-08-17 16:30:00",
+      "generatedTime": "2026-08-17 16:30:00",
+      "actionType": {
+        "id": "S003_RISK_FOLLOW_UP",
+        "name": "风险分档跟踪",
+        "description": "黄灯企业按亮灯直接形成预警入口，由集团债务风险管理人员显式提交后送达对应成员单位接口人。",
+        "version": "1.0.2",
+        "status": "已发布"
+      },
+      "rule": null,
+      "ruleApplicability": "不适用；本次按黄灯、红灯或黑灯当前亮灯形成一企一预警",
+      "metric": {
+        "id": "MET-S003-FINAL-RISK-SCORE",
+        "name": "企业最终风险评分",
+        "value": "33.92 分",
+        "explanation": "本次评估为黄灯，已按当前亮灯形成预警并送达环保测试公司2接口人。",
+        "evaluatedAt": "2025-12-31",
+        "scope": "环保测试公司2 · 环保"
+      },
+      "owner": null,
+      "ownerId": null,
+      "recommendation": "黄灯企业按亮灯直接形成预警入口，由集团债务风险管理人员显式提交后送达对应成员单位接口人。 ",
+      "banks": [],
+      "loans": [],
+      "loanCount": 0,
+      "evidence": {
+        "semanticVersion": "S003-M01-DEBT-RISK-PKG 1.0.2",
+        "dataVersion": "1.0.0",
+        "dataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "resultVersion": "1.1.0",
+        "cutoff": "2025-12-31",
+        "quality": "允许推进",
+        "availability": "完整可用",
+        "ready": "C017 接收安全门通过",
+        "snapshotId": "S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-018",
+        "freshness": "固定运行证据",
+        "qualitySource": {
+          "contractCode": "C017",
+          "consumer": "决策中心",
+          "gate": "request_receipt",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+          "summaryVersion": "current-2",
+          "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt"
+        }
+      },
+      "status": "awaiting",
+      "requestGate": {
+        "status": "accepted",
+        "checkedAt": "2026-08-17 16:36:00",
+        "reason": "C011 标准行动申请已接收，当前 C017 安全门允许推进",
+        "reminderCreated": true
+      },
+      "formation": {
+        "requestGateStatus": "accepted",
+        "requestGateCheckedAt": "2026-08-17 16:36:00",
+        "requestGateReason": "C011 标准行动申请已接收",
+        "reminderCreated": true,
+        "confirmationGateStatus": "not_reached",
+        "confirmationGateReason": "等待环保测试公司2债务风险接口人核实确认并选择实际负责人"
+      },
+      "confirmationEligibility": {
+        "allowed": true,
+        "requiresAcknowledgement": false,
+        "reason": "已送达环保测试公司2债务风险接口人，待成员单位接口人核实确认后分办"
+      },
+      "c017SafetyReads": [
+        {
+          "gate": "request_receipt",
+          "gateLabel": "行动申请接收前",
+          "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+          "summaryVersion": "current-2",
+          "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+          "readAt": "2026-08-17T16:36:00.000Z",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "财务来源、企业当期因子输入版本",
+          "reason": "当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败。",
+          "recovery": "无需恢复",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt",
+          "outcome": "allowed"
+        }
+      ],
+      "c017ReadAttempts": {
+        "request_receipt": 1,
+        "confirmation_submit": 0,
+        "task_formation": 0
+      },
+      "sourceEvents": [
+        {
+          "type": "驾驶舱人工提交",
+          "time": "2026-08-17 16:36:00",
+          "reason": "集团债务风险管理人员从仪表盘提交标准 Action Request，并送达环保测试公司2债务风险接口人"
+        }
+      ],
+      "supplementRequests": [],
+      "duplicateRequests": [],
+      "taskId": null,
+      "taskCreating": false,
+      "decision": null,
+      "automatic": false,
+      "actionRequestImmutable": false,
+      "projectionOnly": false,
+      "requestId": "AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "scenarioContext": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "decisionRecipient": {
+        "enterpriseId": "S003-ENT-018",
+        "memberUnitId": "S003-UNIT-018",
+        "memberUnitName": "环保测试公司2",
+        "recipientId": "S003-CONTACT-018",
+        "recipientName": "环保测试公司2债务风险接口人",
+        "role": "成员单位债务风险接口人"
+      },
+      "routingTarget": {
+        "type": "member-unit-decision-center",
+        "organizationId": "S003-UNIT-018",
+        "organizationName": "环保测试公司2"
+      },
+      "recipientRole": "成员单位债务风险接口人",
+      "recommendedTaskOwner": "环保测试公司2债务风险责任人",
+      "recommendedTaskOwnerId": "S003-ENT-018-DEBT-RISK-OWNER",
+      "idempotencyKey": "S003-RUN-20260817163000000-c02200000001|S003-ENT-018|S003_RISK_FOLLOW_UP|2025-12-31|1.1.0",
+      "sourceResultId": "S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-018",
+      "sourceResultVersion": "1.1.0",
+      "c017ReceiptRead": {
+        "gate": "request_receipt",
+        "gateLabel": "行动申请接收前",
+        "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+        "summaryVersion": "current-2",
+        "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+        "readAt": "2026-08-17T16:36:00.000Z",
+        "qualityStatus": "允许推进",
+        "hardFailure": "否",
+        "detectedAt": "不适用",
+        "impactScope": "无硬质量失败影响",
+        "businessFieldCategories": "财务来源、企业当期因子输入版本",
+        "reason": "当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败。",
+        "recovery": "无需恢复",
+        "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt",
+        "outcome": "allowed"
+      }
+    }
+  ],
+  "supersedes": "resources/m04/decision-inbox.v2.json",
+  "projectionCorrection": {
+    "type": "evidence-completeness-successor",
+    "reason": "补齐既有 C011 接收事件已发生但 v1 工作投影遗漏的 C017 request_receipt 最小安全读取回执；不重放行动申请、不改写历史事件。",
+    "formedAt": "2026-08-17T08:30:00.000Z",
+    "sourceOwner": "数据工程",
+    "consumerOwner": "决策中心"
+  }
+}

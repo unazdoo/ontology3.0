@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "ofw.s004.report-agent-config.v2",
+  "agentDefinitionId": "AGENT-S004-PREFLIGHT-REPORT-002",
+  "agentReleaseVersion": "2.0.0",
+  "owner": "M05",
+  "promptVersion": "PROMPT-S004-REPORT-002",
+  "skillVersion": "SKILL-S004-REPORT-ASSEMBLY-002",
+  "scenarioContext": {
+    "baselineVersion": "v1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v2",
+    "scenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+    "formedAt": "2026-08-15T23:30:00.000Z"
+  },
+  "inputContract": "EVID-S004-20260815-0002",
+  "toolWhitelist": [
+    "READ_FIXED_EVIDENCE_PACKAGE",
+    "WRITE_STRUCTURED_DRAFT"
+  ],
+  "generationPolicy": {
+    "mayOrganizeEvidenceBackedNarrative": true,
+    "mayExplainPublishedMetrics": true,
+    "maySelectLatestData": false,
+    "mayReadWorkbook": false,
+    "mayReadSourceNodes": false,
+    "mayReadAnnualReportsDirectly": false,
+    "mayRecalculateFormalMetrics": false,
+    "mayGenerateCreditDecision": false,
+    "mayGenerateRiskControllability": false,
+    "mayPublishReport": false,
+    "mayCreateActionRequest": false,
+    "mayCreateTodo": false
+  },
+  "humanOnlyOutputSlots": [
+    "investigationOpinion",
+    "riskControllabilityJudgements",
+    "creditComprehensiveJudgement",
+    "publicationAuthorization"
+  ],
+  "outputSchema": "ofw.s004.agent-draft.v2"
+}

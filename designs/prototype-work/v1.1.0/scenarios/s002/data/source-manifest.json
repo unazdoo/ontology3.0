@@ -1,0 +1,272 @@
+{
+  "schemaVersion": "s002-source-manifest/v1",
+  "scenarioId": "S002",
+  "scenarioVersion": "S002-v1",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "currency": "CNY",
+  "unit": "万元",
+  "expenseBasis": "不含税",
+  "incomeSignPolicy": "源负号代表收益；展示层转正，同时保留源值和转换证据",
+  "dataAsOf": "2025-12-31",
+  "authority": {
+    "sourcePackage": "S002预算监督管理_演示加工数据候选包_v0.1.xlsx",
+    "sourcePackageSha256": "a283fabf23f63506f33c5900d0f3643c82734659a890ee504d7394bdb0244599",
+    "usage": "S002 场景加工候选包，用于记录演示修正与补全结果；8 份逐字节来源工作簿仍分别是来源快照权威文件，本候选包不是生产数据资产，也不替代来源快照",
+    "authoritativeSourceSnapshotCount": 8,
+    "authoritativeSourceDirectory": "source-files",
+    "sourceOverwriteAllowed": false
+  },
+  "downloadPolicy": {
+    "originDirectory": "/Users/domi/Public/Vibecoding/ontology2.0/ai 竞赛资料/预算监督管理/data_v5",
+    "copyDirectory": "source-files",
+    "copyKind": "ORIGINAL_SOURCE_COPY",
+    "contentChanged": false,
+    "verifiedAt": "2026-08-15",
+    "downloadMutatesOwnerState": false,
+    "note": "8 份文件均为 data_v5 原始工作簿的逐字节副本；下载仅供查看，不改变快照、质量、管道或资产状态。"
+  },
+  "logicalSourceSummary": {
+    "logicalSourceCount": 5,
+    "sourceSnapshotCount": 8,
+    "logicalMemberCount": 14,
+    "logicalSources": [
+      {"logicalSourceId": "DS-ACTUAL-EXECUTION", "name": "实际执行明细", "snapshotIds": ["SRC-2024-ACTUAL", "SRC-2025-ACTUAL"], "snapshotCount": 2, "pipelineId": "S002-PIPE-BUDGET-v1", "targetAssetVersion": "S002-BUDGET-EXEC-v1"},
+      {"logicalSourceId": "DS-APPROVED-BUDGET", "name": "预算下达明细", "snapshotIds": ["SRC-2024-BUDGET", "SRC-2025-BUDGET"], "snapshotCount": 2, "pipelineId": "S002-PIPE-BUDGET-v1", "targetAssetVersion": "S002-BUDGET-EXEC-v1"},
+      {"logicalSourceId": "DS-INITIAL-SUBMISSION", "name": "预算申报明细", "snapshotIds": ["SRC-2025-SUBMISSION", "SRC-2026-SUBMISSION"], "snapshotCount": 2, "pipelineId": "S002-PIPE-BUDGET-v1", "targetAssetVersion": "S002-BUDGET-EXEC-v1"},
+      {"logicalSourceId": "DS-PROJECT-COMMITMENT", "name": "项目预算占用", "snapshotIds": ["SRC-2025-COMMITMENT"], "snapshotCount": 1, "pipelineId": "S002-PIPE-PROJECT-v1", "targetAssetVersion": "S002-PROJECT-OCC-v1"},
+      {"logicalSourceId": "DS-PROJECT-USE", "name": "项目预算使用表", "snapshotIds": ["SRC-PROJECT-USE"], "snapshotCount": 1, "pipelineId": "S002-PIPE-PROJECT-v1", "targetAssetVersion": "S002-PROJECT-OCC-v1"}
+    ]
+  },
+  "pipelineSummary": {
+    "pipelineCount": 2,
+    "pipelines": [
+      {"pipelineId": "S002-PIPE-BUDGET-v1", "name": "预算编制与执行标准化管道", "logicalSourceIds": ["DS-ACTUAL-EXECUTION", "DS-APPROVED-BUDGET", "DS-INITIAL-SUBMISSION"], "snapshotCount": 6, "logicalMemberCount": 12, "targetAssetVersion": "S002-BUDGET-EXEC-v1"},
+      {"pipelineId": "S002-PIPE-PROJECT-v1", "name": "项目预算余额与采购占用标准化管道", "logicalSourceIds": ["DS-PROJECT-COMMITMENT", "DS-PROJECT-USE"], "snapshotCount": 2, "logicalMemberCount": 2, "targetAssetVersion": "S002-PROJECT-OCC-v1"}
+    ],
+    "businessFormulaBoundary": "管道只负责来源快照、修正映射、稳定键、通用质量和数据资产版本；Metric公式、Rule阈值及预算业务判断归M01。"
+  },
+  "sources": [
+    {
+      "sourceId": "SRC-2024-ACTUAL",
+      "logicalSourceId": "DS-ACTUAL-EXECUTION",
+      "snapshotKey": "FY2024",
+      "snapshotLabel": "2024年度快照",
+      "file": "2024年实际执行.xlsx",
+      "logicalMembers": ["Sheet"],
+      "range": "Sheet!A1:L162",
+      "version": "data_v5",
+      "asOf": "2024-12-31",
+      "rows": 161,
+      "purpose": "2024实际执行、年末计提",
+      "sensitivity": "内部财务中高敏感",
+      "sha256": "5064556a172d2e91dbc33454987ae12caab2849f00a2888c6646559b50ba92a7",
+      "download": {
+        "relativePath": "source-files/2024年实际执行.xlsx",
+        "copyKind": "ORIGINAL_SOURCE_COPY",
+        "sizeBytes": 20966,
+        "sha256Verified": true,
+        "marker": "SOURCE"
+      }
+    },
+    {
+      "sourceId": "SRC-2025-ACTUAL",
+      "logicalSourceId": "DS-ACTUAL-EXECUTION",
+      "snapshotKey": "FY2025",
+      "snapshotLabel": "2025年度快照",
+      "file": "2025年实际执行.xlsx",
+      "logicalMembers": ["Sheet"],
+      "range": "Sheet!A1:L204",
+      "version": "data_v5",
+      "asOf": "2025-12-31",
+      "rows": 203,
+      "purpose": "2025实际执行、次年确认",
+      "sensitivity": "内部财务中高敏感",
+      "sha256": "2714661fa34651bc01332fa6f58c2f0259357385ac5ef77a2dacaae6b1eb69d2",
+      "download": {
+        "relativePath": "source-files/2025年实际执行.xlsx",
+        "copyKind": "ORIGINAL_SOURCE_COPY",
+        "sizeBytes": 23249,
+        "sha256Verified": true,
+        "marker": "SOURCE"
+      }
+    },
+    {
+      "sourceId": "SRC-2024-BUDGET",
+      "logicalSourceId": "DS-APPROVED-BUDGET",
+      "snapshotKey": "FY2024-APPROVED",
+      "snapshotLabel": "2024年度最终批准预算快照",
+      "file": "2024年预算下达明细.xlsx",
+      "logicalMembers": ["Sheet"],
+      "range": "Sheet!A1:I31",
+      "version": "FY2024-APPROVED-FINAL-v1",
+      "asOf": "2024-01-15",
+      "rows": 30,
+      "purpose": "2024最终批准预算",
+      "sensitivity": "内部财务中高敏感",
+      "sha256": "29b6a7060f504ba8c96c019e0cb9a295c734e02e6afc70f86d59d628590d3438",
+      "download": {
+        "relativePath": "source-files/2024年预算下达明细.xlsx",
+        "copyKind": "ORIGINAL_SOURCE_COPY",
+        "sizeBytes": 10929,
+        "sha256Verified": true,
+        "marker": "SOURCE"
+      }
+    },
+    {
+      "sourceId": "SRC-2025-BUDGET",
+      "logicalSourceId": "DS-APPROVED-BUDGET",
+      "snapshotKey": "FY2025-APPROVED",
+      "snapshotLabel": "2025年度最终批准预算快照",
+      "file": "2025年预算下达明细.xlsx",
+      "logicalMembers": ["Sheet"],
+      "range": "Sheet!A1:I31",
+      "version": "FY2025-APPROVED-FINAL-v1",
+      "asOf": "2025-01-15",
+      "rows": 30,
+      "purpose": "2025最终批准预算",
+      "sensitivity": "内部财务中高敏感",
+      "sha256": "e194594c61cb27a5c4355a6e8f75d9c463ccf1686e0def5715921eca8d137c79",
+      "download": {
+        "relativePath": "source-files/2025年预算下达明细.xlsx",
+        "copyKind": "ORIGINAL_SOURCE_COPY",
+        "sizeBytes": 11012,
+        "sha256Verified": true,
+        "marker": "SOURCE"
+      }
+    },
+    {
+      "sourceId": "SRC-2025-SUBMISSION",
+      "logicalSourceId": "DS-INITIAL-SUBMISSION",
+      "snapshotKey": "FY2025-INITIAL",
+      "snapshotLabel": "2025年度初始申报快照",
+      "file": "2025年预算申报明细汇总.xlsx",
+      "logicalMembers": ["收入成本预算汇总表", "市场项目预算明细", "部门公共费用明细", "技术配置"],
+      "range": "4个逻辑成员",
+      "version": "FY2025-INITIAL-SUBMISSION-v1",
+      "asOf": "2024-10-31",
+      "rows": 64,
+      "purpose": "2025部门最初申报",
+      "sensitivity": "内部财务中高敏感",
+      "sha256": "850af12aaece5fe14adb7c2609018a618e64018fc36724ff7f5f3ea3b51e441a",
+      "download": {
+        "relativePath": "source-files/2025年预算申报明细汇总.xlsx",
+        "copyKind": "ORIGINAL_SOURCE_COPY",
+        "sizeBytes": 22622,
+        "sha256Verified": true,
+        "marker": "SOURCE"
+      }
+    },
+    {
+      "sourceId": "SRC-2026-SUBMISSION",
+      "logicalSourceId": "DS-INITIAL-SUBMISSION",
+      "snapshotKey": "FY2026-INITIAL",
+      "snapshotLabel": "2026年度初始申报快照",
+      "file": "2026年预算申报明细汇总.xlsx",
+      "logicalMembers": ["收入成本预算汇总表", "市场项目预算明细", "部门公共费用明细", "技术配置"],
+      "range": "4个逻辑成员",
+      "version": "FY2026-INITIAL-SUBMISSION-v1",
+      "asOf": "2025-10-31",
+      "rows": 64,
+      "purpose": "2026部门最初申报",
+      "sensitivity": "内部财务中高敏感",
+      "sha256": "85f0ce556faad8d0ef51b3bf7a5f49dc73508321d75f419db6f6bafd8427827f",
+      "download": {
+        "relativePath": "source-files/2026年预算申报明细汇总.xlsx",
+        "copyKind": "ORIGINAL_SOURCE_COPY",
+        "sizeBytes": 22929,
+        "sha256Verified": true,
+        "marker": "SOURCE"
+      }
+    },
+    {
+      "sourceId": "SRC-2025-COMMITMENT",
+      "logicalSourceId": "DS-PROJECT-COMMITMENT",
+      "snapshotKey": "FY2025",
+      "snapshotLabel": "2025年度占用快照",
+      "file": "2025年预算占用.XLSX",
+      "logicalMembers": ["Sheet"],
+      "range": "Sheet!A1:L109",
+      "version": "data_v5",
+      "asOf": "2025-12-31",
+      "rows": 108,
+      "purpose": "PR/PO占用及释放事件；源覆盖3个项目",
+      "sensitivity": "内部采购财务中高敏感",
+      "sha256": "af94789f3ac8238ffd076c9006f5a29a096978ce182284efd5478994f249d20a",
+      "download": {
+        "relativePath": "source-files/2025年预算占用.XLSX",
+        "copyKind": "ORIGINAL_SOURCE_COPY",
+        "sizeBytes": 15900,
+        "sha256Verified": true,
+        "marker": "SOURCE"
+      }
+    },
+    {
+      "sourceId": "SRC-PROJECT-USE",
+      "logicalSourceId": "DS-PROJECT-USE",
+      "snapshotKey": "ASOF-2025-12-31",
+      "snapshotLabel": "2025-12-31确认快照",
+      "file": "项目预算使用情况表.xlsx",
+      "logicalMembers": ["Sheet"],
+      "range": "Sheet!A1:D22",
+      "version": "derived-2025-12-31",
+      "asOf": "2025-12-31",
+      "rows": 21,
+      "purpose": "项目立项金额及源已使用值",
+      "sensitivity": "内部项目财务中高敏感",
+      "sha256": "36bbb71e67f995ce815703528b9cb1a062df02caa4f816581369a00b7b536d1c",
+      "download": {
+        "relativePath": "source-files/项目预算使用情况表.xlsx",
+        "copyKind": "ORIGINAL_SOURCE_COPY",
+        "sizeBytes": 5605,
+        "sha256Verified": true,
+        "marker": "SOURCE"
+      }
+    }
+  ],
+  "dataMarkerPolicy": {
+    "SOURCE": "来源原值，未作业务含义改写",
+    "CORRECTED": "为演示修复日期、期间或取值；保留源值和修复说明",
+    "SYNTHETIC_FOR_DEMO": "为跨年可比、部门差异或占用演示补全的合成记录",
+    "DERIVED_REVERSAL": "由来源事实按确认时点派生的冲回或次年确认记录",
+    "DERIVED": "由来源及已标记演示输入计算的结果，不冒充直接来源事实",
+    "IMPUTED_ZERO": "来源未覆盖且仅为演示完整性补零；不得解读为来源确认的真实零"
+  },
+  "qualitySummary": {
+    "checksPassed": 20,
+    "checksTotal": 20,
+    "formulaErrors": 0,
+    "legalRecordsRetained": {
+      "duplicateVoucherGroups": 21,
+      "periodAnomalies": 13,
+      "dateInversions": 6
+    },
+    "actual2024": {"SOURCE": 161, "SYNTHETIC_FOR_DEMO": 42},
+    "actual2025": {"SOURCE": 147, "CORRECTED": 56, "DERIVED_REVERSAL": 14},
+    "publicExpense2026": {"SYNTHETIC_FOR_DEMO": 12},
+    "occupancyExamples": {"SYNTHETIC_FOR_DEMO": 6},
+    "imputedZeroProjects": {"IMPUTED_ZERO": 18},
+    "projectBalances": {"DERIVED": 21, "containsSyntheticInputs": true}
+  },
+  "consumerBoundary": {
+    "businessDataAssetCount": 2,
+    "businessDataAssets": [
+      {
+        "assetId": "S002-BUDGET-EXECUTION-ASSET",
+        "version": "S002-BUDGET-EXEC-v1",
+        "scope": "预算编制、最终批准预算、实际执行与初始申报"
+      },
+      {
+        "assetId": "S002-PROJECT-OCCUPANCY-ASSET",
+        "version": "S002-PROJECT-OCC-v1",
+        "scope": "项目预算使用、采购占用、余额与供应商比较"
+      }
+    ],
+    "compatibilityDeliveryPointer": "S002-DATA-v1",
+    "compatibilityPointerIsBusinessAsset": false,
+    "publishedOntologyCandidate": "S002-ONTO-v1",
+    "authoritativePointerCandidate": "T019-S002-v1",
+    "externalDispatch": false,
+    "productionAsset": false
+  }
+}

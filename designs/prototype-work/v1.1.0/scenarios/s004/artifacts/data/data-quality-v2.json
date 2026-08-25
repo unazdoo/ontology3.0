@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "ofw.s004.data-quality.v2",
+  "qualityRunId": "DQR-S004-20260815-V2-001",
+  "owner": "M02",
+  "status": "PASS_WITH_DISCLOSURES",
+  "checkedAt": "2026-08-15T14:35:00+08:00",
+  "scenarioContext": {
+    "baselineVersion": "v1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v2",
+    "scenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+    "formedAt": "2026-08-15T23:30:00.000Z"
+  },
+  "snapshotId": "DS-S004-20260815-V2-001",
+  "checks": [
+    { "checkId": "DQ-V2-IDENTITY", "result": "PASS", "detail": "借款人统一社会信用代码、成员ID、申请编号和报告编号稳定键完整。" },
+    { "checkId": "DQ-V2-FINANCIAL-COVERAGE", "result": "PASS", "detail": "2023—2025年资产负债表、利润表、现金流量表的权威示例列示行均已进入数据快照。" },
+    { "checkId": "DQ-V2-NO-DUPLICATE-FINANCIAL-UPLOAD", "result": "PASS", "detail": "年度财务报告已包含的数据未重复建立上传型模拟数据。" },
+    { "checkId": "DQ-V2-RESTATEMENT", "result": "PASS_WITH_DISCLOSURE", "detail": "2024年度按2025年报重述比较数列示；2023年度按示例列示口径保留并显式披露。" },
+    { "checkId": "DQ-V2-UNIT-CURRENCY", "result": "PASS", "detail": "财务金额统一为人民币万元，期间与截至日完整。" },
+    { "checkId": "DQ-V2-SYNTHETIC-NODES", "result": "PASS_WITH_DISCLOSURE", "detail": "工商、评级、政策、成员资格、贷款申请和内部授信等演示节点均标记synthetic-demo，不冒充正式外部证据。" },
+    { "checkId": "DQ-V2-WORKING-CAPITAL-ROUNDING", "result": "PASS", "detail": "资金需求测算按权威示例展示口径：周转天数保留两位、周转次数保留四位、最终额度取整至万元。" }
+  ],
+  "blockingIssues": [],
+  "publicationDisclosureRequired": [
+    "本报告为演示案例，模拟上传节点不得用于真实授信。",
+    "客户专属征信、内部评级和审批结论须在真实业务中由人工另行核实。"
+  ]
+}

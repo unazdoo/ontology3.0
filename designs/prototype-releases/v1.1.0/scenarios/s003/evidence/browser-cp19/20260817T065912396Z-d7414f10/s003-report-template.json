@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "ofw.s003.m06.report-template.v2",
+  "moduleId": "M06",
+  "moduleOwner": "报告中心",
+  "templateId": "S003-RPT-TPL-ENTERPRISE-RISK",
+  "templateVersion": "1.1.0",
+  "supersedes": "resources/m06/report-template.v1.json",
+  "name": "企业债务风险评估报告模板",
+  "lifecycleStatus": "published",
+  "definitionId": "S003-RPT-DEF-DEBT-RISK",
+  "supportedFormats": [
+    "html",
+    "print-to-pdf"
+  ],
+  "layout": {
+    "density": "high",
+    "pageWidth": "A4-responsive",
+    "navigation": "left-anchor-index",
+    "readerLayout": "baseline-three-pane",
+    "printOptimized": true
+  },
+  "sections": [
+    {
+      "sectionId": "executive-summary",
+      "title": "总体风险评分与结论",
+      "required": true,
+      "components": [
+        "enterprise-identity",
+        "assessment-context",
+        "score-card",
+        "risk-tier-badge",
+        "conclusion-callout"
+      ]
+    },
+    {
+      "sectionId": "key-risk-diagnosis",
+      "title": "关键风险诊断说明",
+      "required": true,
+      "components": [
+        "lowest-three-indicators",
+        "negative-factor-diagnosis",
+        "default-semantics-summary",
+        "evidence-pointers"
+      ]
+    },
+    {
+      "sectionId": "adjustment-factors",
+      "title": "调节因子明细",
+      "required": true,
+      "components": [
+        "factor-table",
+        "factor-state-summary",
+        "default-semantics"
+      ]
+    },
+    {
+      "sectionId": "financial-indicators",
+      "title": "财务指标评分明细",
+      "required": true,
+      "components": [
+        "indicator-table",
+        "weight-total",
+        "raw-score-summary"
+      ]
+    },
+    {
+      "sectionId": "rule-basis",
+      "title": "规则、默认语义与口径",
+      "required": true,
+      "components": [
+        "composite-formula",
+        "construction-default",
+        "profit-history-default",
+        "missing-factor-default",
+        "not-applicable-semantics",
+        "tier-rule"
+      ]
+    },
+    {
+      "sectionId": "risk-strategy",
+      "title": "风险应对策略与改善建议",
+      "required": true,
+      "components": [
+        "tier-management-focus",
+        "indicator-recommendations",
+        "factor-mitigation-recommendations"
+      ]
+    },
+    {
+      "sectionId": "three-month-plan",
+      "title": "未来三个月行动建议",
+      "required": true,
+      "components": [
+        "month-one-verification",
+        "month-two-tracking",
+        "month-three-reassessment",
+        "no-automatic-side-effects-note"
+      ]
+    },
+    {
+      "sectionId": "disposition-status",
+      "title": "风险触发与行动状态",
+      "required": true,
+      "components": [
+        "trigger-classification",
+        "candidate-list",
+        "action-request-and-todo-status"
+      ]
+    },
+    {
+      "sectionId": "verification-and-evidence",
+      "title": "核验、版本与证据",
+      "required": true,
+      "components": [
+        "verification-summary",
+        "version-binding",
+        "evidence-index",
+        "artifact-downloads"
+      ]
+    }
+  ],
+  "download": {
+    "templateJson": true,
+    "formalHtml": true,
+    "printToPdf": true,
+    "exampleHtml": false,
+    "reasonExampleHtmlDisabled": "模板不携带旧场景数据，正式 HTML 由具体报告内容版本形成。"
+  }
+}

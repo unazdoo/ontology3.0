@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>正在恢复 S001 运行记录</title>
+  <style>
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f1f5fa; color: #1b2940; font-family: Inter,"PingFang SC","Microsoft YaHei",sans-serif; }
+    main { width: min(560px,calc(100vw - 40px)); padding: 30px; border: 1px solid #d7e0ec; border-radius: 16px; background: #fff; box-shadow: 0 18px 46px rgba(31,50,80,.12); }
+    h1 { margin: 0 0 10px; font-size: 22px; } p { color: #5d6d84; line-height: 1.7; } .bar { height: 8px; margin-top: 20px; border-radius: 999px; background: #e6ebf3; overflow: hidden; }.bar i { display: block; width: 42%; height: 100%; background: #1769e0; animation: load 1.1s ease-in-out infinite alternate; } a { color: #1769e0; }
+    @keyframes load { to { transform: translateX(140%); } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>正在恢复已归档的 S001 运行记录</h1>
+    <p id="status">正在校验运行快照并恢复六模块状态。</p>
+    <div class="bar" aria-hidden="true"><i></i></div>
+    <p><a href="./completed-run.html">返回运行记录</a></p>
+  </main>
+  <script>
+    (async () => {
+      "use strict";
+      const file = "./runtime-snapshots/S001-RUN-20260814062516042-e1fd5e6ab3f4.runtime.json";
+      const expectedRunId = "S001-RUN-20260814062516042-e1fd5e6ab3f4";
+      const expectedSha256 = "565208eb3040d3de2eed1bdfac65a639d4653cc0f95912986e436d7a0eef8edb";
+      const status = document.getElementById("status");
+      const isOwnedKey = key => key.startsWith("ontology3") || key.startsWith("ontology.financial-world");
+      const digest = async bytes => Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))).map(value => value.toString(16).padStart(2,"0")).join("");
+      try {
+        const response = await fetch(file, { cache: "no-store" });
+        if (!response.ok) throw new Error(`运行快照读取失败（${response.status}）`);
+        const bytes = await response.arrayBuffer();
+        if (await digest(bytes) !== expectedSha256) throw new Error("运行快照完整性校验失败");
+        const snapshot = JSON.parse(new TextDecoder().decode(bytes));
+        if (snapshot.format !== "ontology3-prototype-runtime-snapshot" || snapshot.scenarioRunId !== expectedRunId) throw new Error("运行快照身份不匹配");
+        for (const key of Object.keys(localStorage)) if (isOwnedKey(key)) localStorage.removeItem(key);
+        for (const key of Object.keys(sessionStorage)) if (isOwnedKey(key)) sessionStorage.removeItem(key);
+        for (const [key,value] of Object.entries(snapshot.localStorage || {})) localStorage.setItem(key,value);
+        for (const [key,value] of Object.entries(snapshot.sessionStorage || {})) sessionStorage.setItem(key,value);
+        status.textContent = "运行记录已恢复，正在打开正式报告。";
+        setTimeout(() => location.replace("./s001-e2e-integration/#module/report"), 180);
+      } catch (error) {
+        status.textContent = `${error.message || "运行记录恢复失败"}。请返回运行记录后重试。`;
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+{
+  "schemaVersion": "ofw.s002.module-state-export.v2",
+  "moduleId": "M02",
+  "moduleName": "数据工程",
+  "owner": "数据工程",
+  "moduleVersion": "S002-M02-1.0.0",
+  "scenarioAdapterVersion": "S002-M02-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "baselineCheckpointBinding": {
+    "ref": "designs/scenario-checkpoints/baselines/v1.0.3/T056-baseline-checkpoint.json",
+    "sha256": "0a90f5f68dccaa7c18be71b4c82019616f19b0e359f931024652d95165ecd414"
+  },
+  "baselineModuleBinding": {
+    "baselineVersion": "1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "prototypePath": "designs/prototype-releases/v1.0.3/data-engineering-prototype-review",
+    "exactVersion": "v1.0.3#dd47ca1f16b985c6",
+    "treeSha256": "dd47ca1f16b985c6e7acbdd2f262af2636b1bb18ceb7187f727ae33630b87fe5",
+    "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+    "supportingPrototypeComponents": []
+  },
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815144500000-9e6580dfb269",
+    "formedAt": "2026-08-15T14:45:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "published-switched",
+  "formedAt": "2026-08-15T14:48:00.000Z",
+  "stateDeclaration": "referenced",
+  "emptyReason": null,
+  "resources": [
+    {
+      "resourceId": "T001-S002-BUDGET-SOURCE-v1",
+      "resourceType": "data-source",
+      "version": "1.0.0",
+      "summary": "八份预算监督管理演示来源登记",
+      "authoritativeRef": "S002/S002-RUN-20260815144500000-9e6580dfb269/M02/T001-S002-BUDGET-SOURCE-v1",
+      "formedAt": "2026-08-15T14:48:00.000Z"
+    },
+    {
+      "resourceId": "T002-S002-BUDGET-SNAPSHOT-a283fabf23f6",
+      "resourceType": "source-snapshot",
+      "version": "1.0.0",
+      "summary": "候选加工包及逻辑成员快照",
+      "authoritativeRef": "S002/S002-RUN-20260815144500000-9e6580dfb269/M02/T002-S002-BUDGET-SNAPSHOT-a283fabf23f6",
+      "formedAt": "2026-08-15T14:48:00.000Z"
+    },
+    {
+      "resourceId": "T003-S002-BUDGET-PIPELINE-v1",
+      "resourceType": "pipeline-definition",
+      "version": "1.0.0",
+      "summary": "标准化、修正标识和派生视图管道定义；不包含业务阈值",
+      "authoritativeRef": "S002/S002-RUN-20260815144500000-9e6580dfb269/M02/T003-S002-BUDGET-PIPELINE-v1",
+      "formedAt": "2026-08-15T14:48:00.000Z"
+    },
+    {
+      "resourceId": "T004-S002-BUDGET-PIPELINE-RUN-v1",
+      "resourceType": "pipeline-run",
+      "version": "1.0.0",
+      "summary": "口径标准化、合法记录修复与演示补全运行",
+      "authoritativeRef": "S002/S002-RUN-20260815144500000-9e6580dfb269/M02/T004-S002-BUDGET-PIPELINE-RUN-v1",
+      "formedAt": "2026-08-15T14:48:00.000Z"
+    },
+    {
+      "resourceId": "T005-S002-BUDGET-QUALITY-v1",
+      "resourceType": "quality-result",
+      "version": "1.0.0",
+      "summary": "缺失、重复、口径、键和历史可比性质量结果",
+      "authoritativeRef": "S002/S002-RUN-20260815144500000-9e6580dfb269/M02/T005-S002-BUDGET-QUALITY-v1",
+      "formedAt": "2026-08-15T14:48:00.000Z"
+    },
+    {
+      "resourceId": "T006-S002-BUDGET-SCHEMA-v1",
+      "resourceType": "schema-contract",
+      "version": "1.0.0",
+      "summary": "主体、期间、科目、版本、情景、项目和凭证行稳定键契约",
+      "authoritativeRef": "S002/S002-RUN-20260815144500000-9e6580dfb269/M02/T006-S002-BUDGET-SCHEMA-v1",
+      "formedAt": "2026-08-15T14:48:00.000Z"
+    },
+    {
+      "resourceId": "S002-DATA-v1",
+      "resourceType": "data-asset-version",
+      "version": "1.0.0",
+      "summary": "人民币万元、不含税费用、收益展示转正的数据资产版本",
+      "authoritativeRef": "S002/S002-RUN-20260815144500000-9e6580dfb269/M02/S002-DATA-v1",
+      "formedAt": "2026-08-15T14:48:00.000Z"
+    },
+    {
+      "resourceId": "C003-S002-DELIVERY-v1",
+      "resourceType": "delivery-receipt",
+      "version": "1.0.0",
+      "summary": "数据资产交付与接收回执",
+      "authoritativeRef": "S002/S002-RUN-20260815144500000-9e6580dfb269/M02/C003-S002-DELIVERY-v1",
+      "formedAt": "2026-08-15T14:48:00.000Z"
+    },
+    {
+      "resourceId": "C017-S002-DATA-v1",
+      "resourceType": "quality-summary",
+      "version": "1.0.0",
+      "summary": "Action三道门消费的数据当前摘要",
+      "authoritativeRef": "S002/S002-RUN-20260815144500000-9e6580dfb269/M02/C017-S002-DATA-v1",
+      "formedAt": "2026-08-15T14:48:00.000Z"
+    }
+  ],
+  "ownerBoundary": {
+    "ownsOnly": [
+      "data-source",
+      "source-snapshot",
+      "pipeline-definition",
+      "pipeline-run",
+      "schema-contract",
+      "quality-result",
+      "data-asset-version",
+      "delivery-receipt",
+      "quality-summary"
+    ],
+    "consumesByReference": true,
+    "copiesOtherModuleTruth": false,
+    "computesBusinessMetricOrRule": false
+  },
+  "demoDataMarker": "SYNTHETIC_FOR_DEMO",
+  "sideEffectPolicy": {
+    "allowHistoricalReplay": false,
+    "allowExternalDispatch": false
+  },
+  "runtimeState": {
+    "moduleId": "M02",
+    "moduleVersion": "S002-M02-1.0.0",
+    "progress": {
+      "dataConnected": true,
+      "qualityPassed": true,
+      "assetPublished": true
+    },
+    "sourceSnapshot": {
+      "snapshotId": "S002-SOURCE-SNAPSHOT-v1",
+      "sourceFiles": 8,
+      "logicalMembers": 14,
+      "sourcePackage": "S002预算监督管理_演示加工数据候选包_v0.1.xlsx",
+      "sourceSha256": "a283fabf23f63506f33c5900d0f3643c82734659a890ee504d7394bdb0244599",
+      "formedAt": "2026-08-15T14:46:00.000Z",
+      "dataMarkerPolicy": [
+        "SOURCE",
+        "CORRECTED",
+        "SYNTHETIC_FOR_DEMO",
+        "DERIVED_REVERSAL",
+        "DERIVED",
+        "IMPUTED_ZERO",
+        "MIXED_SOURCE_AND_DEMO_MARKERS"
+      ]
+    },
+    "qualityReceipt": {
+      "receiptId": "S002-QUALITY-RECEIPT-v1",
+      "status": "passed-for-demo",
+      "checksPassed": 20,
+      "checksTotal": 20,
+      "formulaErrors": 0,
+      "repairedIssues": {
+        "duplicateVoucherGroups": 21,
+        "periodAnomalies": 13,
+        "dateInversions": 6
+      },
+      "formedAt": "2026-08-15T14:46:30.000Z",
+      "disclaimer": "演示加工通过，不等于生产数据验收。"
+    },
+    "dataAsset": {
+      "assetId": "S002-DATA-ASSET",
+      "version": "S002-DATA-v1",
+      "status": "published-for-scenario",
+      "qualityReceiptId": "S002-QUALITY-RECEIPT-v1",
+      "snapshotId": "S002-SOURCE-SNAPSHOT-v1",
+      "asOf": "2025-12-31",
+      "currency": "CNY",
+      "unit": "万元",
+      "formedAt": "2026-08-15T14:47:00.000Z"
+    }
+  }
+}

@@ -1,0 +1,334 @@
+{
+  "schemaVersion": "ofw.s003.m04.manual-action-inbox.v1",
+  "moduleId": "M04",
+  "moduleOwner": "决策中心",
+  "inboxId": "S003-M04-MANUAL-ACTION-INBOX-20260815-001",
+  "inboxVersion": "1.0.0",
+  "status": "received-awaiting-human-decision",
+  "immutable": true,
+  "formedAt": "2026-08-15T14:20:00.000Z",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "submissionPolicy": {
+    "source": "M06 仪表盘人工提交",
+    "manualOnly": true,
+    "automaticCreation": false,
+    "requiresHumanConfirmation": true,
+    "multiLevelApproval": false,
+    "externalDispatch": false
+  },
+  "requests": [
+    {
+      "id": "AR-S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-007-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+      "reminderId": "DR-S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-007-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+      "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-007-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+      "sourceCandidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-007-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "subjectId": "S003-ENT-007",
+      "subjectName": "风电测试公司07",
+      "scenario": "债务风险监测",
+      "sourceType": "report",
+      "sourceRef": "债务风险驾驶舱 · S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-007",
+      "requester": "集团债务风险管理人员",
+      "submittedBy": "集团债务风险管理人员",
+      "requestTime": "2026-08-15 14:20:00",
+      "generatedTime": "2026-08-15 14:20:02",
+      "actionType": {
+        "id": "S003_RISK_FOLLOW_UP",
+        "name": "风险分档跟踪",
+        "version": "1.0.1",
+        "status": "已发布"
+      },
+      "rule": null,
+      "ruleApplicability": "不适用；本次为仪表盘人工提交",
+      "metric": {
+        "id": "MET-S003-FINAL-RISK-SCORE",
+        "name": "企业最终风险评分",
+        "value": "37.75 分",
+        "explanation": "同轮 Published C035 结果命中黄灯风险分档",
+        "evaluatedAt": "2025-12-31",
+        "scope": "风电测试公司07 · 新能源产业-风电"
+      },
+      "owner": "集团债务风险管理负责人",
+      "ownerId": "S003-DEBT-RISK-OWNER",
+      "recommendation": "核实黄灯风险来源并形成持续跟踪安排；确认后由负责人待办承接。",
+      "banks": [],
+      "loans": [],
+      "loanCount": 0,
+      "evidence": {
+        "semanticVersion": "S003-M01-DEBT-RISK-PKG 1.0.1",
+        "dataVersion": "1.0.0",
+        "dataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "resultVersion": "1.0.0",
+        "cutoff": "2025-12-31",
+        "quality": "质量检查通过",
+        "availability": "完整可用",
+        "ready": "消费就绪",
+        "snapshotId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-007",
+        "freshness": "固定运行证据"
+      },
+      "status": "awaiting",
+      "requestGate": {
+        "status": "accepted",
+        "checkedAt": "2026-08-15 14:20:02",
+        "reason": "C011 标准行动申请已接收，固定证据可进入人工判断",
+        "reminderCreated": true
+      },
+      "formation": {
+        "requestGateStatus": "accepted",
+        "requestGateCheckedAt": "2026-08-15 14:20:02",
+        "requestGateReason": "C011 标准行动申请已接收",
+        "reminderCreated": true,
+        "confirmationGateStatus": "not_reached",
+        "confirmationGateReason": "等待集团债务风险管理人员提交人工决定"
+      },
+      "confirmationEligibility": {
+        "allowed": true,
+        "requiresAcknowledgement": false,
+        "reason": "固定风险评分、分档和报告证据可核对，等待人工判断"
+      },
+      "c017SafetyReads": [
+        {
+          "gate": "request_receipt",
+          "gateLabel": "行动申请接收前",
+          "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT",
+          "summaryVersion": "current-1",
+          "summaryFormedAt": "2026-08-15 14:19:58",
+          "readAt": "2026-08-15 14:20:02",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "债务风险评分、风险分档",
+          "reason": "当前摘要未标记版本级或范围级硬质量失败",
+          "recovery": "无需恢复",
+          "evidenceLocator": "C017 / S003-T007-FORMAL-CANDIDATE-20251231-v1 / current",
+          "outcome": "allowed"
+        }
+      ],
+      "c017ReadAttempts": {
+        "request_receipt": 1,
+        "confirmation_submit": 0,
+        "task_formation": 0
+      },
+      "sourceEvents": [
+        {
+          "type": "驾驶舱人工提交",
+          "time": "2026-08-15 14:20:02",
+          "reason": "集团债务风险管理人员从仪表盘提交标准 Action Request"
+        }
+      ],
+      "supplementRequests": [],
+      "duplicateRequests": [],
+      "taskId": null,
+      "taskCreating": false,
+      "decision": null,
+      "automatic": false,
+      "actionRequestImmutable": false,
+      "projectionOnly": false,
+      "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-007|S003_RISK_FOLLOW_UP|2025-12-31|1.0.0"
+    },
+    {
+      "id": "AR-S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-017-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0",
+      "reminderId": "DR-S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-017-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0",
+      "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-017-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0",
+      "sourceCandidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-017-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "subjectId": "S003-ENT-017",
+      "subjectName": "环保测试公司1",
+      "scenario": "债务风险监测",
+      "sourceType": "report",
+      "sourceRef": "债务风险驾驶舱 · S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-017",
+      "requester": "集团债务风险管理人员",
+      "submittedBy": "集团债务风险管理人员",
+      "requestTime": "2026-08-15 14:22:00",
+      "generatedTime": "2026-08-15 14:22:02",
+      "actionType": {
+        "id": "S003_FACTOR_EMERGENCY",
+        "name": "重大因子应急处置",
+        "version": "1.0.1",
+        "status": "已发布"
+      },
+      "rule": null,
+      "ruleApplicability": "不适用；本次为仪表盘人工提交",
+      "metric": {
+        "id": "MET-S003-FINAL-RISK-SCORE",
+        "name": "企业最终风险评分",
+        "value": "30.52 分",
+        "explanation": "同轮 Published C035 结果命中重大诉讼调节因子",
+        "evaluatedAt": "2025-12-31",
+        "scope": "环保测试公司1 · 环保"
+      },
+      "owner": "集团债务风险管理负责人",
+      "ownerId": "S003-DEBT-RISK-OWNER",
+      "recommendation": "核实重大诉讼阶段、金额和现金流影响，形成风险缓释安排；确认后由负责人待办承接。",
+      "banks": [],
+      "loans": [],
+      "loanCount": 0,
+      "evidence": {
+        "semanticVersion": "S003-M01-DEBT-RISK-PKG 1.0.1",
+        "dataVersion": "1.0.0",
+        "dataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "resultVersion": "1.0.0",
+        "cutoff": "2025-12-31",
+        "quality": "质量检查通过",
+        "availability": "完整可用",
+        "ready": "消费就绪",
+        "snapshotId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-017",
+        "freshness": "固定运行证据"
+      },
+      "status": "awaiting",
+      "requestGate": {
+        "status": "accepted",
+        "checkedAt": "2026-08-15 14:22:02",
+        "reason": "C011 标准行动申请已接收，固定证据可进入人工判断",
+        "reminderCreated": true
+      },
+      "formation": {
+        "requestGateStatus": "accepted",
+        "requestGateCheckedAt": "2026-08-15 14:22:02",
+        "requestGateReason": "C011 标准行动申请已接收",
+        "reminderCreated": true,
+        "confirmationGateStatus": "not_reached",
+        "confirmationGateReason": "等待集团债务风险管理人员提交人工决定"
+      },
+      "confirmationEligibility": {
+        "allowed": true,
+        "requiresAcknowledgement": false,
+        "reason": "固定风险评分、调节因子和报告证据可核对，等待人工判断"
+      },
+      "c017SafetyReads": [],
+      "c017ReadAttempts": {
+        "request_receipt": 1,
+        "confirmation_submit": 0,
+        "task_formation": 0
+      },
+      "sourceEvents": [
+        {
+          "type": "驾驶舱人工提交",
+          "time": "2026-08-15 14:22:02",
+          "reason": "集团债务风险管理人员从仪表盘提交标准 Action Request"
+        }
+      ],
+      "supplementRequests": [],
+      "duplicateRequests": [],
+      "taskId": null,
+      "taskCreating": false,
+      "decision": null,
+      "automatic": false,
+      "actionRequestImmutable": false,
+      "projectionOnly": false,
+      "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-017|S003_FACTOR_EMERGENCY|2025-12-31|1.0.0"
+    },
+    {
+      "id": "AR-S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+      "reminderId": "DR-S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+      "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+      "sourceCandidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "subjectId": "S003-ENT-018",
+      "subjectName": "环保测试公司2",
+      "scenario": "债务风险监测",
+      "sourceType": "report",
+      "sourceRef": "债务风险驾驶舱 · S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-018",
+      "requester": "集团债务风险管理人员",
+      "submittedBy": "集团债务风险管理人员",
+      "requestTime": "2026-08-15 14:24:00",
+      "generatedTime": "2026-08-15 14:24:02",
+      "actionType": {
+        "id": "S003_RISK_FOLLOW_UP",
+        "name": "风险分档跟踪",
+        "version": "1.0.1",
+        "status": "已发布"
+      },
+      "rule": null,
+      "ruleApplicability": "不适用；本次为仪表盘人工提交",
+      "metric": {
+        "id": "MET-S003-FINAL-RISK-SCORE",
+        "name": "企业最终风险评分",
+        "value": "33.92 分",
+        "explanation": "同轮 Published C035 结果命中黄灯风险分档",
+        "evaluatedAt": "2025-12-31",
+        "scope": "环保测试公司2 · 环保"
+      },
+      "owner": "集团债务风险管理负责人",
+      "ownerId": "S003-DEBT-RISK-OWNER",
+      "recommendation": "持续跟踪弱化指标和现金流变化，确认后由负责人待办承接。",
+      "banks": [],
+      "loans": [],
+      "loanCount": 0,
+      "evidence": {
+        "semanticVersion": "S003-M01-DEBT-RISK-PKG 1.0.1",
+        "dataVersion": "1.0.0",
+        "dataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "resultVersion": "1.0.0",
+        "cutoff": "2025-12-31",
+        "quality": "质量检查通过",
+        "availability": "完整可用",
+        "ready": "消费就绪",
+        "snapshotId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-018",
+        "freshness": "固定运行证据"
+      },
+      "status": "awaiting",
+      "requestGate": {
+        "status": "accepted",
+        "checkedAt": "2026-08-15 14:24:02",
+        "reason": "C011 标准行动申请已接收，固定证据可进入人工判断",
+        "reminderCreated": true
+      },
+      "formation": {
+        "requestGateStatus": "accepted",
+        "requestGateCheckedAt": "2026-08-15 14:24:02",
+        "requestGateReason": "C011 标准行动申请已接收",
+        "reminderCreated": true,
+        "confirmationGateStatus": "not_reached",
+        "confirmationGateReason": "等待集团债务风险管理人员提交人工决定"
+      },
+      "confirmationEligibility": {
+        "allowed": true,
+        "requiresAcknowledgement": false,
+        "reason": "固定风险评分、分档和报告证据可核对，等待人工判断"
+      },
+      "c017SafetyReads": [],
+      "c017ReadAttempts": {
+        "request_receipt": 1,
+        "confirmation_submit": 0,
+        "task_formation": 0
+      },
+      "sourceEvents": [
+        {
+          "type": "驾驶舱人工提交",
+          "time": "2026-08-15 14:24:02",
+          "reason": "集团债务风险管理人员从仪表盘提交标准 Action Request"
+        }
+      ],
+      "supplementRequests": [],
+      "duplicateRequests": [],
+      "taskId": null,
+      "taskCreating": false,
+      "decision": null,
+      "automatic": false,
+      "actionRequestImmutable": false,
+      "projectionOnly": false,
+      "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-018|S003_RISK_FOLLOW_UP|2025-12-31|1.0.0"
+    }
+  ]
+}

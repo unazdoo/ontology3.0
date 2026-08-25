@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "ofw.s002.module-state-export.v1",
+  "moduleId": "M03",
+  "moduleName": "智能问数",
+  "owner": "智能问数",
+  "moduleVersion": "S002-M03-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815010000000-a283fabf23f6",
+    "formedAt": "2026-08-15T01:00:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "published-switched",
+  "formedAt": "2026-08-15T01:15:00.000Z",
+  "stateDeclaration": "empty",
+  "emptyReason": "尚未到达 query-integrated；仅导出可恢复空状态",
+  "resources": [],
+  "ownerBoundary": {
+    "ownsOnly": [
+      "query-agent",
+      "prompt",
+      "skill",
+      "query-run",
+      "query-result"
+    ],
+    "consumesByReference": true,
+    "copiesOtherModuleTruth": false
+  },
+  "demoDataMarker": "SYNTHETIC_FOR_DEMO",
+  "sideEffectPolicy": {
+    "allowHistoricalReplay": false,
+    "allowExternalDispatch": false
+  }
+}

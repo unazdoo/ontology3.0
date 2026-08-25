@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "registryType": "platform-activity-baseline",
+  "updatedAt": "2026-08-24",
+  "status": "active-implementation-reference",
+  "activityBaseline": {
+    "version": "1.1.0",
+    "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+    "releasePath": "designs/prototype-releases/v1.1.0",
+    "entry": "designs/prototype-releases/v1.1.0/s001-e2e-integration/index.html",
+    "releaseTag": "prototype-v1.1.0-frozen",
+    "manifestPath": "designs/prototype-releases/v1.1.0/manifest.json",
+    "manifestSha256": "4127512eeb9d29c37171937ac49f301c060fc4e95e4454830793251bc07822bd",
+    "checkpointPath": "designs/scenario-checkpoints/baselines/v1.1.0/T056-baseline-checkpoint.json",
+    "checkpointSha256": "47231607dafd4cf45a46b699f4110592d12c78ca7dc687893843979fa8c61c05",
+    "parentVersion": "1.0.3",
+    "governanceParentSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "rollbackVersion": "1.0.3",
+    "acceptanceReady": false,
+    "runtimeSnapshotIncluded": false,
+    "formalRuntimeBaselineReady": false
+  },
+  "historicalGovernanceBaseline": {
+    "version": "1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "releasePath": "designs/prototype-releases/v1.0.3",
+    "tag": "prototype-v1.0.3-frozen",
+    "role": "read-only historical parent, migration source and rollback baseline"
+  },
+  "inheritanceRule": {
+    "newWorkParentVersion": "1.1.0",
+    "newWorkBaselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+    "appliesTo": [
+      "后续项目实施工作区",
+      "S005",
+      "M07",
+      "M08",
+      "产品升级工作区"
+    ],
+    "mustCreateNewWorkspace": true,
+    "mustCreateNewScenarioVersion": true,
+    "mustCreateNewScenarioRunId": true,
+    "mustPreserveHistoricalRuns": true,
+    "silentParentMutation": false,
+    "migrationRequiresVersionGovernanceRecord": true
+  },
+  "pendingMigrations": [
+    {
+      "workId": "S005",
+      "branch": "codex/s005-research",
+      "worktree": "/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s005-research",
+      "recordedParentVersion": "1.0.3",
+      "recordedBaselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+      "requiredParentVersion": "1.1.0",
+      "requiredBaselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+      "status": "pending-explicit-migration",
+      "documentMutation": "none"
+    },
+    {
+      "workId": "M07",
+      "branch": "codex/m07-ontology-exploration-research",
+      "worktree": "/Users/domi/Public/Vibecoding/ontology3.0-worktrees/m07-ontology-exploration-research",
+      "recordedParentVersion": "1.0.3",
+      "recordedBaselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+      "requiredParentVersion": "1.1.0",
+      "requiredBaselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+      "status": "pending-explicit-migration",
+      "documentMutation": "none"
+    },
+    {
+      "workId": "M08",
+      "branch": "codex/m08-digital-twin-modeling-research",
+      "worktree": "/Users/domi/Public/Vibecoding/ontology3.0-worktrees/m08-digital-twin-modeling-research",
+      "recordedParentVersion": "1.0.3",
+      "recordedBaselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+      "requiredParentVersion": "1.1.0",
+      "requiredBaselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+      "status": "pending-explicit-migration",
+      "documentMutation": "none"
+    }
+  ],
+  "formalBaselineBlockers": [
+    {
+      "id": "C034-IMPL-001",
+      "owner": "M01—M06",
+      "item": "六模块正式快照导出、校验、克隆恢复和隔离回归证据",
+      "status": "missing",
+      "effect": "不得宣称四场景正式可恢复运行基线"
+    },
+    {
+      "id": "C034-IMPL-002",
+      "owner": "S004 / 平台总控",
+      "item": "S004 public Checkpoint",
+      "status": "not-created",
+      "effect": "不得宣称 S004 正式恢复就绪"
+    },
+    {
+      "id": "RUNTIME-BASELINE-001",
+      "owner": "平台总控与项目实施",
+      "item": "四场景正式运行快照及生产技术联调证据",
+      "status": "missing",
+      "effect": "v1.1.0 仅作为实施参考原型，不是正式运行真源"
+    }
+  ],
+  "boundary": {
+    "acceptanceReady": false,
+    "doesNotMean": [
+      "模块设计评审通过",
+      "场景验收通过",
+      "生产技术联调通过",
+      "S001 正式验收通过",
+      "一期验收通过"
+    ],
+    "immutableCheckpointRule": "T056 JSON 与发布 manifest 不原地修改；任何基线内容变化必须生成新版本和新 baselineSnapshotId。"
+  }
+}

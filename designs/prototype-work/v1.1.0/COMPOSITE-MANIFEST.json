@@ -1,0 +1,35 @@
+{
+  "manifestVersion": 1,
+  "candidateVersion": "v1.1.0-rc.10",
+  "status": "review-candidate",
+  "sourceProductBaseline": "v1.0.7",
+  "governanceBaselineVersion": "v1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "acceptanceReady": false,
+  "reviewEntry": true,
+  "uniqueEntry": "s001-e2e-integration/index.html",
+  "recommendedPort": 4342,
+  "branch": "codex/v1.1.0-composite",
+  "scenarioRegistry": "SCENARIO-REGISTRY.json",
+  "checkpointRegistry": "CHECKPOINT-REGISTRY.md",
+  "mergedScenarios": ["S001", "S002", "S003", "S004"],
+  "compositeRunEvidence": "COMPOSITE-RUN-RC4.json",
+  "invalidatedCompositeRunEvidence": "COMPOSITE-RUN-202608211618.json",
+  "runtimeSnapshot": {
+    "path": "runtime-snapshots/S001-RUN-20260816081748567-705ac89fb83a.runtime.json",
+    "sha256": "5f9a9a75d1a9916b20a6758aa9d0285fac4a7eba3f64a1637b8be0ecb0cada18",
+    "mode": "read-only historical restore"
+  },
+  "moduleCapabilitySources": {
+    "M01": "S001 v1.0.7 canonical workbench + native S002/S003/S004 resource adapters",
+    "M02": "S001 v1.0.7 canonical workbench + native S002/S003/S004 resource adapters",
+    "M03": "S001 v1.0.7 canonical workbench + one query assistant identity + exact S001/S002/S003 C009 domain bindings; S004 not applicable",
+    "M04": "S003 CP38 canonical workbench + S001/S003 combined record store + version-isolated dashboard C011 v3 intake with C017 registered-version-alias gate",
+    "M05": "Four-scenario Agent catalog + dedicated report copilot, report verification Agent and report generation capabilities; verification extraction never makes formal determinations",
+    "M06": "Horizontal 24-report workbench + 440px report assistant + compact question rail + real verification Agent extraction followed by five deterministic rule groups",
+    "Dashboard": "Standalone canonical dashboard with three industries/two operating stages, five-item risk disposition and two controlled rerun triggers"
+  },
+  "mergeGate": "All four completed source runs and their exact module resources are assembled; full-viewport regression is complete and explicit user review remains the promotion gate.",
+  "compositionMode": "one canonical workbench per module; scenarioId is a record field/filter; no scenario UI runtime or scenario-detail iframe",
+  "note": "This manifest records the canonical-module composite candidate. It does not assert module review, scenario acceptance, or phase-1 acceptance."
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp16-result.v1",
+  "runId": "20260816T201156943Z-ea438ddd",
+  "formedAt": "2026-08-16T20:11:56.943Z",
+  "origin": "http://127.0.0.1:4333",
+  "formalSourceScenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+  "browserVersion": "149.0.7827.55",
+  "cases": [
+    {
+      "id": "dashboard-action-and-config",
+      "status": "passed",
+      "durationMs": 7186,
+      "details": {
+        "modelConfigRoute": true,
+        "actionSubmittedToDecisionCenter": true
+      }
+    },
+    {
+      "id": "old-projection-compatibility",
+      "status": "passed",
+      "durationMs": 9007,
+      "details": {
+        "oldProjectionSchema": "v999",
+        "status": "isolated-rebuilt",
+        "publishedReadReady": true
+      }
+    }
+  ],
+  "totals": {
+    "cases": 2,
+    "passed": 2,
+    "failed": 0
+  },
+  "checkpointCreated": true,
+  "acceptanceReady": false
+}

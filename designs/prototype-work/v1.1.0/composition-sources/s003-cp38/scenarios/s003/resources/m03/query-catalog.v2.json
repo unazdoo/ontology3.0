@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "ofw.s003.m03.query-catalog.v2",
+  "moduleId": "M03",
+  "moduleOwner": "智能问数",
+  "catalogId": "S003-M03-QUERY-CATALOG-V2",
+  "catalogVersion": "1.1.0",
+  "supersedes": "resources/m03/query-catalog.v1.json",
+  "status": "published-query-catalog",
+  "immutable": true,
+  "formedAt": "2026-08-16T23:30:00.000Z",
+  "mode": "read-only-published-facts",
+  "requires": ["C008", "T019", "C035"],
+  "forbids": ["直接读取兼容性T007", "自行重算风险分", "修改模型参数", "自动创建Action Request"],
+  "queries": [
+    {"queryId": "S003-QRY-001", "question": "当前集团各风险等级有多少家企业？", "resultShape": "risk-tier-distribution"},
+    {"queryId": "S003-QRY-002", "question": "哪些企业处于红灯或黑灯？", "resultShape": "enterprise-list"},
+    {"queryId": "S003-QRY-003", "question": "指定企业本轮债务风险评估详情是什么？", "resultShape": "enterprise-detail", "requiresEnterpriseId": true},
+    {"queryId": "S003-QRY-004", "question": "指定企业本轮评分最低的三项指标是什么？", "resultShape": "lowest-three-indicators", "requiresEnterpriseId": true},
+    {"queryId": "S003-QRY-005", "question": "哪些企业因子采用了缺失套零或不适用语义？", "resultShape": "factor-default-and-not-applicable"},
+    {"queryId": "S003-QRY-006", "question": "当前有哪些待人工确认的风险处置候选？", "resultShape": "disposition-candidate-list"}
+  ]
+}

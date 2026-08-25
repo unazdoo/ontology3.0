@@ -1,0 +1,172 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp13-result.v1",
+  "runId": "20260816T105152102Z-caf76ff2",
+  "formedAt": "2026-08-16T10:51:52.105Z",
+  "origin": "http://127.0.0.1:4333",
+  "formalScenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "gitHead": "5620618386b1427cbf0a19877ff00b1b44dd249e",
+  "playwrightNodeModules": "/Users/domi/.codex/skills/baoyu-design/agents/gen-pptx/node_modules",
+  "headless": true,
+  "cases": [
+    {
+      "id": "m01-legacy-bootstrap-projection",
+      "label": "M01 旧 S001 启动投影显式隔离并重建",
+      "status": "passed",
+      "startedAt": "2026-08-16T10:51:52.571Z",
+      "durationMs": 1712,
+      "details": {
+        "c008Key": "ontology3-c008-authoritative-projection-v1:S003:S003-v1:S003-RUN-20260815133000000-c03503000001",
+        "workspaceKey": "ontology3-canvas-first-review-v17:S003:S003-v1:S003-RUN-20260815133000000-c03503000001",
+        "matchingKeys": [
+          "ontology3-c008-authoritative-projection-v1:S003:S003-v1:S003-RUN-20260815133000000-c03503000001",
+          "ontology3-canvas-first-review-v17:S003:S003-v1:S003-RUN-20260815133000000-c03503000001"
+        ],
+        "projection": {
+          "projectionId": "ontology3-c008-authoritative-projection-v1:S003:S003-v1:S003-RUN-20260815133000000-c03503000001",
+          "projectionVersion": "4",
+          "schemaVersion": 1,
+          "formedAt": "2026-08-16 18:51:52",
+          "sourceModule": "本体管理",
+          "contractCode": "C008",
+          "readStatus": "failed",
+          "scenarioContext": {
+            "scenarioId": "S003",
+            "scenarioVersion": "S003-v1",
+            "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+            "scenarioName": "债务风险监测",
+            "formedAt": "2026-08-15T13:30:00.000Z",
+            "status": "active"
+          },
+          "scenarioId": "S003",
+          "scenarioVersion": "S003-v1",
+          "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+          "scenarioName": "债务风险监测",
+          "scenarioFormedAt": "2026-08-15T13:30:00.000Z",
+          "scenarioStatus": "active",
+          "publishedSemanticVersionId": null,
+          "publishedSemanticVersion": null,
+          "consumableDataVersion": null,
+          "dataAsOf": null,
+          "switchedAt": null,
+          "previousTrustedCombination": null,
+          "candidate": null,
+          "validationReference": null,
+          "consumptionState": "权威投影读取失败",
+          "reason": "尚未接收平台公共层提供的当前完整 C033 场景运行上下文",
+          "recoverySuggestion": "由平台公共层提供当前完整 C033；本体管理接收后重新形成同一场景轮次的权威投影。",
+          "ontologyStableId": null,
+          "current": null,
+          "evidenceLocator": null
+        },
+        "recoveryHistory": [
+          {
+            "schemaVersion": 1,
+            "recoveryId": "c008-recovery-MSVOQGWN-0DFG",
+            "recoveryType": "known-legacy-s003-bootstrap-context",
+            "recoveredAt": "2026-08-16 18:51:52",
+            "sourceProjectionKey": "ontology3-c008-authoritative-projection-v1:S003:S003-v1:S003-RUN-20260815133000000-c03503000001",
+            "previousFault": {
+              "detectedAt": "2026-08-16 18:51:52",
+              "reason": "统一权威投影与当前场景运行上下文不一致"
+            },
+            "previousProjection": {
+              "projectionId": "ontology3-c008-authoritative-projection-v1:S003:S003-v1:S003-RUN-20260815133000000-c03503000001",
+              "projectionVersion": "1",
+              "schemaVersion": 1,
+              "formedAt": "2026-08-16T09:59:59.000Z",
+              "sourceModule": "本体管理",
+              "contractCode": "C008",
+              "readStatus": "empty",
+              "scenarioContext": {
+                "scenarioId": "S001",
+                "scenarioVersion": "S001-v1",
+                "scenarioRunId": "s001-awaiting-delivery",
+                "scenarioName": "集团融资成本与债务结构优化",
+                "formedAt": "2026-08-16T09:59:59.000Z",
+                "status": "等待合法交付"
+              },
+              "scenarioId": "S001",
+              "scenarioVersion": "S001-v1",
+              "scenarioRunId": "s001-awaiting-delivery",
+              "scenarioName": "集团融资成本与债务结构优化",
+              "scenarioFormedAt": "2026-08-16T09:59:59.000Z",
+              "scenarioStatus": "等待合法交付",
+              "publishedSemanticVersionId": null,
+              "publishedSemanticVersion": null,
+              "consumableDataVersion": null,
+              "dataAsOf": null,
+              "switchedAt": null,
+              "previousTrustedCombination": null,
+              "candidate": null,
+              "validationReference": null,
+              "consumptionState": "尚未形成正式组合",
+              "reason": "当前场景轮次没有权威消费绑定",
+              "recoverySuggestion": "完成 Published 语义版本、数据匹配、业务消费验证和受控采用后重新读取。",
+              "ontologyStableId": null,
+              "current": null,
+              "evidenceLocator": null
+            },
+            "previousProjectionRaw": null,
+            "isolationReason": "统一权威投影与当前场景运行上下文不一致",
+            "action": "隔离由旧初始化顺序写入 S003 命名空间的 S001 默认工作投影，并按当前 S003 场景上下文重建；历史正式证据未删除或覆盖。",
+            "rebuiltProjection": {
+              "projectionVersion": "3",
+              "readStatus": "failed",
+              "publishedSemanticVersionId": null,
+              "publishedSemanticVersion": null,
+              "consumableDataVersion": null,
+              "dataAsOf": null,
+              "evidenceLocator": null
+            },
+            "scenarioContext": {
+              "scenarioId": "S003",
+              "scenarioVersion": "S003-v1",
+              "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+              "scenarioName": "债务风险监测",
+              "formedAt": "2026-08-15T13:30:00.000Z",
+              "status": "active"
+            }
+          }
+        ],
+        "recoveryId": "c008-recovery-MSVOQGWN-0DFG",
+        "rebuiltReadStatus": "failed"
+      },
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": null,
+      "error": null,
+      "completedAt": "2026-08-16T10:51:54.283Z"
+    }
+  ],
+  "totals": {
+    "cases": 1,
+    "passed": 1,
+    "failed": 0,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "httpErrors": 0,
+    "ignoredAbortedRequests": 0
+  },
+  "errorBudget": {
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "httpErrors": 0
+  },
+  "checkpointCreated": false,
+  "acceptanceReady": false,
+  "browserVersion": "149.0.7827.55",
+  "completedAt": "2026-08-16T10:51:54.310Z"
+}

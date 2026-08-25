@@ -1,0 +1,175 @@
+{
+  "schemaVersion": "ofw.s002.scenario-configuration.v3",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "baselineCheckpointBinding": {
+    "ref": "designs/scenario-checkpoints/baselines/v1.0.3/T056-baseline-checkpoint.json",
+    "sha256": "0a90f5f68dccaa7c18be71b4c82019616f19b0e359f931024652d95165ecd414",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26"
+  },
+  "baselineModuleBindings": {
+    "M01": {
+      "baselineVersion": "1.0.3",
+      "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+      "prototypePath": "designs/prototype-releases/v1.0.3/ontology-management-review",
+      "exactVersion": "v1.0.3#75870802dbcf5f3c",
+      "treeSha256": "75870802dbcf5f3ced2b8c6efaca41f01ae1e57fc34893ef44a14710633142fd",
+      "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+      "supportingPrototypeComponents": [
+        {
+          "prototypePath": "designs/prototype-releases/v1.0.3/ontology-management-prototype",
+          "treeSha256": "e0591568e3c52f464b53b295b8106056dea531c9f407c056bee6c21191645443",
+          "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+          "files": 4,
+          "bytes": 134336
+        }
+      ],
+      "files": 4,
+      "bytes": 761907
+    },
+    "M02": {
+      "baselineVersion": "1.0.3",
+      "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+      "prototypePath": "designs/prototype-releases/v1.0.3/data-engineering-prototype-review",
+      "exactVersion": "v1.0.3#dd47ca1f16b985c6",
+      "treeSha256": "dd47ca1f16b985c6e7acbdd2f262af2636b1bb18ceb7187f727ae33630b87fe5",
+      "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+      "supportingPrototypeComponents": [],
+      "files": 15,
+      "bytes": 1477062
+    },
+    "M03": {
+      "baselineVersion": "1.0.3",
+      "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+      "prototypePath": "designs/prototype-releases/v1.0.3/intelligent-query-prototype",
+      "exactVersion": "v1.0.3#5122f6b9bfab04af",
+      "treeSha256": "5122f6b9bfab04af794460fdba30d41b35fecd71d4d966472f66e7bc799c3e56",
+      "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+      "supportingPrototypeComponents": [],
+      "files": 25,
+      "bytes": 5977996
+    },
+    "M04": {
+      "baselineVersion": "1.0.3",
+      "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+      "prototypePath": "designs/prototype-releases/v1.0.3/decision-center-prototype",
+      "exactVersion": "v1.0.3#243f7a8a779b1fb9",
+      "treeSha256": "243f7a8a779b1fb9dddb74996c5bc7d99ad51211f019a2991afb6c8916f7b66b",
+      "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+      "supportingPrototypeComponents": [],
+      "files": 35,
+      "bytes": 10919329
+    },
+    "M05": {
+      "baselineVersion": "1.0.3",
+      "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+      "prototypePath": "designs/prototype-releases/v1.0.3/agent-application",
+      "exactVersion": "v1.0.3#027d9f20c7d7ebd7",
+      "treeSha256": "027d9f20c7d7ebd753eb8e36b4475a5c271c91d979feda8e0d57c39b3cb9bcb2",
+      "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+      "supportingPrototypeComponents": [],
+      "files": 25,
+      "bytes": 6067300
+    },
+    "M06": {
+      "baselineVersion": "1.0.3",
+      "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+      "prototypePath": "designs/prototype-releases/v1.0.3/report-center",
+      "exactVersion": "v1.0.3#8be8533ca1583f91",
+      "treeSha256": "8be8533ca1583f9135c76acf3bfab844d1431abc0e4807ec301e2f63d1dad0ad",
+      "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+      "supportingPrototypeComponents": [],
+      "files": 8,
+      "bytes": 1032893
+    }
+  },
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815154000000-79841356bdf8",
+    "formedAt": "2026-08-15T15:40:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "data-connected",
+  "checkpointId": "CP-S002-20260815154200000-b1bc00ab7edc",
+  "entryRef": "designs/prototype-work/v1.1.0/scenarios/s002/index.html",
+  "port": 4332,
+  "code": {
+    "prototypeVersion": "1.1.0",
+    "buildVersion": "S002-v1+076e8f3aa009",
+    "entryRef": "designs/prototype-work/v1.1.0/scenarios/s002/index.html",
+    "treeSha256": "076e8f3aa009d9289656062eb7d39e99dbaf8339a5cebca8ac7278cedbc15f9a"
+  },
+  "preOperation": null,
+  "runtimeState": {
+    "platform": {
+      "context": {
+        "scenarioId": "S002",
+        "scenarioVersion": "S002-v1",
+        "scenarioRunId": "S002-RUN-20260815154000000-79841356bdf8",
+        "formedAt": "2026-08-15T15:40:00.000Z",
+        "status": "active"
+      },
+      "mode": "live",
+      "activeTheme": "execution",
+      "filters": {
+        "year": 2025,
+        "department": "全部",
+        "subject": "全部",
+        "project": "全部",
+        "period": "全年",
+        "anomaly": "全部"
+      },
+      "selectedQuestion": null,
+      "drill": null,
+      "events": [
+        {
+          "type": "step-completed",
+          "step": "dataConnected",
+          "detail": "8份权威资料及14个逻辑成员进入S002独立命名空间。",
+          "context": {
+            "scenarioId": "S002",
+            "scenarioVersion": "S002-v1",
+            "scenarioRunId": "S002-RUN-20260815154000000-79841356bdf8",
+            "formedAt": "2026-08-15T15:40:00.000Z",
+            "status": "active"
+          },
+          "at": "2026-08-15T15:41:00.000Z"
+        },
+        {
+          "type": "step-completed",
+          "step": "qualityPassed",
+          "detail": "合法重复保留；期间和日期异常按授权形成可追溯演示修正。",
+          "context": {
+            "scenarioId": "S002",
+            "scenarioVersion": "S002-v1",
+            "scenarioRunId": "S002-RUN-20260815154000000-79841356bdf8",
+            "formedAt": "2026-08-15T15:40:00.000Z",
+            "status": "active"
+          },
+          "at": "2026-08-15T15:41:30.000Z"
+        },
+        {
+          "type": "step-completed",
+          "step": "assetPublished",
+          "detail": "M02形成S002-DATA-v1，业务阈值和指标公式仍不进入管道。",
+          "context": {
+            "scenarioId": "S002",
+            "scenarioVersion": "S002-v1",
+            "scenarioRunId": "S002-RUN-20260815154000000-79841356bdf8",
+            "formedAt": "2026-08-15T15:40:00.000Z",
+            "status": "active"
+          },
+          "at": "2026-08-15T15:42:00.000Z"
+        }
+      ],
+      "checkpointHistory": [],
+      "checkpoint": null,
+      "restoredFrom": null,
+      "regressionFrom": null,
+      "lastEventAt": "2026-08-15T15:42:00.000Z"
+    }
+  },
+  "sourcePackageSha256": "a283fabf23f63506f33c5900d0f3643c82734659a890ee504d7394bdb0244599",
+  "formedAt": "2026-08-15T15:42:00.000Z"
+}

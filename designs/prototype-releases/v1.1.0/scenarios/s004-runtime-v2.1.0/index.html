@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <meta name="design_doc_mode" content="prototype" />
+    <meta
+      name="description"
+      content="智财问策 S004：复用 v1.0.3 六模块实际实现，通过 v1.1.0 运行时适配接入贷前调查场景。"
+    />
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="../../../../prototype-releases/v1.0.3/shared-type-scale.css?v=20260815-01" />
+    <link rel="stylesheet" href="../../../../prototype-releases/v1.0.3/s001-e2e-integration/styles.css?v=20260815-06" />
+    <title>S004 财务公司贷款贷前调查 · 智财问策</title>
+  </head>
+  <body>
+    <div id="app" aria-live="polite"></div>
+    <div id="modal-root"></div>
+    <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+    <script src="../../foundation/ofw-scenario-foundation.js?v=20260815-02"></script>
+    <script src="./ofw-baseline-module-adapter.js?v=20260816-04"></script>
+    <script src="./scenario-config.js?v=20260817-17"></script>
+    <script src="./scenario-storage-proxy.js?v=20260816-05"></script>
+    <script src="./seed-data.js?v=20260817-16"></script>
+    <!-- native-seeder seeds the six v1.0.3 module storage keys, then injects
+         the shared shell app.js so every module iframe boots with S004 as its
+         native scenario state. -->
+    <script src="./native-seeder.js?v=20260817-29"></script>
+  </body>
+</html>

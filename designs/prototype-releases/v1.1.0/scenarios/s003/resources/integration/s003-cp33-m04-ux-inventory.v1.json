@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "ofw.s003.m04-ux-correction-inventory.v1",
+  "inventoryId": "S003-CP33-M04-DECISION-WORKBENCH-UX",
+  "inventoryVersion": "1.0.0",
+  "formedAt": "2026-08-19T08:09:45.000Z",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "prototypeVersion": "1.1.0",
+  "scenarioId": "S003",
+  "scenarioVersion": "S003-v1",
+  "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+  "changes": [
+    { "area": "决策事项", "behavior": "S003 列表和卡片点击后打开右侧详情抽屉，保留来源、证据、决策操作和追溯入口；不改变 URL。" },
+    { "area": "视图", "behavior": "S003 支持列表/卡片切换并保留显式 v3 视图偏好；非 S003 继续使用 v1.0.3 组合/列表行为。" },
+    { "area": "决策来源", "behavior": "四类来源卡片只在 S003 工作台条件式装入，计数与当前 scope、筛选口径一致。" },
+    { "area": "运营概览", "behavior": "保留全部任务、待处理、处理中、已逾期、已结束五张状态卡；去除查看全部任务按钮。" },
+    { "area": "审批流", "behavior": "审批流和任务进展使用浮窗查看，关闭后留在原列表，不提供跳转详情主路径。" },
+    { "area": "基线隔离", "behavior": "非 S003 portfolio 场景恢复基线预览、组合视图、六类待办状态和任务详情入口。" }
+  ],
+  "formalScenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+  "acceptanceReady": false
+}

@@ -1,0 +1,42 @@
+{
+  "type": "design",
+  "designSystems": [],
+  "primaryDesignSystem": null,
+  "assets": {
+    "S001 集团融资成本与债务结构分析报告模板": {
+      "versions": [
+        {
+          "path": "templates/s001-financing-report-template.html",
+          "createdAt": "2026-08-16T10:54:16.572Z",
+          "status": "needs-review",
+          "subtitle": "与正式报告六章结构一致的可打印 HTML 模板"
+        }
+      ]
+    },
+    "统一报告中心": {
+      "versions": [
+        {
+          "path": "index.html",
+          "createdAt": "2026-08-22T01:21:27.669Z",
+          "status": "needs-review",
+          "subtitle": "440px报告助手、横向推荐问、低频过程动效、核验Agent抽取与确定性规则比对",
+          "verification": {
+            "unifiedCatalog": "24 份正式报告、4 类报告定义使用同一目录与详情路由",
+            "sourceAlignment": "S003 CP38 / M06 v9；保留 S004 贷前正式报告、同源 HTML/PDF 与候选版本",
+            "readerSections": "S001 4 章；S003 9 章；S004 6 章，均从正式 HTML 正文派生并可精确定位",
+            "assistantLayout": "320—540px 可拖拽；长标题、长回答和证据标识无横向溢出；输入区与操作栏保持可见",
+            "verificationLayout": "核验摘要唯一；5 个检查项可展开，详情不再被旧网格压成零宽度",
+            "legacyDeepLinks": "S003 历史 /reports/view 深链归一到统一 /report/:id 阅读器",
+            "acceptanceReady": false
+          },
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          }
+        }
+      ]
+    }
+  },
+  "createdAt": "2026-08-16T10:54:16.572Z",
+  "updatedAt": "2026-08-23T16:44:27.294Z"
+}

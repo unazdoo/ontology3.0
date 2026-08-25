@@ -1,0 +1,46 @@
+{
+  "module": "M04",
+  "scenarioId": "S002",
+  "scenarioVersion": "S002-v1",
+  "implementationDate": "2026-08-15",
+  "verificationDate": "2026-08-17",
+  "baselineVersion": "1.0.3",
+  "sourcePath": "designs/prototype-releases/v1.0.3/decision-center-prototype",
+  "sourceTreeSha256": "243f7a8a779b1fb9dddb74996c5bc7d99ad51211f019a2991afb6c8916f7b66b",
+  "sourceFiles": 35,
+  "sourceBytes": 10919329,
+  "runtimeEntry": "baseline-adapters/m04/decision-center-prototype/index.html",
+  "resolvedEntry": "baseline-adapters/m04/decision-center-prototype/review-v2/action-portfolio.html",
+  "adapterScript": "baseline-adapters/m04/s002-adapter.js",
+  "originalEntrySha256": "4423ff9324dc01263abb83d287e7b4d63e0c705f96b78fe0f6c14ecc7b0492d4",
+  "changedFiles": [
+    {
+      "path": "decision-center-prototype/review-v2/action-portfolio.html",
+      "change": "仅新增 S002 adapter script 标签；保留 v1.0.3 DOM、样式、React 组件、路由和交互。",
+      "originalSha256": "4423ff9324dc01263abb83d287e7b4d63e0c705f96b78fe0f6c14ecc7b0492d4",
+      "adaptedSha256": "58a707658636d7e3714b80871045b30497c341beef56489bd86b7a21105a54d8"
+    },
+    {
+      "path": "decision-center-prototype/review-v2/shared/app.jsx",
+      "change": "在场景副本中保留基线决策中心组件与交互，补充 S002 已确认/已拒绝引导、Owner Bridge 人工决定写入及场景本地稳定详情入口。",
+      "originalSha256": "c348855048a241c9372a469eda2eb19364629cd92d4fd922ac5c6ad10ca75469",
+      "adaptedSha256": "590ae2cf78e1d6249d6821de5aae77b617e8dd482acfa346b97794c776ad7d62"
+    },
+    {
+      "path": "s002-adapter.js",
+      "change": "注入 S002 场景上下文、8 条基础事项及驾驶舱触发事项；RULE-002 统一为 <=70%、95%—100%、>100% 三分支，设备管理部 63.20% 作为正式低执行率命中。六类兼容 Action ID 映射为整改、合理性复核、费用优化、申报依据补充、占用清理和价格复核；按同 scenarioId/scenarioVersion/scenarioRunId 读取 M04 Owner State，不调用外部预算系统。",
+      "adaptedSha256": "3a73de3795b2ea4731ab96f264202f8a3cf73abd75711f9cdfe955afea98f699"
+    },
+    {
+      "path": "tests/owner-state-projection.test.cjs",
+      "change": "独立验证 3 已确认、1 已拒绝、4 基础待决策和 3 平台内待办；验证驾驶舱同事实预警幂等复用既有事项、两项新事实补建待决策、Owner 隔离、两项数据资产、八条事项事实一致性、C019 投影，以及确认/拒绝/重复确认幂等。",
+      "adaptedSha256": "4bbc7996bb2bab28fb52f57946078683ceaaada1700a028343638abe9b85e1d9"
+    },
+    {
+      "path": "tests/owner-browser-harness.html",
+      "change": "隔离浏览器夹具使用内存静态 Owner 快照形成 6 待决策、3 已确认、1 已拒绝和 3 平台内待办；同一项目预算覆盖预警复用 HIT-001，两项新增事实保留独立待决策，用于验证整改型行动、业务负责人及基线页面可见投影；不读取或写入正式活动运行，也不属于正式运行入口。",
+      "adaptedSha256": "5e959137d6a968587920dc1a8b1ba0b08aa264ad92f5efcc931ca0baf47fd01a"
+    }
+  ],
+  "boundary": "仅生成草稿、人工确认/拒绝和平台内待办；禁止自动审批、过账、预算覆盖和外部派发。"
+}

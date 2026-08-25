@@ -1,0 +1,87 @@
+{
+  "outputRef": "checkpoints/CP28-health-chrome-and-final-regression.json",
+  "checkpointId": "CP-S003-20260819023500000-c02828000028",
+  "checkpointNode": "e2e-integrated",
+  "createdAt": "2026-08-19T02:35:00.000Z",
+  "buildVersion": "S003-CP28",
+  "acceptanceReady": false,
+  "entryRef": "runtime/cp28-entry.v1.html",
+  "baseline": {
+    "baselineVersion": "1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "parentVersion": "1.0.3"
+  },
+  "scenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+    "formedAt": "2026-08-17T16:30:00.000Z",
+    "status": "active"
+  },
+  "codeRefs": [
+    "runtime/cp28-entry.v1.html",
+    "checkpoints/spec-CP28.json",
+    "scripts/create-checkpoint-v2.cjs",
+    "state.js",
+    "data.js",
+    "integration-config.js",
+    "tests/baseline-extension-contract.test.js",
+    "resources/integration/s003-cp28-final-change-inventory.v1.json",
+    "resources/m01/runtime-export.v2.json",
+    "resources/m02/data-contract.v1.1.json",
+    "resources/m03/query-runtime.v2.json",
+    "resources/m04/decision-runtime.v2.json",
+    "resources/m05/agent-position.v7.json",
+    "resources/m06/report-manifest.v9.json",
+    "evidence/CP28-health-chrome-and-final-regression-validation.md"
+  ],
+  "modules": {
+    "M01": {"moduleVersion":"1.1.0","exportId":"S003-M01-RUNTIME-EXPORT-20260817-002","exportRef":"resources/m01/runtime-export.v2.json","evidenceRef":"evidence/CP28-health-chrome-and-final-regression-validation.md"},
+    "M02": {"moduleVersion":"1.1.0","exportId":"S003-M02-DATA-CONTRACT","exportRef":"resources/m02/data-contract.v1.1.json","evidenceRef":"evidence/CP28-health-chrome-and-final-regression-validation.md"},
+    "M03": {"moduleVersion":"1.1.0","exportId":"S003-M03-QUERY-RUNTIME","exportRef":"resources/m03/query-runtime.v2.json","evidenceRef":"evidence/CP28-health-chrome-and-final-regression-validation.md"},
+    "M04": {"moduleVersion":"1.1.0","exportId":"S003-M04-DECISION-RUNTIME","exportRef":"resources/m04/decision-runtime.v2.json","evidenceRef":"evidence/CP28-health-chrome-and-final-regression-validation.md"},
+    "M05": {"moduleVersion":"1.7.0","exportId":"S003-M05-REPORT-COPILOT-SCENARIO-PROFILE","exportRef":"resources/m05/agent-position.v7.json","evidenceRef":"evidence/CP28-health-chrome-and-final-regression-validation.md"},
+    "M06": {"moduleVersion":"1.7.0","exportId":"S003-M06-REPORT-MANIFEST-20260817-008","exportRef":"resources/m06/report-manifest.v9.json","evidenceRef":"evidence/CP28-health-chrome-and-final-regression-validation.md"}
+  },
+  "stateSections": {
+    "data": {"status":"referenced","items":[
+      {"owner":"M02 数据工程","resourceId":"S003-T007-FORMAL-CANDIDATE-20251231-v1","version":"1.0.0","ref":"resources/m02/formal-candidate-data-asset.v1.json"},
+      {"owner":"M02 数据工程","resourceId":"S003-T053-INPUT-SNAPSHOT-20251231-v1","version":"1.0.0","ref":"resources/m02/human-input-snapshot.v1.json"}
+    ]},
+    "semantics": {"status":"referenced","items":[
+      {"owner":"M01 本体管理","resourceId":"S003-M01-PUBLISHED-POINTER","version":"1.1.0","ref":"resources/m01/published-pointer.v2.json"},
+      {"owner":"M01 本体管理","resourceId":"S003-M01-ACTION-TYPE-CATALOG","version":"1.1.0","ref":"resources/m01/action-type-catalog.v2.json"}
+    ]},
+    "configurations": {"status":"referenced","items":[
+      {"owner":"平台场景包","resourceId":"S003-SCENARIO-MANIFEST","version":"1.0.0","ref":"resources/scenario-manifest.json"},
+      {"owner":"平台公共层与 S003 总装","resourceId":"S003-CP28-HEALTH-CHROME-FINAL-INVENTORY","version":"1.0.0","ref":"resources/integration/s003-cp28-final-change-inventory.v1.json"},
+      {"owner":"S003 总装","resourceId":"S003-CP28-INTEGRATION-CONFIG","version":"1.2.8","ref":"integration-config.js"},
+      {"owner":"S003 总装","resourceId":"S003-CP28-RUNTIME-CONFIG","version":"1.2.8","ref":"data.js"}
+    ]},
+    "results": {"status":"referenced","items":[
+      {"owner":"M01 本体管理","resourceId":"S003-C035-RISK-RESULTS-20251231-v2","version":"1.1.0","ref":"resources/m01/c035-risk-results.v2.json"},
+      {"owner":"M03 智能问数","resourceId":"S003-M03-QUERY-RESULTS-20260817-002","version":"1.1.0","ref":"resources/m03/query-results.v2.json"}
+    ]},
+    "reports": {"status":"referenced","items":[
+      {"owner":"M06 报告中心","resourceId":"S003-M06-REPORT-MANIFEST-20260817-008","version":"1.7.0","ref":"resources/m06/report-manifest.v9.json"},
+      {"owner":"M06 报告中心","resourceId":"S003-M06-REPORT-CONTENTS-20260817-008","version":"1.7.0","ref":"resources/m06/report-contents.v9.json"}
+    ]},
+    "decisions": {"status":"referenced","items":[
+      {"owner":"M04 决策中心","resourceId":"S003-M04-DECISION-RESULTS-20260817-003","version":"1.2.0","ref":"resources/m04/decision-results.v3.json"},
+      {"owner":"M04 决策中心","resourceId":"S003-M04-ENTERPRISE-CONTACT-ROUTING","version":"1.0.0","ref":"resources/m04/enterprise-contact-routing.v1.json"}
+    ]},
+    "testFixtures": {"status":"referenced","items":[
+      {"owner":"M02 数据工程","resourceId":"S003-AUTHORITATIVE-WORKBOOK-FIXTURE","version":"1.0.0","ref":"resources/m02/企业债务风险评估模版_S003兼容版.xlsx"},
+      {"owner":"S003 总装测试","resourceId":"S003-ENTERPRISE-FIXTURE","version":"1.0.0","ref":"fixtures/enterprise-fixture.v1.json"}
+    ]},
+    "featureFlags": {"status":"referenced","items":[
+      {"owner":"平台场景包","resourceId":"S003-FEATURE-FLAGS","version":"1.0.0","ref":"resources/scenario-manifest.json"},
+      {"owner":"S003 总装","resourceId":"S003-CONDITIONAL-INTEGRATION","version":"1.2.8","ref":"integration-config.js"}
+    ]},
+    "evidence": {"status":"referenced","items":[
+      {"owner":"S003 总装","resourceId":"S003-CP28-VALIDATION-EVIDENCE","version":"1.0.0","ref":"evidence/CP28-health-chrome-and-final-regression-validation.md"},
+      {"owner":"平台公共层与 S003 总装","resourceId":"S003-CP28-FINAL-INVENTORY","version":"1.0.0","ref":"resources/integration/s003-cp28-final-change-inventory.v1.json"}
+    ]}
+  },
+  "restoreEvidenceRef": "evidence/CP28-health-chrome-and-final-regression-validation.md"
+}

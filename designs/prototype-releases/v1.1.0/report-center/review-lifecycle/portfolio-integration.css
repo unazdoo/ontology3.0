@@ -1,0 +1,46 @@
+.portfolio-page { display: grid; gap: 16px; }
+.portfolio-scene-tabs { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+.portfolio-scene-tab { min-width: 150px; min-height: 42px; display: flex; align-items: center; gap: 8px; padding: 8px 11px; border: 1px solid transparent; border-radius: 5px; color: var(--muted); text-decoration: none; transition: background .18s ease, border-color .18s ease, color .18s ease; }
+.portfolio-scene-tab:hover { border-color: var(--line-strong); background: var(--surface-2); color: var(--ink); }
+.portfolio-scene-tab.active { border-color: #356d92; background: #eef5f9; color: #164564; }
+.portfolio-scene-tab > span:not(.icon) { display: grid; place-items: center; min-width: 38px; height: 24px; border-radius: 4px; background: #dceaf2; color: #245f83; font-size: 11px; font-weight: 800; }
+.portfolio-scene-tab strong { font-size: 12px; font-weight: 700; }
+.portfolio-scene-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.portfolio-scene-card { display: grid; gap: 11px; min-height: 235px; padding: 18px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+.portfolio-scene-card header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.portfolio-scene-card h2, .portfolio-feature-hero h2 { margin: 0; font-size: 18px; }
+.portfolio-scene-card p, .portfolio-feature-hero p { margin: 0; color: var(--muted); line-height: 1.7; }
+.portfolio-scene-card dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0; }
+.portfolio-scene-card dl div { padding: 9px; border: 1px solid var(--line); background: var(--surface-2); }
+.portfolio-scene-card dt { color: var(--muted); font-size: 11px; }
+.portfolio-scene-card dd { margin: 3px 0 0; font-size: 18px; font-weight: 800; }
+.portfolio-scene-card .btn { justify-self: start; }
+.portfolio-feature-hero { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px; border: 1px solid var(--line); border-radius: 6px; background: linear-gradient(135deg, #f2f7fa 0%, #fff 72%); }
+.portfolio-feature-hero > div:first-child { display: grid; gap: 7px; max-width: 760px; }
+.budget-topic-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.budget-topic-grid article, .s004-resource-grid article { padding: 16px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); }
+.budget-topic-grid article > span, .s004-resource-grid article > span { color: #477690; font-size: 11px; font-weight: 800; }
+.budget-topic-grid h3, .s004-resource-grid h3 { margin: 7px 0; font-size: 15px; }
+.budget-topic-grid strong { color: #245f83; }
+.budget-topic-grid p, .s004-resource-grid p { margin: 7px 0 0; color: var(--muted); line-height: 1.65; }
+.portfolio-fact-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.portfolio-fact-row.risk-summary { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.portfolio-fact-row > div { padding: 13px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); }
+.portfolio-fact-row span { display: block; color: var(--muted); font-size: 11px; }
+.portfolio-fact-row strong { display: block; margin-top: 3px; font-size: 20px; }
+.s004-resource-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.s004-resource-grid article { display: grid; align-content: start; gap: 5px; min-height: 170px; }
+.s004-resource-grid .btn, .s004-resource-grid .button-row { justify-self: start; margin-top: 9px; }
+.portfolio-companion-list { display: grid; gap: 8px; }
+.portfolio-companion-list details { border: 1px solid var(--line); border-radius: 5px; background: var(--surface-2); }
+.portfolio-companion-list summary { padding: 12px 14px; cursor: pointer; font-weight: 700; }
+.portfolio-companion-list p { margin: 0; padding: 0 14px 14px; color: var(--muted); line-height: 1.7; }
+@media (max-width: 960px) {
+  .budget-topic-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .portfolio-fact-row.risk-summary { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .portfolio-scene-grid, .budget-topic-grid, .s004-resource-grid, .portfolio-fact-row, .portfolio-fact-row.risk-summary { grid-template-columns: 1fr; }
+  .portfolio-feature-hero { align-items: flex-start; flex-direction: column; }
+  .portfolio-scene-tab { min-width: 0; flex: 1 1 140px; }
+}

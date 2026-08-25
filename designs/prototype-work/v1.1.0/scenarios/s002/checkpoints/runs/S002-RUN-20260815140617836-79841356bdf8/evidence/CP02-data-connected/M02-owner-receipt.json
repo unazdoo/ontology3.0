@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "ofw.s002.owner-validation-receipt.v1",
+  "receiptId": "RECEIPT-M02-data-connected-158da5dd034e",
+  "moduleId": "M02",
+  "owner": "数据工程",
+  "moduleVersion": "S002-M02-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815140617836-79841356bdf8",
+    "formedAt": "2026-08-15T14:06:17.836Z",
+    "status": "active"
+  },
+  "checkpointNode": "data-connected",
+  "exportRef": "checkpoints/runs/S002-RUN-20260815140617836-79841356bdf8/evidence/CP02-data-connected/M02-state-export.json",
+  "exportSha256": "158da5dd034ec6a1e1c484346c298dbf5a973a6f59d8efb75cd08d48824c91e5",
+  "validatedAt": "2026-08-15T14:08:17.836Z",
+  "validationStatus": "verified",
+  "checks": {
+    "scenarioIdentity": "verified",
+    "baselineBinding": "verified",
+    "ownerBoundary": "verified",
+    "exportDigest": "verified",
+    "isolatedCloneShape": "verified-by-scenario-adapter",
+    "historicalSideEffectsDisabled": "verified"
+  },
+  "validationScope": "prototype-scenario-adapter",
+  "conclusionBoundary": "S002原型适配器导出与恢复校验通过，不代表生产模块部署或平台验收通过"
+}

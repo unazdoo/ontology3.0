@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "ofw.s003.m02.quality-result.v1",
+  "qualityResultId": "S003-M02-QUALITY-20251231-v1",
+  "qualityRuleSetId": "S003-M02-QUALITY-001",
+  "status": "passed",
+  "formedAt": "2026-08-15T13:04:23.000Z",
+  "owner": "M02 数据工程",
+  "inputIds": [
+    "S003-M02-SOURCE-XLSX-20251231",
+    "S003-T053-INPUT-20251231-v1"
+  ],
+  "outputDataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+  "checks": [
+    {
+      "checkId": "member-shape",
+      "status": "passed",
+      "evidence": "财务数据 A1:AA22；调节因子 A1:I22"
+    },
+    {
+      "checkId": "enterprise-count",
+      "status": "passed",
+      "expected": 21,
+      "actual": 21
+    },
+    {
+      "checkId": "stable-enterprise-id",
+      "status": "passed",
+      "unique": true,
+      "note": "生产需映射企业主数据；名称不得作为主键"
+    },
+    {
+      "checkId": "finance-finite-values",
+      "status": "passed",
+      "invalidCount": 0
+    },
+    {
+      "checkId": "factor-enum",
+      "status": "passed",
+      "invalidCount": 0
+    },
+    {
+      "checkId": "factor-applicability",
+      "status": "passed",
+      "notApplicableCount": 7
+    },
+    {
+      "checkId": "assessment-context",
+      "status": "passed",
+      "assessmentAt": "2025-12-31",
+      "currency": "CNY",
+      "amountUnit": "元"
+    },
+    {
+      "checkId": "source-integrity",
+      "status": "passed",
+      "sourceSha256": "dbdab9c870d7f2e456c3a9e0f91b340b372da6d40eb241551e0ee8848cac42a0",
+      "fixtureSha256": "09191f28b87aac2757e805265fb7b9593f6979dc003ad43b8f72ea5d738f875a"
+    }
+  ],
+  "explicitlyExcludedChecks": [
+    "风险评分",
+    "评分公式",
+    "因子系数",
+    "评分权重",
+    "风险阈值",
+    "风险分档命中",
+    "Action Type 命中"
+  ]
+}

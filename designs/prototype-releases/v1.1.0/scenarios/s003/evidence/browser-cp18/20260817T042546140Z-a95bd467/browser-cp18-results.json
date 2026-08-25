@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp18-result.v1",
+  "runId": "20260817T042546140Z-a95bd467",
+  "formedAt": "2026-08-17T04:25:46.140Z",
+  "origin": "http://127.0.0.1:48124",
+  "formalSourceScenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+  "browserVersion": "149.0.7827.55",
+  "cases": [
+    {
+      "id": "quick-rerun-and-history",
+      "status": "failed",
+      "durationMs": 1356,
+      "error": {
+        "name": "AssertionError",
+        "message": "历史尚未提交候选应显式只读\n\n5 !== 8\n",
+        "stack": "AssertionError [ERR_ASSERTION]: 历史尚未提交候选应显式只读\n\n5 !== 8\n\n    at caseQuickRerunAndHistory (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:731:10)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:819:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp18.cjs:847:16)"
+      }
+    }
+  ],
+  "totals": {
+    "cases": 1,
+    "passed": 0,
+    "failed": 1
+  },
+  "checkpointCreated": false,
+  "acceptanceReady": false
+}

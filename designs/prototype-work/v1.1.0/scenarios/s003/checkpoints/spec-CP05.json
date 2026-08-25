@@ -1,0 +1,77 @@
+{
+  "outputRef": "checkpoints/CP05-decision-chain-completed.json",
+  "checkpointId": "CP-S003-20260815144500000-c03505000005",
+  "checkpointNode": "decision-chain-completed",
+  "createdAt": "2026-08-15T14:45:00.000Z",
+  "buildVersion": "S003-CP05",
+  "entryRef": "runtime/cp05-entry.v1.html",
+  "baseline": {"baselineVersion": "1.0.3", "baselineSnapshotId": "BSL-S001-V103-DE0119608E26", "parentVersion": "1.0.3"},
+  "scenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "codeRefs": [
+    "runtime/cp05-entry.v1.html",
+    "domain/decision-service.js",
+    "scripts/build-decision-assets.cjs",
+    "scripts/build-decision-results.cjs",
+    "scripts/validate-decision-assets.cjs",
+    "scripts/create-checkpoint-v2.cjs",
+    "tests/decision-service.test.js",
+    "tests/decision-assets.test.js",
+    "resources/m01/runtime-export.v1.json",
+    "resources/m01/c035-risk-results.v1.json",
+    "resources/m01/published-risk-facts.v1.json",
+    "resources/m02/data-contract.v1.1.json",
+    "resources/m03/query-runtime.v1.json",
+    "resources/m03/query-results.v1.json",
+    "resources/m04/decision-binding.v1.json",
+    "resources/m04/decision-runtime.v1.json",
+    "resources/m04/decision-results.v1.json",
+    "resources/m05/agent-position.v1.json",
+    "resources/m06/report-contract.v1.json",
+    "resources/scenario-manifest.json",
+    "fixtures/enterprise-fixture.v1.json",
+    "evidence/CP05-decision-chain-validation.md"
+  ],
+  "modules": {
+    "M01": {"moduleVersion": "1.0.1", "exportId": "S003-M01-RUNTIME-EXPORT-20260815-001", "exportRef": "resources/m01/runtime-export.v1.json", "evidenceRef": "evidence/CP05-decision-chain-validation.md"},
+    "M02": {"moduleVersion": "1.1.0", "exportId": "S003-M02-DATA-CONTRACT", "exportRef": "resources/m02/data-contract.v1.1.json", "evidenceRef": "evidence/CP05-decision-chain-validation.md"},
+    "M03": {"moduleVersion": "1.0.0", "exportId": "S003-M03-QUERY-RUNTIME", "exportRef": "resources/m03/query-runtime.v1.json", "evidenceRef": "evidence/CP05-decision-chain-validation.md"},
+    "M04": {"moduleVersion": "1.0.0", "exportId": "S003-M04-GENERIC-DECISION-RUNTIME", "exportRef": "resources/m04/decision-runtime.v1.json", "evidenceRef": "evidence/CP05-decision-chain-validation.md"},
+    "M05": {"moduleVersion": "1.0.0", "exportId": "S003-M05-NO-DEDICATED-AGENT", "exportRef": "resources/m05/agent-position.v1.json", "evidenceRef": "evidence/CP05-decision-chain-validation.md"},
+    "M06": {"moduleVersion": "1.0.0", "exportId": "S003-M06-REPORT-CONTRACT", "exportRef": "resources/m06/report-contract.v1.json", "evidenceRef": "evidence/CP05-decision-chain-validation.md"}
+  },
+  "stateSections": {
+    "data": {"status": "referenced", "items": [
+      {"owner": "M02 数据工程", "resourceId": "S003-M02-SOURCE-XLSX-20251231", "version": "1.0.0", "ref": "resources/m02/source-asset.v1.json"},
+      {"owner": "M02 数据工程", "resourceId": "S003-T053-INPUT-20251231-v1", "version": "1.0.0", "ref": "resources/m02/human-input-snapshot.v1.json"},
+      {"owner": "M02 数据工程", "resourceId": "S003-T007-FORMAL-CANDIDATE-20251231-v1", "version": "1.0.0", "ref": "resources/m02/formal-candidate-data-asset.v1.json"},
+      {"owner": "M02 数据工程", "resourceId": "S003-M02-QUALITY-20251231-v1", "version": "1.0.0", "ref": "resources/m02/quality-result.v1.json"}
+    ]},
+    "semantics": {"status": "referenced", "items": [
+      {"owner": "M01 本体管理", "resourceId": "S003-M01-DEBT-RISK-PKG", "version": "1.0.0", "ref": "resources/m01/model-package.v1.json"},
+      {"owner": "M01 本体管理", "resourceId": "S003-M01-PUBLISHED-POINTER", "version": "1.0.1", "ref": "resources/m01/published-pointer.v1.json"}
+    ]},
+    "configurations": {"status": "referenced", "items": [
+      {"owner": "平台场景包", "resourceId": "S003-SCENARIO-MANIFEST", "version": "1.0.0", "ref": "resources/scenario-manifest.json"},
+      {"owner": "M04 决策中心", "resourceId": "S003-M04-DECISION-RUNTIME", "version": "1.0.0", "ref": "resources/m04/decision-runtime.v1.json"}
+    ]},
+    "results": {"status": "referenced", "items": [
+      {"owner": "M01 本体管理", "resourceId": "S003-C035-RISK-RESULTS-20251231-v1", "version": "1.0.0", "ref": "resources/m01/c035-risk-results.v1.json"},
+      {"owner": "M01 本体管理", "resourceId": "S003-PUBLISHED-RISK-FACTS-20251231-v1", "version": "1.0.0", "ref": "resources/m01/published-risk-facts.v1.json"},
+      {"owner": "M03 智能问数", "resourceId": "S003-M03-QUERY-RESULTS-20260815-001", "version": "1.0.0", "ref": "resources/m03/query-results.v1.json"}
+    ]},
+    "reports": {"status": "empty", "reason": "CP05 尚未生成企业报告。"},
+    "decisions": {"status": "referenced", "items": [
+      {"owner": "M04 决策中心", "resourceId": "S003-M04-DECISION-RESULTS-20260815-001", "version": "1.0.0", "ref": "resources/m04/decision-results.v1.json"}
+    ]},
+    "testFixtures": {"status": "referenced", "items": [{"owner": "S003 总装测试", "resourceId": "S003-FIXTURE-20251231-v1", "version": "1.0.0", "ref": "fixtures/enterprise-fixture.v1.json"}]},
+    "featureFlags": {"status": "referenced", "items": [{"owner": "平台场景包", "resourceId": "S003-FEATURE-FLAGS", "version": "1.0.0", "ref": "resources/scenario-manifest.json"}]},
+    "evidence": {"status": "referenced", "items": [{"owner": "S003 总装", "resourceId": "S003-CP05-VALIDATION", "version": "1.0.0", "ref": "evidence/CP05-decision-chain-validation.md"}]}
+  },
+  "restoreEvidenceRef": "evidence/CP05-decision-chain-validation.md"
+}

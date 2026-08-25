@@ -1,0 +1,814 @@
+{
+  "schemaVersion": "ofw.s003.m04.decision-results.v1",
+  "moduleId": "M04",
+  "moduleOwner": "决策中心",
+  "resultSetId": "S003-M04-DECISION-RESULTS-20260817-002",
+  "resultSetVersion": "1.1.0",
+  "status": "decision-chain-completed",
+  "immutable": true,
+  "formedAt": "2026-08-17T08:35:00.000Z",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "assessmentAt": "2025-12-31",
+  "candidateSummary": {
+    "total": 9,
+    "awaitingHumanConfirmation": 8,
+    "confirmed": 1,
+    "actionRequestsCreated": 1,
+    "todosCreated": 1,
+    "notificationsDispatched": 0,
+    "approvalsStarted": 0
+  },
+  "candidatesBeforeConfirmation": [
+    {
+      "schemaVersion": "ofw.s003.disposition-candidate.v1",
+      "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-007-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+      "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-007|S003_RISK_FOLLOW_UP|2025-12-31|1.0.0",
+      "status": "CANDIDATE_AWAITING_HUMAN_CONFIRMATION",
+      "requiresHumanConfirmation": true,
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "enterpriseId": "S003-ENT-007",
+      "enterpriseName": "风电测试公司07",
+      "category": "新能源产业-风电",
+      "riskTier": "YELLOW",
+      "riskTierName": "黄灯",
+      "finalScore": 37.75,
+      "actionTypeId": "S003_RISK_FOLLOW_UP",
+      "trigger": {
+        "type": "RISK_TIER",
+        "tierId": "YELLOW",
+        "tierName": "黄灯"
+      },
+      "assessmentAt": "2025-12-31",
+      "resultVersion": "1.0.0",
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-007",
+      "sourceResultVersion": "1.0.0",
+      "owner": null,
+      "actionRequestId": null,
+      "todoId": null,
+      "autoCreateActionRequest": false,
+      "autoCreateTodo": false,
+      "source": {
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-007",
+        "c035SchemaVersion": "ofw.s003.c035.assessment-result.v1"
+      }
+    },
+    {
+      "schemaVersion": "ofw.s003.disposition-candidate.v1",
+      "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-007-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0",
+      "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-007|S003_FACTOR_EMERGENCY|2025-12-31|1.0.0",
+      "status": "CANDIDATE_AWAITING_HUMAN_CONFIRMATION",
+      "requiresHumanConfirmation": true,
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "enterpriseId": "S003-ENT-007",
+      "enterpriseName": "风电测试公司07",
+      "category": "新能源产业-风电",
+      "riskTier": "YELLOW",
+      "riskTierName": "黄灯",
+      "finalScore": 37.75,
+      "actionTypeId": "S003_FACTOR_EMERGENCY",
+      "trigger": {
+        "type": "MAJOR_FACTOR",
+        "factors": [
+          "重大诉讼"
+        ]
+      },
+      "assessmentAt": "2025-12-31",
+      "resultVersion": "1.0.0",
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-007",
+      "sourceResultVersion": "1.0.0",
+      "owner": null,
+      "actionRequestId": null,
+      "todoId": null,
+      "autoCreateActionRequest": false,
+      "autoCreateTodo": false,
+      "source": {
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-007",
+        "c035SchemaVersion": "ofw.s003.c035.assessment-result.v1"
+      }
+    },
+    {
+      "schemaVersion": "ofw.s003.disposition-candidate.v1",
+      "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-009-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0",
+      "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-009|S003_FACTOR_EMERGENCY|2025-12-31|1.0.0",
+      "status": "CANDIDATE_AWAITING_HUMAN_CONFIRMATION",
+      "requiresHumanConfirmation": true,
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "enterpriseId": "S003-ENT-009",
+      "enterpriseName": "风电测试公司09",
+      "category": "新能源产业-风电",
+      "riskTier": "GREEN",
+      "riskTierName": "绿灯",
+      "finalScore": 47.32,
+      "actionTypeId": "S003_FACTOR_EMERGENCY",
+      "trigger": {
+        "type": "MAJOR_FACTOR",
+        "factors": [
+          "当月资金余缺预警"
+        ]
+      },
+      "assessmentAt": "2025-12-31",
+      "resultVersion": "1.0.0",
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-009",
+      "sourceResultVersion": "1.0.0",
+      "owner": null,
+      "actionRequestId": null,
+      "todoId": null,
+      "autoCreateActionRequest": false,
+      "autoCreateTodo": false,
+      "source": {
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-009",
+        "c035SchemaVersion": "ofw.s003.c035.assessment-result.v1"
+      }
+    },
+    {
+      "schemaVersion": "ofw.s003.disposition-candidate.v1",
+      "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-017-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+      "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-017|S003_RISK_FOLLOW_UP|2025-12-31|1.0.0",
+      "status": "CANDIDATE_AWAITING_HUMAN_CONFIRMATION",
+      "requiresHumanConfirmation": true,
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "enterpriseId": "S003-ENT-017",
+      "enterpriseName": "环保测试公司1",
+      "category": "环保",
+      "riskTier": "YELLOW",
+      "riskTierName": "黄灯",
+      "finalScore": 30.52,
+      "actionTypeId": "S003_RISK_FOLLOW_UP",
+      "trigger": {
+        "type": "RISK_TIER",
+        "tierId": "YELLOW",
+        "tierName": "黄灯"
+      },
+      "assessmentAt": "2025-12-31",
+      "resultVersion": "1.0.0",
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-017",
+      "sourceResultVersion": "1.0.0",
+      "owner": null,
+      "actionRequestId": null,
+      "todoId": null,
+      "autoCreateActionRequest": false,
+      "autoCreateTodo": false,
+      "source": {
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-017",
+        "c035SchemaVersion": "ofw.s003.c035.assessment-result.v1"
+      }
+    },
+    {
+      "schemaVersion": "ofw.s003.disposition-candidate.v1",
+      "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-017-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0",
+      "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-017|S003_FACTOR_EMERGENCY|2025-12-31|1.0.0",
+      "status": "CANDIDATE_AWAITING_HUMAN_CONFIRMATION",
+      "requiresHumanConfirmation": true,
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "enterpriseId": "S003-ENT-017",
+      "enterpriseName": "环保测试公司1",
+      "category": "环保",
+      "riskTier": "YELLOW",
+      "riskTierName": "黄灯",
+      "finalScore": 30.52,
+      "actionTypeId": "S003_FACTOR_EMERGENCY",
+      "trigger": {
+        "type": "MAJOR_FACTOR",
+        "factors": [
+          "重大诉讼"
+        ]
+      },
+      "assessmentAt": "2025-12-31",
+      "resultVersion": "1.0.0",
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-017",
+      "sourceResultVersion": "1.0.0",
+      "owner": null,
+      "actionRequestId": null,
+      "todoId": null,
+      "autoCreateActionRequest": false,
+      "autoCreateTodo": false,
+      "source": {
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-017",
+        "c035SchemaVersion": "ofw.s003.c035.assessment-result.v1"
+      }
+    },
+    {
+      "schemaVersion": "ofw.s003.disposition-candidate.v1",
+      "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+      "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-018|S003_RISK_FOLLOW_UP|2025-12-31|1.0.0",
+      "status": "CANDIDATE_AWAITING_HUMAN_CONFIRMATION",
+      "requiresHumanConfirmation": true,
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "enterpriseId": "S003-ENT-018",
+      "enterpriseName": "环保测试公司2",
+      "category": "环保",
+      "riskTier": "YELLOW",
+      "riskTierName": "黄灯",
+      "finalScore": 33.92,
+      "actionTypeId": "S003_RISK_FOLLOW_UP",
+      "trigger": {
+        "type": "RISK_TIER",
+        "tierId": "YELLOW",
+        "tierName": "黄灯"
+      },
+      "assessmentAt": "2025-12-31",
+      "resultVersion": "1.0.0",
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-018",
+      "sourceResultVersion": "1.0.0",
+      "owner": null,
+      "actionRequestId": null,
+      "todoId": null,
+      "autoCreateActionRequest": false,
+      "autoCreateTodo": false,
+      "source": {
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-018",
+        "c035SchemaVersion": "ofw.s003.c035.assessment-result.v1"
+      }
+    },
+    {
+      "schemaVersion": "ofw.s003.disposition-candidate.v1",
+      "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-019-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+      "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-019|S003_RISK_FOLLOW_UP|2025-12-31|1.0.0",
+      "status": "CANDIDATE_AWAITING_HUMAN_CONFIRMATION",
+      "requiresHumanConfirmation": true,
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "enterpriseId": "S003-ENT-019",
+      "enterpriseName": "环保测试公司3",
+      "category": "环保",
+      "riskTier": "YELLOW",
+      "riskTierName": "黄灯",
+      "finalScore": 37.31,
+      "actionTypeId": "S003_RISK_FOLLOW_UP",
+      "trigger": {
+        "type": "RISK_TIER",
+        "tierId": "YELLOW",
+        "tierName": "黄灯"
+      },
+      "assessmentAt": "2025-12-31",
+      "resultVersion": "1.0.0",
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-019",
+      "sourceResultVersion": "1.0.0",
+      "owner": null,
+      "actionRequestId": null,
+      "todoId": null,
+      "autoCreateActionRequest": false,
+      "autoCreateTodo": false,
+      "source": {
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-019",
+        "c035SchemaVersion": "ofw.s003.c035.assessment-result.v1"
+      }
+    },
+    {
+      "schemaVersion": "ofw.s003.disposition-candidate.v1",
+      "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.0.0",
+      "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-020|S003_SPECIAL_DISPOSAL|2025-12-31|1.0.0",
+      "status": "CANDIDATE_AWAITING_HUMAN_CONFIRMATION",
+      "requiresHumanConfirmation": true,
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "enterpriseId": "S003-ENT-020",
+      "enterpriseName": "环保测试公司4",
+      "category": "环保",
+      "riskTier": "RED",
+      "riskTierName": "红灯",
+      "finalScore": 23.05,
+      "actionTypeId": "S003_SPECIAL_DISPOSAL",
+      "trigger": {
+        "type": "RISK_TIER",
+        "tierId": "RED",
+        "tierName": "红灯"
+      },
+      "assessmentAt": "2025-12-31",
+      "resultVersion": "1.0.0",
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-020",
+      "sourceResultVersion": "1.0.0",
+      "owner": null,
+      "actionRequestId": null,
+      "todoId": null,
+      "autoCreateActionRequest": false,
+      "autoCreateTodo": false,
+      "source": {
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-020",
+        "c035SchemaVersion": "ofw.s003.c035.assessment-result.v1"
+      }
+    },
+    {
+      "schemaVersion": "ofw.s003.disposition-candidate.v1",
+      "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-020-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0",
+      "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-020|S003_FACTOR_EMERGENCY|2025-12-31|1.0.0",
+      "status": "CANDIDATE_AWAITING_HUMAN_CONFIRMATION",
+      "requiresHumanConfirmation": true,
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "enterpriseId": "S003-ENT-020",
+      "enterpriseName": "环保测试公司4",
+      "category": "环保",
+      "riskTier": "RED",
+      "riskTierName": "红灯",
+      "finalScore": 23.05,
+      "actionTypeId": "S003_FACTOR_EMERGENCY",
+      "trigger": {
+        "type": "MAJOR_FACTOR",
+        "factors": [
+          "当月资金余缺预警"
+        ]
+      },
+      "assessmentAt": "2025-12-31",
+      "resultVersion": "1.0.0",
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-020",
+      "sourceResultVersion": "1.0.0",
+      "owner": null,
+      "actionRequestId": null,
+      "todoId": null,
+      "autoCreateActionRequest": false,
+      "autoCreateTodo": false,
+      "source": {
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-020",
+        "c035SchemaVersion": "ofw.s003.c035.assessment-result.v1"
+      }
+    }
+  ],
+  "confirmedDecision": {
+    "schemaVersion": "ofw.s003.m04.confirmation-receipt.v1",
+    "serviceVersion": "1.0.0",
+    "mode": "generic-decision-center",
+    "scenarioIdentity": {
+      "scenarioId": "S003",
+      "scenarioVersion": "S003-v1",
+      "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+    },
+    "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.0.0",
+    "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-020|S003_SPECIAL_DISPOSAL|2025-12-31|1.0.0",
+    "created": true,
+    "idempotent": false,
+    "duplicate": false,
+    "sideEffects": {
+      "actionRequestCreated": true,
+      "todoCreated": true,
+      "notificationSent": false,
+      "externalDispatch": false
+    },
+    "actionRequest": {
+      "schemaVersion": "ofw.s003.m04.action-request.v1",
+      "actionRequestId": "AR-S003-00BMPUKR",
+      "status": "pending-generic-decision-handoff",
+      "entry": "Action Request",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "enterpriseId": "S003-ENT-020",
+      "enterpriseName": "环保测试公司4",
+      "category": "环保",
+      "riskTier": "RED",
+      "riskTierName": "红灯",
+      "finalScore": 23.05,
+      "actionTypeId": "S003_SPECIAL_DISPOSAL",
+      "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.0.0",
+      "sourceCandidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.0.0",
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-020",
+      "assessmentAt": "2025-12-31",
+      "resultVersion": "1.0.0",
+      "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-020|S003_SPECIAL_DISPOSAL|2025-12-31|1.0.0",
+      "owner": "集团债务风险管理负责人",
+      "note": "按通用决策中心红灯处置规则推动负责人待办；一期不启用多级审批。",
+      "confirmed": true,
+      "confirmedAt": "2026-08-15T14:32:00.000Z",
+      "todoId": "TODO-S003-00BMPUKR",
+      "requiresHumanConfirmation": false,
+      "approvalRequired": false,
+      "permissionModel": "single-owner-todo",
+      "automatic": false,
+      "projectionOnly": true,
+      "multiLevelApproval": false,
+      "multiUserPermissionModel": false,
+      "externalDispatch": "generic-decision-center",
+      "c017ReceiptRead": {
+        "gate": "request_receipt",
+        "gateLabel": "行动申请接收前",
+        "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT",
+        "summaryVersion": "current-1",
+        "summaryFormedAt": "2026-08-15 14:19:58",
+        "readAt": "2026-08-15 14:31:50",
+        "qualityStatus": "允许推进",
+        "hardFailure": "否",
+        "detectedAt": "不适用",
+        "impactScope": "无硬质量失败影响",
+        "businessFieldCategories": "债务风险评分、风险分档、调节因子输入",
+        "reason": "数据工程 C017 当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败",
+        "recovery": "无需恢复",
+        "evidenceLocator": "C017 / S003-T007-FORMAL-CANDIDATE-20251231-v1 / current",
+        "outcome": "allowed"
+      },
+      "c017ConfirmationRead": {
+        "gate": "confirmation_submit",
+        "gateLabel": "人工确认提交前",
+        "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT",
+        "summaryVersion": "current-1",
+        "summaryFormedAt": "2026-08-15 14:19:58",
+        "readAt": "2026-08-15 14:31:58",
+        "qualityStatus": "允许推进",
+        "hardFailure": "否",
+        "detectedAt": "不适用",
+        "impactScope": "无硬质量失败影响",
+        "businessFieldCategories": "债务风险评分、风险分档、调节因子输入",
+        "reason": "数据工程 C017 当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败",
+        "recovery": "无需恢复",
+        "evidenceLocator": "C017 / S003-T007-FORMAL-CANDIDATE-20251231-v1 / current",
+        "outcome": "allowed"
+      }
+    },
+    "todo": {
+      "schemaVersion": "ofw.s003.m04.owner-todo.v1",
+      "todoId": "TODO-S003-00BMPUKR",
+      "actionRequestId": "AR-S003-00BMPUKR",
+      "status": "pending",
+      "target": "负责人待办",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+      },
+      "enterpriseId": "S003-ENT-020",
+      "enterpriseName": "环保测试公司4",
+      "actionTypeId": "S003_SPECIAL_DISPOSAL",
+      "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.0.0",
+      "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-020",
+      "assessmentAt": "2025-12-31",
+      "resultVersion": "1.0.0",
+      "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-020|S003_SPECIAL_DISPOSAL|2025-12-31|1.0.0",
+      "owner": "集团债务风险管理负责人",
+      "note": "按通用决策中心红灯处置规则推动负责人待办；一期不启用多级审批。",
+      "createdAt": "2026-08-15T14:32:00.000Z",
+      "automatic": false,
+      "approvalRequired": false,
+      "multiLevelApproval": false,
+      "externalDispatch": false,
+      "c017SafetyRead": {
+        "gate": "task_formation",
+        "gateLabel": "负责人待办形成前",
+        "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT",
+        "summaryVersion": "current-1",
+        "summaryFormedAt": "2026-08-15 14:19:58",
+        "readAt": "2026-08-15 14:32:00",
+        "qualityStatus": "允许推进",
+        "hardFailure": "否",
+        "detectedAt": "不适用",
+        "impactScope": "无硬质量失败影响",
+        "businessFieldCategories": "债务风险评分、风险分档、调节因子输入",
+        "reason": "数据工程 C017 当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败",
+        "recovery": "无需恢复",
+        "evidenceLocator": "C017 / S003-T007-FORMAL-CANDIDATE-20251231-v1 / current",
+        "outcome": "allowed"
+      }
+    },
+    "c017SafetyReads": [
+      {
+        "gate": "request_receipt",
+        "gateLabel": "行动申请接收前",
+        "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT",
+        "summaryVersion": "current-1",
+        "summaryFormedAt": "2026-08-15 14:19:58",
+        "readAt": "2026-08-15 14:31:50",
+        "qualityStatus": "允许推进",
+        "hardFailure": "否",
+        "detectedAt": "不适用",
+        "impactScope": "无硬质量失败影响",
+        "businessFieldCategories": "债务风险评分、风险分档、调节因子输入",
+        "reason": "数据工程 C017 当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败",
+        "recovery": "无需恢复",
+        "evidenceLocator": "C017 / S003-T007-FORMAL-CANDIDATE-20251231-v1 / current",
+        "outcome": "allowed"
+      },
+      {
+        "gate": "confirmation_submit",
+        "gateLabel": "人工确认提交前",
+        "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT",
+        "summaryVersion": "current-1",
+        "summaryFormedAt": "2026-08-15 14:19:58",
+        "readAt": "2026-08-15 14:31:58",
+        "qualityStatus": "允许推进",
+        "hardFailure": "否",
+        "detectedAt": "不适用",
+        "impactScope": "无硬质量失败影响",
+        "businessFieldCategories": "债务风险评分、风险分档、调节因子输入",
+        "reason": "数据工程 C017 当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败",
+        "recovery": "无需恢复",
+        "evidenceLocator": "C017 / S003-T007-FORMAL-CANDIDATE-20251231-v1 / current",
+        "outcome": "allowed"
+      },
+      {
+        "gate": "task_formation",
+        "gateLabel": "负责人待办形成前",
+        "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT",
+        "summaryVersion": "current-1",
+        "summaryFormedAt": "2026-08-15 14:19:58",
+        "readAt": "2026-08-15 14:32:00",
+        "qualityStatus": "允许推进",
+        "hardFailure": "否",
+        "detectedAt": "不适用",
+        "impactScope": "无硬质量失败影响",
+        "businessFieldCategories": "债务风险评分、风险分档、调节因子输入",
+        "reason": "数据工程 C017 当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败",
+        "recovery": "无需恢复",
+        "evidenceLocator": "C017 / S003-T007-FORMAL-CANDIDATE-20251231-v1 / current",
+        "outcome": "allowed"
+      }
+    ],
+    "c017ReadAttempts": {
+      "request_receipt": 1,
+      "confirmation_submit": 1,
+      "task_formation": 1
+    }
+  },
+  "confirmations": [
+    {
+      "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-020|S003_SPECIAL_DISPOSAL|2025-12-31|1.0.0",
+      "created": true,
+      "idempotent": false,
+      "duplicate": false,
+      "actionRequest": {
+        "schemaVersion": "ofw.s003.m04.action-request.v1",
+        "actionRequestId": "AR-S003-00BMPUKR",
+        "status": "pending-generic-decision-handoff",
+        "entry": "Action Request",
+        "scenarioIdentity": {
+          "scenarioId": "S003",
+          "scenarioVersion": "S003-v1",
+          "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+        },
+        "enterpriseId": "S003-ENT-020",
+        "enterpriseName": "环保测试公司4",
+        "category": "环保",
+        "riskTier": "RED",
+        "riskTierName": "红灯",
+        "finalScore": 23.05,
+        "actionTypeId": "S003_SPECIAL_DISPOSAL",
+        "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.0.0",
+        "sourceCandidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.0.0",
+        "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-020",
+        "assessmentAt": "2025-12-31",
+        "resultVersion": "1.0.0",
+        "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-020|S003_SPECIAL_DISPOSAL|2025-12-31|1.0.0",
+        "owner": "集团债务风险管理负责人",
+        "note": "按通用决策中心红灯处置规则推动负责人待办；一期不启用多级审批。",
+        "confirmed": true,
+        "confirmedAt": "2026-08-15T14:32:00.000Z",
+        "todoId": "TODO-S003-00BMPUKR",
+        "requiresHumanConfirmation": false,
+        "approvalRequired": false,
+        "permissionModel": "single-owner-todo",
+        "automatic": false,
+        "projectionOnly": true,
+        "multiLevelApproval": false,
+        "multiUserPermissionModel": false,
+        "externalDispatch": "generic-decision-center",
+        "c017ReceiptRead": {
+          "gate": "request_receipt",
+          "gateLabel": "行动申请接收前",
+          "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT",
+          "summaryVersion": "current-1",
+          "summaryFormedAt": "2026-08-15 14:19:58",
+          "readAt": "2026-08-15 14:31:50",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "债务风险评分、风险分档、调节因子输入",
+          "reason": "数据工程 C017 当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败",
+          "recovery": "无需恢复",
+          "evidenceLocator": "C017 / S003-T007-FORMAL-CANDIDATE-20251231-v1 / current",
+          "outcome": "allowed"
+        },
+        "c017ConfirmationRead": {
+          "gate": "confirmation_submit",
+          "gateLabel": "人工确认提交前",
+          "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT",
+          "summaryVersion": "current-1",
+          "summaryFormedAt": "2026-08-15 14:19:58",
+          "readAt": "2026-08-15 14:31:58",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "债务风险评分、风险分档、调节因子输入",
+          "reason": "数据工程 C017 当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败",
+          "recovery": "无需恢复",
+          "evidenceLocator": "C017 / S003-T007-FORMAL-CANDIDATE-20251231-v1 / current",
+          "outcome": "allowed"
+        }
+      },
+      "todo": {
+        "schemaVersion": "ofw.s003.m04.owner-todo.v1",
+        "todoId": "TODO-S003-00BMPUKR",
+        "actionRequestId": "AR-S003-00BMPUKR",
+        "status": "pending",
+        "target": "负责人待办",
+        "scenarioIdentity": {
+          "scenarioId": "S003",
+          "scenarioVersion": "S003-v1",
+          "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+        },
+        "enterpriseId": "S003-ENT-020",
+        "enterpriseName": "环保测试公司4",
+        "actionTypeId": "S003_SPECIAL_DISPOSAL",
+        "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.0.0",
+        "sourceResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-020",
+        "assessmentAt": "2025-12-31",
+        "resultVersion": "1.0.0",
+        "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-020|S003_SPECIAL_DISPOSAL|2025-12-31|1.0.0",
+        "owner": "集团债务风险管理负责人",
+        "note": "按通用决策中心红灯处置规则推动负责人待办；一期不启用多级审批。",
+        "createdAt": "2026-08-15T14:32:00.000Z",
+        "automatic": false,
+        "approvalRequired": false,
+        "multiLevelApproval": false,
+        "externalDispatch": false,
+        "c017SafetyRead": {
+          "gate": "task_formation",
+          "gateLabel": "负责人待办形成前",
+          "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT",
+          "summaryVersion": "current-1",
+          "summaryFormedAt": "2026-08-15 14:19:58",
+          "readAt": "2026-08-15 14:32:00",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "债务风险评分、风险分档、调节因子输入",
+          "reason": "数据工程 C017 当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败",
+          "recovery": "无需恢复",
+          "evidenceLocator": "C017 / S003-T007-FORMAL-CANDIDATE-20251231-v1 / current",
+          "outcome": "allowed"
+        }
+      },
+      "c017SafetyReads": [
+        {
+          "gate": "request_receipt",
+          "gateLabel": "行动申请接收前",
+          "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT",
+          "summaryVersion": "current-1",
+          "summaryFormedAt": "2026-08-15 14:19:58",
+          "readAt": "2026-08-15 14:31:50",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "债务风险评分、风险分档、调节因子输入",
+          "reason": "数据工程 C017 当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败",
+          "recovery": "无需恢复",
+          "evidenceLocator": "C017 / S003-T007-FORMAL-CANDIDATE-20251231-v1 / current",
+          "outcome": "allowed"
+        },
+        {
+          "gate": "confirmation_submit",
+          "gateLabel": "人工确认提交前",
+          "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT",
+          "summaryVersion": "current-1",
+          "summaryFormedAt": "2026-08-15 14:19:58",
+          "readAt": "2026-08-15 14:31:58",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "债务风险评分、风险分档、调节因子输入",
+          "reason": "数据工程 C017 当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败",
+          "recovery": "无需恢复",
+          "evidenceLocator": "C017 / S003-T007-FORMAL-CANDIDATE-20251231-v1 / current",
+          "outcome": "allowed"
+        },
+        {
+          "gate": "task_formation",
+          "gateLabel": "负责人待办形成前",
+          "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT",
+          "summaryVersion": "current-1",
+          "summaryFormedAt": "2026-08-15 14:19:58",
+          "readAt": "2026-08-15 14:32:00",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "债务风险评分、风险分档、调节因子输入",
+          "reason": "数据工程 C017 当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败",
+          "recovery": "无需恢复",
+          "evidenceLocator": "C017 / S003-T007-FORMAL-CANDIDATE-20251231-v1 / current",
+          "outcome": "allowed"
+        }
+      ],
+      "c017ReadAttempts": {
+        "request_receipt": 1,
+        "confirmation_submit": 1,
+        "task_formation": 1
+      }
+    }
+  ],
+  "policy": {
+    "owner": "财务公司",
+    "primaryUser": "集团债务风险管理人员",
+    "humanConfirmationRequired": true,
+    "reviewer": null,
+    "multiLevelApproval": false,
+    "multiUserPermissions": false,
+    "target": "负责人待办",
+    "sourceContracts": [
+      "C011",
+      "C019",
+      "C033",
+      "C035",
+      "C017"
+    ]
+  },
+  "source": {
+    "c035Results": {
+      "ref": "resources/m01/c035-risk-results.v1.json",
+      "sha256": "10e8ca2284abaaf680b549b6da3c5374ac6168a5e9b4bbe6d0abbcdb864b6153"
+    },
+    "publishedFacts": {
+      "ref": "resources/m01/published-risk-facts.v1.json",
+      "sha256": "8d31823a37c2b4949d01b5a2d2744607bddb7f9c2ee54e2e3c8e9acfebe74099"
+    },
+    "decisionRuntime": {
+      "ref": "resources/m04/decision-runtime.v1.json",
+      "sha256": "0bee1570bb2c64367a1d996e478af979164c6ba50c64327e8669a49c120e55a2"
+    },
+    "c017SafetyProjection": {
+      "contractCode": "C017",
+      "consumer": "决策中心",
+      "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT",
+      "summaryVersion": "current-1",
+      "dataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+      "owner": "数据工程",
+      "readOnlyReceipt": true
+    }
+  },
+  "sideEffects": {
+    "automaticActionRequest": false,
+    "automaticTodo": false,
+    "actionRequestCreatedOnlyAfterHumanConfirmation": true,
+    "notificationsDispatched": false,
+    "approvalsStarted": false,
+    "externalDispatch": false
+  },
+  "factsCount": 21,
+  "supersedes": {
+    "resultSetId": "S003-M04-DECISION-RESULTS-20260815-001",
+    "resultSetVersion": "1.0.0",
+    "ref": "resources/m04/decision-results.v1.json",
+    "preserved": true
+  },
+  "projectionCorrection": {
+    "type": "evidence-completeness-successor",
+    "reason": "补齐 v1 正式决策结果已执行但未随结果投影保存的 C017 三道最小安全读取回执；不重放确认、待办、通知或审批。",
+    "formedAt": "2026-08-17T08:35:00.000Z",
+    "sourceOwner": "数据工程",
+    "consumerOwner": "决策中心"
+  }
+}

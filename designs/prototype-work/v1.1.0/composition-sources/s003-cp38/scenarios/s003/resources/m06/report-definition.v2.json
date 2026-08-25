@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "ofw.s003.m06.report-definition.v2",
+  "moduleId": "M06",
+  "moduleOwner": "报告中心",
+  "businessOwner": "财务公司",
+  "definitionId": "S003-RPT-DEF-DEBT-RISK",
+  "definitionVersion": "1.1.0",
+  "supersedes": "resources/m06/report-definition.v1.json",
+  "name": "企业债务风险评估报告",
+  "lifecycleStatus": "published",
+  "purpose": "面向集团债务风险管理人员，呈现单户企业债务风险评分、风险分档、关键风险诊断、调节因子、改善建议、未来三个月行动建议、处置状态和完整证据链。",
+  "audience": ["集团债务风险管理人员"],
+  "scope": {
+    "objectType": "企业",
+    "oneReportPerEnterprise": true,
+    "assessmentAtRequired": true,
+    "sameScenarioRunRequired": true
+  },
+  "sourceContracts": ["C008", "T019", "C035", "C019"],
+  "requiredEvidenceTypes": [
+    "C035_RESULT",
+    "PUBLISHED_RISK_FACT",
+    "PUBLISHED_MODEL_POINTER",
+    "FORMAL_DATA_ASSET",
+    "HUMAN_INPUT_SNAPSHOT",
+    "QUALITY_RESULT",
+    "REPORT_CONTRACT",
+    "DECISION_RESULT"
+  ],
+  "requiredSections": [
+    "executive-summary",
+    "key-risk-diagnosis",
+    "adjustment-factors",
+    "financial-indicators",
+    "rule-basis",
+    "risk-strategy",
+    "three-month-plan",
+    "disposition-status",
+    "verification-and-evidence"
+  ],
+  "narrativePolicy": {
+    "diagnosisUsesPublishedFactsOnly": true,
+    "recommendationsAreManagementGuidance": true,
+    "recommendationsCreateNoSideEffects": true,
+    "threeMonthPlanCreatesNoTaskAutomatically": true
+  },
+  "verificationPolicy": {
+    "deterministic": true,
+    "clientSideScoreRecalculation": false,
+    "checksScenarioIdentity": true,
+    "checksPublishedBindings": true,
+    "checksContentConsistency": true,
+    "checksArtifactIdentity": true
+  },
+  "companionPolicy": {
+    "mode": "platform-generic-read-only",
+    "dedicatedAgentRequired": false,
+    "mayRecalculateScore": false,
+    "mayCreateActionRequest": false,
+    "answersMustCiteReportEvidence": true
+  },
+  "publicationPolicy": {
+    "formats": ["html", "print-to-pdf"],
+    "sameIdentityAcrossFormats": true,
+    "downloadable": true,
+    "historicalReadOnly": true
+  },
+  "permissionPolicy": {
+    "multiUserWorkflow": false,
+    "multiLevelApproval": false,
+    "reviewerRequired": false
+  }
+}

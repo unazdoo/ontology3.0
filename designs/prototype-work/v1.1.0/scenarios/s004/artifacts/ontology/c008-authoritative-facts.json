@@ -1,0 +1,223 @@
+{
+  "schemaVersion": "ofw.contract.C008.s004.v1",
+  "contractId": "C008",
+  "bundleId": "C008-S004-AUTHORITATIVE-FACTS-001",
+  "bundleVersion": "1.0.0",
+  "owner": "M01",
+  "publishedPointer": "T019-S004-PUBLISHED-001",
+  "ontologyPackageId": "ONTO-S004-LOAN-PREFLIGHT-001",
+  "ontologyPackageVersion": "1.0.0",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "identity": {
+    "financialCompanyId": "FC-DEMO-001",
+    "borrowerId": "BORR-CN-USCC-91440300093677087R",
+    "memberId": "MEM-CGN-003816",
+    "applicationId": "APP-S004-20260815-0001",
+    "reportId": "RPT-S004-20260815-0001",
+    "reportNumber": "S004-PLR-2026-0001"
+  },
+  "facts": {
+    "memberStatus": "ACTIVE",
+    "loanApplication": {
+      "requestedAmount": "100000.00",
+      "currency": "CNY",
+      "unit": "CNY_10K",
+      "termMonths": 12,
+      "annualInterestRate": "0.0235",
+      "loanType": "WORKING_CAPITAL",
+      "guaranteeMode": "CREDIT",
+      "guarantorStatus": "NOT_APPLICABLE",
+      "collateralStatus": "NOT_APPLICABLE"
+    },
+    "financial2025": {
+      "asOfDate": "2025-12-31",
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "currency": "CNY",
+      "unit": "CNY_10K",
+      "totalAssets": "50565611.81",
+      "totalLiabilities": "32944179.09",
+      "currentAssets": "7789145.50",
+      "currentLiabilities": "11776215.54",
+      "parentEquity": "12318847.41",
+      "cashAndBank": "2082672.08",
+      "revenue": "7569655.90",
+      "netProfit": "1473114.42",
+      "parentNetProfit": "976535.90",
+      "operatingCashFlow": "2997052.94",
+      "constructionInProgress": "11393091.07",
+      "shortTermBorrowings": "4215111.99"
+    },
+    "internalFunding": {
+      "approvedFacility": "300000.00",
+      "usedFacility": "120000.00",
+      "availableFacility": "180000.00",
+      "existingWorkingCapitalLoans": "120000.00",
+      "otherWorkingCapitalChannels": "30000.00",
+      "currency": "CNY",
+      "unit": "CNY_10K"
+    }
+  },
+  "metricRun": {
+    "metricRunId": "MTR-S004-20260815-0001",
+    "status": "VERIFIED",
+    "calculatedAt": "2026-08-15T12:52:00.000Z",
+    "calculationEngine": "M01-DETERMINISTIC-METRIC-ENGINE",
+    "results": [
+      {
+        "metricId": "MET-DEBT-ASSET-RATIO",
+        "rawValue": "0.6515135071199685",
+        "displayValue": "65.15%"
+      },
+      {
+        "metricId": "MET-CURRENT-RATIO",
+        "rawValue": "0.6614302764366692",
+        "displayValue": "0.66"
+      },
+      {
+        "metricId": "MET-EBIT-INTEREST-COVERAGE",
+        "rawValue": "4.874157894541738",
+        "displayValue": "4.87"
+      },
+      {
+        "metricId": "MET-MAIN-BUSINESS-PROFIT-MARGIN",
+        "rawValue": "0.3080159601442385",
+        "displayValue": "30.80%"
+      },
+      {
+        "metricId": "MET-RETURN-ON-TOTAL-ASSETS",
+        "rawValue": "0.04790161614111294",
+        "displayValue": "4.79%"
+      },
+      {
+        "metricId": "MET-RETURN-ON-PARENT-EQUITY",
+        "rawValue": "0.07757253988365662",
+        "displayValue": "7.76%"
+      },
+      {
+        "metricId": "MET-INVENTORY-TURNOVER",
+        "rawValue": "2.407130699655670",
+        "displayValue": "2.41"
+      },
+      {
+        "metricId": "MET-AR-TURNOVER",
+        "rawValue": "8.843408712839369",
+        "displayValue": "8.84"
+      },
+      {
+        "metricId": "MET-TOTAL-ASSET-TURNOVER",
+        "rawValue": "0.1549272064118306",
+        "displayValue": "0.15"
+      },
+      {
+        "metricId": "MET-CURRENT-ASSET-TURNOVER",
+        "rawValue": "1.005247531714792",
+        "displayValue": "1.01"
+      },
+      {
+        "metricId": "MET-TOTAL-ASSET-GROWTH",
+        "rawValue": "0.0724",
+        "displayValue": "7.24%"
+      },
+      {
+        "metricId": "MET-PARENT-EQUITY-GROWTH",
+        "rawValue": "-0.0420",
+        "displayValue": "-4.20%"
+      },
+      {
+        "metricId": "MET-NET-PROFIT-GROWTH",
+        "rawValue": "-0.1567",
+        "displayValue": "-15.67%"
+      },
+      {
+        "metricId": "MET-REVENUE-GROWTH",
+        "rawValue": "-0.0411",
+        "displayValue": "-4.11%"
+      },
+      {
+        "metricId": "MET-WORKING-CAPITAL-NEED",
+        "rawValue": "2340351.7498342284",
+        "displayValue": "2340351.75",
+        "unit": "CNY_10K",
+        "calculationRuleVersion": "S004-FUNDING-V2-FULL-PRECISION"
+      },
+      {
+        "metricId": "MET-MAX-NEW-WORKING-CAPITAL-LOAN",
+        "rawValue": "107679.6698342284",
+        "displayValue": "107679.67",
+        "unit": "CNY_10K",
+        "calculationRuleVersion": "S004-FUNDING-V2-FULL-PRECISION"
+      }
+    ]
+  },
+  "ruleRun": {
+    "ruleRunId": "RULERUN-S004-20260815-0001",
+    "status": "VERIFIED",
+    "results": [
+      {
+        "ruleId": "RULE-S004-MEMBER-ACTIVE",
+        "result": "PASS"
+      },
+      {
+        "ruleId": "RULE-S004-LOAN-MINIMUM-SCOPE",
+        "result": "PASS"
+      },
+      {
+        "ruleId": "RULE-S004-AMOUNT-WITHIN-FUNDING",
+        "result": "PASS",
+        "requestedAmount": "100000.00",
+        "maximumAmount": "107679.67"
+      },
+      {
+        "ruleId": "RULE-S004-AMOUNT-WITHIN-FACILITY",
+        "result": "PASS",
+        "requestedAmount": "100000.00",
+        "availableFacility": "180000.00"
+      },
+      {
+        "ruleId": "RULE-S004-DEBT-RATIO-ATTENTION",
+        "result": "ATTENTION",
+        "observedValue": "0.6515135071199685"
+      },
+      {
+        "ruleId": "RULE-S004-CURRENT-RATIO-ATTENTION",
+        "result": "ATTENTION",
+        "observedValue": "0.6614302764366692"
+      },
+      {
+        "ruleId": "RULE-S004-NEGATIVE-GROWTH-ATTENTION",
+        "result": "ATTENTION",
+        "revenueGrowth": "-0.0411",
+        "netProfitGrowth": "-0.1567"
+      },
+      {
+        "ruleId": "RULE-S004-EVIDENCE-SCOPE-CONSISTENCY",
+        "result": "PASS_WITH_ACKNOWLEDGED_WARNING",
+        "qualityRef": "artifacts/data/data-quality.json"
+      }
+    ],
+    "creditDecision": "NOT_COMPUTED",
+    "riskControllability": "NOT_COMPUTED"
+  },
+  "evidenceRefs": [
+    "artifacts/data/official-public.json",
+    "artifacts/data/synthetic-demo.json",
+    "artifacts/data/data-quality.json",
+    "artifacts/data/c017-confidence-summary.json"
+  ],
+  "consumerPolicy": {
+    "allowedConsumers": [
+      "M05",
+      "M06"
+    ],
+    "directWorkbookRead": false,
+    "directAnnualReportReadByAgent": false,
+    "recalculationByAgent": false
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "ofw.s003.m02.risk-band-config-input.v1",
+  "resourceType": "manual-model-config-input",
+  "configKind": "risk-bands",
+  "sourceId": "S003-M02-SOURCE-RISK-BAND-CONFIG-20251231",
+  "configId": "S003-M02-RISK-BAND-CONFIG",
+  "configVersion": "1.0.0",
+  "lifecycleStatus": "published",
+  "immutable": true,
+  "formedAt": "2026-08-15T13:04:23.000Z",
+  "owner": "财务公司",
+  "moduleOwner": "M01 本体管理",
+  "inputOwner": "财务公司",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1"
+  },
+  "assessmentAt": "2025-12-31",
+  "tiers": [
+    {"tierId":"GREEN","name":"绿灯","minInclusive":40,"maxExclusive":null,"color":"#3f8f73"},
+    {"tierId":"YELLOW","name":"黄灯","minInclusive":25,"maxExclusive":40,"color":"#c8902f"},
+    {"tierId":"RED","name":"红灯","minInclusive":10,"maxExclusive":25,"color":"#c95d54"},
+    {"tierId":"BLACK","name":"黑灯","minInclusive":0,"maxExclusive":10,"color":"#28323d","fixed":true}
+  ],
+  "versions": [
+    {"snapshotId":"S003-T053-RISK-BAND-CONFIG-20251231-v1","configVersion":"1.0.0","lifecycleStatus":"published","formedAt":"2026-08-15T13:04:23.000Z","owner":"财务公司"}
+  ],
+  "consumptionContract": "仅作为 M01 Published 风险分档配置输入；不进入 Python 管道参数或数据质量规则。"
+}

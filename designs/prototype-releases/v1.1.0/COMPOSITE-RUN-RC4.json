@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "ofw.composite-run-ledger.v1",
+  "candidateVersion": "v1.1.0-rc.4",
+  "status": "assembled-from-authoritative-source-runs",
+  "formedAt": "2026-08-22T10:00:00+08:00",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "acceptanceReady": false,
+  "scenarios": [
+    {
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+      "progress": "15/15",
+      "dataAsOf": "2025-12-31",
+      "applicableModules": ["M01", "M02", "M03", "M04", "M05", "M06"],
+      "result": "complete"
+    },
+    {
+      "scenarioId": "S002",
+      "scenarioVersion": "S002-v1",
+      "scenarioRunId": "S002-RUN-20260815080000000-6ef5d0ef82f9",
+      "progress": "13/13",
+      "dataAsOf": "2025-12-31",
+      "applicableModules": ["M01", "M02", "M03", "M05", "M06"],
+      "notApplicableModules": ["M04"],
+      "result": "complete"
+    },
+    {
+      "scenarioId": "S003",
+      "scenarioVersion": "S003-v1",
+      "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+      "checkpointId": "CP-S003-20260819141420000-c03838000038",
+      "progress": "15/15",
+      "dataAsOf": "2025-12-31",
+      "applicableModules": ["M01", "M02", "M03", "M04", "M05", "M06"],
+      "result": "complete"
+    },
+    {
+      "scenarioId": "S004",
+      "scenarioVersion": "S004-v2.1.0",
+      "scenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+      "progress": "15/15",
+      "dataAsOf": "2026-08-15",
+      "applicableModules": ["M01", "M02", "M05", "M06"],
+      "notApplicableModules": ["M03", "M04"],
+      "result": "complete"
+    }
+  ],
+  "moduleResults": {
+    "M01": "4 Published ontologies; all current and revisable",
+    "M02": "15 sources; 15 downloadable snapshots; 5 successful pipelines; 5 consumable assets",
+    "M03": "55 semantic resources; 3 uniquely matched query configurations with exact context, evidence and CSV gates; S004 handed to report copilot",
+    "M04": "S001 and S003 decision records; S002 and S004 explicit zero-item boundaries",
+    "M05": "8 agents; 8 archived runs/results; 4 evidence packages; 3 copilot sessions; new report requests create owned sessions, runs, results and receipts",
+    "M06": "24 formal reports with real HTML/PDF; 4 definitions/templates; Agent-backed generation, copilot and complete reading flow",
+    "Dashboard": "3 published management dashboards"
+  },
+  "evidencePolicy": "This ledger assembles immutable source scenario runs and exact resource references. It does not replace source Owner records or claim production acceptance.",
+  "acceptanceBoundary": "Awaiting user review; not module approval, scenario acceptance, or phase-1 acceptance."
+}

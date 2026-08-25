@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "ofw.s003.m05.agent-position.v1",
+  "moduleId": "M05",
+  "moduleOwner": "Agent应用",
+  "exportId": "S003-M05-NO-DEDICATED-AGENT",
+  "exportVersion": "1.0.0",
+  "status": "verified-not-required-for-phase-1",
+  "dedicatedAgent": false,
+  "reason": "S003一期为确定性评估、报告和通用决策闭环，不需要Agent参与评分或业务写入。",
+  "allowedReuse": ["平台现有报告伴读入口（如后续用户显式进入）"],
+  "forbidden": ["重算C035结果", "修改模型配置", "自动创建Action Request", "替代人工确认"]
+}

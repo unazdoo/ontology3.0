@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "ofw.contract.C017.v1",
+  "contractId": "C017",
+  "summaryId": "C017-S004-20260815-0001",
+  "owner": "M02",
+  "consumerModules": [
+    "M01",
+    "M05",
+    "M06"
+  ],
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "dataAssetVersions": [
+    "DA-S004-OFFICIAL-PUBLIC-001@1.0.0",
+    "DA-S004-SYNTHETIC-DEMO-001@1.0.0"
+  ],
+  "confidence": {
+    "officialPublic": "HIGH",
+    "syntheticDemo": "DEMO_CONTROLLED",
+    "crossPeriodComparability": "LIMITED",
+    "deterministicMetricReadiness": "READY_FOR_2025_WITH_RESTATED_2024_BASE",
+    "publicationReadiness": "READY_AFTER_HUMAN_ACKNOWLEDGEMENT"
+  },
+  "counts": {
+    "blockingIssues": 0,
+    "acknowledgedWarnings": 2,
+    "expiredSources": 0,
+    "unverifiableFacts": 0
+  },
+  "qualityRef": "artifacts/data/data-quality.json"
+}

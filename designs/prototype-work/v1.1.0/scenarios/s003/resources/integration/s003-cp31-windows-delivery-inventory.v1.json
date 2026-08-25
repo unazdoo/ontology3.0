@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "ofw.s003.windows-demo-delivery-inventory.v1",
+  "inventoryId": "S003-CP31-WINDOWS-DEMO-DELIVERY-INVENTORY",
+  "inventoryVersion": "1.0.0",
+  "formedAt": "2026-08-19T03:15:00.000Z",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "prototypeVersion": "1.1.0",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+    "formedAt": "2026-08-17T16:30:00.000Z",
+    "status": "active"
+  },
+  "packageName": "S003-Windows-Demo-20260819-CP31",
+  "cacheVersion": "20260819-31-windows-demo",
+  "acceptanceReady": false,
+  "files": [
+    {"path":"VERSION.json","sha256":"ac22c311f6b2eb55b54e155690c618ec84b7bb32ac4fbac1ee6de0971c398619"},
+    {"path":"WORKSPACE.md","sha256":"8d82c532f49f1bf5ec903a4f2aa82a64e407c07d03c51dda1927142df42df983"},
+    {"path":"s001-e2e-integration/app.js","sha256":"0e1c03c0abae881ad1ab9ca75b0229e1207d28e8459c97c96d336d246c04cea0"},
+    {"path":"s001-e2e-integration/data.js","sha256":"80b8a87f8e0ce261405a133b0968680c6e8e30f9dc98647aefad2e387c5312e7"},
+    {"path":"s001-e2e-integration/index.html","sha256":"b7ef6c48fa25d0cbc7d57489ce540d35f1fa87617e6cfbdcc8fa5fd93dd80a84"},
+    {"path":"scenarios/s003/data.js","sha256":"e276bca59cee1ef3e7ae0e871705680371eebef83b736426e545bd6526a6c939"},
+    {"path":"scenarios/s003/integration-config.js","sha256":"d174e1578c19ee125831b71697b7d6e179b346e14f5b0abbce85831d28ddef06"},
+    {"path":"scenarios/s003/state.js","sha256":"54d4951d3f336296aff1be52c4494e504036a67ffec93950f33170b6749f0ab1"},
+    {"path":"report-center/review-lifecycle/app.js","sha256":"e3d076c94b3b4fd7fe310c9a275e7dfb4cfdeaec6bdad93df1e98f64ebdcf532"}
+  ],
+  "launcherContract": {
+    "preferredPort": 4333,
+    "host": "127.0.0.1",
+    "entry": "prototype/v1.1.0/s001-e2e-integration/index.html",
+    "runtime": "Windows PowerShell 5+ or PowerShell 7",
+    "nodeRequired": false,
+    "pythonRequired": false,
+    "databaseRequired": false
+  }
+}

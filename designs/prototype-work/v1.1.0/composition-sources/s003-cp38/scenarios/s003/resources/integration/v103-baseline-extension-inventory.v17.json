@@ -1,0 +1,1366 @@
+{
+  "schemaVersion": "ofw.s003.baseline-extension-inventory.v17",
+  "inventoryId": "S003-V103-BASELINE-MODULE-INTEGRATION-20260817-CP23-TALK-TRACK-MEMBER-ROUTING-FINAL",
+  "createdAt": "2026-08-17T22:30:00.000Z",
+  "immutable": true,
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "prototypeVersion": "1.1.0",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260817163000000-c02200000001"
+  },
+  "currentFormalResourceRefs": {
+    "M01": [
+      "scenarios/s003/resources/m01/model-package.v2.json",
+      "scenarios/s003/resources/m01/model-configuration.v3.json",
+      "scenarios/s003/resources/m01/published-pointer.v2.json",
+      "scenarios/s003/resources/m01/action-type-catalog.v2.json",
+      "scenarios/s003/resources/m01/evaluation-run.v2.json",
+      "scenarios/s003/resources/m01/c035-risk-results.v2.json",
+      "scenarios/s003/resources/m01/published-risk-facts.v2.json",
+      "scenarios/s003/resources/m01/runtime-export.v2.json"
+    ],
+    "M02": [
+      "scenarios/s003/resources/m02/source-registry.v4.json",
+      "scenarios/s003/resources/m02/pipeline-current-projection.v4.json",
+      "scenarios/s003/resources/m02/c017-decision-projection.v2.json"
+    ],
+    "M03": [
+      "scenarios/s003/resources/m03/query-catalog.v3.json",
+      "scenarios/s003/resources/m03/query-runtime.v2.json",
+      "scenarios/s003/resources/m03/query-results.v2.json"
+    ],
+    "M04": [
+      "scenarios/s003/resources/m04/decision-binding.v2.json",
+      "scenarios/s003/resources/m04/decision-runtime.v2.json",
+      "scenarios/s003/resources/m04/decision-inbox.v3.json",
+      "scenarios/s003/resources/m04/decision-results.v3.json",
+      "scenarios/s003/resources/m04/enterprise-contact-routing.v1.json"
+    ],
+    "M05": [
+      "scenarios/s003/resources/m05/agent-position.v7.json"
+    ],
+    "M06": [
+      "scenarios/s003/resources/m06/report-manifest.v9.json",
+      "scenarios/s003/resources/m06/report-contents.v9.json",
+      "scenarios/s003/resources/m06/report-artifacts.v9.json",
+      "scenarios/s003/resources/m06/report-history-index.v4.json"
+    ]
+  },
+  "scope": "v1.0.3-derived-v1.1.0 conditional integration surfaces; frozen v1.0.3 excluded and separately verified",
+  "fileCount": 187,
+  "treeSha256": "ef44189d86da801330d0fb208fc0ac042db9bf2ccb433dca699fb5f94fd35332",
+  "files": [
+    {
+      "moduleId": "PLATFORM",
+      "owner": "平台公共层",
+      "path": "VERSION.json",
+      "sha256": "2bcbe39006e1ffc0ecf2ca21833eb78c4a290b0d0ba379fd7252a95c8b6bc916",
+      "bytes": 3052
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "平台公共层",
+      "path": "WORKSPACE.md",
+      "sha256": "a1cf6dcab56cbd3efe5c8dc54d64948976fa1233f1df3aaeb174861d6f22050a",
+      "bytes": 5252
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "平台公共层",
+      "path": "foundation/ofw-scenario-foundation.js",
+      "sha256": "29d6fcd98e9cf4fc082864e0c848b7b7de84e32f6da948c5a17d4f4fba2b1630",
+      "bytes": 38099
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "平台公共层",
+      "path": "foundation/ofw-scenario-foundation.test.cjs",
+      "sha256": "5e774a8df52d0ee18fc2d307dea9b4430366594108262ee11a1cecc57c2f6ccb",
+      "bytes": 15376
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "平台公共壳",
+      "path": "s001-e2e-integration/index.html",
+      "sha256": "a7d1e701ca07f0c13c63738ac08fe39cfdd1f5f415fa72e4b6ccf4fd86710725",
+      "bytes": 1722
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "平台公共壳",
+      "path": "s001-e2e-integration/app.js",
+      "sha256": "5fa635095f448ff2aec05f48927373eeb04e9a88683f65471cf1f336df9a9fe4",
+      "bytes": 117044
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "平台公共壳",
+      "path": "s001-e2e-integration/data.js",
+      "sha256": "77a74507fb4c58a727ad87b9e436b9d66a79d8d60ca6417b9c45476e17fc94b7",
+      "bytes": 11614
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "平台公共壳",
+      "path": "s001-e2e-integration/state.js",
+      "sha256": "1beb2e359610637bd82ab8ad14724a10f766b41ef04b9da1ca14957c22f5fc51",
+      "bytes": 89899
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "平台公共壳",
+      "path": "s001-e2e-integration/styles.css",
+      "sha256": "f96bac017b1856a087d92e6de3336027bdf4dd87fd865b3e2a3ab345e5beb100",
+      "bytes": 54722
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "ontology-management-review/canvas-first/index.html",
+      "sha256": "18b23c27c1a3a0b87c4c1e4e2ed4eab2c97ff37bff1741ce58b56283e760c4e4",
+      "bytes": 1304
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "ontology-management-review/canvas-first/app.js",
+      "sha256": "0020e16804e43e29326e6e932d9e0374a3662bce07868fa2ebe50fda274d5584",
+      "bytes": 652628
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "ontology-management-review/canvas-first/s003-scenario-adapter.js",
+      "sha256": "f8bae8570f6030959a88fdffb4698389653990ebc7cc65050f89f986707960b9",
+      "bytes": 72466
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "ontology-management-review/canvas-first/s003-scenario-adapter.css",
+      "sha256": "026a588ffb5b2c07e25f45972c20318bfa2e587b4d1c636dd971eb1921fac5b1",
+      "bytes": 12415
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "data-engineering-prototype-review/review-v3/方案B2.html",
+      "sha256": "7f37f283f0c59274b8c2ffc651fa5d99770739f4c9b8d36fd855a72fa97eeb1f",
+      "bytes": 616713
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "data-engineering-prototype-review/review-v3/shared/shell.html",
+      "sha256": "d0ae46d28f56b1300c6672cd4b9f5d346fe690541608c0588533b2ebb2ac924b",
+      "bytes": 564
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "data-engineering-prototype-review/review-v3/shared/app.js",
+      "sha256": "a77e0eefcf8cc53609ae349dcbe6bba8086bf2c6f962f4349487d76e85060e5f",
+      "bytes": 499992
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "data-engineering-prototype-review/review-v3/shared/s003-scenario-adapter.js",
+      "sha256": "5ff71273b0d242240ad06f75097aeed61b510758c1c83cbb7d3e6d350e17c952",
+      "bytes": 13086
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "data-engineering-prototype-review/review-v3/shared/s003-scenario-adapter.css",
+      "sha256": "fa3a1cf94bd86f6f45f5d2a3f341d4130132a3f564df018ec0b76aaca9e7446a",
+      "bytes": 229
+    },
+    {
+      "moduleId": "M03",
+      "owner": "智能问数",
+      "path": "intelligent-query-prototype/review-next/conversation-workspace/index.html",
+      "sha256": "b2e575659c3b2f83d9058d46ccdecd4d0fd364d3a5066d493eba50960be84c65",
+      "bytes": 1699
+    },
+    {
+      "moduleId": "M03",
+      "owner": "智能问数",
+      "path": "intelligent-query-prototype/review-next/conversation-workspace/app.jsx",
+      "sha256": "c905d79685bfea8ba4d0e8ad5857eef8612091f0e5cf827c77126ce04d7004ef",
+      "bytes": 221197
+    },
+    {
+      "moduleId": "M03",
+      "owner": "智能问数",
+      "path": "intelligent-query-prototype/review-next/conversation-workspace/styles.css",
+      "sha256": "f08ae6571901997e1e86f27de557c65dec1a4624d008ef11f9fa18b460359194",
+      "bytes": 64046
+    },
+    {
+      "moduleId": "M03",
+      "owner": "智能问数",
+      "path": "intelligent-query-prototype/review-next/conversation-workspace/s003-adapter.jsx",
+      "sha256": "685d2ab40682f54989877bc57296049731b2087e840bb17121013971bbcfd9e7",
+      "bytes": 1748
+    },
+    {
+      "moduleId": "M03",
+      "owner": "智能问数",
+      "path": "intelligent-query-prototype/review-next/conversation-workspace/s003-native-bridge.js",
+      "sha256": "a3914d1ca4fb546be4e81d3d9df60e3b27eb0e60d669d576e56668c5b8ce741c",
+      "bytes": 78857
+    },
+    {
+      "moduleId": "M03",
+      "owner": "智能问数",
+      "path": "intelligent-query-prototype/review-next/conversation-workspace/s003-native-bridge.test.cjs",
+      "sha256": "b74a42fe2365d34f9782eb0cbcdbeb44c0a21e4e42dae48a0502aa071de09f03",
+      "bytes": 22395
+    },
+    {
+      "moduleId": "M04",
+      "owner": "决策中心",
+      "path": "decision-center-prototype/review-v2/action-portfolio.html",
+      "sha256": "bf4a77f40904dd1355e59caf6474646cf155a2cc288e401a5a9cade77b178ceb",
+      "bytes": 1198
+    },
+    {
+      "moduleId": "M04",
+      "owner": "决策中心",
+      "path": "decision-center-prototype/review-v2/shared/app.jsx",
+      "sha256": "e309fc8b37a074c56b03914c6bfe686d8f9da760a0c7ef36e0761225b42f4a29",
+      "bytes": 339232
+    },
+    {
+      "moduleId": "M04",
+      "owner": "决策中心",
+      "path": "decision-center-prototype/review-v2/shared/data.jsx",
+      "sha256": "0dfd9c120193e54db569efbc0c33bc5be76f198668e93d7dfe1fbfd0af93f915",
+      "bytes": 57441
+    },
+    {
+      "moduleId": "M04",
+      "owner": "决策中心",
+      "path": "decision-center-prototype/review-v2/shared/s003-adapter.jsx",
+      "sha256": "dd5ddd1e3fbf3ca7418704f5119518bc2f945b89a2ee8219f10d3d7f823d1b9b",
+      "bytes": 68521
+    },
+    {
+      "moduleId": "M04",
+      "owner": "决策中心",
+      "path": "decision-center-prototype/review-v2/shared/s003-adapter.test.cjs",
+      "sha256": "5bfa748fff9155698f6a12260b8047a63130894c7bfbedef42126df44460cc0e",
+      "bytes": 59828
+    },
+    {
+      "moduleId": "M05",
+      "owner": "Agent 应用",
+      "path": "agent-application/Agent应用.html",
+      "sha256": "16004b964cf71273e88a68ea07b4abd2d0b2fb065e9430cf92ff4fdf461aef22",
+      "bytes": 1856
+    },
+    {
+      "moduleId": "M05",
+      "owner": "Agent 应用",
+      "path": "agent-application/app.jsx",
+      "sha256": "5aa5fbcff22196a1a0bac981c642511743d69073d723c15aae2d3ba6f488d88b",
+      "bytes": 397554
+    },
+    {
+      "moduleId": "M05",
+      "owner": "Agent 应用",
+      "path": "agent-application/app.css",
+      "sha256": "6925e21aefe3d5aebfd12c014bf4d93ff4a8ef19ba28ba866ca000dd1ed85ac6",
+      "bytes": 76794
+    },
+    {
+      "moduleId": "M05",
+      "owner": "Agent 应用",
+      "path": "agent-application/s003-adapter.jsx",
+      "sha256": "b24a3f3b75257173d31bb366ace4b0b612792c23b649c7d6d4acaa16d8c483d0",
+      "bytes": 50527
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "report-center/review-lifecycle/index.html",
+      "sha256": "004cade5e95a54015d6ccc897aa1a648833b02c94f75e915f6a3502a6f8beaa8",
+      "bytes": 1565
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "report-center/review-lifecycle/app.js",
+      "sha256": "cc5e4ec93b91521e8affae58f8d123fd4b5c8c03d44bec94b4015baa972f0bb6",
+      "bytes": 652959
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "report-center/review-lifecycle/lifecycle.css",
+      "sha256": "a48440fc536ec5031e076c1de2efe2b7ce42b8cdeeecfc9a85c732d2a1993aba",
+      "bytes": 57334
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "平台公共壳",
+      "path": "scenarios/s003/tests/baseline-extension-contract.test.js",
+      "sha256": "49fd9e599d172d40185b55c509d68c3d34d152b886bcf98b1a08e88bc448379d",
+      "bytes": 16783
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "ontology-management-review/canvas-first/s003-native-integration.test.cjs",
+      "sha256": "1171103c8e44d6bf75ee32a47353ec202b4586441c85da36fd89143057cfd71c",
+      "bytes": 31758
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "data-engineering-prototype-review/review-v3/shared/s003-native-integration.test.cjs",
+      "sha256": "68e59cd6fd0aa71619d18392b83c9ac64e244876eac3434d7c37e85f82fbb8af",
+      "bytes": 12860
+    },
+    {
+      "moduleId": "M05",
+      "owner": "Agent 应用",
+      "path": "agent-application/s003-adapter.test.cjs",
+      "sha256": "935580852c02d397049662781f118004882b4b11fd742d71846976474619db54",
+      "bytes": 28780
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "report-center/review-lifecycle/s003-integration.test.cjs",
+      "sha256": "4ec3335892e8e9a437037255c1a31dd3a49ef2f0d03aa73fdc906a58a94cebca",
+      "bytes": 40110
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "data-engineering-prototype-review/review-v3/shared/s003-m02-browser-regression.cjs",
+      "sha256": "966d1ef4e8b20cd5cdd8cc105da8559dd6b643864f137e11f9ea287b3fb08781",
+      "bytes": 15400
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "data-engineering-prototype-review/review-v3/verify-static.mjs",
+      "sha256": "0b2e2593acb87e5274639266273219b62909c2bea71bbdf8fe88942f93a0659d",
+      "bytes": 64460
+    },
+    {
+      "moduleId": "M04",
+      "owner": "决策中心",
+      "path": "decision-center-prototype/review-v2/shared/app.css",
+      "sha256": "676edada22805c3939bab157b5baf0e9ea7091b8ad2e866ab3b8266c9bff8163",
+      "bytes": 110996
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/scripts/browser-cp14.cjs",
+      "sha256": "2602bc4990dfef4266b7f645976b78c73073bc091851be9599d11db6279e5b80",
+      "bytes": 20988
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装",
+      "path": "scenarios/s003/data.js",
+      "sha256": "ee7607a1534dc975c323108ea713479b0ae58aa67e94b54a6352780ad41979cb",
+      "bytes": 26744
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装",
+      "path": "scenarios/s003/integration-config.js",
+      "sha256": "847220c1c67b325aa2ea283a7b99fa9bf12eb5cbca4621925eedf6bab17c82f3",
+      "bytes": 14454
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装",
+      "path": "scenarios/s003/app.js",
+      "sha256": "42690bb0482366fd4625b62594ab2049fdeb1d917434086fdb87119442e3947a",
+      "bytes": 168784
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装",
+      "path": "scenarios/s003/state.js",
+      "sha256": "027b6c84f33586f5a526df3913d870282d87da140e3fd71c5918ee49dc5c59df",
+      "bytes": 169089
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装测试",
+      "path": "scenarios/s003/scripts/browser-cp15.cjs",
+      "sha256": "114c78c129eb8b34e05f4a7f0af4fd95a64f996af39a48517115f67e77bc123f",
+      "bytes": 45751
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "scenarios/s003/resources/m01/model-configuration.v1.json",
+      "sha256": "e501425aeae5a453eef605d885cb8f513082c7c847059c951c04c68e07134327",
+      "bytes": 3250
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "scenarios/s003/resources/m02/source-registry.v2.json",
+      "sha256": "99d10c5a42d36de4c4971f920369195cfc32d706a322a217b08c071f993e54fe",
+      "bytes": 1905
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "scenarios/s003/resources/m02/pipeline-current-projection.v2.json",
+      "sha256": "ebd65f5bb74d22c62f71cb4b9b99e4748d78de633539bb22b61cb6c2221c3fbf",
+      "bytes": 1822
+    },
+    {
+      "moduleId": "M05",
+      "owner": "Agent 应用",
+      "path": "scenarios/s003/resources/m05/agent-position.v2.json",
+      "sha256": "7ec9a13b664f34143a1c9347fd6d39cfbc7cbce763f1a4ca439373fd3cde6a54",
+      "bytes": 10507
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "report-center/review-lifecycle/external-owners.js",
+      "sha256": "90b1d533d2debacc2d1cd6eaa9014c7f6cac6f7a355e006897c63df2143850eb",
+      "bytes": 50339
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/domain/report-service-v2.js",
+      "sha256": "4bb836dbe383bfd9cfd1503f9be546f98b5c0cbeaf905b34e8e74081ae77e5da",
+      "bytes": 22898
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/scripts/build-report-assets-v2.cjs",
+      "sha256": "e59c4fb6748803b9c3d3cd1963d0fc218ddabfae48f28e9bad31d562d4067323",
+      "bytes": 12596
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/scripts/build-report-assets-v3.cjs",
+      "sha256": "051287e7b9d4a45146518ad32e8be2cc0659ebb513bbef6f0bdbf9c29d1f5b8f",
+      "bytes": 11543
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心测试",
+      "path": "scenarios/s003/tests/report-assets-v2.test.js",
+      "sha256": "aa97a5609f189c87519022778dfd6e5176305fbf6986368a1142ffaca36f1d70",
+      "bytes": 6699
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-contract.v2.json",
+      "sha256": "f3ff4d89233cd9d4e4c67e286548886a187ed5bb2fe302e68fcbb35f3fc9e644",
+      "bytes": 1354
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-definition.v2.json",
+      "sha256": "50351f630c7204be0fd7464eaddf932ddc4c110eeeb9514d6a71aabbeb76e4b0",
+      "bytes": 2310
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-template.v2.json",
+      "sha256": "37da9508359b0c78dc0f578e26ab00e085c4dfc71ae41a6c4b8120cfd5d6cb0b",
+      "bytes": 2977
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-assurance-profile.v1.json",
+      "sha256": "0f67f2731e8d2a1b272b58f25149636e1e8fef4ed3290c88afc921724823630c",
+      "bytes": 1608
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-manifest.v3.json",
+      "sha256": "95d9eaa64b14df41c7c3707f1031fc6ab49f9e3013c13cde5c73fbca58217701",
+      "bytes": 37961
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-contents.v3.json",
+      "sha256": "7ae3dfdb9645e7bd6085b453f91efbbea355bb02feb70f746660faedd27bf750",
+      "bytes": 529330
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-artifacts.v3.json",
+      "sha256": "f051f2dbed4a0e0d4152cc416a3740005be74b27f8f95887c1d25af0d684f0e8",
+      "bytes": 362844
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装测试",
+      "path": "scenarios/s003/scripts/browser-cp16.cjs",
+      "sha256": "5fd9c51b8799c3ee18be49553484074f6a14149e3a0c371a8d0e95fd42908120",
+      "bytes": 46818
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装测试",
+      "path": "scenarios/s003/tests/workbench-shell.test.js",
+      "sha256": "639a40d28748b59f5992e2bf95e907bd66d88ef7a068c604004a3ab3cf0f775b",
+      "bytes": 20317
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装测试",
+      "path": "scenarios/s003/scripts/browser-cp17.cjs",
+      "sha256": "0bdff8a7d55fab81f12ba47872490ca94fae3f4f94b847f4d600f59d08677283",
+      "bytes": 46818
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装测试",
+      "path": "scenarios/s003/scripts/browser-cp18.cjs",
+      "sha256": "1309d3d76559c8e6d427c8c561a79e544f33c953afa94b28d27b39e37233b7e6",
+      "bytes": 56912
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装",
+      "path": "scenarios/s003/index.html",
+      "sha256": "d099ac51aef2ead53c7ecadcae7096f595e9cdbafb679e571b133a49724a476d",
+      "bytes": 3041
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装",
+      "path": "scenarios/s003/styles.css",
+      "sha256": "b31d501596a300caa05102f104cd0248a3ba9274cd74147ab47585ebc305f922",
+      "bytes": 108828
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 运行服务",
+      "path": "scenarios/s003/domain/checkpoint-service.js",
+      "sha256": "b61eb9305070233e9573452446e7fd70be2cb5a82d2d7891389d2c78c024fe30",
+      "bytes": 26961
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 运行服务",
+      "path": "scenarios/s003/domain/checkpoint-projection.js",
+      "sha256": "7fbe386cbdc9ed052563e0ff3ba12e710ef949e689839fb06bf48d496b29116d",
+      "bytes": 11464
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 运行服务",
+      "path": "scenarios/s003/domain/query-service.js",
+      "sha256": "85f68b9009370e2cd1466146390ff79b2acbe26e89f425b614f64a816cbdb125",
+      "bytes": 22324
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 运行服务",
+      "path": "scenarios/s003/domain/decision-service.js",
+      "sha256": "849428ab36d4a81a887aa2430ebff6396c031c78f259d6225dbbb3627fcd552c",
+      "bytes": 44691
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装测试",
+      "path": "scenarios/s003/tests/checkpoint-service.test.js",
+      "sha256": "a125b9cc470a0adc417a19e1964456c6f294e4a62cc05720fa2095579fc8fed4",
+      "bytes": 13163
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装测试",
+      "path": "scenarios/s003/tests/checkpoint-projection.test.js",
+      "sha256": "52ba4b33523c90da636d324dad66c00438faf12a89f425edfdce92db00e68d6d",
+      "bytes": 6542
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装测试",
+      "path": "scenarios/s003/tests/data-assets.test.js",
+      "sha256": "efd2bb9518e71d682fcc2dc6ae3b3ad2d071d3e7eaa781defab641b2a84cbe15",
+      "bytes": 4935
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装测试",
+      "path": "scenarios/s003/tests/decision-service.test.js",
+      "sha256": "4f90148ba5f236e217e37dc699d513ac6b43d09b5b98c3448ec5626a0a5238f6",
+      "bytes": 18960
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装测试",
+      "path": "scenarios/s003/tests/navigation-assembly.test.js",
+      "sha256": "c9d39d86ef0c3bf98b9f4b507673292d578cbfd91eed14b87dc43392c6097ea7",
+      "bytes": 3017
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装测试",
+      "path": "scenarios/s003/tests/query-service.test.js",
+      "sha256": "7249a55fbcac524b6ae9faf733b58333f2804c8727b3f622cf7e373ac9a9a2ba",
+      "bytes": 10597
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装测试",
+      "path": "scenarios/s003/tests/state-persistence.test.js",
+      "sha256": "03f7cac8ec4fdc05d17c985e373223b72dd36667d5b32f4aacb66e817045a15a",
+      "bytes": 57011
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "ontology-management-review/canvas-first/app.css",
+      "sha256": "3d06ee38fecf45f432fddceedcc9de7c5271cc79968da41b03adcef6cad8fdda",
+      "bytes": 140807
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "data-engineering-prototype-review/review-v3/shared/fixtures.js",
+      "sha256": "b5deb84b53fbfeae1e18dc47581dc3bf9a3e4d2b1d7a7dd17237f8a11482e205",
+      "bytes": 34581
+    },
+    {
+      "moduleId": "M03",
+      "owner": "智能问数",
+      "path": "intelligent-query-prototype/review-next/conversation-workspace/variant.css",
+      "sha256": "923644b43e6b3fec6df664ad1bc388e4751079c531943f09fc39de0f749fb2de",
+      "bytes": 36351
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "scenarios/s003/resources/m01/published-pointer.v1.json",
+      "sha256": "d6f108423e2ae5010dfb1ebb2522fca0aa62f758ba99f31f4bf22b412b66767e",
+      "bytes": 19356
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "scenarios/s003/resources/m01/action-type-catalog.v1.json",
+      "sha256": "195e7b8479b5adceaa554e88091e3686b5aa95045ee23d4636ece1d5d614cbc1",
+      "bytes": 2928
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "scenarios/s003/resources/m01/c035-risk-results.v1.json",
+      "sha256": "10e8ca2284abaaf680b549b6da3c5374ac6168a5e9b4bbe6d0abbcdb864b6153",
+      "bytes": 250528
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "scenarios/s003/resources/m01/published-risk-facts.v1.json",
+      "sha256": "8d31823a37c2b4949d01b5a2d2744607bddb7f9c2ee54e2e3c8e9acfebe74099",
+      "bytes": 16408
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "scenarios/s003/resources/m02/source-asset.v1.json",
+      "sha256": "0043b79946c4b32f09eb53df7ee2251c40e66c7bbde8b120e79842b2bc9b1a14",
+      "bytes": 1473
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "scenarios/s003/resources/m02/pipeline-run.v1.json",
+      "sha256": "7c50dad6a9970fb445970033e7f5ad72f9a69e95ac972393b94da0b592360911",
+      "bytes": 2395
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "scenarios/s003/resources/m02/c017-decision-projection.v1.json",
+      "sha256": "0f7d47c573334a1ee4ebd6ee0bdaa5b87e3dc0c7c3bbb1bf85fb5590e0be72c7",
+      "bytes": 4589
+    },
+    {
+      "moduleId": "M03",
+      "owner": "智能问数",
+      "path": "scenarios/s003/resources/m03/query-catalog.v1.json",
+      "sha256": "1f6eb360ff5bcb5e4fd605ee6cccb0ba1509c86bdfe68d87703f9a58a70944bf",
+      "bytes": 1192
+    },
+    {
+      "moduleId": "M03",
+      "owner": "智能问数",
+      "path": "scenarios/s003/resources/m03/query-catalog.v2.json",
+      "sha256": "b05dea2bd46dddde865ac250d95b14cc83c8074b5cb4c61b7e54d3e2dd9272ae",
+      "bytes": 1471
+    },
+    {
+      "moduleId": "M03",
+      "owner": "智能问数",
+      "path": "scenarios/s003/resources/m03/query-results.v1.json",
+      "sha256": "0a8f5b66d4b268060d4871d558d4b9c51c11afa9b5fe87e742fdf07ca2a30ee3",
+      "bytes": 41834
+    },
+    {
+      "moduleId": "M04",
+      "owner": "决策中心",
+      "path": "scenarios/s003/resources/m04/decision-inbox.v1.json",
+      "sha256": "5b1e294840156a08ac23620b46fe2a621119901cd520e0f505ebcf6efd1a556b",
+      "bytes": 13809
+    },
+    {
+      "moduleId": "M04",
+      "owner": "决策中心",
+      "path": "scenarios/s003/resources/m04/decision-inbox.v2.json",
+      "sha256": "c381f0b612c446bbec906f785784b7ce0b97b611a425f6625c7369ca47850dbd",
+      "bytes": 17603
+    },
+    {
+      "moduleId": "M04",
+      "owner": "决策中心",
+      "path": "scenarios/s003/resources/m04/decision-results.v2.json",
+      "sha256": "c6002a52cd9ab3cee1c311aa6bfe967722b0bf13ad37562639dab821a2a9c14f",
+      "bytes": 34722
+    },
+    {
+      "moduleId": "M05",
+      "owner": "Agent 应用",
+      "path": "scenarios/s003/resources/m05/agent-position.v3.json",
+      "sha256": "6aab650385ba518f923e5067b8dec0e8c452808adbdfdb1d119ccdac51099052",
+      "bytes": 9948
+    },
+    {
+      "moduleId": "M05",
+      "owner": "Agent 应用",
+      "path": "scenarios/s003/resources/m05/agent-position.v4.json",
+      "sha256": "a190f81734a4139f985b88835e8caebace6f1f80501fa76e7316c28a324ba60c",
+      "bytes": 10012
+    },
+    {
+      "moduleId": "M05",
+      "owner": "Agent 应用",
+      "path": "scenarios/s003/scripts/build-agent-position-v3.cjs",
+      "sha256": "932d4d9e3673fa3c57e1b70f319aaa70980d641e8a4dd13b91c6248b2c77a795",
+      "bytes": 1510
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/domain/report-service-v3.js",
+      "sha256": "b365ccad95134872167ec541f79151120b68ae380a902262d44c779ca90e131f",
+      "bytes": 31449
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/domain/report-service-v4.js",
+      "sha256": "170fa2fbe931f21d52c70cb89ad1121e07d76079fc312ce9628ef86219e29906",
+      "bytes": 7652
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/domain/report-service-v5.js",
+      "sha256": "6cd04abc52013b05ed9eb21eb93a6204efeaeb69e781d04ff1c85de959284de6",
+      "bytes": 17645
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/scripts/build-report-assets-v4.cjs",
+      "sha256": "2d2373fd31216f19a104f1c3bb484e3654dea27636ddacd6ff0975dce398c897",
+      "bytes": 12738
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/scripts/build-report-assets-v5.cjs",
+      "sha256": "1534377f229d7d53df5df3349d2c61ea506acf122d2c8ab9882365086f8aca6d",
+      "bytes": 10425
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/scripts/build-report-assets-v6.cjs",
+      "sha256": "e66820d9a2032da8b50991c5f78c6eb6f66b1e9ab93afb7ebb2757cd3a6985ed",
+      "bytes": 13687
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心测试",
+      "path": "scenarios/s003/tests/report-assets-v4.test.js",
+      "sha256": "808cb58808ee62f4ba5dc9a63cdb43aa46bbf5906bc545fba2a9ed0c258db887",
+      "bytes": 3947
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心测试",
+      "path": "scenarios/s003/tests/report-assets-v5.test.js",
+      "sha256": "359c2794052d525df09f63fad0465b4680898d521e32995d91dd568f50671a9e",
+      "bytes": 3681
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心测试",
+      "path": "scenarios/s003/tests/report-assets-v6.test.js",
+      "sha256": "7a1633c69592d1e118a62b69a794bb9a39eef5d26eac522723db885702d0bed7",
+      "bytes": 4390
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-assurance-profile.v2.json",
+      "sha256": "75f6709c5a63386d75d0128ee6fd74fe49a553040b90292db2537996ada591ae",
+      "bytes": 2580
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-assurance-profile.v3.json",
+      "sha256": "53d87207c47523c34e1603c84ad85c2cfb70b75f16b8e1edb593c61116ab9299",
+      "bytes": 2932
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-manifest.v4.json",
+      "sha256": "493c365ba404d053b5db5850290d61850b1963772cafecb8bd71f7dec3bd1b9f",
+      "bytes": 38309
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-manifest.v5.json",
+      "sha256": "9e95762728b86c83a31527ae34943c705ff8ae833ec193e231de2b9e685c5863",
+      "bytes": 38528
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-manifest.v6.json",
+      "sha256": "487328ff9379ab8168535a592d4d5de993cba38a702d95b273ce3a142c8bca80",
+      "bytes": 38990
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-contents.v4.json",
+      "sha256": "34dd5c3077ef076f534ab3c4e3ea6f85c1632e6e632d36c2d928da39624710b7",
+      "bytes": 580684
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-contents.v5.json",
+      "sha256": "92fd9b6f1f732a935395c54decdb33d693d10d14c3ab848ffde0bf7fc7c35588",
+      "bytes": 587323
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-contents.v6.json",
+      "sha256": "38b77dd488a51e19c90a6d365a3d1b08a50c931c9d14bf81285537641a778ae5",
+      "bytes": 784578
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-artifacts.v4.json",
+      "sha256": "b6f516c3e4e03a0874a1a0448b413c1eba4d0b8e8e7878802b950debcba85123",
+      "bytes": 422080
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-artifacts.v5.json",
+      "sha256": "545b5f5a9b6e7b3c257913af0ea0fd803c0c48e3a67fa34123804161fed33345",
+      "bytes": 423509
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-artifacts.v6.json",
+      "sha256": "2f8c37683283348a01c569410098160558d8fb433e0d84efe7b5477032b2b397",
+      "bytes": 554535
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-history-index.v1.json",
+      "sha256": "c04c1f4fbe345c3d7362aa662fabe59145a33a442781e125a70de0a908ed9193",
+      "bytes": 3565
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装",
+      "path": "scenarios/s003/README.md",
+      "sha256": "89a7f4f52058c7602c8f5b6b04aead6c3239263645996571fd60a88c38a796e9",
+      "bytes": 5461
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装",
+      "path": "scenarios/s003/CHANGELOG.md",
+      "sha256": "a215944b7cde9bdc78d5da6b2c10fdf1882fdc0f13d17c468d2946785fa2d1db",
+      "bytes": 19264
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装测试",
+      "path": "scenarios/s003/scripts/browser-cp19.cjs",
+      "sha256": "92e14ac0af84aabaa8f372deda1b46ea3fd54c1346a7caa95b936636bd19c46f",
+      "bytes": 64367
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 运行服务",
+      "path": "scenarios/s003/domain/config-service.js",
+      "sha256": "ec7aa1a23c255af4608276122bc11f37eb2ffcfc72e3d9bf64396622ec7ccce2",
+      "bytes": 9672
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装测试",
+      "path": "scenarios/s003/tests/config-service.test.js",
+      "sha256": "88ae591610ace929d6f699af532fe04d841a412930c35498ada881926b4860c1",
+      "bytes": 3161
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "scenarios/s003/resources/m01/model-configuration.v2.json",
+      "sha256": "4674af1598c3d7d0f42bd56502fd15d961a089f1f76d97a50fbcbe86eeaf998d",
+      "bytes": 3512
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "scenarios/s003/resources/m02/source-registry.v3.json",
+      "sha256": "ec4f724983fbd001fe6ad8029e4665cb0a2475e29d4449ea716c9793dd7e3e10",
+      "bytes": 1924
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "scenarios/s003/resources/m02/pipeline-run.v2.json",
+      "sha256": "9956a3e857c379f660ecf498f1c4b17c1ba0c8e64a2de8458e123a2ad6209e46",
+      "bytes": 2280
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "scenarios/s003/resources/m02/pipeline-current-projection.v3.json",
+      "sha256": "3b637fe6bc2d3257f67a595fd20c3559417e7390bb847a698eecb04071debcd8",
+      "bytes": 1674
+    },
+    {
+      "moduleId": "M05",
+      "owner": "Agent 应用",
+      "path": "scenarios/s003/resources/m05/agent-position.v5.json",
+      "sha256": "b42c32118d2592b7d17a05066ab23a00cb70c5d59885adfc14937270eee7c2d5",
+      "bytes": 10012
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/scripts/build-report-assets-v7.cjs",
+      "sha256": "e2e9d6344fc9da4b559b03b0a3ead696360e758bc1d56cedfc46b8b3f25bd815",
+      "bytes": 10347
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心测试",
+      "path": "scenarios/s003/tests/report-assets-v7.test.js",
+      "sha256": "69190d286f81061315f37e3fa006fba6307ff2623ddbae5f85a0a4257a6055b2",
+      "bytes": 3837
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-history-index.v2.json",
+      "sha256": "42198af1edeb0c678a3dde7b57de1d5c8071e1a6cf883599c3ced7e6e7fd9416",
+      "bytes": 3951
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-manifest.v7.json",
+      "sha256": "09bf2888ff119149fa2b2fbab1d6aa2679c930490a05362d5576ec2c6f87c8ff",
+      "bytes": 38990
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-contents.v7.json",
+      "sha256": "02db37c4cd68cea2811a7282612e8d6baacaaa7dbc9b340e2e6833bb6d230dfd",
+      "bytes": 870883
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-artifacts.v7.json",
+      "sha256": "56560ccd114ee45801b1fa8b2394c9bd905161fcb6efb404c0d2ddb263e860ce",
+      "bytes": 579910
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/evidence/M06-report-content-v7-validation.md",
+      "sha256": "cd6a39d3583d2396498ffe1aaaab3eb3bfadd9ef804364c371dc27e2f54c6767",
+      "bytes": 1077
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 当前资源总装",
+      "path": "scenarios/s003/domain/report-service.js",
+      "sha256": "f8e9a4e392c35a874bf5eaf83180e5ad3e32606c00ab7bf4321479c2e37e0448",
+      "bytes": 31021
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 当前资源总装",
+      "path": "scenarios/s003/scripts/build-risk-action-routing-v2.cjs",
+      "sha256": "a744c507927381e2411ed3c2377397d03c430d68ee21252bee7ba473d7acdb0b",
+      "bytes": 58472
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 当前资源测试",
+      "path": "scenarios/s003/tests/report-service.test.js",
+      "sha256": "c7a1de7589ad540315685fc39c2153533cec7a65d6657c985cd168349db85841",
+      "bytes": 8344
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "scenarios/s003/resources/m01/model-package.v2.json",
+      "sha256": "c1bcfdf2c61313e57233ad4ecd471e24b09535aa7f62d4bfb97741e15ec9b014",
+      "bytes": 14617
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "scenarios/s003/resources/m01/model-configuration.v3.json",
+      "sha256": "30f53df8df5c3e2c9054139d480b1f14cecbc058c8642429a6074dc728de2a1e",
+      "bytes": 3309
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "scenarios/s003/resources/m01/published-pointer.v2.json",
+      "sha256": "9b42e601cb5d64c03178682f8a21e8ef9119e4382d3d929c02849a0e43efd481",
+      "bytes": 19118
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "scenarios/s003/resources/m01/action-type-catalog.v2.json",
+      "sha256": "3c87805e603b0f3c8a5a33d4419755c22113a6fa4351cb2f40f8903709f28faa",
+      "bytes": 2644
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "scenarios/s003/resources/m01/evaluation-run.v2.json",
+      "sha256": "55eab61a938115b5db9d4a0c5abd8f79d64f475f41f3b5c5babb07a1ba564bef",
+      "bytes": 2909
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "scenarios/s003/resources/m01/c035-risk-results.v2.json",
+      "sha256": "fbcbff5095a556293cf3ede0249c548bb9208da8a2e2f66139be418419fabf7a",
+      "bytes": 249129
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "scenarios/s003/resources/m01/published-risk-facts.v2.json",
+      "sha256": "95784154c9ce49bbc500a444f832d435bc60f42426bbf9846ef27f154db55ca1",
+      "bytes": 20711
+    },
+    {
+      "moduleId": "M01",
+      "owner": "本体管理",
+      "path": "scenarios/s003/resources/m01/runtime-export.v2.json",
+      "sha256": "bc39529937bf2a93a782a400b6fc16d531c5aeb6f92aa4311c65b92f28d54f41",
+      "bytes": 33073
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "scenarios/s003/resources/m02/source-registry.v4.json",
+      "sha256": "c3c232797662f269f50553fb51dc7687d0f44710c1fb6f81815301e91aa4045f",
+      "bytes": 2216
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "scenarios/s003/resources/m02/pipeline-current-projection.v4.json",
+      "sha256": "83ae2212c0829835beb655b632d090540d8ce0b69e164c694950e1d16609911a",
+      "bytes": 2239
+    },
+    {
+      "moduleId": "M02",
+      "owner": "数据工程",
+      "path": "scenarios/s003/resources/m02/c017-decision-projection.v2.json",
+      "sha256": "d4e4ec619a1422c65f95a4a0b249fdc347cffaf74d0785c717cd3e908d914866",
+      "bytes": 5005
+    },
+    {
+      "moduleId": "M03",
+      "owner": "智能问数",
+      "path": "scenarios/s003/resources/m03/query-catalog.v3.json",
+      "sha256": "53d0e637a1ba8424e855e364e6a2cb366072eef3b5e763ddf08633848043fced",
+      "bytes": 1672
+    },
+    {
+      "moduleId": "M03",
+      "owner": "智能问数",
+      "path": "scenarios/s003/resources/m03/query-runtime.v2.json",
+      "sha256": "987008e183554cadf9173897e6eefbe0414ca911b5bc7e3b8ff61e026cb4c3ee",
+      "bytes": 2376
+    },
+    {
+      "moduleId": "M03",
+      "owner": "智能问数",
+      "path": "scenarios/s003/resources/m03/query-results.v2.json",
+      "sha256": "f8d48902e3fae67f44ab6e5f37e9dc2ade8b4b33385fa1d0c62e5cc9473e8071",
+      "bytes": 36261
+    },
+    {
+      "moduleId": "M04",
+      "owner": "决策中心",
+      "path": "scenarios/s003/resources/m04/decision-binding.v2.json",
+      "sha256": "dad7f3e1b91a2eb60df91131b1604afbee19fd4a0b04d58a8bd8df9184797a1a",
+      "bytes": 1754
+    },
+    {
+      "moduleId": "M04",
+      "owner": "决策中心",
+      "path": "scenarios/s003/resources/m04/decision-runtime.v2.json",
+      "sha256": "4d2e7b04b5ebc34f0c920b4922e703cc7e812991314961608d529ca3631dfcec",
+      "bytes": 2453
+    },
+    {
+      "moduleId": "M04",
+      "owner": "决策中心",
+      "path": "scenarios/s003/resources/m04/decision-inbox.v3.json",
+      "sha256": "6e9f619aec47592a8e16f143f57b5066fc8f209b99c0c7b145751d14546a0b2e",
+      "bytes": 25151
+    },
+    {
+      "moduleId": "M04",
+      "owner": "决策中心",
+      "path": "scenarios/s003/resources/m04/decision-results.v3.json",
+      "sha256": "865b8f15b38476e43df766230ff0b7bb2719c76752c8cdf22cf7e28466f3f567",
+      "bytes": 38507
+    },
+    {
+      "moduleId": "M04",
+      "owner": "决策中心",
+      "path": "scenarios/s003/resources/m04/enterprise-contact-routing.v1.json",
+      "sha256": "4837718fc90298f655a19cd7be1aff4688bd55f57a1b14e5c674d00f0cbb5d10",
+      "bytes": 9268
+    },
+    {
+      "moduleId": "M05",
+      "owner": "Agent 应用",
+      "path": "scenarios/s003/resources/m05/agent-position.v6.json",
+      "sha256": "80d06ca00f4fc1453c9e1756ec51279d95e770e642dd56d6f38954750df25536",
+      "bytes": 10103
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-history-index.v3.json",
+      "sha256": "347f922268254e643639dae5c8a3edc3a72f53fbd86aa7b52912bd2dea835a04",
+      "bytes": 4391
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-manifest.v8.json",
+      "sha256": "46471c46f041562b66d743a4f36c942554223bfdfc54aa882ea6e188f470376f",
+      "bytes": 28944
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-contents.v8.json",
+      "sha256": "6136eaff52857bb31c97f25f67fc0b1ec64840d80c56138bf1f619420b8cdd9b",
+      "bytes": 861059
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-artifacts.v8.json",
+      "sha256": "45cb96a30238bb15dd04d58918e46b86fc6c5032cb45f41a90de656fe57cb889",
+      "bytes": 579163
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/domain/report-service-v6.js",
+      "sha256": "e0472c5af989d35aa9b00b7642a3fcf92ff1307c2deff077fcf09515f96e0e3c",
+      "bytes": 21745
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/scripts/build-report-assets-v9.cjs",
+      "sha256": "1c157f14a969dee7deb8622bc15e056558244e33d2646557e25e3cce646dc2b7",
+      "bytes": 21654
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心测试",
+      "path": "scenarios/s003/tests/report-assets-v9.test.js",
+      "sha256": "4b89332a685d21dce54f2c99411acd72b193a55631e57bb716d02431e41ca2c3",
+      "bytes": 5311
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-history-index.v4.json",
+      "sha256": "9c3a91a47e3f065e8359c4c15b2e3a4db2dc59bf35f0f75ff71ad728e5a71ae9",
+      "bytes": 4994
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-manifest.v9.json",
+      "sha256": "65cfa665e3eee4d375f8a57609df3dd0118e15b5cdd0a94a5059587a423e0d15",
+      "bytes": 31020
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-contents.v9.json",
+      "sha256": "588fd9c70fcd60d9ddf61932ea0f6811fae30109f5a70634472e916f8b2235b9",
+      "bytes": 869381
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/resources/m06/report-artifacts.v9.json",
+      "sha256": "57877cd41c1ddf76ee77ba32bc8c96e5018052d5b125c31d37f456e1fb8c8a21",
+      "bytes": 580805
+    },
+    {
+      "moduleId": "M06",
+      "owner": "报告中心",
+      "path": "scenarios/s003/evidence/M06-report-content-v9-validation.md",
+      "sha256": "88a99a238e3e6e2aeef992d105895e2c8187e1b94d8e3ed790be7ffdf0b58cf9",
+      "bytes": 1367
+    },
+    {
+      "moduleId": "M05",
+      "owner": "Agent 应用",
+      "path": "scenarios/s003/scripts/build-agent-position-v7.cjs",
+      "sha256": "5b5bcbb98d49a7f46b4fae98093e5e01a65ce65e528b1e0fe698634843c732b2",
+      "bytes": 4314
+    },
+    {
+      "moduleId": "M05",
+      "owner": "Agent 应用",
+      "path": "scenarios/s003/resources/m05/agent-position.v7.json",
+      "sha256": "01209a8d9d699bf32a835e4a633d1e13a0c6d0680fb491caef8c422e8fd13fe7",
+      "bytes": 10241
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装",
+      "path": "scenarios/s003/runtime/cp22-entry.v1.html",
+      "sha256": "697ff47c1ae4e0e3c95a5403c062e821bc7c8826543d99bc39883fe17a3f356e",
+      "bytes": 5708
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装",
+      "path": "scenarios/s003/checkpoints/spec-CP22.json",
+      "sha256": "a44a1f79512d7c5f81497ca4d41616e038259989515247fb4c5f807699abfd93",
+      "bytes": 10002
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装测试",
+      "path": "scenarios/s003/tests/current-risk-action-routing.test.js",
+      "sha256": "4b30fc2de6a6d701b53db9f3d3a7be57353b1bef937eca253e18fa773aa63d44",
+      "bytes": 6472
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装测试",
+      "path": "scenarios/s003/tests/state-persistence.test.js",
+      "sha256": "03f7cac8ec4fdc05d17c985e373223b72dd36667d5b32f4aacb66e817045a15a",
+      "bytes": 57011
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装",
+      "path": "scenarios/s003/runtime/cp23-entry.v1.html",
+      "sha256": "2ecccc7a5b12d431d161efe2402bf6b9e4482d9eda9312763163e64be627de83",
+      "bytes": 5752
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装",
+      "path": "scenarios/s003/checkpoints/spec-CP23.json",
+      "sha256": "1e18a8a8469d268d166e4f7af6749200456ddbf2abf53f5d410b5e279048b349",
+      "bytes": 10317
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装工具",
+      "path": "scenarios/s003/scripts/build-baseline-extension-inventory.cjs",
+      "sha256": "1fda7e6b0359d8a1a1e7e42195240cfac735ef58a325253ad45f303e519e3192",
+      "bytes": 25791
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装工具",
+      "path": "scenarios/s003/scripts/create-checkpoint-v2.cjs",
+      "sha256": "b28b8fa0626773b3099e3b4b70871ed3fb6a8ce8751f778a05592608c869494f",
+      "bytes": 6323
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 总装证据",
+      "path": "scenarios/s003/evidence/CP23-talk-track-and-member-routing-validation.md",
+      "sha256": "8b497176dc302a24e7c9a6a3b544c442d65f0a37afaf82d8cfd621542564653b",
+      "bytes": 5580
+    },
+    {
+      "moduleId": "PLATFORM",
+      "owner": "S003 浏览器证据",
+      "path": "scenarios/s003/evidence/browser-cp23/20260817T223000000Z-talk-track-member-routing/browser-cp23-results.json",
+      "sha256": "ed810a147b080f7f7f9f34bce9b096c9386492747e46fe341d43edac0de3f0c7",
+      "bytes": 3201
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "ofw.s003.browser-surface-result.v1",
+  "runId": "20260818T000230493Z-cfb9c096",
+  "formedAt": "2026-08-18T00:02:37.198Z",
+  "baseUrl": "http://127.0.0.1:4393",
+  "cases": [
+    {
+      "id": "m02-detail",
+      "status": "passed",
+      "details": {
+        "route": "http://127.0.0.1:4393/data-engineering-prototype-review/review-v3/%E6%96%B9%E6%A1%88B2.html?prototypeBuild=20260817-36-cp23&scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001&formedAt=2026-08-17T16%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-17T16%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-17T16%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.2&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/resources/source/s003-workbook?tab=overview",
+        "detailStructure": [
+          "detail-hero",
+          "tabs",
+          "detail-grid"
+        ],
+        "factorInputSeparated": true
+      },
+      "durationMs": 958
+    },
+    {
+      "id": "m01-published",
+      "status": "failed",
+      "error": {
+        "message": "locator.click: Error: strict mode violation: getByRole('link', { name: '评分权重' }) resolved to 2 elements:\n    1) <a class=\"\" aria-current=\"false\" href=\"#published/version?id=S003-M01-DEBT-RISK-V1_0_2&tab=s003-model-config&configTab=weights\">评分权重</a> aka getByRole('link', { name: '评分权重', exact: true })\n    2) <a class=\"s003-m01-config-index-card\" href=\"#published/version?id=S003-M01-DEBT-RISK-V1_0_2&tab=s003-model-config&configTab=weights\">…</a> aka getByRole('link', { name: '评分权重 财务公司 按企业类别维护十五项财务指标权重，每类合计必须为 100%。' })\n\nCall log:\n\u001b[2m  - waiting for getByRole('link', { name: '评分权重' })\u001b[22m\n",
+        "stack": "locator.click: Error: strict mode violation: getByRole('link', { name: '评分权重' }) resolved to 2 elements:\n    1) <a class=\"\" aria-current=\"false\" href=\"#published/version?id=S003-M01-DEBT-RISK-V1_0_2&tab=s003-model-config&configTab=weights\">评分权重</a> aka getByRole('link', { name: '评分权重', exact: true })\n    2) <a class=\"s003-m01-config-index-card\" href=\"#published/version?id=S003-M01-DEBT-RISK-V1_0_2&tab=s003-model-config&configTab=weights\">…</a> aka getByRole('link', { name: '评分权重 财务公司 按企业类别维护十五项财务指标权重，每类合计必须为 100%。' })\n\nCall log:\n\u001b[2m  - waiting for getByRole('link', { name: '评分权重' })\u001b[22m\n\n    at m01Published (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:108:47)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-s003-surface.cjs:182:51)"
+      },
+      "durationMs": 1072
+    },
+    {
+      "id": "m03-deep-link",
+      "status": "passed",
+      "details": {
+        "sourceRoute": "http://127.0.0.1:4393/intelligent-query-prototype/review-next/conversation-workspace/index.html?prototypeBuild=20260817-36-cp23&scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001&formedAt=2026-08-17T16%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-17T16%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-17T16%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.2&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/semantics",
+        "targetRoute": "http://127.0.0.1:4393/ontology-management-review/canvas-first/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001&scenarioContextFormedAt=2026-08-17T16%3A30%3A00.000Z&scenarioStatus=active#published/ontology?id=S003-M01-DEBT-RISK-PKG&version=S003-M01-DEBT-RISK-PKG%401.0.2"
+      },
+      "durationMs": 3216
+    },
+    {
+      "id": "m06-report",
+      "status": "passed",
+      "details": {
+        "dashboardRoute": "http://127.0.0.1:4393/report-center/review-lifecycle/index.html?prototypeBuild=20260817-36-cp23&scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001&formedAt=2026-08-17T16%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-17T16%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-17T16%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.2&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/reports/view?enterpriseId=S003-ENT-020&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-020&runId=S003-RUN-20260817163000000-c02200000001",
+        "reportRunId": "S003-RUN-20260817163000000-c02200000001"
+      },
+      "durationMs": 1103
+    }
+  ],
+  "totals": {
+    "cases": 4,
+    "passed": 3,
+    "failed": 1
+  }
+}

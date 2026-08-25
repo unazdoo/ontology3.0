@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "ofw.s003.m01.action-type-catalog.v2",
+  "catalogId": "S003-M01-ACTION-TYPE-CATALOG",
+  "catalogVersion": "1.1.0",
+  "lifecycleStatus": "published",
+  "immutable": true,
+  "formedAt": "2026-08-16T23:10:00.000Z",
+  "moduleId": "M01",
+  "moduleOwner": "本体管理",
+  "businessOwner": "财务公司",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+    "formedAt": "2026-08-17T16:30:00.000Z",
+    "status": "active"
+  },
+  "publishedModelBinding": {
+    "pointerId": "S003-M01-PUBLISHED-POINTER",
+    "pointerVersion": "1.1.0",
+    "pointerRef": "resources/m01/published-pointer.v2.json",
+    "packageId": "S003-M01-DEBT-RISK-PKG",
+    "packageVersion": "1.0.2",
+    "semanticVersionId": "S003-M01-DEBT-RISK-PKG@1.0.2"
+  },
+  "presentationOnly": true,
+  "actionTypes": [
+    {
+      "actionTypeId": "S003_RISK_FOLLOW_UP",
+      "displayName": "风险分档跟踪",
+      "description": "黄灯企业按亮灯直接形成预警入口，由集团债务风险管理人员显式提交后送达对应成员单位接口人。",
+      "managementHint": "由集团债务风险管理人员从驾驶舱提交行动申请，进入通用决策中心人工判断。",
+      "triggerSummary": "黄灯风险分档",
+      "requiresHumanConfirmation": true
+    },
+    {
+      "actionTypeId": "S003_SPECIAL_DISPOSAL",
+      "displayName": "专项风险处置",
+      "description": "红灯企业按亮灯直接形成专项预警入口，由对应成员单位接口人核实后分办。",
+      "managementHint": "提交后沿用通用 Action Request 与负责人待办，不建设 S003 专属处置页。",
+      "triggerSummary": "红灯风险分档",
+      "requiresHumanConfirmation": true
+    },
+    {
+      "actionTypeId": "S003_EMERGENCY_RESPONSE",
+      "displayName": "重大风险应急响应",
+      "description": "黑灯企业按亮灯直接形成应急预警入口，由对应成员单位接口人优先核实后分办。",
+      "managementHint": "必须经人工确认后进入通用决策中心；一期不自动通知、不启动多级审批。",
+      "triggerSummary": "黑灯风险分档",
+      "requiresHumanConfirmation": true
+    }
+  ],
+  "boundaries": [
+    "本目录只补充已发布 Action Type 的权威展示名称、说明和管理提示，不改变触发条件、评分、阈值或历史结果。",
+    "M04 和 M06 只能消费本目录，不得各自硬编码不同的 Action Type 展示名称。",
+    "行动申请仍必须由用户从驾驶舱人工提交，并通过通用决策中心处理。"
+  ]
+}

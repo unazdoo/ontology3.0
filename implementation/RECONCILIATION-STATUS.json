@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "baseline": "v1.1.0",
+  "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+  "overallStatus": "prototype-p0-p1-closed; implementation-p0-p1-open",
+  "acceptanceReady": false,
+  "modules": {
+    "M01": { "prototypeStatus": "closed", "designStatus": "owner-backfill-committed", "implementationStatus": "open" },
+    "M02": { "prototypeStatus": "closed", "designStatus": "owner-backfill-committed", "implementationStatus": "open" },
+    "M03": { "prototypeStatus": "closed", "designStatus": "owner-backfill-committed", "implementationStatus": "open" },
+    "M04": { "prototypeStatus": "closed", "designStatus": "owner-backfill-complete-uncommitted", "implementationStatus": "open" },
+    "M05": { "prototypeStatus": "closed", "designStatus": "owner-backfill-complete-uncommitted", "implementationStatus": "open" },
+    "M06": { "prototypeStatus": "closed", "designStatus": "owner-backfill-complete-uncommitted", "implementationStatus": "open" }
+  },
+  "ownerBackfillCommits": {
+    "M01-M03": "24c3dd2",
+    "M05-M06": "uncommitted-in-module-worktree",
+    "M04": "uncommitted-in-module-worktree"
+  },
+  "prototypeClosedEvidence": [
+    "M02-M01 exact resource projection and asset detail alignment",
+    "M03 authority/state-source and semantic resource closure",
+    "M04 preseed/idempotency/conditional scenario closure",
+    "M05 report copilot and verification Agent separation",
+    "M06 static generation gate, report assistant and deterministic verification UX",
+    "three viewport and console regression"
+  ],
+  "implementationOpenGates": [
+    "real T002/T007/T008/C003/C017/C028/C029 exchange",
+    "real C008/T019 and C009/C010 query evidence",
+    "real C011/C017/C019 decision and task evidence",
+    "real C024/C025 and T044/T049/C027 report evidence",
+    "C034 export/validate/clone-restore for M01-M06",
+    "IAM/security/NFR/observability/performance/DR evidence"
+  ],
+  "userDecisionOpen": ["Q001", "Q002", "Q003", "Q004", "Q028/CR035", "CR008", "CR009", "CR010", "QA-X-007", "QA-X-010", "C027 comparison policy"]
+}

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "ofw.c034.checkpoint.v1",
+  "checkpointId": "CP-S003-20260817160000000-c03520000020",
+  "checkpointNode": "file-protocol-entry-fixed",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "parentVersion": "1.0.3",
+  "scenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "status": "active"
+  },
+  "sourceScenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+  "createdAt": "2026-08-17T08:00:00.000Z",
+  "immutable": true,
+  "acceptanceReady": false,
+  "code": {
+    "prototypeVersion": "1.1.0",
+    "buildVersion": "S003-CP20",
+    "entryRef": "../../启动S003.command",
+    "codeTreeSha256": "8bd9311563961f1cf1cddc0519f336c09c91ac6008aa6d42760210c0610fa55c"
+  },
+  "fix": {
+    "rootCause": "file:// Fetch API is blocked by browser security policy, so S003 JSON resources were unreadable after the compatibility redirect.",
+    "behavior": "file:// opens a clear HTTP-start guidance page; HTTP entry remains the v1.0.3-derived public shell.",
+    "launcher": "启动S003.command starts 127.0.0.1:4333 and opens the S003 shell.",
+    "businessContractChange": false
+  },
+  "validation": {
+    "fileEntry": "passed; no console or page errors",
+    "nodeContractTests": "296/296 passed",
+    "browserCases": "10/10 passed",
+    "m02Static": "passed",
+    "frozenBaselineDiff": 0,
+    "historicalSideEffectsReplayed": false
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "ofw.s003.m02.pipeline-current-projection.v4",
+  "projectionId": "S003-M02-PIPELINE-CURRENT-PROJECTION",
+  "projectionVersion": "4.0.0",
+  "status": "consumption-ready",
+  "formedAt": "2026-08-17T16:32:00.000Z",
+  "supersedes": "resources/m02/pipeline-current-projection.v3.json",
+  "sourcePipelineRunId": "S003-M02-PIPELINE-RUN-20260815-002",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+    "formedAt": "2026-08-17T16:30:00.000Z",
+    "status": "active"
+  },
+  "inputSources": [
+    {
+      "nodeId": "node-source-workbook",
+      "slotId": "financialWorkbook",
+      "nativeResourceId": "s003-workbook",
+      "sourceId": "S003-M02-SOURCE-XLSX-20251231",
+      "name": "企业债务风险评估模版 · 财务数据",
+      "version": "S003-M02-SOURCE-XLSX-20251231",
+      "contentMode": "full-data",
+      "passContentToPython": true
+    }
+  ],
+  "humanBusinessInputBinding": {
+    "owner": "M02 数据工程",
+    "snapshotId": "S003-T053-INPUT-20251231-v1",
+    "snapshotVersion": "1.0.0",
+    "resource": "resources/m02/human-input-snapshot.v1.json",
+    "pipelineInput": false,
+    "qualityRule": false,
+    "note": "企业当期因子按不可变人工业务输入版本绑定评估运行，不提供企业因子模型配置页，也不进入 Python 数据管道。"
+  },
+  "modelConfigurationRef": {
+    "owner": "M01 本体管理",
+    "resource": "resources/m01/model-configuration.v3.json",
+    "pipelineInput": false,
+    "note": "调节因子档位与系数、评分权重、风险分档和固定计算语义随 Published 模型版本生效。"
+  },
+  "adoptionEvidence": {
+    "status": "adopted",
+    "publishedPointerId": "S003-M01-PUBLISHED-POINTER",
+    "publishedSemanticVersionId": "S003-M01-DEBT-RISK-PKG@1.0.2",
+    "dataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+    "assessmentAt": "2025-12-31",
+    "adoptedAt": "2026-08-17T16:32:00.000Z",
+    "owner": "M01 本体管理"
+  },
+  "derivation": [
+    "resources/m02/pipeline-run.v2.json",
+    "resources/m02/human-input-snapshot.v1.json",
+    "resources/m01/published-pointer.v2.json"
+  ],
+  "historicalEvidenceMutated": false
+}

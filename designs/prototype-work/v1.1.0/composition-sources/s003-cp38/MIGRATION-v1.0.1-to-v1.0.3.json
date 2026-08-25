@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "migrationId": "MIG-V110-PARENT-V101-TO-V103",
+  "status": "completed-public-bootstrap",
+  "workspaceVersion": "1.1.0",
+  "sourceParentVersion": "1.0.1",
+  "targetParentVersion": "1.0.3",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "baselineCheckpoint": "../../scenario-checkpoints/baselines/v1.0.3/T056-baseline-checkpoint.json",
+  "baselineCheckpointSha256": "0a90f5f68dccaa7c18be71b4c82019616f19b0e359f931024652d95165ecd414",
+  "migratedAt": "2026-08-15T12:31:49+08:00",
+  "migrationMode": "copy frozen code baseline into editable public bootstrap; preserve historical source-parent evidence",
+  "frozenSource": {
+    "path": "../../prototype-releases/v1.0.3",
+    "manifest": "../../prototype-releases/v1.0.3/manifest.json",
+    "manifestSha256": "de0119608e26b09cfbdcf86143db95ca9446c25030453086b4f8c1e840af8ba1",
+    "gitTag": "prototype-v1.0.3-frozen",
+    "gitCommit": "ea69e9ad3bceef93b000e6f3ddc639ab093e2515"
+  },
+  "preservedHistory": {
+    "previousWorkspaceParent": "1.0.1",
+    "previousWorkspaceState": "rebase-pending",
+    "rule": "旧父版本只读留痕；不得静默改写或删除"
+  },
+  "materialization": {
+    "status": "completed",
+    "scope": "v1.0.3 reusable prototype code and shared integration shell",
+    "validation": "先完成除 VERSION/WORKSPACE/CHANGELOG、迁移记录及公共 foundation 外与 v1.0.3 冻结树逐文件一致的物化校验；随后统一入口只增加加载公共底座及场景命名空间接线，不修改任何 S001 业务结果",
+    "excludedFromReuse": [
+      "S001 scenarioRunId and runtime snapshot as a new scenario initial state",
+      "S001 15/15 completion state",
+      "S001 business records, report, task and evidence identifiers"
+    ],
+    "verificationOwner": "平台总控",
+    "verificationBasis": "v1.0.3 manifest component and entry hashes plus T056 verifier"
+  },
+  "scenarioChanges": [],
+  "scenarioImplementationStatus": "not-started",
+  "rollback": {
+    "version": "1.0.3",
+    "path": "../../prototype-releases/v1.0.3",
+    "mode": "discard editable workspace and rematerialize from the frozen baseline; never edit the frozen directory"
+  },
+  "acceptanceReady": false,
+  "conclusionBoundary": "父版本迁移和公共 bootstrap 完成不等于新增场景实现、模块评审通过、S001 正式验收通过或一期验收通过"
+}

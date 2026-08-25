@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231d4ed8'/%3E%3Cpath d='M18 18h12v12H18zm16 0h12v12H34zM18 34h12v12H18zm16 0h12v12H34z' fill='white'/%3E%3C/svg%3E" />
+    <title>本体管理 · 语义空间</title>
+    <script>
+      (() => {
+        if (location.protocol !== "http:" || location.hostname !== "localhost") return;
+        const targetOrigin = `http://127.0.0.1${location.port ? `:${location.port}` : ""}`;
+        location.replace(`${targetOrigin}${location.pathname}${location.search}${location.hash}`);
+      })();
+    </script>
+    <link rel="stylesheet" href="../../shared-type-scale.css?v=20260815-02" />
+    <link rel="stylesheet" href="./app.css?v=20260819-40-performance" />
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+    <script src="./app.js?v=20260819-40-performance"></script>
+    <script src="./s003-scenario-adapter.js?v=20260819-40-performance"></script>
+  </body>
+</html>

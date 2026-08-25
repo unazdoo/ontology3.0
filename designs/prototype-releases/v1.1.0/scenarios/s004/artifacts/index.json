@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "ofw.s004.artifact-index.v1",
+  "artifactIndexId": "ARTIDX-S004-20260815-0001",
+  "owner": "S004场景总装",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v1",
+    "scenarioRunId": "S004-RUN-20260815124059209-4d35e1ed1b61",
+    "formedAt": "2026-08-15T12:40:59.208Z",
+    "status": "active"
+  },
+  "status": "completed-demo",
+  "artifacts": {
+    "officialPublic": "artifacts/data/official-public.json",
+    "syntheticDemo": "artifacts/data/synthetic-demo.json",
+    "dataQuality": "artifacts/data/data-quality.json",
+    "confidenceSummary": "artifacts/data/c017-confidence-summary.json",
+    "publishedResources": "artifacts/ontology/published-resources.json",
+    "c008Facts": "artifacts/ontology/c008-authoritative-facts.json",
+    "evidencePackage": "artifacts/agent/evidence-package.json",
+    "agentDraft": "artifacts/agent/draft-output.json",
+    "reportDefinition": "artifacts/report/report-definition.json",
+    "humanConfirmation": "artifacts/report/human-confirmation.json",
+    "deterministicVerification": "artifacts/report/deterministic-verification.json",
+    "publicationManifest": "artifacts/report/publication-manifest-v1.0.1.json",
+    "publicationManifestV1_0": "artifacts/report/publication-manifest.json",
+    "currentPublicationPointer": "artifacts/report/current-publication-pointer.json",
+    "currentReportHtml": "artifacts/report/RPT-S004-CGNPC-20260815-v1.0.1.html",
+    "currentReportPdf": "artifacts/report/RPT-S004-CGNPC-20260815-v1.0.1.pdf"
+  },
+  "moduleExports": "module-exports/index.json",
+  "fixture": "fixtures/s004-demo.json",
+  "formalOutputPolicy": {
+    "formats": [
+      "controlled-html",
+      "same-source-pdf"
+    ],
+    "docx": "not-in-phase-one",
+    "immutableAfterPublication": true,
+    "sharedIdentityRequired": true
+  }
+}

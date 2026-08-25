@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "ofw.scenario-runtime.manifest.v1",
+  "scenarioId": "S004",
+  "scenarioVersion": "S004-v2.1.0",
+  "baselineVersion": "v1.0.3",
+  "foundationBaselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "runtimeLayerVersion": "v1.1.0",
+  "moduleImplementationPolicy": "baseline-entry-with-registered-m02-parameterization",
+  "moduleEntries": {
+    "M01": "prototype-releases/v1.0.3/ontology-management-review/canvas-first/index.html",
+    "M02": "prototype-work/v1.1.0/scenarios/s004-runtime-v2.1.0/baseline-modules/m02-data-engineering.html",
+    "M03": "prototype-releases/v1.0.3/intelligent-query-prototype/review-next/conversation-workspace/index.html",
+    "M04": "prototype-releases/v1.0.3/decision-center-prototype/review-v2/action-portfolio.html",
+    "M05": "prototype-releases/v1.0.3/agent-application/Agent应用.html",
+    "M06": "prototype-releases/v1.0.3/report-center/review-lifecycle/index.html"
+  },
+  "moduleEntryAllowlist": {
+    "algorithm": "SHA-256",
+    "entries": {
+      "M01": {
+        "entryType": "frozen-release",
+        "sourceRef": "../../../../prototype-releases/v1.0.3/ontology-management-review/canvas-first/index.html",
+        "releasePath": "prototype-releases/v1.0.3/ontology-management-review/canvas-first/index.html",
+        "sha256": "f4f0dd80454248a3d230302b6f6c8cc8a12d3bfd847d194164cf0e702ec1f462"
+      },
+      "M02": {
+        "entryType": "registered-parameterization",
+        "sourceRef": "./baseline-modules/m02-data-engineering.html",
+        "releasePath": "prototype-work/v1.1.0/scenarios/s004-runtime-v2.1.0/baseline-modules/m02-data-engineering.html",
+        "sha256": "261c479e4dfa42c76570449e46e4ef294ae138c4fbe1b138d18f479e3e22b874",
+        "originReleasePath": "prototype-releases/v1.0.3/data-engineering-prototype-review/review-v3/方案B2.html",
+        "originSha256": "cbc0360fc4aeddd1285ddd26c3f5bdbc1b3cf539610779f45bde5f26923ef2d3",
+        "patchRegistryPath": "prototype-work/v1.1.0/scenarios/s004-runtime-v2.1.0/baseline-modules/PATCH-REGISTRY.md",
+        "patchCount": 28,
+        "diffStats": { "baseLines": 3450, "adapterLines": 3833, "nonEqualBlocks": 60, "addedLines": 446, "removedLines": 63 }
+      },
+      "M03": {
+        "entryType": "frozen-release",
+        "sourceRef": "../../../../prototype-releases/v1.0.3/intelligent-query-prototype/review-next/conversation-workspace/index.html",
+        "releasePath": "prototype-releases/v1.0.3/intelligent-query-prototype/review-next/conversation-workspace/index.html",
+        "sha256": "2a253befbca1cce7dd891cc74609625591786949305b991aee1921ad06e7de88"
+      },
+      "M04": {
+        "entryType": "frozen-release",
+        "sourceRef": "../../../../prototype-releases/v1.0.3/decision-center-prototype/review-v2/action-portfolio.html",
+        "releasePath": "prototype-releases/v1.0.3/decision-center-prototype/review-v2/action-portfolio.html",
+        "sha256": "4423ff9324dc01263abb83d287e7b4d63e0c705f96b78fe0f6c14ecc7b0492d4"
+      },
+      "M05": {
+        "entryType": "frozen-release",
+        "sourceRef": "../../../../prototype-releases/v1.0.3/agent-application/Agent应用.html",
+        "releasePath": "prototype-releases/v1.0.3/agent-application/Agent应用.html",
+        "sha256": "696fc45f13f9dc0d516aaf7132f262d50859940ad9d1335d098c1c65a36a4f33"
+      },
+      "M06": {
+        "entryType": "frozen-release",
+        "sourceRef": "../../../../prototype-releases/v1.0.3/report-center/review-lifecycle/index.html",
+        "releasePath": "prototype-releases/v1.0.3/report-center/review-lifecycle/index.html",
+        "sha256": "b0bd7099d759a3ffa43e7cbaa62d350c7f1782fc50909394cf37f9304b9dd58a"
+      }
+    }
+  },
+  "scenarioIdentity": {
+    "financialCompanyId": "FC-DEMO-001",
+    "borrowerId": "BORR-CN-USCC-91440300093677087R",
+    "memberId": "MEM-CGN-003816",
+    "applicationId": "APP-S004-20260815-0001",
+    "reportNumber": "S004-PLR-2026-0001"
+  },
+  "sceneBoundaries": {
+    "M03": "NOT_APPLICABLE",
+    "M04": "EMPTY_ACTION_REQUEST_QUEUE",
+    "formalReportConclusion": "AI_SUGGESTION_REQUIRES_HUMAN_CONFIRMATION"
+  },
+  "resourceRefs": {
+    "publishedResources": "../s004/artifacts/ontology/published-resources-v2.json",
+    "c008Facts": "../s004/artifacts/ontology/c008-authoritative-facts-v2.json",
+    "dataQuality": "../s004/artifacts/data/data-quality-v2.json",
+    "reportDefinition": "../s004/artifacts/report/report-definition-v2.json",
+    "agentEvidencePackage": "../s004/artifacts/agent/evidence-package-v2.json"
+  },
+  "historicalArtifacts": {
+    "deliveryVersionLabel": "S004-v2.0.1",
+    "artifactScenarioVersion": "S004-v2",
+    "artifactScenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+    "projectionMode": "EXPLICIT_IMMUTABLE_ARTIFACT_PROJECTION",
+    "readOnly": true,
+    "formalOutputsMayBeReusedAsCurrent": false,
+    "checkpointMayBePromoted": false,
+    "runtimeRule": "原始场景上下文作为 sourceScenarioContext 保留；v2.1.0 仅在隔离命名空间形成运行投影和新增运行记录，不改写历史制品。"
+  },
+  "publicCheckpoint": {
+    "schema": "ofw.c034.checkpoint.v1",
+    "status": "not-created",
+    "reason": "本次仅完成运行时适配与回归；未获正式 Checkpoint 创建授权，故保持 not-created"
+  }
+}

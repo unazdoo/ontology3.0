@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp13-result.v1",
+  "runId": "20260816T104609155Z-9a78a0ce",
+  "formedAt": "2026-08-16T10:46:09.156Z",
+  "origin": "http://127.0.0.1:4333",
+  "formalScenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "gitHead": "5620618386b1427cbf0a19877ff00b1b44dd249e",
+  "playwrightNodeModules": "/Users/domi/.codex/skills/baoyu-design/agents/gen-pptx/node_modules",
+  "headless": true,
+  "cases": [
+    {
+      "id": "m04-incompatible-projections",
+      "label": "M04 state/view/projection 不兼容记录隔离与 React 重建",
+      "status": "failed",
+      "startedAt": "2026-08-16T10:46:09.298Z",
+      "durationMs": 2512,
+      "details": {
+        "primaryKeys": {
+          "state": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m04:decision-center.portfolio.state.v6",
+          "view": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m04:decision-center.portfolio.view.v2",
+          "projection": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m04:decision-center.c019.projection.v1"
+        },
+        "recoveryKeys": {
+          "state": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m04:decision-center.portfolio.state.recovered.v1",
+          "view": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m04:decision-center.portfolio.view.recovered.v1",
+          "projection": "ofw:v1.1.0:S003:S003-v1:S003-RUN-20260815133000000-c03503000001:m04:decision-center.c019.projection.recovered.v1"
+        },
+        "recoveredPresence": {
+          "state": true,
+          "view": false,
+          "projection": true
+        }
+      },
+      "diagnostics": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "requestErrors": [],
+        "httpErrors": [],
+        "ignoredAbortedRequests": []
+      },
+      "screenshot": "evidence/browser-cp13/20260816T104609155Z-9a78a0ce/m04-incompatible-projections.png",
+      "error": {
+        "name": "AssertionError",
+        "message": "M04 view 未形成独立恢复键",
+        "stack": "AssertionError [ERR_ASSERTION]: M04 view 未形成独立恢复键\n    at Object.caseM04IncompatibleProjections [as m04-incompatible-projections] (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:379:12)\n    at async executeCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:694:5)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp13.cjs:751:22)"
+      },
+      "completedAt": "2026-08-16T10:46:11.810Z"
+    }
+  ],
+  "totals": {
+    "cases": 1,
+    "passed": 0,
+    "failed": 1,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "httpErrors": 0,
+    "ignoredAbortedRequests": 0
+  },
+  "errorBudget": {
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "httpErrors": 0
+  },
+  "checkpointCreated": false,
+  "acceptanceReady": false,
+  "browserVersion": "149.0.7827.55",
+  "completedAt": "2026-08-16T10:46:11.838Z"
+}

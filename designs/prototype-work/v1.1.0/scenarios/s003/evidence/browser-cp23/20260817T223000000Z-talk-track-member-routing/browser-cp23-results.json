@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "ofw.s003.browser-evidence.v1",
+  "evidenceId": "S003-CP23-BROWSER-RESULT",
+  "formedAt": "2026-08-17T22:30:00.000Z",
+  "browser": "Codex in-app Chromium",
+  "entry": "http://127.0.0.1:4333/s001-e2e-integration/index.html?scenarioId=S003#home",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260817163000000-c02200000001"
+  },
+  "statePolicy": {
+    "existingBrowserStatePreserved": true,
+    "localStorageCleared": false,
+    "newScenarioRunCreated": false,
+    "historicalSideEffectsReplayed": false,
+    "workingProjectionPromotedToPublished": false
+  },
+  "interactiveChecks": [
+    {
+      "id": "M01_CURRENT_MODEL_CONFIGURATION",
+      "status": "passed",
+      "observed": "已发布本体 V1.0.2 的模型配置仅显示配置总览、调节因子配置、评分权重和风险分档配置；未显示企业因子配置。"
+    },
+    {
+      "id": "M06_ALERT_BY_LIGHT_TIER",
+      "status": "passed",
+      "observed": "仪表盘正式评分覆盖 21 家企业，分布为绿灯 16、黄灯 4、红灯 1、黑灯 0；黄灯、红灯、黑灯共 5 家逐户显示预警行动，重大因子未单独制造第二条行动。"
+    },
+    {
+      "id": "M06_MEMBER_UNIT_ROUTING",
+      "status": "passed",
+      "observed": "风险行动页逐户显示对应成员单位债务风险接口人，并明确接口人确认后再分办本单位负责人。"
+    },
+    {
+      "id": "M04_ACTION_REQUEST_DETAIL",
+      "status": "passed",
+      "observed": "行动申请详情显示提交人为集团债务风险管理人员、收件人为对应成员单位债务风险接口人；确认前负责人待办为未形成。"
+    },
+    {
+      "id": "M04_CONFIRM_AND_ASSIGN_DIALOG",
+      "status": "passed",
+      "observed": "确认并交办弹窗显示当前由对应成员单位接口人确认，接口人与实际待办负责人是两个独立角色；未提交最终确认。"
+    },
+    {
+      "id": "LEGACY_WORKING_PROJECTION_COMPATIBILITY",
+      "status": "passed",
+      "observed": "保留旧工作投影直接进入时，界面显示 4 条待成员单位接口人确认、1 条已分办；旧角色文案已刷新，历史决定、待办和证据未改写。"
+    }
+  ],
+  "supplementalAutomatedBrowserRegression": {
+    "formedAt": "2026-08-17T21:44:44.676Z",
+    "cases": [
+      "M02 native resource directory and workbook detail",
+      "public shell scenario identity and health",
+      "S001 isolation",
+      "retired S003 private configuration route migration"
+    ],
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "httpErrors": 0,
+    "status": "passed"
+  },
+  "interactiveDiagnostics": {
+    "consoleErrors": [],
+    "pageLoadFailuresObserved": 0,
+    "finalUrl": "http://127.0.0.1:4333/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#module/decision"
+  },
+  "nonBlockingWarning": {
+    "status": "visible-and-truthful",
+    "message": "CP20 历史文件不符合当前 C034 manifest 合同，已隔离为历史警告；未被伪装为当前运行健康。"
+  },
+  "status": "passed"
+}

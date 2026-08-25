@@ -1,0 +1,120 @@
+{
+  "outputRef": "checkpoints/CP02-data-connected.json",
+  "checkpointId": "CP-S003-20260815131500000-a2b3c4d5e6f7",
+  "checkpointNode": "data-connected",
+  "createdAt": "2026-08-15T13:15:00.000Z",
+  "buildVersion": "S003-CP02",
+  "entryRef": "index.html",
+  "scenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815123937016-96a195ed3f4c",
+    "formedAt": "2026-08-15T12:39:37.016Z",
+    "status": "active"
+  },
+  "codeRefs": [
+    "README.md",
+    "scripts/create-checkpoint.cjs",
+    "scripts/extract-workbook-fixture.cjs",
+    "scripts/build-data-assets.cjs",
+    "fixtures/enterprise-fixture.v1.json",
+    "resources/scenario-manifest.json",
+    "resources/m01/model-package.v1.json",
+    "resources/m02/data-contract.v1.1.json",
+    "resources/m02/source-asset.v1.json",
+    "resources/m02/human-input-snapshot.v1.json",
+    "resources/m02/formal-candidate-data-asset.v1.json",
+    "resources/m02/quality-result.v1.json",
+    "resources/m02/pipeline-run.v1.json",
+    "resources/m03/query-catalog.v1.json",
+    "resources/m04/decision-binding.v1.json",
+    "resources/m05/agent-position.v1.json",
+    "resources/m06/report-contract.v1.json",
+    "tests/data-assets.test.js",
+    "evidence/CP02-data-connected-validation.md"
+  ],
+  "modules": {
+    "M01": {
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M01-DEBT-RISK-PKG",
+      "exportRef": "resources/m01/model-package.v1.json",
+      "evidenceRef": "evidence/CP02-data-connected-validation.md#M01"
+    },
+    "M02": {
+      "moduleVersion": "1.1.0",
+      "exportId": "S003-M02-DATA-CONTRACT",
+      "exportRef": "resources/m02/data-contract.v1.1.json",
+      "evidenceRef": "evidence/CP02-data-connected-validation.md#M02"
+    },
+    "M03": {
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M03-QUERY-CATALOG",
+      "exportRef": "resources/m03/query-catalog.v1.json",
+      "evidenceRef": "evidence/CP02-data-connected-validation.md#M03"
+    },
+    "M04": {
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M04-GENERIC-DECISION-BINDING",
+      "exportRef": "resources/m04/decision-binding.v1.json",
+      "evidenceRef": "evidence/CP02-data-connected-validation.md#M04"
+    },
+    "M05": {
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M05-NO-DEDICATED-AGENT",
+      "exportRef": "resources/m05/agent-position.v1.json",
+      "evidenceRef": "evidence/CP02-data-connected-validation.md#M05"
+    },
+    "M06": {
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M06-REPORT-CONTRACT",
+      "exportRef": "resources/m06/report-contract.v1.json",
+      "evidenceRef": "evidence/CP02-data-connected-validation.md#M06"
+    }
+  },
+  "stateSections": {
+    "data": {
+      "status": "referenced",
+      "items": [
+        {"owner": "M02 数据工程", "resourceId": "S003-M02-SOURCE-XLSX-20251231", "version": "1.0.0", "ref": "resources/m02/source-asset.v1.json"},
+        {"owner": "M02 数据工程", "resourceId": "S003-T053-INPUT-20251231-v1", "version": "1.0.0", "ref": "resources/m02/human-input-snapshot.v1.json"},
+        {"owner": "M02 数据工程", "resourceId": "S003-T007-FORMAL-CANDIDATE-20251231-v1", "version": "1.0.0", "ref": "resources/m02/formal-candidate-data-asset.v1.json"},
+        {"owner": "M02 数据工程", "resourceId": "S003-M02-QUALITY-20251231-v1", "version": "1.0.0", "ref": "resources/m02/quality-result.v1.json"},
+        {"owner": "M02 数据工程", "resourceId": "S003-M02-PIPELINE-RUN-20260815-001", "version": "1.0.0", "ref": "resources/m02/pipeline-run.v1.json"}
+      ]
+    },
+    "semantics": {
+      "status": "referenced",
+      "items": [
+        {"owner": "M01 本体管理", "resourceId": "S003-M01-DEBT-RISK-PKG", "version": "1.0.0", "ref": "resources/m01/model-package.v1.json"}
+      ]
+    },
+    "configurations": {
+      "status": "referenced",
+      "items": [
+        {"owner": "平台场景包", "resourceId": "S003-SCENARIO-MANIFEST", "version": "1.0.0", "ref": "resources/scenario-manifest.json"}
+      ]
+    },
+    "results": {"status": "empty", "reason": "尚未执行确定性评估。"},
+    "reports": {"status": "empty", "reason": "尚未生成企业报告。"},
+    "decisions": {"status": "empty", "reason": "尚未形成处置候选或 Action Request。"},
+    "testFixtures": {
+      "status": "referenced",
+      "items": [
+        {"owner": "S003 总装测试", "resourceId": "S003-FIXTURE-20251231-v1", "version": "1.0.0", "ref": "fixtures/enterprise-fixture.v1.json"}
+      ]
+    },
+    "featureFlags": {
+      "status": "referenced",
+      "items": [
+        {"owner": "平台场景包", "resourceId": "S003-FEATURE-FLAGS", "version": "1.0.0", "ref": "resources/scenario-manifest.json"}
+      ]
+    },
+    "evidence": {
+      "status": "referenced",
+      "items": [
+        {"owner": "S003 总装", "resourceId": "S003-CP02-VALIDATION", "version": "1.0.0", "ref": "evidence/CP02-data-connected-validation.md"}
+      ]
+    }
+  },
+  "restoreEvidenceRef": "evidence/CP02-data-connected-validation.md#恢复校验"
+}

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "ofw.s003.m02.pipeline-run.v2",
+  "pipelineRunId": "S003-M02-PIPELINE-RUN-20260815-002",
+  "pipelineId": "S003-M02-PIPELINE-001",
+  "status": "succeeded",
+  "startedAt": "2026-08-15T13:04:23.000Z",
+  "completedAt": "2026-08-15T13:04:23.000Z",
+  "owner": "M02 数据工程",
+  "inputSourceId": "S003-M02-SOURCE-XLSX-20251231",
+  "inputSources": [
+    {
+      "nodeId": "node-source-workbook",
+      "slotId": "financialWorkbook",
+      "sourceId": "S003-M02-SOURCE-XLSX-20251231",
+      "name": "企业债务风险评估模版 · 财务数据",
+      "version": "S003-M02-SOURCE-XLSX-20251231",
+      "contentMode": "full-data",
+      "passContentToPython": true
+    }
+  ],
+  "nodes": [
+    {"nodeId":"node-source-workbook","nodeType":"source","label":"企业债务风险评估模版 · 财务数据","status":"succeeded"},
+    {"nodeId":"node-python","nodeType":"python","label":"债务风险财务数据标准化","status":"succeeded"},
+    {"nodeId":"node-quality","nodeType":"quality","label":"数据质量检查","status":"succeeded"},
+    {"nodeId":"node-publish","nodeType":"publish","label":"发布候选数据资产","status":"succeeded"},
+    {"nodeId":"node-refresh","nodeType":"refresh","label":"提交本体刷新请求","status":"succeeded","note":"已由 M01 Published 指针和正式采用证据闭环；企业因子配置不经过本管道。"}
+  ],
+  "outputDataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+  "qualityResultId": "S003-M02-QUALITY-20251231-v1",
+  "operations": [
+    "读取财务工作簿快照",
+    "绑定稳定测试夹具 enterpriseId",
+    "附加评估时点、币种和金额单位",
+    "标准化 I / AA 财务字段",
+    "执行数据质量检查",
+    "提交数据资产刷新请求"
+  ],
+  "modelConfigurationBoundary": "企业当期因子取值由独立 T053 人工业务输入快照提供并随本轮运行绑定；调节因子定义与系数、评分权重、固定计算语义和风险阈值由 M01 Published 模型定义提供。两者均不进入 Python 管道参数或数据质量规则。",
+  "forbiddenOperationsConfirmedAbsent": [
+    "企业因子配置",
+    "风险评分",
+    "因子系数计算",
+    "评分权重",
+    "风险阈值",
+    "风险分档",
+    "Action Type 命中"
+  ]
+}

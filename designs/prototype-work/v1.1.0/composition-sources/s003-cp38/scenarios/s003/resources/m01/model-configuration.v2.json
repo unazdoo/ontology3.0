@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "ofw.s003.m01.model-configuration.v2",
+  "configurationId": "S003-M01-MODEL-CONFIGURATION",
+  "configurationVersion": "2.0.0",
+  "status": "published",
+  "moduleId": "M01",
+  "moduleOwner": "本体管理",
+  "businessOwner": "财务公司",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+  },
+  "publishedModelRef": "resources/m01/published-pointer.v1.json#/activeTarget/publishedSnapshot",
+  "stableRoute": "#published/version?id={publishedVersionId}&tab=s003-model-config&configTab={sectionId}",
+  "sections": [
+    {
+      "sectionId": "overview",
+      "label": "配置总览",
+      "owner": "M01 本体管理",
+      "description": "汇总当前模型版本、配置状态和生效流程。"
+    },
+    {
+      "sectionId": "factor-input",
+      "label": "企业因子配置",
+      "owner": "财务公司",
+      "description": "按企业维护六项业务因子取值；适用但缺失按 0 档，不适用与缺失严格分离。",
+      "lifecycle": "model-draft"
+    },
+    {
+      "sectionId": "factors",
+      "label": "调节因子配置",
+      "owner": "财务公司",
+      "description": "维护调节因子的适用范围、档位和系数，不形成普通指标 Rule。",
+      "lifecycle": "model-draft"
+    },
+    {
+      "sectionId": "weights",
+      "label": "评分权重",
+      "owner": "财务公司",
+      "description": "按企业类别维护十五项财务指标权重，每类合计必须为 100%。",
+      "lifecycle": "model-draft"
+    },
+    {
+      "sectionId": "tiers",
+      "label": "风险分档配置",
+      "owner": "财务公司",
+      "description": "维护绿、黄、红、黑四档阈值，要求连续覆盖且无重叠。",
+      "lifecycle": "model-draft"
+    }
+  ],
+  "fixedCalculationSemantics": [
+    {
+      "code": "UNDER_CONSTRUCTION_60",
+      "description": "在建企业财务原始分固定为 60 分。",
+      "presentedIn": "评分权重"
+    },
+    {
+      "code": "HISTORY_INSUFFICIENT_DEFAULT_A",
+      "description": "盈利历史不足时，盈利稳定性按 A 档（100 分）。",
+      "presentedIn": "评分权重"
+    },
+    {
+      "code": "DEFAULTED_ZERO",
+      "description": "企业因子适用但缺失时按 0 档处理。",
+      "presentedIn": "企业因子配置"
+    },
+    {
+      "code": "NOT_APPLICABLE",
+      "description": "业务不适用与缺失严格分离，不参与因子调节。",
+      "presentedIn": "企业因子配置"
+    }
+  ],
+  "effectMechanism": [
+    "编辑统一模型 Draft",
+    "校验模型参数、企业因子和固定计算语义",
+    "显式发布新的模型版本并切换 Published 指针",
+    "驾驶舱选择新模型版本并创建新的 scenarioRunId 快速重跑",
+    "新结果、报告和行动申请只绑定新运行，不覆盖历史"
+  ],
+  "excludedSubTabs": [
+    "行动触发",
+    "固定业务语义",
+    "发布与版本"
+  ],
+  "boundaries": [
+    "企业因子取值属于 M01 模型配置，不登记为 M02 数据源，也不进入 M02 数据管道。",
+    "因子系数、评分权重和风险阈值只属于 M01 Published 模型定义。",
+    "Action Type 使用基线已发布资源页和生命周期，不作为模型配置子页签。",
+    "发布与版本使用基线 Published 生命周期和统一底部操作区，不作为配置子页签。",
+    "模型配置不得写入 Python 管道参数或数据质量规则。"
+  ]
+}

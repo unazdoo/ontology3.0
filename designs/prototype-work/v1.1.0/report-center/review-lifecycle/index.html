@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <link rel="icon" href="data:,">
+    <title>智财问策 · 报告中心</title>
+    <link rel="stylesheet" href="canonical.css?v=20260824-12" id="canonical-style">
+  </head>
+  <body>
+    <div id="app">
+      <div class="boot-shell" aria-live="polite">
+        <div class="boot-mark" aria-hidden="true"><span></span></div>
+        <div><strong>报告中心</strong><small>正在读取报告与模板</small></div>
+      </div>
+    </div>
+    <div id="toast-root" aria-live="polite" aria-atomic="true"></div>
+    <script src="vendor/lucide.min.js"></script>
+    <script>
+      (function () {
+        const root = document.getElementById("app");
+        const scripts = [
+          ["data.js", "12"],
+          ["portfolio-integration.js", "20260822-01"],
+          ["canonical-data.js", "20260823-08"],
+          ["canonical-app.js", "20260824-23"]
+        ];
+        let index = 0;
+        const next = () => {
+          if (index >= scripts.length) return;
+          const [src, version] = scripts[index++];
+          const script = document.createElement("script");
+          script.src = `${src}?v=${version}`;
+          script.onload = next;
+          script.onerror = () => {
+            root.innerHTML = `<div class="boot-shell"><div><strong>报告中心</strong><small>报告资源读取失败，请重新读取</small></div></div>`;
+          };
+          document.body.appendChild(script);
+        };
+        next();
+      })();
+    </script>
+  </body>
+</html>

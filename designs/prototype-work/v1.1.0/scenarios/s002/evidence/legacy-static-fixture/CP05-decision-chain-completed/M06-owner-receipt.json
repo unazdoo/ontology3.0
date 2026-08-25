@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "ofw.s002.owner-validation-receipt.v1",
+  "receiptId": "RECEIPT-M06-decision-chain-completed-c47b42dcbde5",
+  "moduleId": "M06",
+  "owner": "报告中心",
+  "moduleVersion": "S002-M06-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815010000000-a283fabf23f6",
+    "formedAt": "2026-08-15T01:00:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "decision-chain-completed",
+  "exportRef": "evidence/CP05-decision-chain-completed/M06-state-export.json",
+  "exportSha256": "c47b42dcbde5d9e21aad6472a6772e643244e1962359d1ec950a65d8970c4970",
+  "validatedAt": "2026-08-15T01:25:00.000Z",
+  "validationStatus": "verified",
+  "checks": {
+    "scenarioIdentity": "verified",
+    "baselineBinding": "verified",
+    "ownerBoundary": "verified",
+    "exportDigest": "verified",
+    "isolatedCloneShape": "verified",
+    "historicalSideEffectsDisabled": "verified"
+  },
+  "conclusionBoundary": "技术导出校验通过，不代表模块业务验收或平台验收通过"
+}

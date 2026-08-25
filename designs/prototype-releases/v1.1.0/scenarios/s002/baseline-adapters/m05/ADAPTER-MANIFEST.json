@@ -1,0 +1,40 @@
+{
+  "module": "M05",
+  "scenarioId": "S002",
+  "scenarioVersion": "S002-v1",
+  "implementationDate": "2026-08-15",
+  "verificationDate": "2026-08-17",
+  "baselineVersion": "1.0.3",
+  "sourcePath": "designs/prototype-releases/v1.0.3/agent-application",
+  "sourceTreeSha256": "027d9f20c7d7ebd753eb8e36b4475a5c271c91d979feda8e0d57c39b3cb9bcb2",
+  "sourceFiles": 25,
+  "sourceBytes": 6067300,
+  "runtimeEntry": "baseline-adapters/m05/agent-application/Agent应用.html",
+  "adapterScript": "baseline-adapters/m05/agent-application/s002-adapter.js",
+  "originalEntrySha256": "696fc45f13f9dc0d516aaf7132f262d50859940ad9d1335d098c1c65a36a4f33",
+  "changedFiles": [
+    {
+      "path": "agent-application/Agent应用.html",
+      "change": "仅新增 S002 adapter script 标签；保留 v1.0.3 Agent 目录、资源、运行、结果和协作编排页面。",
+      "originalSha256": "696fc45f13f9dc0d516aaf7132f262d50859940ad9d1335d098c1c65a36a4f33",
+      "adaptedSha256": "5bd6eb073b3d8fe2ae380e43d2f6cf5524100a93d8cfc29506a94fa1c226635a"
+    },
+    {
+      "path": "agent-application/app.jsx",
+      "change": "保留 v1.0.3 Agent 目录、运行和结果结构，仅修正 S002 历史证据读取时点、双数据资产投影及组合指针说明。",
+      "originalSha256": "ddfef87fa95cb24847a13f495b7cd144d4d6ea6ac76dc2b4c7a3b0cdaadd0048",
+      "adaptedSha256": "5ddc84db8f0a3dcf8028d3b2670ce8c203f68ad0d298f77b66964c6420b9274e"
+    },
+    {
+      "path": "agent-application/s002-adapter.js",
+      "change": "注入预算异常分析 Agent、预算报告草稿 Agent、Prompt、Skill、Tool、两条完成运行、固定证据包和并行协作编排；明确两个业务数据资产及 S002-DATA-v1 组合指针，并以 confirm-result 门保证完成运行显示真实结果而非受限占位。",
+      "adaptedSha256": "8c44a46d14f2196e9e0d5605dc72983503bac52f6fa946eb574107a58e6f4162"
+    },
+    {
+      "path": "../../tests/m05-evidence-projection.test.cjs",
+      "change": "验证两条完成运行固定双数据资产、组合指针、历史读取时点和同轮证据。",
+      "adaptedSha256": "eb4c47541e2d052c1fb7c324eeafcd7df68844c2fdbaa130c514bced9063cf3a"
+    }
+  ],
+  "boundary": "Agent 只读消费固定证据；不定义 Metric/Rule，不确认 Action，不自动创建待办或发布正式报告。"
+}

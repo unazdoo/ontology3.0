@@ -1,0 +1,642 @@
+{
+  "schemaVersion": "ofw.s003.m06.report-manifest.v9",
+  "moduleId": "M06",
+  "moduleOwner": "报告中心",
+  "businessOwner": "财务公司",
+  "manifestId": "S003-M06-REPORT-MANIFEST-20260817-008",
+  "manifestVersion": "1.7.0",
+  "supersedes": "resources/m06/report-manifest.v8.json",
+  "status": "formal-reports-generated",
+  "immutable": true,
+  "formedAt": "2026-08-17T19:40:00.000Z",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+    "formedAt": "2026-08-17T16:30:00.000Z",
+    "status": "active"
+  },
+  "prototypeVersion": "1.1.0",
+  "assessmentAt": "2025-12-31",
+  "reportDefinitionId": "S003-RPT-DEF-DEBT-RISK",
+  "reportDefinitionVersion": "1.1.0",
+  "reportTemplateId": "S003-RPT-TPL-ENTERPRISE-RISK",
+  "reportTemplateVersion": "1.1.0",
+  "reportAssuranceProfileId": "S003-RPT-ASSURANCE-PROFILE",
+  "reportAssuranceProfileVersion": "1.2.0",
+  "modelIdentity": {
+    "packageId": "S003-M01-DEBT-RISK-PKG",
+    "packageVersion": "1.0.2",
+    "publishedVersion": "1.0.2",
+    "lifecycleStatus": "published"
+  },
+  "source": {
+    "c035Results": {
+      "ref": "resources/m01/c035-risk-results.v2.json",
+      "sha256": "fbcbff5095a556293cf3ede0249c548bb9208da8a2e2f66139be418419fabf7a",
+      "resultSetId": "S003-C035-RISK-RESULTS-20251231-v2",
+      "resultSetVersion": "1.1.0"
+    },
+    "publishedFacts": {
+      "ref": "resources/m01/published-risk-facts.v2.json",
+      "sha256": "95784154c9ce49bbc500a444f832d435bc60f42426bbf9846ef27f154db55ca1",
+      "factSetId": "S003-PUBLISHED-RISK-FACTS-20251231-v2",
+      "factSetVersion": "1.1.0"
+    },
+    "publishedPointer": {
+      "ref": "resources/m01/published-pointer.v2.json",
+      "sha256": "9b42e601cb5d64c03178682f8a21e8ef9119e4382d3d929c02849a0e43efd481",
+      "pointerId": "S003-M01-PUBLISHED-POINTER",
+      "pointerVersion": "1.1.0"
+    },
+    "formalDataAsset": {
+      "ref": "resources/m02/formal-candidate-data-asset.v1.json",
+      "sha256": "4c3cacb90bc41b8a75b90e8359b2bf55a80d0b7d0e2e9c0b8e5b3cc39eb9894a",
+      "dataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+      "dataAssetVersion": "1.0.0"
+    },
+    "humanInputSnapshot": {
+      "ref": "resources/m02/human-input-snapshot.v1.json",
+      "sha256": "6cf3798465875855a2a0b5c3f46eed5d92c353def0953ed758cb75a046f59c64",
+      "snapshotId": "S003-T053-INPUT-20251231-v1",
+      "snapshotVersion": "1.0.0"
+    },
+    "qualityResult": {
+      "ref": "resources/m02/quality-result.v1.json",
+      "sha256": "f6c7fd943eef46d1add40efd8f0d824f57e2ec54ca042ebae74b494502dd3230",
+      "qualityResultId": "S003-M02-QUALITY-20251231-v1",
+      "qualityResultVersion": "ofw.s003.m02.quality-result.v1"
+    },
+    "reportContract": {
+      "ref": "resources/m06/report-contract.v2.json",
+      "sha256": "f3ff4d89233cd9d4e4c67e286548886a187ed5bb2fe302e68fcbb35f3fc9e644",
+      "contractId": "S003-M06-REPORT-CONTRACT",
+      "contractVersion": "1.1.0"
+    },
+    "reportDefinition": {
+      "ref": "resources/m06/report-definition.v2.json",
+      "sha256": "50351f630c7204be0fd7464eaddf932ddc4c110eeeb9514d6a71aabbeb76e4b0",
+      "definitionId": "S003-RPT-DEF-DEBT-RISK",
+      "definitionVersion": "1.1.0"
+    },
+    "reportTemplate": {
+      "ref": "resources/m06/report-template.v2.json",
+      "sha256": "37da9508359b0c78dc0f578e26ab00e085c4dfc71ae41a6c4b8120cfd5d6cb0b",
+      "templateId": "S003-RPT-TPL-ENTERPRISE-RISK",
+      "templateVersion": "1.1.0"
+    },
+    "decisionResults": {
+      "ref": "resources/m04/decision-results.v3.json",
+      "sha256": "865b8f15b38476e43df766230ff0b7bb2719c76752c8cdf22cf7e28466f3f567",
+      "resultSetId": "S003-M04-DECISION-RESULTS-20260817-003",
+      "resultSetVersion": "1.2.0"
+    },
+    "reportAssurance": {
+      "ref": "resources/m06/report-assurance-profile.v3.json",
+      "sha256": "53d87207c47523c34e1603c84ad85c2cfb70b75f16b8e1edb593c61116ab9299",
+      "profileId": "S003-RPT-ASSURANCE-PROFILE",
+      "profileVersion": "1.2.0"
+    },
+    "previousManifest": {
+      "ref": "resources/m06/report-manifest.v8.json",
+      "sha256": "46471c46f041562b66d743a4f36c942554223bfdfc54aa882ea6e188f470376f",
+      "manifestId": "S003-M06-REPORT-MANIFEST-20260817-007",
+      "manifestVersion": "1.6.0"
+    },
+    "previousContents": {
+      "ref": "resources/m06/report-contents.v8.json",
+      "sha256": "6136eaff52857bb31c97f25f67fc0b1ec64840d80c56138bf1f619420b8cdd9b",
+      "contentSetId": "S003-M06-REPORT-CONTENTS-20260817-007",
+      "contentSetVersion": "1.6.0"
+    },
+    "previousArtifacts": {
+      "ref": "resources/m06/report-artifacts.v8.json",
+      "sha256": "45cb96a30238bb15dd04d58918e46b86fc6c5032cb45f41a90de656fe57cb889",
+      "artifactSetId": "S003-M06-REPORT-ARTIFACTS-20260817-007",
+      "artifactSetVersion": "1.6.0"
+    }
+  },
+  "collections": {
+    "contents": {
+      "contentSetId": "S003-M06-REPORT-CONTENTS-20260817-008",
+      "contentSetVersion": "1.7.0",
+      "ref": "resources/m06/report-contents.v9.json",
+      "sha256": "588fd9c70fcd60d9ddf61932ea0f6811fae30109f5a70634472e916f8b2235b9"
+    },
+    "artifacts": {
+      "artifactSetId": "S003-M06-REPORT-ARTIFACTS-20260817-008",
+      "artifactSetVersion": "1.7.0",
+      "ref": "resources/m06/report-artifacts.v9.json",
+      "sha256": "57877cd41c1ddf76ee77ba32bc8c96e5018052d5b125c31d37f456e1fb8c8a21"
+    }
+  },
+  "reportCount": 21,
+  "summary": {
+    "riskTierCounts": {
+      "GREEN": 16,
+      "YELLOW": 4,
+      "RED": 1,
+      "BLACK": 0
+    },
+    "reportsWithDispositionCandidate": 5,
+    "transferredToOwnerTodo": 1,
+    "actionRequestsCreatedByReportGeneration": 0,
+    "todosCreatedByReportGeneration": 0,
+    "notificationsDispatchedByReportGeneration": 0,
+    "alertEnterpriseCount": 5,
+    "alertCount": 5
+  },
+  "reports": [
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-001",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "f56292f004a03d64840db3796d777e20e54ff802229ec8d920fce979f73577e4",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-001-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "77e267c8f9df1eccb6b8fda6ebd4f0fa07bd92d3f08fcb38c7b11f6c4478adaa",
+      "enterpriseId": "S003-ENT-001",
+      "enterpriseName": "风电测试公司01",
+      "finalScore": 59.08,
+      "riskTierId": "GREEN",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-001&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-001"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-002",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "f9c5c394bac918c7b3409feba6a6b5b52de539d15829049483f048999ced0fce",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-002-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "1f5bda36df720cd9c113b9e7355ef917e94ea4a686113defe9249639d518d94a",
+      "enterpriseId": "S003-ENT-002",
+      "enterpriseName": "风电测试公司02",
+      "finalScore": 88.41,
+      "riskTierId": "GREEN",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-002&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-002"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-003",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "47a4e0ef8cb474b5857789342f1d8cd670b064139795722c39181445b49d98e3",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-003-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "4a5f5b77c12db972eff9e1f415fbbd2532bc7863c225409a260a27934f88bbc0",
+      "enterpriseId": "S003-ENT-003",
+      "enterpriseName": "风电测试公司03",
+      "finalScore": 71.57,
+      "riskTierId": "GREEN",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-003&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-003"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-004",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "03168a64a0104bf1a40c68999984eaadb249f474944f296bc0fedc9c65f259ed",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-004-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "dfe08984b73af88a1336113d6757a19f37e52c0a1a36aa430896d02062262c91",
+      "enterpriseId": "S003-ENT-004",
+      "enterpriseName": "风电测试公司04",
+      "finalScore": 80.37,
+      "riskTierId": "GREEN",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-004&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-004"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-005",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "68c9969b95811bacced52a142560bea2ce709d431f27bbdd0365929c8835347d",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-005-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "8445a5312113637c17a499c31eede52954290ead6573d99cde09109467dd02af",
+      "enterpriseId": "S003-ENT-005",
+      "enterpriseName": "风电测试公司05",
+      "finalScore": 57.3,
+      "riskTierId": "GREEN",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-005&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-005"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-006",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "82ebaf09845a0e16d8843792a8ebadc7f4bdaa3dfa6fd0bc16d4c7d52b74a47b",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-006-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "c7ac1cdba2a75940c692ba1216e09fd525b6bc9f215b1a56bb0bc5671f0ae99a",
+      "enterpriseId": "S003-ENT-006",
+      "enterpriseName": "风电测试公司06",
+      "finalScore": 60.64,
+      "riskTierId": "GREEN",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-006&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-006"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-007",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "30fbbe512a14954c4bd9c8d672583a650dc276d5d7265f16ee8cf35924702e74",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-007-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "6c0f14b06ea841fec21748c201fd2b5a2d855ca8e7228d1c8575991fd21e6c04",
+      "enterpriseId": "S003-ENT-007",
+      "enterpriseName": "风电测试公司07",
+      "finalScore": 37.75,
+      "riskTierId": "YELLOW",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-007&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-007"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-008",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "855899c3719dc5f60c91ee300a14f434fe80339b9dc00aed163c4dff64e0d6f3",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-008-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "f79fc93fbfe78dfcb18f1c2e2477971607172c5f8fcee6acae6fce13e5d32fe6",
+      "enterpriseId": "S003-ENT-008",
+      "enterpriseName": "风电测试公司08",
+      "finalScore": 56.62,
+      "riskTierId": "GREEN",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-008&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-008"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-009",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "5be85e4c5e317f147d4bcd9be9281443886709b300b28c95047ca83a2726828e",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-009-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "be9d9a78cf6d07a38e8d1014da5d23a7d554f8dbdb416d0fc3ae37f386149620",
+      "enterpriseId": "S003-ENT-009",
+      "enterpriseName": "风电测试公司09",
+      "finalScore": 47.32,
+      "riskTierId": "GREEN",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-009&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-009"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-010",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "4cd4f71f8a4fe83dab5fcfea89f186df6a8039780e44bbfeb24b6512b040d843",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-010-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "635337323268c1bd509aa5982a1e3e82d80b5b895e26095a0e322096b5db941e",
+      "enterpriseId": "S003-ENT-010",
+      "enterpriseName": "风电测试公司10",
+      "finalScore": 54,
+      "riskTierId": "GREEN",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-010&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-010"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-011",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "167e4fca9440a22b55a6e4a0eb91a721f68d9f5161582550470978ff4ba23636",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-011-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "17e4e3fd7b11d792ddf0a65b326ab5f06d98afe14906ffbb91822beba763978d",
+      "enterpriseId": "S003-ENT-011",
+      "enterpriseName": "风电测试公司11",
+      "finalScore": 54,
+      "riskTierId": "GREEN",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-011&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-011"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-012",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "ca7c08b46bbbf6fcd8d680df5756c78abc3be5c0bd195605acfd498b4b257275",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-012-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "3f837a204b76f28488a11946cffaa0bd0aed8ab4ed15dada4ce683d9eb2696ca",
+      "enterpriseId": "S003-ENT-012",
+      "enterpriseName": "风电测试公司12",
+      "finalScore": 54,
+      "riskTierId": "GREEN",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-012&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-012"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-013",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "837580f810ee364673514dbd0a1de8cd204aae31105a890c30d834d9d4d1fc52",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-013-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "f6223afa606bdf19380f64b57529d19eddf9469837a8ed0fca42aead66141a4c",
+      "enterpriseId": "S003-ENT-013",
+      "enterpriseName": "风电测试公司13",
+      "finalScore": 43.96,
+      "riskTierId": "GREEN",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-013&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-013"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-014",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "736807ed2715c9a8edc976618e93687a40fb0ea04c6a4a11cda018350b13c0e3",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-014-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "d243a30f5eb9ffa92f3c0401cb0e65fb399fae04382ad68025ee106a0aebfe21",
+      "enterpriseId": "S003-ENT-014",
+      "enterpriseName": "风电测试公司14",
+      "finalScore": 54.57,
+      "riskTierId": "GREEN",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-014&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-014"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-015",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "f31a585e31df6faa90ed27f9639a1b3d44e21d1a51b2675d17f1fc1b90ac5f64",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-015-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "a3f3b21e073368f5a360f743a16e09fdbf0e0ed978ada01fae3da7faccab11f1",
+      "enterpriseId": "S003-ENT-015",
+      "enterpriseName": "风电测试公司15",
+      "finalScore": 49.92,
+      "riskTierId": "GREEN",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-015&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-015"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-016",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "64a274500ad7cd201fd042d7f19e582e3ef587091e4bf114e7dc085cae816bc9",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-016-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "4edeee7076bd8a59753da7cdf6dd353a4143f68c35358d2b07ef1944b498f443",
+      "enterpriseId": "S003-ENT-016",
+      "enterpriseName": "风电测试公司16",
+      "finalScore": 57.33,
+      "riskTierId": "GREEN",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-016&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-016"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-017",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "ab2ebae6ff224cd135861684dd044959806d3bdf91c9b6dc03c76a26d98776c3",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-017-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "3407afc4d8ffd745286a3af0953245e3d8e6df0a40b4d04dd93d163e211b48eb",
+      "enterpriseId": "S003-ENT-017",
+      "enterpriseName": "环保测试公司1",
+      "finalScore": 30.52,
+      "riskTierId": "YELLOW",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-017&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-017"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-018",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "735d1024565dc1ba0697f45746e1b92eb1a6238965b8259c92dc8197fe405c09",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-018-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "3a7bd47d272f6a9ad8310a2f85069f458a7f585a99f519e3a887bc4549bc19fb",
+      "enterpriseId": "S003-ENT-018",
+      "enterpriseName": "环保测试公司2",
+      "finalScore": 33.92,
+      "riskTierId": "YELLOW",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-018&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-018"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-019",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "d802ad16a1f30270b99aeec1f65a7a233b91c9f1f8413abb388a1b8fd23e499f",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-019-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "e245de2093f00c8aefdeb8138680d04d5bf50308ad4f8c099cfe72eaac526f84",
+      "enterpriseId": "S003-ENT-019",
+      "enterpriseName": "环保测试公司3",
+      "finalScore": 37.31,
+      "riskTierId": "YELLOW",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-019&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-019"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-020",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "886cd3149002da0a658d2fd0a00927ab26c90b2e4712fa8b42318ee111f511de",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-020-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "51287209903e93f2dc2400e9fb183b51b090e9803d473b32abfcbe1291446828",
+      "enterpriseId": "S003-ENT-020",
+      "enterpriseName": "环保测试公司4",
+      "finalScore": 23.05,
+      "riskTierId": "RED",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-020&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-020"
+    },
+    {
+      "reportId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-021",
+      "reportVersion": "1.7.0",
+      "contentVersion": "1.7.0",
+      "contentSha256": "a64a0aff027a34653cda13ff028512993ab8869b5de8e99ab5807077c29a2b69",
+      "artifactId": "S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-021-HTML-V9",
+      "artifactVersion": "html-print-capability-v9",
+      "artifactSha256": "669a04342a4d7d0184fbbccdcde2fd948d573c785ff93d46c251ea2d500938cb",
+      "enterpriseId": "S003-ENT-021",
+      "enterpriseName": "核电测试公司1",
+      "finalScore": 45.1,
+      "riskTierId": "GREEN",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active"
+      },
+      "prototypeVersion": "1.1.0",
+      "deepLink": "?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001#/reports/view?enterpriseId=S003-ENT-021&reportId=S003-RPT-S003-RUN-20260817163000000-c02200000001-S003-ENT-021"
+    }
+  ],
+  "invariants": {
+    "previousV1V2V3EvidenceUntouched": true,
+    "exactScenarioRunDeepLink": true,
+    "sourceFactsRemainUnmodified": true,
+    "reportGenerationCreatesNoDecisionSideEffects": true,
+    "localizedBusinessStatuses": true,
+    "structuredTriggerRendering": true,
+    "professionalDiagnosisAndPlans": true,
+    "dedicatedAgentRequired": false,
+    "dedicatedFirstLevelModuleCreated": false,
+    "clientSideScoreRecalculation": false,
+    "reportFormats": [
+      "html"
+    ],
+    "previousV1V2V3V4EvidenceUntouched": true,
+    "constructionReportsUseNoLowIndicatorDiagnosis": true,
+    "constructionIndicatorTableHasNoSyntheticWeightTotal": true,
+    "nonVacuousDecisionEvidenceRequired": true,
+    "browserPrintToPdfCapability": true,
+    "independentPdfArtifact": false,
+    "previousV1ThroughV5EvidenceUntouched": true,
+    "formationVerificationDerivedFromImmutableResults": true,
+    "majorFactorManagementSignalSeparatedFromScoreTier": true,
+    "yellowRedBlackOneAlertPerEnterprise": true,
+    "majorFactorDoesNotCreateIndependentAction": true,
+    "dashboardSubmissionRoutesToMemberUnitContact": true,
+    "todoCreatedOnlyAfterMemberUnitContactConfirmation": true,
+    "previousV1ThroughV8EvidenceUntouched": true
+  }
+}

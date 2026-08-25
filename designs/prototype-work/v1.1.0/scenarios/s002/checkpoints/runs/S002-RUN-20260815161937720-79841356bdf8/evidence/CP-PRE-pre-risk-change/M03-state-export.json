@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "ofw.s002.module-state-export.v1",
+  "moduleId": "M03",
+  "moduleName": "智能问数",
+  "owner": "智能问数",
+  "moduleVersion": "S002-M03-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815161937720-79841356bdf8",
+    "formedAt": "2026-08-15T16:19:37.720Z",
+    "status": "active"
+  },
+  "checkpointNode": "pre-risk-change",
+  "formedAt": "2026-08-15T16:20:07.720Z",
+  "stateDeclaration": "empty",
+  "emptyReason": "尚未到达 query-integrated；仅导出可恢复空状态",
+  "resources": [],
+  "ownerBoundary": {
+    "ownsOnly": [
+      "query-agent",
+      "prompt",
+      "skill",
+      "query-configuration",
+      "view-definition",
+      "query-run",
+      "query-result"
+    ],
+    "consumesByReference": true,
+    "copiesOtherModuleTruth": false
+  },
+  "demoDataMarker": "SYNTHETIC_FOR_DEMO",
+  "sideEffectPolicy": {
+    "allowHistoricalReplay": false,
+    "allowExternalDispatch": false
+  },
+  "runtimeState": {
+    "moduleId": "M03",
+    "moduleVersion": "S002-M03-1.0.0",
+    "progress": {
+      "queryRun": false,
+      "rulesRun": false
+    },
+    "queryRuns": [],
+    "ruleHits": [],
+    "viewContracts": []
+  }
+}

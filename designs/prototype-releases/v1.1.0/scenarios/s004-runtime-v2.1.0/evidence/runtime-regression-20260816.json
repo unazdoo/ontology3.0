@@ -1,0 +1,166 @@
+{
+  "schemaVersion": "ofw.s004.runtime-regression-evidence.v1",
+  "evidenceKind": "runtime-regression",
+  "formalCheckpoint": false,
+  "formalPublication": false,
+  "verifiedAt": "2026-08-16T23:59:00+08:00",
+  "hostRegressionObservedAt": "2026-08-17T12:10:58+08:00",
+  "scenario": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v2.1.0",
+    "baselineVersion": "v1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26"
+  },
+  "automated": {
+    "command": "node --test designs/prototype-work/v1.1.0/scenarios/s004-runtime-v2.1.0/tests/*.test.cjs",
+    "passed": 129,
+    "failed": 0,
+    "testCount": 129,
+    "status": "PASS",
+    "syntaxCheck": "PASS"
+  },
+  "baselineIntegrity": {
+    "releaseDirectory": "designs/prototype-releases/v1.0.3",
+    "gitUnstagedDiff": false,
+    "gitStagedDiff": false,
+    "gitUntrackedEntries": false,
+    "entrySha256": "PASS",
+    "m02OriginSha256": "PASS",
+    "releaseDirectoryManifestSha256": "9e5be9d04b059e720c9fa3f5be32e7a9b09da65f487c4611eefc539fda1cdd14",
+    "m02ParameterizedCopySha256": "3c7a2e795e959e20557864a85f5f175ef44e7d4796e628edf5b92b7fcf62475e"
+  },
+  "moduleCoverage": {
+    "M01": {
+      "entryMode": "frozen-release",
+      "scenarioContent": "S004 Published 贷前调查本体、C008、17 Metric、9 Rule",
+      "status": "PASS"
+    },
+    "M02": {
+      "entryMode": "registered-parameterization",
+      "scenarioContent": "财报既有事实、synthetic-demo 来源、快照、质量、S004 数据资产和已发布管道",
+      "status": "PASS"
+    },
+    "M03": {
+      "entryMode": "frozen-release",
+      "scenarioContent": "完整问数页面与路由保留；场景状态 NOT_APPLICABLE；不创建 Run/Result/Action Request",
+      "status": "PASS"
+    },
+    "M04": {
+      "entryMode": "frozen-release",
+      "scenarioContent": "完整决策工作台、筛选、组合视图与待办路径保留；S004 队列为 0",
+      "status": "PASS"
+    },
+    "M05": {
+      "entryMode": "frozen-release",
+      "scenarioContent": "报告草稿 Agent、伴读 Agent、固定证据包、Prompt/Skill/Tool/Published 绑定及 Run/Result/Session 已接入；当前隔离轮次可追加运行，历史不可覆盖",
+      "status": "PASS"
+    },
+    "M06": {
+      "entryMode": "frozen-release",
+      "scenarioContent": "正式报告、章节、HTML/PDF、事实绑定、锚点、18 个确定性检查单元、人工复核与 24 个推荐问答已接入；当前隔离轮次可追加问答和核验运行",
+      "status": "PASS"
+    }
+  },
+  "browserRegression": {
+    "origin": "http://127.0.0.1:4311",
+    "freshSixRouteSmoke": {
+      "origins": [
+        "http://127.0.0.1:4339",
+        "http://127.0.0.1:4343"
+      ],
+      "routes": [
+        "#module/data",
+        "#module/ontology",
+        "#module/query",
+        "#module/decision",
+        "#module/agent",
+        "#module/report"
+      ],
+      "result": "12/12 routes loaded with S004 identity and zero application page errors"
+    },
+    "m02SourceLabelCheck": {
+      "officialFinancialReports": {
+        "category": "正式财务报告",
+        "access": "既有权威资料复用",
+        "uploadSimulation": false
+      },
+      "syntheticGapPack": {
+        "category": "手工工作簿",
+        "access": "按需上传工作簿",
+        "uploadSimulation": true
+      },
+      "publishedAsset": "DATA-ASSET-S004-20260815-V01",
+      "status": "PASS"
+    },
+    "walkthroughChecks": {
+      "M02SourceDetails": "PASS: annual-report fields + three full PDF downloads; synthetic pack fields + full XLSX download",
+      "M01Canvas": "PASS: 39 nodes, stable positions; zoom changed 72% → 82% → 72%; drag/pan and wheel-zoom handlers covered",
+      "M05Agent": "PASS: S004 report Agent and copilot Agent enabled; Prompt/Skill/Tool/Published ontology binding penetrable; current run append mode visible; current C022/C023 baseline-default titles corrected without rewriting historical or user-customized titles",
+      "M05ToM06DeepLink": "PASS: 从报告请求发起 switches to M06 and loads #/reports/generate; the bridge binds the fragment to the declared loader URL before the real module document is ready and never strands the iframe at about:blank",
+      "M05Evidence": "PASS: eight-step closed-loop status, current-run eligibility and bounded evidence-directory scrolling",
+      "M06Report": "PASS: controlled A4 fragment, no nested full HTML, no legacy human-input label in controlled reader; title contains borrower/year/issue date; active new content versions preserve their own evidence/draft/content identities through deterministic verification and human confirmation, then stop at pending publication",
+      "M06Assistant": "PASS: 24-question pool, 6 visible per page, refresh rotation and clear-session with recommendations preserved; input fully visible at 1440x900, 1280x720 and 390x844; business UI hides Agent Session/Run/Result readback",
+      "M06Verification": "PASS: V01—V08 / 18 checks / 19 facts / 19 anchors; passed checks show title only; rules detail is collapsed and bounded; rerun shows four-stage in-place progress without navigation reload; verification explanation and current-authority comparison are immediate and explicitly separated",
+      "M06Template": "PASS: catalog and detail HTML/JSON template downloads",
+      "M06PdfPreview": "PASS: report toolbar removes 查看 PDF and keeps 下载 PDF; baseline 更多 → PDF 固定版 and export-complete entries continue to use the immutable 11-page compatibility viewer; source PDF unchanged",
+      "M06RuntimeLiveness": "PASS: content-signature idempotent DOM writes; MutationObserver is frame-scheduled, disconnected during patch and does not observe characterData; 2026-08-17 CDP probe loaded report detail, Q&A and verification; input remained fully visible in three viewports and stable mutation count was 0",
+      "M01BaselineLayout": "PASS: no S004 private context card or runtime banner; v1.0.3 semantic-asset directory layout and routes preserved",
+      "M02SourceDownloads": "PASS: no configuration-explainer card in resource directory; 财务报告 naming applied; content tab has no downloads; snapshot tab exposes three annual-report PDFs and one 11-sheet synthetic workbook with SHA-256-bound source identity",
+      "ExternalInformationProvenance": "PASS: external announcements, ratings, policy and industry material are disclosed as pre-registered/fixed source nodes; report generation performs no live web search; AI suggestion label refers to fixed materials and system facts"
+    },
+    "formalArtifactReadOnlyCheck": {
+      "html": "HTTP 200; report center controlled reader verified",
+      "pdf": "HTTP 200; SHA-256 7e07f0a9a477cf44ca30deb4f6e63c8ddfec88d3f7f16acab06bcd540f79cc1e; 1,130,011 bytes; 11 pages; A4; unencrypted; all 11 rasterized pages visually checked; report-center 11-page compatibility preview and browser download event verified",
+      "historicalSourcePreserved": true
+    },
+    "viewports": [
+      "1440x900",
+      "1280x720",
+      "390x844"
+    ],
+    "moduleCombinations": 18,
+    "passed": 18,
+    "status": "PASS",
+    "latestDeltaRegression": "Prior M01—M06 × three-viewports matrix remains 18/18; current changes were then rechecked on M01 canvas, M02 resource/detail, M05 agent/evidence, and M06 at 1440x900, 1280x720 and 390x844. At 390x844 the preserved v1.0.3 menu collapse action restores readable report content.",
+    "assertions": [
+      "outer and iframe horizontal overflow absent",
+      "S004 scenario identity visible",
+      "module business identity visible",
+      "no load/runtime error text",
+      "M05 report-request deep link reaches the native M06 generation workspace without an about:blank intermediate failure",
+      "M06 cross-module return restores HTML/PDF and companion Run/Result/Session without creating new artifacts"
+    ],
+    "s001Isolation": "PASS",
+    "storageQuotaFallback": {
+      "result": "PASS",
+      "scope": "current scenario logical key only",
+      "fallback": "same scenarioRunId sessionStorage namespace",
+      "otherScenarioDeletion": false,
+      "formalCheckpointSource": false,
+      "browserAssertion": "M01 Published detail and version deep links persisted without QuotaExceededError"
+    }
+  },
+  "sideEffectGuards": {
+    "m03ScenarioStatus": "NOT_APPLICABLE; full v1.0.3 page and controls preserved; no formal S004 query Run/Result",
+    "m03ActionRequest": "NOT_CREATED",
+    "m04ActionRequest": "EMPTY",
+    "m04Approval": "EMPTY",
+    "m04Notification": "EMPTY",
+    "m04Todo": "EMPTY",
+    "m05CurrentRunAppend": "ALLOWED_FROM_COMPLETE_C022_OR_C024",
+    "m05HistoricalRunOverwrite": "BLOCKED",
+    "m05DirectReportPublish": "BLOCKED",
+    "m06ReportQuestionAppend": "ALLOWED",
+    "m06VerificationRerun": "ALLOWED_AND_HISTORY_PRESERVED",
+    "m06PublishedArtifactOverwrite": "BLOCKED"
+  },
+  "historicalScope": {
+    "formalReportModified": false,
+    "historicalCheckpointModified": false,
+    "historicalCheckpointStatementScope": "13 tracked checkpoint manifests are unchanged and hash-valid; 20 legacy V2/V201 checkpoint directories are archive-only and are not claimed as preserved in-place",
+    "legacyV2V201CheckpointLiveTree": "PENDING_INTEGRATION_DECISION",
+    "v1_0_3Modified": false,
+    "newFormalCheckpointCreated": false,
+    "newFormalReportPublished": false
+  }
+}

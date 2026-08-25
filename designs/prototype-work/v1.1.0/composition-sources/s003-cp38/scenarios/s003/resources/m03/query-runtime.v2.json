@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "ofw.s003.m03.query-runtime.v2",
+  "moduleId": "M03",
+  "moduleOwner": "智能问数",
+  "runtimeId": "S003-M03-QUERY-RUNTIME",
+  "runtimeVersion": "1.1.0",
+  "status": "implemented-readonly-current-published-run",
+  "mode": "read-only-published-facts",
+  "scenarioIdentityPolicy": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "must-exactly-match-current-published-run"
+  },
+  "serviceRef": "domain/query-service.js",
+  "consumes": {
+    "contracts": [
+      "C008",
+      "T019",
+      "C035"
+    ],
+    "schemas": [
+      "ofw.s003.c035.assessment-result.v1",
+      "ofw.s003.published-debt-risk-fact.v1"
+    ],
+    "lifecycleStatus": "published-only"
+  },
+  "queries": [
+    {
+      "queryId": "S003-QRY-001",
+      "question": "当前集团各风险等级有多少家企业？",
+      "resultShape": "risk-tier-distribution"
+    },
+    {
+      "queryId": "S003-QRY-002",
+      "question": "哪些企业处于红灯或黑灯？",
+      "resultShape": "enterprise-list"
+    },
+    {
+      "queryId": "S003-QRY-003",
+      "question": "指定企业本轮债务风险评估详情是什么？",
+      "resultShape": "enterprise-detail",
+      "requiresEnterpriseId": true
+    },
+    {
+      "queryId": "S003-QRY-004",
+      "question": "指定企业本轮评分最低的三项指标是什么？",
+      "resultShape": "lowest-three-indicators",
+      "requiresEnterpriseId": true
+    },
+    {
+      "queryId": "S003-QRY-005",
+      "question": "哪些企业因子采用了缺失套零或不适用语义？",
+      "resultShape": "factor-default-and-not-applicable"
+    },
+    {
+      "queryId": "S003-QRY-006",
+      "question": "当前有哪些待成员单位接口人确认的亮灯预警？",
+      "resultShape": "disposition-candidate-list"
+    }
+  ],
+  "guards": [
+    "reject-draft-or-validated-only-model",
+    "reject-scenario-id-or-version-mismatch",
+    "reject-scenario-run-id-mismatch",
+    "reject-c035-and-published-fact-content-mismatch",
+    "reject-source-containing-created-action-request-or-todo"
+  ],
+  "sideEffects": {
+    "mutatesPublishedFacts": false,
+    "createsActionRequest": false,
+    "createsTodo": false,
+    "sendsNotification": false
+  },
+  "queryCatalogRef": "resources/m03/query-catalog.v3.json",
+  "queryCatalogId": "S003-M03-QUERY-CATALOG-V3",
+  "queryCatalogVersion": "1.2.0"
+}

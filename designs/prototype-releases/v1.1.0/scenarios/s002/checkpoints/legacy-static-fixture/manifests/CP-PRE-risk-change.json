@@ -1,0 +1,243 @@
+{
+  "schemaVersion": "ofw.c034.checkpoint.v1",
+  "checkpointId": "CP-S002-20260815014000000-f9f376a90eb5",
+  "checkpointNode": "pre-risk-change",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "parentVersion": "1.0.3",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815010000000-a283fabf23f6",
+    "formedAt": "2026-08-15T01:00:00.000Z",
+    "status": "active"
+  },
+  "sourceScenarioRunId": "S002-RUN-20260815010000000-a283fabf23f6",
+  "createdAt": "2026-08-15T01:40:00.000Z",
+  "immutable": true,
+  "code": {
+    "prototypeVersion": "1.1.0",
+    "buildVersion": "S002-v1+c238e1068abb",
+    "entryRef": "designs/prototype-work/v1.1.0/scenarios/s002/index.html",
+    "treeSha256": "c238e1068abbe277296b6963e461f9911cdbbdf1a2963304a011019a245ea270"
+  },
+  "modules": {
+    "M01": {
+      "moduleId": "M01",
+      "moduleVersion": "S002-M01-1.0.0",
+      "exportId": "M01-EXPORT-CP-PRE-de7574f52c43",
+      "exportRef": "evidence/CP-PRE-pre-risk-change/M01-state-export.json",
+      "exportSha256": "de7574f52c43fd7226f31c9f90c3f6ab8547a9f50fa234d21cbb971a95266cb2",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:40:00.000Z",
+        "evidenceRef": "evidence/CP-PRE-pre-risk-change/M01-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M02": {
+      "moduleId": "M02",
+      "moduleVersion": "S002-M02-1.0.0",
+      "exportId": "M02-EXPORT-CP-PRE-48947ce4ba10",
+      "exportRef": "evidence/CP-PRE-pre-risk-change/M02-state-export.json",
+      "exportSha256": "48947ce4ba1094e836459af9ab1eef829d1fc48046c7d3fa2738b3b8f2cc7340",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:40:00.000Z",
+        "evidenceRef": "evidence/CP-PRE-pre-risk-change/M02-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M03": {
+      "moduleId": "M03",
+      "moduleVersion": "S002-M03-1.0.0",
+      "exportId": "M03-EXPORT-CP-PRE-43d6e3525e31",
+      "exportRef": "evidence/CP-PRE-pre-risk-change/M03-state-export.json",
+      "exportSha256": "43d6e3525e31541cd3b86f7edafdd16182fbf93f7ec9603a96d50846c07eaa82",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:40:00.000Z",
+        "evidenceRef": "evidence/CP-PRE-pre-risk-change/M03-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M04": {
+      "moduleId": "M04",
+      "moduleVersion": "S002-M04-1.0.0",
+      "exportId": "M04-EXPORT-CP-PRE-a8fce13dce55",
+      "exportRef": "evidence/CP-PRE-pre-risk-change/M04-state-export.json",
+      "exportSha256": "a8fce13dce558d2dd5623be0f6cd7bebc4a798066303ff91a008ca58daa1d2e5",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:40:00.000Z",
+        "evidenceRef": "evidence/CP-PRE-pre-risk-change/M04-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M05": {
+      "moduleId": "M05",
+      "moduleVersion": "S002-M05-1.0.0",
+      "exportId": "M05-EXPORT-CP-PRE-defac5707b66",
+      "exportRef": "evidence/CP-PRE-pre-risk-change/M05-state-export.json",
+      "exportSha256": "defac5707b668d2d0be60afb5d8ca94033e546b1c06e2124f36b68762c3eda21",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:40:00.000Z",
+        "evidenceRef": "evidence/CP-PRE-pre-risk-change/M05-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M06": {
+      "moduleId": "M06",
+      "moduleVersion": "S002-M06-1.0.0",
+      "exportId": "M06-EXPORT-CP-PRE-9eb4c2ba18df",
+      "exportRef": "evidence/CP-PRE-pre-risk-change/M06-state-export.json",
+      "exportSha256": "9eb4c2ba18df9b2c7035cf9496e655bea9aa20ae9e22af6e32f45f1ec45e08aa",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:40:00.000Z",
+        "evidenceRef": "evidence/CP-PRE-pre-risk-change/M06-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    }
+  },
+  "stateSections": {
+    "data": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "数据工程",
+          "resourceId": "M02-EXPORT-CP-PRE-48947ce4ba10",
+          "version": "S002-M02-1.0.0",
+          "ref": "evidence/CP-PRE-pre-risk-change/M02-state-export.json",
+          "sha256": "48947ce4ba1094e836459af9ab1eef829d1fc48046c7d3fa2738b3b8f2cc7340",
+          "formedAt": "2026-08-15T01:40:00.000Z"
+        }
+      ]
+    },
+    "semantics": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "本体管理",
+          "resourceId": "M01-EXPORT-CP-PRE-de7574f52c43",
+          "version": "S002-M01-1.0.0",
+          "ref": "evidence/CP-PRE-pre-risk-change/M01-state-export.json",
+          "sha256": "de7574f52c43fd7226f31c9f90c3f6ab8547a9f50fa234d21cbb971a95266cb2",
+          "formedAt": "2026-08-15T01:40:00.000Z"
+        }
+      ]
+    },
+    "configurations": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "S002场景包",
+          "resourceId": "S002-CONFIG-CP-PRE",
+          "version": "S002-CONFIG-1.0.0",
+          "ref": "evidence/CP-PRE-pre-risk-change/scenario-configuration.json",
+          "sha256": "89fffcf9ead1d45c975fa486f4904a46628db059358011755eb0b7709cdc088c",
+          "formedAt": "2026-08-15T01:40:00.000Z"
+        }
+      ]
+    },
+    "results": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "智能问数",
+          "resourceId": "M03-EXPORT-CP-PRE-43d6e3525e31",
+          "version": "S002-M03-1.0.0",
+          "ref": "evidence/CP-PRE-pre-risk-change/M03-state-export.json",
+          "sha256": "43d6e3525e31541cd3b86f7edafdd16182fbf93f7ec9603a96d50846c07eaa82",
+          "formedAt": "2026-08-15T01:40:00.000Z"
+        },
+        {
+          "owner": "Agent 应用",
+          "resourceId": "M05-EXPORT-CP-PRE-defac5707b66",
+          "version": "S002-M05-1.0.0",
+          "ref": "evidence/CP-PRE-pre-risk-change/M05-state-export.json",
+          "sha256": "defac5707b668d2d0be60afb5d8ca94033e546b1c06e2124f36b68762c3eda21",
+          "formedAt": "2026-08-15T01:40:00.000Z"
+        }
+      ]
+    },
+    "reports": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "报告中心",
+          "resourceId": "M06-EXPORT-CP-PRE-9eb4c2ba18df",
+          "version": "S002-M06-1.0.0",
+          "ref": "evidence/CP-PRE-pre-risk-change/M06-state-export.json",
+          "sha256": "9eb4c2ba18df9b2c7035cf9496e655bea9aa20ae9e22af6e32f45f1ec45e08aa",
+          "formedAt": "2026-08-15T01:40:00.000Z"
+        }
+      ]
+    },
+    "decisions": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "决策中心",
+          "resourceId": "M04-EXPORT-CP-PRE-a8fce13dce55",
+          "version": "S002-M04-1.0.0",
+          "ref": "evidence/CP-PRE-pre-risk-change/M04-state-export.json",
+          "sha256": "a8fce13dce558d2dd5623be0f6cd7bebc4a798066303ff91a008ca58daa1d2e5",
+          "formedAt": "2026-08-15T01:40:00.000Z"
+        }
+      ]
+    },
+    "testFixtures": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "S002场景包",
+          "resourceId": "S002-FIXTURE-CP-PRE",
+          "version": "S002-FIXTURE-1.0.0",
+          "ref": "evidence/CP-PRE-pre-risk-change/test-fixture.json",
+          "sha256": "cb5c9628af5fce689768aa78b05fdc4cbbfd89ee14054a82066fb3dff2403054",
+          "formedAt": "2026-08-15T01:40:00.000Z"
+        }
+      ]
+    },
+    "featureFlags": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "平台公共层",
+          "resourceId": "S002-FLAGS-CP-PRE",
+          "version": "S002-FLAGS-1.0.0",
+          "ref": "evidence/CP-PRE-pre-risk-change/feature-flags.json",
+          "sha256": "51b66288783830ff10ca6b995a1a702b7a4e1a8340f704b4ff32bfcf8b53a4e8",
+          "formedAt": "2026-08-15T01:40:00.000Z"
+        }
+      ]
+    },
+    "evidence": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "平台公共层",
+          "resourceId": "S002-EVIDENCE-CP-PRE",
+          "version": "S002-EVIDENCE-1.0.0",
+          "ref": "evidence/CP-PRE-pre-risk-change/evidence-index.json",
+          "sha256": "a39998fce0613ccb919e513bbb5d65d7b06c417051672a8d7ce7fb4fa1d5b345",
+          "formedAt": "2026-08-15T01:40:00.000Z"
+        }
+      ]
+    }
+  },
+  "restoreReadiness": {
+    "status": "verified",
+    "verifiedAt": "2026-08-15T01:40:00.000Z",
+    "evidenceRef": "evidence/CP-PRE-pre-risk-change/restore-validation.json"
+  },
+  "sideEffectPolicy": {
+    "allowHistoricalActionRequestReplay": false,
+    "allowHistoricalNotificationReplay": false,
+    "allowHistoricalApprovalReplay": false,
+    "allowHistoricalTodoReplay": false,
+    "allowExternalDispatch": false
+  }
+}

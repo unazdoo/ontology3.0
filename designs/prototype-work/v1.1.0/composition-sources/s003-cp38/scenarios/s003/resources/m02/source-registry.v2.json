@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "ofw.s003.m02.source-registry.v2",
+  "registryId": "S003-M02-SOURCE-REGISTRY",
+  "registryVersion": "2.0.0",
+  "status": "published-registration",
+  "moduleOwner": "M02 数据工程",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "sources": [
+    {
+      "nativeResourceId": "s003-workbook",
+      "sourceId": "S003-M02-SOURCE-XLSX-20251231",
+      "name": "企业债务风险评估模版",
+      "sourceType": "manual-workbook",
+      "acquisitionStrategy": "按需上传完整工作簿",
+      "pipelineMemberScope": [
+        "财务数据"
+      ],
+      "visibleInDataSourceDirectory": true,
+      "managementSurface": "M02 数据资源目录",
+      "snapshotId": "S003-M02-SOURCE-XLSX-20251231",
+      "assessmentAt": "2025-12-31"
+    },
+    {
+      "nativeResourceId": "s003-enterprise-factor-input",
+      "sourceId": "S003-M02-SOURCE-ENTERPRISE-FACTOR-INPUT",
+      "name": "企业因子输入",
+      "sourceType": "manual-business-input",
+      "acquisitionStrategy": "系统在线填报并显式发布输入快照",
+      "pipelineMemberScope": [
+        "企业因子人工取值"
+      ],
+      "visibleInDataSourceDirectory": false,
+      "managementSurface": "M01 模型配置",
+      "inputServiceOwner": "M02 数据工程",
+      "snapshotId": "S003-T053-INPUT-20251231-v1",
+      "assessmentAt": "2025-12-31"
+    }
+  ],
+  "excludedFromDataSources": [
+    {
+      "name": "调节因子配置",
+      "currentOwner": "M01 本体管理",
+      "reason": "属于 Published 模型规则定义，不是数据源。"
+    },
+    {
+      "name": "风险分档配置",
+      "currentOwner": "M01 本体管理",
+      "reason": "属于 Published 模型阈值定义，不是数据源。"
+    }
+  ]
+}

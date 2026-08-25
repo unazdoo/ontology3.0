@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "ofw.s004.deterministic-verification.v2",
+  "verificationRunId": "VER-S004-20260815-V2-001",
+  "owner": "M06",
+  "verifiedAt": "2026-08-15T15:05:00+08:00",
+  "scenarioContext": {
+    "baselineVersion": "v1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v2",
+    "scenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+    "formedAt": "2026-08-15T23:30:00.000Z"
+  },
+  "inputs": {
+    "publishedOntologyRef": "artifacts/ontology/published-resources-v2.json",
+    "c008Ref": "artifacts/ontology/c008-authoritative-facts-v2.json",
+    "evidencePackageRef": "artifacts/agent/evidence-package-v2.json",
+    "agentDraftRef": "artifacts/agent/draft-output-v2.json",
+    "reportDefinitionRef": "artifacts/report/report-definition-v2.json"
+  },
+  "checks": [
+    {
+      "checkId": "VER-V2-BASELINE-CONTEXT",
+      "result": "PASS",
+      "detail": "基线版本、冻结快照、场景版本和scenarioRunId一致。"
+    },
+    {
+      "checkId": "VER-V2-PUBLISHED-LIFECYCLE",
+      "result": "PASS",
+      "detail": "C008只绑定Published本体及同一T019指针。"
+    },
+    {
+      "checkId": "VER-V2-C008-IDENTITY",
+      "result": "PASS",
+      "detail": "C008、证据包和报告稳定身份一致。"
+    },
+    {
+      "checkId": "VER-V2-EVIDENCE-PACKAGE-OWNER",
+      "result": "PASS",
+      "detail": "固定证据包由M06报告中心拥有，M05报告Agent仅按锁定合同消费。"
+    },
+    {
+      "checkId": "VER-V2-EVIDENCE-HASH-PUBLISHED",
+      "result": "PASS",
+      "detail": "固定证据包锁定的Published本体哈希与实际文件一致。"
+    },
+    {
+      "checkId": "VER-V2-EVIDENCE-HASH-C008",
+      "result": "PASS",
+      "detail": "固定证据包锁定的C008哈希与实际文件一致。"
+    },
+    {
+      "checkId": "VER-V2-NO-RAW-INPUT-REF",
+      "result": "PASS",
+      "detail": "正式构建输入仅为Published本体、C008、固定证据包、结构化草稿、报告定义和人工确认。"
+    },
+    {
+      "checkId": "VER-V2-SECTION-ORDER",
+      "result": "PASS",
+      "detail": "权威示例的封面、五部分及数据来源顺序完整。"
+    },
+    {
+      "checkId": "VER-V2-FORMAL-PAGE-SYSTEM",
+      "result": "PASS",
+      "detail": "正式PDF使用A4纵向页面，并固定2026-08-15创建及修改日期。"
+    },
+    {
+      "checkId": "VER-V2-OPERATIONS-FOUR-SUBSECTIONS",
+      "result": "PASS",
+      "detail": "第二部分严格包含四个权威小节。"
+    },
+    {
+      "checkId": "VER-V2-RISK-THEMES",
+      "result": "PASS",
+      "detail": "第四部分严格使用四个权威风险主题。"
+    },
+    {
+      "checkId": "VER-V2-OWNERSHIP-COMPLETE",
+      "result": "PASS",
+      "detail": "第一部分包含股权结构、前十大股东及质押冻结事实。"
+    },
+    {
+      "checkId": "VER-V2-THREE-FULL-STATEMENTS",
+      "result": "PASS",
+      "detail": "第三部分包含权威示例列示的三年完整资产负债表、利润表和现金流量表。"
+    },
+    {
+      "checkId": "VER-V2-FOURTEEN-METRICS",
+      "result": "PASS",
+      "detail": "14项财务指标均包含2023、2024、2025三年结果。"
+    },
+    {
+      "checkId": "VER-V2-METRIC-RECALCULATION",
+      "result": "PASS",
+      "detail": "14项×3年指标已从C008 Published事实确定性复算一致。"
+    },
+    {
+      "checkId": "VER-V2-WORKING-CAPITAL-CALCULATION",
+      "result": "PASS",
+      "detail": "营运资金周转次数、营运资金量和新增流动资金贷款额度按权威示例精度确定性复算一致。"
+    },
+    {
+      "checkId": "VER-V2-DRAFT-EVIDENCE-BOUNDARY",
+      "result": "PASS",
+      "detail": "Agent草稿全部声明的证据均来自固定证据包。"
+    },
+    {
+      "checkId": "VER-V2-AGENT-DECISION-BOUNDARY",
+      "result": "PASS",
+      "detail": "Agent与Rule均未生成授信结论、额度、利率、条件或风险可控判断。"
+    }
+  ],
+  "status": "PASS",
+  "publicationEligible": true,
+  "humanConfirmationConsumedDuringVerification": false
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "ofw.report-template.download.v1",
+  "templateId": "RT-S004-PREFLIGHT-002",
+  "templateVersion": "2.0.0",
+  "name": "财务公司贷款贷前调查报告模板",
+  "owner": "M06",
+  "status": "ENABLED",
+  "baselineVersion": "v1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "formalBusinessSubject": "财务公司",
+  "borrowerScope": "GROUP_MEMBER_ONLY",
+  "formalOutputs": ["CONTROLLED_HTML", "SAME_SOURCE_PDF"],
+  "docxOutput": "NOT_IN_PHASE_ONE",
+  "humanConfirmationPolicy": {
+    "displayLabel": "【需人工确认】",
+    "aiDraftLabel": "AI 建议（基于已固化资料与系统事实生成）",
+    "requiredFor": ["风险可控性判断", "调查意见", "授信结论", "额度", "期限", "利率", "授信条件", "发布授权"],
+    "prohibitedAutomation": ["自动授信决定", "自动审批", "自动发布", "自动创建 Action Request"]
+  },
+  "sections": [
+    { "order": 0, "anchor": "report-cover", "title": "贷前调查报告" },
+    { "order": 1, "anchor": "sec-01-borrower-evaluation", "title": "第一部分 借款人评价（工商信息）" },
+    { "order": 2, "anchor": "sec-02-operations", "title": "第二部分 借款人经营情况" },
+    { "order": 3, "anchor": "sec-03-financial", "title": "第三部分 借款人财务情况" },
+    { "order": 4, "anchor": "sec-04-risk", "title": "第四部分 借款风险分析", "requiresHumanConfirmation": true },
+    { "order": 5, "anchor": "sec-05-credit-conclusion", "title": "第五部分 授信结论", "requiresHumanConfirmation": true },
+    { "order": 6, "anchor": "sec-06-data-sources", "title": "数据来源" }
+  ],
+  "downloads": {
+    "html": "RT-S004-PREFLIGHT-002-v2.0.0.html",
+    "json": "RT-S004-PREFLIGHT-002-v2.0.0.json"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "ofw.s003.m01.evaluation-run.v1",
+  "evaluationRunId": "S003-M01-EVALUATION-RUN-20260815-001",
+  "evaluationRunVersion": "1.0.0",
+  "status": "succeeded",
+  "immutable": true,
+  "runMode": "first-formal-evaluation",
+  "startedAt": "2026-08-15T13:30:00.000Z",
+  "completedAt": "2026-08-15T13:30:00.000Z",
+  "owner": "M01 本体管理",
+  "businessOwner": "财务公司",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "sourceScenarioRunId": "S003-RUN-20260815123937016-96a195ed3f4c",
+  "newScenarioRunCreated": true,
+  "assessmentAt": "2025-12-31",
+  "deterministic": true,
+  "idempotencyKey": "914b37d3d89cd8aaba8a078ba95186bb57ac6cfb607bfb6fac7bde27190f970e",
+  "inputs": {
+    "publishedPointer": {
+      "ref": "resources/m01/published-pointer.v1.json",
+      "sha256": "d6f108423e2ae5010dfb1ebb2522fca0aa62f758ba99f31f4bf22b412b66767e"
+    },
+    "formalCandidate": {
+      "id": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+      "version": "1.0.0",
+      "ref": "resources/m02/formal-candidate-data-asset.v1.json",
+      "sha256": "4c3cacb90bc41b8a75b90e8359b2bf55a80d0b7d0e2e9c0b8e5b3cc39eb9894a"
+    },
+    "humanInput": {
+      "id": "S003-T053-INPUT-20251231-v1",
+      "version": "1.0.0",
+      "ref": "resources/m02/human-input-snapshot.v1.json",
+      "sha256": "6cf3798465875855a2a0b5c3f46eed5d92c353def0953ed758cb75a046f59c64"
+    },
+    "qualityResult": {
+      "id": "S003-M02-QUALITY-20251231-v1",
+      "ref": "resources/m02/quality-result.v1.json",
+      "sha256": "f6c7fd943eef46d1add40efd8f0d824f57e2ec54ca042ebae74b494502dd3230"
+    }
+  },
+  "outputs": {
+    "c035Results": {
+      "id": "S003-C035-RISK-RESULTS-20251231-v1",
+      "version": "1.0.0",
+      "ref": "resources/m01/c035-risk-results.v1.json",
+      "sha256": "10e8ca2284abaaf680b549b6da3c5374ac6168a5e9b4bbe6d0abbcdb864b6153"
+    },
+    "publishedFacts": {
+      "id": "S003-PUBLISHED-RISK-FACTS-20251231-v1",
+      "version": "1.0.0",
+      "ref": "resources/m01/published-risk-facts.v1.json",
+      "sha256": "8d31823a37c2b4949d01b5a2d2744607bddb7f9c2ee54e2e3c8e9acfebe74099"
+    }
+  },
+  "counts": {
+    "enterprisesEvaluated": 21,
+    "c035Results": 21,
+    "publishedFacts": 21,
+    "dispositionCandidates": 9,
+    "actionRequestsCreated": 0,
+    "todosCreated": 0,
+    "notificationsDispatched": 0,
+    "reportsGenerated": 0
+  },
+  "sideEffectPolicy": {
+    "dispositionCandidatesOnly": true,
+    "requiresHumanConfirmation": true,
+    "automaticActionRequestCreation": false,
+    "automaticTodoCreation": false,
+    "externalDispatch": false
+  }
+}

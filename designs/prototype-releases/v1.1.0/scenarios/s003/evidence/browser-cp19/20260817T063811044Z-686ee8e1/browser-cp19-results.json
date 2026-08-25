@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp19-result.v1",
+  "runId": "20260817T063811044Z-686ee8e1",
+  "formedAt": "2026-08-17T06:38:11.044Z",
+  "origin": "http://127.0.0.1:4333",
+  "formalSourceScenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+  "browserVersion": "149.0.7827.55",
+  "cases": [
+    {
+      "id": "shell-and-modules",
+      "status": "failed",
+      "durationMs": 6346,
+      "error": {
+        "name": "AssertionError",
+        "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'factorInputSourceRecord is not defined',\n+   'factorInputSourceRecord is not defined',\n+   'factorInputSourceRecord is not defined'\n+ ]\n- []\n",
+        "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'factorInputSourceRecord is not defined',\n+   'factorInputSourceRecord is not defined',\n+   'factorInputSourceRecord is not defined'\n+ ]\n- []\n\n    at assertClean (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:65:10)\n    at caseShellAndModules (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:209:3)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:873:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:901:16)"
+      }
+    },
+    {
+      "id": "m02-native",
+      "status": "failed",
+      "durationMs": 1267,
+      "error": {
+        "name": "AssertionError",
+        "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'factorInputSourceRecord is not defined'\n+ ]\n- []\n",
+        "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'factorInputSourceRecord is not defined'\n+ ]\n- []\n\n    at assertClean (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:65:10)\n    at caseM02Native (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:356:3)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:873:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:901:16)"
+      }
+    },
+    {
+      "id": "m01-canvas",
+      "status": "failed",
+      "durationMs": 496,
+      "error": {
+        "name": "AssertionError",
+        "message": "Expected values to be strictly equal:\n\n11 !== 18\n",
+        "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n11 !== 18\n\n    at caseM01Canvas (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:229:10)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:873:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:901:16)"
+      }
+    },
+    {
+      "id": "m01-published-config",
+      "status": "failed",
+      "durationMs": 672,
+      "error": {
+        "name": "AssertionError",
+        "message": "The input did not match the regular expression /一期不设置复核人|财务公司维护/. Input:\n\n'产品\\n' +\n  '语义资产\\n' +\n  'S003\\n' +\n  '债务风险监测\\n' +\n  '已发布本体\\n' +\n  '企业债务风险评估模型\\n' +\n  '\\n' +\n  'V1.0.1 · 精确已发布语义版本\\n' +\n  '\\n' +\n  '返回本体详情\\n' +\n  '创建修订草稿\\n' +\n  '精确语义版本\\n' +\n  'V1.0.1\\n' +\n  '版本稳定标识\\n' +\n  'S003-M01-DEBT-RISK-V1\\n' +\n  '发布状态\\n' +\n  '已发布\\n' +\n  '业务有效状态\\n' +\n  '有效\\n' +\n  '发布时数据映射\\n' +\n  'S003 数据与模型配置已锁定\\n' +\n  '正式使用状态\\n' +\n  '当前正式使用\\n' +\n  '业务生效\\n' +\n  '2026-08-15 13:30:00.000Z\\n' +\n  '发布时间\\n' +\n  '2026-08-15T13:30:00.000Z\\n' +\n  '适用场景\\n' +\n  'S003 债务风险监测\\n' +\n  '版本概览\\n' +\n  '资源与模型\\n' +\n  '在画布中查看\\n' +\n  '数据与消费\\n' +\n  '更新与回退\\n' +\n  '记录与证据\\n' +\n  '模型配置\\n' +\n  '债务风险监测模型配置\\n' +\n  '\\n' +\n  '统一维护企业因子、调节因子、评分权重和风险分档。\\n' +\n  '\\n' +\n  '草稿服务可写\\n' +\n  '已发布模型\\n' +\n  'V1.0.1\\n' +\n  'S003-M01-DEBT-RISK-PKG\\n' +\n  '配置责任人\\n' +\n  '财务公司\\n' +\n  'M01 管理版本与发布\\n' +\n  '企业因子\\n' +\n  '21 家 × 6 项\\n' +\n  '随模型版本统一生效\\n' +\n  '财务数据\\n' +\n  'S003-T007-FORMAL-CANDIDATE-20251231-v1\\n' +\n  '2025-12-31\\n' +\n  '配置总览\\n' +\n  '企业因子配置\\n' +\n  '调节因子配置\\n' +\n  '评分权重\\n' +\n  '风险分档配置\\n' +\n  '风险分档配置\\n' +\n  '\\n' +\n  '维护绿、黄、红、黑四档阈值；四档必须连续覆盖 0—100，无重叠、无空档。\\n' +\n  '\\n' +\n  'GREEN\\n' +\n  '绿灯\\n' +\n  '下界（含）\\n' +\n  '上界（不含）\\n' +\n  'YELLOW\\n' +\n  '黄灯\\n' +\n  '下界（含）\\n' +\n  '上界（不含）\\n' +\n  'RED\\n' +\n  '红灯\\n' +\n  '下界（含）\\n' +\n  '上界（不含）\\n' +\n  'BLACK\\n' +\n  '黑灯\\n' +\n  '下界（含）\\n' +\n  '上界（不含）\\n' +\n  '配置生效\\n' +\n  '\\n' +\n  '所有页签共用同一模型草稿和已发布生命周期。\\n' +\n  '\\n' +\n  '草稿服务可写\\n' +\n  '1\\n' +\n  '编辑并保存模型草稿\\n' +\n  '2\\n' +\n  '校验企业因子与模型参数\\n' +\n  '3\\n' +\n  '发布新的模型版本\\n' +\n  '4\\n' +\n  '驾驶舱选择版本并快速重跑\\n' +\n  '放弃未发布修改\\n' +\n  '保存模型草稿\\n' +\n  '校验模型配置\\n' +\n  '发布模型版本\\n' +\n  '\\n' +\n  '发布只切换模型权威指针，不自动重算企业评分；快速重跑会创建新的 scenarioRunId，既有运行、报告和行动申请保持不变。'\n",
+        "stack": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /一期不设置复核人|财务公司维护/. Input:\n\n'产品\\n' +\n  '语义资产\\n' +\n  'S003\\n' +\n  '债务风险监测\\n' +\n  '已发布本体\\n' +\n  '企业债务风险评估模型\\n' +\n  '\\n' +\n  'V1.0.1 · 精确已发布语义版本\\n' +\n  '\\n' +\n  '返回本体详情\\n' +\n  '创建修订草稿\\n' +\n  '精确语义版本\\n' +\n  'V1.0.1\\n' +\n  '版本稳定标识\\n' +\n  'S003-M01-DEBT-RISK-V1\\n' +\n  '发布状态\\n' +\n  '已发布\\n' +\n  '业务有效状态\\n' +\n  '有效\\n' +\n  '发布时数据映射\\n' +\n  'S003 数据与模型配置已锁定\\n' +\n  '正式使用状态\\n' +\n  '当前正式使用\\n' +\n  '业务生效\\n' +\n  '2026-08-15 13:30:00.000Z\\n' +\n  '发布时间\\n' +\n  '2026-08-15T13:30:00.000Z\\n' +\n  '适用场景\\n' +\n  'S003 债务风险监测\\n' +\n  '版本概览\\n' +\n  '资源与模型\\n' +\n  '在画布中查看\\n' +\n  '数据与消费\\n' +\n  '更新与回退\\n' +\n  '记录与证据\\n' +\n  '模型配置\\n' +\n  '债务风险监测模型配置\\n' +\n  '\\n' +\n  '统一维护企业因子、调节因子、评分权重和风险分档。\\n' +\n  '\\n' +\n  '草稿服务可写\\n' +\n  '已发布模型\\n' +\n  'V1.0.1\\n' +\n  'S003-M01-DEBT-RISK-PKG\\n' +\n  '配置责任人\\n' +\n  '财务公司\\n' +\n  'M01 管理版本与发布\\n' +\n  '企业因子\\n' +\n  '21 家 × 6 项\\n' +\n  '随模型版本统一生效\\n' +\n  '财务数据\\n' +\n  'S003-T007-FORMAL-CANDIDATE-20251231-v1\\n' +\n  '2025-12-31\\n' +\n  '配置总览\\n' +\n  '企业因子配置\\n' +\n  '调节因子配置\\n' +\n  '评分权重\\n' +\n  '风险分档配置\\n' +\n  '风险分档配置\\n' +\n  '\\n' +\n  '维护绿、黄、红、黑四档阈值；四档必须连续覆盖 0—100，无重叠、无空档。\\n' +\n  '\\n' +\n  'GREEN\\n' +\n  '绿灯\\n' +\n  '下界（含）\\n' +\n  '上界（不含）\\n' +\n  'YELLOW\\n' +\n  '黄灯\\n' +\n  '下界（含）\\n' +\n  '上界（不含）\\n' +\n  'RED\\n' +\n  '红灯\\n' +\n  '下界（含）\\n' +\n  '上界（不含）\\n' +\n  'BLACK\\n' +\n  '黑灯\\n' +\n  '下界（含）\\n' +\n  '上界（不含）\\n' +\n  '配置生效\\n' +\n  '\\n' +\n  '所有页签共用同一模型草稿和已发布生命周期。\\n' +\n  '\\n' +\n  '草稿服务可写\\n' +\n  '1\\n' +\n  '编辑并保存模型草稿\\n' +\n  '2\\n' +\n  '校验企业因子与模型参数\\n' +\n  '3\\n' +\n  '发布新的模型版本\\n' +\n  '4\\n' +\n  '驾驶舱选择版本并快速重跑\\n' +\n  '放弃未发布修改\\n' +\n  '保存模型草稿\\n' +\n  '校验模型配置\\n' +\n  '发布模型版本\\n' +\n  '\\n' +\n  '发布只切换模型权威指针，不自动重算企业评分；快速重跑会创建新的 scenarioRunId，既有运行、报告和行动申请保持不变。'\n\n    at caseM01PublishedAndConfig (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:389:10)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:873:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:901:16)"
+      }
+    },
+    {
+      "id": "m03-m04-m05",
+      "status": "failed",
+      "durationMs": 64152,
+      "error": {
+        "name": "TimeoutError",
+        "message": "locator.waitFor: Timeout 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '提新问题', exact: true }).first() to be visible\u001b[22m\n",
+        "stack": "locator.waitFor: Timeout 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '提新问题', exact: true }).first() to be visible\u001b[22m\n\n    at caseM03M04M05 (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:429:79)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:873:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:901:16)"
+      }
+    },
+    {
+      "id": "dashboard-and-report",
+      "status": "failed",
+      "durationMs": 60637,
+      "error": {
+        "name": "AssertionError",
+        "message": "The input did not match the regular expression /#\\/reports\\/s003\\?/. Input:\n\n'http://127.0.0.1:4333/report-center/review-lifecycle/index.html?prototypeBuild=20260817-30-cp18&scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/dashboard/s003'\n",
+        "stack": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /#\\/reports\\/s003\\?/. Input:\n\n'http://127.0.0.1:4333/report-center/review-lifecycle/index.html?prototypeBuild=20260817-30-cp18&scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260815133000000-c03503000001&formedAt=2026-08-15T13%3A30%3A00.000Z&status=active&contextCreatedAt=2026-08-15T13%3A30%3A00.000Z&contextStatus=active&scenarioFormedAt=2026-08-15T13%3A30%3A00.000Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/dashboard/s003'\n\n    at caseDashboardAndReport (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:531:10)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:873:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:901:16)"
+      }
+    },
+    {
+      "id": "dashboard-action-and-config",
+      "status": "failed",
+      "durationMs": 5058,
+      "error": {
+        "name": "Error",
+        "message": "locator.click: Error: strict mode violation: getByRole('button', { name: '查看企业风险报告', exact: true }) resolved to 2 elements:\n    1) <button type=\"button\" class=\"dc-btn secondary sm\">…</button> aka getByRole('button', { name: '查看企业风险报告' }).first()\n    2) <button type=\"button\" class=\"dc-btn secondary sm\">…</button> aka getByRole('button', { name: '查看企业风险报告' }).nth(1)\n\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '查看企业风险报告', exact: true })\u001b[22m\n",
+        "stack": "locator.click: Error: strict mode violation: getByRole('button', { name: '查看企业风险报告', exact: true }) resolved to 2 elements:\n    1) <button type=\"button\" class=\"dc-btn secondary sm\">…</button> aka getByRole('button', { name: '查看企业风险报告' }).first()\n    2) <button type=\"button\" class=\"dc-btn secondary sm\">…</button> aka getByRole('button', { name: '查看企业风险报告' }).nth(1)\n\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '查看企业风险报告', exact: true })\u001b[22m\n\n    at caseDashboardActionAndConfig (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:698:73)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:873:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:901:16)"
+      }
+    },
+    {
+      "id": "old-projection-compatibility",
+      "status": "passed",
+      "durationMs": 807,
+      "details": {
+        "oldProjectionSchema": "v999",
+        "status": "healthy",
+        "retiredProjectionPreserved": true,
+        "publishedReadReady": true
+      }
+    },
+    {
+      "id": "quick-rerun-and-history",
+      "status": "failed",
+      "durationMs": 922,
+      "error": {
+        "name": "AssertionError",
+        "message": "The input did not match the regular expression /工作投影/. Input:\n\n'待发布重跑 · 2025-12-31 · 模型 V1.0.1'\n",
+        "stack": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /工作投影/. Input:\n\n'待发布重跑 · 2025-12-31 · 模型 V1.0.1'\n\n    at caseQuickRerunAndHistory (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:772:10)\n    at runNextTicks (node:internal/process/task_queues:65:5)\n    at process.processImmediate (node:internal/timers:453:9)\n    at process.callbackTrampoline (node:internal/async_hooks:130:17)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:873:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:901:16)"
+      }
+    },
+    {
+      "id": "s001-isolation",
+      "status": "passed",
+      "durationMs": 3791,
+      "details": {
+        "checked": [
+          {
+            "module": "data",
+            "url": "http://127.0.0.1:4333/data-engineering-prototype-review/review-v3/%E6%96%B9%E6%A1%88B2.html?prototypeBuild=20260817-30-cp18&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260817064031664-d3a708c0f71e&formedAt=2026-08-17T06%3A40%3A31.664Z&status=active&contextCreatedAt=2026-08-17T06%3A40%3A31.664Z&contextStatus=active&scenarioFormedAt=2026-08-17T06%3A40%3A31.664Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/resources"
+          },
+          {
+            "module": "ontology",
+            "url": "http://127.0.0.1:4333/ontology-management-review/canvas-first/index.html?prototypeBuild=20260817-30-cp18&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260817064031664-d3a708c0f71e&formedAt=2026-08-17T06%3A40%3A31.664Z&status=active&contextCreatedAt=2026-08-17T06%3A40%3A31.664Z&contextStatus=active&scenarioFormedAt=2026-08-17T06%3A40%3A31.664Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#modeling"
+          },
+          {
+            "module": "query",
+            "url": "http://127.0.0.1:4333/intelligent-query-prototype/review-next/conversation-workspace/index.html?prototypeBuild=20260817-30-cp18&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260817064031664-d3a708c0f71e&formedAt=2026-08-17T06%3A40%3A31.664Z&status=active&contextCreatedAt=2026-08-17T06%3A40%3A31.664Z&contextStatus=active&scenarioFormedAt=2026-08-17T06%3A40%3A31.664Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/ask"
+          },
+          {
+            "module": "decision",
+            "url": "http://127.0.0.1:4333/decision-center-prototype/review-v2/action-portfolio.html?prototypeBuild=20260817-30-cp18&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260817064031664-d3a708c0f71e&formedAt=2026-08-17T06%3A40%3A31.664Z&status=active&contextCreatedAt=2026-08-17T06%3A40%3A31.664Z&contextStatus=active&scenarioFormedAt=2026-08-17T06%3A40%3A31.664Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#workbench"
+          },
+          {
+            "module": "agent",
+            "url": "http://127.0.0.1:4333/agent-application/Agent%E5%BA%94%E7%94%A8.html?prototypeBuild=20260817-30-cp18&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260817064031664-d3a708c0f71e&formedAt=2026-08-17T06%3A40%3A31.664Z&status=active&contextCreatedAt=2026-08-17T06%3A40%3A31.664Z&contextStatus=active&scenarioFormedAt=2026-08-17T06%3A40%3A31.664Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/evidence"
+          },
+          {
+            "module": "report",
+            "url": "http://127.0.0.1:4333/report-center/review-lifecycle/index.html?prototypeBuild=20260817-30-cp18&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260817064031664-d3a708c0f71e&formedAt=2026-08-17T06%3A40%3A31.664Z&status=active&contextCreatedAt=2026-08-17T06%3A40%3A31.664Z&contextStatus=active&scenarioFormedAt=2026-08-17T06%3A40%3A31.664Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/lifecycle"
+          }
+        ]
+      }
+    }
+  ],
+  "totals": {
+    "cases": 10,
+    "passed": 2,
+    "failed": 8
+  },
+  "checkpointCreated": false,
+  "acceptanceReady": false
+}

@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "ofw.s003.m01.model-configuration.v1",
+  "configurationId": "S003-M01-MODEL-CONFIGURATION",
+  "configurationVersion": "1.1.0",
+  "status": "published",
+  "moduleId": "M01",
+  "moduleOwner": "本体管理",
+  "businessOwner": "财务公司",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001"
+  },
+  "publishedModelRef": "resources/m01/published-pointer.v1.json#/activeTarget/publishedSnapshot",
+  "stableRoute": "#published/version?id={publishedVersionId}&tab=s003-model-config&configTab={sectionId}",
+  "sections": [
+    {
+      "sectionId": "overview",
+      "label": "配置总览",
+      "groupId": "overview",
+      "groupLabel": "配置总览",
+      "owner": "M01 本体管理"
+    },
+    {
+      "sectionId": "factor-input",
+      "label": "企业因子配置",
+      "groupId": "enterprise-factor",
+      "groupLabel": "企业因子配置",
+      "owner": "M02 数据工程",
+      "businessOwner": "财务公司",
+      "integrationMode": "embedded-m02-owned-service",
+      "inputResourceId": "S003-M02-SOURCE-ENTERPRISE-FACTOR-INPUT",
+      "snapshotId": "S003-T053-INPUT-20251231-v1",
+      "managementSurface": "M01 模型配置",
+      "visibleInDataSourceDirectory": false,
+      "serviceOperations": [
+        "getS003FactorInputs",
+        "saveS003FactorInputs",
+        "validateS003FactorInputs",
+        "publishS003FactorInputs"
+      ]
+    },
+    {
+      "sectionId": "factors",
+      "label": "调节因子配置",
+      "groupId": "adjustment-factor",
+      "groupLabel": "调节因子配置",
+      "owner": "财务公司",
+      "dataPointer": "/activeTarget/publishedSnapshot/factors"
+    },
+    {
+      "sectionId": "weights",
+      "label": "评分权重",
+      "groupId": "scoring-weight",
+      "groupLabel": "评分权重",
+      "owner": "财务公司",
+      "dataPointer": "/activeTarget/publishedSnapshot/weights"
+    },
+    {
+      "sectionId": "tiers",
+      "label": "风险分档配置",
+      "groupId": "risk-band",
+      "groupLabel": "风险分档配置",
+      "owner": "财务公司",
+      "dataPointer": "/activeTarget/publishedSnapshot/riskTiers"
+    },
+    {
+      "sectionId": "actions",
+      "label": "Action Type",
+      "groupId": "action-trigger",
+      "groupLabel": "行动触发",
+      "owner": "财务公司",
+      "dataPointer": "resources/m01/action-type-catalog.v1.json#/actionTypes"
+    },
+    {
+      "sectionId": "semantics",
+      "label": "固定规则",
+      "groupId": "fixed-semantics",
+      "groupLabel": "固定业务语义",
+      "owner": "财务公司",
+      "dataPointer": "/activeTarget/publishedSnapshot/assessment"
+    },
+    {
+      "sectionId": "validation",
+      "label": "校验与发布",
+      "groupId": "lifecycle",
+      "groupLabel": "发布与版本",
+      "owner": "M01 本体管理"
+    }
+  ],
+  "boundaries": [
+    "企业人工取值由 M02 独立版本化；M01 统一配置页只编排 M02-owned 保存、校验与发布服务，不接管数据 Owner。",
+    "因子系数、评分权重和风险阈值只属于 M01 Published 模型定义。",
+    "模型配置不得写入 Python 管道参数或数据质量规则。"
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "schemaVersion": "ofw.c034.checkpoint.v1",
+  "checkpointId": "CP-S002-20260815010500000-f7b8485fb5b9",
+  "checkpointNode": "initial-configured",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "parentVersion": "1.0.3",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815010000000-a283fabf23f6",
+    "formedAt": "2026-08-15T01:00:00.000Z",
+    "status": "active"
+  },
+  "sourceScenarioRunId": "S002-RUN-20260815010000000-a283fabf23f6",
+  "createdAt": "2026-08-15T01:05:00.000Z",
+  "immutable": true,
+  "code": {
+    "prototypeVersion": "1.1.0",
+    "buildVersion": "S002-v1+c238e1068abb",
+    "entryRef": "designs/prototype-work/v1.1.0/scenarios/s002/index.html",
+    "treeSha256": "c238e1068abbe277296b6963e461f9911cdbbdf1a2963304a011019a245ea270"
+  },
+  "modules": {
+    "M01": {
+      "moduleId": "M01",
+      "moduleVersion": "S002-M01-1.0.0",
+      "exportId": "M01-EXPORT-CP01-ad476dcd0d4a",
+      "exportRef": "evidence/CP01-initial-configured/M01-state-export.json",
+      "exportSha256": "ad476dcd0d4a89d097b381578ee7be40e64f3d8c76ea5b11c15325e496386ad3",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:05:00.000Z",
+        "evidenceRef": "evidence/CP01-initial-configured/M01-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M02": {
+      "moduleId": "M02",
+      "moduleVersion": "S002-M02-1.0.0",
+      "exportId": "M02-EXPORT-CP01-3d386e704ca2",
+      "exportRef": "evidence/CP01-initial-configured/M02-state-export.json",
+      "exportSha256": "3d386e704ca26b8c25c209597fb157495de26f8effef747990deb1059cc5d1fe",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:05:00.000Z",
+        "evidenceRef": "evidence/CP01-initial-configured/M02-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M03": {
+      "moduleId": "M03",
+      "moduleVersion": "S002-M03-1.0.0",
+      "exportId": "M03-EXPORT-CP01-859dad884a83",
+      "exportRef": "evidence/CP01-initial-configured/M03-state-export.json",
+      "exportSha256": "859dad884a83bca648ad178b1a908f04ad562456db59949b7f34aed20dc34e72",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:05:00.000Z",
+        "evidenceRef": "evidence/CP01-initial-configured/M03-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M04": {
+      "moduleId": "M04",
+      "moduleVersion": "S002-M04-1.0.0",
+      "exportId": "M04-EXPORT-CP01-4236c3a1714e",
+      "exportRef": "evidence/CP01-initial-configured/M04-state-export.json",
+      "exportSha256": "4236c3a1714ea6b6f4c5b6271f3bd98d828a53ebfb9ac92018c92b0c56a03fa3",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:05:00.000Z",
+        "evidenceRef": "evidence/CP01-initial-configured/M04-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M05": {
+      "moduleId": "M05",
+      "moduleVersion": "S002-M05-1.0.0",
+      "exportId": "M05-EXPORT-CP01-ce8bc82771f0",
+      "exportRef": "evidence/CP01-initial-configured/M05-state-export.json",
+      "exportSha256": "ce8bc82771f065d3f8706a8abdcc92784e576e1df5fca91abae7ada505977efb",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:05:00.000Z",
+        "evidenceRef": "evidence/CP01-initial-configured/M05-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M06": {
+      "moduleId": "M06",
+      "moduleVersion": "S002-M06-1.0.0",
+      "exportId": "M06-EXPORT-CP01-b22b5ba9af86",
+      "exportRef": "evidence/CP01-initial-configured/M06-state-export.json",
+      "exportSha256": "b22b5ba9af86591a3a2c80f6cbf50af275f45eb055a43c716c5d394f493d6659",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-15T01:05:00.000Z",
+        "evidenceRef": "evidence/CP01-initial-configured/M06-owner-receipt.json"
+      },
+      "restoreMode": "isolated-clone"
+    }
+  },
+  "stateSections": {
+    "data": {
+      "status": "empty",
+      "reason": "数据接入尚未发生；M02 已导出可恢复空状态",
+      "items": []
+    },
+    "semantics": {
+      "status": "empty",
+      "reason": "Published 切换尚未发生；M01 已导出可恢复空状态",
+      "items": []
+    },
+    "configurations": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "S002场景包",
+          "resourceId": "S002-CONFIG-CP01",
+          "version": "S002-CONFIG-1.0.0",
+          "ref": "evidence/CP01-initial-configured/scenario-configuration.json",
+          "sha256": "2fec9655811c68096d59648d4c5ee530ad05414b6aafe871ce293b16aa381dda",
+          "formedAt": "2026-08-15T01:05:00.000Z"
+        }
+      ]
+    },
+    "results": {
+      "status": "empty",
+      "reason": "问数或 Agent 运行尚未发生；结果分区为空",
+      "items": []
+    },
+    "reports": {
+      "status": "empty",
+      "reason": "报告与预算驾驶舱尚未形成；报告分区为空",
+      "items": []
+    },
+    "decisions": {
+      "status": "empty",
+      "reason": "Action Request、人工确认和平台内待办尚未形成；决策分区为空",
+      "items": []
+    },
+    "testFixtures": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "S002场景包",
+          "resourceId": "S002-FIXTURE-CP01",
+          "version": "S002-FIXTURE-1.0.0",
+          "ref": "evidence/CP01-initial-configured/test-fixture.json",
+          "sha256": "27cc5c568a69839ccf05853ba18d64bdca3fa1e1bea8a1fc9e407cd4b9e79180",
+          "formedAt": "2026-08-15T01:05:00.000Z"
+        }
+      ]
+    },
+    "featureFlags": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "平台公共层",
+          "resourceId": "S002-FLAGS-CP01",
+          "version": "S002-FLAGS-1.0.0",
+          "ref": "evidence/CP01-initial-configured/feature-flags.json",
+          "sha256": "b7dfc264b85fbda01e30e9b9e738891268912e61c1607bb266a795d8e5d5872d",
+          "formedAt": "2026-08-15T01:05:00.000Z"
+        }
+      ]
+    },
+    "evidence": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "平台公共层",
+          "resourceId": "S002-EVIDENCE-CP01",
+          "version": "S002-EVIDENCE-1.0.0",
+          "ref": "evidence/CP01-initial-configured/evidence-index.json",
+          "sha256": "c8120091416f44c5084d6a412b13260aa1694dd167549aee2e5b01311d1e415f",
+          "formedAt": "2026-08-15T01:05:00.000Z"
+        }
+      ]
+    }
+  },
+  "restoreReadiness": {
+    "status": "verified",
+    "verifiedAt": "2026-08-15T01:05:00.000Z",
+    "evidenceRef": "evidence/CP01-initial-configured/restore-validation.json"
+  },
+  "sideEffectPolicy": {
+    "allowHistoricalActionRequestReplay": false,
+    "allowHistoricalNotificationReplay": false,
+    "allowHistoricalApprovalReplay": false,
+    "allowHistoricalTodoReplay": false,
+    "allowExternalDispatch": false
+  }
+}

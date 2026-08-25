@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "ofw.s003.m04.decision-binding.v2",
+  "moduleId": "M04",
+  "moduleOwner": "决策中心",
+  "bindingId": "S003-M04-GENERIC-DECISION-BINDING",
+  "bindingVersion": "1.1.0",
+  "status": "active",
+  "supersedes": "resources/m04/decision-binding.v1.json",
+  "formedAt": "2026-08-17T16:30:00.000Z",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+    "formedAt": "2026-08-17T16:30:00.000Z",
+    "status": "active"
+  },
+  "uiMode": "reuse-generic-decision-center-no-dedicated-page",
+  "entry": "Action Request",
+  "candidatePolicy": "YELLOW_RED_BLACK_ONE_ALERT_PER_ENTERPRISE",
+  "requiresHumanConfirmation": true,
+  "confirmationActor": "成员单位债务风险接口人",
+  "todoTarget": "负责人待办",
+  "todoCreatedOnlyAfterRecipientConfirmation": true,
+  "multiLevelApproval": false,
+  "multiUserPermissionModel": false,
+  "automaticCreation": false,
+  "candidateRules": [
+    {
+      "when": "YELLOW",
+      "actionTypeId": "S003_RISK_FOLLOW_UP"
+    },
+    {
+      "when": "RED",
+      "actionTypeId": "S003_SPECIAL_DISPOSAL"
+    },
+    {
+      "when": "BLACK",
+      "actionTypeId": "S003_EMERGENCY_RESPONSE"
+    }
+  ],
+  "routing": {
+    "resourceRef": "resources/m04/enterprise-contact-routing.v1.json",
+    "required": true,
+    "missingRoutePolicy": "FAIL_CLOSED",
+    "target": "对应成员单位接口人的通用决策中心",
+    "fallbackToGroupAdministrator": false
+  },
+  "idempotencyKey": [
+    "scenarioRunId",
+    "enterpriseId",
+    "actionTypeId",
+    "assessmentAt",
+    "resultVersion"
+  ],
+  "historicalReplayAllowed": false,
+  "contracts": [
+    "C011",
+    "C017",
+    "C019",
+    "C033",
+    "C035"
+  ]
+}

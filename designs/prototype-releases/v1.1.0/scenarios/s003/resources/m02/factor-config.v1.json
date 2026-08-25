@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "ofw.s003.m02.factor-config-input.v1",
+  "resourceType": "manual-model-config-input",
+  "configKind": "factor-coefficients",
+  "sourceId": "S003-M02-SOURCE-FACTOR-CONFIG-20251231",
+  "configId": "S003-M02-FACTOR-CONFIG",
+  "configVersion": "1.0.0",
+  "lifecycleStatus": "published",
+  "immutable": true,
+  "formedAt": "2026-08-15T13:04:23.000Z",
+  "owner": "财务公司",
+  "moduleOwner": "M01 本体管理",
+  "inputOwner": "财务公司",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1"
+  },
+  "assessmentAt": "2025-12-31",
+  "factors": [
+    {"factorId":"credit-utilization","name":"融资能力（已用授信余额/授信总额）","tiers":[{"tierId":"ZERO","label":"融资使用率小于等于50%","coefficient":0},{"tierId":"MID","label":"融资使用率大于50%且小于等于80%","coefficient":-0.1},{"tierId":"HIGH","label":"融资使用率大于80%","coefficient":-0.2}]},
+    {"factorId":"guarantee","name":"担保情况","tiers":[{"tierId":"ZERO","label":"未涉及担保","coefficient":0},{"tierId":"EXTERNAL","label":"仅提供对外担保","coefficient":-0.05},{"tierId":"RECEIVED","label":"仅接受担保","coefficient":0.05}]},
+    {"factorId":"headquarters-support","name":"总部支持程度","tiers":[{"tierId":"FULL","label":"总部持股比例100%","coefficient":0.1},{"tierId":"HIGH","label":"总部持股比例75%以上且小于100%","coefficient":0.05},{"tierId":"ZERO","label":"总部持股比例50%以上且小于75%","coefficient":0},{"tierId":"LOW","label":"总部持股比例25%以上且小于50%","coefficient":-0.05},{"tierId":"VERY_LOW","label":"总部持股比例25%以下","coefficient":-0.1}]},
+    {"factorId":"electricity-price","name":"电价波动率","tiers":[{"tierId":"LOW","label":"电价变化率小于等于-15%","coefficient":-0.2},{"tierId":"MID","label":"电价变化率大于-15%且小于等于0","coefficient":-0.1},{"tierId":"ZERO","label":"电价变化率大于0","coefficient":0}]},
+    {"factorId":"litigation","name":"是否存在重大诉讼","tiers":[{"tierId":"ZERO","label":"诉讼标的小于净资产1%","coefficient":0},{"tierId":"MID","label":"诉讼标的为净资产1%至5%","coefficient":-0.05},{"tierId":"HIGH","label":"诉讼标的大于净资产5%","coefficient":-0.15}]},
+    {"factorId":"fund-gap","name":"资金余缺预警","tiers":[{"tierId":"ZERO","label":"无资金缺口","coefficient":0},{"tierId":"CURRENT","label":"当月资金余缺预警","coefficient":-0.3},{"tierId":"M1","label":"未来第一个月资金余缺预警","coefficient":-0.2},{"tierId":"M2","label":"未来第二个月资金余缺预警","coefficient":-0.1},{"tierId":"M3","label":"未来第三个月资金余缺预警","coefficient":-0.05}]}
+  ],
+  "versions": [
+    {"snapshotId":"S003-T053-FACTOR-CONFIG-20251231-v1","configVersion":"1.0.0","lifecycleStatus":"published","formedAt":"2026-08-15T13:04:23.000Z","owner":"财务公司"}
+  ],
+  "consumptionContract": "仅作为 M01 Published 模型配置输入；不进入 Python 管道参数或数据质量规则。"
+}

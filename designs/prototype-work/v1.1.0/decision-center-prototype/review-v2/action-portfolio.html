@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href="data:," />
+    <title>智财问策 · 决策中心</title>
+    <link rel="stylesheet" href="../../shared-type-scale.css?v=20260815-02" />
+    <link rel="stylesheet" href="shared/app.css?v=20260823-rc6-summary" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>window.DC_VARIANT = "portfolio";</script>
+    <script src="shared/vendor/lucide.min.js"></script>
+    <script src="shared/vendor/react.development.js"></script>
+    <script src="shared/vendor/react-dom.development.js"></script>
+    <script src="../../foundation/ofw-scenario-foundation.js?v=1.0.0"></script>
+    <script src="../../composite-resource-registry.js?v=20260823-09"></script>
+    <script src="shared/s003-adapter.compiled.js?v=20260819-40-performance"></script>
+    <script src="shared/portfolio-integration.js?v=20260823-15"></script>
+    <script>
+      (async () => {
+        const load = (src) => new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = src;
+          script.onload = resolve;
+          script.onerror = reject;
+          document.body.appendChild(script);
+        });
+        try {
+          await window.OFW_DECISION_PORTFOLIO.bootstrap();
+          await load("shared/data.compiled.js?v=20260823-rc8-state-v8");
+          await load("shared/components.compiled.js?v=20260822-01");
+          await load("shared/app.compiled.js?v=20260823-rc6-summary");
+        } catch (error) {
+          document.getElementById("root").innerHTML = `<main style="padding:32px;font:14px/1.7 -apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif"><h1>决策中心资源读取失败</h1><p>${String(error?.message || error)}</p><button onclick="location.reload()">重新读取</button></main>`;
+          console.error(error);
+        }
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1135 @@
+{
+  "schemaVersion": "ofw.s003.m01.runtime-export.v1",
+  "runtimeExportId": "S003-M01-RUNTIME-EXPORT-20260815-001",
+  "runtimeExportVersion": "1.0.0",
+  "status": "published-readonly-projection",
+  "immutable": true,
+  "formedAt": "2026-08-15T13:30:00.000Z",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "assessmentAt": "2025-12-31",
+  "authority": {
+    "publishedPointer": {
+      "ref": "resources/m01/published-pointer.v1.json",
+      "sha256": "d6f108423e2ae5010dfb1ebb2522fca0aa62f758ba99f31f4bf22b412b66767e"
+    },
+    "evaluationRun": {
+      "ref": "resources/m01/evaluation-run.v1.json",
+      "sha256": "c6cd7b3d9495e23ab6128619446afa2e79420d9d5f2ac00e2f3fd204980af010"
+    },
+    "c035Results": {
+      "ref": "resources/m01/c035-risk-results.v1.json",
+      "sha256": "10e8ca2284abaaf680b549b6da3c5374ac6168a5e9b4bbe6d0abbcdb864b6153"
+    },
+    "publishedFacts": {
+      "ref": "resources/m01/published-risk-facts.v1.json",
+      "sha256": "8d31823a37c2b4949d01b5a2d2744607bddb7f9c2ee54e2e3c8e9acfebe74099"
+    }
+  },
+  "workbenchProjection": {
+    "summary": {
+      "riskTierCounts": {
+        "GREEN": 16,
+        "YELLOW": 4,
+        "RED": 1,
+        "BLACK": 0
+      },
+      "categoryCounts": {
+        "新能源产业-风电": 13,
+        "在建企业": 3,
+        "环保": 4,
+        "核电": 1
+      },
+      "averageFinalScore": 52.23
+    },
+    "enterpriseRows": [
+      {
+        "enterpriseId": "S003-ENT-001",
+        "enterpriseName": "风电测试公司01",
+        "sector": "新能源",
+        "category": "新能源产业-风电",
+        "rawScore": 84.4,
+        "factorSum": -0.3,
+        "finalScore": 59.08,
+        "riskTier": {
+          "tierId": "GREEN",
+          "name": "绿灯",
+          "color": "#3f8f73",
+          "minInclusive": 40,
+          "maxExclusive": null
+        },
+        "lowestThree": [
+          {
+            "indicatorId": "-",
+            "name": "总资产收益率",
+            "score": 35.19
+          },
+          {
+            "indicatorId": "-",
+            "name": "应收账款周转率",
+            "score": 36.44
+          },
+          {
+            "indicatorId": "-",
+            "name": "销售毛利率",
+            "score": 39.46
+          }
+        ],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "APPLIED",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 0,
+        "dispositionCandidateIds": [],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-001",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-002",
+        "enterpriseName": "风电测试公司02",
+        "sector": "新能源",
+        "category": "新能源产业-风电",
+        "rawScore": 84.2,
+        "factorSum": 0.05,
+        "finalScore": 88.41,
+        "riskTier": {
+          "tierId": "GREEN",
+          "name": "绿灯",
+          "color": "#3f8f73",
+          "minInclusive": 40,
+          "maxExclusive": null
+        },
+        "lowestThree": [
+          {
+            "indicatorId": "-",
+            "name": "应收账款周转率",
+            "score": 36.32
+          },
+          {
+            "indicatorId": "-",
+            "name": "总资产收益率",
+            "score": 36.91
+          },
+          {
+            "indicatorId": "-",
+            "name": "销售毛利率",
+            "score": 41.26
+          }
+        ],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "APPLIED",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 0,
+        "dispositionCandidateIds": [],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-002",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-003",
+        "enterpriseName": "风电测试公司03",
+        "sector": "新能源",
+        "category": "新能源产业-风电",
+        "rawScore": 84.2,
+        "factorSum": -0.15,
+        "finalScore": 71.57,
+        "riskTier": {
+          "tierId": "GREEN",
+          "name": "绿灯",
+          "color": "#3f8f73",
+          "minInclusive": 40,
+          "maxExclusive": null
+        },
+        "lowestThree": [
+          {
+            "indicatorId": "-",
+            "name": "总资产收益率",
+            "score": 36.29
+          },
+          {
+            "indicatorId": "-",
+            "name": "应收账款周转率",
+            "score": 36.76
+          },
+          {
+            "indicatorId": "-",
+            "name": "销售毛利率",
+            "score": 39.58
+          }
+        ],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "APPLIED",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 0,
+        "dispositionCandidateIds": [],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-003",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-004",
+        "enterpriseName": "风电测试公司04",
+        "sector": "新能源",
+        "category": "新能源产业-风电",
+        "rawScore": 84.6,
+        "factorSum": -0.05,
+        "finalScore": 80.37,
+        "riskTier": {
+          "tierId": "GREEN",
+          "name": "绿灯",
+          "color": "#3f8f73",
+          "minInclusive": 40,
+          "maxExclusive": null
+        },
+        "lowestThree": [
+          {
+            "indicatorId": "-",
+            "name": "总资产收益率",
+            "score": 36.9
+          },
+          {
+            "indicatorId": "-",
+            "name": "销售毛利率",
+            "score": 40.19
+          },
+          {
+            "indicatorId": "-",
+            "name": "应收账款周转率",
+            "score": 41
+          }
+        ],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "APPLIED",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 0,
+        "dispositionCandidateIds": [],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-004",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-005",
+        "enterpriseName": "风电测试公司05",
+        "sector": "新能源",
+        "category": "新能源产业-风电",
+        "rawScore": 76.4,
+        "factorSum": -0.25,
+        "finalScore": 57.3,
+        "riskTier": {
+          "tierId": "GREEN",
+          "name": "绿灯",
+          "color": "#3f8f73",
+          "minInclusive": 40,
+          "maxExclusive": null
+        },
+        "lowestThree": [
+          {
+            "indicatorId": "-",
+            "name": "总资产收益率",
+            "score": 33.19
+          },
+          {
+            "indicatorId": "-",
+            "name": "应收账款周转率",
+            "score": 37.04
+          },
+          {
+            "indicatorId": "-",
+            "name": "销售毛利率",
+            "score": 42.96
+          }
+        ],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "APPLIED",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 0,
+        "dispositionCandidateIds": [],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-005",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-006",
+        "enterpriseName": "风电测试公司06",
+        "sector": "新能源",
+        "category": "新能源产业-风电",
+        "rawScore": 75.8,
+        "factorSum": -0.2,
+        "finalScore": 60.64,
+        "riskTier": {
+          "tierId": "GREEN",
+          "name": "绿灯",
+          "color": "#3f8f73",
+          "minInclusive": 40,
+          "maxExclusive": null
+        },
+        "lowestThree": [
+          {
+            "indicatorId": "-",
+            "name": "总资产收益率",
+            "score": 33.11
+          },
+          {
+            "indicatorId": "-",
+            "name": "应收账款周转率",
+            "score": 37.9
+          },
+          {
+            "indicatorId": "-",
+            "name": "销售毛利率",
+            "score": 43.21
+          }
+        ],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "APPLIED",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 0,
+        "dispositionCandidateIds": [],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-006",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-007",
+        "enterpriseName": "风电测试公司07",
+        "sector": "新能源",
+        "category": "新能源产业-风电",
+        "rawScore": 75.5,
+        "factorSum": -0.5,
+        "finalScore": 37.75,
+        "riskTier": {
+          "tierId": "YELLOW",
+          "name": "黄灯",
+          "color": "#c8902f",
+          "minInclusive": 25,
+          "maxExclusive": 40
+        },
+        "lowestThree": [
+          {
+            "indicatorId": "-",
+            "name": "总资产收益率",
+            "score": 32.88
+          },
+          {
+            "indicatorId": "-",
+            "name": "应收账款周转率",
+            "score": 36.87
+          },
+          {
+            "indicatorId": "-",
+            "name": "销售毛利率",
+            "score": 41.07
+          }
+        ],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "APPLIED",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 0,
+        "dispositionCandidateIds": [
+          "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-007-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+          "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-007-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0"
+        ],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-007",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-008",
+        "enterpriseName": "风电测试公司08",
+        "sector": "新能源",
+        "category": "新能源产业-风电",
+        "rawScore": 75.5,
+        "factorSum": -0.25,
+        "finalScore": 56.62,
+        "riskTier": {
+          "tierId": "GREEN",
+          "name": "绿灯",
+          "color": "#3f8f73",
+          "minInclusive": 40,
+          "maxExclusive": null
+        },
+        "lowestThree": [
+          {
+            "indicatorId": "-",
+            "name": "总资产收益率",
+            "score": 32.67
+          },
+          {
+            "indicatorId": "-",
+            "name": "应收账款周转率",
+            "score": 41.01
+          },
+          {
+            "indicatorId": "-",
+            "name": "销售毛利率",
+            "score": 45.01
+          }
+        ],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "APPLIED",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 0,
+        "dispositionCandidateIds": [],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-008",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-009",
+        "enterpriseName": "风电测试公司09",
+        "sector": "新能源",
+        "category": "新能源产业-风电",
+        "rawScore": 72.8,
+        "factorSum": -0.35,
+        "finalScore": 47.32,
+        "riskTier": {
+          "tierId": "GREEN",
+          "name": "绿灯",
+          "color": "#3f8f73",
+          "minInclusive": 40,
+          "maxExclusive": null
+        },
+        "lowestThree": [
+          {
+            "indicatorId": "-",
+            "name": "总资产收益率",
+            "score": 39.23
+          },
+          {
+            "indicatorId": "-",
+            "name": "盈利稳定性",
+            "score": 50
+          },
+          {
+            "indicatorId": "-",
+            "name": "销售毛利率",
+            "score": 51.42
+          }
+        ],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "APPLIED",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 0,
+        "dispositionCandidateIds": [
+          "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-009-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0"
+        ],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-009",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-010",
+        "enterpriseName": "风电测试公司10",
+        "sector": "新能源",
+        "category": "在建企业",
+        "rawScore": 60,
+        "factorSum": -0.1,
+        "finalScore": 54,
+        "riskTier": {
+          "tierId": "GREEN",
+          "name": "绿灯",
+          "color": "#3f8f73",
+          "minInclusive": 40,
+          "maxExclusive": null
+        },
+        "lowestThree": [],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "NOT_APPLICABLE",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 16,
+        "dispositionCandidateIds": [],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-010",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-011",
+        "enterpriseName": "风电测试公司11",
+        "sector": "新能源",
+        "category": "在建企业",
+        "rawScore": 60,
+        "factorSum": -0.1,
+        "finalScore": 54,
+        "riskTier": {
+          "tierId": "GREEN",
+          "name": "绿灯",
+          "color": "#3f8f73",
+          "minInclusive": 40,
+          "maxExclusive": null
+        },
+        "lowestThree": [],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "NOT_APPLICABLE",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 16,
+        "dispositionCandidateIds": [],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-011",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-012",
+        "enterpriseName": "风电测试公司12",
+        "sector": "新能源",
+        "category": "在建企业",
+        "rawScore": 60,
+        "factorSum": -0.1,
+        "finalScore": 54,
+        "riskTier": {
+          "tierId": "GREEN",
+          "name": "绿灯",
+          "color": "#3f8f73",
+          "minInclusive": 40,
+          "maxExclusive": null
+        },
+        "lowestThree": [],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "NOT_APPLICABLE",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 16,
+        "dispositionCandidateIds": [],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-012",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-013",
+        "enterpriseName": "风电测试公司13",
+        "sector": "新能源",
+        "category": "新能源产业-风电",
+        "rawScore": 62.8,
+        "factorSum": -0.3,
+        "finalScore": 43.96,
+        "riskTier": {
+          "tierId": "GREEN",
+          "name": "绿灯",
+          "color": "#3f8f73",
+          "minInclusive": 40,
+          "maxExclusive": null
+        },
+        "lowestThree": [
+          {
+            "indicatorId": "-",
+            "name": "盈利稳定性",
+            "score": 25
+          },
+          {
+            "indicatorId": "-",
+            "name": "股东权益同比增长率",
+            "score": 26.9
+          },
+          {
+            "indicatorId": "-",
+            "name": "总资产收益率",
+            "score": 35.24
+          }
+        ],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "APPLIED",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 0,
+        "dispositionCandidateIds": [],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-013",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-014",
+        "enterpriseName": "风电测试公司14",
+        "sector": "新能源",
+        "category": "新能源产业-风电",
+        "rawScore": 64.2,
+        "factorSum": -0.15,
+        "finalScore": 54.57,
+        "riskTier": {
+          "tierId": "GREEN",
+          "name": "绿灯",
+          "color": "#3f8f73",
+          "minInclusive": 40,
+          "maxExclusive": null
+        },
+        "lowestThree": [
+          {
+            "indicatorId": "-",
+            "name": "盈利稳定性",
+            "score": 25
+          },
+          {
+            "indicatorId": "-",
+            "name": "股东权益同比增长率",
+            "score": 28.12
+          },
+          {
+            "indicatorId": "-",
+            "name": "总资产收益率",
+            "score": 34.97
+          }
+        ],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "APPLIED",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 0,
+        "dispositionCandidateIds": [],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-014",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-015",
+        "enterpriseName": "风电测试公司15",
+        "sector": "新能源",
+        "category": "新能源产业-风电",
+        "rawScore": 62.4,
+        "factorSum": -0.2,
+        "finalScore": 49.92,
+        "riskTier": {
+          "tierId": "GREEN",
+          "name": "绿灯",
+          "color": "#3f8f73",
+          "minInclusive": 40,
+          "maxExclusive": null
+        },
+        "lowestThree": [
+          {
+            "indicatorId": "-",
+            "name": "股东权益同比增长率",
+            "score": 0
+          },
+          {
+            "indicatorId": "-",
+            "name": "盈利稳定性",
+            "score": 25
+          },
+          {
+            "indicatorId": "-",
+            "name": "总资产收益率",
+            "score": 36.14
+          }
+        ],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "APPLIED",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 0,
+        "dispositionCandidateIds": [],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-015",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-016",
+        "enterpriseName": "风电测试公司16",
+        "sector": "新能源",
+        "category": "新能源产业-风电",
+        "rawScore": 63.7,
+        "factorSum": -0.1,
+        "finalScore": 57.33,
+        "riskTier": {
+          "tierId": "GREEN",
+          "name": "绿灯",
+          "color": "#3f8f73",
+          "minInclusive": 40,
+          "maxExclusive": null
+        },
+        "lowestThree": [
+          {
+            "indicatorId": "-",
+            "name": "盈利稳定性",
+            "score": 25
+          },
+          {
+            "indicatorId": "-",
+            "name": "股东权益同比增长率",
+            "score": 31.62
+          },
+          {
+            "indicatorId": "-",
+            "name": "总资产收益率",
+            "score": 35.2
+          }
+        ],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "APPLIED",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 0,
+        "dispositionCandidateIds": [],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-016",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-017",
+        "enterpriseName": "环保测试公司1",
+        "sector": "其他",
+        "category": "环保",
+        "rawScore": 43.6,
+        "factorSum": -0.3,
+        "finalScore": 30.52,
+        "riskTier": {
+          "tierId": "YELLOW",
+          "name": "黄灯",
+          "color": "#c8902f",
+          "minInclusive": 25,
+          "maxExclusive": 40
+        },
+        "lowestThree": [
+          {
+            "indicatorId": "-",
+            "name": "股东权益同比增长率",
+            "score": 0
+          },
+          {
+            "indicatorId": "-",
+            "name": "盈利稳定性",
+            "score": 0
+          },
+          {
+            "indicatorId": "-",
+            "name": "经营活动产生的现金流入",
+            "score": 25.92
+          }
+        ],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "NOT_APPLICABLE",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 1,
+        "dispositionCandidateIds": [
+          "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-017-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+          "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-017-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0"
+        ],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-017",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-018",
+        "enterpriseName": "环保测试公司2",
+        "sector": "其他",
+        "category": "环保",
+        "rawScore": 42.4,
+        "factorSum": -0.2,
+        "finalScore": 33.92,
+        "riskTier": {
+          "tierId": "YELLOW",
+          "name": "黄灯",
+          "color": "#c8902f",
+          "minInclusive": 25,
+          "maxExclusive": 40
+        },
+        "lowestThree": [
+          {
+            "indicatorId": "-",
+            "name": "股东权益同比增长率",
+            "score": 0
+          },
+          {
+            "indicatorId": "-",
+            "name": "盈利稳定性",
+            "score": 0
+          },
+          {
+            "indicatorId": "-",
+            "name": "经营活动产生的现金流入",
+            "score": 26.15
+          }
+        ],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "NOT_APPLICABLE",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 1,
+        "dispositionCandidateIds": [
+          "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0"
+        ],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-018",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-019",
+        "enterpriseName": "环保测试公司3",
+        "sector": "其他",
+        "category": "环保",
+        "rawScore": 43.9,
+        "factorSum": -0.15,
+        "finalScore": 37.31,
+        "riskTier": {
+          "tierId": "YELLOW",
+          "name": "黄灯",
+          "color": "#c8902f",
+          "minInclusive": 25,
+          "maxExclusive": 40
+        },
+        "lowestThree": [
+          {
+            "indicatorId": "-",
+            "name": "股东权益同比增长率",
+            "score": 0
+          },
+          {
+            "indicatorId": "-",
+            "name": "盈利稳定性",
+            "score": 0
+          },
+          {
+            "indicatorId": "-",
+            "name": "经营活动产生的现金流入",
+            "score": 27.16
+          }
+        ],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "NOT_APPLICABLE",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 1,
+        "dispositionCandidateIds": [
+          "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-019-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0"
+        ],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-019",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-020",
+        "enterpriseName": "环保测试公司4",
+        "sector": "其他",
+        "category": "环保",
+        "rawScore": 41.9,
+        "factorSum": -0.45,
+        "finalScore": 23.05,
+        "riskTier": {
+          "tierId": "RED",
+          "name": "红灯",
+          "color": "#c95d54",
+          "minInclusive": 10,
+          "maxExclusive": 25
+        },
+        "lowestThree": [
+          {
+            "indicatorId": "-",
+            "name": "股东权益同比增长率",
+            "score": 0
+          },
+          {
+            "indicatorId": "-",
+            "name": "盈利稳定性",
+            "score": 0
+          },
+          {
+            "indicatorId": "-",
+            "name": "应收账款周转率",
+            "score": 25.91
+          }
+        ],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "NOT_APPLICABLE",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 1,
+        "dispositionCandidateIds": [
+          "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.0.0",
+          "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-020-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0"
+        ],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-020",
+        "reportStatus": "not-generated-at-cp03"
+      },
+      {
+        "enterpriseId": "S003-ENT-021",
+        "enterpriseName": "核电测试公司1",
+        "sector": "核电",
+        "category": "核电",
+        "rawScore": 45.1,
+        "factorSum": 0,
+        "finalScore": 45.1,
+        "riskTier": {
+          "tierId": "GREEN",
+          "name": "绿灯",
+          "color": "#3f8f73",
+          "minInclusive": 40,
+          "maxExclusive": null
+        },
+        "lowestThree": [
+          {
+            "indicatorId": "-",
+            "name": "现金比率",
+            "score": 0
+          },
+          {
+            "indicatorId": "-",
+            "name": "现金流动负债比率",
+            "score": 0
+          },
+          {
+            "indicatorId": "-",
+            "name": "盈利稳定性",
+            "score": 25
+          }
+        ],
+        "factorStates": {
+          "credit-utilization": "APPLIED",
+          "guarantee": "APPLIED",
+          "headquarters-support": "APPLIED",
+          "electricity-price": "APPLIED",
+          "litigation": "APPLIED",
+          "fund-gap": "APPLIED"
+        },
+        "markerCount": 0,
+        "dispositionCandidateIds": [],
+        "c035ResultId": "S003-C035-S003-RUN-20260815133000000-c03503000001-S003-ENT-021",
+        "reportStatus": "not-generated-at-cp03"
+      }
+    ],
+    "dispositionCandidates": [
+      {
+        "schemaVersion": "ofw.s003.disposition-candidate.v1",
+        "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-007-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+        "actionTypeId": "S003_RISK_FOLLOW_UP",
+        "status": "CANDIDATE_AWAITING_HUMAN_CONFIRMATION",
+        "requiresHumanConfirmation": true,
+        "trigger": {
+          "type": "RISK_TIER",
+          "tierId": "YELLOW",
+          "tierName": "黄灯"
+        },
+        "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-007|S003_RISK_FOLLOW_UP|2025-12-31|1.0.0",
+        "actionRequestId": null,
+        "todoId": null,
+        "autoCreateActionRequest": false,
+        "autoCreateTodo": false
+      },
+      {
+        "schemaVersion": "ofw.s003.disposition-candidate.v1",
+        "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-007-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0",
+        "actionTypeId": "S003_FACTOR_EMERGENCY",
+        "status": "CANDIDATE_AWAITING_HUMAN_CONFIRMATION",
+        "requiresHumanConfirmation": true,
+        "trigger": {
+          "type": "MAJOR_FACTOR",
+          "factors": [
+            "重大诉讼"
+          ]
+        },
+        "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-007|S003_FACTOR_EMERGENCY|2025-12-31|1.0.0",
+        "actionRequestId": null,
+        "todoId": null,
+        "autoCreateActionRequest": false,
+        "autoCreateTodo": false
+      },
+      {
+        "schemaVersion": "ofw.s003.disposition-candidate.v1",
+        "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-009-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0",
+        "actionTypeId": "S003_FACTOR_EMERGENCY",
+        "status": "CANDIDATE_AWAITING_HUMAN_CONFIRMATION",
+        "requiresHumanConfirmation": true,
+        "trigger": {
+          "type": "MAJOR_FACTOR",
+          "factors": [
+            "当月资金余缺预警"
+          ]
+        },
+        "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-009|S003_FACTOR_EMERGENCY|2025-12-31|1.0.0",
+        "actionRequestId": null,
+        "todoId": null,
+        "autoCreateActionRequest": false,
+        "autoCreateTodo": false
+      },
+      {
+        "schemaVersion": "ofw.s003.disposition-candidate.v1",
+        "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-017-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+        "actionTypeId": "S003_RISK_FOLLOW_UP",
+        "status": "CANDIDATE_AWAITING_HUMAN_CONFIRMATION",
+        "requiresHumanConfirmation": true,
+        "trigger": {
+          "type": "RISK_TIER",
+          "tierId": "YELLOW",
+          "tierName": "黄灯"
+        },
+        "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-017|S003_RISK_FOLLOW_UP|2025-12-31|1.0.0",
+        "actionRequestId": null,
+        "todoId": null,
+        "autoCreateActionRequest": false,
+        "autoCreateTodo": false
+      },
+      {
+        "schemaVersion": "ofw.s003.disposition-candidate.v1",
+        "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-017-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0",
+        "actionTypeId": "S003_FACTOR_EMERGENCY",
+        "status": "CANDIDATE_AWAITING_HUMAN_CONFIRMATION",
+        "requiresHumanConfirmation": true,
+        "trigger": {
+          "type": "MAJOR_FACTOR",
+          "factors": [
+            "重大诉讼"
+          ]
+        },
+        "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-017|S003_FACTOR_EMERGENCY|2025-12-31|1.0.0",
+        "actionRequestId": null,
+        "todoId": null,
+        "autoCreateActionRequest": false,
+        "autoCreateTodo": false
+      },
+      {
+        "schemaVersion": "ofw.s003.disposition-candidate.v1",
+        "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+        "actionTypeId": "S003_RISK_FOLLOW_UP",
+        "status": "CANDIDATE_AWAITING_HUMAN_CONFIRMATION",
+        "requiresHumanConfirmation": true,
+        "trigger": {
+          "type": "RISK_TIER",
+          "tierId": "YELLOW",
+          "tierName": "黄灯"
+        },
+        "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-018|S003_RISK_FOLLOW_UP|2025-12-31|1.0.0",
+        "actionRequestId": null,
+        "todoId": null,
+        "autoCreateActionRequest": false,
+        "autoCreateTodo": false
+      },
+      {
+        "schemaVersion": "ofw.s003.disposition-candidate.v1",
+        "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-019-S003_RISK_FOLLOW_UP-2025-12-31-1.0.0",
+        "actionTypeId": "S003_RISK_FOLLOW_UP",
+        "status": "CANDIDATE_AWAITING_HUMAN_CONFIRMATION",
+        "requiresHumanConfirmation": true,
+        "trigger": {
+          "type": "RISK_TIER",
+          "tierId": "YELLOW",
+          "tierName": "黄灯"
+        },
+        "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-019|S003_RISK_FOLLOW_UP|2025-12-31|1.0.0",
+        "actionRequestId": null,
+        "todoId": null,
+        "autoCreateActionRequest": false,
+        "autoCreateTodo": false
+      },
+      {
+        "schemaVersion": "ofw.s003.disposition-candidate.v1",
+        "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.0.0",
+        "actionTypeId": "S003_SPECIAL_DISPOSAL",
+        "status": "CANDIDATE_AWAITING_HUMAN_CONFIRMATION",
+        "requiresHumanConfirmation": true,
+        "trigger": {
+          "type": "RISK_TIER",
+          "tierId": "RED",
+          "tierName": "红灯"
+        },
+        "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-020|S003_SPECIAL_DISPOSAL|2025-12-31|1.0.0",
+        "actionRequestId": null,
+        "todoId": null,
+        "autoCreateActionRequest": false,
+        "autoCreateTodo": false
+      },
+      {
+        "schemaVersion": "ofw.s003.disposition-candidate.v1",
+        "candidateId": "S003-CAND-S003-RUN-20260815133000000-c03503000001-S003-ENT-020-S003_FACTOR_EMERGENCY-2025-12-31-1.0.0",
+        "actionTypeId": "S003_FACTOR_EMERGENCY",
+        "status": "CANDIDATE_AWAITING_HUMAN_CONFIRMATION",
+        "requiresHumanConfirmation": true,
+        "trigger": {
+          "type": "MAJOR_FACTOR",
+          "factors": [
+            "当月资金余缺预警"
+          ]
+        },
+        "idempotencyKey": "S003-RUN-20260815133000000-c03503000001|S003-ENT-020|S003_FACTOR_EMERGENCY|2025-12-31|1.0.0",
+        "actionRequestId": null,
+        "todoId": null,
+        "autoCreateActionRequest": false,
+        "autoCreateTodo": false
+      }
+    ]
+  },
+  "consumptionPolicy": {
+    "readOnly": true,
+    "consumers": [
+      "M03 智能问数",
+      "M04 决策中心",
+      "M06 报告中心"
+    ],
+    "directRecalculationForbidden": true,
+    "actionRequestRequiresHumanConfirmation": true,
+    "formalReportNotIncludedAtCp03": true
+  }
+}

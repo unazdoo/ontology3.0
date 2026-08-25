@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "ofw.s003.integration-change-inventory.v1",
+  "inventoryId": "S003-CP29-CACHE-PINNED-FINAL-INVENTORY",
+  "inventoryVersion": "1.0.0",
+  "formedAt": "2026-08-19T02:39:00.000Z",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "prototypeVersion": "1.1.0",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+    "formedAt": "2026-08-17T16:30:00.000Z",
+    "status": "active"
+  },
+  "cacheVersion": "20260819-19-cp29-final",
+  "purpose": "锁定最终缓存参数和交付前工作树，确保浏览器载入 CP27—CP28 已验证修正。",
+  "acceptanceReady": false,
+  "files": [
+    {"moduleId":"PLATFORM","owner":"平台公共壳","path":"s001-e2e-integration/app.js","sha256":"3a953981df6c4aef85a2221bed3ed8567f9ce8ec226ef1c6d7a492740a6dfc75"},
+    {"moduleId":"PLATFORM","owner":"平台公共壳","path":"s001-e2e-integration/data.js","sha256":"feb57abcc98cb5b6598256d8463763c69eec1942a84a3172a1e77f6fe44e7310"},
+    {"moduleId":"PLATFORM","owner":"平台公共壳","path":"s001-e2e-integration/index.html","sha256":"f6b376ff1fb362ef421fa221df4935881795657054f42c96e0355eb6e24e321d"},
+    {"moduleId":"PLATFORM","owner":"S003 运行服务","path":"scenarios/s003/state.js","sha256":"54d4951d3f336296aff1be52c4494e504036a67ffec93950f33170b6749f0ab1"},
+    {"moduleId":"PLATFORM","owner":"S003 场景包","path":"scenarios/s003/data.js","sha256":"238187a34fd88aa468e2ffbd1b822352fc36151b84606347071ca907c43102a8"},
+    {"moduleId":"PLATFORM","owner":"S003 场景包","path":"scenarios/s003/integration-config.js","sha256":"d3d7d848d8a691c43d894be5d142385d277c004b03a0f038cec9d4c40a58a355"},
+    {"moduleId":"PLATFORM","owner":"S003 总装测试","path":"scenarios/s003/tests/baseline-extension-contract.test.js","sha256":"f41a3a760d04b58076f71197decaaefb87fafdd40118d7fe08032664b81b44b3"},
+    {"moduleId":"M06","owner":"报告中心","path":"report-center/review-lifecycle/app.js","sha256":"a8df6b4b41a799dd1a37ca2672b15c1df2492e31478f4dc5e26b7e5cc7a0e88f"},
+    {"moduleId":"M06","owner":"报告中心","path":"report-center/review-lifecycle/lifecycle.css","sha256":"79163ce00ce2df7d9c340f00b149cec33e1a0f8fd8aec737321af708117e77d9"},
+    {"moduleId":"M06","owner":"报告中心","path":"report-center/review-lifecycle/index.html","sha256":"d09e6a1948112b26af253cf36068db9960c8dd111d17a5165473851d27a97544"},
+    {"moduleId":"M06","owner":"报告中心测试","path":"report-center/review-lifecycle/s003-integration.test.cjs","sha256":"d174593b762b7bc5488d568ccf6dce7ccbd4566b9e1bb84ed716406cc1431fec"},
+    {"moduleId":"M01","owner":"本体管理","path":"ontology-management-review/canvas-first/app.js","sha256":"5d6bee24ee85859a09630ba5c4d6d910c9df5c3c0dd54f52426716c4271b6458"},
+    {"moduleId":"M01","owner":"本体管理","path":"ontology-management-review/canvas-first/index.html","sha256":"9e345b0ca9251891c2f6a8deac804766ac848f8ec69223f0e2e45f0a100a142f"},
+    {"moduleId":"M03","owner":"智能问数","path":"intelligent-query-prototype/review-next/conversation-workspace/app.jsx","sha256":"3530e22c04c607c7543ccd06ea6b12e5a102958155ee7d6ef610556880f11156"},
+    {"moduleId":"M03","owner":"智能问数","path":"intelligent-query-prototype/review-next/conversation-workspace/components.jsx","sha256":"9fb91743d1dc7cd93e52e4cec3758e3074782a2e7513f8d08595882a5cd3ae39"},
+    {"moduleId":"M03","owner":"智能问数","path":"intelligent-query-prototype/review-next/conversation-workspace/s003-native-bridge.js","sha256":"4cf4d93e1cf2151d50cf34d482e510e045b7752799f2cec075825b7ddfff3deb"},
+    {"moduleId":"M03","owner":"智能问数","path":"intelligent-query-prototype/review-next/conversation-workspace/index.html","sha256":"f924faa8e644dc756b93bef4d7ed653efa1c1d49532c82910aa39924a2b48030"},
+    {"moduleId":"M05","owner":"Agent 应用","path":"agent-application/s003-adapter.jsx","sha256":"a70c0234c8ffeb09bc3d038cb132f273c682231aa7dcb29b6127b3069951d190"},
+    {"moduleId":"M05","owner":"Agent 应用","path":"agent-application/app.jsx","sha256":"7939d19fa1481aaf2b88e87f7369bc7bbcfda1ebf27083e993f8170741e241d6"},
+    {"moduleId":"M05","owner":"Agent 应用","path":"agent-application/Agent应用.html","sha256":"29b1b43a7e9383fabf196e3df9df06f3913cc9f46a311df6bdfa661cd1781473"}
+  ]
+}

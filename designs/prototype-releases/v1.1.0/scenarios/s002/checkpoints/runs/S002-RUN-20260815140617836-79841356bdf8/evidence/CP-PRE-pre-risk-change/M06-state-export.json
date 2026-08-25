@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "ofw.s002.module-state-export.v1",
+  "moduleId": "M06",
+  "moduleName": "报告中心",
+  "owner": "报告中心",
+  "moduleVersion": "S002-M06-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815140617836-79841356bdf8",
+    "formedAt": "2026-08-15T14:06:17.836Z",
+    "status": "active"
+  },
+  "checkpointNode": "pre-risk-change",
+  "formedAt": "2026-08-15T14:06:47.836Z",
+  "stateDeclaration": "empty",
+  "emptyReason": "尚未到达 agent-report-dashboard-completed；仅导出可恢复空状态",
+  "resources": [],
+  "ownerBoundary": {
+    "ownsOnly": [
+      "dashboard-version",
+      "dashboard-view",
+      "report-draft",
+      "evidence-package"
+    ],
+    "consumesByReference": true,
+    "copiesOtherModuleTruth": false,
+    "ownsDecisionState": false,
+    "dashboardOwner": true
+  },
+  "demoDataMarker": "SYNTHETIC_FOR_DEMO",
+  "sideEffectPolicy": {
+    "allowHistoricalReplay": false,
+    "allowExternalDispatch": false
+  },
+  "runtimeState": {
+    "moduleId": "M06",
+    "moduleVersion": "S002-M06-1.0.0",
+    "progress": {
+      "reportBuilt": false,
+      "dashboardPublished": false
+    },
+    "reports": [],
+    "dashboardVersions": [],
+    "dashboardView": null
+  }
+}

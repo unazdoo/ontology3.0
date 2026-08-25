@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "ofw.s002.module-state-export.v1",
+  "moduleId": "M04",
+  "moduleName": "决策中心",
+  "owner": "决策中心",
+  "moduleVersion": "S002-M04-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815161937720-79841356bdf8",
+    "formedAt": "2026-08-15T16:19:37.720Z",
+    "status": "active"
+  },
+  "checkpointNode": "pre-risk-change",
+  "formedAt": "2026-08-15T16:20:07.720Z",
+  "stateDeclaration": "empty",
+  "emptyReason": "尚未到达 decision-chain-completed；仅导出可恢复空状态",
+  "resources": [],
+  "ownerBoundary": {
+    "ownsOnly": [
+      "decision-alert",
+      "action-request",
+      "c011-gate",
+      "human-confirmation",
+      "rejection",
+      "owner-todo",
+      "decision-summary"
+    ],
+    "consumesByReference": true,
+    "copiesOtherModuleTruth": false,
+    "externalBudgetSystemDispatch": false,
+    "automaticApproval": false,
+    "automaticPosting": false,
+    "approvedBudgetOverwrite": false,
+    "demoOutcome": "仅形成 Action Request 草稿、人工确认与平台内待办"
+  },
+  "demoDataMarker": "SYNTHETIC_FOR_DEMO",
+  "sideEffectPolicy": {
+    "allowHistoricalReplay": false,
+    "allowExternalDispatch": false
+  },
+  "runtimeState": {
+    "moduleId": "M04",
+    "moduleVersion": "S002-M04-1.0.0",
+    "progress": {
+      "actionsDrafted": false,
+      "actionConfirmed": false,
+      "todoCreated": false
+    },
+    "actionRequests": [],
+    "decisionAlerts": [],
+    "todos": [],
+    "decisionSummary": null
+  }
+}

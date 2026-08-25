@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "ofw.s002.module-state-export.v1",
+  "moduleId": "M02",
+  "moduleName": "数据工程",
+  "owner": "数据工程",
+  "moduleVersion": "S002-M02-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815010000000-a283fabf23f6",
+    "formedAt": "2026-08-15T01:00:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "agent-report-dashboard-completed",
+  "formedAt": "2026-08-15T01:30:00.000Z",
+  "stateDeclaration": "referenced",
+  "emptyReason": null,
+  "resources": [
+    {
+      "resourceId": "T001-S002-BUDGET-SOURCE-v1",
+      "resourceType": "data-source",
+      "version": "1.0.0",
+      "summary": "八份预算监督管理演示来源登记",
+      "authoritativeRef": "S002/S002-RUN-20260815010000000-a283fabf23f6/M02/T001-S002-BUDGET-SOURCE-v1",
+      "formedAt": "2026-08-15T01:30:00.000Z"
+    },
+    {
+      "resourceId": "T002-S002-BUDGET-SNAPSHOT-a283fabf23f6",
+      "resourceType": "source-snapshot",
+      "version": "1.0.0",
+      "summary": "候选加工包及逻辑成员快照",
+      "authoritativeRef": "S002/S002-RUN-20260815010000000-a283fabf23f6/M02/T002-S002-BUDGET-SNAPSHOT-a283fabf23f6",
+      "formedAt": "2026-08-15T01:30:00.000Z"
+    },
+    {
+      "resourceId": "T004-S002-BUDGET-PIPELINE-RUN-v1",
+      "resourceType": "pipeline-run",
+      "version": "1.0.0",
+      "summary": "口径标准化、合法记录修复与演示补全运行",
+      "authoritativeRef": "S002/S002-RUN-20260815010000000-a283fabf23f6/M02/T004-S002-BUDGET-PIPELINE-RUN-v1",
+      "formedAt": "2026-08-15T01:30:00.000Z"
+    },
+    {
+      "resourceId": "T005-S002-BUDGET-QUALITY-v1",
+      "resourceType": "quality-result",
+      "version": "1.0.0",
+      "summary": "缺失、重复、口径、键和历史可比性质量结果",
+      "authoritativeRef": "S002/S002-RUN-20260815010000000-a283fabf23f6/M02/T005-S002-BUDGET-QUALITY-v1",
+      "formedAt": "2026-08-15T01:30:00.000Z"
+    },
+    {
+      "resourceId": "S002-DATA-v1",
+      "resourceType": "data-asset-version",
+      "version": "1.0.0",
+      "summary": "人民币万元、不含税费用、收益展示转正的数据资产版本",
+      "authoritativeRef": "S002/S002-RUN-20260815010000000-a283fabf23f6/M02/S002-DATA-v1",
+      "formedAt": "2026-08-15T01:30:00.000Z"
+    }
+  ],
+  "ownerBoundary": {
+    "ownsOnly": [
+      "data-source",
+      "source-snapshot",
+      "pipeline-run",
+      "quality-result",
+      "data-asset-version"
+    ],
+    "consumesByReference": true,
+    "copiesOtherModuleTruth": false,
+    "computesBusinessMetricOrRule": false
+  },
+  "demoDataMarker": "SYNTHETIC_FOR_DEMO",
+  "sideEffectPolicy": {
+    "allowHistoricalReplay": false,
+    "allowExternalDispatch": false
+  }
+}

@@ -1,0 +1,563 @@
+{
+  "schemaVersion": "ofw.c034.checkpoint.v1",
+  "checkpointId": "CP-S003-20260816141000000-c03514000014",
+  "checkpointNode": "e2e-integrated",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "parentVersion": "1.0.3",
+  "scenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "sourceScenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+  "createdAt": "2026-08-16T14:10:00.000Z",
+  "immutable": true,
+  "code": {
+    "prototypeVersion": "1.1.0",
+    "buildVersion": "S003-CP14",
+    "entryRef": "runtime/cp14-entry.v1.html",
+    "treeSha256": "9db94d79ec0e102e303345202f62cd9a1ebb9f99eb6a5b59ce269c7d831409c1"
+  },
+  "modules": {
+    "M01": {
+      "moduleId": "M01",
+      "moduleVersion": "1.0.1",
+      "exportId": "S003-M01-RUNTIME-EXPORT-20260815-001",
+      "exportRef": "resources/m01/runtime-export.v1.json",
+      "exportSha256": "7d0d3d65fc89688d4b2d839218245251c6b53ca28f5f171273b1e532a8ba4c60",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-16T14:10:00.000Z",
+        "evidenceRef": "evidence/CP14-v103-full-scene-regression-validation.md"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M02": {
+      "moduleId": "M02",
+      "moduleVersion": "1.1.0",
+      "exportId": "S003-M02-DATA-CONTRACT",
+      "exportRef": "resources/m02/data-contract.v1.1.json",
+      "exportSha256": "0de2eba3f36b1f7f14007fc5039df5de9a6b97a3f032c23b4e4e298079a5c8a2",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-16T14:10:00.000Z",
+        "evidenceRef": "evidence/CP14-v103-full-scene-regression-validation.md"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M03": {
+      "moduleId": "M03",
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M03-QUERY-RUNTIME",
+      "exportRef": "resources/m03/query-runtime.v1.json",
+      "exportSha256": "4680d2f78295d12a76acde3bc7ddcd66338aa51e727beb1bd98bb8be0294e6e6",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-16T14:10:00.000Z",
+        "evidenceRef": "evidence/CP14-v103-full-scene-regression-validation.md"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M04": {
+      "moduleId": "M04",
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M04-DECISION-RUNTIME",
+      "exportRef": "resources/m04/decision-runtime.v1.json",
+      "exportSha256": "0bee1570bb2c64367a1d996e478af979164c6ba50c64327e8669a49c120e55a2",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-16T14:10:00.000Z",
+        "evidenceRef": "evidence/CP14-v103-full-scene-regression-validation.md"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M05": {
+      "moduleId": "M05",
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M05-NO-DEDICATED-AGENT",
+      "exportRef": "resources/m05/agent-position.v1.json",
+      "exportSha256": "9332d85160efb29e637de41f796ec92fb259f5b4dabe8b0f8f1001ad52084703",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-16T14:10:00.000Z",
+        "evidenceRef": "evidence/CP14-v103-full-scene-regression-validation.md"
+      },
+      "restoreMode": "isolated-clone"
+    },
+    "M06": {
+      "moduleId": "M06",
+      "moduleVersion": "1.0.0",
+      "exportId": "S003-M06-REPORT-MANIFEST-20260815-001",
+      "exportRef": "resources/m06/report-manifest.v1.json",
+      "exportSha256": "0993bb872a2b6d7cec47744c65851cb815d5d552ab60d254edf38f764e96db9d",
+      "validation": {
+        "status": "verified",
+        "validatedAt": "2026-08-16T14:10:00.000Z",
+        "evidenceRef": "evidence/CP14-v103-full-scene-regression-validation.md"
+      },
+      "restoreMode": "isolated-clone"
+    }
+  },
+  "stateSections": {
+    "data": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-M02-SOURCE-XLSX-20251231",
+          "version": "1.0.0",
+          "ref": "resources/m02/source-asset.v1.json",
+          "sha256": "04454497f132b512ca4f9740e9676d00f7fb4c82abf7470e698881f7ee7e2eda",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-T053-INPUT-20251231-v1",
+          "version": "1.0.0",
+          "ref": "resources/m02/human-input-snapshot.v1.json",
+          "sha256": "6cf3798465875855a2a0b5c3f46eed5d92c353def0953ed758cb75a046f59c64",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "version": "1.0.0",
+          "ref": "resources/m02/formal-candidate-data-asset.v1.json",
+          "sha256": "4c3cacb90bc41b8a75b90e8359b2bf55a80d0b7d0e2e9c0b8e5b3cc39eb9894a",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-M02-PIPELINE-RUN-20260815-001",
+          "version": "1.0.0",
+          "ref": "resources/m02/pipeline-run.v1.json",
+          "sha256": "97e3a4958f143794eb681dec33f9f928d16841b9f37152b19b3f3ffa6c0584fe",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "M02 数据工程",
+          "resourceId": "S003-M02-QUALITY-20251231-v1",
+          "version": "1.0.0",
+          "ref": "resources/m02/quality-result.v1.json",
+          "sha256": "f6c7fd943eef46d1add40efd8f0d824f57e2ec54ca042ebae74b494502dd3230",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        }
+      ]
+    },
+    "semantics": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-M01-DEBT-RISK-PKG",
+          "version": "1.0.0",
+          "ref": "resources/m01/model-package.v1.json",
+          "sha256": "f93933e8ecad32bf1f4acb481b8c9596210eb3b3eb8ed582daa8b337bc0c8850",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-M01-PUBLISHED-POINTER",
+          "version": "1.0.0",
+          "ref": "resources/m01/published-pointer.v1.json",
+          "sha256": "d6f108423e2ae5010dfb1ebb2522fca0aa62f758ba99f31f4bf22b412b66767e",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-M01-DEBT-RISK-PKG@activeTarget.publishedSnapshot",
+          "version": "1.0.1",
+          "ref": "resources/m01/published-pointer.v1.json",
+          "sha256": "d6f108423e2ae5010dfb1ebb2522fca0aa62f758ba99f31f4bf22b412b66767e",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        }
+      ]
+    },
+    "configurations": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "平台场景包",
+          "resourceId": "S003-SCENARIO-MANIFEST",
+          "version": "1.0.0",
+          "ref": "resources/scenario-manifest.json",
+          "sha256": "9610188ea98965ee18cd9f66a24fb32a0abfd07bb30483e759ddc29bd53c8d90",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "平台公共层与 S003 总装",
+          "resourceId": "S003-V103-BASELINE-MODULE-INTEGRATION-20260816-CP13",
+          "version": "4.0.0",
+          "ref": "resources/integration/v103-baseline-extension-inventory.v4.json",
+          "sha256": "f0b9e9964bc1e25b14c8628f37037436c0c38c2e337265758f5ec6b0d9da6db7",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP13-INTEGRATION-CONFIG",
+          "version": "1.0.0",
+          "ref": "integration-config.js",
+          "sha256": "91b13b7f2eb976fb7ea44adeb38329005bbe20faa4e56726619e9cd3c0d22b88",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP13-RUNTIME-CONFIG",
+          "version": "1.0.0",
+          "ref": "data.js",
+          "sha256": "a53f6dae6bdefe5c652ac19a93ca5110a652abc054ecadcf3af3069ed6357a58",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "M03 智能问数",
+          "resourceId": "S003-M03-QUERY-RUNTIME",
+          "version": "1.0.0",
+          "ref": "resources/m03/query-runtime.v1.json",
+          "sha256": "4680d2f78295d12a76acde3bc7ddcd66338aa51e727beb1bd98bb8be0294e6e6",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "M04 决策中心",
+          "resourceId": "S003-M04-DECISION-RUNTIME",
+          "version": "1.0.0",
+          "ref": "resources/m04/decision-runtime.v1.json",
+          "sha256": "0bee1570bb2c64367a1d996e478af979164c6ba50c64327e8669a49c120e55a2",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-M06-REPORT-CONTRACT",
+          "version": "1.0.0",
+          "ref": "resources/m06/report-contract.v1.json",
+          "sha256": "9e358adb6d1d308a04169d679bd94f848a8256ac782890eda572dd31d377f457",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "平台公共层",
+          "resourceId": "S003-CP13-CHECKPOINT-RUNTIME",
+          "version": "1.0.0",
+          "ref": "domain/checkpoint-service.js",
+          "sha256": "b61eb9305070233e9573452446e7fd70be2cb5a82d2d7891389d2c78c024fe30",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "平台公共层",
+          "resourceId": "S003-CP13-CHECKPOINT-PROJECTION",
+          "version": "1.0.0",
+          "ref": "domain/checkpoint-projection.js",
+          "sha256": "7fbe386cbdc9ed052563e0ff3ba12e710ef949e689839fb06bf48d496b29116d",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "平台公共层与 S003 总装",
+          "resourceId": "S003-V103-BASELINE-MODULE-INTEGRATION-20260816-CP14",
+          "version": "5.0.0",
+          "ref": "resources/integration/v103-baseline-extension-inventory.v5.json",
+          "sha256": "1551893e6b3fc78c69417d608c11794d9b3916dd5837b6932c4b9fa99e142395",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        }
+      ]
+    },
+    "results": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-C035-RISK-RESULTS-20251231-v1",
+          "version": "1.0.0",
+          "ref": "resources/m01/c035-risk-results.v1.json",
+          "sha256": "10e8ca2284abaaf680b549b6da3c5374ac6168a5e9b4bbe6d0abbcdb864b6153",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "M01 本体管理",
+          "resourceId": "S003-PUBLISHED-RISK-FACTS-20251231-v1",
+          "version": "1.0.0",
+          "ref": "resources/m01/published-risk-facts.v1.json",
+          "sha256": "8d31823a37c2b4949d01b5a2d2744607bddb7f9c2ee54e2e3c8e9acfebe74099",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "M03 智能问数",
+          "resourceId": "S003-M03-QUERY-RESULTS-20260815-001",
+          "version": "1.0.0",
+          "ref": "resources/m03/query-results.v1.json",
+          "sha256": "0a8f5b66d4b268060d4871d558d4b9c51c11afa9b5fe87e742fdf07ca2a30ee3",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        }
+      ]
+    },
+    "reports": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-M06-REPORT-MANIFEST-20260815-001",
+          "version": "1.0.0",
+          "ref": "resources/m06/report-manifest.v1.json",
+          "sha256": "0993bb872a2b6d7cec47744c65851cb815d5d552ab60d254edf38f764e96db9d",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-M06-REPORT-CONTENTS-20260815-001",
+          "version": "1.0.0",
+          "ref": "resources/m06/report-contents.v1.json",
+          "sha256": "ffa14290df718b0283df9714a7d519d1a74f75c1ee6d506ea60a7dca75835df6",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "M06 报告中心",
+          "resourceId": "S003-M06-REPORT-ARTIFACTS-20260815-001",
+          "version": "1.0.0",
+          "ref": "resources/m06/report-artifacts.v1.json",
+          "sha256": "25d4d254055bcd598de62c9a2c2dd789430ac5918fdc48adfc5500dcd4808a8b",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        }
+      ]
+    },
+    "decisions": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "M04 决策中心",
+          "resourceId": "S003-M04-DECISION-RESULTS-20260815-001",
+          "version": "1.0.0",
+          "ref": "resources/m04/decision-results.v1.json",
+          "sha256": "b21dcb8aa0092df23e6ed3b802602775ac3c1a396fb9f6b5fffceb69ad0dd43b",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        }
+      ]
+    },
+    "testFixtures": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-FIXTURE-20251231-v1",
+          "version": "1.0.0",
+          "ref": "fixtures/enterprise-fixture.v1.json",
+          "sha256": "09191f28b87aac2757e805265fb7b9593f6979dc003ad43b8f72ea5d738f875a",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BASELINE-EXTENSION-TESTS",
+          "version": "1.0.0",
+          "ref": "tests/baseline-extension-contract.test.js",
+          "sha256": "2d2e1b7332401e7502cb3057da76621dd8cb06a3503fda64c45df8fc25d252d1",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-PERSISTENCE-TESTS",
+          "version": "1.0.0",
+          "ref": "tests/state-persistence.test.js",
+          "sha256": "25f81563f0556e45721f21a3c4508b27487963ac65bd705dbb5f756eb880732b",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-WORKBENCH-SHELL-TESTS",
+          "version": "1.0.0",
+          "ref": "tests/workbench-shell.test.js",
+          "sha256": "0862a8de6fc0ca29354b29d3f8692a284b6956b7ef75161c6385d257ea5059eb",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-FULL-TREE-SCRIPT",
+          "version": "1.0.0",
+          "ref": "scripts/browser-cp13.cjs",
+          "sha256": "a85869b16395cf861fcd692ac714564063ac5b320ae5ee3226249519d04b3df8",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-COMPATIBILITY-SCRIPT",
+          "version": "1.0.0",
+          "ref": "scripts/browser-cp12.cjs",
+          "sha256": "f03b6140ddd5e5fb4597813aa46ff52a5fb0b2ee23ad774d22427dcba4b36e52",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-SURFACE-SCRIPT",
+          "version": "1.0.0",
+          "ref": "scripts/browser-s003-surface.cjs",
+          "sha256": "3adecce72eaee59ffb3a601a3efb8292b4b4a13a45d0aed3b1d64f701d394305",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-EXTERNAL-ADAPTER-INVENTORY",
+          "version": "4.0.0",
+          "ref": "resources/integration/v103-baseline-extension-inventory.v4.json",
+          "sha256": "f0b9e9964bc1e25b14c8628f37037436c0c38c2e337265758f5ec6b0d9da6db7",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP14-BROWSER-FULL-SCENE",
+          "version": "1.0.0",
+          "ref": "scripts/browser-cp14.cjs",
+          "sha256": "2602bc4990dfef4266b7f645976b78c73073bc091851be9599d11db6279e5b80",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        }
+      ]
+    },
+    "featureFlags": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "平台场景包",
+          "resourceId": "S003-FEATURE-FLAGS",
+          "version": "1.0.0",
+          "ref": "resources/scenario-manifest.json",
+          "sha256": "9610188ea98965ee18cd9f66a24fb32a0abfd07bb30483e759ddc29bd53c8d90",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        }
+      ]
+    },
+    "evidence": {
+      "status": "referenced",
+      "items": [
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP12-IMMUTABLE-PREDECESSOR",
+          "version": "1.0.0",
+          "ref": "checkpoints/CP12-v103-native-integration-corrected.json",
+          "sha256": "d0cfab12674e7dbe6fc307936873092eaf2e20ae6e3acb00f76f53888c10b7fa",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP13-NATIVE-CONDITIONAL-INTEGRATION-VALIDATION",
+          "version": "1.0.0",
+          "ref": "evidence/CP13-v103-native-conditional-integration-validation.md",
+          "sha256": "8b62e78ffc14d40052ca93a1aaf5a02b77b19ab260a1d7ebb6adaa28752832d7",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP13-ENTRY",
+          "version": "1.0.0",
+          "ref": "runtime/cp13-entry.v1.html",
+          "sha256": "abc4f2d299a0f2788fdf257aa0b7d7f8e8a086da36f8e0664fa597304f9f5fd3",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-FULL-TREE-RESULT",
+          "version": "1.0.0",
+          "ref": "evidence/browser-cp13/20260816T104940531Z-f98ae7af/browser-cp13-results.json",
+          "sha256": "be7ff1285b1951f0885538961e52ae70ea08afd2ce11d09fddb4d5d481623930",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-COMPATIBILITY-RESULT",
+          "version": "1.0.0",
+          "ref": "evidence/browser-cp12/20260816T102927794Z-ca987471/browser-cp12-results.json",
+          "sha256": "47820b6fc2c9f10b5d185cfc8f33643793d7ab8a59f6886f9f11cc8b332718f0",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-SURFACE-RESULT",
+          "version": "1.0.0",
+          "ref": "evidence/browser-surface/20260816T102948990Z-d398429c/browser-surface-results.json",
+          "sha256": "d67106d403527a2c9c946c1aef2fd76e728507fda4d3a34b4d67a150a8ae8a0d",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-PRE-FIX-FAILURE-RESULT",
+          "version": "1.0.0",
+          "ref": "evidence/browser-cp13/20260816T103742191Z-2234f1aa/browser-cp13-results.json",
+          "sha256": "d0de536d494f255753eb1ae4973c085d191925fa46162aa1f1648f908e6638d3",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-M02-DETAIL",
+          "version": "1.0.0",
+          "ref": "evidence/browser-surface/20260816T102948990Z-d398429c/m02-detail.png",
+          "sha256": "6e8be7764cf086bcf5646d2e426bb851470dd1fc3b1b5b962fbe2149780a79c7",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-M01-PUBLISHED",
+          "version": "1.0.0",
+          "ref": "evidence/browser-surface/20260816T102948990Z-d398429c/m01-published-config.png",
+          "sha256": "da2185d0f5f9bcfe9d7512c1cdf81e5aab978e82ee2c8d831e948652649b7498",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-M03-DEEP-LINK",
+          "version": "1.0.0",
+          "ref": "evidence/browser-surface/20260816T102948990Z-d398429c/m03-to-m01-deep-link.png",
+          "sha256": "e2661c978bc2e767017e6c2ba71a7a87516eae49b601c8b4618e42e3599e95d5",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP13-BROWSER-M06-REPORT",
+          "version": "1.0.0",
+          "ref": "evidence/browser-surface/20260816T102948990Z-d398429c/m06-dashboard-report.png",
+          "sha256": "36c5931f78bd6b413067cf0ce44d87c1147fbc7238ac7a698dbc1826be2a774a",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP13-IMMUTABLE-PREDECESSOR",
+          "version": "1.0.0",
+          "ref": "checkpoints/CP13-v103-native-conditional-integration-completed.json",
+          "sha256": "93e8019499603bcdb8a2159767946098a0193a7c38e048448196f9c6a21481df",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装",
+          "resourceId": "S003-CP14-FULL-SCENE-VALIDATION",
+          "version": "1.0.0",
+          "ref": "evidence/CP14-v103-full-scene-regression-validation.md",
+          "sha256": "8fe04eb0b6abf517608ce82b58ac3a074eaa56e1c878e12538946068f930b8fa",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "S003 总装测试",
+          "resourceId": "S003-CP14-BROWSER-RESULT",
+          "version": "1.0.0",
+          "ref": "evidence/browser-cp14/20260816T140715236Z-9ba9021d/browser-cp14-results.json",
+          "sha256": "b6ecc05dca169301735e896b2c4b66f0660c51003e85c10a6d9e9e3660992319",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        },
+        {
+          "owner": "M02 数据工程测试",
+          "resourceId": "S003-CP14-M02-BROWSER-RESULT",
+          "version": "1.0.0",
+          "ref": "evidence/browser-cp14/m02-regression/result.json",
+          "sha256": "5b1bb4758ea038851a1a54315055e543258bb6bc7dc7f21b8e31e0d9a1778528",
+          "formedAt": "2026-08-16T14:10:00.000Z"
+        }
+      ]
+    }
+  },
+  "restoreReadiness": {
+    "status": "verified",
+    "verifiedAt": "2026-08-16T14:10:00.000Z",
+    "evidenceRef": "evidence/CP14-v103-full-scene-regression-validation.md"
+  },
+  "sideEffectPolicy": {
+    "allowHistoricalActionRequestReplay": false,
+    "allowHistoricalNotificationReplay": false,
+    "allowHistoricalApprovalReplay": false,
+    "allowHistoricalTodoReplay": false,
+    "allowExternalDispatch": false
+  }
+}

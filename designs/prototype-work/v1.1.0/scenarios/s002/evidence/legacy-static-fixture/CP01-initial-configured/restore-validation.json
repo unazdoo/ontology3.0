@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "ofw.s002.restore-validation.v1",
+  "checkpointId": "CP-S002-20260815010500000-f7b8485fb5b9",
+  "checkpointNode": "initial-configured",
+  "validatedAt": "2026-08-15T01:05:00.000Z",
+  "foundationVersion": "1.0.0",
+  "manifestValidation": "verified",
+  "moduleReceiptCount": 6,
+  "cloneRestore": {
+    "validation": "verified",
+    "createsNewScenarioRunId": true,
+    "overwritesHistory": false,
+    "sideEffectPolicy": {
+      "allowHistoricalActionRequestReplay": false,
+      "allowHistoricalNotificationReplay": false,
+      "allowHistoricalApprovalReplay": false,
+      "allowHistoricalTodoReplay": false,
+      "allowExternalDispatch": false
+    }
+  },
+  "isolatedRegression": {
+    "validation": "verified",
+    "createsNewScenarioRunId": true,
+    "externalCapabilitiesDefault": "disabled",
+    "sideEffectPolicy": {
+      "allowHistoricalActionRequestReplay": false,
+      "allowHistoricalNotificationReplay": false,
+      "allowHistoricalApprovalReplay": false,
+      "allowHistoricalTodoReplay": false,
+      "allowExternalDispatch": false
+    }
+  },
+  "conclusionBoundary": "恢复形状与引用校验通过，不代表模块业务结果或外部预算操作已执行"
+}

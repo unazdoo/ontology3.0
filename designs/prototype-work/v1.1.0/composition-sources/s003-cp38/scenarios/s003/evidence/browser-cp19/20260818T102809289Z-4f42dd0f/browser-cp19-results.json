@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp19-result.v1",
+  "runId": "20260818T102809289Z-4f42dd0f",
+  "formedAt": "2026-08-18T10:28:09.289Z",
+  "origin": "http://127.0.0.1:4333",
+  "formalSourceScenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+  "browserVersion": "149.0.7827.55",
+  "cases": [
+    {
+      "id": "dashboard-and-report",
+      "status": "failed",
+      "durationMs": 60220,
+      "error": {
+        "name": "TimeoutError",
+        "message": "page.waitForFunction: Timeout 60000ms exceeded.",
+        "stack": "page.waitForFunction: Timeout 60000ms exceeded.\n    at openShell (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:92:16)\n    at async caseDashboardAndReport (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:516:42)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:903:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp19.cjs:931:16)"
+      }
+    }
+  ],
+  "totals": {
+    "cases": 1,
+    "passed": 0,
+    "failed": 1
+  },
+  "checkpointCreated": false,
+  "acceptanceReady": false
+}

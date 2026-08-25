@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "ofw.s002.module-state-export.v1",
+  "moduleId": "M05",
+  "moduleName": "Agent 应用",
+  "owner": "Agent 应用",
+  "moduleVersion": "S002-M05-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815010000000-a283fabf23f6",
+    "formedAt": "2026-08-15T01:00:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "e2e-integrated",
+  "formedAt": "2026-08-15T01:35:00.000Z",
+  "stateDeclaration": "referenced",
+  "emptyReason": null,
+  "resources": [
+    {
+      "resourceId": "AGENT-S002-ANOMALY-v1",
+      "resourceType": "agent-definition",
+      "version": "1.0.0",
+      "summary": "预算异常分析 Agent Definition",
+      "authoritativeRef": "S002/S002-RUN-20260815010000000-a283fabf23f6/M05/AGENT-S002-ANOMALY-v1",
+      "formedAt": "2026-08-15T01:35:00.000Z"
+    },
+    {
+      "resourceId": "AGENT-S002-REPORT-DRAFT-v1",
+      "resourceType": "agent-release",
+      "version": "1.0.0",
+      "summary": "预算报告草稿 Agent Release",
+      "authoritativeRef": "S002/S002-RUN-20260815010000000-a283fabf23f6/M05/AGENT-S002-REPORT-DRAFT-v1",
+      "formedAt": "2026-08-15T01:35:00.000Z"
+    },
+    {
+      "resourceId": "C014-S002-RUN-001",
+      "resourceType": "orchestration-run",
+      "version": "1.0.0",
+      "summary": "固定证据下的双 Agent 轻量编排",
+      "authoritativeRef": "S002/S002-RUN-20260815010000000-a283fabf23f6/M05/C014-S002-RUN-001",
+      "formedAt": "2026-08-15T01:35:00.000Z"
+    },
+    {
+      "resourceId": "RUN-S002-AGENT-001",
+      "resourceType": "agent-run",
+      "version": "1.0.0",
+      "summary": "异常解释与报告草稿运行",
+      "authoritativeRef": "S002/S002-RUN-20260815010000000-a283fabf23f6/M05/RUN-S002-AGENT-001",
+      "formedAt": "2026-08-15T01:35:00.000Z"
+    },
+    {
+      "resourceId": "RES-S002-AGENT-001",
+      "resourceType": "agent-result",
+      "version": "1.0.0",
+      "summary": "原因候选、行动建议和报告草稿结果",
+      "authoritativeRef": "S002/S002-RUN-20260815010000000-a283fabf23f6/M05/RES-S002-AGENT-001",
+      "formedAt": "2026-08-15T01:35:00.000Z"
+    }
+  ],
+  "ownerBoundary": {
+    "ownsOnly": [
+      "agent-definition",
+      "agent-release",
+      "agent-run",
+      "agent-result",
+      "orchestration-run"
+    ],
+    "consumesByReference": true,
+    "copiesOtherModuleTruth": false,
+    "publishesMetricOrRule": false,
+    "createsTodoDirectly": false,
+    "publishesReportDirectly": false
+  },
+  "demoDataMarker": "SYNTHETIC_FOR_DEMO",
+  "sideEffectPolicy": {
+    "allowHistoricalReplay": false,
+    "allowExternalDispatch": false
+  }
+}

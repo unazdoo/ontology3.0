@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "ofw.s002.owner-validation-receipt.v1",
+  "receiptId": "RECEIPT-M03-agent-report-dashboard-completed-472a609dad93",
+  "moduleId": "M03",
+  "owner": "智能问数",
+  "moduleVersion": "S002-M03-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815163155313-79841356bdf8",
+    "formedAt": "2026-08-15T16:31:55.313Z",
+    "status": "active"
+  },
+  "checkpointNode": "agent-report-dashboard-completed",
+  "exportRef": "checkpoints/runs/S002-RUN-20260815163155313-79841356bdf8/evidence/CP06-agent-report-dashboard-completed/M03-state-export.json",
+  "exportSha256": "472a609dad933b0edc4460b659fa0e88656e498aae05a6d5873ba4e6eb6880fa",
+  "validatedAt": "2026-08-15T16:40:05.313Z",
+  "validationStatus": "verified",
+  "checks": {
+    "scenarioIdentity": "verified",
+    "baselineBinding": "verified",
+    "ownerBoundary": "verified",
+    "exportDigest": "verified",
+    "isolatedCloneShape": "verified-by-scenario-adapter",
+    "historicalSideEffectsDisabled": "verified"
+  },
+  "validationScope": "prototype-scenario-adapter",
+  "conclusionBoundary": "S002原型适配器导出与恢复校验通过，不代表生产模块部署或平台验收通过"
+}

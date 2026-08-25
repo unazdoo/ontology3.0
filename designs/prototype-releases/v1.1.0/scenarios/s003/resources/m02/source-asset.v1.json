@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "ofw.s003.m02.source-asset.v1",
+  "sourceId": "S003-M02-SOURCE-XLSX-20251231",
+  "status": "verified-source",
+  "immutable": true,
+  "formedAt": "2026-08-15T13:04:23.000Z",
+  "owner": "M02 数据工程",
+  "assessmentAt": "2025-12-31",
+  "currency": "CNY",
+  "amountUnit": "元",
+  "fileName": "企业债务风险评估模版_S003兼容版.xlsx",
+  "sourceSha256": "dbdab9c870d7f2e456c3a9e0f91b340b372da6d40eb241551e0ee8848cac42a0",
+  "sourceSizeBytes": 16250,
+  "downloadArtifact": "resources/m02/企业债务风险评估模版_S003兼容版.xlsx",
+  "previewArtifact": "resources/m02/企业债务风险评估模版_S003兼容版.csv",
+  "logicalMembers": [
+    {
+      "name": "财务数据",
+      "range": "A1:AA22",
+      "rowCount": 21,
+      "fieldCount": 27,
+      "currentPipelineInput": true
+    }
+  ],
+  "attachmentHistoricalMembers": [
+    {
+      "name": "调节因子",
+      "range": "A1:I22",
+      "rowCount": 21,
+      "fieldCount": 9,
+      "role": "source-attachment-history-only",
+      "currentPipelineInput": false,
+      "modelConfigurationAuthority": false,
+      "note": "保留原始工作簿附件证据，不作为当前数据源逻辑成员、企业因子在线填报真源或 M01 模型配置真源。"
+    }
+  ],
+  "compatibilityBoundary": {
+    "compatibilityAssetConsumable": false,
+    "promotedInPlace": false,
+    "note": "源工作簿仅作为权威夹具；本次形成全新的正式建设候选资产。"
+  }
+}

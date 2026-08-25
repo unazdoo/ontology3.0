@@ -1,0 +1,56 @@
+{
+  "version": "1.1.0",
+  "status": "frozen-implementation-baseline",
+  "frozenAt": "2026-08-24",
+  "sourceCandidate": "v1.1.0-rc.10",
+  "targetVersion": "v1.1.0-rc.10",
+  "sourceProductBaseline": "v1.0.7",
+  "parentVersion": "1.0.3",
+  "governanceBaselineVersion": "1.0.3",
+  "governanceBaselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+  "baselineCheckpoint": "../../scenario-checkpoints/baselines/v1.1.0/T056-baseline-checkpoint.json",
+  "scenarioScope": ["S001", "S002", "S003", "S004"],
+  "sourceScenarioRunIds": {
+    "S001": "S001-RUN-20260816081748567-705ac89fb83a",
+    "S002": "S002-RUN-20260815080000000-6ef5d0ef82f9",
+    "S003": "S003-RUN-20260817163000000-c02200000001",
+    "S004": "S004-RUN-20260815233000000-7f3c8e42a1b6"
+  },
+  "entry": "s001-e2e-integration/index.html",
+  "moduleEntries": {
+    "M01": "ontology-management-review/canvas-first/index.html",
+    "M02": "data-engineering-prototype-review/review-v3/方案B2.html",
+    "M03": "intelligent-query-prototype/review-next/conversation-workspace/index.html",
+    "M04": "decision-center-prototype/review-v2/action-portfolio.html",
+    "M05": "agent-application/Agent应用.html",
+    "M06": "report-center/review-lifecycle/index.html",
+    "Dashboard": "dashboard/index.html"
+  },
+  "additionalEntries": [
+    "completed-run.html",
+    "open-completed-run.html"
+  ],
+  "recommendedPort": 4342,
+  "reviewRevision": "closure-rc10-review",
+  "releaseRevision": "v1.1.0-frozen",
+  "activeScenarioRunId": null,
+  "legacyRestoreEntry": null,
+  "integrityManifest": "RC10-INTEGRITY.json",
+  "releaseManifest": "manifest.json",
+  "releaseTag": "prototype-v1.1.0-frozen",
+  "rollbackVersion": "1.0.3",
+  "immutable": true,
+  "editable": false,
+  "runtimeSnapshotIncluded": false,
+  "historicalRuntimeReferences": {
+    "S001": {
+      "path": "runtime-snapshots/S001-RUN-20260816081748567-705ac89fb83a.runtime.json",
+      "mode": "read-only-source-evidence"
+    }
+  },
+  "checkpointBoundary": "The baseline checkpoint locks prototype code, exact module trees, four source scenario run identities and evidence indexes. It is not a formal four-scenario runtime recovery snapshot.",
+  "implementationUse": "Approved as the immutable product interaction and acceptance-reference baseline for production implementation planning.",
+  "acceptanceReady": false,
+  "acceptanceBoundary": "Freezing this implementation reference does not mean module design approval, scenario acceptance, production technical integration, S001 acceptance or phase-1 acceptance."
+}

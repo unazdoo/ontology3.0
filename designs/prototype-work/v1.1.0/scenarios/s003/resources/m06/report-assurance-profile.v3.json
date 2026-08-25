@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "ofw.s003.m06.report-assurance-profile.v3",
+  "moduleId": "M06",
+  "moduleOwner": "报告中心",
+  "profileId": "S003-RPT-ASSURANCE-PROFILE",
+  "profileVersion": "1.2.0",
+  "supersedes": "resources/m06/report-assurance-profile.v2.json",
+  "lifecycleStatus": "published",
+  "formedAt": "2026-08-16T23:30:00.000Z",
+  "verificationChecks": [
+    { "checkId": "scenario-identity", "label": "场景运行身份一致", "severity": "blocking" },
+    { "checkId": "published-binding", "label": "Published 模型与结果绑定一致", "severity": "blocking" },
+    { "checkId": "score-record", "label": "报告评分与 C035 记录一致", "severity": "blocking" },
+    { "checkId": "indicator-coverage", "label": "经营企业权重或在建企业固定分语义覆盖完整", "severity": "blocking" },
+    { "checkId": "factor-coverage", "label": "调节因子与默认语义完整", "severity": "blocking" },
+    { "checkId": "evidence-coverage", "label": "必需证据类型完整", "severity": "blocking" },
+    { "checkId": "artifact-identity", "label": "正式产物与内容版本一致", "severity": "blocking" },
+    { "checkId": "side-effect-boundary", "label": "报告生成未产生决策副作用", "severity": "blocking" },
+    { "checkId": "localized-business-status", "label": "正文与下载产物未暴露内部状态枚举", "severity": "blocking" },
+    { "checkId": "structured-trigger", "label": "风险触发依据已结构化展示", "severity": "blocking" },
+    { "checkId": "diagnosis-value-format", "label": "指标诊断实际值与明细格式一致", "severity": "blocking" },
+    { "checkId": "decision-status-alignment", "label": "预期 C011/C019 记录实际存在且与同轮候选精确一致", "severity": "blocking" },
+    { "checkId": "construction-semantics", "label": "在建企业不生成低分指标诊断并覆盖建设资金专题", "severity": "blocking" }
+  ],
+  "decisionEvidencePolicy": {
+    "emptySetMayPassOnlyWhenNoCandidateExpected": true,
+    "requireExactCandidateId": true,
+    "requireExactEnterpriseId": true,
+    "requireExactActionTypeId": true,
+    "requireExactScenarioRunId": true
+  },
+  "companionQuestions": [
+    { "questionId": "risk-summary", "label": "这家企业为什么是当前风险等级？" },
+    { "questionId": "weakness", "label": "当前最需要核实的风险点是什么？" },
+    { "questionId": "adjustment", "label": "哪些调节因子影响了最终评分？" },
+    { "questionId": "strategy", "label": "风险应对策略与改善重点是什么？" },
+    { "questionId": "three-month-plan", "label": "未来三个月建议如何推进？" },
+    { "questionId": "defaults", "label": "本报告采用了哪些默认或不适用语义？" },
+    { "questionId": "disposition", "label": "当前需要什么风险行动？" },
+    { "questionId": "evidence", "label": "这份报告引用了哪些正式证据？" }
+  ]
+}

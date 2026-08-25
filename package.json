@@ -1,0 +1,16 @@
+{
+  "name": "ontology3-foundation-implementation",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Dependency-free v1.1.x Foundation public contracts",
+  "scripts": {
+    "test": "node --test packages/contracts/test/contracts.test.js packages/identity/index.test.cjs packages/checkpoint/index.test.cjs packages/foundation-contract.test.cjs",
+    "test:quality": "node --test scripts/quality-gate/*.test.mjs scripts/quality-gate/*.test.cjs",
+    "quality:golden": "node scripts/quality-gate/verify-golden-data.mjs",
+    "quality:baseline": "node scripts/quality-gate/verify-baseline-reference.mjs",
+    "quality:sbom": "node scripts/quality-gate/generate-sbom.mjs --output artifacts/sbom.spdx.json && node scripts/quality-gate/verify-sbom.mjs --sbom artifacts/sbom.spdx.json",
+    "quality:security": "node scripts/quality-gate/scan-security.mjs",
+    "quality:check": "npm test && npm run test:quality && npm run quality:baseline && npm run quality:golden && npm run quality:sbom && npm run quality:security",
+    "check": "node --check packages/contracts/index.js && node --check packages/contracts/validation.js && node --check packages/identity/index.js && node --check packages/checkpoint/index.js && node --check scripts/quality-gate/lib/quality-gate.mjs && node --check scripts/quality-gate/verify-pr-evidence.mjs"
+  }
+}

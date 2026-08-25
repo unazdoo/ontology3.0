@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "resourceSchemaVersion": "ofw.s003.m02.c017-decision-projection.v1",
+  "moduleId": "M02",
+  "moduleOwner": "数据工程",
+  "businessOwner": "财务公司",
+  "projectionId": "S003-M02-C017-DECISION-PROJECTION-20260815-001",
+  "projectionVersion": "1.0.0",
+  "contractCode": "C017",
+  "sourceModule": "数据工程",
+  "consumer": "决策中心",
+  "immutable": true,
+  "formedAt": "2026-08-15T13:30:00.000Z",
+  "scenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+    "formedAt": "2026-08-15T13:30:00.000Z",
+    "status": "active"
+  },
+  "readStatus": "ready",
+  "reason": null,
+  "sourceRefs": {
+    "dataAsset": "resources/m02/formal-candidate-data-asset.v1.json",
+    "qualityResult": "resources/m02/quality-result.v1.json",
+    "publishedPointer": "resources/m01/published-pointer.v1.json"
+  },
+  "projections": [
+    {
+      "dataVersion": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+      "dataAssetVersion": "1.0.0",
+      "scenarioContext": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+        "formedAt": "2026-08-15T13:30:00.000Z",
+        "status": "active"
+      },
+      "currentStateSummary": {
+        "id": "S003-M02-C017-CURRENT-STATE-20251231-v1",
+        "version": "1.0.0",
+        "formedAt": "2026-08-15T13:30:00.000Z",
+        "qualityStatus": "允许推进",
+        "hardQualityFailure": false,
+        "detectedAt": "不适用",
+        "impactScope": "无硬质量失败影响",
+        "businessFieldCategories": "无受影响业务字段类别",
+        "reason": "当前正式数据资产质量检查通过，且已取得本体管理正式采用证据。",
+        "recovery": "无需恢复",
+        "evidenceLocator": "resources/m02/c017-decision-projection.v1.json#/projections/0/currentStateSummary"
+      },
+      "qualityStatus": "允许推进",
+      "hardQualityFailure": false,
+      "detectedAt": "不适用",
+      "impactScope": "无硬质量失败影响",
+      "businessFieldCategories": "无受影响业务字段类别",
+      "reason": "当前正式数据资产质量检查通过，且已取得本体管理正式采用证据。",
+      "recovery": "无需恢复",
+      "evidenceLocator": "resources/m02/c017-decision-projection.v1.json#/projections/0",
+      "gates": {
+        "request_receipt": {
+          "currentStateSummary": {
+            "id": "S003-M02-C017-CURRENT-STATE-20251231-v1",
+            "version": "1.0.0",
+            "formedAt": "2026-08-15T13:30:00.000Z"
+          },
+          "qualityStatus": "允许推进",
+          "hardQualityFailure": false,
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "无受影响业务字段类别",
+          "reason": "当前摘要未标记版本级或范围级硬质量失败。",
+          "recovery": "无需恢复",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v1.json#/projections/0/gates/request_receipt"
+        },
+        "confirmation_submit": {
+          "currentStateSummary": {
+            "id": "S003-M02-C017-CURRENT-STATE-20251231-v1",
+            "version": "1.0.0",
+            "formedAt": "2026-08-15T13:30:00.000Z"
+          },
+          "qualityStatus": "允许推进",
+          "hardQualityFailure": false,
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "无受影响业务字段类别",
+          "reason": "当前摘要未标记版本级或范围级硬质量失败。",
+          "recovery": "无需恢复",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v1.json#/projections/0/gates/confirmation_submit"
+        },
+        "task_formation": {
+          "currentStateSummary": {
+            "id": "S003-M02-C017-CURRENT-STATE-20251231-v1",
+            "version": "1.0.0",
+            "formedAt": "2026-08-15T13:30:00.000Z"
+          },
+          "qualityStatus": "允许推进",
+          "hardQualityFailure": false,
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "无受影响业务字段类别",
+          "reason": "当前摘要未标记版本级或范围级硬质量失败。",
+          "recovery": "无需恢复",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v1.json#/projections/0/gates/task_formation"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "version": "1.1.0",
+  "status": "s003-baseline-extension-candidate",
+  "sourceParentVersion": "1.0.1",
+  "parentVersion": "1.0.3",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "referenceBaselineVersion": "1.0.3",
+  "referenceBaselinePath": "../../prototype-releases/v1.0.3",
+  "baselineCheckpointPath": "../../scenario-checkpoints/baselines/v1.0.3/T056-baseline-checkpoint.json",
+  "baselineCheckpointSha256": "0a90f5f68dccaa7c18be71b4c82019616f19b0e359f931024652d95165ecd414",
+  "rebaseRequiredBeforeScenarioWork": false,
+  "migrationRecord": "MIGRATION-v1.0.1-to-v1.0.3.json",
+  "sourceMaterializationManifest": "manifest.json",
+  "sourceMaterializationManifestRole": "v1.0.3 逐文件物化对照，不是 v1.1.0 当前工作区发布清单",
+  "currentWorkspaceManifest": null,
+  "createdAt": "2026-08-14",
+  "baselineMigratedAt": "2026-08-15T12:31:49+08:00",
+  "workspaceRole": "v1.0.3 派生公共壳上的 S003 配置化装入候选",
+  "foundation": {
+    "version": "1.0.0",
+    "contracts": ["C033", "C034"],
+    "entry": "foundation/ofw-scenario-foundation.js",
+    "test": "foundation/ofw-scenario-foundation.test.cjs",
+    "status": "available-for-scenario-integration"
+  },
+  "target": "S003 在本独立工作区完成 v1.0.3 派生壳装入与回归后受控汇入；S002、S004 保持各自独立工作区",
+  "baselineScenarioScope": ["S001"],
+  "plannedScenarioScope": ["S002", "S003", "S004"],
+  "scenarioPackages": {
+    "S002": "scenarios/s002",
+    "S003": "scenarios/s003",
+    "S004": "scenarios/s004"
+  },
+  "scenarioImplementationStatus": "S003-integrated-candidate-cp38-performance-and-m04-ux",
+  "integratedScenarioScope": ["S001", "S003"],
+  "latestScenarioCheckpoint": {
+    "checkpointId": "CP-S003-20260819141420000-c03838000038",
+    "checkpointRef": "scenarios/s003/checkpoints/CP38-performance-and-m04-ux.json",
+    "sourceScenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+    "status": "m04-m06-performance-and-ux; awaiting-user-acceptance; CP38"
+  },
+  "technicalValidation": {
+    "completedAt": "2026-08-19T14:14:20.000Z",
+    "nodeTests": "339/339 current S003 tests passed",
+    "browserRegression": "M04 immediate AI summary, non-collapsing right drawer, compiled-script entry, M06 lazy checkpoint loading and S001 explicit-entry isolation passed",
+    "browserErrorBudget": "console=0; page=0; request=0; HTTP>=400=0",
+    "releaseIntegrity": "v1.0.3 verified: frozen tree diff 0; CP01-CP38 kept append-only",
+    "frozenBaselineDiff": 0,
+    "formalAcceptance": false
+  },
+  "entry": "s001-e2e-integration/index.html",
+  "recommendedPort": 4333,
+  "acceptanceReady": false,
+  "editable": true,
+  "promotionRequiresFullRegression": true,
+  "frozenBaselineImmutable": true,
+  "historicalS001StatePolicy": "read-only-reference-only; never copy into a new scenario run",
+  "integrationRule": "S003 只以配置和兼容适配装入 v1.0.3 派生副本；不得形成第二套产品壳；通过自身联调门后方可汇入，并同时回归 S001 及全部已汇入场景"
+}

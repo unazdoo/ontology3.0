@@ -1,0 +1,29 @@
+{
+  "schema": "ofw.c034.composite-candidate-checkpoint.v1",
+  "checkpointId": "CP-COMPOSITE-S004-20260821",
+  "status": "candidate-review-only",
+  "promotionEligible": false,
+  "scenarioId": "S004",
+  "scenarioVersion": "S004-v2.1.0",
+  "baselineVersion": "v1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "sourceRuntime": "scenarios/s004-runtime-v2.1.0",
+  "sourceScenarioManifest": "scenarios/s004-runtime-v2.1.0/scenario.manifest.json",
+  "sourceScenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+  "modulePolicy": "M01/M03/M04/M05/M06 frozen baseline; M02 registered parameterization",
+  "artifactScope": [
+    "scenarios/s004/artifacts/data",
+    "scenarios/s004/artifacts/ontology",
+    "scenarios/s004/artifacts/agent",
+    "scenarios/s004/artifacts/report"
+  ],
+  "historyIsolation": {
+    "historicalArtifactsReadOnly": true,
+    "formalOutputsMayBeReusedAsCurrent": false,
+    "actionReplay": false,
+    "notificationReplay": false,
+    "approvalReplay": false,
+    "todoReplay": false
+  },
+  "reasonNotFormal": "S004 原始 scenario.manifest.json 明确 publicCheckpoint.status=not-created；本文件只登记组合候选来源，不升级为正式 Checkpoint。"
+}

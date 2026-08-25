@@ -1,0 +1,161 @@
+{
+  "schemaVersion": "ofw.s003.browser-cp15-result.v2",
+  "runId": "20260816T171108181Z-a9ce66ee",
+  "formedAt": "2026-08-16T17:14:07.298Z",
+  "origin": "http://127.0.0.1:4333",
+  "formalSourceScenarioRunId": "S003-RUN-20260815133000000-c03503000001",
+  "browserVersion": "149.0.7827.55",
+  "cases": [
+    {
+      "id": "shell-and-modules",
+      "status": "failed",
+      "durationMs": 15468,
+      "error": {
+        "name": "AssertionError",
+        "message": "The input did not match the regular expression /Action Request/. Input:\n\n'工作区\\n决策工作台\\n决策运营概览\\n正在读取决策运行记录\\n加载决策事项、负责人待办和固定证据。'\n",
+        "stack": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Action Request/. Input:\n\n'工作区\\n决策工作台\\n决策运营概览\\n正在读取决策运行记录\\n加载决策事项、负责人待办和固定证据。'\n\n    at caseShellAndModules (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:141:10)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:524:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:549:17)"
+      }
+    },
+    {
+      "id": "m02-native",
+      "status": "failed",
+      "durationMs": 33138,
+      "error": {
+        "name": "TimeoutError",
+        "message": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#canvas-stage') to be visible\u001b[22m\n",
+        "stack": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#canvas-stage') to be visible\u001b[22m\n\n    at caseM02Native (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:241:40)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:524:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:549:17)"
+      }
+    },
+    {
+      "id": "m01-canvas",
+      "status": "failed",
+      "durationMs": 34235,
+      "error": {
+        "name": "TimeoutError",
+        "message": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.published-lineage-data').first()\u001b[22m\n",
+        "stack": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.published-lineage-data').first()\u001b[22m\n\n    at caseM01Canvas (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:208:21)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:524:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:549:17)"
+      }
+    },
+    {
+      "id": "m01-published-config",
+      "status": "failed",
+      "durationMs": 3547,
+      "error": {
+        "name": "Error",
+        "message": "locator.click: Error: strict mode violation: locator('a[href*=\"configTab=factors\"]') resolved to 2 elements:\n    1) <a class=\"\" aria-current=\"false\" href=\"#published/version?id=S003-M01-DEBT-RISK-V1&tab=s003-model-config&configTab=factors\">调节因子规则</a> aka getByRole('link', { name: '调节因子规则', exact: true })\n    2) <a class=\"s003-m01-config-index-card\" href=\"#published/version?id=S003-M01-DEBT-RISK-V1&tab=s003-model-config&configTab=factors\">…</a> aka getByRole('link', { name: '调节因子规则 财务公司 随已发布模型版本生效' })\n\nCall log:\n\u001b[2m  - waiting for locator('a[href*=\"configTab=factors\"]')\u001b[22m\n",
+        "stack": "locator.click: Error: strict mode violation: locator('a[href*=\"configTab=factors\"]') resolved to 2 elements:\n    1) <a class=\"\" aria-current=\"false\" href=\"#published/version?id=S003-M01-DEBT-RISK-V1&tab=s003-model-config&configTab=factors\">调节因子规则</a> aka getByRole('link', { name: '调节因子规则', exact: true })\n    2) <a class=\"s003-m01-config-index-card\" href=\"#published/version?id=S003-M01-DEBT-RISK-V1&tab=s003-model-config&configTab=factors\">…</a> aka getByRole('link', { name: '调节因子规则 财务公司 随已发布模型版本生效' })\n\nCall log:\n\u001b[2m  - waiting for locator('a[href*=\"configTab=factors\"]')\u001b[22m\n\n    at caseM01PublishedAndConfig (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:274:55)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:524:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:549:17)"
+      }
+    },
+    {
+      "id": "m03-m04-m05",
+      "status": "failed",
+      "durationMs": 6910,
+      "error": {
+        "name": "AssertionError",
+        "message": "The input did not match the regular expression /决策工作台|Action Request/. Input:\n\n''\n",
+        "stack": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /决策工作台|Action Request/. Input:\n\n''\n\n    at caseM03M04M05 (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:315:10)\n    at runNextTicks (node:internal/process/task_queues:65:5)\n    at process.processImmediate (node:internal/timers:453:9)\n    at process.callbackTrampoline (node:internal/async_hooks:130:17)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:524:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:549:17)"
+      }
+    },
+    {
+      "id": "dashboard-and-report",
+      "status": "failed",
+      "durationMs": 5313,
+      "error": {
+        "name": "AssertionError",
+        "message": "The input did not match the regular expression /执行摘要与总体结论/. Input:\n\n'报告工作\\n' +\n  '报告目录\\n' +\n  '0\\n' +\n  '创建与生成\\n' +\n  '正式报告\\n' +\n  '0\\n' +\n  '资源与分析\\n' +\n  '报告定义\\n' +\n  '当前工作区\\n' +\n  '集团财务管理\\n' +\n  '报告生命周期工作区\\n' +\n  '企业债务风险评估报告\\n' +\n  '\\n' +\n  '正在读取当前运行的正式报告资源。\\n' +\n  '\\n' +\n  '正在读取 S003 已发布报告资源\\n' +\n  '基线报告目录、生命周期和生成工作区保持可用；场景资源完成校验后作为原生记录装入。'\n",
+        "stack": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /执行摘要与总体结论/. Input:\n\n'报告工作\\n' +\n  '报告目录\\n' +\n  '0\\n' +\n  '创建与生成\\n' +\n  '正式报告\\n' +\n  '0\\n' +\n  '资源与分析\\n' +\n  '报告定义\\n' +\n  '当前工作区\\n' +\n  '集团财务管理\\n' +\n  '报告生命周期工作区\\n' +\n  '企业债务风险评估报告\\n' +\n  '\\n' +\n  '正在读取当前运行的正式报告资源。\\n' +\n  '\\n' +\n  '正在读取 S003 已发布报告资源\\n' +\n  '基线报告目录、生命周期和生成工作区保持可用；场景资源完成校验后作为原生记录装入。'\n\n    at caseDashboardAndReport (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:355:180)\n    at runNextTicks (node:internal/process/task_queues:65:5)\n    at process.processImmediate (node:internal/timers:453:9)\n    at process.callbackTrampoline (node:internal/async_hooks:130:17)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:524:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:549:17)"
+      }
+    },
+    {
+      "id": "dashboard-action-and-config",
+      "status": "failed",
+      "durationMs": 34251,
+      "error": {
+        "name": "TimeoutError",
+        "message": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[data-action=\"s003-navigate-module\"][data-module=\"ontology\"]').first()\u001b[22m\n\u001b[2m    - locator resolved to <button title=\"本体管理\" type=\"button\" aria-label=\"本体管理\" data-module=\"ontology\" class=\"platform-button\" data-action=\"s003-navigate-module\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    49 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+        "stack": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[data-action=\"s003-navigate-module\"][data-module=\"ontology\"]').first()\u001b[22m\n\u001b[2m    - locator resolved to <button title=\"本体管理\" type=\"button\" aria-label=\"本体管理\" data-module=\"ontology\" class=\"platform-button\" data-action=\"s003-navigate-module\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    49 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at caseDashboardActionAndConfig (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:386:27)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:524:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:549:17)"
+      }
+    },
+    {
+      "id": "old-projection-compatibility",
+      "status": "failed",
+      "durationMs": 3861,
+      "error": {
+        "name": "Error",
+        "message": "page.evaluate: Error: 未找到 M02 当前工作投影\n    at eval (eval at evaluate (:303:30), <anonymous>:4:24)\n    at UtilityScript.evaluate (<anonymous>:305:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+        "stack": "page.evaluate: Error: 未找到 M02 当前工作投影\n    at eval (eval at evaluate (:303:30), <anonymous>:4:24)\n    at UtilityScript.evaluate (<anonymous>:305:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at caseOldProjectionCompatibility (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:410:14)\n    at async runCase (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:524:21)\n    at async main (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s003/designs/prototype-work/v1.1.0/scenarios/s003/scripts/browser-cp15.cjs:549:17)"
+      }
+    },
+    {
+      "id": "quick-rerun-and-history",
+      "status": "passed",
+      "durationMs": 25573,
+      "details": {
+        "oldRunId": "S003-RUN-20260815133000000-c03503000001",
+        "nextRunId": "S003-RUN-20260816171340282-8bf2011c611c",
+        "options": [
+          "工作投影 · 2025-12-31 · 8bf2011c611c",
+          "正式运行 · 2025-12-31 · c03503000001"
+        ],
+        "final": {
+          "shellUrl": "http://127.0.0.1:4333/s001-e2e-integration/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260816171340282-8bf2011c611c&formedAt=2026-08-16T17%3A13%3A40.282Z&status=active&contextCreatedAt=2026-08-16T17%3A13%3A40.282Z&contextStatus=active&scenarioFormedAt=2026-08-16T17%3A13%3A40.282Z&scenarioStatus=active#dashboard",
+          "frameUrl": "http://127.0.0.1:4333/report-center/review-lifecycle/index.html?scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260816171340282-8bf2011c611c&formedAt=2026-08-16T17%3A13%3A40.282Z&status=active&contextCreatedAt=2026-08-16T17%3A13%3A40.282Z&contextStatus=active&scenarioFormedAt=2026-08-16T17%3A13%3A40.282Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=S003-M01-DEBT-RISK-PKG+1.0.1&publishedDataVersion=S003-T007-FORMAL-CANDIDATE-20251231-v1&assessmentAt=2025-12-31#/dashboard/s003",
+          "frameRunId": "S003-RUN-20260816171340282-8bf2011c611c",
+          "context": {
+            "scenarioId": "S003",
+            "scenarioVersion": "S003-v1",
+            "scenarioRunId": "S003-RUN-20260816171340282-8bf2011c611c",
+            "formedAt": "2026-08-16T17:13:40.282Z",
+            "status": "active"
+          },
+          "activeRunId": "S003-RUN-20260816171340282-8bf2011c611c",
+          "lastSuccessfulRunId": "S003-RUN-20260815133000000-c03503000001",
+          "decisionCount": 0
+        },
+        "historicalSideEffectsReplayed": false,
+        "historicalSubmitButtons": 0,
+        "historicalReadonlyButtons": 8
+      }
+    },
+    {
+      "id": "s001-isolation",
+      "status": "passed",
+      "durationMs": 11385,
+      "details": {
+        "checked": [
+          {
+            "module": "data",
+            "url": "http://127.0.0.1:4333/data-engineering-prototype-review/review-v3/%E6%96%B9%E6%A1%88B2.html?scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260816171355997-ff0f1af6884c&formedAt=2026-08-16T17%3A13%3A55.997Z&status=active&contextCreatedAt=2026-08-16T17%3A13%3A55.997Z&contextStatus=active&scenarioFormedAt=2026-08-16T17%3A13%3A55.997Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/resources"
+          },
+          {
+            "module": "ontology",
+            "url": "http://127.0.0.1:4333/ontology-management-review/canvas-first/index.html?prototypeBuild=20260816-16&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260816171355997-ff0f1af6884c&formedAt=2026-08-16T17%3A13%3A55.997Z&status=active&contextCreatedAt=2026-08-16T17%3A13%3A55.997Z&contextStatus=active&scenarioFormedAt=2026-08-16T17%3A13%3A55.997Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#modeling"
+          },
+          {
+            "module": "query",
+            "url": "http://127.0.0.1:4333/intelligent-query-prototype/review-next/conversation-workspace/index.html?scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260816171355997-ff0f1af6884c&formedAt=2026-08-16T17%3A13%3A55.997Z&status=active&contextCreatedAt=2026-08-16T17%3A13%3A55.997Z&contextStatus=active&scenarioFormedAt=2026-08-16T17%3A13%3A55.997Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/ask"
+          },
+          {
+            "module": "decision",
+            "url": "http://127.0.0.1:4333/decision-center-prototype/review-v2/action-portfolio.html?prototypeBuild=20260814-02&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260816171355997-ff0f1af6884c&formedAt=2026-08-16T17%3A13%3A55.997Z&status=active&contextCreatedAt=2026-08-16T17%3A13%3A55.997Z&contextStatus=active&scenarioFormedAt=2026-08-16T17%3A13%3A55.997Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#workbench"
+          },
+          {
+            "module": "agent",
+            "url": "http://127.0.0.1:4333/agent-application/Agent%E5%BA%94%E7%94%A8.html?prototypeBuild=20260814-17&scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260816171355997-ff0f1af6884c&formedAt=2026-08-16T17%3A13%3A55.997Z&status=active&contextCreatedAt=2026-08-16T17%3A13%3A55.997Z&contextStatus=active&scenarioFormedAt=2026-08-16T17%3A13%3A55.997Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/agents"
+          },
+          {
+            "module": "report",
+            "url": "http://127.0.0.1:4333/report-center/review-lifecycle/index.html?scenarioId=S001&scenarioVersion=S001-v1&scenarioRunId=S001-RUN-20260816171355997-ff0f1af6884c&formedAt=2026-08-16T17%3A13%3A55.997Z&status=active&contextCreatedAt=2026-08-16T17%3A13%3A55.997Z&contextStatus=active&scenarioFormedAt=2026-08-16T17%3A13%3A55.997Z&scenarioStatus=active&baselineVersion=1.0.3&baselineSnapshotId=BSL-S001-V103-DE0119608E26&prototypeVersion=1.1.0&publishedResourceVersion=%E8%B4%A2%E5%8A%A1%E6%9C%AC%E4%BD%93+2026.08.12&publishedDataVersion=%E8%9E%8D%E8%B5%84%E6%95%B0%E6%8D%AE+2026.08.13-01&assessmentAt=%E5%BE%85%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E7%A1%AE%E8%AE%A4#/lifecycle"
+          }
+        ]
+      }
+    }
+  ],
+  "totals": {
+    "cases": 10,
+    "passed": 2,
+    "failed": 8
+  },
+  "checkpointCreated": false,
+  "acceptanceReady": false
+}

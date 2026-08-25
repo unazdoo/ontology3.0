@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "ofw.s002.test-fixture.v2",
+  "dataMarker": "SYNTHETIC_FOR_DEMO",
+  "sourcePackageSha256": "a283fabf23f63506f33c5900d0f3643c82734659a890ee504d7394bdb0244599",
+  "approvedBudgetYears": [
+    2024,
+    2025
+  ],
+  "initialSubmissionYears": [
+    2025,
+    2026
+  ],
+  "currency": "CNY",
+  "unit": "万元",
+  "logicalSourceCount": 5,
+  "sourceSnapshotCount": 8,
+  "logicalMemberCount": 14,
+  "dataPipelineCount": 2,
+  "businessDataAssets": [
+    "S002-BUDGET-EXEC-v1",
+    "S002-PROJECT-OCC-v1"
+  ],
+  "compatibilityDeliveryPointer": "S002-DATA-v1",
+  "actionTypes": [
+    "预算执行整改",
+    "下一年度预算合理性复核",
+    "费用管理优化核查",
+    "预算申报依据补充",
+    "采购占用清理",
+    "供应商价格复核"
+  ],
+  "legacyDownstreamActionAliases": [
+    "预算调增",
+    "预算调减",
+    "科目调剂",
+    "申报退回",
+    "占用释放",
+    "供应商价格复核"
+  ],
+  "actionRequestCount": 8,
+  "todoCount": 3,
+  "reportVerification": {
+    "verificationRunId": "VRF-20260815-153001-001",
+    "reportContentVersion": "S002-REPORT-DRAFT-v1",
+    "applicableChecks": 426,
+    "completedChecks": 426,
+    "facts": 58,
+    "verifiedFacts": 58,
+    "anchors": 66,
+    "verifiedAnchors": 66,
+    "passed": 124,
+    "warnings": 0,
+    "failed": 0,
+    "unverifiable": 0,
+    "historicalPersistence": false
+  },
+  "formedAt": "2026-08-15T23:54:20.000Z"
+}

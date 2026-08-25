@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "ofw.s002.module-state-export.v2",
+  "moduleId": "M04",
+  "moduleName": "决策中心",
+  "owner": "决策中心",
+  "moduleVersion": "S002-M04-1.0.0",
+  "scenarioAdapterVersion": "S002-M04-1.0.0",
+  "baselineVersion": "1.0.3",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "baselineCheckpointBinding": {
+    "ref": "designs/scenario-checkpoints/baselines/v1.0.3/T056-baseline-checkpoint.json",
+    "sha256": "0a90f5f68dccaa7c18be71b4c82019616f19b0e359f931024652d95165ecd414"
+  },
+  "baselineModuleBinding": {
+    "baselineVersion": "1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "prototypePath": "designs/prototype-releases/v1.0.3/decision-center-prototype",
+    "exactVersion": "v1.0.3#243f7a8a779b1fb9",
+    "treeSha256": "243f7a8a779b1fb9dddb74996c5bc7d99ad51211f019a2991afb6c8916f7b66b",
+    "treeHashAlgorithm": "sha256(sorted recursive relativePath + NUL + file bytes + NUL)",
+    "supportingPrototypeComponents": []
+  },
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815080000000-3944d3167db8",
+    "formedAt": "2026-08-15T08:00:00.000Z",
+    "status": "active"
+  },
+  "checkpointNode": "agent-report-dashboard-completed",
+  "formedAt": "2026-08-15T18:37:00.000Z",
+  "stateDeclaration": "referenced",
+  "emptyReason": null,
+  "resources": [
+    {
+      "resourceId": "ALERT-S002-BUDGET-v1",
+      "resourceType": "decision-alert",
+      "version": "1.0.0",
+      "summary": "Rule命中和分析建议形成的决策提醒",
+      "authoritativeRef": "S002/S002-RUN-20260815080000000-3944d3167db8/M04/ALERT-S002-BUDGET-v1",
+      "formedAt": "2026-08-15T18:37:00.000Z"
+    },
+    {
+      "resourceId": "AR-S002-BUDGET-v1",
+      "resourceType": "action-request",
+      "version": "1.0.0",
+      "summary": "六类整改或复核 Action Request；旧预算调整动作仅保留兼容别名且不自动执行",
+      "authoritativeRef": "S002/S002-RUN-20260815080000000-3944d3167db8/M04/AR-S002-BUDGET-v1",
+      "formedAt": "2026-08-15T18:37:00.000Z"
+    },
+    {
+      "resourceId": "C011-S002-GATES-v1",
+      "resourceType": "c011-gate",
+      "version": "1.0.0",
+      "summary": "接收、确认、待办形成三次C017读取门",
+      "authoritativeRef": "S002/S002-RUN-20260815080000000-3944d3167db8/M04/C011-S002-GATES-v1",
+      "formedAt": "2026-08-15T18:37:00.000Z"
+    },
+    {
+      "resourceId": "CONFIRM-S002-BUDGET-v1",
+      "resourceType": "human-confirmation",
+      "version": "1.0.0",
+      "summary": "平台管理员逐Request人工确认记录",
+      "authoritativeRef": "S002/S002-RUN-20260815080000000-3944d3167db8/M04/CONFIRM-S002-BUDGET-v1",
+      "formedAt": "2026-08-15T18:37:00.000Z"
+    },
+    {
+      "resourceId": "REJECT-S002-BUDGET-v1",
+      "resourceType": "rejection",
+      "version": "1.0.0",
+      "summary": "拒绝路径与不形成待办证据",
+      "authoritativeRef": "S002/S002-RUN-20260815080000000-3944d3167db8/M04/REJECT-S002-BUDGET-v1",
+      "formedAt": "2026-08-15T18:37:00.000Z"
+    },
+    {
+      "resourceId": "TODO-S002-BUDGET-v1",
+      "resourceType": "owner-todo",
+      "version": "1.0.0",
+      "summary": "确认后逐Request幂等生成的平台内负责人待办",
+      "authoritativeRef": "S002/S002-RUN-20260815080000000-3944d3167db8/M04/TODO-S002-BUDGET-v1",
+      "formedAt": "2026-08-15T18:37:00.000Z"
+    },
+    {
+      "resourceId": "C019-S002-v1",
+      "resourceType": "decision-summary",
+      "version": "1.0.0",
+      "summary": "供Agent和报告中心只读消费的决策摘要",
+      "authoritativeRef": "S002/S002-RUN-20260815080000000-3944d3167db8/M04/C019-S002-v1",
+      "formedAt": "2026-08-15T18:37:00.000Z"
+    }
+  ],
+  "ownerBoundary": {
+    "ownsOnly": [
+      "decision-alert",
+      "action-request",
+      "c011-gate",
+      "human-confirmation",
+      "rejection",
+      "owner-todo",
+      "decision-summary"
+    ],
+    "consumesByReference": true,
+    "copiesOtherModuleTruth": false,
+    "externalBudgetSystemDispatch": false,
+    "automaticApproval": false,
+    "automaticPosting": false,
+    "approvedBudgetOverwrite": false,
+    "demoOutcome": "当前S002范围不形成Action Request、决策提醒或平台内待办实例"
+  },
+  "demoDataMarker": "SYNTHETIC_FOR_DEMO",
+  "sideEffectPolicy": {
+    "allowHistoricalReplay": false,
+    "allowExternalDispatch": false
+  },
+  "runtimeState": {
+    "moduleId": "M04",
+    "moduleVersion": "S002-M04-1.0.0",
+    "progress": {
+      "actionsDrafted": true,
+      "actionConfirmed": true,
+      "todoCreated": true
+    },
+    "actionRequests": [],
+    "decisionAlerts": [],
+    "todos": [],
+    "decisionSummary": {
+      "id": "C019-S002-NOT-APPLICABLE",
+      "status": "no-runtime-actions",
+      "requestCount": 0,
+      "pendingCount": 0,
+      "awaitingCount": 0,
+      "confirmedCount": 0,
+      "rejectedCount": 0,
+      "todoCount": 0,
+      "formedAt": "2026-08-15T08:00:00.000Z"
+    },
+    "actionPolicy": "disabled-for-s002-current-scope"
+  }
+}

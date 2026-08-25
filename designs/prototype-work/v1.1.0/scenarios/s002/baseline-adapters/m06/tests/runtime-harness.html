@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>S002 M06 Runtime Harness</title>
+  <style>
+    html, body, iframe { width: 100%; height: 100%; margin: 0; border: 0; }
+    body { overflow: hidden; background: #eef2f7; }
+  </style>
+</head>
+<body>
+  <iframe id="m06-frame" title="S002 报告中心运行验证"></iframe>
+  <script>
+    (function () {
+      "use strict";
+      const context = {
+        scenarioId: "S002",
+        scenarioVersion: "S002-v1",
+        scenarioRunId: "S002-RUN-20260815160000001-9f72297443c7",
+        formedAt: "2026-08-15T08:00:00.000Z",
+        status: "active"
+      };
+      const actionRequests = [
+        ["AR-S002-001", "HIT-001", "confirmed", "安全运行部 · 概率安全分析项目"],
+        ["AR-S002-002", "HIT-002-2024-AQ", "rejected", "安全运行部 · 2024最终批准预算"],
+        ["AR-S002-003", "HIT-003-2025-AQ", "draft", "安全运行部 · 2025成本费用表现"],
+        ["AR-S002-004", "HIT-002-2025-AQ", "draft", "安全运行部 · 2025最终批准预算"],
+        ["AR-S002-005", "HIT-004", "confirmed", "设备管理部 · 设备项目采购占用"],
+        ["AR-S002-006", "HIT-005", "draft", "安全运行部 · 供应商价格复核"],
+        ["AR-S002-007", "SUG-001", "confirmed", "技术部 · 2025初始申报预算"],
+        ["AR-S002-008", "HIT-002-2025-SB", "draft", "设备管理部 · 2025最终批准预算"]
+      ].map(function (item) {
+        return { requestId: item[0], id: item[0], sourceId: item[1], status: item[2], subject: item[3], subjectName: item[3], scenarioContext: context, createdAt: "2026-08-15T08:20:00.000Z" };
+      });
+      const modules = {
+        m01: {
+          moduleId: "M01", moduleVersion: "S002-M01-1.0.0", progress: { mappingApplied: true, ontologyPublished: true },
+          publishedOntology: { ontologyVersion: "S002-ONTO-v1", publishedPointer: "T019-S002-v1", formedAt: "2026-08-15T08:10:00.000Z" }
+        },
+        m02: {
+          moduleId: "M02", moduleVersion: "S002-M02-1.0.0", progress: { dataConnected: true, qualityPassed: true, assetPublished: true },
+          dataAsset: { assetId: "S002-DATA-BUNDLE", version: "S002-DATA-v1", asOf: "2025-12-31", formedAt: "2026-08-15T08:05:00.000Z" },
+          qualityReceipt: { receiptId: "QR-S002-001", status: "passed-for-demo", formedAt: "2026-08-15T08:05:00.000Z", checksPassed: 20, checksTotal: 20, disclaimer: "演示数据已保留 DERIVED、CORRECTED 与 SYNTHETIC_FOR_DEMO 标识。" }
+        },
+        m04: {
+          moduleId: "M04", moduleVersion: "S002-M04-1.0.0", progress: { actionsDrafted: true, actionConfirmed: true, todoCreated: true },
+          actionRequests: actionRequests,
+          decisionSummary: { requestCount: 8, confirmedCount: 3, rejectedCount: 1, pendingCount: 4, todoCount: 3 }
+        },
+        m06: {
+          moduleId: "M06", moduleVersion: "S002-M06-1.0.0", progress: { reportBuilt: true, dashboardPublished: true },
+          reports: [{ reportId: "RPT-S002-BUDGET-DRAFT-v1", version: "S002-REPORT-DRAFT-v1", status: "draft", scenarioContext: context }],
+          dashboardVersions: [{ dashboardVersionId: "DASH-S002-001", version: "S002-DASHBOARD-v1", status: "published", publishedAt: "2026-08-15T08:30:00.000Z", scenarioContext: context }],
+          dashboardView: { status: "published" }
+        }
+      };
+      window.S002_STORE = {
+        get: function () { return { context: context, actionRequests: actionRequests, modules: modules }; },
+        exportOwnedState: function () { return { scenarioContext: context, modules: modules }; }
+      };
+      window.S002_DATA = {};
+      const query = new URLSearchParams(context);
+      document.getElementById("m06-frame").src = "../report-center/review-lifecycle/index.html?" + query.toString() + "#/dashboard/s002?tab=overview";
+    })();
+  </script>
+</body>
+</html>

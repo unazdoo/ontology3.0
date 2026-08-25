@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "ofw.s003.browser-evidence.v1",
+  "evidenceId": "S003-CP25-BROWSER-RESULT",
+  "formedAt": "2026-08-17T23:30:00.000Z",
+  "browser": "Codex in-app Chromium",
+  "entry": "http://127.0.0.1:4333/s001-e2e-integration/index.html?scenarioId=S003#dashboard",
+  "scenarioIdentity": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "S003-RUN-20260817163000000-c02200000001"
+  },
+  "statePolicy": {
+    "existingBrowserStatePreserved": true,
+    "localStorageCleared": false,
+    "newScenarioRunCreated": false,
+    "historicalSideEffectsReplayed": false,
+    "workingProjectionPromotedToPublished": false
+  },
+  "checks": [
+    {"id":"DASHBOARD_ENTRY","status":"passed","observed":"公共仪表盘与正式评分视图可加载。"},
+    {"id":"MODEL_ROUTE","status":"passed","observed":"模型配置入口继续指向 M01 原生配置路径，四个配置页签保持不变。"},
+    {"id":"ACTION_BOUNDARY","status":"passed","observed":"风险行动保持按黄/红/黑亮灯逐户形成，提交后直达成员单位接口人；本轮未产生副作用。"},
+    {"id":"POINTER_SYNC","status":"passed","observed":"当前工作区指针与 CP25 manifest、v19 inventory 一致。"}
+  ],
+  "browserErrors": {"console":0,"page":0,"request":0,"http":0},
+  "status": "passed"
+}
