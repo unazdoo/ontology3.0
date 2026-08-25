@@ -295,6 +295,8 @@ jobs:
             --output artifacts/receipts/accessibility.json \
             || echo 'Accessibility remains blocked; the final evidence gate will reject this candidate.'
       - name: Fingerprint actual MinIO objects
+        env:
+          PR_PROVIDER_POSTGRES_URL: postgresql://ofw_ci_admin:ofw_${{ github.run_id }}_${{ github.run_attempt }}@127.0.0.1:5432/ofw_ci
         run: |
           node scripts/quality-gate/fingerprint-object-storage.mjs \
             --live --descriptor artifacts/receipts/pr-environment.json \
