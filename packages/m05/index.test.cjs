@@ -292,6 +292,9 @@ test('M05 exposes a strict Foundation C034 provider bridge', () => {
 test('M05 checkpoint owner validation accepts common shapes and preserves rejection', () => {
   const release = m05.publishAgentRelease(m05.createAgentRelease(releaseInput()), { now: '2026-08-24T01:00:00.000Z' });
   const checkpoint = m05.exportM05Checkpoint({ release, scenarioContext: { scenarioId: 'S001', scenarioVersion: 'S001-v1', scenarioRunId: 'S001-RUN-1', formedAt: '2026-08-24T00:00:00.000Z', status: 'active' }, state: {} });
+  const jsonbRoundTrip = JSON.parse(JSON.stringify(checkpoint));
+  jsonbRoundTrip.sideEffectPolicy = Object.fromEntries(Object.entries(jsonbRoundTrip.sideEffectPolicy).reverse());
+  assert.equal(m05.validateM05Checkpoint(jsonbRoundTrip).valid, true, 'JSONB key ordering must not widen an identical policy');
   assert.equal(m05.createM05CheckpointProvider({ owner: { validate: () => false } }).validate(checkpoint).valid, false);
   assert.equal(m05.createM05CheckpointProvider({ owner: { validate: () => ({ ok: false, errors: [{ code: 'NO' }] }) } }).validate(checkpoint).valid, false);
   assert.equal(m05.createM05CheckpointProvider({ owner: { validate: () => ({ valid: false, errors: [{ code: 'NO' }] }) } }).validate(checkpoint).valid, false);

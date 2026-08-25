@@ -2,7 +2,7 @@
 
 const crypto = require('node:crypto');
 const {
-  isRecord, isNonEmptyString, clone, immutable, sha256, issue, validation, fail, nowIso,
+  isRecord, isNonEmptyString, clone, immutable, stableSerialize, sha256, issue, validation, fail, nowIso,
   assertNoForbiddenPayload
 } = require('./util');
 const { validateAgentRelease, assertAgentRelease } = require('../agent-release');
@@ -102,7 +102,7 @@ function validateM05Checkpoint(value) {
   const release = validateAgentRelease(value.agentRelease, { requirePublished: false });
   if (!release.valid) errors.push(...release.errors.map((error) => ({ ...error, path: `agentRelease.${error.path}` })));
   if (!value.sideEffectsSuppressed || value.autoRun !== false || value.autoToolInvocation !== false || value.overwritesSource !== false) errors.push(issue('$', 'side-effect-policy', 'checkpoint restore must suppress side effects'));
-  if (value.sideEffectPolicy && JSON.stringify(value.sideEffectPolicy) !== JSON.stringify(SIDE_EFFECT_POLICY)) errors.push(issue('sideEffectPolicy', 'side-effect-policy', 'checkpoint side effect policy cannot be widened'));
+  if (value.sideEffectPolicy && stableSerialize(value.sideEffectPolicy) !== stableSerialize(SIDE_EFFECT_POLICY)) errors.push(issue('sideEffectPolicy', 'side-effect-policy', 'checkpoint side effect policy cannot be widened'));
   try { assertNoForbiddenPayload(value, 'M05 checkpoint'); } catch (error) { errors.push(issue('$', 'forbidden', error.message)); }
   if (isRecord(value.state)) {
     const rawStateKeys = [];
