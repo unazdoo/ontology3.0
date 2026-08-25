@@ -258,7 +258,7 @@ function buildRuntimeReceipt(stages, state, durationMs) {
       C008: { status: m01.outputs.c008.readStatus, semanticVersionId: m01.outputs.c008.current.semanticVersionId, t019Id: m01.outputs.c008.current.t019Id },
       C011: { status: m04.outputs.received.outcome, requestId: m03.outputs.c011.requestId },
       C019: { status: m04.outputs.c019.status, recordCount: m04.outputs.c019.records.length },
-      C024: { status: "accepted", requestId: m06.outputs.c024.payload.requestId },
+      C024: { status: "accepted", requestId: m06.outputs.c024.request.requestId },
       C025: { status: final.outputs.copilot.outcome, resultRef: final.outputs.copilot.resultRef || null },
       C027: final.outputs.c027
     },
