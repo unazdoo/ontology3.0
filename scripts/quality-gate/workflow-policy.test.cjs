@@ -9,6 +9,7 @@ const workflow = fs.readFileSync(path.join(__dirname, "../../.github/workflows/i
 const policy = JSON.parse(fs.readFileSync(path.join(__dirname, "../../quality-gates/policy.json"), "utf8"));
 
 test("workflow exposes every implementation quality gate and retains evidence", () => {
+  assert.match(workflow, /pull_request:[\s\S]*?branches:[\s\S]*?- main/);
   for (const label of [
     "golden-data", "contract-compatibility", "e2e", "permission-negative",
     "concurrency-idempotency", "performance", "accessibility", "security",
