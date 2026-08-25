@@ -558,6 +558,8 @@ function writeTelemetry(receiptDir, runtime, state, latencies) {
   }))];
   const alert = baseReceipt("ALERT", state, {
     runtimeRunId: runtime.runtimeRunId,
+    traceId: runtime.audit.traceId,
+    correlationId: runtime.audit.correlationId,
     alertId: `ALERT-FAIL-CLOSED-${runtimeToken(runtime.runtimeRunId)}`,
     failClosed: true,
     probe: {
