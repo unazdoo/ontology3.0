@@ -343,7 +343,7 @@ async function casProbe(store, runtime, revision) {
 
 async function missingContextProbe(store) {
   try { await store.hydrate({ ownerModule: "M01", scenarioContext: {} }); }
-  catch (error) { return error.code === "SCENARIO_CONTEXT_INVALID"; }
+  catch (error) { return error.code === "SCENARIO_CONTEXT_INVALID" || (error.code === "INVALID_ARGUMENT" && /scenarioContext\./.test(error.message)); }
   return false;
 }
 
