@@ -39,7 +39,7 @@ function makeFresh(asOf) {
 }
 
 async function setup() {
-  const front = runS001DataSemantic({ scenarioRunId: 'S001-RUN-E2E-FULL' });
+  const front = runS001DataSemantic({ scenarioRunId: process.env.SCENARIO_RUN_ID || 'S001-RUN-E2E-FULL' });
   const fresh = makeFresh(front.asset.t008);
   const readC017 = (input = {}) => front.readC017({ ...input, freshness: input.freshness || fresh });
   const clock = () => '2026-08-25T02:00:00.000Z';
@@ -174,7 +174,7 @@ async function setup() {
   return { front, queryDecision, report, exact };
 }
 
-test('S001 real vertical slice completes through report publication and read-only copilot', async () => {
+test('S001 contract vertical slice completes through report publication and read-only copilot', async () => {
   const result = await setup();
   assert.equal(result.front.c003.status, 'accepted');
   assert.equal(result.front.c008.readStatus, 'ready');

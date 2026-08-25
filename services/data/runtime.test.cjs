@@ -20,11 +20,12 @@ const context = (runId = 'S001-RUN-1') => ({
   status: 'active'
 });
 
-function makeRuntime() {
+function makeRuntime(options = {}) {
   let tick = 0;
   return new DataPipelineRuntime({
     clock: () => new Date(Date.UTC(2026, 7, 24, 0, 0, tick++)),
-    idFactory: (prefix, value) => `${prefix}-${fingerprint(value).slice(0, 10)}`
+    idFactory: (prefix, value) => `${prefix}-${fingerprint(value).slice(0, 10)}`,
+    ...options
   });
 }
 
@@ -259,4 +260,18 @@ test('errors expose stable M02 code and details', () => {
   const error = new DataRuntimeError(ERROR_CODES.CYCLE, 'cycle', { path: ['a', 'a'] });
   assert.equal(error.code, ERROR_CODES.CYCLE);
   assert.deepEqual(error.details.path, ['a', 'a']);
+});
+
+test('M02 runtime state survives export and hydrate with an integrity check', () => {
+  const runtime = makeRuntime();
+  const { run } = successfulRun(runtime);
+  const asset = runtime.publishAsset(run.runId, { members: [{ memberId: 'm' }], reuseLicense: { allowed: true } });
+  const state = runtime.exportState();
+  const reopened = makeRuntime({ state });
+  assert.equal(reopened.getAssetVersion(asset.assetVersionId).assetVersionId, asset.assetVersionId);
+  assert.equal(reopened.exportState().stateDigest, state.stateDigest);
+  assert.throws(
+    () => makeRuntime({ state: { ...state, stateDigest: '0'.repeat(64) } }),
+    (error) => error.code === ERROR_CODES.INVALID_STATE
+  );
 });

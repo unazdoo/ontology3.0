@@ -5,6 +5,7 @@ import {
   DEFAULT_BASELINE_SNAPSHOT_ID,
   formatValidationErrors,
   readJson,
+  sha256,
   validatePrEvidence,
   writeJson
 } from "./lib/quality-gate.mjs";
@@ -18,13 +19,14 @@ Options:
   --pr-number <number>    Validate deterministic PR environment derivation
   --head-sha <sha>        Validate deterministic PR environment derivation
   --policy <path>         Policy JSON (default: quality-gates/policy.json)
+  --receipt-root <path>   Root used to resolve digest-bound receipt paths (default: current directory)
   --report <path>         Write a machine-readable validation report
   --candidate              Fail unless all candidate conditions are met
   --github-output         Append candidate status to $GITHUB_OUTPUT when available`);
 }
 
 function args(argv) {
-  const result = { manifest: null, baseline: DEFAULT_BASELINE_SNAPSHOT_ID, report: null, policy: "quality-gates/policy.json", githubOutput: false, candidate: false };
+  const result = { manifest: null, baseline: DEFAULT_BASELINE_SNAPSHOT_ID, report: null, policy: "quality-gates/policy.json", receiptRoot: process.cwd(), githubOutput: false, candidate: false };
   for (let index = 0; index < argv.length; index += 1) {
     const value = argv[index];
     if (value === "--manifest") result.manifest = argv[++index];
@@ -32,6 +34,7 @@ function args(argv) {
     else if (value === "--pr-number") result.pullRequestNumber = argv[++index];
     else if (value === "--head-sha") result.headSha = argv[++index];
     else if (value === "--policy") result.policy = argv[++index];
+    else if (value === "--receipt-root") result.receiptRoot = argv[++index];
     else if (value === "--report") result.report = argv[++index];
     else if (value === "--candidate") result.candidate = true;
     else if (value === "--github-output") result.githubOutput = true;
@@ -56,6 +59,7 @@ try {
   options = args(process.argv.slice(2));
   if (!options.manifest) throw new Error("--manifest is required");
   const manifest = readJson(options.manifest);
+  const manifestSha256 = sha256(fs.readFileSync(options.manifest));
   const policy = readJson(options.policy);
   const result = validatePrEvidence(manifest, {
     expectedBaselineSnapshotId: options.baseline || policy.baseline?.baselineSnapshotId,
@@ -63,7 +67,9 @@ try {
     expectedSourceVersion: policy.baseline?.sourceVersion,
     requiredSchemaVersion: policy.schema?.requiredVersion || "draft-0.1.0",
     pullRequestNumber: options.pullRequestNumber,
-    headSha: options.headSha
+    headSha: options.headSha,
+    receiptRoot: options.receiptRoot,
+    manifestPath: options.manifest
   });
   const report = {
     gateVersion: result.gateVersion,
@@ -72,6 +78,8 @@ try {
     candidateEligible: result.candidateEligible,
     requiredChecks: result.requiredChecks,
     candidateGates: result.candidateGates,
+    receiptVerification: result.receiptVerification,
+    manifestSha256,
     errors: result.errors,
     policyVersion: policy.policyVersion || null,
     checkedAt: new Date().toISOString()

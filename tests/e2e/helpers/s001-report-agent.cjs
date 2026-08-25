@@ -47,7 +47,7 @@ function defaultExtractionRunner(clock) {
   return async ({ fixedInput }) => ({ status: "completed", completedAt: now(clock), claims: fixedInput.contentItems.flatMap((item) => item.facts.map((fact) => ({ sourceContentItemId: item.sourceContentItemId, factId: fact.factId, t044Id: fixedInput.anchors.find((anchor) => anchor.sourceContentItemId === item.sourceContentItemId).t044Id, observedValue: fact.value, observedUnit: fact.unit, evidenceRefs: fact.evidenceRefs, semanticRef: fact.semanticRef || null }))) });
 }
 
-async function runS001ReportAgent(front, decision, options = {}) {
+async function prepareS001Report(front, decision, options = {}) {
   const scenarioContext = required(options.scenarioContext || front?.scenarioContext, "front.scenarioContext");
   const clock = options.clock || front?.clock;
   const c008Provider = required(options.c008Provider || front?.c008Provider, "front.c008Provider");
@@ -82,13 +82,31 @@ async function runS001ReportAgent(front, decision, options = {}) {
   const t049 = await service.verifyContent({ contentVersionId: generation.contentVersion.contentVersionId, verificationRunId: options.verificationRunId || "T049-S001-REPORT-AGENT", initiatedBy: options.requestedBy || "s001-reviewer" });
   const review = await service.confirmReview({ contentVersionId: generation.contentVersion.contentVersionId, reviewCopyId: generation.reviewCopy.reviewCopyId, verificationRunId: t049.verificationRunId, reviewer: options.reviewer || "s001-reviewer", conclusion: options.reviewConclusion || "confirmed against fixed C019 evidence" });
   const artifact = await service.publishReport({ reportId: options.reportId || "RPT-S001-REPORT-AGENT", reportNo: options.reportNo || "RPT-S001-REPORT-AGENT", artifactVersion: "1.0.0", contentVersionId: generation.contentVersion.contentVersionId, verificationRunId: t049.verificationRunId, reviewDecisionId: review.reviewDecisionId, publishedBy: options.publisher || "s001-reviewer" });
-  let copilot;
-  try {
-    copilot = await service.requestReportCopilot({ reportId: artifact.reportId, reportNumber: artifact.reportNo, artifactVersion: artifact.artifactVersion, contentVersionId: generation.contentVersion.contentVersionId, anchorIds: generation.anchors.map((anchor) => anchor.t044Id), selectionScope: "whole-report", purpose: "report-question", question: options.question || "Explain the fixed decision evidence and review boundary.", c017Ref: generation.c022.evidencePack.generationBindingSummary, agentReleaseRef: required(options.agentReleaseRef || front?.agentReleaseRef, "options.agentReleaseRef or front.agentReleaseRef"), semanticEvidenceRefs: [], requestedBy: options.requestedBy || "s001-reviewer", requestedAt: now(clock), correlationId: options.copilotCorrelationId || "CORR-S001-C024", traceId: options.copilotTraceId || "TRACE-S001-C024" });
-  } catch (error) {
-    throw error;
-  }
-  return Object.freeze({ c019, evidence, generation, t049, review, artifact, copilot, c027: Object.freeze({ triggered: false, reason: "C027 requires explicit user action and is not run by this helper" }) });
+  const copilotInput = { reportId: artifact.reportId, reportNumber: artifact.reportNo, artifactVersion: artifact.artifactVersion, contentVersionId: generation.contentVersion.contentVersionId, anchorIds: generation.anchors.map((anchor) => anchor.t044Id), selectionScope: "whole-report", purpose: "report-question", question: options.question || "Explain the fixed decision evidence and review boundary.", c017Ref: generation.c022.evidencePack.generationBindingSummary, agentReleaseRef: required(options.agentReleaseRef || front?.agentReleaseRef, "options.agentReleaseRef or front.agentReleaseRef"), semanticEvidenceRefs: [], requestedBy: options.requestedBy || "s001-reviewer", requestedAt: now(clock), correlationId: options.copilotCorrelationId || "CORR-S001-C024", traceId: options.copilotTraceId || "TRACE-S001-C024" };
+  const c024 = await service.createReportCopilotRequest(copilotInput);
+  return Object.freeze({ scenarioContext, service, m05Port, c019, evidence, generation, t049, review, artifact, copilotInput, c024, storeState: service.snapshot(), c027: Object.freeze({ triggered: false, reason: "C027 requires explicit user action and is not run by this helper" }) });
 }
 
-module.exports = Object.freeze({ runS001ReportAgent });
+async function runS001M05Copilot(prepared, options = {}) {
+  const port = options.m05Port || prepared.m05Port;
+  const c024Envelope = prepared.c024?.envelope || options.c024Envelope;
+  if (!port || !c024Envelope) throw new Error("runS001M05Copilot requires the persisted C024 envelope and an M05 port");
+  const receiptEnvelope = await port.receiveReportCopilotRequest(c024Envelope);
+  const resultEnvelope = await port.runReportCopilot(c024Envelope, receiptEnvelope);
+  return Object.freeze({ c024Envelope, receiptEnvelope, resultEnvelope });
+}
+
+async function completeS001ReportCopilot(prepared, m05Result, options = {}) {
+  const service = options.service || prepared.service;
+  if (!service) throw new Error("completeS001ReportCopilot requires a rehydrated M06 service");
+  const copilot = await service.requestReportCopilot(prepared.copilotInput);
+  return Object.freeze({ ...prepared, ...m05Result, service, copilot, storeState: service.snapshot() });
+}
+
+async function runS001ReportAgent(front, decision, options = {}) {
+  const prepared = await prepareS001Report(front, decision, options);
+  const m05Result = await runS001M05Copilot(prepared, options);
+  return completeS001ReportCopilot(prepared, m05Result, options);
+}
+
+module.exports = Object.freeze({ prepareS001Report, runS001M05Copilot, completeS001ReportCopilot, runS001ReportAgent, definition, template, defaultGenerationRunner, defaultExtractionRunner });

@@ -32,7 +32,7 @@ function semanticContent() {
   };
 }
 
-function runS001DataSemantic(options = {}) {
+function runS001Data(options = {}) {
   const scenarioContext = context(options);
   let tick = 0;
   const now = () => new Date(Date.parse('2026-08-25T00:00:01.000Z') + tick++ * 1000).toISOString();
@@ -45,7 +45,15 @@ function runS001DataSemantic(options = {}) {
   const run = runtime.runPipeline('T003-S001-FINANCE', { scenarioContext, executor: () => ({ normalized: true }), qualityChecks: [{ checkId: 'structure', status: 'passed', hard: true, checkedCount: 1 }] });
   const asset = runtime.publishAsset(run.runId, { assetId: 'T006-FINANCE', members: MEMBERS, relations: RELATIONS });
   const delivery = runtime.createC003Delivery({ assetVersionId: asset.assetVersionId, deliveryId: 'C003-S001-DATA-E2E', scenarioContext });
+  return { scenarioContext, runtime, snapshot, t008, run, asset, delivery };
+}
 
+function runS001Semantic(front, options = {}) {
+  const scenarioContext = front.scenarioContext;
+  const { asset, delivery } = front;
+  if (!scenarioContext || !asset || !delivery) throw new Error('runS001Semantic requires persisted M02 scenarioContext, asset and C003 delivery');
+  let tick = 0;
+  const now = () => new Date(Date.parse(options.clockStart || '2026-08-25T00:01:01.000Z') + tick++ * 1000).toISOString();
   const service = ontology.createOntologyService({ scenarioContext, ontologyId: 'ONT-S001-FINANCE', clock: now });
   const c003 = service.receiveC003(delivery);
   if (c003.status !== 'accepted') throw new Error(`M01 rejected real M02 C003: ${c003.reasonCode || c003.status}`);
@@ -61,8 +69,14 @@ function runS001DataSemantic(options = {}) {
   const c029 = service.completeC029({ requestId: c028.requestId, scenarioContext, status: 'succeeded', objectChecks: [{ id: 'OBJ-CHECK-S001', status: 'passed', evidenceRef: 'OBJ-E-S001' }], relationChecks: [{ id: 'REL-CHECK-S001', status: 'passed', evidenceRef: 'REL-E-S001' }], evidenceRefs: ['C029-E-S001'] });
   const t019 = service.commitT019({ scenarioContext, qualificationId: c029.t018.qualificationId, idempotencyKey: 'T019-S001-E2E', gates: { ontology: { status: 'passed', evidenceRefs: ['ONTO-GATE-S001'] }, mapping: { status: 'passed', evidenceRefs: ['MAP-GATE-S001'] } }, candidateValidation: { sourceModule: 'M03', semanticVersionId: published.publishedId, dataVersion: asset.assetVersionId, questionSetVersion: 'S001-FIXED-v1', status: 'passed', completedAt: now(), evidenceRefs: ['M03-CV-S001'] } });
   const c008 = service.readC008({ scenarioContext });
-  const readC017 = (input = {}) => runtime.readC017({ assetVersionId: asset.assetVersionId, scenarioContext, consumer: input.consumer || 'intelligent-query', purpose: input.purpose || 'intelligent-query', requestedBy: input.requestedBy || 'M03', ...input });
-  return { scenarioContext, runtime, service, snapshot, t008, run, asset, delivery, c003, draft, validation, published, target, discovery, c028, c029, t018: c029.t018, t019, c008, readC017, projectC017: readC017 };
+  return { scenarioContext, service, asset, delivery, c003, draft, validation, published, target, discovery, c028, c029, t018: c029.t018, t019, c008 };
 }
 
-module.exports = Object.freeze({ runS001DataSemantic });
+function runS001DataSemantic(options = {}) {
+  const dataStage = runS001Data(options);
+  const semanticStage = runS001Semantic(dataStage, options);
+  const readC017 = (input = {}) => dataStage.runtime.readC017({ assetVersionId: dataStage.asset.assetVersionId, scenarioContext: dataStage.scenarioContext, consumer: input.consumer || 'intelligent-query', purpose: input.purpose || 'intelligent-query', requestedBy: input.requestedBy || 'M03', ...input });
+  return { ...dataStage, ...semanticStage, readC017, projectC017: readC017 };
+}
+
+module.exports = Object.freeze({ runS001Data, runS001Semantic, runS001DataSemantic });

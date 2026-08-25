@@ -37,6 +37,17 @@ export const CANDIDATE_GATES = Object.freeze([
   "recovery"
 ]);
 
+export const REQUIRED_RECEIPT_ROLES = Object.freeze([
+  "provisioning",
+  "databaseMigration",
+  "objectStorageFingerprint",
+  "rollback",
+  "runtime",
+  "audit",
+  "negativeTests",
+  "recovery"
+]);
+
 export const REQUIRED_NEGATIVE_CASES = Object.freeze([
   "missing-context",
   "unknown-schema",
@@ -56,6 +67,8 @@ const RUN_ID = /^(?:S[0-9]{3}-)?RUN-[A-Za-z0-9][A-Za-z0-9._-]*$/;
 const PR_NUMBER = /^[1-9][0-9]{0,8}$/;
 const SHA = /^[a-f0-9]{7,64}$/i;
 const FORBIDDEN_ENV_WORDS = /(^|[-_\/.])(prod(?:uction)?|shared|default|main)([-_\/.]|$)/i;
+const FORBIDDEN_RECEIPT_MARKER = /(?:descriptor[-_ ]?only|fixture|fake|placeholder|prototype|historical|local[-_ ]?only)/i;
+const LIVE_EVIDENCE_ROLES = new Set(["provisioning", "objectStorageFingerprint", "runtime", "audit", "recovery"]);
 
 export class QualityGateError extends Error {
   constructor(message, details = []) {
@@ -97,6 +110,238 @@ export function writeJson(filePath, value) {
 export function sha256(value) {
   const input = Buffer.isBuffer(value) ? value : Buffer.from(String(value));
   return crypto.createHash("sha256").update(input).digest("hex");
+}
+
+function receiptBinding(receipt) {
+  return {
+    pullRequestNumber: receipt?.pullRequest?.number ?? receipt?.pullRequestNumber,
+    headSha: receipt?.pullRequest?.headSha ?? receipt?.headSha ?? receipt?.commitSha,
+    environmentId: receipt?.environmentId ?? receipt?.prEnvironment?.id,
+    implementationRoundId: receipt?.implementationRoundId ?? receipt?.roundId
+  };
+}
+
+function normalizedReceiptPath(value) {
+  if (!nonEmpty(value) || path.isAbsolute(value) || value.includes("\\")) return null;
+  const normalized = path.posix.normalize(value);
+  if (normalized === "." || normalized === ".." || normalized.startsWith("../") || normalized.includes("/../")) return null;
+  return normalized.replace(/^\.\//, "");
+}
+
+function readBoundReceipt(reference, role, options, errors) {
+  const field = `receipts.${role}`;
+  if (!reference || typeof reference !== "object" || Array.isArray(reference)) {
+    error(errors, "RECEIPT_REFERENCE_MISSING", field, `${role} receipt reference is required`);
+    return null;
+  }
+  const relative = normalizedReceiptPath(reference.path);
+  if (!relative) {
+    error(errors, "RECEIPT_PATH_INVALID", `${field}.path`, "receipt path must be a repository-relative POSIX path without traversal");
+    return null;
+  }
+  if (!SHA256.test(String(reference.sha256 || ""))) {
+    error(errors, "RECEIPT_DIGEST_INVALID", `${field}.sha256`, "receipt reference needs a SHA-256 digest");
+    return null;
+  }
+  const root = path.resolve(options.receiptRoot || process.cwd());
+  const resolved = path.resolve(root, relative);
+  if (resolved !== root && !resolved.startsWith(`${root}${path.sep}`)) {
+    error(errors, "RECEIPT_PATH_OUTSIDE_ROOT", `${field}.path`, "receipt path escapes the configured receipt root");
+    return null;
+  }
+  if (options.manifestPath && path.resolve(options.manifestPath) === resolved) {
+    error(errors, "RECEIPT_MANIFEST_SELF_REFERENCE", `${field}.path`, "the evidence manifest cannot be its own source receipt");
+    return null;
+  }
+  let bytes;
+  let receipt;
+  try {
+    const rootReal = fs.realpathSync(root);
+    const fileReal = fs.realpathSync(resolved);
+    if (fileReal !== rootReal && !fileReal.startsWith(`${rootReal}${path.sep}`)) {
+      error(errors, "RECEIPT_SYMLINK_OUTSIDE_ROOT", `${field}.path`, "receipt symlink escapes the configured receipt root");
+      return null;
+    }
+    bytes = fs.readFileSync(fileReal);
+    receipt = JSON.parse(bytes.toString("utf8"));
+  } catch (readError) {
+    error(errors, "RECEIPT_READ_FAILED", `${field}.path`, `unable to read and parse receipt: ${readError.message}`);
+    return null;
+  }
+  if (!receipt || typeof receipt !== "object" || Array.isArray(receipt)) {
+    error(errors, "RECEIPT_INVALID", field, "receipt must be a JSON object");
+    return null;
+  }
+  const digest = sha256(bytes);
+  if (digest !== String(reference.sha256).toLowerCase()) {
+    error(errors, "RECEIPT_DIGEST_MISMATCH", `${field}.sha256`, `receipt bytes do not match ${reference.sha256}`);
+  }
+  if (!nonEmpty(reference.receiptId) || !nonEmpty(receipt.receiptId) || reference.receiptId !== receipt.receiptId) {
+    error(errors, "RECEIPT_ID_MISMATCH", `${field}.receiptId`, "receiptId must identify the parsed source receipt");
+  }
+  return { receipt, digest, relative, reference };
+}
+
+function validateReceiptBinding(loaded, role, expected, errors) {
+  if (!loaded) return;
+  const { receipt, reference } = loaded;
+  const field = `receipts.${role}`;
+  const actual = receiptBinding(receipt);
+  const expectedHead = String(expected.headSha || "").toLowerCase();
+  if (Number(actual.pullRequestNumber) !== Number(expected.pullRequestNumber)) {
+    error(errors, "RECEIPT_PR_MISMATCH", field, `${role} receipt belongs to another pull request`);
+  }
+  if (!nonEmpty(actual.headSha) || String(actual.headSha).toLowerCase() !== expectedHead) {
+    error(errors, "RECEIPT_HEAD_MISMATCH", field, `${role} receipt belongs to another commit`);
+  }
+  if (actual.environmentId !== expected.environmentId) {
+    error(errors, "RECEIPT_ENVIRONMENT_MISMATCH", field, `${role} receipt belongs to another PR environment`);
+  }
+  if (actual.implementationRoundId !== expected.implementationRoundId) {
+    error(errors, "RECEIPT_ROUND_MISMATCH", field, `${role} receipt belongs to another implementation round`);
+  }
+  const referenceBinding = {
+    pullRequestNumber: reference.pullRequestNumber,
+    headSha: reference.headSha,
+    environmentId: reference.environmentId,
+    implementationRoundId: reference.implementationRoundId
+  };
+  for (const key of Object.keys(referenceBinding)) {
+    const expectedValue = key === "pullRequestNumber" ? Number(expected[key]) : key === "headSha" ? expectedHead : expected[key];
+    const value = key === "pullRequestNumber" ? Number(referenceBinding[key]) : key === "headSha" ? String(referenceBinding[key] || "").toLowerCase() : referenceBinding[key];
+    if (value !== expectedValue) error(errors, "RECEIPT_REFERENCE_BINDING_MISMATCH", `${field}.${key}`, `${key} must match the manifest CI binding`);
+  }
+  if (receipt.productionEvidence === false) {
+    error(errors, "RECEIPT_NOT_PRODUCTION_EVIDENCE", field, `${role} explicitly declares productionEvidence=false`);
+  }
+  if (LIVE_EVIDENCE_ROLES.has(role) && receipt.productionEvidence !== true) {
+    error(errors, "RECEIPT_LIVE_EVIDENCE_UNPROVEN", field, `${role} must explicitly declare productionEvidence=true`);
+  }
+  for (const marker of [receipt.provisioningMode, receipt.sourceType, receipt.evidenceMode, receipt.runtimeMode]) {
+    if (nonEmpty(marker) && FORBIDDEN_RECEIPT_MARKER.test(marker)) {
+      error(errors, "RECEIPT_SOURCE_FORBIDDEN", field, `${role} uses forbidden non-runtime evidence mode ${marker}`);
+    }
+  }
+}
+
+function statusOf(value) {
+  return typeof value === "string" ? value : value?.status;
+}
+
+function validateProvisioningReceipt(loaded, environment, errors) {
+  if (!loaded) return;
+  const receipt = loaded.receipt;
+  if (receipt.schemaVersion !== "implementation-pr-environment-provider.v1") {
+    error(errors, "PROVISIONING_SCHEMA_INVALID", "receipts.provisioning", "live provider receipt schema is required");
+  }
+  if (!["provisioned", "verified", "passed", "ready"].includes(String(receipt.status || "").toLowerCase())) {
+    error(errors, "PROVISIONING_STATUS_INVALID", "receipts.provisioning.status", "provider receipt must be provisioned, verified, passed, or ready");
+  }
+  if (FORBIDDEN_RECEIPT_MARKER.test(String(receipt.provisioningMode || ""))) {
+    error(errors, "PROVISIONING_DESCRIPTOR_ONLY", "receipts.provisioning.provisioningMode", "descriptor-only provisioning cannot be implementation evidence");
+  }
+  const resources = receipt.resources || {};
+  for (const [key, expected] of Object.entries({
+    databaseSchema: environment?.databaseSchema,
+    objectStoragePrefix: environment?.objectStoragePrefix,
+    queueNamespace: environment?.queueNamespace
+  })) {
+    if (resources[key] !== expected) error(errors, "PROVISIONING_RESOURCE_MISMATCH", `receipts.provisioning.resources.${key}`, `${key} must match the isolated PR environment`);
+  }
+  const lease = receipt.credentialLease || {};
+  if (lease.reference !== environment?.credentialRef || lease.mode !== "short-lived-least-privilege") {
+    error(errors, "PROVISIONING_CREDENTIAL_LEASE_INVALID", "receipts.provisioning.credentialLease", "provider must prove the exact short-lived least-privilege credential reference");
+  }
+  if (!nonEmpty(lease.expiresAt) || Number.isNaN(Date.parse(lease.expiresAt))) {
+    error(errors, "PROVISIONING_CREDENTIAL_EXPIRY_INVALID", "receipts.provisioning.credentialLease.expiresAt", "credential lease expiry must be an ISO date-time");
+  }
+  for (const service of ["postgres", "minio", "nats"]) {
+    const state = String(statusOf(receipt.health?.[service]) || "").toLowerCase();
+    if (!["passed", "verified", "healthy", "ready"].includes(state)) {
+      error(errors, "PROVISIONING_HEALTH_MISSING", `receipts.provisioning.health.${service}`, `${service} live health evidence is required`);
+    }
+  }
+}
+
+function validateRuntimeReceipt(loaded, manifest, errors) {
+  if (!loaded) return;
+  const receipt = loaded.receipt;
+  const runId = firstString(receipt.runtimeRunId, receipt.realRunId, ...(Array.isArray(receipt.realRunIds) ? receipt.realRunIds : []));
+  if (!PASS_STATUSES.has(receipt.status) || receipt.runtimeRunIsReal !== true || !RUN_ID.test(String(runId || ""))) {
+    error(errors, "RUNTIME_RECEIPT_NOT_REAL", "receipts.runtime", "runtime receipt must prove a passed real S001 run");
+  }
+  if (receipt.scenarioId !== "S001" || !Array.isArray(receipt.order) || receipt.order.join(",") !== "M02,M01,M03,M04,M06,M05,M06") {
+    error(errors, "RUNTIME_RECEIPT_ORDER_INVALID", "receipts.runtime.order", "runtime receipt must prove the fixed S001 module order");
+  }
+  if (runId !== manifest.runtimeRunId) error(errors, "RUNTIME_RECEIPT_ID_MISMATCH", "runtimeRunId", "manifest runtimeRunId must come from the parsed runtime receipt");
+}
+
+function validateReceiptProjection(section, loaded, field, errors) {
+  if (!loaded || !section || typeof section !== "object") return;
+  const expected = {
+    ...loaded.receipt,
+    evidence: loaded.relative,
+    receiptId: loaded.receipt.receiptId,
+    receiptSha256: loaded.digest
+  };
+  const canonical = (value) => {
+    if (Array.isArray(value)) return value.map(canonical);
+    if (!value || typeof value !== "object") return value;
+    return Object.fromEntries(Object.keys(value).sort().map((key) => [key, canonical(value[key])]));
+  };
+  if (JSON.stringify(canonical(section)) !== JSON.stringify(canonical(expected))) {
+    error(errors, "RECEIPT_PROJECTION_MISMATCH", field, "manifest projection must exactly match its parsed source receipt plus path and digest");
+  }
+}
+
+export function validateReceiptBundle(manifest, options = {}) {
+  const errors = [];
+  const index = manifest?.receipts;
+  if (!index || typeof index !== "object" || Array.isArray(index)) {
+    return { valid: false, verifiedCount: 0, errors: [{ code: "RECEIPT_INDEX_MISSING", path: "receipts", message: "a digest-bound receipt index is required" }], loaded: {} };
+  }
+  const expected = {
+    pullRequestNumber: manifest.pullRequest?.number ?? options.pullRequestNumber,
+    headSha: manifest.pullRequest?.headSha ?? options.headSha,
+    environmentId: manifest.prEnvironment?.id,
+    implementationRoundId: manifest.implementationRoundId
+  };
+  if (!PR_NUMBER.test(String(expected.pullRequestNumber || "")) || !SHA.test(String(expected.headSha || "")) || !nonEmpty(expected.environmentId) || !nonEmpty(expected.implementationRoundId)) {
+    error(errors, "RECEIPT_BINDING_MISSING", "receipts", "manifest PR, head, environment, and implementationRoundId are required before receipts can be verified");
+  }
+  const loaded = {};
+  for (const role of REQUIRED_RECEIPT_ROLES) {
+    loaded[role] = readBoundReceipt(index[role], role, options, errors);
+    validateReceiptBinding(loaded[role], role, expected, errors);
+  }
+  if (!index.checks || typeof index.checks !== "object" || Array.isArray(index.checks)) {
+    error(errors, "CHECK_RECEIPT_INDEX_MISSING", "receipts.checks", "every named check needs a receipt reference");
+  } else {
+    loaded.checks = {};
+    for (const check of REQUIRED_CHECKS) {
+      loaded.checks[check] = readBoundReceipt(index.checks[check], `checks.${check}`, options, errors);
+      validateReceiptBinding(loaded.checks[check], `checks.${check}`, expected, errors);
+    }
+  }
+  validateProvisioningReceipt(loaded.provisioning, manifest.prEnvironment, errors);
+  validateRuntimeReceipt(loaded.runtime, manifest, errors);
+  validateReceiptProjection(manifest.databaseMigration, loaded.databaseMigration, "databaseMigration", errors);
+  validateReceiptProjection(manifest.objectStorageFingerprint, loaded.objectStorageFingerprint, "objectStorageFingerprint", errors);
+  validateReceiptProjection(manifest.rollback, loaded.rollback, "rollback", errors);
+  validateReceiptProjection(manifest.audit, loaded.audit, "audit", errors);
+  validateReceiptProjection(manifest.negativeTests, loaded.negativeTests, "negativeTests", errors);
+  validateReceiptProjection(manifest.recoveryReceipt, loaded.recovery, "recoveryReceipt", errors);
+  for (const check of REQUIRED_CHECKS) validateReceiptProjection(manifest.checks?.[check], loaded.checks?.[check], `checks.${check}`, errors);
+  const provisioningRef = index.provisioning;
+  if (manifest.prEnvironment?.provisioningReceipt !== provisioningRef?.path || manifest.prEnvironment?.provisioningReceiptSha256 !== provisioningRef?.sha256) {
+    error(errors, "PROVISIONING_REFERENCE_MISMATCH", "prEnvironment.provisioningReceipt", "environment must bind the parsed provisioning receipt path and digest");
+  }
+  return {
+    valid: errors.length === 0,
+    verifiedCount: REQUIRED_RECEIPT_ROLES.filter((role) => loaded[role]).length + Object.values(loaded.checks || {}).filter(Boolean).length,
+    errors,
+    loaded
+  };
 }
 
 function error(errors, code, field, message) {
@@ -477,6 +722,8 @@ export function validatePrEvidence(manifest, options = {}) {
   const normalizedManifest = normalizeManifest(manifest);
   validateMetadata(normalizedManifest, errors, {
     expectedBaselineSnapshotId: options.expectedBaselineSnapshotId || DEFAULT_BASELINE_SNAPSHOT_ID,
+    expectedSourceTag: options.expectedSourceTag,
+    expectedSourceVersion: options.expectedSourceVersion,
     requiredSchemaVersion: options.requiredSchemaVersion || "draft-0.1.0"
   });
 
@@ -497,6 +744,11 @@ export function validatePrEvidence(manifest, options = {}) {
   }
 
   validateEnvironment(normalizedManifest, errors, options);
+  const receiptVerification = validateReceiptBundle(normalizedManifest, {
+    ...options,
+    manifestPath: options.manifestPath
+  });
+  errors.push(...receiptVerification.errors);
 
   const candidateGates = normalizedManifest.candidateGates || normalizedManifest.implementation?.candidateGates;
   if (!candidateGates || typeof candidateGates !== "object" || Array.isArray(candidateGates)) {
@@ -538,7 +790,11 @@ export function validatePrEvidence(manifest, options = {}) {
     errors,
     gateVersion: QUALITY_GATE_VERSION,
     requiredChecks: [...REQUIRED_CHECKS],
-    candidateGates: [...CANDIDATE_GATES]
+    candidateGates: [...CANDIDATE_GATES],
+    receiptVerification: {
+      valid: receiptVerification.valid,
+      verifiedCount: receiptVerification.verifiedCount
+    }
   };
 }
 

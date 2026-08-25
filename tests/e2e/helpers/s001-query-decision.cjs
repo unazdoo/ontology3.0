@@ -18,7 +18,7 @@ async function invoke(value) {
   return value && typeof value.then === 'function' ? value : Promise.resolve(value);
 }
 
-async function runS001QueryDecision(front, options = {}) {
+async function runS001Query(front, options = {}) {
   const scenarioContext = required(front.scenarioContext, 'scenarioContext');
   const c008Reader = asReader(front, 'readC008');
   const c017Reader = asReader(front, 'readC017');
@@ -59,7 +59,17 @@ async function runS001QueryDecision(front, options = {}) {
     correlationId
   });
   if (c011.scenarioRunId !== scenarioContext.scenarioRunId) throw new Error('M03 C011 scenario run drift');
+  return Object.freeze({ scenarioContext, plan, run, c011, planner, traceId, correlationId });
+}
 
+async function runS001Decision(front, options = {}) {
+  const scenarioContext = required(front.scenarioContext, 'scenarioContext');
+  const c017Reader = asReader(front, 'readC017');
+  const c011 = required(front.c011, 'c011');
+  const clock = options.clock || front.clock;
+  const traceId = options.traceId || front.traceId || c011.traceId;
+  const correlationId = options.correlationId || front.correlationId || c011.correlationId || traceId;
+  if (!traceId || !correlationId) throw new Error('runS001Decision requires traceId and correlationId');
   const m04 = decision.createDecisionService({
     scenarioContext,
     c017Reader: (request, gate) => c017Reader({ ...request, scenarioContext, consumer: 'M04' }, gate),
@@ -87,7 +97,13 @@ async function runS001QueryDecision(front, options = {}) {
   const c019 = m04.readC019({ scenarioContext, returnContext: { sourceScenario: 'M06', filters: {}, issuedAt: options.readAt || front.readAt } });
   if (c019.status !== 'ready' || !Array.isArray(c019.records) || c019.records.length !== 1) throw new Error('M04 C019 is not a ready single-resource-chain summary');
 
-  return Object.freeze({ plan, run, c011, received, confirmation, task, c019, m04 });
+  return Object.freeze({ scenarioContext, c011, received, confirmation, task, c019, m04, traceId, correlationId });
 }
 
-module.exports = Object.freeze({ runS001QueryDecision });
+async function runS001QueryDecision(front, options = {}) {
+  const queryStage = await runS001Query(front, options);
+  const decisionStage = await runS001Decision({ ...front, ...queryStage }, options);
+  return Object.freeze({ ...queryStage, ...decisionStage });
+}
+
+module.exports = Object.freeze({ runS001Query, runS001Decision, runS001QueryDecision });

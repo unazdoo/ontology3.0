@@ -6,12 +6,18 @@ runtime evidence or turn prototype tests into production proof.
 
 ## Manifest shape
 
-Use `quality-gates/pr-evidence.schema.json` as the wire contract. A manifest
+Use `quality-gates/pr-evidence.schema.json` as the wire contract. A v2 manifest
 must carry the immutable `baselineSnapshotId`, the changed Schema version and
 compatibility receipt, an accountable Owner, database up/down migration
 evidence, an SHA-256 object-storage fingerprint, a tested rollback target, at
 least one real run ID, an append-only audit receipt, negative-test evidence, a
 C034 recovery receipt, and four isolated PR resources.
+
+The `receipts` index is mandatory. It binds every projected manifest section to
+the exact source JSON by repository-relative path and SHA-256, and repeats the
+PR number, exact head SHA, environment ID and implementation round. The verifier
+reopens these files; an evidence URI string without a matching source receipt
+cannot close a gate.
 
 The `checks` object has one entry for every required gate:
 

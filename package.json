@@ -5,7 +5,7 @@
   "description": "Ontology Financial World v1.1.x integrated implementation",
   "scripts": {
     "test": "npm run test:foundation && npm run test:m02 && npm run test:m01 && npm run test:m03 && npm run test:m04 && npm run test:m06 && npm run test:m05 && npm run test:integration && npm run test:e2e",
-    "test:foundation": "node --test packages/contracts/test/contracts.test.js packages/identity/index.test.cjs packages/checkpoint/index.test.cjs packages/foundation-contract.test.cjs infra/runbook.test.cjs",
+    "test:foundation": "node --test packages/contracts/test/contracts.test.js packages/identity/index.test.cjs packages/checkpoint/index.test.cjs packages/foundation-contract.test.cjs infra/runbook.test.cjs infra/migrate-runtime.test.mjs infra/runtime/postgres-runtime-persistence.test.cjs",
     "test:m02": "node --test services/data/data.test.cjs services/data/runtime.test.cjs services/data/contract.test.cjs services/data/idempotency.test.cjs services/data/foundation-compat.test.cjs services/data/checkpoint.test.cjs",
     "test:m01": "node --test services/ontology/index.test.cjs",
     "test:m03": "node --test services/query/*.test.cjs",
@@ -21,7 +21,7 @@
     "quality:security": "node scripts/quality-gate/scan-security.mjs",
     "quality:check": "npm test && npm run test:quality && npm run quality:baseline && npm run quality:golden && npm run quality:sbom && npm run quality:security",
     "check": "npm run check:foundation && npm run check:m02 && npm run check:m01 && npm run check:m03 && npm run check:m04 && npm run check:m06 && npm run check:m05 && npm run check:integration && npm run check:quality",
-    "check:foundation": "node --check packages/contracts/index.js && node --check packages/contracts/validation.js && node --check packages/contracts/compatibility.js && node --check packages/identity/index.js && node --check packages/checkpoint/index.js",
+    "check:foundation": "node --check packages/contracts/index.js && node --check packages/contracts/validation.js && node --check packages/contracts/compatibility.js && node --check packages/identity/index.js && node --check packages/checkpoint/index.js && node --check infra/migrate-runtime.mjs && node --check infra/runtime/common.js && node --check infra/runtime/postgres-runtime-persistence.js",
     "check:m02": "node --check services/data/index.js && node --check services/data/contracts.js && node --check services/data/runtime.js && node --check services/data/clients.js && node --check services/data/envelope.js && node --check services/data/checkpoint.js",
     "check:m01": "node --check services/ontology/domain.js && node --check services/ontology/repository.js && node --check services/ontology/validation.js && node --check services/ontology/projection.js && node --check services/ontology/service.js && node --check services/ontology/checkpoint.js && node --check services/ontology/contracts.js && node --check services/ontology/index.js && node --check services/ontology/runtime.js",
     "check:m03": "node --check services/query/*.js",
@@ -29,6 +29,16 @@
     "check:m06": "node --check services/report/index.js && node --check packages/report/index.js && node --check packages/report/boundary.js && node --check packages/report/copilot.js && node --check packages/report/decision-summary.js && node --check packages/report/template.js && node --check packages/report/render.js && node --check packages/report/export.js && node --check packages/report/store.js && node --check packages/report/definition.js && node --check packages/report/fixed-view.js && node --check packages/report/gate.js && node --check packages/report/handoff.js && node --check packages/report/verification.js && node --check packages/report/comparison.js && node --check packages/report/checkpoint.js && node --check packages/report/service.js",
     "check:m05": "node --check packages/agent-release/index.js && node --check packages/m05/index.js && node --check packages/m05/schema.js && node --check packages/m05/contracts.js && node --check packages/m05/report.js && node --check packages/m05/report-copilot-boundary.js && node --check packages/m05/report-port.js && node --check packages/m05/gateway.js && node --check packages/m05/orchestration.js && node --check packages/m05/evaluation.js && node --check packages/m05/checkpoint.js",
     "check:integration": "node --check tests/integration/*.test.cjs && node --check tests/e2e/*.test.cjs && node --check tests/e2e/helpers/*.cjs",
-    "check:quality": "node --check scripts/quality-gate/lib/quality-gate.mjs && node --check scripts/quality-gate/verify-pr-evidence.mjs"
+    "check:quality": "node --check scripts/quality-gate/lib/quality-gate.mjs && node --check scripts/quality-gate/lib/pr-environment-provider.mjs && node --check scripts/quality-gate/lib/quality-probe-common.mjs && node --check scripts/quality-gate/provision-pr-environment.mjs && node --check scripts/quality-gate/cleanup-pr-environment.mjs && node --check scripts/quality-gate/fingerprint-object-storage.mjs && node --check scripts/quality-gate/generate-pr-evidence.mjs && node --check scripts/quality-gate/run-real-runtime-evidence.mjs && node --check scripts/quality-gate/run-accessibility-evidence.mjs && node --check scripts/quality-gate/run-observability-evidence.mjs && node --check scripts/quality-gate/run-security-evidence.mjs && node --check scripts/quality-gate/verify-pr-evidence.mjs"
+  },
+  "dependencies": {
+    "@nats-io/jetstream": "3.4.0",
+    "@nats-io/transport-node": "3.4.0",
+    "minio": "8.0.7",
+    "pg": "8.23.0"
+  },
+  "devDependencies": {
+    "axe-core": "4.10.3",
+    "playwright": "1.62.1"
   }
 }

@@ -27,6 +27,16 @@ try {
 const SCHEMA_VERSION = dataContracts.DATA_SCHEMA_VERSION;
 const DATA_SPINE_CONTRACT_ID = dataContracts.DATA_SPINE_CONTRACT_ID;
 const RUNTIME_VERSION = 'implementation-0.1.0';
+const RUNTIME_STATE_SCHEMA_VERSION = 'ofw.m02.runtime-state.v1';
+const RUNTIME_MAP_FIELDS = Object.freeze([
+  'sources', 'snapshots', 'pipelines', 'pipelineVersions', 'runs', 'quality',
+  'assets', 'assetVersions', 'assetVersionOrder', 'assetDependencies',
+  't008Confirmations', 't008ReadEvents', 'readEvents', 'idempotency',
+  'deliveryRecords', 'c032Responses', 'refreshRequests', 'refreshResults',
+  'refreshResultHistory', 'c017Reads', 'c017Summaries',
+  'c017VersionBoundByAssetVersion', 'c017CurrentByAssetVersion', 'events',
+  'postPublishFindings', 'candidateOutcomes'
+]);
 
 const STATUS = Object.freeze({
   DRAFT: 'draft',
@@ -590,6 +600,41 @@ class DataPipelineRuntime {
     this.events = new Map();
     this.postPublishFindings = new Map();
     this.candidateOutcomes = new Map();
+    if (options.state) this.restoreState(options.state);
+  }
+
+  exportState() {
+    const body = {
+      schemaVersion: RUNTIME_STATE_SCHEMA_VERSION,
+      runtimeVersion: RUNTIME_VERSION,
+      sequence: { c032: this.c032Sequence },
+      maps: Object.fromEntries(RUNTIME_MAP_FIELDS.map((field) => [field, [...this[field].entries()].map(([key, value]) => [key, clone(value)])]))
+    };
+    return immutable({ ...body, stateDigest: fingerprint(body) });
+  }
+
+  restoreState(input) {
+    if (!isRecord(input) || input.schemaVersion !== RUNTIME_STATE_SCHEMA_VERSION || input.runtimeVersion !== RUNTIME_VERSION || !isRecord(input.maps)) {
+      fail(ERROR_CODES.INVALID_STATE, 'M02 runtime state uses an unsupported schema');
+    }
+    const copy = clone(input);
+    const suppliedDigest = copy.stateDigest;
+    delete copy.stateDigest;
+    if (!/^[a-f0-9]{64}$/i.test(String(suppliedDigest || '')) || fingerprint(copy) !== suppliedDigest) {
+      fail(ERROR_CODES.INVALID_STATE, 'M02 runtime state fingerprint mismatch');
+    }
+    const unknown = Object.keys(copy.maps).filter((field) => !RUNTIME_MAP_FIELDS.includes(field));
+    if (unknown.length || RUNTIME_MAP_FIELDS.some((field) => !Array.isArray(copy.maps[field]))) {
+      fail(ERROR_CODES.INVALID_STATE, 'M02 runtime state map registry is incomplete or contains unknown fields', { unknown });
+    }
+    for (const field of RUNTIME_MAP_FIELDS) {
+      const entries = copy.maps[field];
+      if (entries.some((entry) => !Array.isArray(entry) || entry.length !== 2)) fail(ERROR_CODES.INVALID_STATE, `M02 runtime state ${field} entries are invalid`);
+      this[field] = new Map(entries.map(([key, value]) => [key, immutable(value)]));
+    }
+    this.c032Sequence = Number(copy.sequence?.c032 || 0);
+    if (!Number.isSafeInteger(this.c032Sequence) || this.c032Sequence < 0) fail(ERROR_CODES.INVALID_STATE, 'M02 c032Sequence is invalid');
+    return this.exportState();
   }
 
   _now(value) {
@@ -2442,6 +2487,7 @@ module.exports = Object.freeze({
   SCHEMA_VERSION,
   DATA_SPINE_CONTRACT_ID,
   RUNTIME_VERSION,
+  RUNTIME_STATE_SCHEMA_VERSION,
   STATUS,
   QUALITY_STATUS,
   ERROR_CODES,

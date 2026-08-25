@@ -41,3 +41,26 @@ test("candidate job depends on the evidence and named gate jobs", () => {
   const candidate = workflow.slice(workflow.indexOf("implementation-candidate:"));
   assert.match(candidate, /needs:\s*\[pr-evidence, scenario-regression, named-quality-gates\]/);
 });
+
+test("real PR evidence runs before cleanup and is handed to downstream gates", () => {
+  const runtime = workflow.slice(workflow.indexOf("real-pr-quality:"), workflow.indexOf("named-quality-gates:"));
+  for (const marker of [
+    "postgres:16-alpine",
+    "minio/minio:RELEASE.2025-04-22T22-12-26Z",
+    "nats:2.10.26-alpine -c /etc/nats/ofw.conf",
+    "minio/health/ready",
+    "js-enabled-only=true",
+    "provision-pr-environment.mjs",
+    "migrate-runtime.mjs up",
+    "migrate-runtime.mjs down",
+    "run-real-runtime-evidence.mjs",
+    "generate-pr-evidence.mjs",
+    "cleanup-pr-environment.mjs",
+    "if: always() && steps.environment.outcome == 'success'"
+  ]) assert.match(runtime, new RegExp(marker.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), marker);
+  assert.ok(runtime.indexOf("run-real-runtime-evidence.mjs") < runtime.indexOf("cleanup-pr-environment.mjs"));
+  assert.ok(runtime.indexOf("generate-pr-evidence.mjs") < runtime.indexOf("cleanup-pr-environment.mjs"));
+  const downstream = workflow.slice(workflow.indexOf("named-quality-gates:"));
+  assert.match(downstream, /actions\/download-artifact@v4/);
+  assert.match(downstream, /implementation-quality-runtime-\$\{\{ github\.run_id \}\}/);
+});
