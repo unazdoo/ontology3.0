@@ -42,7 +42,7 @@ const m08Input = { ...baseInput, modelingObjectiveRef: "S005-POST-INVESTMENT-EVA
 assert.equal(adapter.validateMountInput("M07", m07Input).ok, true);
 assert.equal(adapter.validateMountInput("M08", m08Input).ok, true);
 assert.equal(adapter.validateMountInput("M08", { ...m08Input, resultKind: "FACT" }).ok, false);
-assert.equal(adapter.createNavigationEnvelope("M07", m07Input).routeId, "module/exploration");
+assert.equal(adapter.createNavigationEnvelope("M07", m07Input).routeId, "module/m07");
 assert.equal(adapter.createNavigationEnvelope("M08", m08Input).routeId, "module/modeling");
 
 const receipt = runtime.reset({ now: new Date("2026-08-27T09:35:00.000Z"), randomBytes: fixedBytes(6) });
