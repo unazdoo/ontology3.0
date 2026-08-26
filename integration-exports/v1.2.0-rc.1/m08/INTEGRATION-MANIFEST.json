@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "ofw.prototype.integration-export.v1",
+  "moduleId": "m08",
+  "sourceTag": "prototype-v1.1.0-frozen",
+  "parentVersion": "v1.1.0",
+  "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+  "targetPrototypeVersion": "v1.2.0-rc.1",
+  "acceptanceReady": false,
+  "status": "research-integration-candidate",
+  "scope": "minimal-additive-modeling-export",
+  "mount": {
+    "moduleId": "modeling",
+    "route": "#module/modeling",
+    "iframeEntry": "module/content.html",
+    "sameOriginWithHost": true,
+    "requiredQueryParameters": [
+      "scenarioId",
+      "scenarioVersion",
+      "scenarioRunId"
+    ],
+    "optionalQueryParameters": [
+      "apiBase"
+    ]
+  },
+  "canonicalM07": {
+    "moduleId": "m07",
+    "route": "#module/m07",
+    "implementationProvidedByThisExport": false
+  },
+  "scenarioIdentity": {
+    "fields": [
+      "scenarioId",
+      "scenarioVersion",
+      "scenarioRunId"
+    ],
+    "matchPolicy": "exact-all-fields",
+    "fixedScenarioId": null
+  },
+  "messages": {
+    "m07ToHost": {
+      "type": "OFW_M07_OPEN_M08",
+      "sourceModuleId": "m07",
+      "sourceRoute": "#module/m07",
+      "requiredPayload": [
+        "scenarioId",
+        "scenarioVersion",
+        "scenarioRunId",
+        "objectRef",
+        "formedAt"
+      ]
+    },
+    "hostToM08": {
+      "type": "OFW_M08_DELIVER_CONTEXT",
+      "targetModuleId": "modeling",
+      "requiredPayload": [
+        "scenarioContext"
+      ],
+      "optionalPayload": [
+        "projection",
+        "explorationHandoff"
+      ]
+    },
+    "m08ToHost": {
+      "type": "OFW_M08_RETURN_TO_M07",
+      "targetModuleId": "m07",
+      "targetRoute": "#module/m07",
+      "requiredPayload": [
+        "scenarioId",
+        "scenarioVersion",
+        "scenarioRunId",
+        "inputManifest",
+        "resultEnvelope"
+      ]
+    },
+    "moduleNavigation": {
+      "type": "OFW_M08_NAVIGATE",
+      "m07Route": "#module/m07"
+    }
+  },
+  "dependencies": {
+    "host": [
+      "v1.2 candidate Shell derived from prototype-v1.1.0-frozen",
+      "canonical M07 module registered as m07 at #module/m07",
+      "candidate-owned session handoff storage"
+    ],
+    "runtime": [
+      "same-origin static HTTP serving for host and module",
+      "Node.js >=20 for validation service",
+      "validation API URL supplied as apiBase when not using port 4357"
+    ],
+    "externalPackages": []
+  },
+  "included": [
+    "M08 Objective-first modeling workspace",
+    "M07-to-M08-to-M07 bridge",
+    "deterministic validation service",
+    "synthetic fixture",
+    "unit and static contract tests"
+  ],
+  "excluded": [
+    "M07 exploration implementation",
+    "v1.1.0 platform Shell",
+    "M01-M06 module copies",
+    "S001-S004 scenario copies",
+    "archives",
+    "screenshots",
+    "source business files",
+    "absolute local filesystem bindings"
+  ],
+  "tests": {
+    "staticContract": {
+      "command": "node --test test/static-contract.test.mjs",
+      "expectedTests": 5
+    },
+    "validationService": {
+      "command": "cd validation && npm test",
+      "expectedTests": 43
+    }
+  },
+  "integrity": {
+    "algorithm": "sha256",
+    "file": "SHA256SUMS",
+    "checksumFileIncludedInItself": false
+  },
+  "knownBoundaries": [
+    "Synthetic deterministic fixtures are not source scenario facts or production model evidence.",
+    "Consumer projections for M03, M05 and M06 are contract previews until owner modules integrate the result envelope.",
+    "The host owns navigation and handoff persistence; this export does not provide a second Shell.",
+    "No formal module approval, scenario acceptance, production acceptance or phase-one acceptance is claimed."
+  ]
+}
