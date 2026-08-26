@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "ofw.prototype.integration-sources.v1",
+  "targetPrototypeVersion": "v1.2.0-rc.1",
+  "sourceBaseline": {
+    "version": "v1.1.0",
+    "tag": "prototype-v1.1.0-frozen",
+    "commit": "a8b023d7f8d49ad6ed6c24417b79b6f9df3fb716",
+    "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+    "immutable": true
+  },
+  "inputs": [
+    {
+      "id": "M07",
+      "sourceBranch": "codex/m07-ontology-exploration-research",
+      "packagePath": "integration-exports/v1.2.0-rc.1/m07",
+      "commit": null,
+      "status": "dispatched"
+    },
+    {
+      "id": "M08",
+      "sourceBranch": "codex/m08-digital-twin-modeling-research",
+      "packagePath": "integration-exports/v1.2.0-rc.1/m08",
+      "commit": null,
+      "status": "dispatched"
+    },
+    {
+      "id": "S005",
+      "sourceBranch": "codex/s005-research",
+      "packagePath": "integration-exports/v1.2.0-rc.1/s005",
+      "commit": null,
+      "status": "dispatched"
+    }
+  ],
+  "mergeOrder": ["M07", "M08", "S005", "shared-shell", "regression"],
+  "prohibitedInputs": [
+    "complete copied v1.1.0 trees",
+    "absolute symlinks",
+    "historical runtime state copied as a new run",
+    "implementation source or implementation-only CI changes"
+  ]
+}

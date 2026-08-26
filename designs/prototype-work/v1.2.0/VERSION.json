@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "ofw.prototype.version.v1",
+  "version": "1.2.0-rc.1",
+  "status": "assembly-preparation",
+  "releaseRole": "prototype-composite-review-candidate",
+  "createdAt": "2026-08-27",
+  "sourceTag": "prototype-v1.1.0-frozen",
+  "sourceCommit": "a8b023d7f8d49ad6ed6c24417b79b6f9df3fb716",
+  "parentVersion": "1.1.0",
+  "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+  "governanceHistoricalParentVersion": "1.0.3",
+  "governanceHistoricalSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "sourcePrototypePath": "../../prototype-releases/v1.1.0",
+  "sourcePrototypePolicy": "read-only; never modify or overwrite",
+  "workspace": {
+    "path": "/Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-composite-v1.2.0",
+    "branch": "codex/prototype-v1.2.0-composite",
+    "role": "prototype assembly only"
+  },
+  "implementationIsolation": {
+    "implementationTrack": "implementation-v1.1.x",
+    "prototypeChangesAutoPromote": false,
+    "implementationCodeAllowedInThisWorkspace": false
+  },
+  "plannedModuleScope": ["M01", "M02", "M03", "M04", "M05", "M06", "M07", "M08", "Dashboard"],
+  "plannedScenarioScope": ["S001", "S002", "S003", "S004", "S005"],
+  "integrationInputs": {
+    "M07": "integration-exports/v1.2.0-rc.1/m07",
+    "M08": "integration-exports/v1.2.0-rc.1/m08",
+    "S005": "integration-exports/v1.2.0-rc.1/s005"
+  },
+  "canonicalDecisions": {
+    "M07": {
+      "moduleId": "m07",
+      "route": "#module/m07",
+      "implementation": "workspace-v2"
+    },
+    "M08": {
+      "moduleId": "m08",
+      "route": "#module/m08",
+      "mustAdaptToCanonicalM07": true
+    },
+    "S005": {
+      "scenarioId": "S005",
+      "scenarioVersion": "S005-v1",
+      "assemblyMode": "scenario-package-in-shared-shell"
+    }
+  },
+  "uniqueEntry": null,
+  "runtimeSnapshotIncluded": false,
+  "acceptanceReady": false,
+  "editable": true,
+  "frozen": false,
+  "rollbackVersion": "1.1.0",
+  "nextGate": "three minimal integration export commits verified"
+}
