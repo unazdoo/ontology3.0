@@ -113,6 +113,49 @@ function collectDeclared(manifest, packages, seen) {
   }
 }
 
+function sourceFiles(root, relativePath) {
+  const target = path.resolve(root, relativePath);
+  if (!fs.existsSync(target)) throw new Error(`component path does not exist: ${relativePath}`);
+  const files = [];
+  const visit = (current) => {
+    const stat = fs.statSync(current);
+    if (stat.isFile()) files.push(current);
+    else if (stat.isDirectory()) for (const name of fs.readdirSync(current).sort()) visit(path.join(current, name));
+  };
+  visit(target);
+  return files;
+}
+
+function componentInventory(root) {
+  const inventoryPath = path.resolve(root, "quality-gates/component-inventory.json");
+  const inventory = readJsonIf(inventoryPath);
+  if (!inventory || inventory.schemaVersion !== "implementation-component-inventory.v1" || !Array.isArray(inventory.components)) throw new Error(`invalid component inventory: ${inventoryPath}`);
+  const ids = new Set(); const claimed = new Set();
+  return inventory.components.map((component) => {
+    if (!component || typeof component.id !== "string" || !component.id || ids.has(component.id)) throw new Error("component inventory has an unknown or duplicate component id");
+    if (typeof component.name !== "string" || !component.name || typeof component.version !== "string" || !component.version || !Array.isArray(component.paths) || component.paths.length === 0) throw new Error(`invalid component inventory entry: ${component.id}`);
+    ids.add(component.id);
+    const files = component.paths.flatMap((relativePath) => {
+      if (typeof relativePath !== "string" || !relativePath || path.isAbsolute(relativePath) || relativePath.split("/").includes("..")) throw new Error(`invalid component path for ${component.id}`);
+      if (claimed.has(relativePath)) throw new Error(`duplicate component path: ${relativePath}`);
+      claimed.add(relativePath);
+      return sourceFiles(root, relativePath);
+    });
+    if (!files.length) throw new Error(`component has no source files: ${component.id}`);
+    const source = files.sort().map((file) => ({ path: path.relative(root, file).replaceAll(path.sep, "/"), sha256: sha256(fs.readFileSync(file)) }));
+    return { ...component, source, sourceSha256: sha256(JSON.stringify(source)) };
+  });
+}
+
+function addComponents(root, packages, seen) {
+  for (const component of componentInventory(root)) {
+    const id = addPackage(packages, seen, { name: `ontology3/${component.id}`, version: component.version, relationship: "CONTAINS" });
+    const entry = packages.find((item) => item.entry.SPDXID === id).entry;
+    entry.externalRefs.push({ referenceCategory: "OTHER", referenceType: "component-source-sha256", referenceLocator: `sha256:${component.sourceSha256}` });
+    entry.annotations = [{ annotationType: "OTHER", annotator: "Tool: ontology3-implementation-quality-gate", annotationDate: new Date(0).toISOString(), comment: JSON.stringify({ componentId: component.id, paths: component.paths, source: component.source }) }];
+  }
+}
+
 function makeDocument(manifest, packagePath, packages, lockPath, repositoryRoot = process.cwd()) {
   const rootVersion = String(manifest.version || "0.0.0");
   const rootName = String(manifest.name || path.basename(path.dirname(packagePath)));
@@ -174,6 +217,7 @@ try {
   const seen = new Map();
   if (lockPath && lockPath.endsWith(".json")) collectFromLock(readJsonIf(lockPath), packages, seen);
   collectDeclared(manifest, packages, seen);
+  addComponents(root, packages, seen);
   const document = makeDocument(manifest, packagePath, packages, lockPath, root);
   const output = path.resolve(root, options.output);
   writeJson(output, document);

@@ -1,32 +1,175 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://ontology3.example/contracts/pr-environment-provider.v1.json",
-  "title": "PR environment provider receipt",
+  "title": "Live PR environment provider receipt",
   "type": "object",
-  "required": ["schemaVersion", "environmentId", "resources", "credentialLease", "provisionedAt", "expiresAt", "cleanupPlan"],
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "receiptId",
+    "receiptDigest",
+    "status",
+    "productionEvidence",
+    "provisioningMode",
+    "environmentId",
+    "pullRequest",
+    "implementationRoundId",
+    "resources",
+    "credentialLease",
+    "health",
+    "provisionedAt",
+    "expiresAt",
+    "cleanupPlan"
+  ],
   "properties": {
     "schemaVersion": { "const": "implementation-pr-environment-provider.v1" },
+    "receiptId": { "type": "string", "pattern": "^PRPROV-[A-F0-9]{24}$" },
+    "receiptDigest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "status": { "enum": ["provisioned", "verified"] },
+    "productionEvidence": { "const": true },
+    "provisioningMode": { "const": "live-provider" },
     "environmentId": { "type": "string", "pattern": "^pr-[1-9][0-9]*-[a-f0-9]{12}$" },
+    "pullRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["number", "headSha"],
+      "properties": {
+        "number": { "type": "integer", "minimum": 1 },
+        "headSha": { "type": "string", "pattern": "^[a-f0-9]{12,64}$" }
+      }
+    },
+    "implementationRoundId": { "type": "string", "minLength": 1 },
     "resources": {
       "type": "object",
-      "required": ["databaseSchema", "objectStoragePrefix", "queueNamespace"],
+      "additionalProperties": false,
+      "required": [
+        "databaseSchema",
+        "moduleSchemas",
+        "postgresRole",
+        "objectStorageBucket",
+        "objectStoragePrefix",
+        "markerObject",
+        "queueNamespace",
+        "jetStreamName",
+        "subject",
+        "runtimeCredentialRefs",
+        "minioRuntimeScope",
+        "natsRuntimeIdentity"
+      ],
       "properties": {
-        "databaseSchema": { "type": "string", "minLength": 1 },
-        "objectStoragePrefix": { "type": "string", "minLength": 1 },
-        "queueNamespace": { "type": "string", "minLength": 1 }
+        "databaseSchema": { "type": "string", "pattern": "^pr_[1-9][0-9]*_[a-f0-9]{12}$" },
+        "moduleSchemas": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^pr_[1-9][0-9]*_[a-f0-9]{12}_m0[1-6]$" }
+        },
+        "postgresRole": { "type": "string", "pattern": "^pr_[1-9][0-9]*_[a-f0-9]{12}_app$" },
+        "objectStorageBucket": { "type": "string", "pattern": "^ofw-pr-[1-9][0-9]*-[a-f0-9]{12}$" },
+        "objectStoragePrefix": { "type": "string", "pattern": "^pr/[1-9][0-9]*/[a-f0-9]{12}/$" },
+        "markerObject": { "type": "string", "pattern": "^pr/[1-9][0-9]*/[a-f0-9]{12}/\\.environment\\.json$" },
+        "queueNamespace": { "type": "string", "pattern": "^pr-[1-9][0-9]*-[a-f0-9]{12}$" },
+        "jetStreamName": { "type": "string", "pattern": "^PR_[1-9][0-9]*_[A-F0-9]{12}$" },
+        "subject": { "type": "string", "pattern": "^pr-[1-9][0-9]*-[a-f0-9]{12}\\.>$" },
+        "runtimeCredentialRefs": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["postgres", "minio", "nats"],
+          "properties": {
+            "postgres": { "type": "string", "pattern": "^pr/[1-9][0-9]*/[a-f0-9]{12}/postgres-app$" },
+            "minio": { "type": "string", "pattern": "^pr/[1-9][0-9]*/[a-f0-9]{12}/minio-sts$" },
+            "nats": { "type": "string", "pattern": "^pr/[1-9][0-9]*/[a-f0-9]{12}/nats-app$" }
+          }
+        },
+        "minioRuntimeScope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["bucket", "prefix", "credentialMode", "revocationMode"],
+          "properties": {
+            "bucket": { "type": "string", "pattern": "^ofw-pr-[1-9][0-9]*-[a-f0-9]{12}$" },
+            "prefix": { "type": "string", "pattern": "^pr/[1-9][0-9]*/[a-f0-9]{12}/$" },
+            "credentialMode": { "const": "sts-inline-session-policy" },
+            "revocationMode": { "const": "sts-expiry-and-resource-cleanup" }
+          }
+        },
+        "natsRuntimeIdentity": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["principal", "credentialMode", "revocationMode", "permissions"],
+          "properties": {
+            "principal": { "type": "string", "pattern": "^runtime_pr_[1-9][0-9]*_[a-f0-9]{12}$" },
+            "credentialMode": { "const": "server-startup-config" },
+            "revocationMode": { "const": "job-container-stop" },
+            "permissions": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["publish", "subscribe"],
+              "properties": {
+                "publish": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+                "subscribe": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+              }
+            }
+          }
+        }
       }
     },
     "credentialLease": {
       "type": "object",
-      "required": ["reference", "mode", "expiresAt"],
+      "additionalProperties": false,
+      "required": ["reference", "mode", "issuedAt", "expiresAt", "scope", "secretIncluded"],
       "properties": {
-        "reference": { "type": "string", "minLength": 1 },
+        "reference": { "type": "string", "pattern": "^pr/[1-9][0-9]*/[a-f0-9]{12}$" },
         "mode": { "const": "short-lived-least-privilege" },
-        "expiresAt": { "type": "string", "minLength": 1 }
+        "issuedAt": { "type": "string", "format": "date-time" },
+        "expiresAt": { "type": "string", "format": "date-time" },
+        "scope": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "secretIncluded": { "const": false }
       }
     },
-    "provisionedAt": { "type": "string", "minLength": 1 },
-    "expiresAt": { "type": "string", "minLength": 1 },
-    "cleanupPlan": { "type": "string", "minLength": 1 }
+    "health": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["postgres", "minio", "nats"],
+      "properties": {
+        "postgres": { "$ref": "#/definitions/health" },
+        "minio": { "$ref": "#/definitions/health" },
+        "nats": { "$ref": "#/definitions/health" }
+      }
+    },
+    "provisionedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "cleanupPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["command", "exactScopeOnly", "postCleanupProbeRequired"],
+      "properties": {
+        "command": { "type": "string", "minLength": 1 },
+        "exactScopeOnly": { "const": true },
+        "postCleanupProbeRequired": { "const": true }
+      }
+    }
+  },
+  "definitions": {
+    "health": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "checkedAt", "server", "resource", "runtimeScopeVerified", "crossScopeDenied"],
+      "properties": {
+        "status": { "enum": ["passed", "healthy", "ready"] },
+        "checkedAt": { "type": "string", "format": "date-time" },
+        "server": { "type": "string", "minLength": 1 },
+        "resource": { "type": "string", "minLength": 1 },
+        "probeSequence": { "type": "integer", "minimum": 0 },
+        "runtimeScopeVerified": { "const": true },
+        "crossScopeDenied": { "const": true }
+      }
+    }
   }
 }

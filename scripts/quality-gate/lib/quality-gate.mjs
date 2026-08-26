@@ -31,9 +31,40 @@ export const REQUIRED_CHECKS = Object.freeze([
   "ciCd"
 ]);
 
+export const HARD_REQUIRED_CHECKS = Object.freeze([
+  "goldenData",
+  "contractCompatibility",
+  "e2e",
+  "security",
+  "c034Recovery",
+  "migration",
+  "rollback",
+  "ciCd"
+]);
+
+export const DIAGNOSTIC_CHECKS = Object.freeze([
+  "permissionNegative",
+  "concurrencyIdempotency",
+  "performance",
+  "accessibility",
+  "sbom",
+  "observability"
+]);
+
 export const CANDIDATE_GATES = Object.freeze([
   "s001VerticalSlice",
   "security",
+  "recovery"
+]);
+
+export const REQUIRED_RECEIPT_ROLES = Object.freeze([
+  "provisioning",
+  "databaseMigration",
+  "objectStorageFingerprint",
+  "rollback",
+  "runtime",
+  "audit",
+  "negativeTests",
   "recovery"
 ]);
 
@@ -47,7 +78,7 @@ export const REQUIRED_NEGATIVE_CASES = Object.freeze([
 ]);
 
 const PASS_STATUSES = new Set(["passed", "verified"]);
-const CHECK_STATUSES = new Set(["passed", "verified", "not-applicable"]);
+const CHECK_STATUSES = new Set(["passed", "verified", "not-applicable", "blocked"]);
 const GATE_STATUSES = new Set(["passed", "verified", "blocked", "not-run"]);
 const SHA256 = /^[a-f0-9]{64}$/i;
 // Runtime IDs may be emitted by the scenario runtime (`S001-RUN-*`) or by a
@@ -56,6 +87,8 @@ const RUN_ID = /^(?:S[0-9]{3}-)?RUN-[A-Za-z0-9][A-Za-z0-9._-]*$/;
 const PR_NUMBER = /^[1-9][0-9]{0,8}$/;
 const SHA = /^[a-f0-9]{7,64}$/i;
 const FORBIDDEN_ENV_WORDS = /(^|[-_\/.])(prod(?:uction)?|shared|default|main)([-_\/.]|$)/i;
+const FORBIDDEN_RECEIPT_MARKER = /(?:descriptor[-_ ]?only|fixture|fake|placeholder|prototype|historical|local[-_ ]?only)/i;
+const LIVE_EVIDENCE_ROLES = new Set(["provisioning", "objectStorageFingerprint", "runtime", "audit", "recovery"]);
 
 export class QualityGateError extends Error {
   constructor(message, details = []) {
@@ -97,6 +130,248 @@ export function writeJson(filePath, value) {
 export function sha256(value) {
   const input = Buffer.isBuffer(value) ? value : Buffer.from(String(value));
   return crypto.createHash("sha256").update(input).digest("hex");
+}
+
+function receiptBinding(receipt) {
+  return {
+    pullRequestNumber: receipt?.pullRequest?.number ?? receipt?.pullRequestNumber,
+    headSha: receipt?.pullRequest?.headSha ?? receipt?.headSha ?? receipt?.commitSha,
+    environmentId: receipt?.environmentId ?? receipt?.prEnvironment?.id,
+    implementationRoundId: receipt?.implementationRoundId ?? receipt?.roundId
+  };
+}
+
+function normalizedReceiptPath(value) {
+  if (!nonEmpty(value) || path.isAbsolute(value) || value.includes("\\")) return null;
+  const normalized = path.posix.normalize(value);
+  if (normalized === "." || normalized === ".." || normalized.startsWith("../") || normalized.includes("/../")) return null;
+  return normalized.replace(/^\.\//, "");
+}
+
+function readBoundReceipt(reference, role, options, errors) {
+  const field = `receipts.${role}`;
+  if (!reference || typeof reference !== "object" || Array.isArray(reference)) {
+    error(errors, "RECEIPT_REFERENCE_MISSING", field, `${role} receipt reference is required`);
+    return null;
+  }
+  const relative = normalizedReceiptPath(reference.path);
+  if (!relative) {
+    error(errors, "RECEIPT_PATH_INVALID", `${field}.path`, "receipt path must be a repository-relative POSIX path without traversal");
+    return null;
+  }
+  if (!SHA256.test(String(reference.sha256 || ""))) {
+    error(errors, "RECEIPT_DIGEST_INVALID", `${field}.sha256`, "receipt reference needs a SHA-256 digest");
+    return null;
+  }
+  const root = path.resolve(options.receiptRoot || process.cwd());
+  const resolved = path.resolve(root, relative);
+  if (resolved !== root && !resolved.startsWith(`${root}${path.sep}`)) {
+    error(errors, "RECEIPT_PATH_OUTSIDE_ROOT", `${field}.path`, "receipt path escapes the configured receipt root");
+    return null;
+  }
+  if (options.manifestPath && path.resolve(options.manifestPath) === resolved) {
+    error(errors, "RECEIPT_MANIFEST_SELF_REFERENCE", `${field}.path`, "the evidence manifest cannot be its own source receipt");
+    return null;
+  }
+  let bytes;
+  let receipt;
+  try {
+    const rootReal = fs.realpathSync(root);
+    const fileReal = fs.realpathSync(resolved);
+    if (fileReal !== rootReal && !fileReal.startsWith(`${rootReal}${path.sep}`)) {
+      error(errors, "RECEIPT_SYMLINK_OUTSIDE_ROOT", `${field}.path`, "receipt symlink escapes the configured receipt root");
+      return null;
+    }
+    bytes = fs.readFileSync(fileReal);
+    receipt = JSON.parse(bytes.toString("utf8"));
+  } catch (readError) {
+    error(errors, "RECEIPT_READ_FAILED", `${field}.path`, `unable to read and parse receipt: ${readError.message}`);
+    return null;
+  }
+  if (!receipt || typeof receipt !== "object" || Array.isArray(receipt)) {
+    error(errors, "RECEIPT_INVALID", field, "receipt must be a JSON object");
+    return null;
+  }
+  const digest = sha256(bytes);
+  if (digest !== String(reference.sha256).toLowerCase()) {
+    error(errors, "RECEIPT_DIGEST_MISMATCH", `${field}.sha256`, `receipt bytes do not match ${reference.sha256}`);
+  }
+  if (!nonEmpty(reference.receiptId) || !nonEmpty(receipt.receiptId) || reference.receiptId !== receipt.receiptId) {
+    error(errors, "RECEIPT_ID_MISMATCH", `${field}.receiptId`, "receiptId must identify the parsed source receipt");
+  }
+  return { receipt, digest, relative, reference };
+}
+
+function validateReceiptBinding(loaded, role, expected, errors) {
+  if (!loaded) return;
+  const { receipt, reference } = loaded;
+  const field = `receipts.${role}`;
+  const actual = receiptBinding(receipt);
+  const expectedHead = String(expected.headSha || "").toLowerCase();
+  if (Number(actual.pullRequestNumber) !== Number(expected.pullRequestNumber)) {
+    error(errors, "RECEIPT_PR_MISMATCH", field, `${role} receipt belongs to another pull request`);
+  }
+  if (!nonEmpty(actual.headSha) || String(actual.headSha).toLowerCase() !== expectedHead) {
+    error(errors, "RECEIPT_HEAD_MISMATCH", field, `${role} receipt belongs to another commit`);
+  }
+  if (actual.environmentId !== expected.environmentId) {
+    error(errors, "RECEIPT_ENVIRONMENT_MISMATCH", field, `${role} receipt belongs to another PR environment`);
+  }
+  if (actual.implementationRoundId !== expected.implementationRoundId) {
+    error(errors, "RECEIPT_ROUND_MISMATCH", field, `${role} receipt belongs to another implementation round`);
+  }
+  const referenceBinding = {
+    pullRequestNumber: reference.pullRequestNumber,
+    headSha: reference.headSha,
+    environmentId: reference.environmentId,
+    implementationRoundId: reference.implementationRoundId
+  };
+  for (const key of Object.keys(referenceBinding)) {
+    const expectedValue = key === "pullRequestNumber" ? Number(expected[key]) : key === "headSha" ? expectedHead : expected[key];
+    const value = key === "pullRequestNumber" ? Number(referenceBinding[key]) : key === "headSha" ? String(referenceBinding[key] || "").toLowerCase() : referenceBinding[key];
+    if (value !== expectedValue) error(errors, "RECEIPT_REFERENCE_BINDING_MISMATCH", `${field}.${key}`, `${key} must match the manifest CI binding`);
+  }
+  if (receipt.productionEvidence === false) {
+    error(errors, "RECEIPT_NOT_PRODUCTION_EVIDENCE", field, `${role} explicitly declares productionEvidence=false`);
+  }
+  if (LIVE_EVIDENCE_ROLES.has(role) && receipt.productionEvidence !== true) {
+    error(errors, "RECEIPT_LIVE_EVIDENCE_UNPROVEN", field, `${role} must explicitly declare productionEvidence=true`);
+  }
+  for (const marker of [receipt.provisioningMode, receipt.sourceType, receipt.evidenceMode, receipt.runtimeMode]) {
+    if (nonEmpty(marker) && FORBIDDEN_RECEIPT_MARKER.test(marker)) {
+      error(errors, "RECEIPT_SOURCE_FORBIDDEN", field, `${role} uses forbidden non-runtime evidence mode ${marker}`);
+    }
+  }
+}
+
+function statusOf(value) {
+  return typeof value === "string" ? value : value?.status;
+}
+
+function validateProvisioningReceipt(loaded, environment, errors) {
+  if (!loaded) return;
+  const receipt = loaded.receipt;
+  if (receipt.schemaVersion !== "implementation-pr-environment-provider.v1") {
+    error(errors, "PROVISIONING_SCHEMA_INVALID", "receipts.provisioning", "live provider receipt schema is required");
+  }
+  if (!["provisioned", "verified", "passed", "ready"].includes(String(receipt.status || "").toLowerCase())) {
+    error(errors, "PROVISIONING_STATUS_INVALID", "receipts.provisioning.status", "provider receipt must be provisioned, verified, passed, or ready");
+  }
+  if (FORBIDDEN_RECEIPT_MARKER.test(String(receipt.provisioningMode || ""))) {
+    error(errors, "PROVISIONING_DESCRIPTOR_ONLY", "receipts.provisioning.provisioningMode", "descriptor-only provisioning cannot be implementation evidence");
+  }
+  const resources = receipt.resources || {};
+  for (const [key, expected] of Object.entries({
+    databaseSchema: environment?.databaseSchema,
+    objectStoragePrefix: environment?.objectStoragePrefix,
+    queueNamespace: environment?.queueNamespace
+  })) {
+    if (resources[key] !== expected) error(errors, "PROVISIONING_RESOURCE_MISMATCH", `receipts.provisioning.resources.${key}`, `${key} must match the isolated PR environment`);
+  }
+  const lease = receipt.credentialLease || {};
+  if (lease.reference !== environment?.credentialRef || lease.mode !== "short-lived-least-privilege") {
+    error(errors, "PROVISIONING_CREDENTIAL_LEASE_INVALID", "receipts.provisioning.credentialLease", "provider must prove the exact short-lived least-privilege credential reference");
+  }
+  if (!nonEmpty(lease.expiresAt) || Number.isNaN(Date.parse(lease.expiresAt))) {
+    error(errors, "PROVISIONING_CREDENTIAL_EXPIRY_INVALID", "receipts.provisioning.credentialLease.expiresAt", "credential lease expiry must be an ISO date-time");
+  }
+  for (const service of ["postgres", "minio", "nats"]) {
+    const state = String(statusOf(receipt.health?.[service]) || "").toLowerCase();
+    if (!["passed", "verified", "healthy", "ready"].includes(state)) {
+      error(errors, "PROVISIONING_HEALTH_MISSING", `receipts.provisioning.health.${service}`, `${service} live health evidence is required`);
+    }
+  }
+}
+
+function validateRuntimeReceipt(loaded, manifest, errors) {
+  if (!loaded) return;
+  const receipt = loaded.receipt;
+  const runId = firstString(receipt.runtimeRunId, receipt.realRunId, ...(Array.isArray(receipt.realRunIds) ? receipt.realRunIds : []));
+  if (!PASS_STATUSES.has(receipt.status) || receipt.runtimeRunIsReal !== true || !RUN_ID.test(String(runId || ""))) {
+    error(errors, "RUNTIME_RECEIPT_NOT_REAL", "receipts.runtime", "runtime receipt must prove a passed real S001 run");
+  }
+  if (receipt.scenarioId !== "S001" || !Array.isArray(receipt.order) || receipt.order.join(",") !== "M02,M01,M03,M04,M06,M05,M06") {
+    error(errors, "RUNTIME_RECEIPT_ORDER_INVALID", "receipts.runtime.order", "runtime receipt must prove the fixed S001 module order");
+  }
+  if (runId !== manifest.runtimeRunId) error(errors, "RUNTIME_RECEIPT_ID_MISMATCH", "runtimeRunId", "manifest runtimeRunId must come from the parsed runtime receipt");
+}
+
+function validateReceiptProjection(section, loaded, field, errors) {
+  if (!loaded || !section || typeof section !== "object") return;
+  const expected = {
+    ...loaded.receipt,
+    evidence: loaded.relative,
+    receiptId: loaded.receipt.receiptId,
+    receiptSha256: loaded.digest
+  };
+  const canonical = (value) => {
+    if (Array.isArray(value)) return value.map(canonical);
+    if (!value || typeof value !== "object") return value;
+    return Object.fromEntries(Object.keys(value).sort().map((key) => [key, canonical(value[key])]));
+  };
+  if (JSON.stringify(canonical(section)) !== JSON.stringify(canonical(expected))) {
+    error(errors, "RECEIPT_PROJECTION_MISMATCH", field, "manifest projection must exactly match its parsed source receipt plus path and digest");
+  }
+}
+
+export function validateReceiptBundle(manifest, options = {}) {
+  const errors = [];
+  const index = manifest?.receipts;
+  if (!index || typeof index !== "object" || Array.isArray(index)) {
+    return { valid: false, verifiedCount: 0, errors: [{ code: "RECEIPT_INDEX_MISSING", path: "receipts", message: "a digest-bound receipt index is required" }], loaded: {} };
+  }
+  const expected = {
+    pullRequestNumber: manifest.pullRequest?.number ?? options.pullRequestNumber,
+    headSha: manifest.pullRequest?.headSha ?? options.headSha,
+    environmentId: manifest.prEnvironment?.id,
+    implementationRoundId: manifest.implementationRoundId
+  };
+  if (!PR_NUMBER.test(String(expected.pullRequestNumber || "")) || !SHA.test(String(expected.headSha || "")) || !nonEmpty(expected.environmentId) || !nonEmpty(expected.implementationRoundId)) {
+    error(errors, "RECEIPT_BINDING_MISSING", "receipts", "manifest PR, head, environment, and implementationRoundId are required before receipts can be verified");
+  }
+  const loaded = {};
+  for (const role of REQUIRED_RECEIPT_ROLES) {
+    loaded[role] = readBoundReceipt(index[role], role, options, errors);
+    validateReceiptBinding(loaded[role], role, expected, errors);
+  }
+  if (!index.checks || typeof index.checks !== "object" || Array.isArray(index.checks)) {
+    error(errors, "CHECK_RECEIPT_INDEX_MISSING", "receipts.checks", "every named check needs a receipt reference");
+  } else {
+    loaded.checks = {};
+    for (const check of REQUIRED_CHECKS) {
+      loaded.checks[check] = readBoundReceipt(index.checks[check], `checks.${check}`, options, errors);
+      validateReceiptBinding(loaded.checks[check], `checks.${check}`, expected, errors);
+    }
+  }
+  if (loaded.checks?.accessibility?.receipt?.status === "not-applicable") {
+    const findingReference = loaded.checks.accessibility.receipt.findingEvidence;
+    loaded.accessibilityFinding = readBoundReceipt(findingReference, "checks.accessibility.findingEvidence", options, errors);
+    validateReceiptBinding(loaded.accessibilityFinding, "checks.accessibility.findingEvidence", expected, errors);
+    const finding = loaded.accessibilityFinding?.receipt;
+    if (!finding || finding.status !== "blocked" || finding.productionEvidence !== true || finding.axe?.executed !== true
+        || !(Number(finding.violations) > 0 || finding.blockedReasons?.includes("axe-violations"))) {
+      error(errors, "ACCESSIBILITY_FINDING_RECEIPT_INVALID", "checks.accessibility.findingEvidence", "findingEvidence must resolve to a real production axe receipt blocked by an actual violation");
+    }
+  }
+  validateProvisioningReceipt(loaded.provisioning, manifest.prEnvironment, errors);
+  validateRuntimeReceipt(loaded.runtime, manifest, errors);
+  validateReceiptProjection(manifest.databaseMigration, loaded.databaseMigration, "databaseMigration", errors);
+  validateReceiptProjection(manifest.objectStorageFingerprint, loaded.objectStorageFingerprint, "objectStorageFingerprint", errors);
+  validateReceiptProjection(manifest.rollback, loaded.rollback, "rollback", errors);
+  validateReceiptProjection(manifest.audit, loaded.audit, "audit", errors);
+  validateReceiptProjection(manifest.negativeTests, loaded.negativeTests, "negativeTests", errors);
+  validateReceiptProjection(manifest.recoveryReceipt, loaded.recovery, "recoveryReceipt", errors);
+  for (const check of REQUIRED_CHECKS) validateReceiptProjection(manifest.checks?.[check], loaded.checks?.[check], `checks.${check}`, errors);
+  const provisioningRef = index.provisioning;
+  if (manifest.prEnvironment?.provisioningReceipt !== provisioningRef?.path || manifest.prEnvironment?.provisioningReceiptSha256 !== provisioningRef?.sha256) {
+    error(errors, "PROVISIONING_REFERENCE_MISMATCH", "prEnvironment.provisioningReceipt", "environment must bind the parsed provisioning receipt path and digest");
+  }
+  return {
+    valid: errors.length === 0,
+    verifiedCount: REQUIRED_RECEIPT_ROLES.filter((role) => loaded[role]).length + Object.values(loaded.checks || {}).filter(Boolean).length + (loaded.accessibilityFinding ? 1 : 0),
+    errors,
+    loaded
+  };
 }
 
 function error(errors, code, field, message) {
@@ -174,22 +449,74 @@ function validateEnvironmentShape(environment, errors, fieldPrefix = "prEnvironm
   }
 }
 
-function checkEvidence(value, field, errors, { allowNotApplicable = true } = {}) {
+function checkEvidence(value, field, errors, { diagnostic = false } = {}) {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     error(errors, "CHECK_MISSING", field, `${field} must be an evidence object`);
     return false;
   }
   const status = value.status;
-  if (!CHECK_STATUSES.has(status) || (!allowNotApplicable && status === "not-applicable")) {
-    error(errors, "CHECK_STATUS_INVALID", `${field}.status`, `${field}.status must be passed, verified, or not-applicable`);
+  const allowed = diagnostic ? CHECK_STATUSES : PASS_STATUSES;
+  if (!allowed.has(status)) {
+    error(errors, "CHECK_STATUS_INVALID", `${field}.status`, diagnostic
+      ? `${field}.status must be passed, verified, blocked, or not-applicable`
+      : `${field}.status must be passed or verified`);
   }
   if (![value.evidence, value.evidenceUri, value.receiptUri].some(usableEvidence)) {
     error(errors, "CHECK_EVIDENCE_MISSING", `${field}.evidence`, `${field} needs a durable evidence/receipt URI or path`);
   }
-  if (status === "not-applicable" && !nonEmpty(value.reason)) {
-    error(errors, "CHECK_NA_REASON_MISSING", `${field}.reason`, `${field} not-applicable requires a reason`);
+  if (["not-applicable", "blocked"].includes(status) && !nonEmpty(value.reason)) {
+    error(errors, "CHECK_DIAGNOSTIC_REASON_MISSING", `${field}.reason`, `${field} ${status} requires a reason`);
   }
   return true;
+}
+
+function validateAccessibilityCheck(value, errors) {
+  if (!value || typeof value !== "object") return;
+  const field = "checks.accessibility";
+  if (value.status === "not-applicable") {
+    if (value.scope !== "backend-only") error(errors, "ACCESSIBILITY_DEFER_SCOPE_INVALID", `${field}.scope`, "deferred accessibility scope must be backend-only");
+    if (value.uiChangesDetected !== false) error(errors, "ACCESSIBILITY_DEFER_UI_CHANGE_INVALID", `${field}.uiChangesDetected`, "backend-only deferral requires uiChangesDetected=false");
+    if (value.nextGate !== "first-ui-candidate") error(errors, "ACCESSIBILITY_DEFER_NEXT_GATE_INVALID", `${field}.nextGate`, "deferred accessibility must move to first-ui-candidate");
+    if (!value.findingEvidence || typeof value.findingEvidence !== "object") error(errors, "ACCESSIBILITY_FINDING_EVIDENCE_MISSING", `${field}.findingEvidence`, "deferred accessibility must reference a real blocked axe receipt");
+  } else if (PASS_STATUSES.has(value.status)) {
+    if (value.scope !== "ui" || value.uiChangesDetected !== true || value.axe?.executed !== true || Number(value.violations) !== 0 || value.keyboard !== true || !nonEmpty(value.targetUrl)) {
+      error(errors, "ACCESSIBILITY_PASS_EVIDENCE_INVALID", field, "a passing accessibility check requires an actual UI URL, axe execution, zero violations, and a verified keyboard path");
+    }
+  } else if (value.status === "blocked" && value.axe?.executed !== true) {
+    error(errors, "ACCESSIBILITY_BLOCK_EVIDENCE_INVALID", field, "blocked accessibility must retain the actual axe execution result");
+  }
+}
+
+function validateHardGateSubEvidence(checks, errors) {
+  if (!checks || typeof checks !== "object") return;
+  const contract = checks.contractCompatibility || {};
+  if (contract.idempotencyContractVerified !== true || contract.c033ContractVerified !== true
+      || contract.ownerBoundaryVerified !== true || contract.exactVersionContractVerified !== true) {
+    error(errors, "CONTRACT_SAFETY_SUBEVIDENCE_MISSING", "checks.contractCompatibility", "contract compatibility must prove idempotency, C033, Owner boundaries, and exact-version binding");
+  }
+  const e2e = checks.e2e || {};
+  const idempotency = e2e.idempotency || {};
+  const requiredIdempotency = [
+    "sameKeySameContentOnce",
+    "sameKeyDifferentContentRejected",
+    "casConflictRejected",
+    "outboxDuplicateSuppressed",
+    "inboxDuplicateSuppressed",
+    "retryNoDuplicateSideEffects"
+  ];
+  if (requiredIdempotency.some((field) => idempotency[field] !== true)) {
+    error(errors, "E2E_IDEMPOTENCY_SUBEVIDENCE_MISSING", "checks.e2e.idempotency", "E2E must prove same-key replay, content conflict, CAS, outbox/inbox deduplication, and side-effect-safe retry");
+  }
+  if (e2e.c033Verified !== true || e2e.ownerBoundaryVerified !== true || e2e.exactVersionsVerified !== true) {
+    error(errors, "E2E_AUTHORITY_SUBEVIDENCE_MISSING", "checks.e2e", "E2E must prove C033, Owner boundaries, and exact-version binding");
+  }
+  const security = checks.security || {};
+  if (security.secretScan?.status !== "passed" || Number(security.secretScan?.findingCount) !== 0
+      || security.dependencyAudit?.status !== "verified"
+      || Number(security.dependencyAudit?.vulnerabilities?.high) !== 0
+      || Number(security.dependencyAudit?.vulnerabilities?.critical) !== 0) {
+    error(errors, "SECURITY_BASELINE_SUBEVIDENCE_MISSING", "checks.security", "security hard gate is limited to, but must prove, a clean secret scan and zero high/critical dependency vulnerabilities");
+  }
 }
 
 function validateMetadata(manifest, errors, options) {
@@ -344,10 +671,11 @@ function validateMetadata(manifest, errors, options) {
   if (!negative || typeof negative !== "object" || Array.isArray(negative)) {
     error(errors, "NEGATIVE_TESTS_MISSING", "negativeTests", "negative test receipt is required");
   } else {
-    if (!PASS_STATUSES.has(negative.status)) error(errors, "NEGATIVE_TESTS_NOT_PASSED", "negativeTests.status", "negativeTests.status must be passed or verified");
-    if (!Array.isArray(negative.cases) || negative.cases.length === 0) {
+    if (![...PASS_STATUSES, "blocked", "not-applicable"].includes(negative.status)) error(errors, "NEGATIVE_TESTS_STATUS_INVALID", "negativeTests.status", "negativeTests.status must be passed, verified, blocked, or not-applicable");
+    if (["blocked", "not-applicable"].includes(negative.status) && !nonEmpty(negative.reason)) error(errors, "NEGATIVE_TESTS_REASON_MISSING", "negativeTests.reason", `${negative.status} negative tests require a reason`);
+    if (PASS_STATUSES.has(negative.status) && (!Array.isArray(negative.cases) || negative.cases.length === 0)) {
       error(errors, "NEGATIVE_TEST_CASES_MISSING", "negativeTests.cases", "at least one negative test case is required");
-    } else {
+    } else if (PASS_STATUSES.has(negative.status)) {
       const normalized = negative.cases.map((item) => String(item).toLowerCase());
       const requiredCaseMatchers = [
         ["missing-context", (item) => item.includes("missing") && item.includes("context")],
@@ -477,6 +805,8 @@ export function validatePrEvidence(manifest, options = {}) {
   const normalizedManifest = normalizeManifest(manifest);
   validateMetadata(normalizedManifest, errors, {
     expectedBaselineSnapshotId: options.expectedBaselineSnapshotId || DEFAULT_BASELINE_SNAPSHOT_ID,
+    expectedSourceTag: options.expectedSourceTag,
+    expectedSourceVersion: options.expectedSourceVersion,
     requiredSchemaVersion: options.requiredSchemaVersion || "draft-0.1.0"
   });
 
@@ -487,16 +817,20 @@ export function validatePrEvidence(manifest, options = {}) {
   if (!checks || typeof checks !== "object" || Array.isArray(checks)) {
     error(errors, "CHECKS_MISSING", "checks", "all required quality checks must be recorded");
   } else {
-    for (const check of REQUIRED_CHECKS) checkEvidence(checks[check], `checks.${check}`, errors, { allowNotApplicable: check === "migration" });
+    for (const check of REQUIRED_CHECKS) checkEvidence(checks[check], `checks.${check}`, errors, { diagnostic: DIAGNOSTIC_CHECKS.includes(check) });
+    validateAccessibilityCheck(checks.accessibility, errors);
+    validateHardGateSubEvidence(checks, errors);
     for (const key of Object.keys(checks)) {
       if (!REQUIRED_CHECKS.includes(key)) error(errors, "CHECK_UNKNOWN", `checks.${key}`, "unknown quality check; update the gate contract first");
     }
-    if (checks.security?.status === "not-applicable") error(errors, "SECURITY_REQUIRED", "checks.security.status", "security gate cannot be waived");
-    if (checks.c034Recovery?.status === "not-applicable") error(errors, "RECOVERY_REQUIRED", "checks.c034Recovery.status", "C034 recovery gate cannot be waived");
-    if (checks.sbom?.status === "not-applicable") error(errors, "SBOM_REQUIRED", "checks.sbom.status", "SBOM gate cannot be waived");
   }
 
   validateEnvironment(normalizedManifest, errors, options);
+  const receiptVerification = validateReceiptBundle(normalizedManifest, {
+    ...options,
+    manifestPath: options.manifestPath
+  });
+  errors.push(...receiptVerification.errors);
 
   const candidateGates = normalizedManifest.candidateGates || normalizedManifest.implementation?.candidateGates;
   if (!candidateGates || typeof candidateGates !== "object" || Array.isArray(candidateGates)) {
@@ -513,7 +847,7 @@ export function validatePrEvidence(manifest, options = {}) {
     }
   }
 
-  const allChecksPassed = checks && REQUIRED_CHECKS.every((check) => PASS_STATUSES.has(checks?.[check]?.status));
+  const hardChecksPassed = checks && HARD_REQUIRED_CHECKS.every((check) => PASS_STATUSES.has(checks?.[check]?.status));
   const vertical = candidateGates?.s001VerticalSlice;
   const verticalPassed = PASS_STATUSES.has(vertical?.status);
   const verticalOrderValid = !verticalPassed || (Array.isArray(vertical?.order)
@@ -527,7 +861,7 @@ export function validatePrEvidence(manifest, options = {}) {
   const sameRound = !candidateGatesPassed || (candidateRoundIds.length === CANDIDATE_GATES.length && new Set(candidateRoundIds).size === 1);
   if (!verticalOrderValid) error(errors, "S001_ORDER_INVALID", "candidateGates.s001VerticalSlice.order", "S001 vertical slice order must be M02,M01,M03,M04,M06,M05,M06");
   if (!sameRound) error(errors, "CANDIDATE_ROUND_MISMATCH", "candidateGates", "S001, security and recovery evidence must belong to one implementation round");
-  const candidateEligible = errors.length === 0 && allChecksPassed && verticalOrderValid && sameRound
+  const candidateEligible = errors.length === 0 && hardChecksPassed && verticalOrderValid && sameRound
     && CANDIDATE_GATES.every((gate) => PASS_STATUSES.has(candidateGates?.[gate]?.status));
   if (normalizedManifest.implementationCandidate === true && !candidateEligible) {
     error(errors, "CANDIDATE_NOT_ELIGIBLE", "implementationCandidate", "implementation candidate requires S001 first vertical slice, security and recovery gates to pass");
@@ -538,7 +872,13 @@ export function validatePrEvidence(manifest, options = {}) {
     errors,
     gateVersion: QUALITY_GATE_VERSION,
     requiredChecks: [...REQUIRED_CHECKS],
-    candidateGates: [...CANDIDATE_GATES]
+    hardRequiredChecks: [...HARD_REQUIRED_CHECKS],
+    diagnosticChecks: [...DIAGNOSTIC_CHECKS],
+    candidateGates: [...CANDIDATE_GATES],
+    receiptVerification: {
+      valid: receiptVerification.valid,
+      verifiedCount: receiptVerification.verifiedCount
+    }
   };
 }
 

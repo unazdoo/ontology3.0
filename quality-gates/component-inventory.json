@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "implementation-component-inventory.v1",
+  "components": [
+    { "id": "foundation", "name": "Foundation", "version": "0.1.0", "paths": ["packages/contracts", "packages/identity", "packages/checkpoint"] },
+    { "id": "m01", "name": "M01 Ontology", "version": "0.1.0", "paths": ["services/ontology"] },
+    { "id": "m02", "name": "M02 Data", "version": "0.1.0", "paths": ["services/data"] },
+    { "id": "m03", "name": "M03 Query", "version": "0.1.0", "paths": ["services/query"] },
+    { "id": "m04", "name": "M04 Decision", "version": "0.1.0", "paths": ["services/decision", "packages/decision"] },
+    { "id": "m05", "name": "M05 Agent", "version": "0.1.0", "paths": ["packages/m05", "packages/agent-release", "packages/agent", "packages/agent-gateway", "packages/agent-runtime", "packages/model-gateway", "packages/tool-gateway", "packages/c014", "packages/c020", "packages/c024", "packages/c025", "packages/evaluation", "packages/m05-agent"] },
+    { "id": "m06", "name": "M06 Report", "version": "0.1.0", "paths": ["packages/report", "services/report"] },
+    { "id": "integration-contract-tests", "name": "Integration Contract Tests", "version": "0.1.0", "paths": ["tests/integration"] },
+    { "id": "quality-gates", "name": "Quality Gates", "version": "0.1.0", "paths": ["quality-gates", "scripts/quality-gate"] }
+  ]
+}

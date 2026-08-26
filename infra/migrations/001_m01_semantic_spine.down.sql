@@ -1,0 +1,18 @@
+BEGIN;
+
+DROP TABLE IF EXISTS m01.audit_log;
+DROP TABLE IF EXISTS m01.c008_projections;
+DROP TABLE IF EXISTS m01.t019_history;
+DROP TABLE IF EXISTS m01.t019_heads;
+DROP TABLE IF EXISTS m01.refresh_exchanges;
+DROP TABLE IF EXISTS m01.t054_versions;
+DROP TABLE IF EXISTS m01.published_versions;
+DROP TABLE IF EXISTS m01.draft_revisions;
+DROP TABLE IF EXISTS m01.drafts;
+DROP TABLE IF EXISTS m01.c003_deliveries;
+DROP TABLE IF EXISTS m01.scenario_runs;
+DROP FUNCTION IF EXISTS m01.reject_update_delete();
+DROP FUNCTION IF EXISTS m01.enforce_t019_head_cas();
+DROP SCHEMA IF EXISTS m01;
+
+COMMIT;

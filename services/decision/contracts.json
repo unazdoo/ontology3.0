@@ -1,0 +1,56 @@
+{
+  "moduleId": "M04",
+  "implementationVersion": "implementation-0.1.0",
+  "sourceTag": "prototype-v1.1.0-frozen",
+  "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+  "ownedContracts": ["C012", "C013", "C019"],
+  "consumedContracts": ["C011", "C017"],
+  "c011Provider": "M03",
+  "foundationCompatibility": {
+    "envelopeSchemaVersion": "draft-0.1.0",
+    "checkpointSchemaVersion": "ofw.c034.checkpoint.v1",
+    "scenarioContextUnknownFields": "reject",
+    "schemaChangePolicy": "exact-only"
+  },
+  "checkpointIntegrity": {
+    "sourceTag": "prototype-v1.1.0-frozen",
+    "parentVersion": "v1.1.0",
+    "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+    "requiredHashes": ["stateFingerprint", "ledgerFingerprint", "checkpointFingerprint"],
+    "tamperPolicy": "recompute-and-reject"
+  },
+  "schemas": {
+    "state": "ofw.m04.decision-state.v1",
+    "actionRequest": "ofw.m03.c011.action-request.v1",
+    "reminder": "ofw.m04.c012.decision-reminder.v1",
+    "humanDecision": "ofw.m04.c012.human-decision.v1",
+    "ownerTask": "ofw.m04.c013.owner-task.v1",
+    "c019": "ofw.m04.c019.read-model.v1",
+    "c017SafetyReceipt": "ofw.m04.c017-safety-receipt.v1"
+  },
+  "states": {
+    "request": ["received", "blocked", "rejected", "unknown", "unlocatable", "read_error", "version_conflict"],
+    "reminder": ["awaiting_confirmation", "confirmed", "rejected", "task_creation_blocked", "task_creation_failed", "task_created"],
+    "humanDecision": ["pending", "blocked", "rejected_pending", "confirmed", "rejected"],
+    "task": ["not_created", "blocked", "rejected", "create_failed", "unknown", "created"]
+  },
+  "gates": [
+    {"name": "request_receipt", "before": "C011 receive", "c017Read": true},
+    {"name": "confirmation_submit", "before": "positive human confirmation", "c017Read": true},
+    {"name": "task_formation", "before": "C013 owner task formation", "c017Read": true}
+  ],
+  "idempotency": {
+    "keyParts": ["scenarioId", "scenarioRunId", "requestId", "semanticVersion", "dataVersion"],
+    "conflictFingerprintParts": ["scenarioId", "scenarioVersion", "scenarioRunId", "requestId", "subjectId", "actionType", "rule", "semanticVersion", "dataVersion", "t007", "metric", "evidence"],
+    "sameKey": "return existing refs with zero side effects",
+    "sameRequestIdDifferentContract": "reject and append conflict receipt"
+  },
+  "sideEffectBoundary": {
+    "automaticConfirmation": false,
+    "taskWithoutHumanConfirmation": false,
+    "c017Copy": false,
+    "secondTaskSource": false,
+    "historicalReplay": false
+  },
+  "deferred": ["Q003 due-date calculation", "CR008", "CR009", "CR010"]
+}

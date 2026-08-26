@@ -11,6 +11,8 @@
     "sourceTag",
     "sourceVersion",
     "implementationVersion",
+    "implementationRoundId",
+    "pullRequest",
     "schemaVersion",
     "schemaVersions",
     "schemaCompatibility",
@@ -27,15 +29,26 @@
     "recoveryReceipt",
     "prEnvironment",
     "checks",
-    "candidateGates"
+    "candidateGates",
+    "receipts"
   ],
   "properties": {
-    "manifestVersion": { "type": "string", "minLength": 1 },
+    "manifestVersion": { "const": "implementation-quality-evidence.v2" },
     "gateVersion": { "const": "implementation-quality-gate.v1" },
     "baselineSnapshotId": { "const": "BSL-OFW-V110-94ABD0E991B7" },
     "sourceTag": { "type": "string", "minLength": 1 },
     "sourceVersion": { "type": "string", "minLength": 1 },
     "implementationVersion": { "type": "string", "minLength": 1 },
+    "implementationRoundId": { "type": "string", "minLength": 1 },
+    "pullRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["number", "headSha"],
+      "properties": {
+        "number": { "type": "integer", "minimum": 1 },
+        "headSha": { "type": "string", "pattern": "^[a-fA-F0-9]{7,64}$" }
+      }
+    },
     "schemaVersion": { "type": "string", "minLength": 1 },
     "schemaVersions": {
       "oneOf": [
@@ -136,7 +149,23 @@
         "permissionNegative": { "$ref": "#/definitions/check" },
         "concurrencyIdempotency": { "$ref": "#/definitions/check" },
         "performance": { "$ref": "#/definitions/check" },
-        "accessibility": { "$ref": "#/definitions/check" },
+        "accessibility": {
+          "allOf": [
+            { "$ref": "#/definitions/check" },
+            {
+              "if": { "properties": { "status": { "const": "not-applicable" } } },
+              "then": {
+                "required": ["reason", "scope", "uiChangesDetected", "findingEvidence", "nextGate"],
+                "properties": {
+                  "scope": { "const": "backend-only" },
+                  "uiChangesDetected": { "const": false },
+                  "findingEvidence": { "$ref": "#/definitions/receiptReference" },
+                  "nextGate": { "const": "first-ui-candidate" }
+                }
+              }
+            }
+          ]
+        },
         "security": { "$ref": "#/definitions/check" },
         "sbom": { "$ref": "#/definitions/check" },
         "observability": { "$ref": "#/definitions/check" },
@@ -154,50 +183,118 @@
         "security": { "$ref": "#/definitions/candidateGate" },
         "recovery": { "$ref": "#/definitions/candidateGate" }
       }
+    },
+    "receipts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provisioning", "databaseMigration", "objectStorageFingerprint", "rollback", "runtime", "audit", "negativeTests", "recovery", "checks"],
+      "properties": {
+        "provisioning": { "$ref": "#/definitions/receiptReference" },
+        "databaseMigration": { "$ref": "#/definitions/receiptReference" },
+        "objectStorageFingerprint": { "$ref": "#/definitions/receiptReference" },
+        "rollback": { "$ref": "#/definitions/receiptReference" },
+        "runtime": { "$ref": "#/definitions/receiptReference" },
+        "audit": { "$ref": "#/definitions/receiptReference" },
+        "negativeTests": { "$ref": "#/definitions/receiptReference" },
+        "recovery": { "$ref": "#/definitions/receiptReference" },
+        "checks": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["goldenData", "contractCompatibility", "e2e", "permissionNegative", "concurrencyIdempotency", "performance", "accessibility", "security", "sbom", "observability", "c034Recovery", "migration", "rollback", "ciCd"],
+          "properties": {
+            "goldenData": { "$ref": "#/definitions/receiptReference" },
+            "contractCompatibility": { "$ref": "#/definitions/receiptReference" },
+            "e2e": { "$ref": "#/definitions/receiptReference" },
+            "permissionNegative": { "$ref": "#/definitions/receiptReference" },
+            "concurrencyIdempotency": { "$ref": "#/definitions/receiptReference" },
+            "performance": { "$ref": "#/definitions/receiptReference" },
+            "accessibility": { "$ref": "#/definitions/receiptReference" },
+            "security": { "$ref": "#/definitions/receiptReference" },
+            "sbom": { "$ref": "#/definitions/receiptReference" },
+            "observability": { "$ref": "#/definitions/receiptReference" },
+            "c034Recovery": { "$ref": "#/definitions/receiptReference" },
+            "migration": { "$ref": "#/definitions/receiptReference" },
+            "rollback": { "$ref": "#/definitions/receiptReference" },
+            "ciCd": { "$ref": "#/definitions/receiptReference" }
+          }
+        }
+      }
     }
   },
   "definitions": {
     "evidence": {
       "type": "object",
-      "required": ["status"],
+      "required": ["status", "evidence", "receiptId", "receiptSha256"],
       "properties": {
         "status": { "type": "string" },
         "evidence": { "type": "string" },
         "evidenceUri": { "type": "string" },
-        "receiptUri": { "type": "string" }
+        "receiptUri": { "type": "string" },
+        "receiptId": { "type": "string", "minLength": 1 },
+        "receiptSha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" }
       }
     },
     "check": {
       "type": "object",
-      "required": ["status"],
+      "required": ["status", "evidence", "receiptId", "receiptSha256"],
       "properties": {
-        "status": { "type": "string", "enum": ["passed", "verified", "not-applicable"] },
+        "status": { "type": "string", "enum": ["passed", "verified", "blocked", "not-applicable"] },
         "evidence": { "type": "string", "minLength": 1 },
         "evidenceUri": { "type": "string", "minLength": 1 },
-        "receiptUri": { "type": "string", "minLength": 1 }
-      }
+        "receiptUri": { "type": "string", "minLength": 1 },
+        "receiptId": { "type": "string", "minLength": 1 },
+        "receiptSha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" },
+        "reason": { "type": "string", "minLength": 1 },
+        "scope": { "type": "string", "minLength": 1 },
+        "uiChangesDetected": { "type": "boolean" },
+        "findingEvidence": { "$ref": "#/definitions/receiptReference" },
+        "nextGate": { "type": "string", "minLength": 1 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "enum": ["blocked", "not-applicable"] } } },
+          "then": { "required": ["reason"] }
+        }
+      ]
     },
     "candidateGate": {
       "type": "object",
-      "required": ["status"],
+      "required": ["status", "evidence", "receiptId", "receiptSha256", "roundId"],
       "properties": {
         "status": { "type": "string", "enum": ["passed", "verified", "blocked", "not-run"] },
         "evidence": { "type": "string", "minLength": 1 },
         "evidenceUri": { "type": "string", "minLength": 1 },
         "roundId": { "type": "string", "minLength": 1 },
-        "implementationRoundId": { "type": "string", "minLength": 1 }
+        "implementationRoundId": { "type": "string", "minLength": 1 },
+        "receiptId": { "type": "string", "minLength": 1 },
+        "receiptSha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" }
       }
     },
     "environment": {
       "type": "object",
-      "required": ["id", "databaseSchema", "objectStoragePrefix", "queueNamespace", "credentialRef", "provisioningReceipt"],
+      "required": ["id", "databaseSchema", "objectStoragePrefix", "queueNamespace", "credentialRef", "provisioningReceipt", "provisioningReceiptSha256"],
       "properties": {
         "id": { "type": "string" },
         "databaseSchema": { "type": "string", "minLength": 1 },
         "objectStoragePrefix": { "type": "string", "minLength": 1 },
         "queueNamespace": { "type": "string", "minLength": 1 },
         "credentialRef": { "type": "string", "minLength": 1 },
-        "provisioningReceipt": { "type": "string", "minLength": 1 }
+        "provisioningReceipt": { "type": "string", "minLength": 1 },
+        "provisioningReceiptSha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" }
+      }
+    },
+    "receiptReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "receiptId", "pullRequestNumber", "headSha", "environmentId", "implementationRoundId"],
+      "properties": {
+        "path": { "type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\\\\\).+\\.json$" },
+        "sha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" },
+        "receiptId": { "type": "string", "minLength": 1 },
+        "pullRequestNumber": { "type": "integer", "minimum": 1 },
+        "headSha": { "type": "string", "pattern": "^[a-fA-F0-9]{7,64}$" },
+        "environmentId": { "type": "string", "minLength": 1 },
+        "implementationRoundId": { "type": "string", "minLength": 1 }
       }
     }
   }
