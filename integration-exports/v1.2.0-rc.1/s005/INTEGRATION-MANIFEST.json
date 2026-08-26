@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "ofw.integration-export.v1",
+  "packageId": "S005-v1-minimal-prototype",
+  "packageKind": "scenario-content-package",
+  "status": "research-candidate",
+  "sourceTag": "prototype-v1.1.0-frozen",
+  "parentVersion": "v1.1.0",
+  "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+  "targetPrototypeVersion": "v1.2.0-rc.1",
+  "acceptanceReady": false,
+  "registration": {
+    "scenarioId": "S005",
+    "scenarioVersion": "S005-v1",
+    "scenarioRunIdPattern": "^S005-RUN-[0-9]{17}-[a-f0-9]{12}$",
+    "namespace": "ofw.s005.research.v1",
+    "routeId": "scenario/S005",
+    "contentEntry": "content.html",
+    "displayName": "金融产品投后评价",
+    "mode": "research-read-only"
+  },
+  "shellContract": {
+    "requiresHostShell": true,
+    "includesShell": false,
+    "mountMode": "same-origin-content-frame",
+    "readyEvent": "OFW_S005_READY",
+    "contextEvent": "OFW_S005_CONTEXT",
+    "navigationEvent": "OFW_S005_OPEN_MODULE",
+    "stateEvent": "OFW_S005_STATE_CHANGED",
+    "resetEvent": "OFW_S005_RESET_REQUEST"
+  },
+  "workflow": [
+    { "order": 1, "stageId": "sourceBatch", "moduleId": "M02", "label": "来源快照" },
+    { "order": 2, "stageId": "classification", "moduleId": "M01", "label": "分类与语义" },
+    { "order": 3, "stageId": "compliance", "moduleId": "M03", "label": "持续合规" },
+    { "order": 4, "stageId": "marketPeer", "moduleId": "M03", "label": "市场横评" },
+    { "order": 5, "stageId": "selection", "moduleId": "M04", "label": "池内选择" },
+    { "order": 6, "stageId": "tradingRisk", "moduleId": "M05", "label": "交易与风险" },
+    { "order": 7, "stageId": "reportDraft", "moduleId": "M06", "label": "研究报告" }
+  ],
+  "moduleMapping": {
+    "M01": "classification and semantic candidate references",
+    "M02": "source snapshots, version and quality references",
+    "M03": "read-only compliance and peer comparison",
+    "M04": "read-only selection review; no action request",
+    "M05": "read-only trading and risk review; no agent action",
+    "M06": "research draft only; no formal publication"
+  },
+  "optionalMounts": {
+    "M07": {
+      "routeId": "module/exploration",
+      "direction": "S005-to-M07",
+      "mode": "read-only",
+      "requiredInput": [
+        "scenarioContext",
+        "objectRef",
+        "dataVersionId",
+        "ontologyVersionId",
+        "asOf",
+        "lensIntent"
+      ],
+      "prohibitedWrites": ["businessFact", "publishedResource", "actionRequest"]
+    },
+    "M08": {
+      "routeId": "module/modeling",
+      "direction": "S005-to-M08",
+      "mode": "research-simulation",
+      "requiredInput": [
+        "scenarioContext",
+        "objectRef",
+        "modelingObjectiveRef",
+        "dataVersionId",
+        "ontologyVersionId",
+        "evaluationInputRef",
+        "resultKind"
+      ],
+      "allowedResultKinds": ["PREDICTED", "SIMULATED"],
+      "prohibitedWrites": ["businessFact", "t019", "actionRequest", "tradeInstruction"]
+    }
+  },
+  "resetBoundary": {
+    "scope": "current S005 scenario run only",
+    "createsNewScenarioRunId": true,
+    "preservesHistoricalRuns": true,
+    "preservesModules": ["M01", "M02", "M03", "M04", "M05", "M06", "M07", "M08"],
+    "externalSideEffects": false
+  },
+  "resources": {
+    "researchFixture": "resources/s005-research-fixture.json",
+    "containsRawSensitiveMaterial": false,
+    "containsPseudonymousResearchDataOnly": true
+  },
+  "assets": [
+    "content.html",
+    "content.css",
+    "content.js",
+    "scenario-config.js",
+    "scenario-adapter.js",
+    "resources/s005-research-fixture.json"
+  ],
+  "tests": {
+    "all": "npm test",
+    "package": "npm run verify:package",
+    "researchReplay": "npm run verify:research",
+    "fullChainContract": "npm run verify:full-chain"
+  },
+  "integrity": {
+    "algorithm": "SHA-256",
+    "file": "SHA256SUMS",
+    "scope": "all regular package files except SHA256SUMS"
+  },
+  "knownBoundaries": [
+    "No host Shell or baseline module implementation is included.",
+    "M07 and M08 are mount contracts only and remain external packages.",
+    "Research fixture results are not Published facts or accepted evaluation results.",
+    "No module review, scenario acceptance, production integration or phase-one acceptance is asserted."
+  ]
+}
