@@ -1,0 +1,12 @@
+{
+  "name": "@ofw-prototype/s005-v1",
+  "version": "1.2.0-rc.1",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test": "node tests/verify-package.mjs && node tests/verify-research.mjs && node tests/verify-full-chain.mjs",
+    "verify:package": "node tests/verify-package.mjs",
+    "verify:research": "node tests/verify-research.mjs",
+    "verify:full-chain": "node tests/verify-full-chain.mjs"
+  }
+}
