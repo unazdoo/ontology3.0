@@ -80,7 +80,7 @@
     "operations": {
       "sync-breadcrumb": "Update the host breadcrumb without changing route.",
       "navigate-parent-module": "Route to the requested canonical module and retain returnUrl.",
-      "open-m08": "Adapt context to M08 and route to #module/m08."
+      "open-m08": "Adapt context to M08 and route to moduleId=modeling / #module/modeling."
     },
     "contextFields": [
       "objectRef",
@@ -97,12 +97,14 @@
   "m08Handoff": {
     "sourceOperation": "open-m08",
     "sourceModuleId": "m07",
-    "requestedTargetModuleId": "m08",
-    "requestedTargetRoute": "#module/m08",
+    "requestedTargetModuleId": "modeling",
+    "requestedTargetRoute": "#module/modeling",
+    "messageType": "OFW_M07_OPEN_M08",
+    "payload": "message.context",
     "hostAdapterRequirements": [
       "Accept the message only from the mounted M07 iframe and same origin.",
       "Pass message.context as the immutable M08 input context.",
-      "If M08 still consumes OFW_M07_OPEN_M08, emit that event with payload=message.context in the host adapter only.",
+      "Forward OFW_M07_OPEN_M08 with payload=message.context to the modeling mount without renaming the message.",
       "Persist returnUrl outside M07 and restore it when M08 returns.",
       "Do not rename M07 to exploration or share M08 state with the M07 resource."
     ],
