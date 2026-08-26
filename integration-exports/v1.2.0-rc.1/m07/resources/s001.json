@@ -1,0 +1,3980 @@
+{
+  "schemaVersion": "ofw.m07.validation-resource.v1",
+  "resourceVersion": "s001-financing-v1",
+  "namespace": "ofw.m07.research.v1",
+  "researchOnly": true,
+  "scenarioContext": {
+    "scenarioId": "S001",
+    "scenarioVersion": "S001-v1",
+    "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+    "scenarioName": "集团融资成本与债务结构优化",
+    "formedAt": "2026-08-16T08:17:48.567Z",
+    "status": "active",
+    "dataAsOf": "2025-12-31"
+  },
+  "sourceContext": {
+    "sourceProductBaseline": "v1.0.7",
+    "sourceVersion": "1.1.0-rc.10",
+    "sourceStatus": "review-candidate",
+    "candidateSnapshotStatus": "promoted-to-frozen-implementation-baseline",
+    "acceptanceReady": false,
+    "sourceRoot": "prototype-v1.1.0-frozen:S001",
+    "sourceScenario": {
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+      "name": "集团融资成本与债务结构优化",
+      "domain": "融资管理",
+      "dataAsOf": "2025-12-31",
+      "status": "completed",
+      "sourceProductBaseline": "v1.0.7"
+    }
+  },
+  "ontologyContext": {
+    "publishedSemanticVersionId": "semantic-MSVJM48O-VJC6",
+    "publishedSemanticVersion": "V1",
+    "authoritativeBindingId": "T019-S001-v1",
+    "authoritativeBindingRecordId": "semantic-MSVJM48O-VJC6",
+    "publishedStatus": "published",
+    "consumptionStatus": "可消费",
+    "definitionMode": "published-reference",
+    "owner": "M01 本体管理",
+    "warning": "M07 只读消费 Published 对象与权威数据；不创建、修改或替换本体定义、Metric、Rule、Action Type 或报告事实。"
+  },
+  "source": {
+    "root": "prototype-v1.1.0-frozen:S001",
+    "workbookCount": 1,
+    "dateRange": {
+      "from": "2025-12-31",
+      "to": "2025-12-31"
+    },
+    "asOf": "2025-12-31",
+    "sourceAssetVersion": "FIN-ASSET-20251231-v02",
+    "sourceRows": 5218,
+    "deidentification": "仅保留 v1.1.0 S001 已展示的脱敏主体/机构别名和聚合指标；原始借据、单位编码、机构编码与工作簿内容不写入资源。",
+    "snapshots": [
+      {
+        "id": "s001.snapshot:2025-12-31",
+        "date": "2025-12-31",
+        "file": "集团融资明细_20251231.xlsx",
+        "version": "FIN-ASSET-20251231-v02",
+        "sourceRefs": [
+          "source:s001-data-js",
+          "source:s001-registry"
+        ]
+      }
+    ]
+  },
+  "roles": [
+    {
+      "id": "m07.analyst",
+      "label": "研究分析员",
+      "policyVersion": "research-policy-v1",
+      "objectVisibility": "all-resource-objects"
+    },
+    {
+      "id": "m07.auditor",
+      "label": "证据审计员",
+      "policyVersion": "research-policy-v1",
+      "objectVisibility": "all-resource-objects"
+    },
+    {
+      "id": "m07.restricted",
+      "label": "受限观察员",
+      "policyVersion": "research-policy-v1",
+      "objectVisibility": "group-entity-loan-only",
+      "redaction": "omit-unauthorized-nodes-and-links"
+    }
+  ],
+  "objects": [
+    {
+      "id": "s001.group",
+      "objectTypeId": "m01.object-type.financing-group",
+      "title": "集团融资板块",
+      "subtitle": "S001 · 集团融资成本与债务结构优化",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": null,
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-registry",
+        "source:s001-m01-seed",
+        "source:s001-readme",
+        "source:s001-integration-notes"
+      ],
+      "properties": {
+        "scenario": {
+          "value": "S001",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-registry",
+            "source:s001-m01-seed"
+          ]
+        },
+        "dataAsOf": {
+          "value": "2025-12-31",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-registry"
+          ]
+        },
+        "dataVersion": {
+          "value": "融资数据 2026.08.13-01",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-registry"
+          ]
+        },
+        "ontologyVersion": {
+          "value": "财务本体 2026.08.13-01",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "sourceRows": {
+          "value": 5218,
+          "unit": "rows",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "entityCount": {
+          "value": 3,
+          "unit": "entities",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "financingBalance": {
+          "value": 21613.387,
+          "unit": "亿元",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "weightedAverageCost": {
+          "value": 2.372231,
+          "unit": "%",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "floatingRateRatio": {
+          "value": 95.149492,
+          "unit": "%",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "shortTermDebtRatio": {
+          "value": 0.911805,
+          "unit": "%",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed",
+          "note": "S001 融资资源没有权威空间字段；不生成伪位置。"
+        }
+      },
+      "quality": "passed",
+      "qualityNotes": [
+        "单一受治理截至时点；M07 不据此推断趋势。"
+      ],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor",
+        "m07.restricted"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.group",
+        "objectTypeId": "m01.object-type.financing-group",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:cc8e482dc0e68d37"
+    },
+    {
+      "id": "s001.owner.001",
+      "objectTypeId": "m01.object-type.financing-owner",
+      "title": "负责人001",
+      "subtitle": "融资优化行动承接负责人（脱敏显示）",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "OBJ-FINANCING-OWNER",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "properties": {
+        "ownerRef": {
+          "value": "s001.owner.001",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "displayName": {
+          "value": "负责人001",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "passed",
+      "qualityNotes": [],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.owner.001",
+        "objectTypeId": "m01.object-type.financing-owner",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:ca57c9695e23b3ef"
+    },
+    {
+      "id": "s001.entity.553",
+      "objectTypeId": "m01.object-type.financing-entity",
+      "title": "单位553",
+      "subtitle": "融资主体 · 75 笔 · 截至 2025-12-31",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "OBJ-FINANCING-ENTITY",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed",
+        "source:s001-registry"
+      ],
+      "properties": {
+        "sourceObjectId": {
+          "value": "OBJ-FINANCING-ENTITY",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "unitRef": {
+          "value": "s001.entity.553",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "sourceCode": {
+          "value": null,
+          "state": "redacted",
+          "quality": "passed",
+          "note": "M07 不读取原始单位编码；使用脱敏 ObjectRef。"
+        },
+        "balance": {
+          "value": 393.134,
+          "unit": "亿元",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "averageFinancingCost": {
+          "value": 2.880984,
+          "unit": "%",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "loanCount": {
+          "value": 75,
+          "unit": "笔",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "ruleCode": {
+          "value": "R01",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-m01-seed"
+          ]
+        },
+        "ruleName": {
+          "value": "融资成本偏高",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "ruleMetricLabel": {
+          "value": "平均融资成本",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "ruleMetricValue": {
+          "value": 2.880984,
+          "unit": "%",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "ownerRef": {
+          "value": "s001.owner.001",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-m01-seed"
+          ]
+        },
+        "dataAsOf": {
+          "value": "2025-12-31",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-registry"
+          ]
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed",
+          "note": "无权威 geometry；空间 Lens 应显示不适用。"
+        }
+      },
+      "quality": "passed",
+      "qualityNotes": [
+        "对象身份来自 Published 融资主体定义；原始单位编码在 M07 验证资源中拒绝显示。"
+      ],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor",
+        "m07.restricted"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.entity.553",
+        "objectTypeId": "m01.object-type.financing-entity",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:d33d76d008826e71"
+    },
+    {
+      "id": "s001.loanbook.553",
+      "objectTypeId": "m01.object-type.financing-detail",
+      "title": "单位553 · 融资明细集合",
+      "subtitle": "75 笔 · 聚合投影，不展开单笔借据",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "OBJ-FINANCING-DETAIL",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "properties": {
+        "sourceObjectId": {
+          "value": "OBJ-FINANCING-DETAIL",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "grain": {
+          "value": "聚合融资明细（单笔借据未物化）",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "recordCount": {
+          "value": 75,
+          "unit": "笔",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "dataAsOf": {
+          "value": "2025-12-31",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-registry"
+          ]
+        },
+        "currency": {
+          "value": "CNY 等值（源口径）",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "rateType": {
+          "value": null,
+          "state": "not_provided",
+          "quality": "warning",
+          "note": "data.js 仅提供主体聚合结果，不提供该主体各借据利率形式。"
+        },
+        "termType": {
+          "value": null,
+          "state": "not_provided",
+          "quality": "warning",
+          "note": "data.js 仅提供主体聚合结果，不提供该主体各借据期限种类。"
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "passed",
+      "qualityNotes": [
+        "仅保留来源已证明的笔数与主体归属；不能将聚合对象解释为单笔贷款事实。"
+      ],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor",
+        "m07.restricted"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.loanbook.553",
+        "objectTypeId": "m01.object-type.financing-detail",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:b868c18523ac346a"
+    },
+    {
+      "id": "s001.rule.r01.553",
+      "objectTypeId": "m01.object-type.financing-rule-result",
+      "title": "R01 · 融资成本偏高",
+      "subtitle": "单位553 · 已发布规则求值结果",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "RULE-HIGH-FINANCING-COST",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed",
+        "source:s001-integration-notes"
+      ],
+      "properties": {
+        "ruleId": {
+          "value": "RULE-HIGH-FINANCING-COST",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "ruleCode": {
+          "value": "R01",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "status": {
+          "value": "命中",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-integration-notes"
+          ]
+        },
+        "metricLabel": {
+          "value": "平均融资成本",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "observedValue": {
+          "value": 2.880984,
+          "unit": "%",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "threshold": {
+          "value": 2.75,
+          "unit": "%",
+          "quality": "warning",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ],
+          "note": "阈值属于 Published 规则定义，M07 不重算。"
+        },
+        "condition": {
+          "value": "主体融资成本高于集团基准 0.25 个百分点，或高成本融资余额占比大于 20%（高成本阈值 2.75%）",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "evaluatedAt": {
+          "value": "2025-12-31",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "passed",
+      "qualityNotes": [
+        "只读投影已发布规则求值结果；不在 M07 维护 Rule 定义、阈值或 Action 状态。"
+      ],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.rule.r01.553",
+        "objectTypeId": "m01.object-type.financing-rule-result",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:a1c87225439ca145"
+    },
+    {
+      "id": "s001.evidence.r01.553",
+      "objectTypeId": "m07.object-type.report-evidence",
+      "title": "单位553 · R01 证据",
+      "subtitle": "指标快照、关联融资明细与机构候选",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": null,
+      "sourceRefs": [
+        "source:s001-integration-notes",
+        "source:s001-registry"
+      ],
+      "properties": {
+        "evidenceType": {
+          "value": "规则结果证据包",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-integration-notes"
+          ]
+        },
+        "sourceRefs": {
+          "value": [
+            "数据可信度摘要",
+            "Published 本体",
+            "融资明细聚合"
+          ],
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-registry",
+            "source:s001-m01-seed"
+          ]
+        },
+        "reportRef": {
+          "value": "RPT-20260816-092626-010",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-registry"
+          ]
+        },
+        "dataVersion": {
+          "value": "FIN-ASSET-20251231-v02",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-registry"
+          ]
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "passed",
+      "qualityNotes": [],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.evidence.r01.553",
+        "objectTypeId": "m07.object-type.report-evidence",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:ee1e49f2557b5245"
+    },
+    {
+      "id": "s001.institution.553.01",
+      "objectTypeId": "m01.object-type.financial-institution",
+      "title": "欧陆银行",
+      "subtitle": "优先协商候选 · 单位553 · 排名 1",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "OBJ-FINANCIAL-INSTITUTION",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed",
+        "source:s001-integration-notes"
+      ],
+      "properties": {
+        "displayName": {
+          "value": "欧陆银行",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "candidateRole": {
+          "value": "优先协商候选",
+          "quality": "warning",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-m01-seed"
+          ]
+        },
+        "priorityRank": {
+          "value": 1,
+          "unit": "rank",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "candidateFor": {
+          "value": "s001.entity.553",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "sourceInstitutionCode": {
+          "value": null,
+          "state": "redacted",
+          "quality": "passed",
+          "note": "验证资源不复制机构编码。"
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "warning",
+      "qualityNotes": [
+        "来源为问数/规则输出的优先协商机构候选；不等于已证明的存量借款关系。"
+      ],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.institution.553.01",
+        "objectTypeId": "m01.object-type.financial-institution",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:e57cbc7db5269595"
+    },
+    {
+      "id": "s001.institution.553.02",
+      "objectTypeId": "m01.object-type.financial-institution",
+      "title": "寰宇银行",
+      "subtitle": "优先协商候选 · 单位553 · 排名 2",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "OBJ-FINANCIAL-INSTITUTION",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed",
+        "source:s001-integration-notes"
+      ],
+      "properties": {
+        "displayName": {
+          "value": "寰宇银行",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "candidateRole": {
+          "value": "优先协商候选",
+          "quality": "warning",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-m01-seed"
+          ]
+        },
+        "priorityRank": {
+          "value": 2,
+          "unit": "rank",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "candidateFor": {
+          "value": "s001.entity.553",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "sourceInstitutionCode": {
+          "value": null,
+          "state": "redacted",
+          "quality": "passed",
+          "note": "验证资源不复制机构编码。"
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "warning",
+      "qualityNotes": [
+        "来源为问数/规则输出的优先协商机构候选；不等于已证明的存量借款关系。"
+      ],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.institution.553.02",
+        "objectTypeId": "m01.object-type.financial-institution",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:a0ea324eb21bab03"
+    },
+    {
+      "id": "s001.institution.553.03",
+      "objectTypeId": "m01.object-type.financial-institution",
+      "title": "海联银行",
+      "subtitle": "优先协商候选 · 单位553 · 排名 3",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "OBJ-FINANCIAL-INSTITUTION",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed",
+        "source:s001-integration-notes"
+      ],
+      "properties": {
+        "displayName": {
+          "value": "海联银行",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "candidateRole": {
+          "value": "优先协商候选",
+          "quality": "warning",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-m01-seed"
+          ]
+        },
+        "priorityRank": {
+          "value": 3,
+          "unit": "rank",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "candidateFor": {
+          "value": "s001.entity.553",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "sourceInstitutionCode": {
+          "value": null,
+          "state": "redacted",
+          "quality": "passed",
+          "note": "验证资源不复制机构编码。"
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "warning",
+      "qualityNotes": [
+        "来源为问数/规则输出的优先协商机构候选；不等于已证明的存量借款关系。"
+      ],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.institution.553.03",
+        "objectTypeId": "m01.object-type.financial-institution",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:b2a487d515ed7744"
+    },
+    {
+      "id": "s001.owner.009",
+      "objectTypeId": "m01.object-type.financing-owner",
+      "title": "负责人009",
+      "subtitle": "融资优化行动承接负责人（脱敏显示）",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "OBJ-FINANCING-OWNER",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "properties": {
+        "ownerRef": {
+          "value": "s001.owner.009",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "displayName": {
+          "value": "负责人009",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "passed",
+      "qualityNotes": [],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.owner.009",
+        "objectTypeId": "m01.object-type.financing-owner",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:5481f515b815e7f3"
+    },
+    {
+      "id": "s001.entity.465",
+      "objectTypeId": "m01.object-type.financing-entity",
+      "title": "单位465",
+      "subtitle": "融资主体 · 176 笔 · 截至 2025-12-31",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "OBJ-FINANCING-ENTITY",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed",
+        "source:s001-registry"
+      ],
+      "properties": {
+        "sourceObjectId": {
+          "value": "OBJ-FINANCING-ENTITY",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "unitRef": {
+          "value": "s001.entity.465",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "sourceCode": {
+          "value": null,
+          "state": "redacted",
+          "quality": "passed",
+          "note": "M07 不读取原始单位编码；使用脱敏 ObjectRef。"
+        },
+        "balance": {
+          "value": 770,
+          "unit": "亿元",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "averageFinancingCost": {
+          "value": 2.196617,
+          "unit": "%",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "loanCount": {
+          "value": 176,
+          "unit": "笔",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "ruleCode": {
+          "value": "R02",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-m01-seed"
+          ]
+        },
+        "ruleName": {
+          "value": "浮动利率暴露",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "ruleMetricLabel": {
+          "value": "浮动利率余额占比",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "ruleMetricValue": {
+          "value": 100,
+          "unit": "%",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "ownerRef": {
+          "value": "s001.owner.009",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-m01-seed"
+          ]
+        },
+        "dataAsOf": {
+          "value": "2025-12-31",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-registry"
+          ]
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed",
+          "note": "无权威 geometry；空间 Lens 应显示不适用。"
+        }
+      },
+      "quality": "passed",
+      "qualityNotes": [
+        "对象身份来自 Published 融资主体定义；原始单位编码在 M07 验证资源中拒绝显示。"
+      ],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor",
+        "m07.restricted"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.entity.465",
+        "objectTypeId": "m01.object-type.financing-entity",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:f91a98c2be05b415"
+    },
+    {
+      "id": "s001.loanbook.465",
+      "objectTypeId": "m01.object-type.financing-detail",
+      "title": "单位465 · 融资明细集合",
+      "subtitle": "176 笔 · 聚合投影，不展开单笔借据",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "OBJ-FINANCING-DETAIL",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "properties": {
+        "sourceObjectId": {
+          "value": "OBJ-FINANCING-DETAIL",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "grain": {
+          "value": "聚合融资明细（单笔借据未物化）",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "recordCount": {
+          "value": 176,
+          "unit": "笔",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "dataAsOf": {
+          "value": "2025-12-31",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-registry"
+          ]
+        },
+        "currency": {
+          "value": "CNY 等值（源口径）",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "rateType": {
+          "value": null,
+          "state": "not_provided",
+          "quality": "warning",
+          "note": "data.js 仅提供主体聚合结果，不提供该主体各借据利率形式。"
+        },
+        "termType": {
+          "value": null,
+          "state": "not_provided",
+          "quality": "warning",
+          "note": "data.js 仅提供主体聚合结果，不提供该主体各借据期限种类。"
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "passed",
+      "qualityNotes": [
+        "仅保留来源已证明的笔数与主体归属；不能将聚合对象解释为单笔贷款事实。"
+      ],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor",
+        "m07.restricted"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.loanbook.465",
+        "objectTypeId": "m01.object-type.financing-detail",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:1dc553a082b905c1"
+    },
+    {
+      "id": "s001.rule.r02.465",
+      "objectTypeId": "m01.object-type.financing-rule-result",
+      "title": "R02 · 浮动利率暴露",
+      "subtitle": "单位465 · 已发布规则求值结果",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "RULE-FLOATING-RATE-EXPOSURE",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed",
+        "source:s001-integration-notes"
+      ],
+      "properties": {
+        "ruleId": {
+          "value": "RULE-FLOATING-RATE-EXPOSURE",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "ruleCode": {
+          "value": "R02",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "status": {
+          "value": "命中",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-integration-notes"
+          ]
+        },
+        "metricLabel": {
+          "value": "浮动利率余额占比",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "observedValue": {
+          "value": 100,
+          "unit": "%",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "threshold": {
+          "value": 80,
+          "unit": "%",
+          "quality": "warning",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ],
+          "note": "阈值属于 Published 规则定义，M07 不重算。"
+        },
+        "condition": {
+          "value": "浮动利率余额占比大于 80%",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "evaluatedAt": {
+          "value": "2025-12-31",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "passed",
+      "qualityNotes": [
+        "只读投影已发布规则求值结果；不在 M07 维护 Rule 定义、阈值或 Action 状态。"
+      ],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.rule.r02.465",
+        "objectTypeId": "m01.object-type.financing-rule-result",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:a077d59f09446c35"
+    },
+    {
+      "id": "s001.evidence.r02.465",
+      "objectTypeId": "m07.object-type.report-evidence",
+      "title": "单位465 · R02 证据",
+      "subtitle": "指标快照、关联融资明细与机构候选",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": null,
+      "sourceRefs": [
+        "source:s001-integration-notes",
+        "source:s001-registry"
+      ],
+      "properties": {
+        "evidenceType": {
+          "value": "规则结果证据包",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-integration-notes"
+          ]
+        },
+        "sourceRefs": {
+          "value": [
+            "数据可信度摘要",
+            "Published 本体",
+            "融资明细聚合"
+          ],
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-registry",
+            "source:s001-m01-seed"
+          ]
+        },
+        "reportRef": {
+          "value": "RPT-20260816-092626-010",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-registry"
+          ]
+        },
+        "dataVersion": {
+          "value": "FIN-ASSET-20251231-v02",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-registry"
+          ]
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "passed",
+      "qualityNotes": [],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.evidence.r02.465",
+        "objectTypeId": "m07.object-type.report-evidence",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:4a98fc1875a25a2b"
+    },
+    {
+      "id": "s001.institution.465.01",
+      "objectTypeId": "m01.object-type.financial-institution",
+      "title": "融通银行",
+      "subtitle": "优先协商候选 · 单位465 · 排名 1",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "OBJ-FINANCIAL-INSTITUTION",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed",
+        "source:s001-integration-notes"
+      ],
+      "properties": {
+        "displayName": {
+          "value": "融通银行",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "candidateRole": {
+          "value": "优先协商候选",
+          "quality": "warning",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-m01-seed"
+          ]
+        },
+        "priorityRank": {
+          "value": 1,
+          "unit": "rank",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "candidateFor": {
+          "value": "s001.entity.465",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "sourceInstitutionCode": {
+          "value": null,
+          "state": "redacted",
+          "quality": "passed",
+          "note": "验证资源不复制机构编码。"
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "warning",
+      "qualityNotes": [
+        "来源为问数/规则输出的优先协商机构候选；不等于已证明的存量借款关系。"
+      ],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.institution.465.01",
+        "objectTypeId": "m01.object-type.financial-institution",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:c7b0edf9f75171b6"
+    },
+    {
+      "id": "s001.institution.465.02",
+      "objectTypeId": "m01.object-type.financial-institution",
+      "title": "启明银行",
+      "subtitle": "优先协商候选 · 单位465 · 排名 2",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "OBJ-FINANCIAL-INSTITUTION",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed",
+        "source:s001-integration-notes"
+      ],
+      "properties": {
+        "displayName": {
+          "value": "启明银行",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "candidateRole": {
+          "value": "优先协商候选",
+          "quality": "warning",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-m01-seed"
+          ]
+        },
+        "priorityRank": {
+          "value": 2,
+          "unit": "rank",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "candidateFor": {
+          "value": "s001.entity.465",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "sourceInstitutionCode": {
+          "value": null,
+          "state": "redacted",
+          "quality": "passed",
+          "note": "验证资源不复制机构编码。"
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "warning",
+      "qualityNotes": [
+        "来源为问数/规则输出的优先协商机构候选；不等于已证明的存量借款关系。"
+      ],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.institution.465.02",
+        "objectTypeId": "m01.object-type.financial-institution",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:d396f8ac828191b8"
+    },
+    {
+      "id": "s001.institution.465.03",
+      "objectTypeId": "m01.object-type.financial-institution",
+      "title": "嘉禾银行",
+      "subtitle": "优先协商候选 · 单位465 · 排名 3",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "OBJ-FINANCIAL-INSTITUTION",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed",
+        "source:s001-integration-notes"
+      ],
+      "properties": {
+        "displayName": {
+          "value": "嘉禾银行",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "candidateRole": {
+          "value": "优先协商候选",
+          "quality": "warning",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-m01-seed"
+          ]
+        },
+        "priorityRank": {
+          "value": 3,
+          "unit": "rank",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "candidateFor": {
+          "value": "s001.entity.465",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "sourceInstitutionCode": {
+          "value": null,
+          "state": "redacted",
+          "quality": "passed",
+          "note": "验证资源不复制机构编码。"
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "warning",
+      "qualityNotes": [
+        "来源为问数/规则输出的优先协商机构候选；不等于已证明的存量借款关系。"
+      ],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.institution.465.03",
+        "objectTypeId": "m01.object-type.financial-institution",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:c51c25c824ea6cf8"
+    },
+    {
+      "id": "s001.entity.561",
+      "objectTypeId": "m01.object-type.financing-entity",
+      "title": "单位561",
+      "subtitle": "融资主体 · 50 笔 · 截至 2025-12-31",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "OBJ-FINANCING-ENTITY",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed",
+        "source:s001-registry"
+      ],
+      "properties": {
+        "sourceObjectId": {
+          "value": "OBJ-FINANCING-ENTITY",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "unitRef": {
+          "value": "s001.entity.561",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "sourceCode": {
+          "value": null,
+          "state": "redacted",
+          "quality": "passed",
+          "note": "M07 不读取原始单位编码；使用脱敏 ObjectRef。"
+        },
+        "balance": {
+          "value": 20.016,
+          "unit": "亿元",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "averageFinancingCost": {
+          "value": 2.22838,
+          "unit": "%",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "loanCount": {
+          "value": 50,
+          "unit": "笔",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "ruleCode": {
+          "value": "R03",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-m01-seed"
+          ]
+        },
+        "ruleName": {
+          "value": "短期债务集中",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "ruleMetricLabel": {
+          "value": "短期债务余额占比",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "ruleMetricValue": {
+          "value": 93.545164,
+          "unit": "%",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "ownerRef": {
+          "value": "s001.owner.009",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-m01-seed"
+          ]
+        },
+        "dataAsOf": {
+          "value": "2025-12-31",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-registry"
+          ]
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed",
+          "note": "无权威 geometry；空间 Lens 应显示不适用。"
+        }
+      },
+      "quality": "passed",
+      "qualityNotes": [
+        "对象身份来自 Published 融资主体定义；原始单位编码在 M07 验证资源中拒绝显示。"
+      ],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor",
+        "m07.restricted"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.entity.561",
+        "objectTypeId": "m01.object-type.financing-entity",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:dc86ea00b04bcb65"
+    },
+    {
+      "id": "s001.loanbook.561",
+      "objectTypeId": "m01.object-type.financing-detail",
+      "title": "单位561 · 融资明细集合",
+      "subtitle": "50 笔 · 聚合投影，不展开单笔借据",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "OBJ-FINANCING-DETAIL",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "properties": {
+        "sourceObjectId": {
+          "value": "OBJ-FINANCING-DETAIL",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "grain": {
+          "value": "聚合融资明细（单笔借据未物化）",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "recordCount": {
+          "value": 50,
+          "unit": "笔",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "dataAsOf": {
+          "value": "2025-12-31",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-registry"
+          ]
+        },
+        "currency": {
+          "value": "CNY 等值（源口径）",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "rateType": {
+          "value": null,
+          "state": "not_provided",
+          "quality": "warning",
+          "note": "data.js 仅提供主体聚合结果，不提供该主体各借据利率形式。"
+        },
+        "termType": {
+          "value": null,
+          "state": "not_provided",
+          "quality": "warning",
+          "note": "data.js 仅提供主体聚合结果，不提供该主体各借据期限种类。"
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "passed",
+      "qualityNotes": [
+        "仅保留来源已证明的笔数与主体归属；不能将聚合对象解释为单笔贷款事实。"
+      ],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor",
+        "m07.restricted"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.loanbook.561",
+        "objectTypeId": "m01.object-type.financing-detail",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:bb43d8b7a5065487"
+    },
+    {
+      "id": "s001.rule.r03.561",
+      "objectTypeId": "m01.object-type.financing-rule-result",
+      "title": "R03 · 短期债务集中",
+      "subtitle": "单位561 · 已发布规则求值结果",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "RULE-SHORT-TERM-DEBT-CONCENTRATION",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed",
+        "source:s001-integration-notes"
+      ],
+      "properties": {
+        "ruleId": {
+          "value": "RULE-SHORT-TERM-DEBT-CONCENTRATION",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "ruleCode": {
+          "value": "R03",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "status": {
+          "value": "命中",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-integration-notes"
+          ]
+        },
+        "metricLabel": {
+          "value": "短期债务余额占比",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "observedValue": {
+          "value": 93.545164,
+          "unit": "%",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "threshold": {
+          "value": 30,
+          "unit": "%",
+          "quality": "warning",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ],
+          "note": "阈值属于 Published 规则定义，M07 不重算。"
+        },
+        "condition": {
+          "value": "短期债务余额占比大于 30%",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-m01-seed"
+          ]
+        },
+        "evaluatedAt": {
+          "value": "2025-12-31",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "passed",
+      "qualityNotes": [
+        "只读投影已发布规则求值结果；不在 M07 维护 Rule 定义、阈值或 Action 状态。"
+      ],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.rule.r03.561",
+        "objectTypeId": "m01.object-type.financing-rule-result",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:51556771100ec5dc"
+    },
+    {
+      "id": "s001.evidence.r03.561",
+      "objectTypeId": "m07.object-type.report-evidence",
+      "title": "单位561 · R03 证据",
+      "subtitle": "指标快照、关联融资明细与机构候选",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": null,
+      "sourceRefs": [
+        "source:s001-integration-notes",
+        "source:s001-registry"
+      ],
+      "properties": {
+        "evidenceType": {
+          "value": "规则结果证据包",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-integration-notes"
+          ]
+        },
+        "sourceRefs": {
+          "value": [
+            "数据可信度摘要",
+            "Published 本体",
+            "融资明细聚合"
+          ],
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-registry",
+            "source:s001-m01-seed"
+          ]
+        },
+        "reportRef": {
+          "value": "RPT-20260816-092626-010",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-registry"
+          ]
+        },
+        "dataVersion": {
+          "value": "FIN-ASSET-20251231-v02",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-registry"
+          ]
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "passed",
+      "qualityNotes": [],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.evidence.r03.561",
+        "objectTypeId": "m07.object-type.report-evidence",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:99db5ac6ebb25937"
+    },
+    {
+      "id": "s001.institution.561.01",
+      "objectTypeId": "m01.object-type.financial-institution",
+      "title": "同州银行",
+      "subtitle": "优先协商候选 · 单位561 · 排名 1",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "OBJ-FINANCIAL-INSTITUTION",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed",
+        "source:s001-integration-notes"
+      ],
+      "properties": {
+        "displayName": {
+          "value": "同州银行",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "candidateRole": {
+          "value": "优先协商候选",
+          "quality": "warning",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-m01-seed"
+          ]
+        },
+        "priorityRank": {
+          "value": 1,
+          "unit": "rank",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "candidateFor": {
+          "value": "s001.entity.561",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "sourceInstitutionCode": {
+          "value": null,
+          "state": "redacted",
+          "quality": "passed",
+          "note": "验证资源不复制机构编码。"
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "warning",
+      "qualityNotes": [
+        "来源为问数/规则输出的优先协商机构候选；不等于已证明的存量借款关系。"
+      ],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.institution.561.01",
+        "objectTypeId": "m01.object-type.financial-institution",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:a1a885cf26f961a6"
+    },
+    {
+      "id": "s001.institution.561.02",
+      "objectTypeId": "m01.object-type.financial-institution",
+      "title": "星河银行",
+      "subtitle": "优先协商候选 · 单位561 · 排名 2",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "OBJ-FINANCIAL-INSTITUTION",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed",
+        "source:s001-integration-notes"
+      ],
+      "properties": {
+        "displayName": {
+          "value": "星河银行",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "candidateRole": {
+          "value": "优先协商候选",
+          "quality": "warning",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-m01-seed"
+          ]
+        },
+        "priorityRank": {
+          "value": 2,
+          "unit": "rank",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "candidateFor": {
+          "value": "s001.entity.561",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "sourceInstitutionCode": {
+          "value": null,
+          "state": "redacted",
+          "quality": "passed",
+          "note": "验证资源不复制机构编码。"
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "warning",
+      "qualityNotes": [
+        "来源为问数/规则输出的优先协商机构候选；不等于已证明的存量借款关系。"
+      ],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.institution.561.02",
+        "objectTypeId": "m01.object-type.financial-institution",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:b4532b3a6eb2268e"
+    },
+    {
+      "id": "s001.institution.561.03",
+      "objectTypeId": "m01.object-type.financial-institution",
+      "title": "恒信银行",
+      "subtitle": "优先协商候选 · 单位561 · 排名 3",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": "OBJ-FINANCIAL-INSTITUTION",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed",
+        "source:s001-integration-notes"
+      ],
+      "properties": {
+        "displayName": {
+          "value": "恒信银行",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "candidateRole": {
+          "value": "优先协商候选",
+          "quality": "warning",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-m01-seed"
+          ]
+        },
+        "priorityRank": {
+          "value": 3,
+          "unit": "rank",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "candidateFor": {
+          "value": "s001.entity.561",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "sourceInstitutionCode": {
+          "value": null,
+          "state": "redacted",
+          "quality": "passed",
+          "note": "验证资源不复制机构编码。"
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "warning",
+      "qualityNotes": [
+        "来源为问数/规则输出的优先协商机构候选；不等于已证明的存量借款关系。"
+      ],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.institution.561.03",
+        "objectTypeId": "m01.object-type.financial-institution",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:450a42844fac260b"
+    },
+    {
+      "id": "s001.report.RPT-20260816-092626-010",
+      "objectTypeId": "m07.object-type.report",
+      "title": "集团融资经营分析报告",
+      "subtitle": "RPT-20260816-092626-010 · 内容版本 2.0",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": null,
+      "sourceRefs": [
+        "source:s001-registry",
+        "source:s001-integration-notes"
+      ],
+      "properties": {
+        "reportId": {
+          "value": "RPT-20260816-092626-010",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-registry"
+          ]
+        },
+        "seedReportId": {
+          "value": "RPT-FIN-20260813-001",
+          "quality": "warning",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ],
+          "note": "data.js 为场景 seed 展示编号；组合 registry 的已发布报告引用优先。"
+        },
+        "version": {
+          "value": "2.0",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-registry"
+          ]
+        },
+        "formats": {
+          "value": [
+            "HTML",
+            "PDF"
+          ],
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-data-js",
+            "source:s001-registry"
+          ]
+        },
+        "dataVersion": {
+          "value": "FIN-ASSET-20251231-v02",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-registry"
+          ]
+        },
+        "publishedSemanticVersionId": {
+          "value": "semantic-MSVJM48O-VJC6",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-registry",
+            "source:s001-m01-seed"
+          ]
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "passed",
+      "qualityNotes": [],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.report.RPT-20260816-092626-010",
+        "objectTypeId": "m07.object-type.report",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:cd035d08d46c2004"
+    },
+    {
+      "id": "s001.evidence.report.EP-20260816-092248-003",
+      "objectTypeId": "m07.object-type.report-evidence",
+      "title": "集团融资经营分析固定证据",
+      "subtitle": "EP-20260816-092248-003 · 与报告版本绑定",
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "sourceObjectId": null,
+      "sourceRefs": [
+        "source:s001-registry",
+        "source:s001-integration-notes"
+      ],
+      "properties": {
+        "evidencePackId": {
+          "value": "EP-20260816-092248-003",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-registry"
+          ]
+        },
+        "verificationRunId": {
+          "value": "VRF-20260816-092540-005",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-integration-notes"
+          ]
+        },
+        "coverage": {
+          "value": "53 个事实 / 70 个锚点",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-integration-notes"
+          ]
+        },
+        "quality": {
+          "value": "通过",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-integration-notes"
+          ]
+        },
+        "dataAsOf": {
+          "value": "2025-12-31",
+          "quality": "passed",
+          "sourceRefs": [
+            "source:s001-registry"
+          ]
+        },
+        "geometry": {
+          "value": null,
+          "state": "not_applicable",
+          "quality": "passed"
+        }
+      },
+      "quality": "passed",
+      "qualityNotes": [],
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "technicalFixture": false,
+      "objectRef": {
+        "id": "s001.evidence.report.EP-20260816-092248-003",
+        "objectTypeId": "m07.object-type.report-evidence",
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a"
+      },
+      "stableKeyFingerprint": "sha256:fd52f279355ee806"
+    }
+  ],
+  "links": [
+    {
+      "id": "link:s001.group:contains:s001.entity.553",
+      "linkTypeId": "m07.link-type.group-has-entity",
+      "from": "s001.group",
+      "to": "s001.entity.553",
+      "label": "包含融资主体",
+      "quality": "passed",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor",
+        "m07.restricted"
+      ],
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-registry"
+      ],
+      "relationshipBasis": "published-link",
+      "sourceLinkId": null,
+      "linkRef": {
+        "id": "link:s001.group:contains:s001.entity.553",
+        "linkTypeId": "m07.link-type.group-has-entity",
+        "from": "s001.group",
+        "to": "s001.entity.553"
+      }
+    },
+    {
+      "id": "link:s001.entity.553:has:s001.loanbook.553",
+      "linkTypeId": "m01.link-type.entity-has-financing-detail",
+      "from": "s001.entity.553",
+      "to": "s001.loanbook.553",
+      "label": "拥有融资明细",
+      "quality": "passed",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor",
+        "m07.restricted"
+      ],
+      "sourceRefs": [
+        "source:s001-m01-seed"
+      ],
+      "relationshipBasis": "published-link",
+      "sourceLinkId": null,
+      "linkRef": {
+        "id": "link:s001.entity.553:has:s001.loanbook.553",
+        "linkTypeId": "m01.link-type.entity-has-financing-detail",
+        "from": "s001.entity.553",
+        "to": "s001.loanbook.553"
+      }
+    },
+    {
+      "id": "link:s001.entity.553:owner:s001.owner.001",
+      "linkTypeId": "m01.link-type.entity-owned-by-owner",
+      "from": "s001.entity.553",
+      "to": "s001.owner.001",
+      "label": "由负责人承接",
+      "quality": "passed",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "relationshipBasis": "published-link",
+      "sourceLinkId": null,
+      "notes": "受限观察员不返回负责人节点或关系。",
+      "linkRef": {
+        "id": "link:s001.entity.553:owner:s001.owner.001",
+        "linkTypeId": "m01.link-type.entity-owned-by-owner",
+        "from": "s001.entity.553",
+        "to": "s001.owner.001"
+      }
+    },
+    {
+      "id": "link:s001.entity.553:rule:s001.rule.r01.553",
+      "linkTypeId": "m07.link-type.entity-triggered-rule",
+      "from": "s001.entity.553",
+      "to": "s001.rule.r01.553",
+      "label": "命中规则",
+      "quality": "passed",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "relationshipBasis": "published-link",
+      "sourceLinkId": null,
+      "linkRef": {
+        "id": "link:s001.entity.553:rule:s001.rule.r01.553",
+        "linkTypeId": "m07.link-type.entity-triggered-rule",
+        "from": "s001.entity.553",
+        "to": "s001.rule.r01.553"
+      }
+    },
+    {
+      "id": "link:s001.rule.r01.553:evidence:s001.evidence.r01.553",
+      "linkTypeId": "m07.link-type.rule-supported-by-evidence",
+      "from": "s001.rule.r01.553",
+      "to": "s001.evidence.r01.553",
+      "label": "由证据支持",
+      "quality": "passed",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "sourceRefs": [
+        "source:s001-integration-notes",
+        "source:s001-registry"
+      ],
+      "relationshipBasis": "published-link",
+      "sourceLinkId": null,
+      "linkRef": {
+        "id": "link:s001.rule.r01.553:evidence:s001.evidence.r01.553",
+        "linkTypeId": "m07.link-type.rule-supported-by-evidence",
+        "from": "s001.rule.r01.553",
+        "to": "s001.evidence.r01.553"
+      }
+    },
+    {
+      "id": "link:s001.loanbook.553:candidate:s001.institution.553.01",
+      "linkTypeId": "m07.link-type.priority-negotiation-candidate",
+      "from": "s001.loanbook.553",
+      "to": "s001.institution.553.01",
+      "label": "优先协商候选",
+      "quality": "warning",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "relationshipBasis": "published-rule-output",
+      "sourceLinkId": null,
+      "notes": "未提供单笔融资与机构的可公开细粒度连接；仅展示规则结果候选。",
+      "linkRef": {
+        "id": "link:s001.loanbook.553:candidate:s001.institution.553.01",
+        "linkTypeId": "m07.link-type.priority-negotiation-candidate",
+        "from": "s001.loanbook.553",
+        "to": "s001.institution.553.01"
+      }
+    },
+    {
+      "id": "link:s001.loanbook.553:candidate:s001.institution.553.02",
+      "linkTypeId": "m07.link-type.priority-negotiation-candidate",
+      "from": "s001.loanbook.553",
+      "to": "s001.institution.553.02",
+      "label": "优先协商候选",
+      "quality": "warning",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "relationshipBasis": "published-rule-output",
+      "sourceLinkId": null,
+      "notes": "未提供单笔融资与机构的可公开细粒度连接；仅展示规则结果候选。",
+      "linkRef": {
+        "id": "link:s001.loanbook.553:candidate:s001.institution.553.02",
+        "linkTypeId": "m07.link-type.priority-negotiation-candidate",
+        "from": "s001.loanbook.553",
+        "to": "s001.institution.553.02"
+      }
+    },
+    {
+      "id": "link:s001.loanbook.553:candidate:s001.institution.553.03",
+      "linkTypeId": "m07.link-type.priority-negotiation-candidate",
+      "from": "s001.loanbook.553",
+      "to": "s001.institution.553.03",
+      "label": "优先协商候选",
+      "quality": "warning",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "relationshipBasis": "published-rule-output",
+      "sourceLinkId": null,
+      "notes": "未提供单笔融资与机构的可公开细粒度连接；仅展示规则结果候选。",
+      "linkRef": {
+        "id": "link:s001.loanbook.553:candidate:s001.institution.553.03",
+        "linkTypeId": "m07.link-type.priority-negotiation-candidate",
+        "from": "s001.loanbook.553",
+        "to": "s001.institution.553.03"
+      }
+    },
+    {
+      "id": "link:s001.group:contains:s001.entity.465",
+      "linkTypeId": "m07.link-type.group-has-entity",
+      "from": "s001.group",
+      "to": "s001.entity.465",
+      "label": "包含融资主体",
+      "quality": "passed",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor",
+        "m07.restricted"
+      ],
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-registry"
+      ],
+      "relationshipBasis": "published-link",
+      "sourceLinkId": null,
+      "linkRef": {
+        "id": "link:s001.group:contains:s001.entity.465",
+        "linkTypeId": "m07.link-type.group-has-entity",
+        "from": "s001.group",
+        "to": "s001.entity.465"
+      }
+    },
+    {
+      "id": "link:s001.entity.465:has:s001.loanbook.465",
+      "linkTypeId": "m01.link-type.entity-has-financing-detail",
+      "from": "s001.entity.465",
+      "to": "s001.loanbook.465",
+      "label": "拥有融资明细",
+      "quality": "passed",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor",
+        "m07.restricted"
+      ],
+      "sourceRefs": [
+        "source:s001-m01-seed"
+      ],
+      "relationshipBasis": "published-link",
+      "sourceLinkId": null,
+      "linkRef": {
+        "id": "link:s001.entity.465:has:s001.loanbook.465",
+        "linkTypeId": "m01.link-type.entity-has-financing-detail",
+        "from": "s001.entity.465",
+        "to": "s001.loanbook.465"
+      }
+    },
+    {
+      "id": "link:s001.entity.465:owner:s001.owner.009",
+      "linkTypeId": "m01.link-type.entity-owned-by-owner",
+      "from": "s001.entity.465",
+      "to": "s001.owner.009",
+      "label": "由负责人承接",
+      "quality": "passed",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "relationshipBasis": "published-link",
+      "sourceLinkId": null,
+      "notes": "受限观察员不返回负责人节点或关系。",
+      "linkRef": {
+        "id": "link:s001.entity.465:owner:s001.owner.009",
+        "linkTypeId": "m01.link-type.entity-owned-by-owner",
+        "from": "s001.entity.465",
+        "to": "s001.owner.009"
+      }
+    },
+    {
+      "id": "link:s001.entity.465:rule:s001.rule.r02.465",
+      "linkTypeId": "m07.link-type.entity-triggered-rule",
+      "from": "s001.entity.465",
+      "to": "s001.rule.r02.465",
+      "label": "命中规则",
+      "quality": "passed",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "relationshipBasis": "published-link",
+      "sourceLinkId": null,
+      "linkRef": {
+        "id": "link:s001.entity.465:rule:s001.rule.r02.465",
+        "linkTypeId": "m07.link-type.entity-triggered-rule",
+        "from": "s001.entity.465",
+        "to": "s001.rule.r02.465"
+      }
+    },
+    {
+      "id": "link:s001.rule.r02.465:evidence:s001.evidence.r02.465",
+      "linkTypeId": "m07.link-type.rule-supported-by-evidence",
+      "from": "s001.rule.r02.465",
+      "to": "s001.evidence.r02.465",
+      "label": "由证据支持",
+      "quality": "passed",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "sourceRefs": [
+        "source:s001-integration-notes",
+        "source:s001-registry"
+      ],
+      "relationshipBasis": "published-link",
+      "sourceLinkId": null,
+      "linkRef": {
+        "id": "link:s001.rule.r02.465:evidence:s001.evidence.r02.465",
+        "linkTypeId": "m07.link-type.rule-supported-by-evidence",
+        "from": "s001.rule.r02.465",
+        "to": "s001.evidence.r02.465"
+      }
+    },
+    {
+      "id": "link:s001.loanbook.465:candidate:s001.institution.465.01",
+      "linkTypeId": "m07.link-type.priority-negotiation-candidate",
+      "from": "s001.loanbook.465",
+      "to": "s001.institution.465.01",
+      "label": "优先协商候选",
+      "quality": "warning",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "relationshipBasis": "published-rule-output",
+      "sourceLinkId": null,
+      "notes": "未提供单笔融资与机构的可公开细粒度连接；仅展示规则结果候选。",
+      "linkRef": {
+        "id": "link:s001.loanbook.465:candidate:s001.institution.465.01",
+        "linkTypeId": "m07.link-type.priority-negotiation-candidate",
+        "from": "s001.loanbook.465",
+        "to": "s001.institution.465.01"
+      }
+    },
+    {
+      "id": "link:s001.loanbook.465:candidate:s001.institution.465.02",
+      "linkTypeId": "m07.link-type.priority-negotiation-candidate",
+      "from": "s001.loanbook.465",
+      "to": "s001.institution.465.02",
+      "label": "优先协商候选",
+      "quality": "warning",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "relationshipBasis": "published-rule-output",
+      "sourceLinkId": null,
+      "notes": "未提供单笔融资与机构的可公开细粒度连接；仅展示规则结果候选。",
+      "linkRef": {
+        "id": "link:s001.loanbook.465:candidate:s001.institution.465.02",
+        "linkTypeId": "m07.link-type.priority-negotiation-candidate",
+        "from": "s001.loanbook.465",
+        "to": "s001.institution.465.02"
+      }
+    },
+    {
+      "id": "link:s001.loanbook.465:candidate:s001.institution.465.03",
+      "linkTypeId": "m07.link-type.priority-negotiation-candidate",
+      "from": "s001.loanbook.465",
+      "to": "s001.institution.465.03",
+      "label": "优先协商候选",
+      "quality": "warning",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "relationshipBasis": "published-rule-output",
+      "sourceLinkId": null,
+      "notes": "未提供单笔融资与机构的可公开细粒度连接；仅展示规则结果候选。",
+      "linkRef": {
+        "id": "link:s001.loanbook.465:candidate:s001.institution.465.03",
+        "linkTypeId": "m07.link-type.priority-negotiation-candidate",
+        "from": "s001.loanbook.465",
+        "to": "s001.institution.465.03"
+      }
+    },
+    {
+      "id": "link:s001.group:contains:s001.entity.561",
+      "linkTypeId": "m07.link-type.group-has-entity",
+      "from": "s001.group",
+      "to": "s001.entity.561",
+      "label": "包含融资主体",
+      "quality": "passed",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor",
+        "m07.restricted"
+      ],
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-registry"
+      ],
+      "relationshipBasis": "published-link",
+      "sourceLinkId": null,
+      "linkRef": {
+        "id": "link:s001.group:contains:s001.entity.561",
+        "linkTypeId": "m07.link-type.group-has-entity",
+        "from": "s001.group",
+        "to": "s001.entity.561"
+      }
+    },
+    {
+      "id": "link:s001.entity.561:has:s001.loanbook.561",
+      "linkTypeId": "m01.link-type.entity-has-financing-detail",
+      "from": "s001.entity.561",
+      "to": "s001.loanbook.561",
+      "label": "拥有融资明细",
+      "quality": "passed",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor",
+        "m07.restricted"
+      ],
+      "sourceRefs": [
+        "source:s001-m01-seed"
+      ],
+      "relationshipBasis": "published-link",
+      "sourceLinkId": null,
+      "linkRef": {
+        "id": "link:s001.entity.561:has:s001.loanbook.561",
+        "linkTypeId": "m01.link-type.entity-has-financing-detail",
+        "from": "s001.entity.561",
+        "to": "s001.loanbook.561"
+      }
+    },
+    {
+      "id": "link:s001.entity.561:owner:s001.owner.009",
+      "linkTypeId": "m01.link-type.entity-owned-by-owner",
+      "from": "s001.entity.561",
+      "to": "s001.owner.009",
+      "label": "由负责人承接",
+      "quality": "passed",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "relationshipBasis": "published-link",
+      "sourceLinkId": null,
+      "notes": "受限观察员不返回负责人节点或关系。",
+      "linkRef": {
+        "id": "link:s001.entity.561:owner:s001.owner.009",
+        "linkTypeId": "m01.link-type.entity-owned-by-owner",
+        "from": "s001.entity.561",
+        "to": "s001.owner.009"
+      }
+    },
+    {
+      "id": "link:s001.entity.561:rule:s001.rule.r03.561",
+      "linkTypeId": "m07.link-type.entity-triggered-rule",
+      "from": "s001.entity.561",
+      "to": "s001.rule.r03.561",
+      "label": "命中规则",
+      "quality": "passed",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "relationshipBasis": "published-link",
+      "sourceLinkId": null,
+      "linkRef": {
+        "id": "link:s001.entity.561:rule:s001.rule.r03.561",
+        "linkTypeId": "m07.link-type.entity-triggered-rule",
+        "from": "s001.entity.561",
+        "to": "s001.rule.r03.561"
+      }
+    },
+    {
+      "id": "link:s001.rule.r03.561:evidence:s001.evidence.r03.561",
+      "linkTypeId": "m07.link-type.rule-supported-by-evidence",
+      "from": "s001.rule.r03.561",
+      "to": "s001.evidence.r03.561",
+      "label": "由证据支持",
+      "quality": "passed",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "sourceRefs": [
+        "source:s001-integration-notes",
+        "source:s001-registry"
+      ],
+      "relationshipBasis": "published-link",
+      "sourceLinkId": null,
+      "linkRef": {
+        "id": "link:s001.rule.r03.561:evidence:s001.evidence.r03.561",
+        "linkTypeId": "m07.link-type.rule-supported-by-evidence",
+        "from": "s001.rule.r03.561",
+        "to": "s001.evidence.r03.561"
+      }
+    },
+    {
+      "id": "link:s001.loanbook.561:candidate:s001.institution.561.01",
+      "linkTypeId": "m07.link-type.priority-negotiation-candidate",
+      "from": "s001.loanbook.561",
+      "to": "s001.institution.561.01",
+      "label": "优先协商候选",
+      "quality": "warning",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "relationshipBasis": "published-rule-output",
+      "sourceLinkId": null,
+      "notes": "未提供单笔融资与机构的可公开细粒度连接；仅展示规则结果候选。",
+      "linkRef": {
+        "id": "link:s001.loanbook.561:candidate:s001.institution.561.01",
+        "linkTypeId": "m07.link-type.priority-negotiation-candidate",
+        "from": "s001.loanbook.561",
+        "to": "s001.institution.561.01"
+      }
+    },
+    {
+      "id": "link:s001.loanbook.561:candidate:s001.institution.561.02",
+      "linkTypeId": "m07.link-type.priority-negotiation-candidate",
+      "from": "s001.loanbook.561",
+      "to": "s001.institution.561.02",
+      "label": "优先协商候选",
+      "quality": "warning",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "relationshipBasis": "published-rule-output",
+      "sourceLinkId": null,
+      "notes": "未提供单笔融资与机构的可公开细粒度连接；仅展示规则结果候选。",
+      "linkRef": {
+        "id": "link:s001.loanbook.561:candidate:s001.institution.561.02",
+        "linkTypeId": "m07.link-type.priority-negotiation-candidate",
+        "from": "s001.loanbook.561",
+        "to": "s001.institution.561.02"
+      }
+    },
+    {
+      "id": "link:s001.loanbook.561:candidate:s001.institution.561.03",
+      "linkTypeId": "m07.link-type.priority-negotiation-candidate",
+      "from": "s001.loanbook.561",
+      "to": "s001.institution.561.03",
+      "label": "优先协商候选",
+      "quality": "warning",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ],
+      "relationshipBasis": "published-rule-output",
+      "sourceLinkId": null,
+      "notes": "未提供单笔融资与机构的可公开细粒度连接；仅展示规则结果候选。",
+      "linkRef": {
+        "id": "link:s001.loanbook.561:candidate:s001.institution.561.03",
+        "linkTypeId": "m07.link-type.priority-negotiation-candidate",
+        "from": "s001.loanbook.561",
+        "to": "s001.institution.561.03"
+      }
+    },
+    {
+      "id": "link:s001.report.RPT-20260816-092626-010:evidence:s001.evidence.report.EP-20260816-092248-003",
+      "linkTypeId": "m06.link-type.report-has-evidence",
+      "from": "s001.report.RPT-20260816-092626-010",
+      "to": "s001.evidence.report.EP-20260816-092248-003",
+      "label": "绑定固定证据",
+      "quality": "passed",
+      "permissions": [
+        "m07.analyst",
+        "m07.auditor"
+      ],
+      "sourceRefs": [
+        "source:s001-registry",
+        "source:s001-integration-notes"
+      ],
+      "relationshipBasis": "published-link",
+      "sourceLinkId": null,
+      "linkRef": {
+        "id": "link:s001.report.RPT-20260816-092626-010:evidence:s001.evidence.report.EP-20260816-092248-003",
+        "linkTypeId": "m06.link-type.report-has-evidence",
+        "from": "s001.report.RPT-20260816-092626-010",
+        "to": "s001.evidence.report.EP-20260816-092248-003"
+      }
+    }
+  ],
+  "series": [
+    {
+      "id": "series:s001.entity.553:balance",
+      "ownerObjectId": "s001.entity.553",
+      "propertyId": "s001.property.financingBalance",
+      "label": "融资余额",
+      "unit": "亿元",
+      "valueType": "number",
+      "granularity": "P1D-single-snapshot",
+      "calendar": "snapshot-business-date",
+      "timezone": "Asia/Shanghai",
+      "aggregationSemantics": "snapshot",
+      "missingSemantics": [
+        "not_observed",
+        "missing",
+        "redacted",
+        "quality_blocked",
+        "not_applicable"
+      ],
+      "researchThreshold": null,
+      "sourceGrain": "single governed as-of date",
+      "versionRef": "FIN-ASSET-20251231-v02",
+      "points": [
+        {
+          "t": "2025-12-31",
+          "v": 393.134,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        }
+      ],
+      "note": "单一截至时点；不可用于趋势判断。",
+      "timeSeriesRef": {
+        "id": "series:s001.entity.553:balance",
+        "ownerObjectId": "s001.entity.553",
+        "propertyId": "s001.property.financingBalance",
+        "granularity": "P1D-single-snapshot",
+        "asOf": "2025-12-31",
+        "dataVersion": "FIN-ASSET-20251231-v02"
+      }
+    },
+    {
+      "id": "series:s001.entity.553:cost",
+      "ownerObjectId": "s001.entity.553",
+      "propertyId": "s001.property.averageFinancingCost",
+      "label": "余额加权平均融资成本",
+      "unit": "%",
+      "valueType": "number",
+      "granularity": "P1D-single-snapshot",
+      "calendar": "snapshot-business-date",
+      "timezone": "Asia/Shanghai",
+      "aggregationSemantics": "snapshot",
+      "missingSemantics": [
+        "not_observed",
+        "missing",
+        "redacted",
+        "quality_blocked",
+        "not_applicable"
+      ],
+      "researchThreshold": null,
+      "sourceGrain": "single governed as-of date",
+      "versionRef": "FIN-ASSET-20251231-v02",
+      "points": [
+        {
+          "t": "2025-12-31",
+          "v": 2.880984,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        }
+      ],
+      "note": "单一截至时点；不可用于趋势判断。",
+      "timeSeriesRef": {
+        "id": "series:s001.entity.553:cost",
+        "ownerObjectId": "s001.entity.553",
+        "propertyId": "s001.property.averageFinancingCost",
+        "granularity": "P1D-single-snapshot",
+        "asOf": "2025-12-31",
+        "dataVersion": "FIN-ASSET-20251231-v02"
+      }
+    },
+    {
+      "id": "series:s001.entity.465:balance",
+      "ownerObjectId": "s001.entity.465",
+      "propertyId": "s001.property.financingBalance",
+      "label": "融资余额",
+      "unit": "亿元",
+      "valueType": "number",
+      "granularity": "P1D-single-snapshot",
+      "calendar": "snapshot-business-date",
+      "timezone": "Asia/Shanghai",
+      "aggregationSemantics": "snapshot",
+      "missingSemantics": [
+        "not_observed",
+        "missing",
+        "redacted",
+        "quality_blocked",
+        "not_applicable"
+      ],
+      "researchThreshold": null,
+      "sourceGrain": "single governed as-of date",
+      "versionRef": "FIN-ASSET-20251231-v02",
+      "points": [
+        {
+          "t": "2025-12-31",
+          "v": 770,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        }
+      ],
+      "note": "单一截至时点；不可用于趋势判断。",
+      "timeSeriesRef": {
+        "id": "series:s001.entity.465:balance",
+        "ownerObjectId": "s001.entity.465",
+        "propertyId": "s001.property.financingBalance",
+        "granularity": "P1D-single-snapshot",
+        "asOf": "2025-12-31",
+        "dataVersion": "FIN-ASSET-20251231-v02"
+      }
+    },
+    {
+      "id": "series:s001.entity.465:cost",
+      "ownerObjectId": "s001.entity.465",
+      "propertyId": "s001.property.averageFinancingCost",
+      "label": "余额加权平均融资成本",
+      "unit": "%",
+      "valueType": "number",
+      "granularity": "P1D-single-snapshot",
+      "calendar": "snapshot-business-date",
+      "timezone": "Asia/Shanghai",
+      "aggregationSemantics": "snapshot",
+      "missingSemantics": [
+        "not_observed",
+        "missing",
+        "redacted",
+        "quality_blocked",
+        "not_applicable"
+      ],
+      "researchThreshold": null,
+      "sourceGrain": "single governed as-of date",
+      "versionRef": "FIN-ASSET-20251231-v02",
+      "points": [
+        {
+          "t": "2025-12-31",
+          "v": 2.196617,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        }
+      ],
+      "note": "单一截至时点；不可用于趋势判断。",
+      "timeSeriesRef": {
+        "id": "series:s001.entity.465:cost",
+        "ownerObjectId": "s001.entity.465",
+        "propertyId": "s001.property.averageFinancingCost",
+        "granularity": "P1D-single-snapshot",
+        "asOf": "2025-12-31",
+        "dataVersion": "FIN-ASSET-20251231-v02"
+      }
+    },
+    {
+      "id": "series:s001.entity.465:floating-rate",
+      "ownerObjectId": "s001.entity.465",
+      "propertyId": "s001.property.floatingRateRatio",
+      "label": "浮动利率余额占比",
+      "unit": "%",
+      "valueType": "number",
+      "granularity": "P1D-single-snapshot",
+      "calendar": "snapshot-business-date",
+      "timezone": "Asia/Shanghai",
+      "aggregationSemantics": "snapshot",
+      "missingSemantics": [
+        "not_observed",
+        "missing",
+        "redacted",
+        "quality_blocked",
+        "not_applicable"
+      ],
+      "researchThreshold": null,
+      "sourceGrain": "single governed as-of date",
+      "versionRef": "FIN-ASSET-20251231-v02",
+      "points": [
+        {
+          "t": "2025-12-31",
+          "v": 100,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        }
+      ],
+      "note": "仅为已绑定规则结果中的主体指标。",
+      "timeSeriesRef": {
+        "id": "series:s001.entity.465:floating-rate",
+        "ownerObjectId": "s001.entity.465",
+        "propertyId": "s001.property.floatingRateRatio",
+        "granularity": "P1D-single-snapshot",
+        "asOf": "2025-12-31",
+        "dataVersion": "FIN-ASSET-20251231-v02"
+      }
+    },
+    {
+      "id": "series:s001.entity.561:balance",
+      "ownerObjectId": "s001.entity.561",
+      "propertyId": "s001.property.financingBalance",
+      "label": "融资余额",
+      "unit": "亿元",
+      "valueType": "number",
+      "granularity": "P1D-single-snapshot",
+      "calendar": "snapshot-business-date",
+      "timezone": "Asia/Shanghai",
+      "aggregationSemantics": "snapshot",
+      "missingSemantics": [
+        "not_observed",
+        "missing",
+        "redacted",
+        "quality_blocked",
+        "not_applicable"
+      ],
+      "researchThreshold": null,
+      "sourceGrain": "single governed as-of date",
+      "versionRef": "FIN-ASSET-20251231-v02",
+      "points": [
+        {
+          "t": "2025-12-31",
+          "v": 20.016,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        }
+      ],
+      "note": "单一截至时点；不可用于趋势判断。",
+      "timeSeriesRef": {
+        "id": "series:s001.entity.561:balance",
+        "ownerObjectId": "s001.entity.561",
+        "propertyId": "s001.property.financingBalance",
+        "granularity": "P1D-single-snapshot",
+        "asOf": "2025-12-31",
+        "dataVersion": "FIN-ASSET-20251231-v02"
+      }
+    },
+    {
+      "id": "series:s001.entity.561:cost",
+      "ownerObjectId": "s001.entity.561",
+      "propertyId": "s001.property.averageFinancingCost",
+      "label": "余额加权平均融资成本",
+      "unit": "%",
+      "valueType": "number",
+      "granularity": "P1D-single-snapshot",
+      "calendar": "snapshot-business-date",
+      "timezone": "Asia/Shanghai",
+      "aggregationSemantics": "snapshot",
+      "missingSemantics": [
+        "not_observed",
+        "missing",
+        "redacted",
+        "quality_blocked",
+        "not_applicable"
+      ],
+      "researchThreshold": null,
+      "sourceGrain": "single governed as-of date",
+      "versionRef": "FIN-ASSET-20251231-v02",
+      "points": [
+        {
+          "t": "2025-12-31",
+          "v": 2.22838,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        }
+      ],
+      "note": "单一截至时点；不可用于趋势判断。",
+      "timeSeriesRef": {
+        "id": "series:s001.entity.561:cost",
+        "ownerObjectId": "s001.entity.561",
+        "propertyId": "s001.property.averageFinancingCost",
+        "granularity": "P1D-single-snapshot",
+        "asOf": "2025-12-31",
+        "dataVersion": "FIN-ASSET-20251231-v02"
+      }
+    },
+    {
+      "id": "series:s001.entity.561:short-term-debt",
+      "ownerObjectId": "s001.entity.561",
+      "propertyId": "s001.property.shortTermDebtRatio",
+      "label": "短期债务余额占比",
+      "unit": "%",
+      "valueType": "number",
+      "granularity": "P1D-single-snapshot",
+      "calendar": "snapshot-business-date",
+      "timezone": "Asia/Shanghai",
+      "aggregationSemantics": "snapshot",
+      "missingSemantics": [
+        "not_observed",
+        "missing",
+        "redacted",
+        "quality_blocked",
+        "not_applicable"
+      ],
+      "researchThreshold": null,
+      "sourceGrain": "single governed as-of date",
+      "versionRef": "FIN-ASSET-20251231-v02",
+      "points": [
+        {
+          "t": "2025-12-31",
+          "v": 93.545164,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        }
+      ],
+      "note": "仅为已绑定规则结果中的主体指标。",
+      "timeSeriesRef": {
+        "id": "series:s001.entity.561:short-term-debt",
+        "ownerObjectId": "s001.entity.561",
+        "propertyId": "s001.property.shortTermDebtRatio",
+        "granularity": "P1D-single-snapshot",
+        "asOf": "2025-12-31",
+        "dataVersion": "FIN-ASSET-20251231-v02"
+      }
+    },
+    {
+      "id": "series:s001.group:balance",
+      "ownerObjectId": "s001.group",
+      "propertyId": "s001.property.financingBalance",
+      "label": "集团融资余额",
+      "unit": "亿元",
+      "valueType": "number",
+      "granularity": "P1D-single-snapshot",
+      "calendar": "snapshot-business-date",
+      "timezone": "Asia/Shanghai",
+      "aggregationSemantics": "snapshot",
+      "missingSemantics": [
+        "not_observed",
+        "missing",
+        "redacted",
+        "quality_blocked",
+        "not_applicable"
+      ],
+      "researchThreshold": null,
+      "sourceGrain": "single governed as-of date",
+      "versionRef": "FIN-ASSET-20251231-v02",
+      "points": [
+        {
+          "t": "2025-12-31",
+          "v": 21613.387,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        }
+      ],
+      "note": "单一截至时点；不可用于趋势判断。",
+      "timeSeriesRef": {
+        "id": "series:s001.group:balance",
+        "ownerObjectId": "s001.group",
+        "propertyId": "s001.property.financingBalance",
+        "granularity": "P1D-single-snapshot",
+        "asOf": "2025-12-31",
+        "dataVersion": "FIN-ASSET-20251231-v02"
+      }
+    },
+    {
+      "id": "series:s001.group:cost",
+      "ownerObjectId": "s001.group",
+      "propertyId": "s001.property.averageFinancingCost",
+      "label": "集团加权平均融资成本",
+      "unit": "%",
+      "valueType": "number",
+      "granularity": "P1D-single-snapshot",
+      "calendar": "snapshot-business-date",
+      "timezone": "Asia/Shanghai",
+      "aggregationSemantics": "snapshot",
+      "missingSemantics": [
+        "not_observed",
+        "missing",
+        "redacted",
+        "quality_blocked",
+        "not_applicable"
+      ],
+      "researchThreshold": null,
+      "sourceGrain": "single governed as-of date",
+      "versionRef": "FIN-ASSET-20251231-v02",
+      "points": [
+        {
+          "t": "2025-12-31",
+          "v": 2.372231,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        }
+      ],
+      "note": "单一截至时点；不可用于趋势判断。",
+      "timeSeriesRef": {
+        "id": "series:s001.group:cost",
+        "ownerObjectId": "s001.group",
+        "propertyId": "s001.property.averageFinancingCost",
+        "granularity": "P1D-single-snapshot",
+        "asOf": "2025-12-31",
+        "dataVersion": "FIN-ASSET-20251231-v02"
+      }
+    },
+    {
+      "id": "series:s001.group:floating-rate",
+      "ownerObjectId": "s001.group",
+      "propertyId": "s001.property.floatingRateRatio",
+      "label": "集团浮动利率余额占比",
+      "unit": "%",
+      "valueType": "number",
+      "granularity": "P1D-single-snapshot",
+      "calendar": "snapshot-business-date",
+      "timezone": "Asia/Shanghai",
+      "aggregationSemantics": "snapshot",
+      "missingSemantics": [
+        "not_observed",
+        "missing",
+        "redacted",
+        "quality_blocked",
+        "not_applicable"
+      ],
+      "researchThreshold": null,
+      "sourceGrain": "single governed as-of date",
+      "versionRef": "FIN-ASSET-20251231-v02",
+      "points": [
+        {
+          "t": "2025-12-31",
+          "v": 95.149492,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        }
+      ],
+      "note": "单一截至时点；不可用于趋势判断。",
+      "timeSeriesRef": {
+        "id": "series:s001.group:floating-rate",
+        "ownerObjectId": "s001.group",
+        "propertyId": "s001.property.floatingRateRatio",
+        "granularity": "P1D-single-snapshot",
+        "asOf": "2025-12-31",
+        "dataVersion": "FIN-ASSET-20251231-v02"
+      }
+    },
+    {
+      "id": "series:s001.group:short-term-debt",
+      "ownerObjectId": "s001.group",
+      "propertyId": "s001.property.shortTermDebtRatio",
+      "label": "集团短期债务余额占比",
+      "unit": "%",
+      "valueType": "number",
+      "granularity": "P1D-single-snapshot",
+      "calendar": "snapshot-business-date",
+      "timezone": "Asia/Shanghai",
+      "aggregationSemantics": "snapshot",
+      "missingSemantics": [
+        "not_observed",
+        "missing",
+        "redacted",
+        "quality_blocked",
+        "not_applicable"
+      ],
+      "researchThreshold": null,
+      "sourceGrain": "single governed as-of date",
+      "versionRef": "FIN-ASSET-20251231-v02",
+      "points": [
+        {
+          "t": "2025-12-31",
+          "v": 0.911805,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        }
+      ],
+      "note": "单一截至时点；不可用于趋势判断。",
+      "timeSeriesRef": {
+        "id": "series:s001.group:short-term-debt",
+        "ownerObjectId": "s001.group",
+        "propertyId": "s001.property.shortTermDebtRatio",
+        "granularity": "P1D-single-snapshot",
+        "asOf": "2025-12-31",
+        "dataVersion": "FIN-ASSET-20251231-v02"
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "event:R01:553",
+      "eventType": "rule-evaluation",
+      "t": "2025-12-31",
+      "timeSemantics": "data-as-of",
+      "objectId": "s001.entity.553",
+      "ruleId": "RULE-HIGH-FINANCING-COST",
+      "state": "triggered",
+      "quality": "passed",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ]
+    },
+    {
+      "id": "event:R02:465",
+      "eventType": "rule-evaluation",
+      "t": "2025-12-31",
+      "timeSemantics": "data-as-of",
+      "objectId": "s001.entity.465",
+      "ruleId": "RULE-FLOATING-RATE-EXPOSURE",
+      "state": "triggered",
+      "quality": "passed",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ]
+    },
+    {
+      "id": "event:R03:561",
+      "eventType": "rule-evaluation",
+      "t": "2025-12-31",
+      "timeSemantics": "data-as-of",
+      "objectId": "s001.entity.561",
+      "ruleId": "RULE-SHORT-TERM-DEBT-CONCENTRATION",
+      "state": "triggered",
+      "quality": "passed",
+      "sourceRefs": [
+        "source:s001-data-js",
+        "source:s001-m01-seed"
+      ]
+    }
+  ],
+  "lensDefinitions": [
+    {
+      "id": "lens.catalog.v1",
+      "kind": "catalog",
+      "owner": "M07",
+      "version": "s001-v1",
+      "supports": [
+        "ObjectRef",
+        "quality",
+        "permission",
+        "sourceContext"
+      ]
+    },
+    {
+      "id": "lens.object360.v1",
+      "kind": "object360",
+      "owner": "M07",
+      "version": "s001-v1",
+      "supports": [
+        "properties",
+        "links",
+        "quality",
+        "version",
+        "evidence"
+      ]
+    },
+    {
+      "id": "lens.graph.v1",
+      "kind": "graph",
+      "owner": "M07",
+      "version": "s001-v1",
+      "maxHops": 2,
+      "supports": [
+        "LinkRef",
+        "permission-filter",
+        "quality-filter"
+      ]
+    },
+    {
+      "id": "lens.temporal.v1",
+      "kind": "temporal",
+      "owner": "M07",
+      "version": "s001-v1",
+      "supports": [
+        "TimeSeriesRef",
+        "single-snapshot",
+        "raw",
+        "rolling",
+        "diff",
+        "event-location"
+      ]
+    },
+    {
+      "id": "lens.spatial.v1",
+      "kind": "spatial",
+      "owner": "M07",
+      "version": "s001-v1",
+      "status": "not_applicable",
+      "reason": "S001 当前来源没有权威 geometry/GeoRef；不得生成伪位置。"
+    }
+  ],
+  "moduleResources": {
+    "scene": {
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+      "name": "集团融资成本与债务结构优化",
+      "domain": "融资管理",
+      "dataAsOf": "2025-12-31",
+      "status": "completed",
+      "sourceProductBaseline": "v1.0.7"
+    },
+    "dataEngineering": {
+      "sources": [
+        "融资一览表",
+        "融资数据共享文件夹"
+      ],
+      "pipelines": [
+        "融资数据标准化与发布"
+      ],
+      "assets": [
+        "FIN-ASSET-20251231-v02"
+      ],
+      "quality": "通过",
+      "members": "4 个成员 / 3 条关系"
+    },
+    "ontology": {
+      "name": "企业融资语义",
+      "publishedVersion": "semantic-MSVJM48O-VJC6 / V1",
+      "pointer": "T019-S001-v1",
+      "scope": "4 Object / 3 Link / 7 Metric / 3 Rule / 1 Action Type"
+    },
+    "query": {
+      "agent": "融资问数 Agent",
+      "configId": "IQ-AGENT-S001-FINANCING",
+      "semanticResources": 37,
+      "status": "available",
+      "questions": [
+        "三家单位综合平均融资成本是多少？",
+        "单位553需要优先与哪些银行协商？",
+        "集团融资成本、债务结构和产业板块对比如何？"
+      ]
+    },
+    "decisions": {
+      "requests": 3,
+      "reminders": 3,
+      "confirmed": 1,
+      "tasks": 1,
+      "summary": "三条融资优化请求；一条人工确认并形成负责人待办。"
+    },
+    "agents": [
+      "融资洞察与行动协作 Agent",
+      "融资经营分析报告生成 Agent",
+      "报告伴读与数据核验助手"
+    ],
+    "reports": {
+      "definitions": [
+        "集团融资经营分析报告"
+      ],
+      "dashboards": [
+        "集团融资驾驶舱"
+      ],
+      "reports": [
+        "RPT-20260816-092626-010 / 2.0.0"
+      ],
+      "template": "report-center/review-lifecycle/templates/s001-financing-report-template.html",
+      "formats": [
+        "HTML",
+        "PDF"
+      ]
+    },
+    "chain": {
+      "M02": {
+        "status": "completed",
+        "refs": [
+          "RUN-20251231-002",
+          "FIN-ASSET-20251231-v02"
+        ]
+      },
+      "M01": {
+        "status": "completed",
+        "refs": [
+          "semantic-MSVJM48O-VJC6",
+          "T019-S001-v1"
+        ]
+      },
+      "M03": {
+        "status": "completed",
+        "refs": [
+          "RUN-MSVJWKPO-002",
+          "C018-S001-v1"
+        ]
+      },
+      "M04": {
+        "status": "completed",
+        "refs": [
+          "AR-RUN-MSVJWKPO-002-UNIT-553",
+          "TD-6872111633"
+        ]
+      },
+      "M05": {
+        "status": "completed",
+        "refs": [
+          "RUN-20260816-004",
+          "RES-20260816-004"
+        ]
+      },
+      "M06": {
+        "status": "completed",
+        "refs": [
+          "RPT-20260816-092626-010",
+          "EP-20260816-092248-003",
+          "CMP-20260816-092853-001"
+        ]
+      }
+    },
+    "workflow": [
+      {
+        "id": "upload",
+        "module": "data",
+        "title": "上传融资数据",
+        "action": "选择并上传数据",
+        "summary": "读取 5,218 条融资明细与配套业务表。",
+        "prerequisite": null
+      },
+      {
+        "id": "pipeline",
+        "module": "data",
+        "title": "运行数据管道",
+        "action": "运行管道",
+        "summary": "完成字段、余额与质量规则检查。",
+        "prerequisite": "upload"
+      },
+      {
+        "id": "dataPublish",
+        "module": "data",
+        "title": "发布数据资产",
+        "action": "发布数据资产",
+        "summary": "形成可被本体管理引用的数据版本。",
+        "prerequisite": "pipeline"
+      },
+      {
+        "id": "mapping",
+        "module": "ontology",
+        "title": "完成本体映射",
+        "action": "应用映射",
+        "summary": "将融资主体、贷款与金融机构映射到业务对象。",
+        "prerequisite": "dataPublish"
+      },
+      {
+        "id": "ontologyPublish",
+        "module": "ontology",
+        "title": "发布本体版本",
+        "action": "发布本体版本",
+        "summary": "发布指标、三条规则和行动类型的同一业务版本。",
+        "prerequisite": "mapping"
+      },
+      {
+        "id": "query",
+        "module": "query",
+        "title": "查询融资成本",
+        "action": "运行标准问数",
+        "summary": "返回集团与任意两家、三家单位的综合平均融资成本。",
+        "prerequisite": "ontologyPublish"
+      },
+      {
+        "id": "rules",
+        "module": "query",
+        "title": "识别重点事项",
+        "action": "运行规则检查",
+        "summary": "三条规则分别触发三家单位，并给出优先协商银行。",
+        "prerequisite": "query"
+      },
+      {
+        "id": "actions",
+        "module": "decision",
+        "title": "提交行动申请",
+        "action": "提交 3 条行动申请",
+        "summary": "将已固定证据的重点事项送入决策中心。",
+        "prerequisite": "rules"
+      },
+      {
+        "id": "confirm",
+        "module": "decision",
+        "title": "人工确认行动",
+        "action": "确认 1 笔代表性行动",
+        "summary": "选择一笔确认负责人、优先银行与行动建议；其余事项继续留在待决策队列。",
+        "prerequisite": "actions"
+      },
+      {
+        "id": "todo",
+        "module": "decision",
+        "title": "负责人待办形成",
+        "action": "追踪待办",
+        "summary": "代表性确认后形成 1 条负责人待办，并保留来源回链；未确认事项不形成待办。",
+        "prerequisite": "confirm",
+        "automatic": true
+      },
+      {
+        "id": "report",
+        "module": "report",
+        "title": "生成融资分析报告",
+        "action": "生成报告",
+        "summary": "只读决策运行摘要，形成报告草稿和证据包。",
+        "prerequisite": "todo"
+      },
+      {
+        "id": "verify",
+        "module": "report",
+        "title": "完成确定性核验",
+        "action": "执行数据核验",
+        "summary": "逐项核对余额、成本、规则触发与负责人信息。",
+        "prerequisite": "report"
+      },
+      {
+        "id": "publish",
+        "module": "report",
+        "title": "发布 HTML/PDF",
+        "action": "发布两种格式",
+        "summary": "两种格式共享报告编号、内容版本和证据链。",
+        "prerequisite": "verify"
+      },
+      {
+        "id": "companion",
+        "module": "agent",
+        "title": "阅读报告结论",
+        "action": "打开报告伴读",
+        "summary": "基于固定证据解释结论和下一步，不重新计算正式指标。",
+        "prerequisite": "publish"
+      },
+      {
+        "id": "compare",
+        "module": "report",
+        "title": "与当前数据比较",
+        "action": "与当前数据比较",
+        "summary": "显式比较报告证据版本与当前数据，并记录新鲜度。",
+        "prerequisite": "companion"
+      }
+    ],
+    "modules": [
+      {
+        "id": "data",
+        "name": "数据工程",
+        "short": "数据",
+        "icon": "database",
+        "source": "../data-engineering-prototype-review/review-v3/方案B2.html?v=20260822-05",
+        "description": "统一管理四场景数据源、快照、管道、质量和已发布数据资产。",
+        "steps": [
+          "upload",
+          "pipeline",
+          "dataPublish"
+        ],
+        "color": "blue"
+      },
+      {
+        "id": "ontology",
+        "name": "本体管理",
+        "short": "本体",
+        "icon": "network",
+        "source": "../ontology-management-review/canvas-first/index.html?v=20260823-02",
+        "description": "统一管理业务对象、关系、指标、规则、行动类型和已发布本体。",
+        "steps": [
+          "mapping",
+          "ontologyPublish"
+        ],
+        "color": "violet"
+      },
+      {
+        "id": "query",
+        "name": "智能问数",
+        "short": "问数",
+        "icon": "sparkles",
+        "source": "../intelligent-query-prototype/review-next/conversation-workspace/index.html?v=20260823-07",
+        "description": "基于已发布业务定义回答融资、预算和债务风险问题，并保留证据。",
+        "steps": [
+          "query",
+          "rules"
+        ],
+        "color": "cyan"
+      },
+      {
+        "id": "decision",
+        "name": "决策中心",
+        "short": "决策",
+        "icon": "target",
+        "source": "../decision-center-prototype/review-v2/action-portfolio.html?prototypeBuild=20260823-15",
+        "description": "接收跨业务行动申请，经人工确认后形成负责人待办。",
+        "steps": [
+          "actions",
+          "confirm",
+          "todo"
+        ],
+        "color": "orange"
+      },
+      {
+        "id": "agent",
+        "name": "Agent 应用",
+        "short": "Agent",
+        "icon": "bot",
+        "source": "../agent-application/Agent应用.html?v=20260824-08",
+        "description": "配置并运行洞察、报告生成和报告伴读 Agent，保存结果与证据。",
+        "steps": [
+          "companion"
+        ],
+        "color": "teal"
+      },
+      {
+        "id": "report",
+        "name": "报告中心",
+        "short": "报告",
+        "icon": "file",
+        "source": "../report-center/review-lifecycle/index.html?v=20260824-12",
+        "description": "统一创建、核验、发布和阅读各类正式报告及历史版本。",
+        "steps": [
+          "report",
+          "verify",
+          "publish",
+          "compare"
+        ],
+        "color": "green"
+      }
+    ],
+    "reportSeed": {
+      "id": "RPT-FIN-20260813-001",
+      "version": "内容版本 1.0",
+      "evidence": "证据包 2026.08.13-01",
+      "title": "集团融资成本与重点行动分析",
+      "formats": [
+        "HTML",
+        "PDF"
+      ]
+    },
+    "groupMetrics": [
+      {
+        "label": "融资余额",
+        "value": "21,613.387",
+        "unit": "亿元"
+      },
+      {
+        "label": "加权平均融资成本",
+        "value": "2.372231",
+        "unit": "%"
+      },
+      {
+        "label": "浮动利率余额占比",
+        "value": "95.149492",
+        "unit": "%"
+      },
+      {
+        "label": "短期债务余额占比",
+        "value": "0.911805",
+        "unit": "%"
+      }
+    ],
+    "combinations": [
+      {
+        "units": "单位553 + 单位465",
+        "balance": "1,163.134 亿元",
+        "cost": "2.427930%"
+      },
+      {
+        "units": "单位553 + 单位561",
+        "balance": "413.150 亿元",
+        "cost": "2.849367%"
+      },
+      {
+        "units": "单位465 + 单位561",
+        "balance": "790.016 亿元",
+        "cost": "2.197422%"
+      },
+      {
+        "units": "单位553 + 单位465 + 单位561",
+        "balance": "1,183.150 亿元",
+        "cost": "2.424554%"
+      }
+    ]
+  },
+  "contracts": {
+    "objectRef": {
+      "namespace": "ofw.m07.research.v1",
+      "stableWithin": "scenarioId + scenarioVersion + publishedSemanticVersionId",
+      "format": "s001.<kind>.<source-key>",
+      "sourceOfTruth": "M01 Published ObjectRef"
+    },
+    "linkRef": {
+      "sourceOfTruth": "M01 Published LinkRef or explicitly marked M07 recommendation projection",
+      "permissionRule": "both endpoints must be visible",
+      "qualityRule": "warning candidate links never become confirmed lender facts"
+    },
+    "timeSeriesRef": {
+      "ownerRule": "series.ownerObjectId must point to visible ObjectRef",
+      "grain": "P1D-single-snapshot",
+      "missingRule": "missing/not_observed remain explicit; no interpolation",
+      "versionRule": "each point carries snapshotRef and dataVersion"
+    },
+    "geoRef": {
+      "status": "not_applicable",
+      "reason": "S001 validation source does not prove geometry, CRS, valid time or layer membership",
+      "fallback": "show honest not-applicable state and return to graph/object 360"
+    },
+    "deepLink": {
+      "required": [
+        "scenarioId",
+        "scenarioVersion",
+        "scenarioRunId",
+        "publishedSemanticVersionId",
+        "object",
+        "lens"
+      ],
+      "unauthorized": "re-authorize on open; never resolve by title or cached object"
+    }
+  },
+  "sourceDefinitions": [
+    {
+      "id": "OBJ-FINANCING-ENTITY",
+      "name": "融资主体",
+      "memberId": "FIN-MEMBER-SUBJECT",
+      "count": 574,
+      "identity": "PROP-FINANCING-ENTITY-UNIT-CODE",
+      "title": "PROP-FINANCING-ENTITY-UNIT-NAME"
+    },
+    {
+      "id": "OBJ-FINANCING-DETAIL",
+      "name": "融资明细",
+      "memberId": "FIN-MEMBER-DETAIL",
+      "count": 5218,
+      "identity": "PROP-FINANCING-DETAIL-LOAN-ID",
+      "title": "PROP-FINANCING-DETAIL-LOAN-ID"
+    },
+    {
+      "id": "OBJ-FINANCIAL-INSTITUTION",
+      "name": "融资机构",
+      "memberId": "FIN-MEMBER-INSTITUTION",
+      "count": 24,
+      "identity": "PROP-FINANCIAL-INSTITUTION-CODE",
+      "title": "PROP-FINANCIAL-INSTITUTION-NAME"
+    },
+    {
+      "id": "OBJ-FINANCING-OWNER",
+      "name": "融资负责人",
+      "memberId": "FIN-MEMBER-OWNER",
+      "count": 24,
+      "identity": "PROP-FINANCING-OWNER-ID",
+      "title": "PROP-FINANCING-OWNER-NAME"
+    }
+  ],
+  "sourceContract": {
+    "dataAssetVersion": "FIN-ASSET-20251231-v02",
+    "sourceRunId": "RUN-20251231-002",
+    "qualityResultId": "QUALITY-20251231-002",
+    "publishedSemanticVersionId": "semantic-MSVJM48O-VJC6",
+    "t019Pointer": "T019-S001-v1",
+    "memberCoverage": "4/4",
+    "relationshipCoverage": "3/3",
+    "metricCount": 7,
+    "ruleCount": 3,
+    "actionTypeCount": 1
+  },
+  "validationNotes": [
+    "S001 资源是 M07 只读验证投影，不是新的业务事实真源。",
+    "贷款对象是按主体聚合的融资明细集合；没有复制 5,218 行或伪造单笔借据。",
+    "机构对象是已发布规则输出的优先协商候选；关系质量 warning，不等于实际存量 lender 关系。",
+    "当前只有 2025-12-31 一个受治理时点；时序 Lens 可定位单点但不能宣称趋势。",
+    "空间 Lens 返回 not_applicable，除非 M02/M01 后续提供带 CRS、有效时间和证据的 GeoRef。",
+    "规则、行动和报告状态只显示来源引用；M07 不执行 Action 或修改报告。"
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "schemaVersion": "ofw.prototype.integration-export.v1",
+  "packageId": "m07-v1.2.0-rc.1",
+  "sourceTag": "prototype-v1.1.0-frozen",
+  "parentVersion": "v1.1.0",
+  "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+  "targetPrototypeVersion": "v1.2.0-rc.1",
+  "acceptanceReady": false,
+  "module": {
+    "moduleId": "m07",
+    "name": "多视图探索",
+    "route": "#module/m07",
+    "canonicalEntry": "module/workspace-v2.html",
+    "canonicalImplementation": "Owner workspace-v2",
+    "secondShellIncluded": false,
+    "workflowStepAdded": false
+  },
+  "mount": {
+    "mode": "same-origin-iframe",
+    "sourceTemplate": "module/workspace-v2.html?embedded=1&resource={resource}&scenarioId={scenarioId}&lens=catalog",
+    "scenarioResources": {
+      "S001": "../resources/s001.json",
+      "S005": "../resources/s005.json"
+    },
+    "hostRegistration": {
+      "moduleId": "m07",
+      "route": "#module/m07",
+      "researchOnly": true
+    },
+    "requirements": [
+      "Keep the existing unified product Shell as the only Shell.",
+      "Mount the canonical entry in a same-origin iframe.",
+      "Preserve moduleId=m07 and route=#module/m07 during integration."
+    ]
+  },
+  "fileMappings": [
+    {
+      "packagePath": "module/workspace-v2.html",
+      "targetRole": "M07 canonical iframe entry"
+    },
+    {
+      "packagePath": "module/workspace-v2.js",
+      "targetRole": "M07 interaction, deep-link and handoff runtime"
+    },
+    {
+      "packagePath": "module/workspace-v2.css",
+      "targetRole": "M07 responsive workspace styles"
+    },
+    {
+      "packagePath": "module/core.js",
+      "targetRole": "M07 resource, permission and graph helpers"
+    },
+    {
+      "packagePath": "module/vendor/",
+      "targetRole": "Local D3, Leaflet and Lucide runtime assets"
+    },
+    {
+      "packagePath": "resources/s001.json",
+      "targetRole": "S001 deidentified resource adapter"
+    },
+    {
+      "packagePath": "resources/s005.json",
+      "targetRole": "S005 deidentified resource adapter"
+    }
+  ],
+  "inputs": {
+    "resourceSchema": "ofw.m07.validation-resource.v1",
+    "namespace": "ofw.m07.research.v1",
+    "queryParameters": {
+      "resource": "Required resource URL when the S001 default is not used.",
+      "scenarioId": "Host scenario identity retained in deep links.",
+      "lens": "catalog|object360|graph|temporal|spatial",
+      "object": "Optional stable ObjectRef.",
+      "role": "Optional research role id.",
+      "returnFrom": "Optional module id used for the return receipt."
+    }
+  },
+  "outputs": {
+    "channel": "ofw.m07.prototype.handoff.v1",
+    "operations": {
+      "sync-breadcrumb": "Update the host breadcrumb without changing route.",
+      "navigate-parent-module": "Route to the requested canonical module and retain returnUrl.",
+      "open-m08": "Adapt context to M08 and route to #module/m08."
+    },
+    "contextFields": [
+      "objectRef",
+      "lensRef",
+      "seriesRef",
+      "timeRange",
+      "dataVersionId",
+      "ontologyVersionId",
+      "bindingId",
+      "scenarioId",
+      "scenarioRunId"
+    ]
+  },
+  "m08Handoff": {
+    "sourceOperation": "open-m08",
+    "sourceModuleId": "m07",
+    "requestedTargetModuleId": "m08",
+    "requestedTargetRoute": "#module/m08",
+    "hostAdapterRequirements": [
+      "Accept the message only from the mounted M07 iframe and same origin.",
+      "Pass message.context as the immutable M08 input context.",
+      "If M08 still consumes OFW_M07_OPEN_M08, emit that event with payload=message.context in the host adapter only.",
+      "Persist returnUrl outside M07 and restore it when M08 returns.",
+      "Do not rename M07 to exploration or share M08 state with the M07 resource."
+    ],
+    "missingSeriesBehavior": "M08 must show an unavailable-input state when seriesRef is null; it must not invent a series."
+  },
+  "tests": {
+    "commands": [
+      "node --check module/core.js",
+      "node --check module/workspace-v2.js",
+      "node --test tests/*.test.mjs",
+      "shasum -a 256 -c SHA256SUMS"
+    ],
+    "coverage": [
+      "release and mount identity",
+      "canonical entry and no second Shell",
+      "S001 and S005 resource contracts",
+      "S005 isLinkAllowed regression",
+      "M08 handoff envelope fields",
+      "checksum completeness"
+    ]
+  },
+  "knownBoundaries": [
+    "Research prototype package only; acceptanceReady remains false.",
+    "S001 has one governed point and cannot establish a trend.",
+    "S005 Published and Binding identities are research references.",
+    "S005 spatial points are technical fixtures.",
+    "OpenStreetMap tiles require network access for the S005 spatial fixture view.",
+    "M08 runtime code and the unified host Shell are intentionally not included."
+  ],
+  "exclusions": {
+    "baselineProductCopy": true,
+    "otherCanonicalModules": true,
+    "screenshots": true,
+    "archives": true,
+    "absolutePaths": true,
+    "desktopMetadata": true
+  }
+}
