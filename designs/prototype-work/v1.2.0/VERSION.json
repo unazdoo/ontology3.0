@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ofw.prototype.version.v1",
   "version": "1.2.0-rc.1",
-  "status": "assembly-preparation",
+  "status": "assembly-inputs-ready",
   "releaseRole": "prototype-composite-review-candidate",
   "createdAt": "2026-08-27",
   "sourceTag": "prototype-v1.1.0-frozen",
@@ -36,8 +36,9 @@
       "implementation": "workspace-v2"
     },
     "M08": {
-      "moduleId": "m08",
-      "route": "#module/m08",
+      "resourceOwnerId": "M08",
+      "moduleId": "modeling",
+      "route": "#module/modeling",
       "mustAdaptToCanonicalM07": true
     },
     "S005": {
@@ -52,5 +53,6 @@
   "editable": true,
   "frozen": false,
   "rollbackVersion": "1.1.0",
-  "nextGate": "three minimal integration export commits verified"
+  "packageVerification": "PACKAGE-VERIFICATION.json",
+  "nextGate": "materialize the single v1.2.0-rc.1 candidate entry"
 }

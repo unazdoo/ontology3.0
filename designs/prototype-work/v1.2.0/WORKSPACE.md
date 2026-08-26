@@ -11,7 +11,7 @@
 - 底座提交：`a8b023d7f8d49ad6ed6c24417b79b6f9df3fb716`
 - 父版本：`v1.1.0`
 - 基线快照：`BSL-OFW-V110-94ABD0E991B7`
-- 状态：总装准备中
+- 状态：三个最小交付包已核验并汇入，待物化总装入口
 - `acceptanceReady = false`
 
 冻结目录 `designs/prototype-releases/v1.1.0/` 仅作只读来源，不得原地修改。
@@ -24,11 +24,13 @@
 
 ## 输入交付包
 
-三个来源分支只提交自己的最小包：
+三个来源分支已提交并由总控导入自己的最小包：
 
 1. `integration-exports/v1.2.0-rc.1/m07/`
 2. `integration-exports/v1.2.0-rc.1/m08/`
 3. `integration-exports/v1.2.0-rc.1/s005/`
+
+实际来源提交和总装导入提交登记在 `INTEGRATION-SOURCES.json`，独立复跑结果登记在 `PACKAGE-VERIFICATION.json`。
 
 交付包不得包含整套 v1.1.0 副本、第二平台 Shell、绝对符号链接、归档截图、原始敏感资料或正式实施代码。
 

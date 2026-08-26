@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "ofw.prototype.package-verification.v1",
+  "verifiedOn": "2026-08-27",
+  "targetPrototypeVersion": "v1.2.0-rc.1",
+  "result": "PASSED",
+  "sourceBaseline": {
+    "version": "v1.1.0",
+    "tag": "prototype-v1.1.0-frozen",
+    "commit": "a8b023d7f8d49ad6ed6c24417b79b6f9df3fb716",
+    "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+    "releaseVerification": "PASSED: manifest v2, 13 components, 10 entries",
+    "checkpointVerification": "PASSED"
+  },
+  "packages": {
+    "M07": {
+      "files": 14,
+      "bytes": 1393744,
+      "contractTests": "5/5 PASSED",
+      "checksums": "13/13 PASSED",
+      "cleanExport": true,
+      "portable": true
+    },
+    "M08": {
+      "files": 25,
+      "bytes": 268220,
+      "staticContractTests": "5/5 PASSED",
+      "validationTests": "43/43 PASSED",
+      "checksums": "24/24 PASSED",
+      "cleanExport": true,
+      "portable": true
+    },
+    "S005": {
+      "files": 14,
+      "bytes": 61070,
+      "packageTests": "3/3 PASSED",
+      "checksums": "13/13 PASSED",
+      "cleanExport": true,
+      "portable": true
+    }
+  },
+  "crossPackageContract": {
+    "M07": {
+      "moduleId": "m07",
+      "route": "#module/m07"
+    },
+    "M08": {
+      "resourceOwnerId": "M08",
+      "moduleId": "modeling",
+      "route": "#module/modeling"
+    },
+    "S005": {
+      "scenarioId": "S005",
+      "scenarioVersion": "S005-v1",
+      "m07RouteId": "module/m07",
+      "m08RouteId": "module/modeling"
+    },
+    "handoff": [
+      "OFW_M07_OPEN_M08",
+      "OFW_M08_DELIVER_CONTEXT",
+      "OFW_M08_RETURN_TO_M07"
+    ],
+    "result": "PASSED"
+  },
+  "forbiddenContent": {
+    "absoluteFilesystemPaths": 0,
+    "absoluteSymlinks": 0,
+    "copiedFrozenProductTrees": 0,
+    "secondProductShells": 0,
+    "implementationSourceChanges": 0
+  },
+  "assemblyBoundary": {
+    "packagesImported": true,
+    "candidateEntryMaterialized": false,
+    "fullCompositeRegressionRun": false,
+    "acceptanceReady": false
+  }
+}
