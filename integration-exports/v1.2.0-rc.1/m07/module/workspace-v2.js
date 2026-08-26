@@ -112,7 +112,7 @@
     agent: { label: "交给 Agent", target: "Agent 应用", detail: "以固定证据启动受控解释", icon: "bot" },
     report: { label: "查看报告与证据", target: "报告中心", detail: "定位正式报告和证据锚点", icon: "file-text" },
     dashboard: { label: "打开管理视图", target: "仪表盘", detail: "将探索范围带入正式驾驶舱", icon: "layout-dashboard" },
-    m08: { label: "进入模型与模拟", target: "模型与模拟", detail: "把对象、Lens、时序范围和版本交给 M08", icon: "activity" },
+    modeling: { label: "进入模型与模拟", target: "模型与模拟", detail: "把对象、Lens、时序范围和版本交给 M08", icon: "activity" },
   };
 
   const ROUTE_BY_MODULE = {
@@ -123,7 +123,7 @@
     agent: "#module/agent",
     report: "#module/report",
     dashboard: "#dashboard",
-    m08: "#module/m08",
+    modeling: "#module/modeling",
   };
 
   let resource = null;
@@ -768,7 +768,7 @@
 
   function contextualModules() {
     if (state.lens === "graph") return ["query", "decision", "report"];
-    if (state.lens === "temporal") return ["m08", "query", "report"];
+    if (state.lens === "temporal") return ["modeling", "query", "report"];
     if (state.lens === "spatial") return ["data", "ontology", "dashboard"];
     return ["ontology", "query", "report"];
   }
@@ -921,9 +921,22 @@
     const primary = document.querySelector(".primary-pane");
     returnUrl.searchParams.set("position", `scroll:${Math.round(primary?.scrollTop || 0)}`);
     const selectedSeries = objectSeries(target)[0] || objectSeries(object())[0] || null;
+    const handoffContext = {
+      objectRef: allowed(target) ? { id: target.id, title: target.title, objectTypeRef: target.objectTypeId } : null,
+      lensRef: { moduleId: MODULE_ID, lensId: state.lens, route: MODULE_ROUTE },
+      seriesRef: selectedSeries ? { id: selectedSeries.id, label: selectedSeries.label, unit: selectedSeries.unit, ownerObjectId: selectedSeries.ownerObjectId } : null,
+      timeRange: { start: state.temporalFrom, end: state.temporalTo },
+      dataVersionId: dataVersionId(),
+      ontologyVersionId: resource.ontologyContext.publishedSemanticVersionId,
+      bindingId: resource.ontologyContext.authoritativeBindingId,
+      scenarioId: resource.scenarioContext.scenarioId,
+      scenarioRunId: resource.scenarioContext.scenarioRunId,
+    };
+    const isModelingHandoff = moduleId === "modeling";
     const envelope = {
       channel: HANDOFF_CHANNEL,
-      operation: moduleId === "m08" ? "open-m08" : "navigate-parent-module",
+      operation: isModelingHandoff ? "open-m08" : "navigate-parent-module",
+      ...(isModelingHandoff ? { type: "OFW_M07_OPEN_M08", payload: handoffContext } : {}),
       moduleId,
       route,
       sourceModuleId: MODULE_ID,
@@ -937,17 +950,7 @@
       bindingId: resource.ontologyContext.authoritativeBindingId,
       scenarioId: resource.scenarioContext.scenarioId,
       scenarioRunId: resource.scenarioContext.scenarioRunId,
-      context: {
-        objectRef: allowed(target) ? { id: target.id, title: target.title, objectTypeRef: target.objectTypeId } : null,
-        lensRef: { moduleId: MODULE_ID, lensId: state.lens, route: MODULE_ROUTE },
-        seriesRef: selectedSeries ? { id: selectedSeries.id, label: selectedSeries.label, unit: selectedSeries.unit, ownerObjectId: selectedSeries.ownerObjectId } : null,
-        timeRange: { start: state.temporalFrom, end: state.temporalTo },
-        dataVersionId: dataVersionId(),
-        ontologyVersionId: resource.ontologyContext.publishedSemanticVersionId,
-        bindingId: resource.ontologyContext.authoritativeBindingId,
-        scenarioId: resource.scenarioContext.scenarioId,
-        scenarioRunId: resource.scenarioContext.scenarioRunId,
-      },
+      context: handoffContext,
     };
     closeDrawer();
     if (window.parent !== window) {

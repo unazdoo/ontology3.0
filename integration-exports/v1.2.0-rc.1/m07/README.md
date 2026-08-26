@@ -45,9 +45,9 @@ S005 将 `resource` 改为 `../resources/s005.json`，并将 `scenarioId` 改为
 
 - `sync-breadcrumb`：同步当前 Lens 名称；
 - `navigate-parent-module`：请求宿主打开其他 canonical 模块；
-- `open-m08`：请求宿主把 `context` 适配给 M08，并转到 `#module/m08`。
+- `open-m08`：请求宿主把 `context` 适配给 M08，并转到 `moduleId=modeling`、`route=#module/modeling`。
 
-`open-m08.context` 包含 `objectRef`、`lensRef`、可选 `seriesRef`、`timeRange`、`dataVersionId`、`ontologyVersionId`、`bindingId`、`scenarioId` 和 `scenarioRunId`。M08 返回时，宿主应使用消息中的 `returnUrl` 恢复 M07，并继续保持 `#module/m07`。
+`open-m08` 保持既有 `type=OFW_M07_OPEN_M08`，其 `payload` 与 `context` 相同，包含 `objectRef`、`lensRef`、可选 `seriesRef`、`timeRange`、`dataVersionId`、`ontologyVersionId`、`bindingId`、`scenarioId` 和 `scenarioRunId`。M08 返回时，宿主应使用消息中的 `returnUrl` 恢复 M07，并继续保持 `#module/m07`。
 
 独立打开页面时不会跳转到任何外部 Shell；交接改为本页 `m07:handoff` 事件，便于本地调试。
 

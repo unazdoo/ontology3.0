@@ -49,6 +49,9 @@ test("release and mount identity are fixed", () => {
   assert.equal(manifest.module.moduleId, "m07");
   assert.equal(manifest.module.route, "#module/m07");
   assert.equal(manifest.module.canonicalEntry, "module/workspace-v2.html");
+  assert.equal(manifest.m08Handoff.requestedTargetModuleId, "modeling");
+  assert.equal(manifest.m08Handoff.requestedTargetRoute, "#module/modeling");
+  assert.equal(manifest.m08Handoff.messageType, "OFW_M07_OPEN_M08");
 });
 
 test("Owner workspace is canonical and contains no second Shell", () => {
@@ -60,8 +63,9 @@ test("Owner workspace is canonical and contains no second Shell", () => {
   assert.match(runtime, /const MODULE_ID = "m07"/);
   assert.match(runtime, /const MODULE_ROUTE = "#module\/m07"/);
   assert.match(runtime, /ofw\.m07\.prototype\.handoff\.v1/);
-  assert.match(runtime, /operation: moduleId === "m08" \? "open-m08"/);
-  assert.match(runtime, /m08: "#module\/m08"/);
+  assert.match(runtime, /isModelingHandoff = moduleId === "modeling"/);
+  assert.match(runtime, /modeling: "#module\/modeling"/);
+  assert.match(runtime, /type: "OFW_M07_OPEN_M08"/);
   assert.doesNotMatch(runtime, /platform-shell|window\.parent\.document/);
 });
 
