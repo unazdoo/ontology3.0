@@ -29,7 +29,7 @@
     modules: Object.freeze(["M01", "M02", "M03", "M04", "M05", "M06"]),
     optionalMounts: Object.freeze({
       M07: Object.freeze({
-        routeId: "module/exploration",
+        routeId: "module/m07",
         requiredInput: Object.freeze(["scenarioContext", "objectRef", "dataVersionId", "ontologyVersionId", "asOf", "lensIntent"])
       }),
       M08: Object.freeze({
