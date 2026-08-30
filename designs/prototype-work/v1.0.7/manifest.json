@@ -1,0 +1,30 @@
+{
+  "manifestVersion": 1,
+  "prototypeVersion": "1.0.7",
+  "status": "review-candidate",
+  "generatedAt": "2026-08-18T08:50:00.000Z",
+  "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+  "acceptanceReady": false,
+  "reviewEntry": true,
+  "integrationResult": "15/15",
+  "parentVersion": "1.0.6",
+  "rollbackVersion": "1.0.6",
+  "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "algorithm": "sha256(relativePath\\0fileBytes\\0, sorted recursively)",
+  "runtimeSnapshot": {
+    "path": "runtime-snapshots/S001-RUN-20260816081748567-705ac89fb83a.runtime.json",
+    "sha256": "5f9a9a75d1a9916b20a6758aa9d0285fac4a7eba3f64a1637b8be0ecb0cada18",
+    "originVersion": "1.0.5",
+    "mode": "archived-runtime-restore"
+  },
+  "components": {
+    "six-module-integration": "s001-e2e-integration/index.html",
+    "query-experience": "intelligent-query-prototype/review-next/conversation-workspace/index.html"
+  },
+  "entries": {
+    "review": "completed-run.html",
+    "restore": "open-completed-run.html",
+    "integration": "s001-e2e-integration/index.html"
+  },
+  "note": "15/15 表示恢复的已归档实际运行轮次；本版本提供全链路走查入口，不宣称 v1.0.7 已形成新的运行证据或验收通过。"
+}
