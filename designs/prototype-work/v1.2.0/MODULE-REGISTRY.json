@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "ofw.prototype.module-registry.v1",
+  "targetPrototypeVersion": "v1.2.0-rc.1",
+  "sourceBaseline": {
+    "sourceTag": "prototype-v1.1.0-frozen",
+    "sourceCommit": "a8b023d7f8d49ad6ed6c24417b79b6f9df3fb716",
+    "parentVersion": "v1.1.0",
+    "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+    "referenceMode": "read-only-relative"
+  },
+  "shell": {
+    "count": 1,
+    "owner": "composite-host",
+    "entry": "composite/s001-e2e-integration/index.html",
+    "moduleMountMode": "same-origin-content-frame",
+    "nestedPlatformShellAllowed": false
+  },
+  "moduleOrder": [
+    "M01",
+    "M02",
+    "M03",
+    "M04",
+    "M05",
+    "M06",
+    "M07",
+    "M08",
+    "Dashboard"
+  ],
+  "modules": [
+    {
+      "resourceOwnerId": "M01",
+      "moduleId": "ontology",
+      "name": "本体管理",
+      "route": "#module/ontology",
+      "entry": "../../prototype-releases/v1.1.0/ontology-management-review/canvas-first/index.html",
+      "assetMode": "frozen-relative-reference",
+      "baselineBehavior": "preserve-v1.1.0"
+    },
+    {
+      "resourceOwnerId": "M02",
+      "moduleId": "data",
+      "name": "数据工程",
+      "route": "#module/data",
+      "entry": "../../prototype-releases/v1.1.0/data-engineering-prototype-review/review-v3/方案B2.html",
+      "assetMode": "frozen-relative-reference",
+      "baselineBehavior": "preserve-v1.1.0"
+    },
+    {
+      "resourceOwnerId": "M03",
+      "moduleId": "query",
+      "name": "智能问数",
+      "route": "#module/query",
+      "entry": "../../prototype-releases/v1.1.0/intelligent-query-prototype/review-next/conversation-workspace/index.html",
+      "assetMode": "frozen-relative-reference",
+      "baselineBehavior": "preserve-v1.1.0"
+    },
+    {
+      "resourceOwnerId": "M04",
+      "moduleId": "decision",
+      "name": "决策中心",
+      "route": "#module/decision",
+      "entry": "../../prototype-releases/v1.1.0/decision-center-prototype/review-v2/action-portfolio.html",
+      "assetMode": "frozen-relative-reference",
+      "baselineBehavior": "preserve-v1.1.0"
+    },
+    {
+      "resourceOwnerId": "M05",
+      "moduleId": "agent",
+      "name": "Agent 应用",
+      "route": "#module/agent",
+      "entry": "../../prototype-releases/v1.1.0/agent-application/Agent应用.html",
+      "assetMode": "frozen-relative-reference",
+      "baselineBehavior": "preserve-v1.1.0"
+    },
+    {
+      "resourceOwnerId": "M06",
+      "moduleId": "report",
+      "name": "报告中心",
+      "route": "#module/report",
+      "entry": "../../prototype-releases/v1.1.0/report-center/review-lifecycle/index.html",
+      "assetMode": "frozen-relative-reference",
+      "baselineBehavior": "preserve-v1.1.0"
+    },
+    {
+      "resourceOwnerId": "M07",
+      "moduleId": "m07",
+      "name": "多视图探索",
+      "route": "#module/m07",
+      "entry": "composite/modules/m07/module/workspace-v2.html",
+      "assetMode": "candidate-owned",
+      "canonicalImplementation": "workspace-v2",
+      "secondaryImplementationsAllowed": false
+    },
+    {
+      "resourceOwnerId": "M08",
+      "moduleId": "modeling",
+      "name": "模型与模拟",
+      "route": "#module/modeling",
+      "entry": "composite/modules/modeling/module/content.html",
+      "assetMode": "candidate-owned",
+      "canonicalImplementation": "objective-first-content",
+      "contextSourceModuleId": "m07"
+    },
+    {
+      "resourceOwnerId": "Dashboard",
+      "moduleId": "dashboard",
+      "name": "仪表盘",
+      "route": "#dashboard",
+      "entry": "composite/dashboard/index.html",
+      "sourceEntry": "../../prototype-releases/v1.1.0/dashboard/index.html",
+      "assetMode": "candidate-incremental-overlay",
+      "baselineBehavior": "preserve-v1.1.0-s001-s003",
+      "increment": "S005-post-investment-dashboard"
+    }
+  ],
+  "registrationPolicy": {
+    "routeUniqueness": "required",
+    "moduleIdentityUniqueness": "required",
+    "resourceCatalog": "composite/resources/catalog.js",
+    "scenarioIdUsage": "record-field-and-filter-only",
+    "globalScenarioSwitchRouteAllowed": false,
+    "moduleScenarioLoaderAllowed": false,
+    "resourceEntryMode": "home-directory-auto-context"
+  },
+  "acceptanceReady": false
+}

@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "ofw.s005.research-fixture.v1",
+  "scenarioId": "S005",
+  "scenarioVersion": "S005-v1",
+  "namespace": "ofw.s005.research.v1",
+  "asOf": "2026-07-17",
+  "fixture": true,
+  "sourceSummary": {
+    "snapshotCount": 79,
+    "sheetInstanceCount": 393,
+    "candidateCount": 15,
+    "firstSnapshotDate": "2025-02-21",
+    "lastSnapshotDate": "2026-07-17",
+    "rawIdentitiesIncluded": false
+  },
+  "versionRefs": {
+    "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+    "ontologyVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+    "evaluationInputRef": "S005-EVAL-INPUT-RESEARCH-v1",
+    "modelingObjectiveRef": "MO-S005-POST-INVESTMENT-RESEARCH-v1"
+  },
+  "kpis": [
+    { "label": "评价对象", "value": "15", "unit": "只候选", "tone": "blue" },
+    { "label": "来源快照", "value": "79", "unit": "份", "tone": "blue" },
+    { "label": "符合范围", "value": "3", "unit": "只", "tone": "green" },
+    { "label": "需复核 / 未知", "value": "1 / 1", "unit": "只", "tone": "amber" },
+    { "label": "池内选择差异", "value": "+0.42", "unit": "百分点", "tone": "green" },
+    { "label": "结论状态", "value": "部分评价", "unit": "", "tone": "amber" }
+  ],
+  "marketSeries": {
+    "labels": ["2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07"],
+    "pool": [100, 100.8, 101.6, 102.4, 103.3, 104.1, 105.0],
+    "peerMedian": [100, 100.5, 101.1, 101.8, 102.5, 103.1, 103.8],
+    "peerTopThird": [100, 100.7, 101.4, 102.1, 102.9, 103.6, 104.5],
+    "benchmark": [100, 100.3, 100.8, 101.4, 102.0, 102.6, 103.2]
+  },
+  "selectionSeries": {
+    "labels": ["T+1", "T+5", "T+20", "T+60"],
+    "selected": [100.02, 100.18, 100.63, 101.42],
+    "eligibleUnselected": [100.01, 100.12, 100.42, 101.0],
+    "expectedSpreadPct": 0.42
+  },
+  "products": [
+    {
+      "objectRef": { "id": "PRD-223C00000000A5FB", "objectTypeRef": "InvestmentProduct", "title": "基金 A" },
+      "category": "混合二级债基",
+      "scopeStatus": "需复核",
+      "selectionStatus": "已选",
+      "evidenceStatus": "PARTIAL"
+    },
+    {
+      "objectRef": { "id": "PRD-40A100000000B2C7", "objectTypeRef": "InvestmentProduct", "title": "基金 B" },
+      "category": "中长期纯债基金",
+      "scopeStatus": "符合范围",
+      "selectionStatus": "未选",
+      "evidenceStatus": "COMPLETE"
+    },
+    {
+      "objectRef": { "id": "PRD-62D200000000C1A9", "objectTypeRef": "InvestmentProduct", "title": "基金 C" },
+      "category": "混合一级债基",
+      "scopeStatus": "无法判断",
+      "selectionStatus": "已选",
+      "evidenceStatus": "INSUFFICIENT_HISTORY"
+    },
+    {
+      "objectRef": { "id": "PRD-843300000000D4E2", "objectTypeRef": "InvestmentProduct", "title": "基金 D" },
+      "category": "短期纯债基金",
+      "scopeStatus": "符合范围",
+      "selectionStatus": "未选",
+      "evidenceStatus": "COMPLETE"
+    },
+    {
+      "objectRef": { "id": "PRD-A60400000000E8D1", "objectTypeRef": "InvestmentProduct", "title": "基金 E" },
+      "category": "利率债",
+      "scopeStatus": "符合范围",
+      "selectionStatus": "已选",
+      "evidenceStatus": "COMPLETE"
+    }
+  ],
+  "riskLamps": [
+    { "label": "合规 / 范围", "state": "需复核", "tone": "amber", "detail": "事件影响期待人工确认" },
+    { "label": "数据质量", "state": "部分", "tone": "amber", "detail": "日 NAV 与现金流待接入" },
+    { "label": "信用 / 久期", "state": "无法判断", "tone": "gray", "detail": "穿透和评级证据不足" },
+    { "label": "集中度", "state": "正常", "tone": "green", "detail": "研究夹具未见超范围" }
+  ]
+}

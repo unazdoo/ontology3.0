@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="M07 多视图探索工作区：对象目录、对象全貌、关系网络、时序与空间。">
+  <title>多视图探索工作区 · 智财问策</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="vendor/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
+  <link rel="stylesheet" href="workspace-v2.css">
+</head>
+<body>
+  <div id="m07-workspace" class="m07-workspace" aria-busy="true" data-screen-label="M07 多视图探索工作区">
+    <header class="exploration-toolbar">
+      <div class="scene-identity">
+        <span class="scene-icon" aria-hidden="true"><i data-lucide="scan-search"></i></span>
+        <div>
+          <span id="scenario-kicker" class="toolbar-kicker">M07 · 只读探索</span>
+          <strong id="scenario-name">多视图探索</strong>
+        </div>
+      </div>
+      <div id="trust-summary" class="trust-summary" aria-label="当前读取上下文"></div>
+      <div class="toolbar-actions">
+        <button id="mobile-objects" class="tool-button mobile-only" type="button" title="选择对象" aria-label="选择对象">
+          <i data-lucide="panel-left-open"></i>
+        </button>
+        <button id="permission-button" class="tool-button role-button" type="button" title="权限验证" aria-label="打开权限验证">
+          <i data-lucide="shield-check"></i><span id="role-label">研究分析员</span>
+        </button>
+        <button id="copy-deep-link" class="tool-button" type="button" title="复制当前探索链接" aria-label="复制当前探索链接">
+          <i data-lucide="link"></i><span class="desktop-label">复制链接</span>
+        </button>
+        <button id="use-object-button" class="tool-button primary" type="button" aria-label="使用此对象">
+          <i data-lucide="send"></i><span>使用此对象</span>
+        </button>
+        <button id="mobile-context" class="tool-button mobile-only" type="button" title="查看上下文" aria-label="查看上下文">
+          <i data-lucide="panel-right-open"></i>
+        </button>
+      </div>
+    </header>
+
+    <nav id="lens-nav" class="lens-nav" aria-label="探索视图"></nav>
+
+    <section id="selection-bar" class="selection-bar" aria-label="当前对象"></section>
+
+    <div id="workspace-grid" class="workspace-grid">
+      <aside id="object-pane" class="object-pane workspace-pane" aria-label="对象选择">
+        <header class="pane-header">
+          <div><span class="pane-kicker">对象</span><h2>选择分析对象</h2></div>
+          <span id="object-count" class="count-label">0</span>
+          <button class="icon-button pane-close mobile-only" type="button" data-close-pane="object" title="关闭" aria-label="关闭对象选择"><i data-lucide="x"></i></button>
+        </header>
+        <div class="object-controls">
+          <label class="search-control">
+            <i data-lucide="search"></i>
+            <input id="object-search" type="search" placeholder="搜索名称、类型或稳定 ID" autocomplete="off" aria-label="搜索对象">
+            <button id="clear-search" type="button" title="清除搜索" aria-label="清除搜索"><i data-lucide="x"></i></button>
+          </label>
+          <div class="filter-grid">
+            <label><span>对象类型</span><select id="type-filter" aria-label="对象类型"></select></label>
+            <label><span>质量状态</span><select id="quality-filter" aria-label="质量状态">
+              <option value="all">全部质量</option>
+              <option value="passed">质量通过</option>
+              <option value="warning">质量警告</option>
+              <option value="blocked">质量阻断</option>
+            </select></label>
+          </div>
+          <label class="sort-control"><span>排序</span><select id="sort-select" aria-label="对象排序">
+            <option value="title">按名称</option>
+            <option value="type">按类型</option>
+            <option value="quality">按质量</option>
+          </select></label>
+        </div>
+        <div id="object-list" class="object-list" role="listbox" aria-label="可见对象"></div>
+      </aside>
+
+      <main class="primary-pane workspace-pane" tabindex="-1">
+        <header id="view-header" class="view-header"></header>
+        <section id="view-stage" class="view-stage" data-screen-label="M07 当前探索视图"></section>
+      </main>
+
+      <aside id="context-pane" class="context-pane workspace-pane" aria-label="探索上下文和后续操作">
+        <header class="pane-header">
+          <div><span class="pane-kicker">上下文</span><h2>当前选择</h2></div>
+          <button class="icon-button pane-close mobile-only" type="button" data-close-pane="context" title="关闭" aria-label="关闭上下文"><i data-lucide="x"></i></button>
+        </header>
+        <div id="context-content" class="context-content"></div>
+      </aside>
+    </div>
+  </div>
+
+  <div id="drawer-backdrop" class="drawer-backdrop" hidden></div>
+  <aside id="action-drawer" class="action-drawer" aria-hidden="true" aria-label="上下文操作"></aside>
+  <div id="toast-area" class="toast-area" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="vendor/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"></script>
+  <script src="vendor/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
+  <script src="vendor/lucide.min.js"></script>
+  <script src="core.js"></script>
+  <script src="workspace-v2.js"></script>
+</body>
+</html>

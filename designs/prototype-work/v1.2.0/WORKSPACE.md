@@ -11,7 +11,7 @@
 - 底座提交：`a8b023d7f8d49ad6ed6c24417b79b6f9df3fb716`
 - 父版本：`v1.1.0`
 - 基线快照：`BSL-OFW-V110-94ABD0E991B7`
-- 状态：三个最小交付包已核验并汇入，待物化总装入口
+- 状态：唯一总装候选入口已物化；品牌与首页保持 v1.1.0 基线，Dashboard 以候选增量方式加入 S005，并完成当前候选回归
 - `acceptanceReady = false`
 
 冻结目录 `designs/prototype-releases/v1.1.0/` 仅作只读来源，不得原地修改。
@@ -46,5 +46,11 @@
 ## 当前门禁
 
 当前只要求最小原型门：包可移植、单一入口、无双层 Shell、身份一致、主要流程可点击、重置隔离、页面和控制台无新增错误。生产安全、权限、性能、审批和验收证据不作为本轮总装前置门。
+
+当前唯一入口为 `composite/s001-e2e-integration/index.html`；执行证据登记在 `COMPOSITE-REGRESSION-MATRIX.json` 与 `composite/evidence/browser-regression.json`。
+
+当前 Dashboard 入口为 `composite/dashboard/index.html`：前三个业务驾驶舱保持冻结基线数据与交互，S005 作为第四个投后评价驾驶舱进入同一目录。它不是第二套平台 Shell。
+
+模块页不提供额外的场景资源装载器。五场景资源只在首页统一目录中按业务属性检索；选择资源后由宿主自动携带上下文进入对应模块。
 
 总装候选完成不等于模块评审、场景验收、生产技术联调或一期验收通过。

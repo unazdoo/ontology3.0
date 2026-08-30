@@ -1,0 +1,216 @@
+{
+  "schemaVersion": "ofw.prototype.browser-regression.v1",
+  "candidateVersion": "v1.2.0-rc.1",
+  "observedAt": "2026-08-29T08:54:35Z",
+  "entry": "http://127.0.0.1:4342/designs/prototype-work/v1.2.0/composite/s001-e2e-integration/index.html#home",
+  "services": {
+    "static": "http://127.0.0.1:4342",
+    "modeling": "http://127.0.0.1:4359",
+    "modelingHealthStatus": 200
+  },
+  "routeCoverage": {
+    "routes": [
+      "#home",
+      "#module/ontology",
+      "#module/data",
+      "#module/query",
+      "#module/decision",
+      "#module/agent",
+      "#module/report",
+      "#module/m07",
+      "#module/modeling",
+      "#dashboard"
+    ],
+    "meaningfulContent": 10,
+    "outerShellCount": 1,
+    "outerGlobalNavigationCount": 1,
+    "visibleNestedGlobalNavigationCount": 0,
+    "moduleScenarioLoaderCount": 0,
+    "result": "passed"
+  },
+  "moduleEntry": {
+    "resourceEntryMode": "home-directory-auto-context",
+    "moduleScenarioLoaderCount": 0,
+    "moduleScenarioLoaderActionCount": 0,
+    "iframeCount": 1,
+    "desktopContentOffsetPx": 38,
+    "mobileContentOffsetPx": 36,
+    "desktopOuterHorizontalOverflow": 0,
+    "mobileOuterHorizontalOverflow": 0,
+    "applicationErrors": 0,
+    "automaticContextEntryPreserved": true,
+    "result": "passed"
+  },
+  "viewports": [
+    {
+      "size": "1440x900",
+      "routesChecked": 10,
+      "blankPages": 0,
+      "outerHorizontalOverflows": 0,
+      "iframeHorizontalOverflows": 0,
+      "clippedCommandButtons": 0,
+      "result": "passed"
+    },
+    {
+      "size": "1280x720",
+      "routesChecked": 10,
+      "blankPages": 0,
+      "outerHorizontalOverflows": 0,
+      "iframeHorizontalOverflows": 0,
+      "clippedCommandButtons": 0,
+      "result": "passed"
+    },
+    {
+      "size": "390x844",
+      "routesChecked": 10,
+      "blankPages": 0,
+      "outerHorizontalOverflows": 0,
+      "iframeHorizontalOverflows": 0,
+      "clippedCommandButtons": 0,
+      "bottomNavigationOverlap": 0,
+      "result": "passed"
+    }
+  ],
+  "resourceCatalog": {
+    "registeredResources": 45,
+    "modules": 9,
+    "scenarios": 5,
+    "businessFilterObserved": "module=m07, scenarioId=S005, query=投后",
+    "matchingResources": 1,
+    "unregisteredScenarioObserved": "S002 M07",
+    "crossScenarioFallbackObserved": false,
+    "result": "passed"
+  },
+  "baselineParity": {
+    "sourceEntry": "../../prototype-releases/v1.1.0/s001-e2e-integration/index.html",
+    "brandAssetExact": true,
+    "brandMotionPreserved": true,
+    "homeSkeletonPreserved": true,
+    "homeHeading": "从可信数据到可追溯行动",
+    "domainCount": 3,
+    "moduleChainCount": 8,
+    "scenarioCount": 5,
+    "s005InitialProgress": "0/7",
+    "unifiedResourcePanelPosition": "after-baseline-home",
+    "viewports": [
+      "1440x900",
+      "1280x720",
+      "390x844"
+    ],
+    "result": "passed"
+  },
+  "dashboardS005": {
+    "sourceEntry": "../../prototype-releases/v1.1.0/dashboard/index.html",
+    "candidateEntry": "composite/dashboard/index.html",
+    "directoryCount": 4,
+    "baselineDashboardIds": [
+      "financing",
+      "budget",
+      "risk"
+    ],
+    "scenarioId": "S005",
+    "scenarioVersion": "S005-v1",
+    "status": "部分评价",
+    "routes": [
+      "overview",
+      "products",
+      "market",
+      "selection"
+    ],
+    "productCount": 5,
+    "marketSeriesCount": 4,
+    "selectionSeriesCount": 2,
+    "nestedPlatformShellCount": 0,
+    "viewports": [
+      "1440x900",
+      "1280x720",
+      "390x844"
+    ],
+    "result": "passed"
+  },
+  "handoff": {
+    "path": "S005 -> M07 -> M08 -> M07",
+    "identityFieldsExact": true,
+    "identityDriftObserved": false,
+    "objectRef": {
+      "id": "PRD-223C00000000A5FB",
+      "objectTypeRef": "InvestmentProduct",
+      "title": "基金 A"
+    },
+    "lensBefore": "temporal",
+    "lensAfter": "temporal",
+    "objectRestored": true,
+    "returnPositionRestored": "scroll:0",
+    "seriesRef": null,
+    "missingSeriesState": "SERIES_INPUT_UNAVAILABLE",
+    "crossObjectSeriesFallbackObserved": false,
+    "returnedToM07": true,
+    "returnMode": "context-recovery-from-unavailable-state",
+    "result": "passed"
+  },
+  "navigationState": {
+    "refreshRoutes": [
+      "#home",
+      "#module/ontology",
+      "#module/m07",
+      "#module/modeling"
+    ],
+    "hashRestored": 4,
+    "scenarioContextRestored": 4,
+    "moduleContentRestored": 3,
+    "historyForwardPath": [
+      "#home",
+      "#module/m07",
+      "#module/modeling",
+      "#module/m07"
+    ],
+    "historyBackSequence": [
+      "#module/modeling",
+      "#module/m07",
+      "#home"
+    ],
+    "historyForwardSequence": [
+      "#module/m07",
+      "#module/modeling",
+      "#module/m07"
+    ],
+    "currentDeepLinksRechecked": 10,
+    "routingLogicChangedByParityCorrection": false,
+    "priorHistoryReplayObservedAt": "2026-08-27T15:33:39Z",
+    "result": "passed"
+  },
+  "resetIsolation": {
+    "browserBoundaryCopyObserved": true,
+    "browserBoundaryCopy": "只重置当前 S005 轮次；S001-S004 和其他模块记录不会被修改",
+    "behavioralTest": "node --test composite/s001-e2e-integration/state.contract.test.mjs",
+    "behavioralTestsPassed": 4,
+    "archivedScenariosChanged": 0,
+    "result": "passed"
+  },
+  "runtimeErrors": {
+    "consoleErrors": 0,
+    "consoleWarnings": 0,
+    "pageErrorOverlays": 0,
+    "failedResourceRequests": 0,
+    "externalMapRequests": 0,
+    "result": "passed"
+  },
+  "browserToolingNote": {
+    "knownObserverInjectionMessages": 1,
+    "signature": "MutationObserver.observe parameter 1 is not of type Node",
+    "applicationErrorCaptureCount": 0,
+    "excludedFromApplicationRuntimeCount": true
+  },
+  "screenshots": [
+    "composite/evidence/screenshots/home-1440x900.png",
+    "composite/evidence/screenshots/home-1280x720.png",
+    "composite/evidence/screenshots/home-390x844.png",
+    "composite/evidence/screenshots/m01-1280x720.png",
+    "composite/evidence/screenshots/m07-390x844.png",
+    "composite/evidence/screenshots/m08-1440x900.png",
+    "composite/evidence/screenshots/m08-390x844.png",
+    "composite/evidence/screenshots/dashboard-s005-1440x900.png",
+    "composite/evidence/screenshots/dashboard-s005-390x844.png"
+  ],
+  "acceptanceReady": false
+}

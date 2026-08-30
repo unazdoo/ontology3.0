@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "ofw.prototype.contract-change-requests.v1",
+  "targetPrototypeVersion": "v1.2.0-rc.1",
+  "status": "CANDIDATE_ADAPTER_IMPLEMENTED_PENDING_GOVERNANCE",
+  "acceptanceReady": false,
+  "registeredOn": "2026-08-27",
+  "implementedOn": "2026-08-27",
+  "sourceBaseline": {
+    "version": "v1.1.0",
+    "tag": "prototype-v1.1.0-frozen",
+    "commit": "a8b023d7f8d49ad6ed6c24417b79b6f9df3fb716",
+    "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7"
+  },
+  "requests": [
+    {
+      "id": "CR-V120-001",
+      "status": "CANDIDATE_ADAPTER_IMPLEMENTED_PENDING_GOVERNANCE",
+      "severity": "assembly-blocker",
+      "type": "cross-module-contract",
+      "title": "Unify the authoritative M07 to M08 scenario identity and return context",
+      "owners": ["M07", "M08", "S005", "Composite"],
+      "conflicts": [
+        "M07 OFW_M07_OPEN_M08 payload omits scenarioVersion and formedAt, while M08 requires both and rejects the actual payload.",
+        "M07 S005 resource carries S005-research-v1 and a fixed validation run id, while the canonical S005 contract requires S005-v1 and a newly formed S005-RUN identity.",
+        "The M07 manifest requires immutable forwarding of message.context, so reconstructing the identity in the host is a contract revision rather than a route-only adapter.",
+        "M07 writes a return position but does not read it back, and it always hands off the first series instead of the selected series."
+      ],
+      "evidence": [
+        "integration-exports/v1.2.0-rc.1/m07/module/workspace-v2.js:913",
+        "integration-exports/v1.2.0-rc.1/m07/module/workspace-v2.js:923",
+        "integration-exports/v1.2.0-rc.1/m07/INTEGRATION-MANIFEST.json:85",
+        "integration-exports/v1.2.0-rc.1/m07/INTEGRATION-MANIFEST.json:103",
+        "integration-exports/v1.2.0-rc.1/m07/resources/s005.json:5",
+        "integration-exports/v1.2.0-rc.1/m08/INTEGRATION-MANIFEST.json:39",
+        "integration-exports/v1.2.0-rc.1/m08/bridge/m07-m08-bridge.js:21",
+        "integration-exports/v1.2.0-rc.1/m08/module/content.js:232",
+        "integration-exports/v1.2.0-rc.1/s005/scenario-adapter.js:53"
+      ],
+      "requiredDecision": "Revise the handoff contract so the Composite host may retain the M07 business context while replacing its scenario identity with the active five-field authoritative scenarioContext, then freeze and validate the normalized payload before M08 delivery.",
+      "candidateImplementation": "The composite candidate implements a technical adapter in which M07 accepts the host five-field context, the host validates and freezes the normalized payload, selected series is preferred, and the exact return URL and position are restored. This is not a user or platform contract approval.",
+      "resolutionEvidence": [
+        "composite/tests/m07-m08-runtime.test.mjs",
+        "composite/modules/m07/tests/contracts.test.mjs",
+        "composite/modules/modeling/test/static-contract.test.mjs",
+        "composite/evidence/browser-regression.json#handoff"
+      ],
+      "minimumClosure": [
+        "The actual M07 runtime payload includes or explicitly permits host normalization of scenarioVersion, scenarioRunId, formedAt and status.",
+        "S005 M07 mount uses S005-v1 and the current S005-RUN identity without copying the fixed validation run id.",
+        "M07 selected series and exact return URL, lens, object and scroll position survive M07 to M08 to M07.",
+        "A cross-package test executes the actual M07 payload through M08 acceptM07Open for S005."
+      ]
+    },
+    {
+      "id": "CR-V120-002",
+      "status": "CANDIDATE_ADAPTER_IMPLEMENTED_PENDING_GOVERNANCE",
+      "severity": "assembly-blocker",
+      "type": "cross-module-capability-contract",
+      "title": "Register an S005 InvestmentProduct objective in the M08 runtime catalog",
+      "owners": ["M08", "S005", "Composite"],
+      "conflicts": [
+        "S005 requires an M08 modelingObjectiveRef and an InvestmentProduct input, but the M08 runtime objective catalog contains no S005 objective and returns no compatible objective for InvestmentProduct.",
+        "The M08 validation fixture declares MO-S005-POST-INVESTMENT-RESEARCH-v1, while the S005 package declares S005-POST-INVESTMENT-EVALUATION-RESEARCH-v1; neither value is registered in the API catalog consumed by the M08 workspace.",
+        "S005 uses PREDICTED and SIMULATED result kinds while M08 emits PREDICTION and SIMULATION.",
+        "The M08 workspace falls back to S001 case-study objects and series when an S005 handoff cannot resolve a compatible objective, which would replace rather than preserve the S005 context."
+      ],
+      "evidence": [
+        "integration-exports/v1.2.0-rc.1/s005/scenario-config.js:35",
+        "integration-exports/v1.2.0-rc.1/s005/resources/s005-research-fixture.json:11",
+        "integration-exports/v1.2.0-rc.1/m08/validation/fixtures/s005-synthetic.v1.json:16",
+        "integration-exports/v1.2.0-rc.1/m08/validation/src/objective-registry.mjs:62",
+        "integration-exports/v1.2.0-rc.1/m08/validation/src/objective-registry.mjs:377",
+        "integration-exports/v1.2.0-rc.1/m08/module/content.js:232",
+        "integration-exports/v1.2.0-rc.1/m08/module/content.js:395",
+        "integration-exports/v1.2.0-rc.1/m08/module/content.js:460"
+      ],
+      "requiredDecision": "Choose one canonical S005 modeling objective id and one result-kind vocabulary, register the objective as compatible with InvestmentProduct, and adapt the M08 workspace to render its S005 inputs and result envelope instead of the S001 case-study defaults.",
+      "candidateImplementation": "The composite candidate uses MO-S005-POST-INVESTMENT-RESEARCH-v1 with PREDICTION and SIMULATION, filters objectives by the active scenario, and returns an unavailable state rather than another scenario or object's input. This is not a user or platform contract approval.",
+      "resolutionEvidence": [
+        "composite/modules/modeling/validation/src/objective-registry.mjs",
+        "composite/modules/modeling/test/static-contract.test.mjs",
+        "composite/evidence/browser-regression.json#handoff"
+      ],
+      "minimumClosure": [
+        "The M08 objective catalog includes S005 and returns at least one compatible objective for InvestmentProduct with useKind=SIMULATION.",
+        "The S005 M07 handoff resolves to that objective without a compatibility error.",
+        "An incompatible or missing S005 input produces an unavailable-input state and never falls back to an S001 object or series.",
+        "The returned inputManifest and resultEnvelope retain the exact active S005 identity and do not write facts or overwrite archived scenario state."
+      ]
+    }
+  ]
+}

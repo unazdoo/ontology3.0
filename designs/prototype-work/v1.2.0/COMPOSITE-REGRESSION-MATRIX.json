@@ -1,0 +1,327 @@
+{
+  "schemaVersion": "ofw.composite-regression.v3",
+  "candidateVersion": "v1.2.0-rc.1",
+  "uniqueEntry": "composite/s001-e2e-integration/index.html",
+  "recommendedReviewUrl": "http://127.0.0.1:4342/designs/prototype-work/v1.2.0/composite/s001-e2e-integration/index.html#home",
+  "runStatus": "passed",
+  "acceptanceReady": false,
+  "statusVocabulary": [
+    "pending",
+    "running",
+    "passed",
+    "failed",
+    "blocked"
+  ],
+  "evidencePolicy": "A case may be marked passed only after its command or browser steps were executed against the current artifact inventory.",
+  "cases": [
+    {
+      "id": "CRG-001",
+      "area": "entry-and-routing",
+      "requirement": "首页、M01 至 M08 和仪表盘均可从唯一入口进入",
+      "method": "browser",
+      "viewports": [
+        "1440x900",
+        "1280x720",
+        "390x844"
+      ],
+      "status": "passed",
+      "observedAt": "2026-08-29T08:54:35Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#routeCoverage",
+        "composite/evidence/screenshots/home-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-002",
+      "area": "single-shell",
+      "requirement": "所有模块由同一平台 Shell 挂载，页面不存在双层平台导航或模块级场景资源装载器",
+      "method": "static-and-browser",
+      "viewports": [
+        "1440x900",
+        "390x844"
+      ],
+      "status": "passed",
+      "observedAt": "2026-08-29T08:54:35Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#routeCoverage",
+        "node composite/tests/verify-candidate.mjs"
+      ]
+    },
+    {
+      "id": "CRG-003",
+      "area": "module-contract",
+      "requirement": "M07 固定为 m07 / #module/m07 / workspace-v2，M08 固定为 M08 / modeling / #module/modeling",
+      "method": "static",
+      "command": "node composite/tests/verify-candidate.mjs",
+      "status": "passed",
+      "observedAt": "2026-08-29T08:54:35Z",
+      "evidence": [
+        "node composite/tests/verify-candidate.mjs",
+        "MODULE-REGISTRY.json"
+      ]
+    },
+    {
+      "id": "CRG-004",
+      "area": "resource-catalog",
+      "requirement": "S001 至 S005 的资源在 M01 至 M08 和仪表盘的统一目录中按业务属性筛选，复合键不冲突",
+      "method": "static-and-browser",
+      "status": "passed",
+      "observedAt": "2026-08-29T08:54:35Z",
+      "evidence": [
+        "node --test composite/resources/catalog.test.mjs",
+        "composite/evidence/browser-regression.json#resourceCatalog"
+      ]
+    },
+    {
+      "id": "CRG-005",
+      "area": "archived-identity",
+      "requirement": "S001 至 S004 的版本、历史 scenarioRunId、formedAt 和 completed 状态保持只读且不被覆盖",
+      "method": "static-behavioral",
+      "command": "node composite/tests/verify-candidate.mjs",
+      "status": "passed",
+      "observedAt": "2026-08-29T08:54:35Z",
+      "evidence": [
+        "node --test composite/s001-e2e-integration/state.contract.test.mjs",
+        "SCENARIO-REGISTRY.json#archivedIdentityProtection"
+      ]
+    },
+    {
+      "id": "CRG-006",
+      "area": "handoff",
+      "requirement": "S005 从 M07 进入 M08 并返回 M07 后，五字段场景身份、对象、时间范围和读取位置一致",
+      "method": "browser",
+      "status": "passed",
+      "observedAt": "2026-08-29T08:54:35Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#handoff",
+        "node --test composite/tests/m07-m08-runtime.test.mjs"
+      ]
+    },
+    {
+      "id": "CRG-007",
+      "area": "handoff-contract",
+      "requirement": "M07、宿主和 M08 对 scenarioId、scenarioVersion、scenarioRunId、formedAt、status 执行精确匹配",
+      "method": "static-behavioral",
+      "command": "node composite/tests/verify-candidate.mjs",
+      "status": "passed",
+      "observedAt": "2026-08-29T08:54:35Z",
+      "evidence": [
+        "node --test composite/tests/m07-m08-runtime.test.mjs",
+        "node --test composite/modules/modeling/test/static-contract.test.mjs"
+      ]
+    },
+    {
+      "id": "CRG-008",
+      "area": "refresh",
+      "requirement": "在首页、M07、M08 和任一冻结模块刷新后恢复当前路由、场景与模块上下文",
+      "method": "browser",
+      "status": "passed",
+      "observedAt": "2026-08-29T08:54:35Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#navigationState"
+      ]
+    },
+    {
+      "id": "CRG-009",
+      "area": "history",
+      "requirement": "浏览器后退和前进按历史顺序恢复首页、M07、M08 与返回后的 M07",
+      "method": "browser",
+      "status": "passed",
+      "observedAt": "2026-08-29T08:54:35Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#navigationState"
+      ]
+    },
+    {
+      "id": "CRG-010",
+      "area": "deep-link",
+      "requirement": "#home、八个 #module 路由和 #dashboard 深链均落到对应工作区",
+      "method": "browser",
+      "routes": [
+        "#home",
+        "#module/ontology",
+        "#module/data",
+        "#module/query",
+        "#module/decision",
+        "#module/agent",
+        "#module/report",
+        "#module/m07",
+        "#module/modeling",
+        "#dashboard"
+      ],
+      "status": "passed",
+      "observedAt": "2026-08-29T08:54:35Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#routeCoverage"
+      ]
+    },
+    {
+      "id": "CRG-011",
+      "area": "reset-isolation",
+      "requirement": "重置当前 S005 只生成新的 S005 scenarioRunId、封存上一轮并清除该轮交接，不触碰 S001 至 S004",
+      "method": "static-behavioral-and-browser",
+      "command": "node composite/tests/verify-candidate.mjs",
+      "status": "passed",
+      "observedAt": "2026-08-29T08:54:35Z",
+      "evidence": [
+        "node --test composite/s001-e2e-integration/state.contract.test.mjs",
+        "composite/evidence/browser-regression.json#resetIsolation"
+      ]
+    },
+    {
+      "id": "CRG-012",
+      "area": "viewport-1440",
+      "requirement": "1440x900 下首页、九个工作区和关键抽屉无横向溢出或内容遮挡",
+      "method": "browser",
+      "viewport": "1440x900",
+      "status": "passed",
+      "observedAt": "2026-08-29T08:54:35Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#viewports/0",
+        "composite/evidence/screenshots/home-1440x900.png",
+        "composite/evidence/screenshots/m08-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-013",
+      "area": "viewport-1280",
+      "requirement": "1280x720 下首页、九个工作区和关键抽屉无横向溢出或内容遮挡",
+      "method": "browser",
+      "viewport": "1280x720",
+      "status": "passed",
+      "observedAt": "2026-08-29T08:54:35Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#viewports/1",
+        "composite/evidence/screenshots/home-1280x720.png",
+        "composite/evidence/screenshots/m01-1280x720.png"
+      ]
+    },
+    {
+      "id": "CRG-014",
+      "area": "viewport-mobile",
+      "requirement": "390x844 下导航、目录、模块内容和交接操作可用且无横向溢出",
+      "method": "browser",
+      "viewport": "390x844",
+      "status": "passed",
+      "observedAt": "2026-08-29T08:54:35Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#viewports/2",
+        "composite/evidence/screenshots/home-390x844.png",
+        "composite/evidence/screenshots/m07-390x844.png",
+        "composite/evidence/screenshots/m08-390x844.png"
+      ]
+    },
+    {
+      "id": "CRG-015",
+      "area": "runtime-errors",
+      "requirement": "三档视口走查期间控制台错误、页面错误和失败资源请求均为 0",
+      "method": "browser-instrumentation",
+      "expected": {
+        "consoleErrors": 0,
+        "pageErrors": 0,
+        "failedResourceRequests": 0
+      },
+      "status": "passed",
+      "observedAt": "2026-08-29T08:54:35Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#runtimeErrors"
+      ]
+    },
+    {
+      "id": "CRG-016",
+      "area": "frozen-integrity",
+      "requirement": "v1.1.0 冻结目录相对 sourceCommit 无已跟踪或未跟踪变化",
+      "method": "static",
+      "command": "node composite/tests/verify-candidate.mjs",
+      "status": "passed",
+      "observedAt": "2026-08-29T08:54:35Z",
+      "evidence": [
+        "node designs/prototype-releases/verify-release.mjs 1.1.0",
+        "node designs/scenario-checkpoints/baselines/v1.1.0/verify-baseline.mjs"
+      ]
+    },
+    {
+      "id": "CRG-017",
+      "area": "portability",
+      "requirement": "候选只使用可解析相对资产引用，不含符号链接、绝对文件系统绑定或冻结目录副本",
+      "method": "static",
+      "command": "node composite/tests/verify-candidate.mjs",
+      "status": "passed",
+      "observedAt": "2026-08-29T08:54:35Z",
+      "evidence": [
+        "node composite/tests/verify-candidate.mjs",
+        "COMPOSITE-MANIFEST.json#composition"
+      ]
+    },
+    {
+      "id": "CRG-018",
+      "area": "visible-copy",
+      "requirement": "产品可见文本不暴露内部制作标签；M08 的正式模块名和业务结果类型按注册合同保留",
+      "method": "static-and-browser",
+      "status": "passed",
+      "observedAt": "2026-08-29T08:54:35Z",
+      "evidence": [
+        "node composite/tests/verify-candidate.mjs",
+        "composite/evidence/browser-regression.json#routeCoverage"
+      ]
+    },
+    {
+      "id": "CRG-019",
+      "area": "state-boundaries",
+      "requirement": "配置、候选资源、当前运行数据和正式结果保持分离，候选包不包含运行快照或正式结果",
+      "method": "static",
+      "command": "node composite/tests/verify-candidate.mjs",
+      "status": "passed",
+      "observedAt": "2026-08-29T08:54:35Z",
+      "evidence": [
+        "COMPOSITE-MANIFEST.json#stateSeparation",
+        "node composite/tests/verify-candidate.mjs"
+      ]
+    },
+    {
+      "id": "CRG-020",
+      "area": "baseline-shell-home-parity",
+      "requirement": "品牌脑网络标识、首页三能力域架构、领域详情和信息层级保持 v1.1.0 基线，M07、M08 与 S005 只作增量扩展",
+      "method": "static-and-browser",
+      "viewports": [
+        "1440x900",
+        "1280x720",
+        "390x844"
+      ],
+      "status": "passed",
+      "evidence": [
+        "node --test composite/s001-e2e-integration/baseline-parity.test.mjs",
+        "composite/evidence/browser-regression.json#baselineParity",
+        "composite/evidence/screenshots/home-1440x900.png",
+        "composite/evidence/screenshots/home-390x844.png"
+      ],
+      "observedAt": "2026-08-29T08:54:35Z"
+    },
+    {
+      "id": "CRG-021",
+      "area": "dashboard-s005-integration",
+      "requirement": "仪表盘保留 S001 至 S003 基线并在同一目录真实提供 S005 概览、产品、市场横评和选择证据视图",
+      "method": "static-and-browser",
+      "viewports": [
+        "1440x900",
+        "1280x720",
+        "390x844"
+      ],
+      "status": "passed",
+      "evidence": [
+        "node --test composite/dashboard/dashboard.contract.test.mjs",
+        "composite/evidence/browser-regression.json#dashboardS005",
+        "composite/evidence/screenshots/dashboard-s005-1440x900.png",
+        "composite/evidence/screenshots/dashboard-s005-390x844.png"
+      ],
+      "observedAt": "2026-08-29T08:54:35Z"
+    }
+  ],
+  "runSummary": {
+    "passed": 21,
+    "failed": 0,
+    "blocked": 0,
+    "pending": 0,
+    "lastObservedAt": "2026-08-29T08:54:35Z"
+  }
+}

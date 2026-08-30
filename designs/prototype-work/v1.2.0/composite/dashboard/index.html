@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <link rel="icon" href="data:,">
+    <title>智财问策 · 仪表盘</title>
+    <script>
+      window.__OFW_RUNTIME_ERRORS__ = [];
+      window.__OFW_FAILED_RESOURCES__ = [];
+      window.addEventListener("error", function (event) {
+        var target = event.target;
+        if (target && target !== window && (target.src || target.href)) {
+          window.__OFW_FAILED_RESOURCES__.push(String(target.src || target.href));
+          return;
+        }
+        window.__OFW_RUNTIME_ERRORS__.push(String(event.message || event.error || "window error"));
+      }, true);
+      window.addEventListener("unhandledrejection", function (event) {
+        window.__OFW_RUNTIME_ERRORS__.push(String(event.reason || "unhandled rejection"));
+      });
+    </script>
+    <link rel="stylesheet" href="styles.css?v=20260828-01">
+  </head>
+  <body>
+    <div id="app" class="boot">正在读取仪表盘</div>
+    <div id="toast-root" aria-live="polite"></div>
+    <script src="../../../../prototype-releases/v1.1.0/report-center/review-lifecycle/vendor/lucide.min.js"></script>
+    <script src="../../../../prototype-releases/v1.1.0/report-center/review-lifecycle/portfolio-integration.js?v=20260822-01"></script>
+    <script src="../../../../prototype-releases/v1.1.0/scenarios/s003/domain/score-engine.js?v=20260823-01"></script>
+    <script src="data.js?v=20260828-01"></script>
+    <script src="app.js?v=20260828-01"></script>
+  </body>
+</html>

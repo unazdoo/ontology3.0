@@ -1,8 +1,9 @@
 {
   "schemaVersion": "ofw.prototype.package-verification.v1",
-  "verifiedOn": "2026-08-27",
+  "verifiedOn": "2026-08-29",
   "targetPrototypeVersion": "v1.2.0-rc.1",
   "result": "PASSED",
+  "acceptanceReady": false,
   "sourceBaseline": {
     "version": "v1.1.0",
     "tag": "prototype-v1.1.0-frozen",
@@ -59,7 +60,30 @@
       "OFW_M08_DELIVER_CONTEXT",
       "OFW_M08_RETURN_TO_M07"
     ],
-    "result": "PASSED"
+    "result": "PASSED_WITH_CANDIDATE_ADAPTER_PENDING_GOVERNANCE",
+    "changeRequests": ["CR-V120-001", "CR-V120-002"],
+    "resolutionEvidence": [
+      "Candidate M07 and host normalize the exact five-field active scenario context before M08 delivery.",
+      "Candidate M07 maps the five S005 products to canonical InvestmentProduct PRD references and never reuses its source validation run id.",
+      "Candidate M08 registers MO-S005-POST-INVESTMENT-RESEARCH-v1 and uses PREDICTION and SIMULATION result kinds.",
+      "Missing or incompatible inputs produce an unavailable state with no S001 or cross-object fallback.",
+      "Browser regression restores the same object, lens, time range and return position through M07 to M08 to M07."
+    ]
+  },
+  "candidateAssembly": {
+    "uniqueEntry": "composite/s001-e2e-integration/index.html",
+    "staticVerification": "19/19 PASSED",
+    "nodeTests": "77/77 PASSED",
+    "baselineParityContract": "5/5 PASSED",
+    "dashboardS005Contract": "4/4 PASSED",
+    "regressionCases": "21/21 PASSED",
+    "viewports": ["1440x900", "1280x720", "390x844"],
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "failedResourceRequests": 0,
+    "frozenIntegrity": "PASSED",
+    "browserEvidence": "composite/evidence/browser-regression.json",
+    "browserToolingNoise": "1 known in-app observer injection message excluded; application capture remained 0"
   },
   "forbiddenContent": {
     "absoluteFilesystemPaths": 0,
@@ -70,8 +94,8 @@
   },
   "assemblyBoundary": {
     "packagesImported": true,
-    "candidateEntryMaterialized": false,
-    "fullCompositeRegressionRun": false,
+    "candidateEntryMaterialized": true,
+    "fullCompositeRegressionRun": true,
     "acceptanceReady": false
   }
 }

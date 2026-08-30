@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "ofw.scenario-registry.v2",
+  "targetPrototypeVersion": "v1.2.0-rc.1",
+  "sourceProductBaseline": "v1.1.0",
+  "sourceTag": "prototype-v1.1.0-frozen",
+  "sourceCommit": "a8b023d7f8d49ad6ed6c24417b79b6f9df3fb716",
+  "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+  "scenarios": [
+    {
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "lifecycle": "archived",
+      "mutable": false,
+      "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+      "formedAt": "2026-08-16T08:17:48.567Z",
+      "status": "completed",
+      "identityPolicy": "exact-read-only-source-identity",
+      "namespacePrefix": "ofw:v1.1.0:S001:S001-v1",
+      "resetPolicy": "protected-no-change"
+    },
+    {
+      "scenarioId": "S002",
+      "scenarioVersion": "S002-v1",
+      "lifecycle": "archived",
+      "mutable": false,
+      "scenarioRunId": "S002-RUN-20260815080000000-6ef5d0ef82f9",
+      "formedAt": "2026-08-15T08:00:00.000Z",
+      "status": "completed",
+      "identityPolicy": "exact-read-only-source-identity",
+      "namespacePrefix": "ofw:v1.1.0:S002:S002-v1",
+      "resetPolicy": "protected-no-change"
+    },
+    {
+      "scenarioId": "S003",
+      "scenarioVersion": "S003-v1",
+      "lifecycle": "archived",
+      "mutable": false,
+      "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+      "formedAt": "2026-08-17T16:30:00.000Z",
+      "status": "completed",
+      "identityPolicy": "exact-read-only-source-identity",
+      "namespacePrefix": "ofw:v1.1.0:S003:S003-v1",
+      "resetPolicy": "protected-no-change"
+    },
+    {
+      "scenarioId": "S004",
+      "scenarioVersion": "S004-v2.1.0",
+      "lifecycle": "archived",
+      "mutable": false,
+      "scenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+      "formedAt": "2026-08-15T23:30:00.000Z",
+      "status": "completed",
+      "identityPolicy": "exact-read-only-source-identity",
+      "namespacePrefix": "ofw:v1.1.0:S004:S004-v2.1.0",
+      "resetPolicy": "protected-no-change"
+    },
+    {
+      "scenarioId": "S005",
+      "scenarioVersion": "S005-v1",
+      "lifecycle": "active-candidate",
+      "mutable": true,
+      "status": "active",
+      "namespacePrefix": "ofw:v1.2.0:S005:S005-v1:{scenarioRunId}",
+      "scenarioRunIdPolicy": {
+        "mode": "dynamic-per-run",
+        "format": "^S005-RUN-[0-9]{17}-[a-f0-9]{12}$",
+        "generateOn": [
+          "first-open-without-valid-current-run",
+          "current-scenario-reset"
+        ],
+        "fixedScenarioRunIdAllowed": false,
+        "historicalRunReuseAllowed": false,
+        "copyFromS001ToS004Allowed": false
+      },
+      "resetPolicy": {
+        "scope": "current-scenario-run-only",
+        "preservePriorRunAsLocalHistory": true,
+        "touchArchivedScenarios": false,
+        "clearCurrentRunHandoff": true,
+        "externalSideEffects": 0
+      },
+      "package": "composite/scenarios/s005",
+      "resourceCatalog": "composite/resources/catalog.js",
+      "modelingObjectiveRef": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+      "allowedResultKinds": [
+        "PREDICTION",
+        "SIMULATION"
+      ]
+    }
+  ],
+  "archivedIdentityProtection": {
+    "scenarioIds": [
+      "S001",
+      "S002",
+      "S003",
+      "S004"
+    ],
+    "overwriteAllowed": false,
+    "newRunMustUseNewIdentity": true
+  },
+  "resourceIntegration": {
+    "scenarioIds": [
+      "S001",
+      "S002",
+      "S003",
+      "S004",
+      "S005"
+    ],
+    "moduleResourceOwnerIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06",
+      "M07",
+      "M08",
+      "Dashboard"
+    ],
+    "selectionRule": "scenarioId is a resource attribute and filter; it is not a second shell or a global scenario route",
+    "collisionKey": "moduleId + scenarioId + resourceId",
+    "crossScenarioFallbackAllowed": false
+  },
+  "runtimeSnapshotIncluded": false,
+  "acceptanceReady": false
+}

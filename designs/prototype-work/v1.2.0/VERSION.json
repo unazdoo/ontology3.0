@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ofw.prototype.version.v1",
   "version": "1.2.0-rc.1",
-  "status": "assembly-inputs-ready",
+  "status": "assembly-candidate-verified",
   "releaseRole": "prototype-composite-review-candidate",
   "createdAt": "2026-08-27",
   "sourceTag": "prototype-v1.1.0-frozen",
@@ -45,14 +45,25 @@
       "scenarioId": "S005",
       "scenarioVersion": "S005-v1",
       "assemblyMode": "scenario-package-in-shared-shell"
+    },
+    "Dashboard": {
+      "moduleId": "dashboard",
+      "route": "#dashboard",
+      "implementation": "candidate-incremental-overlay",
+      "sourceBaseline": "prototype-v1.1.0-frozen/dashboard",
+      "increment": "S005-post-investment-dashboard"
     }
   },
-  "uniqueEntry": null,
+  "uniqueEntry": "composite/s001-e2e-integration/index.html",
   "runtimeSnapshotIncluded": false,
   "acceptanceReady": false,
   "editable": true,
   "frozen": false,
   "rollbackVersion": "1.1.0",
   "packageVerification": "PACKAGE-VERIFICATION.json",
-  "nextGate": "materialize the single v1.2.0-rc.1 candidate entry"
+  "contractChangeRequests": "CONTRACT-CHANGE-REQUESTS.json",
+  "regressionMatrix": "COMPOSITE-REGRESSION-MATRIX.json",
+  "browserRegression": "composite/evidence/browser-regression.json",
+  "assemblyResult": "ASSEMBLY-RESULT.md",
+  "nextGate": "prototype walkthrough and explicit implementation handoff decision"
 }

@@ -1,0 +1,417 @@
+{
+  "schema": "ofw.m08.research.fixture.v1",
+  "namespace": "ofw.m08.research.v1",
+  "fixtureId": "FIX-S005-SYNTHETIC-v1",
+  "classification": "SYNTHETIC_RESEARCH_ONLY",
+  "containsSourceBusinessValues": false,
+  "containsPersonalOrInstitutionNames": false,
+  "sourceContext": {
+    "scenarioId": "S005",
+    "sourceResearch": "s005-post-investment",
+    "sourceFactsCopied": false,
+    "note": "Field roles are inspired by the S005 inventory, but identifiers, amounts, dates and trajectories are synthetic."
+  },
+  "objective": {
+    "resourceKind": "ModelingObjective",
+    "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+    "name": "Post-investment evaluation engineering fitness",
+    "status": "RESEARCH_ACTIVE",
+    "businessTargetStatus": "PENDING_USER_DECISION",
+    "comparisonPurpose": "ENGINEERING_FITNESS_ONLY",
+    "prohibitedClaim": "No predictive accuracy or business-optimal-model claim is allowed without an approved target, label and ground truth.",
+    "ownerRole": "M08_RESEARCH",
+    "trainingDataVersionId": "DATA-SYN-S005-TRAIN-v1",
+    "evaluationDataVersionId": "DATA-SYN-S005-EVAL-v1",
+    "evaluationTransactionId": "TX-SYN-S005-EVAL-0001",
+    "featureSchemaVersion": "FEATURE-S005-RESEARCH-v1",
+    "metricSchemaVersion": "METRIC-ENGINEERING-FITNESS-v1",
+    "evaluatorVersion": "EVAL-M08-DETERMINISTIC-v1",
+    "missingDimensionPolicy": "NO_REWEIGHT_BLOCK_OR_DEGRADE",
+    "reviewPolicy": "HUMAN_APPROVAL_REQUIRED_FOR_RELEASE_CANDIDATE"
+  },
+  "candidates": [
+    {
+      "resourceKind": "CandidateModel",
+      "candidateId": "CM-S005-BALANCED-v1",
+      "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+      "status": "SUBMITTED_FOR_RESEARCH_EVALUATION",
+      "method": "DETERMINISTIC_SCORECARD",
+      "missingPolicy": "BLOCK",
+      "weights": {
+        "returnQuality": 0.3,
+        "diversification": 0.25,
+        "liquidity": 0.2,
+        "creditQuality": 0.25
+      },
+      "modelVersion": {
+        "resourceKind": "ModelVersion",
+        "modelVersionId": "MV-S005-BALANCED-0001",
+        "immutable": true,
+        "contentHash": "sha256:research-balanced-0001",
+        "authorId": "author-research-001",
+        "createdAt": "2026-08-24T00:00:00+08:00",
+        "codeVersion": "m08-scorecard-balanced-v1",
+        "environment": "node-deterministic-no-network-v1",
+        "trainingDataVersionId": "DATA-SYN-S005-TRAIN-v1",
+        "featureSchemaVersion": "FEATURE-S005-RESEARCH-v1"
+      }
+    },
+    {
+      "resourceKind": "CandidateModel",
+      "candidateId": "CM-S005-CONSERVATIVE-v1",
+      "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+      "status": "SUBMITTED_FOR_RESEARCH_EVALUATION",
+      "method": "DETERMINISTIC_SCORECARD",
+      "missingPolicy": "BLOCK",
+      "weights": {
+        "returnQuality": 0.18,
+        "diversification": 0.27,
+        "liquidity": 0.28,
+        "creditQuality": 0.27
+      },
+      "modelVersion": {
+        "resourceKind": "ModelVersion",
+        "modelVersionId": "MV-S005-CONSERVATIVE-0001",
+        "immutable": true,
+        "contentHash": "sha256:research-conservative-0001",
+        "authorId": "author-research-002",
+        "createdAt": "2026-08-24T00:00:00+08:00",
+        "codeVersion": "m08-scorecard-conservative-v1",
+        "environment": "node-deterministic-no-network-v1",
+        "trainingDataVersionId": "DATA-SYN-S005-TRAIN-v1",
+        "featureSchemaVersion": "FEATURE-S005-RESEARCH-v1"
+      }
+    },
+    {
+      "resourceKind": "CandidateModel",
+      "candidateId": "CM-S005-LEGACY-REWEIGHT-v1",
+      "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+      "status": "SUBMITTED_FOR_RESEARCH_EVALUATION",
+      "method": "DETERMINISTIC_SCORECARD",
+      "missingPolicy": "REWEIGHT",
+      "weights": {
+        "returnQuality": 0.35,
+        "diversification": 0.25,
+        "liquidity": 0.15,
+        "creditQuality": 0.25
+      },
+      "modelVersion": {
+        "resourceKind": "ModelVersion",
+        "modelVersionId": "MV-S005-LEGACY-REWEIGHT-0001",
+        "immutable": true,
+        "contentHash": "sha256:research-legacy-reweight-0001",
+        "authorId": "author-research-003",
+        "createdAt": "2026-08-24T00:00:00+08:00",
+        "codeVersion": "m08-scorecard-legacy-v1",
+        "environment": "node-deterministic-no-network-v1",
+        "trainingDataVersionId": "DATA-SYN-S005-TRAIN-v1",
+        "featureSchemaVersion": "FEATURE-S005-RESEARCH-v1"
+      }
+    }
+  ],
+  "evaluationSamples": [
+    {
+      "sampleId": "SYN-EVAL-001",
+      "features": {
+        "returnRatio": 0.052,
+        "concentrationRatio": 0.26,
+        "liquidityScore": 0.86,
+        "ratingScore": 4.4
+      }
+    },
+    {
+      "sampleId": "SYN-EVAL-002",
+      "features": {
+        "returnRatio": 0.031,
+        "concentrationRatio": 0.38,
+        "liquidityScore": 0.71,
+        "ratingScore": 3.8
+      }
+    },
+    {
+      "sampleId": "SYN-EVAL-003",
+      "features": {
+        "returnRatio": -0.012,
+        "concentrationRatio": 0.44,
+        "liquidityScore": 0.58,
+        "ratingScore": 3.2
+      }
+    },
+    {
+      "sampleId": "SYN-EVAL-004",
+      "features": {
+        "returnRatio": 0.018,
+        "concentrationRatio": 0.31,
+        "liquidityScore": 0.77,
+        "ratingScore": 4.0
+      }
+    },
+    {
+      "sampleId": "SYN-EVAL-MISSING-LIQUIDITY",
+      "features": {
+        "returnRatio": 0.026,
+        "concentrationRatio": 0.29,
+        "ratingScore": 4.1
+      }
+    }
+  ],
+  "monotonicityPairs": [
+    {
+      "pairId": "MONO-001",
+      "better": {
+        "returnRatio": 0.04,
+        "concentrationRatio": 0.28,
+        "liquidityScore": 0.82,
+        "ratingScore": 4.2
+      },
+      "worse": {
+        "returnRatio": 0.01,
+        "concentrationRatio": 0.42,
+        "liquidityScore": 0.61,
+        "ratingScore": 3.4
+      }
+    },
+    {
+      "pairId": "MONO-002",
+      "better": {
+        "returnRatio": 0.015,
+        "concentrationRatio": 0.33,
+        "liquidityScore": 0.75,
+        "ratingScore": 3.9
+      },
+      "worse": {
+        "returnRatio": -0.02,
+        "concentrationRatio": 0.48,
+        "liquidityScore": 0.5,
+        "ratingScore": 3.0
+      }
+    }
+  ],
+  "ontologyBindingDraft": {
+    "resourceKind": "ModelBinding",
+    "bindingId": "MB-S005-EVALUATION-v1",
+    "status": "DRAFT_REQUIRES_M01_CR",
+    "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+    "publishedOntologyRef": "EXTERNAL_PUBLISHED_ONTOLOGY_REFERENCE_REQUIRED",
+    "inputMappings": [
+      {
+        "modelPort": "returnRatio",
+        "objectTypeRef": "InvestmentProduct",
+        "propertyRef": "ytdReturnRatio",
+        "type": "double",
+        "unit": "ratio"
+      },
+      {
+        "modelPort": "concentrationRatio",
+        "objectTypeRef": "InvestmentPortfolio",
+        "propertyRef": "largestPositionRatio",
+        "type": "double",
+        "unit": "ratio"
+      },
+      {
+        "modelPort": "liquidityScore",
+        "objectTypeRef": "InvestmentProduct",
+        "propertyRef": "liquidityAssessment",
+        "type": "double",
+        "unit": "score_0_1",
+        "availability": "SYNTHETIC_ONLY_CURRENTLY"
+      },
+      {
+        "modelPort": "ratingScore",
+        "objectTypeRef": "InvestmentProduct",
+        "propertyRef": "creditQualityAssessment",
+        "type": "double",
+        "unit": "score_0_5",
+        "availability": "SYNTHETIC_ONLY_CURRENTLY"
+      }
+    ],
+    "outputMappings": [
+      {
+        "modelPort": "score",
+        "objectTypeRef": "InvestmentEvaluation",
+        "propertyRef": "predictedEvaluationScore",
+        "type": "double",
+        "unit": "score_0_100",
+        "resultKind": "PREDICTION"
+      },
+      {
+        "modelPort": "coverage",
+        "objectTypeRef": "InvestmentEvaluation",
+        "propertyRef": "predictedEvaluationCoverage",
+        "type": "double",
+        "unit": "ratio",
+        "resultKind": "PREDICTION"
+      }
+    ]
+  },
+  "simulationBaseline": {
+    "resourceKind": "SimulationBaseline",
+    "baselineId": "SB-S005-SYNTHETIC-PORTFOLIO-v1",
+    "immutable": true,
+    "resultKind": "FACT_REFERENCE_ONLY",
+    "asOf": "2026-06-30",
+    "sourceSnapshotRef": "DATA-SYN-S005-EVAL-v1@TX-SYN-S005-EVAL-0001",
+    "evidenceClass": "SYNTHETIC_ASSUMED",
+    "holdings": [
+      {
+        "holdingId": "SYN-HOLDING-001",
+        "investmentAmountCny": 41000000,
+        "currentMarketValueCny": 42300000,
+        "durationYears": 2.1,
+        "spreadDurationYears": 1.7,
+        "ratingScore": 4.4,
+        "liquidityScore": 0.86,
+        "redemptionSensitivity": 0.35
+      },
+      {
+        "holdingId": "SYN-HOLDING-002",
+        "investmentAmountCny": 33000000,
+        "currentMarketValueCny": 32600000,
+        "durationYears": 3.4,
+        "spreadDurationYears": 2.8,
+        "ratingScore": 3.8,
+        "liquidityScore": 0.7,
+        "redemptionSensitivity": 0.5
+      },
+      {
+        "holdingId": "SYN-HOLDING-003",
+        "investmentAmountCny": 26000000,
+        "currentMarketValueCny": 27100000,
+        "durationYears": 1.3,
+        "spreadDurationYears": 1.1,
+        "ratingScore": 4.1,
+        "liquidityScore": 0.76,
+        "redemptionSensitivity": 0.28
+      }
+    ]
+  },
+  "parameterSets": [
+    {
+      "resourceKind": "SimulationParameterSet",
+      "parameterSetId": "PS-S005-RATE-UP-100-v1",
+      "parameters": {
+        "interestRateBps": 100,
+        "creditSpreadBps": 0,
+        "ratingNotches": 0,
+        "liquidityHaircutPct": 0,
+        "redemptionPct": 0
+      }
+    },
+    {
+      "resourceKind": "SimulationParameterSet",
+      "parameterSetId": "PS-S005-COMBINED-STRESS-v1",
+      "parameters": {
+        "interestRateBps": 150,
+        "creditSpreadBps": 200,
+        "ratingNotches": -1,
+        "liquidityHaircutPct": 8,
+        "redemptionPct": 12
+      }
+    },
+    {
+      "resourceKind": "SimulationParameterSet",
+      "parameterSetId": "PS-S005-OUT-OF-RANGE-v1",
+      "parameters": {
+        "interestRateBps": 900,
+        "creditSpreadBps": 0,
+        "ratingNotches": 0,
+        "liquidityHaircutPct": 0,
+        "redemptionPct": 0
+      }
+    }
+  ],
+  "simulationCases": [
+    {
+      "resourceKind": "SimulationCase",
+      "caseId": "SC-S005-SINGLE-RATE-v1",
+      "baselineId": "SB-S005-SYNTHETIC-PORTFOLIO-v1",
+      "parameterSetId": "PS-S005-RATE-UP-100-v1",
+      "graphId": "GRAPH-SINGLE-MARKET-v1"
+    },
+    {
+      "resourceKind": "SimulationCase",
+      "caseId": "SC-S005-COMPOSITE-v1",
+      "baselineId": "SB-S005-SYNTHETIC-PORTFOLIO-v1",
+      "parameterSetId": "PS-S005-COMBINED-STRESS-v1",
+      "graphId": "GRAPH-COMPOSITE-v1"
+    }
+  ],
+  "modelGraphs": [
+    {
+      "resourceKind": "CompositeModelGraph",
+      "graphId": "GRAPH-SINGLE-MARKET-v1",
+      "nodes": [
+        {
+          "nodeId": "marketShock",
+          "modelVersionId": "MV-SIM-MARKET-SHOCK-0001",
+          "inputs": {
+            "portfolio": {
+              "source": "baseline",
+              "port": "portfolio"
+            },
+            "parameters": {
+              "source": "parameterSet",
+              "port": "parameters"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "shockedPortfolio": {
+          "nodeId": "marketShock",
+          "port": "portfolio"
+        }
+      }
+    },
+    {
+      "resourceKind": "CompositeModelGraph",
+      "graphId": "GRAPH-COMPOSITE-v1",
+      "nodes": [
+        {
+          "nodeId": "marketShock",
+          "modelVersionId": "MV-SIM-MARKET-SHOCK-0001",
+          "inputs": {
+            "portfolio": {
+              "source": "baseline",
+              "port": "portfolio"
+            },
+            "parameters": {
+              "source": "parameterSet",
+              "port": "parameters"
+            }
+          }
+        },
+        {
+          "nodeId": "evaluation",
+          "modelVersionId": "MV-SIM-EVALUATION-0001",
+          "inputs": {
+            "portfolio": {
+              "source": "node",
+              "nodeId": "marketShock",
+              "port": "portfolio"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "shockedPortfolio": {
+          "nodeId": "marketShock",
+          "port": "portfolio"
+        },
+        "simulatedEvaluation": {
+          "nodeId": "evaluation",
+          "port": "evaluation"
+        }
+      }
+    }
+  ],
+  "referenceFactResult": {
+    "resourceKind": "EvaluationResult",
+    "resultId": "FACT-EVAL-S005-SYNTHETIC-0001",
+    "resultKind": "FACT",
+    "asOf": "2026-06-30",
+    "dataVersionId": "DATA-SYN-S005-EVAL-v1",
+    "score": 72.4,
+    "permissionScope": "fact.read"
+  }
+}
