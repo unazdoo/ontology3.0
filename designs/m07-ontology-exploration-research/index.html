@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>M07 Ontology 多视图探索研究原型</title>
+  <link rel="stylesheet" href="vendor/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app" class="app-shell" aria-busy="true">
+    <aside class="product-rail" aria-label="M07 Lens 导航">
+      <div class="brand-mark" title="智财问策研究模块" aria-label="智财问策研究模块">OFW</div>
+      <nav id="lens-nav" class="lens-nav"></nav>
+      <button class="rail-button" id="open-validation" type="button" title="验证状态" aria-label="验证状态">
+        <i data-lucide="shield-check"></i>
+      </button>
+    </aside>
+
+    <div class="app-body">
+      <header class="topbar">
+        <div class="breadcrumbs" aria-label="当前位置">
+          <button class="icon-button" id="history-back" type="button" title="返回" aria-label="返回">
+            <i data-lucide="arrow-left"></i>
+          </button>
+          <span>平台能力研究</span><i data-lucide="chevron-right"></i>
+          <strong>M07 多视图探索</strong>
+        </div>
+        <div class="topbar-actions">
+          <span class="status-chip warning"><i></i>研究验证</span>
+          <span class="status-chip neutral desktop-only"><i></i>来源基线待冻结</span>
+          <label class="role-control">
+            <i data-lucide="user-round-cog"></i>
+            <select id="role-select" aria-label="角色视图"></select>
+          </label>
+          <button class="icon-button" id="copy-link" type="button" title="复制稳定深链" aria-label="复制稳定深链">
+            <i data-lucide="link"></i>
+          </button>
+        </div>
+      </header>
+
+      <section class="context-strip" id="context-strip" aria-label="统一对象上下文"></section>
+
+      <div class="content-grid">
+        <aside class="directory-pane" aria-label="对象目录">
+          <div class="pane-heading">
+            <div>
+              <span class="eyebrow">PUBLISHED OBJECTS</span>
+              <h1>对象目录</h1>
+            </div>
+            <span id="result-count" class="count-badge">0</span>
+          </div>
+          <div class="search-box">
+            <i data-lucide="search"></i>
+            <input id="object-search" type="search" placeholder="搜索对象、类型或稳定 ID" autocomplete="off">
+            <button id="clear-search" class="clear-button" type="button" title="清除搜索" aria-label="清除搜索">
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+          <div class="filter-row">
+            <select id="type-filter" aria-label="对象类型筛选"></select>
+            <select id="quality-filter" aria-label="质量筛选">
+              <option value="all">全部质量</option>
+              <option value="passed">通过</option>
+              <option value="warning">警告</option>
+              <option value="blocked">阻断</option>
+            </select>
+          </div>
+          <div id="object-list" class="object-list" role="listbox" aria-label="对象结果"></div>
+          <div class="pane-foot">
+            <span><i data-lucide="database"></i>79 个来源快照</span>
+            <span><i data-lucide="lock-keyhole"></i>运行时重授权</span>
+          </div>
+        </aside>
+
+        <main class="workspace" id="workspace" tabindex="-1">
+          <div id="workspace-content" class="workspace-content" data-screen-label="M07 Ontology Exploration"></div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-region" class="toast-region" aria-live="polite"></div>
+
+  <dialog id="validation-dialog" class="validation-dialog">
+    <form method="dialog" class="dialog-shell">
+      <header>
+        <div>
+          <span class="eyebrow">VALIDATION RESOURCE</span>
+          <h2>隔离验证状态</h2>
+        </div>
+        <button class="icon-button" value="cancel" title="关闭" aria-label="关闭"><i data-lucide="x"></i></button>
+      </header>
+      <div id="validation-content" class="dialog-content"></div>
+      <footer>
+        <button class="button secondary" value="cancel">关闭</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <script src="vendor/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous"></script>
+  <script src="vendor/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
+  <script src="vendor/lucide.min.js"></script>
+  <script src="core.js"></script>
+  <script src="lenses.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

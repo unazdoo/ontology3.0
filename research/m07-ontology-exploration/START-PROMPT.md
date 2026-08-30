@@ -6,7 +6,7 @@
 
 工作树：
 
-`/Users/domi/Public/Vibecoding/ontology3.0-worktrees/m07-ontology-exploration-research/`
+`<M07_RESEARCH_WORKTREE>/`
 
 分支：
 
@@ -29,7 +29,7 @@
 
 1. `research/m07-ontology-exploration/README.md`
 2. `research/m07-ontology-exploration/SOURCE-REGISTER.md`
-3. `/Users/domi/Library/CloudStorage/OneDrive-个人/Palantir资料/` 中已登记资料；对 DOCX、视频和截图使用合适的结构化读取方式。
+3. `<PALANTIR_REFERENCE_ROOT>/` 中已登记资料；对 DOCX、视频和截图使用合适的结构化读取方式。
 4. Palantir 当前官方文档，记录 URL、更新时间与检索日期；本地演示与官方当前能力发生差异时，以官方文档描述当前产品，以本地资料作为历史设计参考。
 5. 最新平台总控、阶段1本体管理、阶段2数据工程及其他相关主文档，只读。
 6. 当前组合工作树的 VERSION、Foundation、统一入口、本体、问数、报告和仪表盘，只读。

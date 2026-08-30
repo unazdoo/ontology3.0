@@ -1,0 +1,278 @@
+{
+  "schemaVersion": 1,
+  "benchmark": "ofw.m07.research.v1.performance",
+  "evidenceClass": "isolated deterministic synthetic technical validation",
+  "disclaimer": "These results measure local in-process algorithms and data structures only. They do not establish production backend, network, concurrency, authorization, persistence, or service-SLO capability.",
+  "environment": {
+    "capturedAt": "2026-08-23T20:27:28.492Z",
+    "node": "v22.22.0",
+    "v8": "12.4.254.21-node.33",
+    "platform": "darwin",
+    "release": "25.6.0",
+    "architecture": "arm64",
+    "cpuModel": "Apple M4",
+    "logicalCpuCount": 10,
+    "totalSystemMemoryMiB": 16384,
+    "v8HeapLimitMiB": 4144,
+    "garbageCollectorExposed": true
+  },
+  "deterministicInput": {
+    "seed": "0x7a17c9e3",
+    "objectCount": 1000000,
+    "graphEdgeCount": 12000000,
+    "timeSeriesPointCount": 1000000,
+    "spatialPointCount": 500000
+  },
+  "build": {
+    "totalMs": 696.514,
+    "componentsMs": {
+      "objectDirectory": 81.625,
+      "graphAdjacency": 583.913,
+      "timeSeries": 15.753,
+      "spatialIndex": 15.204
+    }
+  },
+  "correctness": {
+    "objectDirectory": {
+      "checkedRows": 50,
+      "passed": true
+    },
+    "graphExpansion": {
+      "roots": 8,
+      "hops": 2,
+      "returnedNodes": 926,
+      "edgesVisited": 1092,
+      "passed": true
+    },
+    "timeSeries": {
+      "inputPoints": 1000000,
+      "outputBuckets": 1000,
+      "missingPoints": 101,
+      "rollingWindow": 1440,
+      "passed": true
+    },
+    "spatial": {
+      "worldPointCount": 500000,
+      "antimeridianResultCount": 920,
+      "passed": true
+    }
+  },
+  "phases": {
+    "objectDirectoryQuery": {
+      "warmups": 100,
+      "samples": 600,
+      "latencyMs": {
+        "min": 0.001,
+        "p50": 0.005,
+        "p95": 0.009,
+        "p99": 0.042,
+        "max": 0.556,
+        "mean": 0.007
+      },
+      "aggregateResultCount": 30000,
+      "aggregateChecksum": "0x2ec8c42a",
+      "workload": {
+        "indexedObjects": 1000000,
+        "prefixFacetAndQualityFilter": true,
+        "cursorPagination": true,
+        "pageSize": 50
+      }
+    },
+    "graphExpansion": {
+      "warmups": 50,
+      "samples": 300,
+      "latencyMs": {
+        "min": 0.003,
+        "p50": 0.029,
+        "p95": 0.129,
+        "p99": 0.356,
+        "max": 3.739,
+        "mean": 0.052
+      },
+      "aggregateResultCount": 186182,
+      "aggregateChecksum": "0x032df90c",
+      "workload": {
+        "graphNodes": 1000000,
+        "directedEdges": 12000000,
+        "degree": 12,
+        "rootsPerQuery": 8,
+        "hops": [
+          1,
+          2
+        ],
+        "resultCap": 5000,
+        "objectTypeFilter": true
+      }
+    },
+    "timeSeriesTransform": {
+      "warmups": 3,
+      "samples": 20,
+      "latencyMs": {
+        "min": 10.907,
+        "p50": 16.756,
+        "p95": 24.357,
+        "p99": 29.462,
+        "max": 29.462,
+        "mean": 17.481
+      },
+      "aggregateResultCount": 20000,
+      "aggregateChecksum": "0x68ecad4a",
+      "workload": {
+        "inputPoints": 1000000,
+        "outputBuckets": 1000,
+        "operations": [
+          "min-max downsample",
+          "quality-aware rolling mean",
+          "first difference",
+          "threshold event count"
+        ],
+        "missingValuePolicy": "quality=0 excluded from aggregates; adjacent difference unavailable"
+      }
+    },
+    "spatialRangeQuery": {
+      "warmups": 80,
+      "samples": 400,
+      "latencyMs": {
+        "min": 0.001,
+        "p50": 0.01,
+        "p95": 0.022,
+        "p99": 0.036,
+        "max": 0.112,
+        "mean": 0.011
+      },
+      "aggregateResultCount": 25640,
+      "aggregateChecksum": "0x36fd3105",
+      "workload": {
+        "indexedPoints": 500000,
+        "geometry": "WGS84 synthetic points",
+        "index": "1-degree uniform grid with exact point-in-bbox check",
+        "antimeridianAware": true,
+        "resultCap": 2000
+      }
+    }
+  },
+  "memory": {
+    "beforeBuild": {
+      "rssMiB": 38.047,
+      "heapUsedMiB": 3.721,
+      "heapTotalMiB": 8.563,
+      "externalMiB": 1.783,
+      "arrayBuffersMiB": 0.01
+    },
+    "afterBuild": {
+      "rssMiB": 114.031,
+      "heapUsedMiB": 3.744,
+      "heapTotalMiB": 8.813,
+      "externalMiB": 72.101,
+      "arrayBuffersMiB": 69.862
+    },
+    "afterBenchmark": {
+      "rssMiB": 120.859,
+      "heapUsedMiB": 3.869,
+      "heapTotalMiB": 9.063,
+      "externalMiB": 76.548,
+      "arrayBuffersMiB": 73.677
+    },
+    "peakRssMiB": 120.859
+  },
+  "hardGateLimits": {
+    "datasetBuildMs": 30000,
+    "objectDirectoryP50Ms": 20,
+    "objectDirectoryP95Ms": 50,
+    "graphExpansionP50Ms": 20,
+    "graphExpansionP95Ms": 50,
+    "timeSeriesTransformP50Ms": 150,
+    "timeSeriesTransformP95Ms": 250,
+    "spatialRangeP50Ms": 20,
+    "spatialRangeP95Ms": 50,
+    "peakRssMiB": 768
+  },
+  "gateResults": [
+    {
+      "name": "dataset build",
+      "actual": 696.514,
+      "operator": "<=",
+      "limit": 30000,
+      "unit": "ms",
+      "passed": true
+    },
+    {
+      "name": "object directory p50",
+      "actual": 0.005,
+      "operator": "<=",
+      "limit": 20,
+      "unit": "ms",
+      "passed": true
+    },
+    {
+      "name": "object directory p95",
+      "actual": 0.009,
+      "operator": "<=",
+      "limit": 50,
+      "unit": "ms",
+      "passed": true
+    },
+    {
+      "name": "graph expansion p50",
+      "actual": 0.029,
+      "operator": "<=",
+      "limit": 20,
+      "unit": "ms",
+      "passed": true
+    },
+    {
+      "name": "graph expansion p95",
+      "actual": 0.129,
+      "operator": "<=",
+      "limit": 50,
+      "unit": "ms",
+      "passed": true
+    },
+    {
+      "name": "time-series transform p50",
+      "actual": 16.756,
+      "operator": "<=",
+      "limit": 150,
+      "unit": "ms",
+      "passed": true
+    },
+    {
+      "name": "time-series transform p95",
+      "actual": 24.357,
+      "operator": "<=",
+      "limit": 250,
+      "unit": "ms",
+      "passed": true
+    },
+    {
+      "name": "spatial range p50",
+      "actual": 0.01,
+      "operator": "<=",
+      "limit": 20,
+      "unit": "ms",
+      "passed": true
+    },
+    {
+      "name": "spatial range p95",
+      "actual": 0.022,
+      "operator": "<=",
+      "limit": 50,
+      "unit": "ms",
+      "passed": true
+    },
+    {
+      "name": "peak RSS",
+      "actual": 120.859,
+      "operator": "<=",
+      "limit": 768,
+      "unit": "MiB",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "passed": true,
+    "passedGateCount": 10,
+    "totalGateCount": 10,
+    "productionClaim": false
+  }
+}

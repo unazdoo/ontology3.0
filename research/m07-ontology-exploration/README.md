@@ -2,7 +2,7 @@
 
 ## 工作树身份
 
-- 工作树：`/Users/domi/Public/Vibecoding/ontology3.0-worktrees/m07-ontology-exploration-research/`
+- 工作树：当前 `codex/m07-ontology-exploration-research` 工作树
 - 分支：`codex/m07-ontology-exploration-research`
 - 创建基线提交：`f3c80ba5e5e70929fd0628c798c4878048924bbd`
 - 治理参考基线：`v1.0.3`
@@ -13,6 +13,8 @@
 - `acceptanceReady = false`
 - 建议隔离端口：`4356`
 - 建议研究命名空间：`ofw.m07.research.v1`
+
+> 治理观察：总控拟将 `v1.1.0` 设为后续实施和新增研究的统一活动基线，`v1.0.3` 保留为只读历史父版本、迁移来源和回退基线。本工作区记录该拟议方向，但在用户裁决/CR/正式冻结前仍保持 `rebaseRequired = true` 与 `acceptanceReady = false`。
 
 M07 是平台公共能力研究，不是 S005 私有页面，也不直接复制 Palantir 产品。
 
@@ -33,7 +35,7 @@ M07 研究同一 Published Ontology 的多种只读用户 Lens：
 
 ### Palantir 本地资料
 
-根目录：`/Users/domi/Library/CloudStorage/OneDrive-个人/Palantir资料/`
+根目录：`<PALANTIR_REFERENCE_ROOT>/`
 
 优先读取：
 
@@ -48,8 +50,8 @@ M07 研究同一 Published Ontology 的多种只读用户 Lens：
 
 ### 首个验证场景
 
-- S005 工作树：`/Users/domi/Public/Vibecoding/ontology3.0-worktrees/s005-research/`
-- 投资资料：`/Users/domi/Public/Vibecoding/ontology2.0/ai 竞赛资料/投资业务/`
+- S005 工作树：只读 `s005-research` 工作树
+- 投资资料：`<S005_INVESTMENT_SOURCE_ROOT>/`
 
 S005 可验证产品、管理人、发行人、持仓和风险事件的对象 360，以及净值/收益/风险时序和地域暴露；M07 的资源模型必须保持跨场景通用。
 
@@ -90,6 +92,10 @@ S005 可验证产品、管理人、发行人、持仓和风险事件的对象 36
 8. `性能与规模技术验证计划.md`
 9. `一期范围与后置能力.md`
 10. `待用户裁决与CR建议.md`
+11. `S001集成变体与浏览器验证.md`
+12. `M07-S001全链路验证.md`
+
+独立研究原型入口为 `../../designs/m07-ontology-exploration-research/index.html`，与 S001/S005 脱敏验证资源、合同测试和性能证据一并保留。可合并交付以 `../../integration-exports/v1.2.0-rc.1/m07/` 为唯一集成包；`v1.1.0-s001-full-chain` 组合副本、早期 `v1.1.0-s001` 变体和浏览器截图不属于研究源归档。
 
 ## 允许与禁止
 
