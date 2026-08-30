@@ -2,11 +2,13 @@
 
 ## 工作树身份
 
-- 工作树：`/Users/domi/Public/Vibecoding/ontology3.0-worktrees/m08-digital-twin-modeling-research/`
+- 工作树：当前仓库的 `codex/m08-digital-twin-modeling-research` 工作树
 - 分支：`codex/m08-digital-twin-modeling-research`
 - 创建基线提交：`f3c80ba5e5e70929fd0628c798c4878048924bbd`
 - 治理参考基线：`v1.0.3`
 - 基线快照：`BSL-S001-V103-DE0119608E26`
+- 活动实现基线：`v1.1.0`
+- 活动实现基线快照：`BSL-OFW-V110-94ABD0E991B7`（只读来源）
 - 预期产品来源：当前四场景组合版本正式冻结后的产品基线
 - `baselineStatus = 待正式冻结`
 - `rebaseRequired = true`
@@ -40,7 +42,7 @@ M08 是平台公共模型治理、数字孪生和隔离模拟能力研究，不�
 
 ## 参考资料
 
-根目录：`/Users/domi/Library/CloudStorage/OneDrive-个人/Palantir资料/`
+原始资料位置：本机 Palantir 参考资料目录（只读，不纳入仓库）
 
 优先读取：
 
@@ -106,6 +108,57 @@ S005 可验证：
 8. `S005压力情景验证设计.md`
 9. `一期范围与后置能力.md`
 10. `待用户裁决与CR建议.md`
+11. `Quiver-M07-M08跨模块案例.md`
+12. `M07-M08全链路体验重构.md`
+13. `Objective输入输出与消费适配设计.md`
+
+当前已形成的制品均为研究/候选状态：
+
+- [Palantir建模与数字孪生能力对照.md](./Palantir建模与数字孪生能力对照.md)
+- [当前平台模型能力与缺口矩阵.md](./当前平台模型能力与缺口矩阵.md)
+- [M08资源模型草案.md](./M08资源模型草案.md)
+- [ModelingObjective与候选比较合同.md](./ModelingObjective与候选比较合同.md)
+- [模型输入输出Ontology绑定合同草案.md](./模型输入输出Ontology绑定合同草案.md)
+- [SimulationBaseline与Case合同草案.md](./SimulationBaseline与Case合同草案.md)
+- [真实预测模拟三态隔离规则.md](./真实预测模拟三态隔离规则.md)
+- [S005压力情景验证设计.md](./S005压力情景验证设计.md)
+- [一期范围与后置能力.md](./一期范围与后置能力.md)
+- [待用户裁决与CR建议.md](./待用户裁决与CR建议.md)
+- [Quiver-M07-M08跨模块案例.md](./Quiver-M07-M08跨模块案例.md)
+- [M07-M08全链路体验重构.md](./M07-M08全链路体验重构.md)
+- [Objective输入输出与消费适配设计.md](./Objective输入输出与消费适配设计.md)
+
+## 隔离技术验证（研究证据）
+
+验证包位于 [`validation/`](./validation/)，固定命名空间 `ofw.m08.research.v1`，默认端口 `4357`。它使用零依赖 Node.js、合成 S005 夹具和独立内存运行，不读取当前组合 localStorage、运行编号或历史快照。
+
+```bash
+cd research/m08-digital-twin-modeling/validation
+npm test
+npm run evidence
+npm start
+```
+
+当前证据：43/43 自动测试通过，`evidence/technical-validation-summary.json` 为 `overallStatus=PASSED`。证据覆盖四类 Objective Registry、Object Type 兼容发现、通用 Binding schema 与单位漂移拒绝、M07/M03/M05/M06 Consumer Projection、M04 非事实硬拒绝、候选公平比较、人工评审硬门、无 endpoint Binding、M07 精确上下文进入 Simulation Run、单模型/复合模拟、三态隔离、DAG 校验和副作用禁用。内部 PASS 不代表用户评审、M07/M08 正式立项、模型生产可用或一期验收。
+
+## 当前研究结论
+
+- Palantir 当前官方文档仍公开 Modeling Objective、Experiments、Evaluations、Ontology model integration、Vertex Scenario 和 Global Branching；Vertex 直接 chained models 已标记 Sunset，Objective checks 当前并非强制 release 门，MetricSet/`foundry_ml` 已进入弃用迁移路径。
+- M08 可借鉴 Objective-first、不可变 Model Version/Submission、精确评估 transaction、人工评审、Function/Binding、Baseline/Scenario diff 和血缘治理；不复制 Palantir UI、品牌、RID、Endpoint、Scenario Apply 或 Action 副作用。
+- S003 C035 继续作为 M01 特例；S005 当前只能以合成数据验证工程适配，不能宣称预测准确率或业务最优。
+- 正式立项门当前不满足：组合未正式冻结、`rebaseRequired=true`、`acceptanceReady=false`，且多项 Owner/合同/用户裁决待关闭。
+
+## v1.1.0 活动基线对齐（用户最新方向）
+
+本轮集成原型按以下实施假设落地：
+
+- 后续实施与新增研究的活动实现基线：`v1.1.0`；
+- `v1.0.3`：只读历史父版本、迁移来源和回退基线；
+- M08 S001 隔离入口：`designs/m08-s001-v1.1.0-integrated/`；
+- 原型版本：`m08-s001-v1.1.0-baseline-additive.5`；
+- 集成端口：`4358`；研究命名空间仍为 `ofw.m08.research.v1`。
+
+当前基线增量修订为 `m08-s001-v1.1.0-baseline-additive.5`：实现和视觉基于 v1.1.0 活动实现基线，保留 M01–M06 canonical 页面和父壳交接；M07 探索分析与 M08 模型与模拟作为两个独立研究模块增量挂载。M08 采用 Objective-first 目录和工作区，四类 Objective 共用输入输出合同、Binding 校验、Consumer Projection 和 Result Envelope；M07 不再跳入固定利率 Case。M07 使用 `ofw.m07.research.v1`，M08 及 4357 服务使用 `ofw.m08.research.v1`。两者均未正式立项。
 
 ## 允许与禁止
 

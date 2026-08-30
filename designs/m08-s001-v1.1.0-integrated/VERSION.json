@@ -1,0 +1,27 @@
+{
+  "prototypeVersion": "m08-s001-v1.1.0-baseline-additive.5",
+  "activeImplementationBaseline": "v1.1.0",
+  "activeImplementationBaselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+  "activeImplementationBaselineStatus": "promoted-to-frozen-implementation-baseline; source remains read-only for M08 research",
+  "governanceParentBaseline": "v1.0.3",
+  "governanceParentSnapshotId": "BSL-S001-V103-DE0119608E26",
+  "governanceParentRole": "read-only historical parent / migration source / rollback baseline",
+  "sourcePrototype": "integration-composite-v1.1.0/designs/prototype-releases/v1.1.0",
+  "sourcePrototypeStatus": "v1.1.0 promoted implementation baseline; source copied read-only into this isolated M08 worktree",
+  "scenarioId": "S001",
+  "scenarioVersion": "S001-v1",
+  "sourceScenarioRunId": null,
+  "researchNamespace": "ofw.m08.research.v1",
+  "explorationNamespace": "ofw.m07.research.v1",
+  "acceptanceReady": false,
+  "publishedModelRegistrationAllowed": false,
+  "t019WriteAllowed": false,
+  "notes": [
+    "M07 exploration and M08 modeling are additive research modules in the v1.1.0 shell; the six existing production module pages and their adapters remain baseline files.",
+    "M07 uses a task flow of object selection, fact exploration, exact context handoff and returned-result comparison; M08 fixes that context into each simulation run.",
+    "M08 is Objective-first: FORECAST, CLASSIFICATION, SCORING and OPTIMIZATION share one registry, typed Binding validation, consumer projections and a generic Result Envelope.",
+    "M07 discovers compatible Objectives by Object Type and intent; M07, M03, M05 and M06 receive different read-only projections while M04 rejects non-FACT sources.",
+    "M08 research status and simulation results are isolated and do not extend the S001 production workflow completion count.",
+    "M08 content receives read-only C033/C017/C008 projection from the baseline parent and uses the 4357 deterministic validation service; it never reuses a source scenario run ID as a research run."
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "schema": "ofw.m08.research.validation-evidence.v1",
+  "namespace": "ofw.m08.research.v1",
+  "generatedAt": "2026-08-25T16:19:22.532Z",
+  "fixtureId": "FIX-S005-SYNTHETIC-v1",
+  "fixtureHash": "1bdb28dc494d95ed3a12e86be8db58af3017fd8b83b0b430fab628fdc588de44",
+  "sourceBusinessValuesCopied": false,
+  "baseline": {
+    "baselineCommit": "f3c80ba5e5e70929fd0628c798c4878048924bbd",
+    "governanceBaselineVersion": "v1.0.3",
+    "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+    "productBaselineStatus": "NOT_FROZEN",
+    "rebaseRequired": true,
+    "acceptanceReady": false
+  },
+  "positiveChecks": {
+    "candidateCount": 3,
+    "fixedFairComparisonFingerprint": "ac5ee6f431c196bb1ca07c3281e1cfc7e7a94b0761ad062c42ac47d71b320039",
+    "humanReviewStatus": "HUMAN_APPROVED",
+    "releaseCandidateStatus": "RESEARCH_RELEASE_CANDIDATE",
+    "published": false,
+    "t019WriteAllowed": false,
+    "concreteEndpointExposed": false,
+    "singleModelSimulationStatus": "SUCCEEDED",
+    "compositeSimulationStatus": "SUCCEEDED",
+    "resultKinds": [
+      "FACT",
+      "PREDICTION",
+      "SIMULATION"
+    ],
+    "overwriteAllowed": false,
+    "sideEffectAttempts": 0,
+    "sideEffectsEmitted": 0,
+    "objectiveKinds": [
+      "CLASSIFICATION",
+      "FORECAST",
+      "OPTIMIZATION",
+      "SCORING"
+    ],
+    "objectiveCount": 4,
+    "forecastConsumerDisplayMode": "TIMELINE_OVERLAY",
+    "optimizationResultKind": "SIMULATION",
+    "m04ConsumerStatus": "BLOCKED",
+    "m04ConsumerCode": "NON_FACT_SOURCE_REJECTED"
+  },
+  "failurePropagation": {
+    "runStatus": "FAILED",
+    "nodeStatuses": [
+      {
+        "nodeId": "forcedFailure",
+        "status": "FAILED",
+        "errorCode": "FORCED_MODEL_FAILURE"
+      },
+      {
+        "nodeId": "downstreamEvaluation",
+        "status": "SKIPPED_UPSTREAM_FAILED",
+        "errorCode": "UPSTREAM_FAILED"
+      }
+    ],
+    "partialResultPromotable": false
+  },
+  "negativeChecks": [
+    {
+      "name": "parameter-range",
+      "status": "PASSED",
+      "expectedCode": "PARAMETER_OUT_OF_RANGE",
+      "actualCode": "PARAMETER_OUT_OF_RANGE",
+      "message": "Simulation parameter interestRateBps is outside the research bounds."
+    },
+    {
+      "name": "cycle-detection",
+      "status": "PASSED",
+      "expectedCode": "CYCLE_DETECTED",
+      "actualCode": "CYCLE_DETECTED",
+      "message": "Composite model graph contains a dependency cycle."
+    },
+    {
+      "name": "unit-mismatch",
+      "status": "PASSED",
+      "expectedCode": "UNIT_MISMATCH",
+      "actualCode": "UNIT_MISMATCH",
+      "message": "Composite model ports have incompatible units."
+    },
+    {
+      "name": "time-grain-mismatch",
+      "status": "PASSED",
+      "expectedCode": "TIME_GRAIN_MISMATCH",
+      "actualCode": "TIME_GRAIN_MISMATCH",
+      "message": "Composite model ports have incompatible time grains."
+    },
+    {
+      "name": "model-type-incompatibility",
+      "status": "PASSED",
+      "expectedCode": "MODEL_INCOMPATIBLE_TYPE",
+      "actualCode": "MODEL_INCOMPATIBLE_TYPE",
+      "message": "Composite model ports have incompatible types."
+    },
+    {
+      "name": "data-insufficient",
+      "status": "PASSED",
+      "expectedCode": "DATA_INSUFFICIENT",
+      "actualCode": "DATA_INSUFFICIENT",
+      "downstreamStatus": "SKIPPED_UPSTREAM_FAILED",
+      "partialResultPromotable": false
+    },
+    {
+      "name": "simulation-fact-write",
+      "status": "PASSED",
+      "expectedCode": "NON_FACT_WRITE_REJECTED",
+      "actualCode": "NON_FACT_WRITE_REJECTED",
+      "message": "Prediction and simulation results cannot write to the fact store."
+    },
+    {
+      "name": "prediction-fact-write",
+      "status": "PASSED",
+      "expectedCode": "NON_FACT_WRITE_REJECTED",
+      "actualCode": "NON_FACT_WRITE_REJECTED",
+      "message": "Prediction and simulation results cannot write to the fact store."
+    },
+    {
+      "name": "objective-binding-unit-drift",
+      "status": "PASSED",
+      "expectedCode": "BINDING_FIELD_MISMATCH",
+      "actualCode": "BINDING_FIELD_MISMATCH",
+      "message": "input mapping weightedAverageCost.unit is incompatible."
+    }
+  ],
+  "overallStatus": "PASSED",
+  "conclusionBoundary": "Internal deterministic validation only; not user approval, M08 initiation, production readiness or phase-one acceptance."
+}

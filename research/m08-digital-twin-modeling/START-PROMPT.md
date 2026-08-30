@@ -6,7 +6,7 @@
 
 工作树：
 
-`/Users/domi/Public/Vibecoding/ontology3.0-worktrees/m08-digital-twin-modeling-research/`
+当前仓库的 `codex/m08-digital-twin-modeling-research` 工作树。
 
 分支：
 
@@ -29,7 +29,7 @@
 
 1. `research/m08-digital-twin-modeling/README.md`
 2. `research/m08-digital-twin-modeling/SOURCE-REGISTER.md`
-3. `/Users/domi/Library/CloudStorage/OneDrive-个人/Palantir资料/` 中已登记的 DOCX 和视频。
+3. `SOURCE-REGISTER.md` 已登记、位于本机只读参考资料目录的 DOCX 和视频。
 4. Palantir 当前官方文档，记录 URL、更新时间和检索日期；本地资料与官方当前能力冲突时，分别记录“历史参考”和“当前能力”。
 5. 最新平台总控、阶段1—阶段6主文档，只读。
 6. 当前组合工作树 VERSION、Foundation、Checkpoint、资源注册和模块边界，只读。
