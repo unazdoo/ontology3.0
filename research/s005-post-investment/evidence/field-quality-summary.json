@@ -1,0 +1,3786 @@
+{
+  "artifact": "S005 field quality and snapshot cadence audit",
+  "namespace": "ofw.s005.research.v1",
+  "generatedAt": "2026-08-23T17:12:12.212Z",
+  "sourceSnapshotCount": 79,
+  "formulaAudit": {
+    "publicApiSurface": "Range.formulas aligned with imported Range.values",
+    "formulaAccessFailureCount": 0,
+    "cachedValueAccessFailureCount": 0,
+    "formulaErrorDefinition": "formulaErrorValueCount uses source cached values read by bundled openpyxl data_only=True; artifactImportErrorValueCount separately reports artifact-tool imported/calculated error tokens. Each formula-cell variant additionally requires a formula in the same aligned cell.",
+    "caveat": "The two error surfaces must not be conflated. Source cached-value errors are source-quality evidence; artifact import errors may reflect unsupported formula calculation. No source formula was recalculated or repaired."
+  },
+  "fieldQuality": [
+    {
+      "sheetName": "债券投资交易风险监控周报表",
+      "sheetRole": "bond_trade_risk_snapshot",
+      "columnIndex1Based": 1,
+      "field": "序号",
+      "temporalSemantics": "row_identifier",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 79,
+      "nonEmptyCount": 79,
+      "nonEmptyRatePct": 100,
+      "numericCount": 79,
+      "numericRateOfAllRowsPct": 100,
+      "numericRateOfNonEmptyPct": 100,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "债券投资交易风险监控周报表",
+      "sheetRole": "bond_trade_risk_snapshot",
+      "columnIndex1Based": 2,
+      "field": "债券类别",
+      "temporalSemantics": "classification_as_of_snapshot",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 79,
+      "nonEmptyCount": 0,
+      "nonEmptyRatePct": 0,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "债券投资交易风险监控周报表",
+      "sheetRole": "bond_trade_risk_snapshot",
+      "columnIndex1Based": 3,
+      "field": "债券名称",
+      "temporalSemantics": "descriptive_as_of_snapshot",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 79,
+      "nonEmptyCount": 79,
+      "nonEmptyRatePct": 100,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "债券投资交易风险监控周报表",
+      "sheetRole": "bond_trade_risk_snapshot",
+      "columnIndex1Based": 4,
+      "field": "面值",
+      "temporalSemantics": "point_in_time_nominal_balance",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 79,
+      "nonEmptyCount": 79,
+      "nonEmptyRatePct": 100,
+      "numericCount": 79,
+      "numericRateOfAllRowsPct": 100,
+      "numericRateOfNonEmptyPct": 100,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "债券投资交易风险监控周报表",
+      "sheetRole": "bond_trade_risk_snapshot",
+      "columnIndex1Based": 5,
+      "field": "买入净价",
+      "temporalSemantics": "cost_basis",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 79,
+      "nonEmptyCount": 79,
+      "nonEmptyRatePct": 100,
+      "numericCount": 79,
+      "numericRateOfAllRowsPct": 100,
+      "numericRateOfNonEmptyPct": 100,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "债券投资交易风险监控周报表",
+      "sheetRole": "bond_trade_risk_snapshot",
+      "columnIndex1Based": 6,
+      "field": "当前净价",
+      "temporalSemantics": "point_in_time_market_price",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 79,
+      "nonEmptyCount": 79,
+      "nonEmptyRatePct": 100,
+      "numericCount": 50,
+      "numericRateOfAllRowsPct": 63.29,
+      "numericRateOfNonEmptyPct": 63.29,
+      "formulaCellCount": 79,
+      "formulaErrorValueCount": 29,
+      "formulaErrorInFormulaCellCount": 29,
+      "artifactImportErrorValueCount": 79,
+      "artifactImportErrorInFormulaCellCount": 79,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "债券投资交易风险监控周报表",
+      "sheetRole": "bond_trade_risk_snapshot",
+      "columnIndex1Based": 7,
+      "field": "已收利息",
+      "temporalSemantics": "cumulative_received_interest",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 79,
+      "nonEmptyCount": 79,
+      "nonEmptyRatePct": 100,
+      "numericCount": 79,
+      "numericRateOfAllRowsPct": 100,
+      "numericRateOfNonEmptyPct": 100,
+      "formulaCellCount": 79,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "债券投资交易风险监控周报表",
+      "sheetRole": "bond_trade_risk_snapshot",
+      "columnIndex1Based": 8,
+      "field": "累计收益率",
+      "temporalSemantics": "cumulative_performance_measure",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 79,
+      "nonEmptyCount": 79,
+      "nonEmptyRatePct": 100,
+      "numericCount": 50,
+      "numericRateOfAllRowsPct": 63.29,
+      "numericRateOfNonEmptyPct": 63.29,
+      "formulaCellCount": 79,
+      "formulaErrorValueCount": 29,
+      "formulaErrorInFormulaCellCount": 29,
+      "artifactImportErrorValueCount": 29,
+      "artifactImportErrorInFormulaCellCount": 29,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "债券投资交易风险监控周报表",
+      "sheetRole": "bond_trade_risk_snapshot",
+      "columnIndex1Based": 9,
+      "field": "止损",
+      "temporalSemantics": "risk_threshold_or_status",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 79,
+      "nonEmptyCount": 79,
+      "nonEmptyRatePct": 100,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "债券投资交易风险监控周报表",
+      "sheetRole": "bond_trade_risk_snapshot",
+      "columnIndex1Based": 10,
+      "field": "UNLABELED_COLUMN_J",
+      "temporalSemantics": "risk_threshold_or_status",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 79,
+      "nonEmptyCount": 0,
+      "nonEmptyRatePct": 0,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "固收业务风险监控周报表",
+      "sheetRole": "fixed_income_holding_risk_snapshot",
+      "columnIndex1Based": 1,
+      "field": "序号",
+      "temporalSemantics": "row_identifier",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 78,
+      "totalDataRows": 1581,
+      "nonEmptyCount": 1498,
+      "nonEmptyRatePct": 94.75,
+      "numericCount": 1420,
+      "numericRateOfAllRowsPct": 89.82,
+      "numericRateOfNonEmptyPct": 94.79,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "固收业务风险监控周报表",
+      "sheetRole": "fixed_income_holding_risk_snapshot",
+      "columnIndex1Based": 2,
+      "field": "债券类别",
+      "temporalSemantics": "classification_as_of_snapshot",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 78,
+      "totalDataRows": 1581,
+      "nonEmptyCount": 1521,
+      "nonEmptyRatePct": 96.2,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "固收业务风险监控周报表",
+      "sheetRole": "fixed_income_holding_risk_snapshot",
+      "columnIndex1Based": 3,
+      "field": "债券名称",
+      "temporalSemantics": "descriptive_as_of_snapshot",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 78,
+      "totalDataRows": 1581,
+      "nonEmptyCount": 1581,
+      "nonEmptyRatePct": 100,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 682,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 682,
+      "artifactImportErrorInFormulaCellCount": 682,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "固收业务风险监控周报表",
+      "sheetRole": "fixed_income_holding_risk_snapshot",
+      "columnIndex1Based": 4,
+      "field": "发行人 (中央政府投资企业/其他企业)",
+      "temporalSemantics": "descriptive_as_of_snapshot",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 78,
+      "totalDataRows": 1581,
+      "nonEmptyCount": 1581,
+      "nonEmptyRatePct": 100,
+      "numericCount": 1443,
+      "numericRateOfAllRowsPct": 91.27,
+      "numericRateOfNonEmptyPct": 91.27,
+      "formulaCellCount": 1443,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 1443,
+      "artifactImportErrorInFormulaCellCount": 1443,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "固收业务风险监控周报表",
+      "sheetRole": "fixed_income_holding_risk_snapshot",
+      "columnIndex1Based": 5,
+      "field": "UNLABELED_COLUMN_E",
+      "temporalSemantics": "point_in_time_concentration",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 78,
+      "totalDataRows": 1581,
+      "nonEmptyCount": 78,
+      "nonEmptyRatePct": 4.93,
+      "numericCount": 78,
+      "numericRateOfAllRowsPct": 4.93,
+      "numericRateOfNonEmptyPct": 100,
+      "formulaCellCount": 78,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "固收业务风险监控周报表",
+      "sheetRole": "fixed_income_holding_risk_snapshot",
+      "columnIndex1Based": 6,
+      "field": "单户集中度",
+      "temporalSemantics": "point_in_time_portfolio_ratio",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 78,
+      "totalDataRows": 1581,
+      "nonEmptyCount": 1581,
+      "nonEmptyRatePct": 100,
+      "numericCount": 1503,
+      "numericRateOfAllRowsPct": 95.07,
+      "numericRateOfNonEmptyPct": 95.07,
+      "formulaCellCount": 1503,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 1443,
+      "artifactImportErrorInFormulaCellCount": 1443,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "固收业务风险监控周报表",
+      "sheetRole": "fixed_income_holding_risk_snapshot",
+      "columnIndex1Based": 7,
+      "field": "占固收总投资比例",
+      "temporalSemantics": "point_in_time_term_or_duration",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 78,
+      "totalDataRows": 1581,
+      "nonEmptyCount": 1443,
+      "nonEmptyRatePct": 91.27,
+      "numericCount": 1443,
+      "numericRateOfAllRowsPct": 91.27,
+      "numericRateOfNonEmptyPct": 100,
+      "formulaCellCount": 1443,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 1443,
+      "artifactImportErrorInFormulaCellCount": 1443,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "固收业务风险监控周报表",
+      "sheetRole": "fixed_income_holding_risk_snapshot",
+      "columnIndex1Based": 8,
+      "field": "投资期限 (信用债久期不超过10年)",
+      "temporalSemantics": "point_in_time_investment_balance",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 78,
+      "totalDataRows": 1581,
+      "nonEmptyCount": 1443,
+      "nonEmptyRatePct": 91.27,
+      "numericCount": 1290,
+      "numericRateOfAllRowsPct": 81.59,
+      "numericRateOfNonEmptyPct": 89.4,
+      "formulaCellCount": 231,
+      "formulaErrorValueCount": 153,
+      "formulaErrorInFormulaCellCount": 21,
+      "artifactImportErrorValueCount": 153,
+      "artifactImportErrorInFormulaCellCount": 21,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "固收业务风险监控周报表",
+      "sheetRole": "fixed_income_holding_risk_snapshot",
+      "columnIndex1Based": 9,
+      "field": "UNLABELED_COLUMN_I",
+      "temporalSemantics": "derived_or_unlabeled_source_value",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 78,
+      "totalDataRows": 1581,
+      "nonEmptyCount": 1348,
+      "nonEmptyRatePct": 85.26,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "固收业务风险监控周报表",
+      "sheetRole": "fixed_income_holding_risk_snapshot",
+      "columnIndex1Based": 10,
+      "field": "总投资额(元)",
+      "temporalSemantics": "derived_or_unlabeled_source_value",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 78,
+      "totalDataRows": 1581,
+      "nonEmptyCount": 78,
+      "nonEmptyRatePct": 4.93,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "固收业务风险监控周报表",
+      "sheetRole": "fixed_income_holding_risk_snapshot",
+      "columnIndex1Based": 11,
+      "field": "#NAME?",
+      "temporalSemantics": "derived_or_unlabeled_source_value",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 78,
+      "totalDataRows": 1581,
+      "nonEmptyCount": 0,
+      "nonEmptyRatePct": 0,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资风险限额监控表",
+      "sheetRole": "investment_limit_snapshot",
+      "columnIndex1Based": 1,
+      "field": "投资业务类型",
+      "temporalSemantics": "classification_as_of_snapshot",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 78,
+      "totalDataRows": 588,
+      "nonEmptyCount": 259,
+      "nonEmptyRatePct": 44.05,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资风险限额监控表",
+      "sheetRole": "investment_limit_snapshot",
+      "columnIndex1Based": 2,
+      "field": "投资品种",
+      "temporalSemantics": "classification_as_of_snapshot",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 78,
+      "totalDataRows": 588,
+      "nonEmptyCount": 510,
+      "nonEmptyRatePct": 86.73,
+      "numericCount": 78,
+      "numericRateOfAllRowsPct": 13.27,
+      "numericRateOfNonEmptyPct": 15.29,
+      "formulaCellCount": 78,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 78,
+      "artifactImportErrorInFormulaCellCount": 78,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资风险限额监控表",
+      "sheetRole": "investment_limit_snapshot",
+      "columnIndex1Based": 3,
+      "field": "仓位(成本)",
+      "temporalSemantics": "point_in_time_position_or_cost",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 78,
+      "totalDataRows": 588,
+      "nonEmptyCount": 510,
+      "nonEmptyRatePct": 86.73,
+      "numericCount": 432,
+      "numericRateOfAllRowsPct": 73.47,
+      "numericRateOfNonEmptyPct": 84.71,
+      "formulaCellCount": 343,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 205,
+      "artifactImportErrorInFormulaCellCount": 205,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资风险限额监控表",
+      "sheetRole": "investment_limit_snapshot",
+      "columnIndex1Based": 4,
+      "field": "风险限额 / 风控比例/金额",
+      "temporalSemantics": "rule_limit",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 78,
+      "totalDataRows": 588,
+      "nonEmptyCount": 294,
+      "nonEmptyRatePct": 50,
+      "numericCount": 78,
+      "numericRateOfAllRowsPct": 13.27,
+      "numericRateOfNonEmptyPct": 26.53,
+      "formulaCellCount": 78,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 78,
+      "artifactImportErrorInFormulaCellCount": 78,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资风险限额监控表",
+      "sheetRole": "investment_limit_snapshot",
+      "columnIndex1Based": 5,
+      "field": "实际比例/金额",
+      "temporalSemantics": "point_in_time_limit_measure",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 78,
+      "totalDataRows": 588,
+      "nonEmptyCount": 294,
+      "nonEmptyRatePct": 50,
+      "numericCount": 216,
+      "numericRateOfAllRowsPct": 36.73,
+      "numericRateOfNonEmptyPct": 73.47,
+      "formulaCellCount": 216,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 78,
+      "artifactImportErrorInFormulaCellCount": 78,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资风险限额监控表",
+      "sheetRole": "investment_limit_snapshot",
+      "columnIndex1Based": 6,
+      "field": "限额状态(●/●)",
+      "temporalSemantics": "point_in_time_limit_status",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 78,
+      "totalDataRows": 588,
+      "nonEmptyCount": 294,
+      "nonEmptyRatePct": 50,
+      "numericCount": 78,
+      "numericRateOfAllRowsPct": 13.27,
+      "numericRateOfNonEmptyPct": 26.53,
+      "formulaCellCount": 78,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资风险限额监控表",
+      "sheetRole": "investment_limit_snapshot",
+      "columnIndex1Based": 7,
+      "field": "备注",
+      "temporalSemantics": "descriptive_as_of_snapshot",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 78,
+      "totalDataRows": 588,
+      "nonEmptyCount": 0,
+      "nonEmptyRatePct": 0,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "风险监控指标",
+      "sheetRole": "portfolio_risk_indicator_definition",
+      "columnIndex1Based": 1,
+      "field": "指标",
+      "temporalSemantics": "rule_definition",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 79,
+      "nonEmptyCount": 79,
+      "nonEmptyRatePct": 100,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "风险监控指标",
+      "sheetRole": "portfolio_risk_indicator_definition",
+      "columnIndex1Based": 2,
+      "field": "定义",
+      "temporalSemantics": "rule_definition",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 79,
+      "nonEmptyCount": 79,
+      "nonEmptyRatePct": 100,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "风险监控指标",
+      "sheetRole": "portfolio_risk_indicator_definition",
+      "columnIndex1Based": 3,
+      "field": "计算公式",
+      "temporalSemantics": "rule_definition",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 79,
+      "nonEmptyCount": 79,
+      "nonEmptyRatePct": 100,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "风险监控指标",
+      "sheetRole": "portfolio_risk_indicator_definition",
+      "columnIndex1Based": 4,
+      "field": "阈值 / 红",
+      "temporalSemantics": "rule_threshold",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 79,
+      "nonEmptyCount": 79,
+      "nonEmptyRatePct": 100,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "风险监控指标",
+      "sheetRole": "portfolio_risk_indicator_definition",
+      "columnIndex1Based": 5,
+      "field": "黄",
+      "temporalSemantics": "rule_threshold",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 79,
+      "nonEmptyCount": 79,
+      "nonEmptyRatePct": 100,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "风险监控指标",
+      "sheetRole": "portfolio_risk_indicator_definition",
+      "columnIndex1Based": 6,
+      "field": "绿",
+      "temporalSemantics": "rule_threshold",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 79,
+      "nonEmptyCount": 79,
+      "nonEmptyRatePct": 100,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "风险监控指标",
+      "sheetRole": "portfolio_risk_indicator_definition",
+      "columnIndex1Based": 7,
+      "field": "统计周期",
+      "temporalSemantics": "rule_definition",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 79,
+      "nonEmptyCount": 79,
+      "nonEmptyRatePct": 100,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "风险监控指标",
+      "sheetRole": "portfolio_risk_indicator_definition",
+      "columnIndex1Based": 8,
+      "field": "对应战略焦点行动 / (总经理部关注风险需填)",
+      "temporalSemantics": "rule_definition",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 79,
+      "nonEmptyCount": 79,
+      "nonEmptyRatePct": 100,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "风险监控指标",
+      "sheetRole": "portfolio_risk_indicator_definition",
+      "columnIndex1Based": 9,
+      "field": "备注",
+      "temporalSemantics": "rule_definition",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 79,
+      "nonEmptyCount": 79,
+      "nonEmptyRatePct": 100,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资项目每周简报",
+      "sheetRole": "product_position_snapshot",
+      "columnIndex1Based": 1,
+      "field": "证券代码",
+      "temporalSemantics": "identifier",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 1828,
+      "nonEmptyCount": 1828,
+      "nonEmptyRatePct": 100,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资项目每周简报",
+      "sheetRole": "product_position_snapshot",
+      "columnIndex1Based": 2,
+      "field": "证券名称",
+      "temporalSemantics": "descriptive_as_of_snapshot",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 1828,
+      "nonEmptyCount": 1828,
+      "nonEmptyRatePct": 100,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资项目每周简报",
+      "sheetRole": "product_position_snapshot",
+      "columnIndex1Based": 3,
+      "field": "投资分类I级",
+      "temporalSemantics": "classification_as_of_snapshot",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 1828,
+      "nonEmptyCount": 1594,
+      "nonEmptyRatePct": 87.2,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资项目每周简报",
+      "sheetRole": "product_position_snapshot",
+      "columnIndex1Based": 4,
+      "field": "投资分类II级",
+      "temporalSemantics": "classification_as_of_snapshot",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 1828,
+      "nonEmptyCount": 1828,
+      "nonEmptyRatePct": 100,
+      "numericCount": 234,
+      "numericRateOfAllRowsPct": 12.8,
+      "numericRateOfNonEmptyPct": 12.8,
+      "formulaCellCount": 234,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资项目每周简报",
+      "sheetRole": "product_position_snapshot",
+      "columnIndex1Based": 5,
+      "field": "区域",
+      "temporalSemantics": "classification_as_of_snapshot",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 1828,
+      "nonEmptyCount": 1828,
+      "nonEmptyRatePct": 100,
+      "numericCount": 234,
+      "numericRateOfAllRowsPct": 12.8,
+      "numericRateOfNonEmptyPct": 12.8,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资项目每周简报",
+      "sheetRole": "product_position_snapshot",
+      "columnIndex1Based": 6,
+      "field": "分支机构",
+      "temporalSemantics": "organizational_assignment_as_of_snapshot",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 1828,
+      "nonEmptyCount": 1828,
+      "nonEmptyRatePct": 100,
+      "numericCount": 0,
+      "numericRateOfAllRowsPct": 0,
+      "numericRateOfNonEmptyPct": 0,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资项目每周简报",
+      "sheetRole": "product_position_snapshot",
+      "columnIndex1Based": 7,
+      "field": "持仓数量",
+      "temporalSemantics": "point_in_time_balance",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 1828,
+      "nonEmptyCount": 1828,
+      "nonEmptyRatePct": 100,
+      "numericCount": 1750,
+      "numericRateOfAllRowsPct": 95.73,
+      "numericRateOfNonEmptyPct": 95.73,
+      "formulaCellCount": 146,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资项目每周简报",
+      "sheetRole": "product_position_snapshot",
+      "columnIndex1Based": 8,
+      "field": "投资金额",
+      "temporalSemantics": "ambiguous_balance_or_cost_basis",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 1828,
+      "nonEmptyCount": 1828,
+      "nonEmptyRatePct": 100,
+      "numericCount": 1780,
+      "numericRateOfAllRowsPct": 97.37,
+      "numericRateOfNonEmptyPct": 97.37,
+      "formulaCellCount": 205,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资项目每周简报",
+      "sheetRole": "product_position_snapshot",
+      "columnIndex1Based": 9,
+      "field": "本年度投资收益",
+      "temporalSemantics": "year_to_date_cumulative",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 1828,
+      "nonEmptyCount": 1828,
+      "nonEmptyRatePct": 100,
+      "numericCount": 1731,
+      "numericRateOfAllRowsPct": 94.69,
+      "numericRateOfNonEmptyPct": 94.69,
+      "formulaCellCount": 79,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资项目每周简报",
+      "sheetRole": "product_position_snapshot",
+      "columnIndex1Based": 10,
+      "field": "当前市值",
+      "temporalSemantics": "point_in_time_valuation",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 1828,
+      "nonEmptyCount": 1594,
+      "nonEmptyRatePct": 87.2,
+      "numericCount": 1594,
+      "numericRateOfAllRowsPct": 87.2,
+      "numericRateOfNonEmptyPct": 100,
+      "formulaCellCount": 72,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资项目每周简报",
+      "sheetRole": "product_position_snapshot",
+      "columnIndex1Based": 11,
+      "field": "浮动盈亏",
+      "temporalSemantics": "point_in_time_valuation_result",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 1828,
+      "nonEmptyCount": 1594,
+      "nonEmptyRatePct": 87.2,
+      "numericCount": 1594,
+      "numericRateOfAllRowsPct": 87.2,
+      "numericRateOfNonEmptyPct": 100,
+      "formulaCellCount": 72,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资项目每周简报",
+      "sheetRole": "product_position_snapshot",
+      "columnIndex1Based": 12,
+      "field": "现价",
+      "temporalSemantics": "point_in_time_market_price",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 1828,
+      "nonEmptyCount": 1594,
+      "nonEmptyRatePct": 87.2,
+      "numericCount": 1594,
+      "numericRateOfAllRowsPct": 87.2,
+      "numericRateOfNonEmptyPct": 100,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资项目每周简报",
+      "sheetRole": "product_position_snapshot",
+      "columnIndex1Based": 13,
+      "field": "成本单价",
+      "temporalSemantics": "cost_basis",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 1828,
+      "nonEmptyCount": 1594,
+      "nonEmptyRatePct": 87.2,
+      "numericCount": 1594,
+      "numericRateOfAllRowsPct": 87.2,
+      "numericRateOfNonEmptyPct": 100,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资项目每周简报",
+      "sheetRole": "product_position_snapshot",
+      "columnIndex1Based": 14,
+      "field": "本年已实现盈亏",
+      "temporalSemantics": "year_to_date_cumulative_realized_result",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 1828,
+      "nonEmptyCount": 1594,
+      "nonEmptyRatePct": 87.2,
+      "numericCount": 1594,
+      "numericRateOfAllRowsPct": 87.2,
+      "numericRateOfNonEmptyPct": 100,
+      "formulaCellCount": 73,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资项目每周简报",
+      "sheetRole": "product_position_snapshot",
+      "columnIndex1Based": 15,
+      "field": "细分项目",
+      "temporalSemantics": "classification_as_of_snapshot",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 1828,
+      "nonEmptyCount": 1594,
+      "nonEmptyRatePct": 87.2,
+      "numericCount": 1569,
+      "numericRateOfAllRowsPct": 85.83,
+      "numericRateOfNonEmptyPct": 98.43,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    },
+    {
+      "sheetName": "投资项目每周简报",
+      "sheetRole": "product_position_snapshot",
+      "columnIndex1Based": 16,
+      "field": "项目负责人",
+      "temporalSemantics": "organizational_assignment_as_of_snapshot",
+      "directAdjacentSnapshotDifferenceAllowedAsTransactionOrCashFlow": false,
+      "snapshotCount": 79,
+      "totalDataRows": 1828,
+      "nonEmptyCount": 1015,
+      "nonEmptyRatePct": 55.53,
+      "numericCount": 216,
+      "numericRateOfAllRowsPct": 11.82,
+      "numericRateOfNonEmptyPct": 21.28,
+      "formulaCellCount": 0,
+      "formulaErrorValueCount": 0,
+      "formulaErrorInFormulaCellCount": 0,
+      "artifactImportErrorValueCount": 0,
+      "artifactImportErrorInFormulaCellCount": 0,
+      "formulaAccessUnavailableSnapshotCount": 0
+    }
+  ],
+  "duplicateCandidateKeysBySnapshot": {
+    "definitions": {
+      "productSecurityCode": "normalized security code in product_position_snapshot (strong candidate)",
+      "fixedIncomeBondName": "normalized bond name in fixed_income_holding_risk_snapshot (name-only candidate)",
+      "fixedIncomeIssuerName": "normalized issuer name in fixed_income_holding_risk_snapshot (name-only candidate)",
+      "bondTradeBondName": "normalized bond name in bond_trade_risk_snapshot (name-only candidate)"
+    },
+    "managerKey": "Not audited because no explicit manager identifier or manager-name field is present.",
+    "interpretation": [
+      "No within-snapshot duplicate was found for the product security-code candidate, supporting its use as a replay row key subject to security-master confirmation.",
+      "No within-snapshot duplicate was found for the bond-name candidates, but names remain weaker than authoritative bond codes and still require a security master.",
+      "Issuer names repeat across holdings in every available fixed-income snapshot because one issuer can map to multiple bonds. Issuer name is an entity-link candidate, not a unique holding-row key."
+    ],
+    "snapshots": [
+      {
+        "snapshotDate": "2025-02-21",
+        "productSecurityCode": {
+          "rowCount": 21,
+          "populatedKeyCount": 21,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 18,
+          "populatedKeyCount": 18,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 18,
+          "populatedKeyCount": 15,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-02-28",
+        "productSecurityCode": {
+          "rowCount": 21,
+          "populatedKeyCount": 21,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 18,
+          "populatedKeyCount": 18,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 18,
+          "populatedKeyCount": 15,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-03-07",
+        "productSecurityCode": {
+          "rowCount": 21,
+          "populatedKeyCount": 21,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 18,
+          "populatedKeyCount": 18,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 18,
+          "populatedKeyCount": 15,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-03-14",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 18,
+          "populatedKeyCount": 18,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 18,
+          "populatedKeyCount": 15,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-03-21",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-03-28",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-03-31",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-04-03",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-04-11",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-04-18",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-04-25",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-04-30",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-05-09",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-05-16",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-05-23",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-05-30",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-06-06",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-06-13",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-06-20",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-06-27",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-06-30",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-07-04",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-07-11",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-07-18",
+        "productSecurityCode": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 3
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-07-25",
+        "productSecurityCode": {
+          "rowCount": 25,
+          "populatedKeyCount": 25,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 22,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-07-31",
+        "productSecurityCode": {
+          "rowCount": 25,
+          "populatedKeyCount": 25,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 22,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-08-01",
+        "productSecurityCode": {
+          "rowCount": 25,
+          "populatedKeyCount": 25,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 22,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-08-08",
+        "productSecurityCode": {
+          "rowCount": 25,
+          "populatedKeyCount": 25,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 22,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-08-15",
+        "productSecurityCode": {
+          "rowCount": 25,
+          "populatedKeyCount": 25,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 22,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-08-22",
+        "productSecurityCode": {
+          "rowCount": 25,
+          "populatedKeyCount": 25,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 22,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-08-29",
+        "productSecurityCode": {
+          "rowCount": 25,
+          "populatedKeyCount": 25,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 22,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-09-05",
+        "productSecurityCode": {
+          "rowCount": 25,
+          "populatedKeyCount": 25,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 22,
+          "populatedKeyCount": 16,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-09-12",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-09-19",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-09-26",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-09-30",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-10-10",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-10-17",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-10-20",
+        "productSecurityCode": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": null,
+        "fixedIncomeIssuerName": null,
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-10-24",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-10-31",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-11-07",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 15,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 8
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-11-14",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 15,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 8
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-11-21",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 15,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 8
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-11-28",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 15,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 8
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-12-05",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 14,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 9
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-12-12",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 14,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 9
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-12-19",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 13,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 10
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-12-26",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 4,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 1,
+          "duplicateRowCount": 19
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2025-12-31",
+        "productSecurityCode": {
+          "rowCount": 28,
+          "populatedKeyCount": 28,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 25,
+          "populatedKeyCount": 25,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 25,
+          "populatedKeyCount": 11,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 14
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-01-09",
+        "productSecurityCode": {
+          "rowCount": 17,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 15,
+          "populatedKeyCount": 15,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 15,
+          "populatedKeyCount": 10,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 5
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-01-16",
+        "productSecurityCode": {
+          "rowCount": 17,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 15,
+          "populatedKeyCount": 15,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 15,
+          "populatedKeyCount": 10,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 5
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-01-23",
+        "productSecurityCode": {
+          "rowCount": 17,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 15,
+          "populatedKeyCount": 15,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 15,
+          "populatedKeyCount": 10,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 5
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-01-30",
+        "productSecurityCode": {
+          "rowCount": 17,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 15,
+          "populatedKeyCount": 15,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 15,
+          "populatedKeyCount": 10,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 5
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-02-06",
+        "productSecurityCode": {
+          "rowCount": 20,
+          "populatedKeyCount": 20,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 18,
+          "populatedKeyCount": 18,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 18,
+          "populatedKeyCount": 13,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 5
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-02-13",
+        "productSecurityCode": {
+          "rowCount": 20,
+          "populatedKeyCount": 20,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 18,
+          "populatedKeyCount": 18,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 18,
+          "populatedKeyCount": 13,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 5
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-02-27",
+        "productSecurityCode": {
+          "rowCount": 20,
+          "populatedKeyCount": 20,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 18,
+          "populatedKeyCount": 18,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 18,
+          "populatedKeyCount": 13,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 5
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-03-06",
+        "productSecurityCode": {
+          "rowCount": 20,
+          "populatedKeyCount": 20,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 18,
+          "populatedKeyCount": 18,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 18,
+          "populatedKeyCount": 13,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 5
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-03-13",
+        "productSecurityCode": {
+          "rowCount": 20,
+          "populatedKeyCount": 20,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 18,
+          "populatedKeyCount": 18,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 18,
+          "populatedKeyCount": 14,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 4
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-03-20",
+        "productSecurityCode": {
+          "rowCount": 20,
+          "populatedKeyCount": 20,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 18,
+          "populatedKeyCount": 18,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 18,
+          "populatedKeyCount": 14,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 4
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-03-27",
+        "productSecurityCode": {
+          "rowCount": 21,
+          "populatedKeyCount": 21,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 19,
+          "populatedKeyCount": 19,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 19,
+          "populatedKeyCount": 15,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 4
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-03-31",
+        "productSecurityCode": {
+          "rowCount": 21,
+          "populatedKeyCount": 21,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 18,
+          "populatedKeyCount": 18,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 18,
+          "populatedKeyCount": 14,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 4
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-04-03",
+        "productSecurityCode": {
+          "rowCount": 21,
+          "populatedKeyCount": 21,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 18,
+          "populatedKeyCount": 18,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 18,
+          "populatedKeyCount": 14,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 4
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-04-10",
+        "productSecurityCode": {
+          "rowCount": 21,
+          "populatedKeyCount": 21,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 18,
+          "populatedKeyCount": 18,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 18,
+          "populatedKeyCount": 14,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 4
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-04-17",
+        "productSecurityCode": {
+          "rowCount": 21,
+          "populatedKeyCount": 21,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 18,
+          "populatedKeyCount": 18,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 18,
+          "populatedKeyCount": 14,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 4
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-04-24",
+        "productSecurityCode": {
+          "rowCount": 21,
+          "populatedKeyCount": 21,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 18,
+          "populatedKeyCount": 18,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 18,
+          "populatedKeyCount": 14,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 4
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-04-30",
+        "productSecurityCode": {
+          "rowCount": 21,
+          "populatedKeyCount": 21,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 18,
+          "populatedKeyCount": 18,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 18,
+          "populatedKeyCount": 14,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 4
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-05-08",
+        "productSecurityCode": {
+          "rowCount": 21,
+          "populatedKeyCount": 21,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 18,
+          "populatedKeyCount": 18,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 18,
+          "populatedKeyCount": 14,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 4
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-05-15",
+        "productSecurityCode": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 20,
+          "populatedKeyCount": 20,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 20,
+          "populatedKeyCount": 15,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 2,
+          "duplicateRowCount": 5
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-05-22",
+        "productSecurityCode": {
+          "rowCount": 25,
+          "populatedKeyCount": 25,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 22,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 5
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-05-29",
+        "productSecurityCode": {
+          "rowCount": 25,
+          "populatedKeyCount": 25,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 22,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 5
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-06-05",
+        "productSecurityCode": {
+          "rowCount": 25,
+          "populatedKeyCount": 25,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 22,
+          "populatedKeyCount": 22,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 22,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 3,
+          "duplicateRowCount": 5
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-06-12",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 4,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-06-18",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 4,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-06-26",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 4,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-06-30",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 4,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-07-03",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 4,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-07-10",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 4,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      },
+      {
+        "snapshotDate": "2026-07-17",
+        "productSecurityCode": {
+          "rowCount": 26,
+          "populatedKeyCount": 26,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeBondName": {
+          "rowCount": 23,
+          "populatedKeyCount": 23,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        },
+        "fixedIncomeIssuerName": {
+          "rowCount": 23,
+          "populatedKeyCount": 17,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 4,
+          "duplicateRowCount": 6
+        },
+        "bondTradeBondName": {
+          "rowCount": 1,
+          "populatedKeyCount": 1,
+          "missingKeyRowCount": 0,
+          "duplicatedKeyCount": 0,
+          "duplicateRowCount": 0
+        }
+      }
+    ]
+  },
+  "cadence": {
+    "firstSnapshotDate": "2025-02-21",
+    "lastSnapshotDate": "2026-07-17",
+    "transitionCount": 78,
+    "sevenDayIntervalCount": 54,
+    "nonSevenDayIntervalCount": 24,
+    "intervalDaysDistribution": {
+      "1": 1,
+      "3": 6,
+      "4": 5,
+      "5": 2,
+      "6": 3,
+      "7": 54,
+      "8": 3,
+      "9": 2,
+      "10": 1,
+      "14": 1
+    },
+    "nonSevenDayIntervals": [
+      {
+        "previousSnapshotDate": "2025-03-28",
+        "snapshotDate": "2025-03-31",
+        "intervalDays": 3,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2025-03-31",
+        "snapshotDate": "2025-04-03",
+        "intervalDays": 3,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2025-04-03",
+        "snapshotDate": "2025-04-11",
+        "intervalDays": 8,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2025-04-25",
+        "snapshotDate": "2025-04-30",
+        "intervalDays": 5,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2025-04-30",
+        "snapshotDate": "2025-05-09",
+        "intervalDays": 9,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2025-06-27",
+        "snapshotDate": "2025-06-30",
+        "intervalDays": 3,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2025-06-30",
+        "snapshotDate": "2025-07-04",
+        "intervalDays": 4,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2025-07-25",
+        "snapshotDate": "2025-07-31",
+        "intervalDays": 6,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2025-07-31",
+        "snapshotDate": "2025-08-01",
+        "intervalDays": 1,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2025-09-26",
+        "snapshotDate": "2025-09-30",
+        "intervalDays": 4,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2025-09-30",
+        "snapshotDate": "2025-10-10",
+        "intervalDays": 10,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2025-10-17",
+        "snapshotDate": "2025-10-20",
+        "intervalDays": 3,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2025-10-20",
+        "snapshotDate": "2025-10-24",
+        "intervalDays": 4,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2025-12-26",
+        "snapshotDate": "2025-12-31",
+        "intervalDays": 5,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2025-12-31",
+        "snapshotDate": "2026-01-09",
+        "intervalDays": 9,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2026-02-13",
+        "snapshotDate": "2026-02-27",
+        "intervalDays": 14,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2026-03-27",
+        "snapshotDate": "2026-03-31",
+        "intervalDays": 4,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2026-03-31",
+        "snapshotDate": "2026-04-03",
+        "intervalDays": 3,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2026-04-24",
+        "snapshotDate": "2026-04-30",
+        "intervalDays": 6,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2026-04-30",
+        "snapshotDate": "2026-05-08",
+        "intervalDays": 8,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2026-06-12",
+        "snapshotDate": "2026-06-18",
+        "intervalDays": 6,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2026-06-18",
+        "snapshotDate": "2026-06-26",
+        "intervalDays": 8,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2026-06-26",
+        "snapshotDate": "2026-06-30",
+        "intervalDays": 4,
+        "isSevenDayInterval": false
+      },
+      {
+        "previousSnapshotDate": "2026-06-30",
+        "snapshotDate": "2026-07-03",
+        "intervalDays": 3,
+        "isSevenDayInterval": false
+      }
+    ],
+    "interpretation": "The source is a dated weekly/periodic snapshot series with irregular and month-end intervals; it is not a continuous daily series."
+  },
+  "missingSheets": {
+    "affectedSnapshots": [
+      {
+        "snapshotDate": "2025-10-20",
+        "missingSheets": [
+          "固收业务风险监控周报表",
+          "投资风险限额监控表"
+        ]
+      }
+    ],
+    "explicit20251020Finding": {
+      "snapshotDate": "2025-10-20",
+      "missingSheets": [
+        "固收业务风险监控周报表",
+        "投资风险限额监控表"
+      ],
+      "interpretation": "Two expected sheet roles are absent from the source workbook on this date and reappear in the next snapshot. Do not impute their records from adjacent snapshots."
+    }
+  },
+  "temporalSemanticsBoundary": {
+    "safeDirectDifferenceFields": [],
+    "prohibition": "No audited field is approved for interpreting an adjacent-snapshot difference directly as a trade or cash flow.",
+    "reasons": [
+      "Point-in-time balances and valuations can change because of transactions, market prices, valuation methods, classifications, corrections, or multiple simultaneous causes.",
+      "Year-to-date and cumulative fields can reset, be corrected, change definition, or combine realized and valuation effects; a weekly delta is not a transaction ledger.",
+      "Irregular snapshot intervals and the 2025-10-20 missing-sheet event break any assumption of complete consecutive-period observation.",
+      "Cash-flow and transaction conclusions require dated transaction, subscription/redemption, coupon/interest, fee, and settlement records with stable event identifiers."
+    ],
+    "semanticLabels": {
+      "yearToDate": "year_to_date_cumulative and year_to_date_cumulative_realized_result",
+      "cumulative": "cumulative_received_interest and cumulative_performance_measure",
+      "pointInTime": "labels beginning point_in_time_ plus current descriptive/classification assignments",
+      "ambiguous": "ambiguous_balance_or_cost_basis, derived_or_unlabeled_source_value, and unknown_requires_owner_definition"
+    }
+  },
+  "privacy": {
+    "identityValuesEmitted": false,
+    "duplicateAuditEmitsCountsOnly": true
+  }
+}

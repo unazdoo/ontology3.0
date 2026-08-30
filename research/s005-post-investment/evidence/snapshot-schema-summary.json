@@ -1,0 +1,275 @@
+{
+  "artifact": "S005 snapshot schema and identity audit",
+  "namespace": "ofw.s005.research.v1",
+  "generatedAt": "2026-08-23T17:12:12.213Z",
+  "source": {
+    "directory": "S005_SOURCE_DIR",
+    "filePattern": "*（YYYYMMDD）.xlsx",
+    "accessMode": "read_only",
+    "sourceFilesModified": false,
+    "sourceFilesCopied": false
+  },
+  "parser": {
+    "primary": "@oai/artifact-tool SpreadsheetFile.importXlsx for workbook structure and formula surfaces",
+    "version": "2.8.48",
+    "importedSnapshotCount": 79,
+    "failedImportCount": 0,
+    "fallback": "bundled Python openpyxl read_only=True, data_only=True for cached cell values only",
+    "fallbackReason": "Used after full-batch audit showed that artifact-tool evaluates many supported source formula cells to error tokens even when the XLSX contains usable cached values. The fallback prevents parser-calculation limitations from being misclassified as missing business identities or source formula errors.",
+    "cachedValueAccessFailureCount": 0
+  },
+  "coverage": {
+    "expectedSnapshotCount": 79,
+    "actualSnapshotCount": 79,
+    "countMatchesExpectation": true,
+    "firstSnapshotDate": "2025-02-21",
+    "lastSnapshotDate": "2026-07-17",
+    "totalWorkbookBytes": 4042246,
+    "totalSheetInstances": 393,
+    "distinctSheetNames": 5
+  },
+  "structure": {
+    "distinctWorkbookStructureCount": 2,
+    "workbookStructureTransitionCount": 2,
+    "workbookVariants": [
+      {
+        "signature": "779eb07983c7ce21",
+        "snapshotCount": 78,
+        "firstDate": "2025-02-21",
+        "lastDate": "2026-07-17"
+      },
+      {
+        "signature": "e517bb49ed3ca703",
+        "snapshotCount": 1,
+        "firstDate": "2025-10-20",
+        "lastDate": "2025-10-20"
+      }
+    ],
+    "sheetSchemaVariants": [
+      {
+        "sheetName": "投资项目每周简报",
+        "role": "product_position_snapshot",
+        "structureSignature": "9a8dd4162136b2ee",
+        "fields": [
+          "证券代码",
+          "证券名称",
+          "投资分类I级",
+          "投资分类II级",
+          "区域",
+          "分支机构",
+          "持仓数量",
+          "投资金额",
+          "本年度投资收益",
+          "当前市值",
+          "浮动盈亏",
+          "现价",
+          "成本单价",
+          "本年已实现盈亏",
+          "细分项目",
+          "项目负责人"
+        ],
+        "headerRows": [
+          1
+        ],
+        "recordCountMethod": "rows_after_header_with_security_code_and_name",
+        "snapshotCount": 79,
+        "firstDate": "2025-02-21",
+        "lastDate": "2026-07-17",
+        "minimumDataRecordCount": 17,
+        "maximumDataRecordCount": 28,
+        "minimumUsedRowCount": 24,
+        "maximumUsedRowCount": 39
+      },
+      {
+        "sheetName": "风险监控指标",
+        "role": "portfolio_risk_indicator_definition",
+        "structureSignature": "491249abe3857aa8",
+        "fields": [
+          "指标",
+          "定义",
+          "计算公式",
+          "阈值 / 红",
+          "黄",
+          "绿",
+          "统计周期",
+          "对应战略焦点行动 / (总经理部关注风险需填)",
+          "备注"
+        ],
+        "headerRows": [
+          1,
+          2
+        ],
+        "recordCountMethod": "rows_after_two_level_header_with_indicator_name",
+        "snapshotCount": 79,
+        "firstDate": "2025-02-21",
+        "lastDate": "2026-07-17",
+        "minimumDataRecordCount": 1,
+        "maximumDataRecordCount": 1,
+        "minimumUsedRowCount": 3,
+        "maximumUsedRowCount": 3
+      },
+      {
+        "sheetName": "债券投资交易风险监控周报表",
+        "role": "bond_trade_risk_snapshot",
+        "structureSignature": "4aac8ae76afd748e",
+        "fields": [
+          "序号",
+          "债券类别",
+          "债券名称",
+          "面值",
+          "买入净价",
+          "当前净价",
+          "已收利息",
+          "累计收益率",
+          "止损",
+          "UNLABELED_COLUMN_J"
+        ],
+        "headerRows": [
+          3
+        ],
+        "recordCountMethod": "rows_after_header_with_bond_name_excluding_repeated_header",
+        "snapshotCount": 79,
+        "firstDate": "2025-02-21",
+        "lastDate": "2026-07-17",
+        "minimumDataRecordCount": 1,
+        "maximumDataRecordCount": 1,
+        "minimumUsedRowCount": 18,
+        "maximumUsedRowCount": 18
+      },
+      {
+        "sheetName": "固收业务风险监控周报表",
+        "role": "fixed_income_holding_risk_snapshot",
+        "structureSignature": "85c000697e995c63",
+        "fields": [
+          "序号",
+          "债券类别",
+          "债券名称",
+          "发行人 (中央政府投资企业/其他企业)",
+          "UNLABELED_COLUMN_E",
+          "单户集中度",
+          "占固收总投资比例",
+          "投资期限 (信用债久期不超过10年)",
+          "UNLABELED_COLUMN_I",
+          "总投资额(元)",
+          "#NAME?"
+        ],
+        "headerRows": [
+          4
+        ],
+        "recordCountMethod": "rows_after_header_with_bond_name",
+        "snapshotCount": 78,
+        "firstDate": "2025-02-21",
+        "lastDate": "2026-07-17",
+        "minimumDataRecordCount": 15,
+        "maximumDataRecordCount": 25,
+        "minimumUsedRowCount": 52,
+        "maximumUsedRowCount": 62
+      },
+      {
+        "sheetName": "投资风险限额监控表",
+        "role": "investment_limit_snapshot",
+        "structureSignature": "0a322870f118053c",
+        "fields": [
+          "投资业务类型",
+          "投资品种",
+          "仓位(成本)",
+          "风险限额 / 风控比例/金额",
+          "实际比例/金额",
+          "限额状态(●/●)",
+          "备注"
+        ],
+        "headerRows": [
+          3,
+          4
+        ],
+        "recordCountMethod": "rows_after_two_level_header_with_business_or_product_type",
+        "snapshotCount": 78,
+        "firstDate": "2025-02-21",
+        "lastDate": "2026-07-17",
+        "minimumDataRecordCount": 6,
+        "maximumDataRecordCount": 8,
+        "minimumUsedRowCount": 10,
+        "maximumUsedRowCount": 12
+      }
+    ]
+  },
+  "identityAssessment": {
+    "product": {
+      "sourceSheetRole": "product_position_snapshot",
+      "candidateKey": "normalized security code",
+      "quality": "STRONG_CANDIDATE_PENDING_SOURCE_OWNER_CONFIRMATION",
+      "rationale": "An explicit security code and name are present in each product-position row; code/name cardinality anomalies are reported only as counts.",
+      "distinctIdentityCount": 36,
+      "observedOnceCount": 0,
+      "observedAtLeast4Count": 36,
+      "observedAtLeast13Count": 32,
+      "observedAtLeast26Count": 28,
+      "observedInAtLeastHalfSnapshotsCount": 24,
+      "observedInAllSnapshotsCount": 10,
+      "maximumSnapshotCount": 79,
+      "codesWithMultipleNormalizedNamesCount": 4,
+      "normalizedNamesMappedToMultipleCodesCount": 0
+    },
+    "manager": {
+      "candidateKey": null,
+      "quality": "UNAVAILABLE",
+      "rationale": "No explicit manager identifier or manager-name field exists in the audited sheets. Parsing a manager from a product name would be heuristic and is not accepted as a stable key."
+    },
+    "issuer": {
+      "sourceSheetRole": "fixed_income_holding_risk_snapshot",
+      "candidateKey": "normalized issuer name",
+      "quality": "MODERATE_NAME_ONLY_REQUIRES_MASTER_DATA",
+      "rationale": "An issuer-name field exists, but no issuer code or authoritative entity identifier is present.",
+      "distinctIdentityCount": 46,
+      "observedOnceCount": 3,
+      "observedAtLeast4Count": 35,
+      "observedAtLeast13Count": 28,
+      "observedAtLeast26Count": 20,
+      "observedInAtLeastHalfSnapshotsCount": 12,
+      "observedInAllSnapshotsCount": 0,
+      "maximumSnapshotCount": 78
+    },
+    "holding": {
+      "productHoldingCandidateKey": "normalized security code",
+      "productHoldingQuality": "STRONG_CANDIDATE_PENDING_SOURCE_OWNER_CONFIRMATION",
+      "bondHoldingCandidateKey": "normalized bond name",
+      "bondHoldingQuality": "MODERATE_NAME_ONLY_REQUIRES_SECURITY_MASTER",
+      "rationale": "Product positions expose a code; bond-risk sheets expose a bond name but no consistently populated bond code in the audited structure.",
+      "bondHoldingCoverage": {
+        "distinctIdentityCount": 37,
+        "observedOnceCount": 1,
+        "observedAtLeast4Count": 36,
+        "observedAtLeast13Count": 32,
+        "observedAtLeast26Count": 27,
+        "observedInAtLeastHalfSnapshotsCount": 21,
+        "observedInAllSnapshotsCount": 1,
+        "maximumSnapshotCount": 79
+      }
+    }
+  },
+  "replayCandidateSelection": {
+    "count": 15,
+    "targetRange": "10-20",
+    "selectedCountWithinTargetRange": true,
+    "method": "Rank normalized security-code identities by snapshot coverage, then numeric-field completeness; emit only namespace-scoped anonymized IDs.",
+    "limitations": [
+      "Selection establishes longitudinal traceability, not product suitability or evaluation quality.",
+      "Weekly snapshots cannot be treated as daily NAV, market data, or complete cash-flow history.",
+      "A security master is still required to confirm code semantics, share-class changes, mergers, and renames."
+    ]
+  },
+  "privacy": {
+    "rawProductNamesEmitted": false,
+    "rawSecurityCodesEmittedInIdentityOutputs": false,
+    "rawManagerNamesEmitted": false,
+    "rawIssuerNamesEmitted": false,
+    "rawBondNamesEmitted": false,
+    "anonymization": "SHA-256(namespace|domain|normalized source key), truncated to 16 uppercase hex characters; intended only as a stable research pseudonym."
+  },
+  "limitations": [
+    "Record counts use documented sheet-specific structural predicates and are not accounting reconciliations.",
+    "Merged headers are represented from imported cell values; unlabeled imported columns receive positional labels.",
+    "Formula error cells, if present in source workbooks, are treated as source values and are not recalculated or repaired.",
+    "No raw source workbook was modified, copied, renamed, or exported."
+  ]
+}
