@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>S001 集团融资成本与债务结构分析报告模板</title>
+    <style>
+      :root {
+        --ink: #172437;
+        --muted: #66758a;
+        --line: #d9e1ea;
+        --soft: #f4f7fa;
+        --accent: #1c5f8f;
+        --accent-soft: #eaf3f9;
+        --warning: #8b5a15;
+        --warning-soft: #fff5e3;
+        font-family: -apple-system, "SF Pro Text", "PingFang SC", "Noto Sans SC", sans-serif;
+        color: var(--ink);
+        background: #e9eef3;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body { margin: 0; min-width: 320px; background: #e9eef3; }
+      button { font: inherit; }
+      .toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        min-height: 58px;
+        padding: 10px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        color: #fff;
+        background: rgba(24, 39, 58, 0.94);
+        backdrop-filter: blur(16px);
+        box-shadow: 0 8px 24px rgba(19, 34, 52, 0.16);
+      }
+      .toolbar-title { min-width: 0; display: grid; gap: 2px; }
+      .toolbar-title strong { font-size: 14px; }
+      .toolbar-title span { color: #becbd8; font-size: 12px; }
+      .toolbar-actions { display: flex; align-items: center; gap: 8px; }
+      .toolbar button {
+        min-height: 36px;
+        padding: 0 14px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 5px;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+        cursor: pointer;
+      }
+      .toolbar button:hover { background: rgba(255, 255, 255, 0.16); }
+      .document {
+        width: min(920px, calc(100% - 40px));
+        margin: 32px auto 64px;
+        padding: 64px 70px 56px;
+        background: #fff;
+        box-shadow: 0 18px 50px rgba(23, 36, 55, 0.14);
+      }
+      .cover { min-height: 620px; padding: 18px 0 44px; display: flex; flex-direction: column; border-bottom: 2px solid var(--ink); }
+      .eyebrow { color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: 0.16em; }
+      h1 { max-width: 650px; margin: 90px 0 18px; font-size: 36px; line-height: 1.28; letter-spacing: -0.02em; text-wrap: balance; }
+      .subtitle { max-width: 640px; margin: 0; color: var(--muted); font-size: 16px; line-height: 1.8; }
+      .cover-meta { margin-top: auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+      .cover-meta div { min-height: 66px; padding: 13px 14px; display: grid; align-content: center; gap: 5px; border-bottom: 1px solid var(--line); }
+      .cover-meta div:nth-child(odd) { border-right: 1px solid var(--line); }
+      .cover-meta span, .field-label { color: var(--muted); font-size: 11px; }
+      .cover-meta strong { font-size: 13px; font-weight: 600; }
+      .slot {
+        display: inline-flex;
+        align-items: center;
+        min-height: 27px;
+        padding: 3px 8px;
+        border: 1px dashed #9db4c7;
+        border-radius: 3px;
+        color: #42647f;
+        background: #f3f8fb;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .toc { padding: 38px 0 12px; }
+      .toc h2 { margin-top: 0; }
+      .toc-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 24px; }
+      .toc a { padding: 10px 0; display: flex; align-items: center; gap: 10px; color: var(--ink); border-bottom: 1px solid var(--line); text-decoration: none; }
+      .toc a span { width: 28px; color: var(--accent); font-size: 12px; font-weight: 700; }
+      .chapter { padding: 42px 0 10px; border-top: 1px solid var(--line); }
+      .chapter-head { margin-bottom: 22px; display: flex; align-items: flex-start; gap: 16px; }
+      .chapter-index { width: 42px; height: 42px; display: grid; place-items: center; flex: 0 0 auto; color: #fff; background: var(--ink); font-size: 12px; font-weight: 700; }
+      h2 { margin: 0; font-size: 24px; line-height: 1.4; }
+      .chapter-head p { margin: 5px 0 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+      h3 { margin: 26px 0 10px; font-size: 15px; }
+      p, li { font-size: 14px; line-height: 1.8; orphans: 3; widows: 3; }
+      .lead { margin: 0 0 18px; font-size: 15px; }
+      .kpi-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+      .kpi { min-height: 108px; padding: 14px; display: grid; align-content: space-between; gap: 12px; border: 1px solid var(--line); background: var(--soft); break-inside: avoid; }
+      .kpi span { color: var(--muted); font-size: 11px; }
+      .kpi strong { font-size: 20px; }
+      .narrative-slot { margin: 16px 0; padding: 14px 16px; border-left: 3px solid var(--accent); color: #30465b; background: var(--accent-soft); }
+      .narrative-slot strong { display: block; margin-bottom: 5px; font-size: 12px; }
+      .narrative-slot span { font-size: 13px; line-height: 1.75; }
+      .chart-slot { min-height: 230px; padding: 18px; display: grid; align-content: space-between; border: 1px solid var(--line); break-inside: avoid; }
+      .chart-slot header { display: flex; justify-content: space-between; gap: 12px; }
+      .chart-slot header strong { font-size: 13px; }
+      .chart-slot header span { color: var(--muted); font-size: 11px; }
+      .chart-bars { height: 140px; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); align-items: end; gap: 12px; border-bottom: 1px solid var(--line); }
+      .chart-bars i { height: var(--height); display: block; background: linear-gradient(180deg, #82afcc, #326e98); opacity: 0.35; }
+      .chart-bars span { display: block; margin: 6px 0 -23px; color: var(--muted); font-size: 10px; text-align: center; }
+      table { width: 100%; border-collapse: collapse; break-inside: auto; }
+      thead { display: table-header-group; }
+      tr { break-inside: avoid; }
+      th, td { padding: 10px 9px; border: 1px solid var(--line); font-size: 12px; line-height: 1.55; text-align: left; vertical-align: top; }
+      th { color: #405269; background: var(--soft); font-weight: 700; }
+      td.num, th.num { text-align: right; }
+      .rule-list { display: grid; gap: 10px; }
+      .rule-card { padding: 14px 15px; display: grid; grid-template-columns: 95px minmax(0, 1fr); gap: 14px; border: 1px solid #ead5b1; background: var(--warning-soft); break-inside: avoid; }
+      .rule-card > strong { color: var(--warning); font-size: 13px; }
+      .rule-card div { display: grid; gap: 7px; }
+      .rule-card span { color: #5d4b31; font-size: 12px; line-height: 1.65; }
+      .evidence-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      .evidence-item { padding: 12px; border: 1px solid var(--line); break-inside: avoid; }
+      .evidence-item span { display: block; margin-bottom: 5px; color: var(--muted); font-size: 11px; }
+      .evidence-item strong { font-size: 12px; line-height: 1.6; }
+      .limitation { margin-top: 16px; padding: 14px 16px; border: 1px solid #d6dde5; background: #fafbfc; }
+      .limitation strong { display: block; margin-bottom: 6px; font-size: 12px; }
+      .limitation p { margin: 0; color: var(--muted); font-size: 12px; }
+      .footer { margin-top: 44px; padding-top: 16px; display: flex; justify-content: space-between; gap: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; line-height: 1.6; }
+      @media (max-width: 720px) {
+        .toolbar { align-items: flex-start; padding: 10px 12px; }
+        .toolbar-title span { display: none; }
+        .document { width: 100%; margin: 0; padding: 34px 20px 42px; box-shadow: none; }
+        .cover { min-height: 560px; }
+        h1 { margin-top: 64px; font-size: 29px; }
+        .cover-meta, .toc-grid, .evidence-grid { grid-template-columns: 1fr; }
+        .cover-meta div:nth-child(odd) { border-right: 0; }
+        .kpi-grid { grid-template-columns: 1fr; }
+        .rule-card { grid-template-columns: 1fr; }
+        .footer { flex-direction: column; }
+      }
+      @media print {
+        :root, body { background: #fff; }
+        .toolbar { display: none; }
+        .document { width: auto; margin: 0; padding: 0; box-shadow: none; }
+        .cover { min-height: 245mm; break-after: page; }
+        .toc { break-after: page; }
+        .chapter { break-before: page; }
+        .slot, .kpi, .narrative-slot, .chart-slot, .rule-card, .evidence-item, th { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+        a { color: inherit; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="toolbar">
+      <div class="toolbar-title">
+        <strong>集团融资成本与债务结构分析报告模板</strong>
+        <span>RT-FIN-002 · 版本 2.2.0 · S001</span>
+      </div>
+      <div class="toolbar-actions">
+        <button type="button" onclick="window.print()">打印或保存为 PDF</button>
+      </div>
+    </header>
+    <main class="document">
+      <section class="cover">
+        <span class="eyebrow">集团融资经营分析</span>
+        <h1>集团融资成本与债务结构分析报告</h1>
+        <p class="subtitle">围绕融资余额、加权融资成本、债务结构、重点单位、合作机构与规则发现，形成可追溯的经营分析。</p>
+        <div class="cover-meta">
+          <div><span>报告编号</span><strong><span class="slot">发布后自动填入</span></strong></div>
+          <div><span>内容版本</span><strong><span class="slot">发布后自动填入</span></strong></div>
+          <div><span>已发布业务定义</span><strong><span class="slot">生成时固定</span></strong></div>
+          <div><span>数据版本</span><strong><span class="slot">生成时固定</span></strong></div>
+          <div><span>数据截至时间</span><strong><span class="slot">生成时固定</span></strong></div>
+          <div><span>证据包</span><strong><span class="slot">核验时形成</span></strong></div>
+        </div>
+      </section>
+
+      <nav class="toc" aria-label="报告目录">
+        <h2>目录</h2>
+        <div class="toc-grid">
+          <a href="#overview"><span>01</span>经营概览</a>
+          <a href="#cost"><span>02</span>融资成本</a>
+          <a href="#structure"><span>03</span>债务结构</a>
+          <a href="#units"><span>04</span>重点单位与机构</a>
+          <a href="#rules"><span>05</span>规则发现</a>
+          <a href="#evidence"><span>06</span>证据与限制</a>
+        </div>
+      </nav>
+
+      <section class="chapter" id="overview">
+        <header class="chapter-head"><span class="chapter-index">01</span><div><h2>经营概览</h2><p>展示报告固定时点下的集团融资规模、成本和主要结构指标。</p></div></header>
+        <p class="lead">截至 <span class="slot">数据截至时间</span>，集团融资余额为 <span class="slot">融资余额</span>，余额加权融资成本为 <span class="slot">加权融资成本</span>。</p>
+        <div class="kpi-grid">
+          <div class="kpi"><span>融资余额</span><strong><span class="slot">指标值 / 单位</span></strong></div>
+          <div class="kpi"><span>加权融资成本</span><strong><span class="slot">指标值 / 单位</span></strong></div>
+          <div class="kpi"><span>浮动利率余额占比</span><strong><span class="slot">指标值 / 单位</span></strong></div>
+        </div>
+        <div class="narrative-slot"><strong>经营判断</strong><span>由报告生成流程依据已固定指标、趋势和证据形成，经确定性核验与人工复核后进入正式报告。</span></div>
+      </section>
+
+      <section class="chapter" id="cost">
+        <header class="chapter-head"><span class="chapter-index">02</span><div><h2>融资成本</h2><p>分析集团融资成本水平、变化趋势及高成本融资贡献。</p></div></header>
+        <p>高成本融资余额占比为 <span class="slot">指标值 / 单位</span>；重点单位及贡献由当前报告固定事实填入。</p>
+        <figure class="chart-slot">
+          <header><strong>近六个月融资成本（%）</strong><span>取得两个及以上可比较时点后展示</span></header>
+          <div class="chart-bars" aria-label="融资成本趋势占位">
+            <div><i style="--height:44%"></i><span>月份</span></div><div><i style="--height:57%"></i><span>月份</span></div><div><i style="--height:51%"></i><span>月份</span></div><div><i style="--height:68%"></i><span>月份</span></div><div><i style="--height:62%"></i><span>月份</span></div><div><i style="--height:73%"></i><span>月份</span></div>
+          </div>
+        </figure>
+        <div class="narrative-slot"><strong>口径说明</strong><span>组合融资成本按所选融资明细折合人民币余额加权；报告生成时固定精确业务定义、数据版本和结果版本。</span></div>
+      </section>
+
+      <section class="chapter" id="structure">
+        <header class="chapter-head"><span class="chapter-index">03</span><div><h2>债务结构</h2><p>按利率、期限、币种和担保方式展示受治理结构结果。</p></div></header>
+        <table>
+          <thead><tr><th>结构维度</th><th>主要类别</th><th class="num">占比</th><th>分析说明</th></tr></thead>
+          <tbody>
+            <tr><td>利率结构</td><td><span class="slot">主要类别</span></td><td class="num"><span class="slot">指标值</span></td><td><span class="slot">结构判断</span></td></tr>
+            <tr><td>期限结构</td><td><span class="slot">主要类别</span></td><td class="num"><span class="slot">指标值</span></td><td><span class="slot">结构判断</span></td></tr>
+            <tr><td>币种结构</td><td><span class="slot">主要类别</span></td><td class="num"><span class="slot">指标值</span></td><td><span class="slot">结构判断</span></td></tr>
+            <tr><td>担保结构</td><td><span class="slot">主要类别</span></td><td class="num"><span class="slot">指标值</span></td><td><span class="slot">质量限制或判断</span></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="chapter" id="units">
+        <header class="chapter-head"><span class="chapter-index">04</span><div><h2>重点单位与机构</h2><p>比较三家重点单位的融资余额与成本，并列示需优先协商的金融机构。</p></div></header>
+        <h3>重点单位比较</h3>
+        <table>
+          <thead><tr><th>单位</th><th class="num">融资余额</th><th class="num">加权融资成本</th><th>主要问题</th></tr></thead>
+          <tbody>
+            <tr><td><span class="slot">单位名称</span></td><td class="num"><span class="slot">指标值</span></td><td class="num"><span class="slot">指标值</span></td><td><span class="slot">Rule 发现</span></td></tr>
+            <tr><td><span class="slot">单位名称</span></td><td class="num"><span class="slot">指标值</span></td><td class="num"><span class="slot">指标值</span></td><td><span class="slot">Rule 发现</span></td></tr>
+            <tr><td><span class="slot">单位名称</span></td><td class="num"><span class="slot">指标值</span></td><td class="num"><span class="slot">指标值</span></td><td><span class="slot">Rule 发现</span></td></tr>
+          </tbody>
+        </table>
+        <h3>优先协商机构</h3>
+        <table>
+          <thead><tr><th>金融机构</th><th>对应单位</th><th class="num">问题融资余额</th><th>建议协商方向</th></tr></thead>
+          <tbody><tr><td><span class="slot">机构名称</span></td><td><span class="slot">单位名称</span></td><td class="num"><span class="slot">金额</span></td><td><span class="slot">降息、置换、固定利率或展期方向</span></td></tr></tbody>
+        </table>
+      </section>
+
+      <section class="chapter" id="rules">
+        <header class="chapter-head"><span class="chapter-index">05</span><div><h2>规则发现</h2><p>展示 R01、R02、R03 的命中主体、触发分支、阈值、评估时间和证据。</p></div></header>
+        <div class="rule-list">
+          <article class="rule-card"><strong>R01</strong><div><span><b>适用问题：</b>高成本融资</span><span><b>运行结果：</b><span class="slot">主体 / 命中状态 / 触发分支</span></span></div></article>
+          <article class="rule-card"><strong>R02</strong><div><span><b>适用问题：</b>浮动利率敞口</span><span><b>运行结果：</b><span class="slot">主体 / 命中状态 / 触发分支</span></span></div></article>
+          <article class="rule-card"><strong>R03</strong><div><span><b>适用问题：</b>短期债务集中</span><span><b>运行结果：</b><span class="slot">主体 / 命中状态 / 触发分支</span></span></div></article>
+        </div>
+        <div class="narrative-slot"><strong>融资优化建议</strong><span>建议必须引用已固定的 Rule 结果和 Action Type，不直接创建提醒或负责人待办。</span></div>
+      </section>
+
+      <section class="chapter" id="evidence">
+        <header class="chapter-head"><span class="chapter-index">06</span><div><h2>证据与限制</h2><p>披露报告固定版本、数据可信度、证据包、核验覆盖和使用限制。</p></div></header>
+        <div class="evidence-grid">
+          <div class="evidence-item"><span>报告定义 / 模板</span><strong>RD-FIN-001 1.0.0 / RT-FIN-002 2.2.0</strong></div>
+          <div class="evidence-item"><span>已发布业务定义</span><strong><span class="slot">精确版本</span></strong></div>
+          <div class="evidence-item"><span>数据版本 / 截至时间</span><strong><span class="slot">精确版本与时点</span></strong></div>
+          <div class="evidence-item"><span>质量 / 新鲜度 / 消费状态</span><strong><span class="slot">生成时固定摘要</span></strong></div>
+          <div class="evidence-item"><span>证据包 / 核验记录</span><strong><span class="slot">稳定标识与覆盖结果</span></strong></div>
+          <div class="evidence-item"><span>HTML / PDF</span><strong>共享报告编号、内容版本与证据链</strong></div>
+        </div>
+        <div class="limitation"><strong>使用限制</strong><p>LLM 只组织和解释已固定证据，不作为数据源或正式计算层。正式报告发布后不随新数据、模板或重新渲染原地变化。</p></div>
+      </section>
+
+      <footer class="footer">
+        <span>集团融资成本与债务结构分析报告模板 · RT-FIN-002 · 版本 2.2.0</span>
+        <span>系统内受控 HTML 与同源 PDF 共享报告编号、内容版本和证据链。</span>
+      </footer>
+    </main>
+  </body>
+</html>

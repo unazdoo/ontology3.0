@@ -1,0 +1,36 @@
+import fs from "node:fs";
+import path from "node:path";
+import vm from "node:vm";
+import { fileURLToPath } from "node:url";
+
+const here=path.dirname(fileURLToPath(import.meta.url));
+const manifest=JSON.parse(fs.readFileSync(path.join(here,"shared/manifest.json"),"utf8"));
+const sandbox={window:{}};vm.createContext(sandbox);vm.runInContext(fs.readFileSync(path.join(here,"shared/fixtures.js"),"utf8"),sandbox);
+const data=sandbox.window.DE_DATA;
+const errors=[];const assert=(ok,msg)=>{if(!ok)errors.push(msg)};
+assert(manifest.screens.length===14,"SCREEN_MANIFEST 必须正好 14 项");
+assert(manifest.variants.length===3,"必须正好 3 个方案");
+assert(data.pipelines.length===2,"必须正好 2 条管道");
+assert(data.pipelines.every(p=>p.nodeCount===4),"两条管道必须都是 4 节点");
+const s003=data.pipelines.find(p=>p.id==="pipe-s003-compat");
+assert(Boolean(s003),"缺少 S003 管道");assert(s003.latestRun==="无最近运行","S003 不得出现真实运行");assert(s003.outputAssetId===null,"S003 不得出现已发布资产");
+assert(s003.name==="债务风险输入兼容性验证","S003 管道名称不得暗示已完成发布");
+assert(data.assets.length===1&&data.assets[0].id==="asset-finance","已发布资产只能包含真实融资资产");
+assert(data.sources.filter(s=>s.authenticity==="demo").every(s=>s.canOpen===false),"演示连接器不得下钻");
+for(const file of ["方案A.html","方案B.html","方案C.html","逐页对比.html"]){const p=path.join(here,file);assert(fs.existsSync(p),`缺少 ${file}`);if(fs.existsSync(p)){const html=fs.readFileSync(p,"utf8");assert(!html.includes("{{"),`${file} 存在未替换模板标记`);assert(!/https?:\/\//.test(html),`${file} 包含外部网络依赖`);}}
+const app=fs.readFileSync(path.join(here,"shared/app.js"),"utf8");assert(!app.includes("请求本体刷新</"),"画布不得出现请求本体刷新节点");assert(app.includes("提交 C028 / T050"),"缺少数据工程提交 C028/T050 的交接边界");assert(app.includes("唯一提交 T019"),"缺少本体管理唯一提交 T019 的边界");assert(!app.includes("C028 资产 Owner"),"不得把 C028 误写为资产 Owner");assert(app.includes("同 T006 自循环禁止"),"缺少资产复用防自循环门禁");assert(app.includes("CR-DE-007 候选"),"缺少资产复用候选合同标识");assert(app.includes("function runDetail"),"缺少管道内运行详情");assert(app.includes("function sharedFolderModal"),"缺少共享文件夹设置弹层");assert(app.includes("当前仅手工触发"),"共享文件夹不得显示每5分钟自动检查");assert(app.includes("评审原型 · 交互夹具"),"缺少全局评审原型标识");assert(data.pipelines.find(p=>p.id==="pipe-s003-compat").version==="评审结构 · 非 T003","S003 不得编造权威管道版本");
+const compare=fs.readFileSync(path.join(here,"shared/compare.js"),"utf8");
+assert(compare.includes('let layout="readable"'),"逐页对比必须默认使用可读布局");
+assert(compare.includes("三版缩略")&&compare.includes("fitCompactFrames"),"逐页对比必须提供等比缩略模式");
+assert(app.includes("评审结构 · 未形成 T003"),"S003 画布必须明确未形成 T003");
+assert(app.includes("评审结构不能保存为平台管道版本"),"S003 保存操作必须禁用");
+assert(!app.includes("当前仅保存管道配置"),"S003 不得暗示已有可保存的平台管道配置");
+assert(!app.includes("配置可保存，但发布操作不可用"),"S003 发布区不得暗示配置可保存");
+assert(app.includes('preset:"debug-running"')&&app.includes('preset:"debug-complete"'),"调试必须使用独立的无副作用状态");
+assert(!app.includes('action==="debug") { navigate(routeWith({preset:"running"'),"调试不得进入正式运行路径");
+assert(app.includes("调试完成 · 未形成正式 T005"),"调试完成必须明确不形成正式 T005");
+assert(app.includes("function filteredAssets"),"搜索筛选必须同时覆盖已发布资产");
+assert(app.includes("${sourceCount} 个来源 · ${assetCount} 个资产"),"来源与资产结果数量必须动态计算");
+assert(app.includes('ui.assetView === "list"')&&app.includes('ui.sourceView === "cards"'),"卡片/列表切换必须影响真实渲染");
+assert(app.includes("activeGroup===g"),"方案 B 分类高亮必须跟随当前筛选");
+if(errors.length){console.error(errors.map(x=>`FAIL ${x}`).join("\n"));process.exit(1);}console.log("PASS 静态断言全部通过：14 页、3 方案、2 管道、四节点、S003 无运行/资产、演示连接器门禁。 ");

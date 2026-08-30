@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>运行状态导出</title></head>
+<body>
+  <pre id="payload">正在读取运行状态…</pre>
+  <script>
+    (() => {
+      const owned = key => key.startsWith("ontology3") || key.startsWith("ontology.financial-world");
+      const read = storage => Object.fromEntries(Object.keys(storage).filter(owned).sort().map(key => [key, storage.getItem(key)]));
+      document.getElementById("payload").textContent = JSON.stringify({
+        sourceOrigin: location.origin,
+        localStorage: read(localStorage),
+        sessionStorage: read(sessionStorage)
+      });
+    })();
+  </script>
+</body>
+</html>

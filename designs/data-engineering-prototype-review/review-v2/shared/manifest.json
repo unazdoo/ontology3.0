@@ -1,0 +1,40 @@
+{
+  "version": "review-v2.0",
+  "fixtureHash": "de-s001-s003-20260810",
+  "variants": [
+    { "key": "A", "title": "方案 A · 双栏关系目录", "focus": "一眼看清来源、资产与引用关系", "layout": "dual-relation" },
+    { "key": "B", "title": "方案 B · 主从三栏工作台", "focus": "适合资源数量增长后的检索与管理", "layout": "master-detail" },
+    { "key": "C", "title": "方案 C · 渐进展开关系卡片", "focus": "低密度表达，适合业务演示与非技术用户", "layout": "focus-cards" }
+  ],
+  "screens": [
+    { "id": "resource-directory", "label": "数据资源目录", "route": "#/resources" },
+    { "id": "manual-source-detail", "label": "手工上传数据源详情", "route": "#/resources/source/src-finance-upload?tab=summary" },
+    { "id": "s003-source-detail", "label": "S003 兼容性详情", "route": "#/resources/source/src-s003-workbook?tab=compatibility" },
+    { "id": "asset-detail", "label": "数据资产详情", "route": "#/resources/asset/asset-finance?tab=summary" },
+    { "id": "pipeline-list", "label": "数据管道列表", "route": "#/pipelines?tab=list" },
+    { "id": "run-history", "label": "运行历史", "route": "#/pipelines?tab=runs" },
+    { "id": "canvas-default", "label": "管道画布默认态", "route": "#/pipelines/pipe-finance/canvas?preset=default" },
+    { "id": "source-node-config", "label": "数据源节点配置", "route": "#/pipelines/pipe-finance/canvas?preset=default&node=source&panel=config&overlay=source-picker" },
+    { "id": "python-node-config", "label": "Python 节点配置与代码", "route": "#/pipelines/pipe-finance/canvas?preset=default&node=python&panel=config&nodeTab=code" },
+    { "id": "quality-result", "label": "数据检查结果", "route": "#/pipelines/pipe-finance/canvas?preset=quality-warning&node=quality&panel=result" },
+    { "id": "publish-config", "label": "发布数据资产配置", "route": "#/pipelines/pipe-finance/canvas?preset=default&node=publish&panel=config" },
+    { "id": "running", "label": "运行中", "route": "#/pipelines/pipe-finance/canvas?preset=running&node=python&panel=result" },
+    { "id": "quality-failed", "label": "质量失败", "route": "#/pipelines/pipe-finance/canvas?preset=quality-failed&node=quality&panel=result" },
+    { "id": "publish-confirm", "label": "发布前确认", "route": "#/pipelines/pipe-finance/canvas?preset=publish-ready&node=publish&overlay=publish-confirm" }
+  ],
+  "invariants": {
+    "primaryNavigation": ["数据资源", "数据管道"],
+    "pipelineCount": 2,
+    "financeNodeCount": 4,
+    "s003NodeCount": 4,
+    "s003RunCount": 0,
+    "s003PublishedAssetCount": 0,
+    "s003Consumption": "不可消费"
+  },
+  "entries": [
+    { "source": "shared/shell.html", "output": "方案A.html", "variant": "A" },
+    { "source": "shared/shell.html", "output": "方案B.html", "variant": "B" },
+    { "source": "shared/shell.html", "output": "方案C.html", "variant": "C" },
+    { "source": "shared/compare-shell.html", "output": "逐页对比.html", "variant": "COMPARE" }
+  ]
+}

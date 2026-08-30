@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>财务 AI 的可信经营闭环</title>
+  <style>
+    :root {
+      --type-display: 108px;
+      --type-title: 72px;
+      --type-subtitle: 46px;
+      --type-body: 34px;
+      --type-small: 28px;
+      --pad-top: 92px;
+      --pad-bottom: 78px;
+      --pad-x: 112px;
+      --gap-title: 46px;
+      --gap-item: 28px;
+      --paper: #f6f3ed;
+      --paper-cold: #edf1f3;
+      --paper-bright: #fbfaf6;
+      --ink: #102b43;
+      --ink-soft: #42596a;
+      --ink-faint: #6f7f8b;
+      --line: rgba(25, 59, 83, 0.20);
+      --line-strong: rgba(25, 59, 83, 0.38);
+      --blue: #164f78;
+      --blue-bright: #177da5;
+      --teal: #1d8574;
+      --teal-soft: #dcece7;
+      --copper: #b65b43;
+      --copper-soft: #f0dfd9;
+      --navy: #0d263a;
+      --navy-2: #15384f;
+      --shadow: 0 26px 68px rgba(31, 53, 68, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #071019;
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+      color: var(--ink);
+    }
+
+    body {
+      font-size: var(--type-body);
+    }
+
+    section[data-label] > *:not(img):not(picture):not(video):not(svg):not(canvas) {
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    .slide-shell {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 1px 1px, rgba(25, 79, 116, 0.105) 1.35px, transparent 1.5px) 0 0 / 28px 28px,
+        linear-gradient(135deg, var(--paper-bright) 0%, var(--paper) 56%, var(--paper-cold) 100%);
+    }
+
+    .slide-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, transparent 8%, rgba(23, 91, 130, 0.06) 8.1%, transparent 8.2%),
+        linear-gradient(0deg, transparent 86%, rgba(23, 91, 130, 0.055) 86.1%, transparent 86.2%);
+    }
+
+    .slide-shell.dark {
+      color: #f2f6f7;
+      background:
+        radial-gradient(circle at 1px 1px, rgba(125, 204, 214, 0.13) 1.2px, transparent 1.4px) 0 0 / 30px 30px,
+        linear-gradient(135deg, #0b2132 0%, #11364c 58%, #0a2735 100%);
+    }
+
+    .slide-shell.dark::before {
+      background:
+        linear-gradient(90deg, transparent 10%, rgba(114, 208, 211, 0.08) 10.1%, transparent 10.2%),
+        linear-gradient(0deg, transparent 86%, rgba(114, 208, 211, 0.08) 86.1%, transparent 86.2%);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: var(--type-display);
+      line-height: 1.05;
+      letter-spacing: -0.055em;
+      font-weight: 700;
+    }
+
+    h2 {
+      font-size: var(--type-title);
+      line-height: 1.12;
+      letter-spacing: -0.035em;
+      font-weight: 700;
+    }
+
+    h3 {
+      font-size: var(--type-subtitle);
+      line-height: 1.18;
+      letter-spacing: -0.025em;
+      font-weight: 650;
+    }
+
+    p,
+    li {
+      font-size: var(--type-body);
+      line-height: 1.55;
+    }
+
+    .small {
+      font-size: var(--type-small);
+      line-height: 1.5;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 18px;
+      font-size: var(--type-small);
+      line-height: 1;
+      letter-spacing: 0.14em;
+      font-weight: 700;
+      color: var(--blue);
+    }
+
+    .kicker::before {
+      content: "";
+      width: 62px;
+      height: 5px;
+      background: var(--blue-bright);
+    }
+
+    .dark .kicker {
+      color: #84d6d5;
+    }
+
+    .dark .kicker::before {
+      background: #6dd1cc;
+    }
+
+    .deck-header {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      min-height: 102px;
+      border-bottom: 2px solid var(--line);
+      padding-bottom: 26px;
+    }
+
+    .deck-header .brand-lockup {
+      width: 640px;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .deck-header .page-no {
+      font-size: var(--type-small);
+      line-height: 1;
+      letter-spacing: 0.16em;
+      color: var(--ink-faint);
+      font-weight: 650;
+    }
+
+    .title-row {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 80px;
+      margin-top: 36px;
+    }
+
+    .title-row .title-note {
+      max-width: 580px;
+      padding-bottom: 8px;
+      color: var(--ink-soft);
+      text-align: right;
+    }
+
+    .slide-footer {
+      position: absolute;
+      z-index: 4;
+      left: var(--pad-x);
+      right: var(--pad-x);
+      bottom: 78px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--ink-faint);
+      font-size: var(--type-small);
+      letter-spacing: 0.08em;
+    }
+
+    .slide-footer .evidence-key {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .evidence-key::before {
+      content: "";
+      width: 78px;
+      height: 2px;
+      background: var(--line-strong);
+    }
+
+    .back-link {
+      position: fixed;
+      z-index: 1000;
+      top: 18px;
+      right: 18px;
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 12px;
+      border: 1px solid rgba(193, 214, 228, 0.28);
+      border-radius: 7px;
+      color: #dceaf2;
+      background: rgba(8, 22, 33, 0.78);
+      backdrop-filter: blur(12px);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 600;
+      opacity: 0.3;
+      transition: opacity 160ms ease, background 160ms ease;
+    }
+
+    .back-link:hover,
+    .back-link:focus-visible {
+      opacity: 1;
+      background: rgba(8, 22, 33, 0.96);
+      outline: none;
+    }
+
+    /* 01 COVER */
+    .cover-shell {
+      padding-top: 72px;
+    }
+
+    .cover-brand {
+      position: relative;
+      z-index: 4;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--line);
+      padding-bottom: 30px;
+    }
+
+    .cover-brand img {
+      width: 700px;
+      height: auto;
+    }
+
+    .cover-brand .motto {
+      font-size: var(--type-small);
+      letter-spacing: 0.28em;
+      font-weight: 700;
+      color: var(--ink-soft);
+    }
+
+    .cover-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 92px;
+      align-items: center;
+      height: calc(100% - 95px);
+      padding-bottom: 52px;
+    }
+
+    .cover-copy {
+      align-self: center;
+    }
+
+    .cover-copy h1 {
+      margin-top: 38px;
+      max-width: 1070px;
+    }
+
+    .cover-copy h1 span {
+      display: block;
+    }
+
+    .cover-copy h1 span:last-child {
+      color: var(--blue);
+    }
+
+    .cover-subtitle {
+      margin-top: 38px;
+      max-width: 960px;
+      font-size: var(--type-subtitle);
+      color: var(--ink-soft);
+      line-height: 1.42;
+    }
+
+    .cover-sequence {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      width: 100%;
+      max-width: 1010px;
+      margin-top: 64px;
+    }
+
+    .cover-sequence .sequence-item {
+      position: relative;
+      padding-top: 24px;
+      border-top: 3px solid var(--line-strong);
+      color: var(--ink-soft);
+      font-size: var(--type-small);
+      font-weight: 650;
+      letter-spacing: 0.06em;
+    }
+
+    .cover-sequence .sequence-item::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 0;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      background: var(--blue-bright);
+      box-shadow: 0 0 0 8px rgba(23, 125, 165, 0.12);
+    }
+
+    .cover-sequence .sequence-item:last-child {
+      color: var(--teal);
+    }
+
+    .cover-sequence .sequence-item:last-child::before {
+      background: var(--teal);
+    }
+
+    .cover-mark-wrap {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 650px;
+    }
+
+    .cover-mark-wrap::before,
+    .cover-mark-wrap::after {
+      content: "";
+      position: absolute;
+      border: 2px solid rgba(23, 92, 130, 0.24);
+      border-radius: 50%;
+    }
+
+    .cover-mark-wrap::before {
+      width: 590px;
+      height: 590px;
+    }
+
+    .cover-mark-wrap::after {
+      width: 470px;
+      height: 470px;
+      border-style: dashed;
+    }
+
+    .cover-mark {
+      position: relative;
+      z-index: 2;
+      width: 520px;
+      height: 520px;
+      object-fit: contain;
+      filter: drop-shadow(0 24px 38px rgba(14, 51, 80, 0.14));
+    }
+
+    .orbit-node {
+      position: absolute;
+      z-index: 3;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--paper-bright);
+      border: 6px solid var(--teal);
+      box-shadow: 0 0 0 10px rgba(29, 133, 116, 0.10);
+    }
+
+    .orbit-node.one { top: 92px; right: 112px; }
+    .orbit-node.two { bottom: 108px; left: 110px; }
+    .orbit-node.three { bottom: 174px; right: 38px; border-color: var(--copper); }
+
+    /* 02 TEAM */
+    .team-intro {
+      position: relative;
+      z-index: 2;
+      margin-top: 46px;
+      display: grid;
+      grid-template-columns: 520px 1fr;
+      gap: 62px;
+      align-items: end;
+    }
+
+    .team-intro .lead-line {
+      color: var(--ink-soft);
+      max-width: 1130px;
+    }
+
+    .team-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 28px;
+      margin-top: 42px;
+    }
+
+    .team-member {
+      position: relative;
+      min-height: 470px;
+      padding: 0 18px 28px;
+      border-bottom: 3px solid var(--line-strong);
+    }
+
+    .team-member::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 128px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
+    }
+
+    .portrait-slot {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      width: 184px;
+      height: 184px;
+      margin: 0 auto 22px;
+      border-radius: 50%;
+      border: 3px solid var(--blue);
+      background:
+        radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.86) 0 25%, transparent 26%),
+        linear-gradient(145deg, #e8edef, #d7e1e5);
+      box-shadow: 0 18px 40px rgba(31, 70, 95, 0.12), inset 0 0 0 13px rgba(255, 255, 255, 0.54);
+      color: var(--blue);
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+    }
+
+    .team-member:nth-child(2) .portrait-slot,
+    .team-member:nth-child(4) .portrait-slot {
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+
+    .team-member h3 {
+      text-align: center;
+      color: var(--ink);
+      font-size: 38px;
+    }
+
+    .team-member p {
+      text-align: center;
+      color: var(--ink-soft);
+    }
+
+    .member-role {
+      margin-bottom: 7px;
+      color: var(--blue);
+      text-align: center;
+      font-size: 21px;
+      font-weight: 750;
+      letter-spacing: .07em;
+    }
+
+    .member-dept {
+      margin-top: 8px;
+      font-size: 21px;
+      line-height: 1.35;
+    }
+
+    .member-duty {
+      margin-top: 14px;
+      font-size: 23px;
+      line-height: 1.42;
+      color: var(--ink) !important;
+      font-weight: 600;
+    }
+
+    /* 03 TRANSFORMATION */
+    .transformation-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1fr 300px 1fr;
+      gap: 30px;
+      align-items: stretch;
+      height: 590px;
+      margin-top: 54px;
+    }
+
+    .pain-field,
+    .solution-field {
+      position: relative;
+      padding: 52px 54px;
+      border-radius: 4px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .pain-field {
+      background: linear-gradient(145deg, rgba(250, 246, 241, 0.96), rgba(240, 223, 217, 0.92));
+      border: 2px solid rgba(182, 91, 67, 0.30);
+    }
+
+    .solution-field {
+      background: linear-gradient(145deg, rgba(247, 251, 248, 0.98), rgba(220, 236, 231, 0.94));
+      border: 2px solid rgba(29, 133, 116, 0.28);
+    }
+
+    .pain-field::after,
+    .solution-field::after {
+      content: "";
+      position: absolute;
+      right: -60px;
+      bottom: -90px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      border: 26px solid rgba(182, 91, 67, 0.08);
+    }
+
+    .solution-field::after {
+      border-color: rgba(29, 133, 116, 0.09);
+    }
+
+    .pain-field h3 { color: var(--copper); }
+    .solution-field h3 { color: var(--teal); }
+
+    .field-list {
+      list-style: none;
+      margin: 40px 0 0;
+      padding: 0;
+    }
+
+    .field-list li {
+      position: relative;
+      padding: 18px 0 18px 48px;
+      border-top: 2px solid rgba(19, 59, 82, 0.12);
+      color: var(--ink-soft);
+    }
+
+    .field-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 31px;
+      width: 18px;
+      height: 18px;
+      border: 4px solid var(--copper);
+      transform: rotate(45deg);
+    }
+
+    .solution-field .field-list li::before {
+      border-color: var(--teal);
+      border-radius: 50%;
+      transform: none;
+    }
+
+    .conversion-bridge {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 28px;
+      color: var(--blue);
+      text-align: center;
+    }
+
+    .bridge-arrow {
+      position: relative;
+      width: 250px;
+      height: 5px;
+      background: var(--blue);
+    }
+
+    .bridge-arrow::before {
+      content: "";
+      position: absolute;
+      left: -1px;
+      top: -9px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--blue);
+      box-shadow: 0 0 0 11px rgba(22, 79, 120, 0.10);
+    }
+
+    .bridge-arrow::after {
+      content: "";
+      position: absolute;
+      right: -2px;
+      top: -13px;
+      border-top: 15px solid transparent;
+      border-bottom: 15px solid transparent;
+      border-left: 24px solid var(--blue);
+    }
+
+    .bridge-steps {
+      display: grid;
+      gap: 14px;
+      width: 100%;
+    }
+
+    .bridge-steps span {
+      display: block;
+      font-size: var(--type-small);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .transformation-equation {
+      position: absolute;
+      z-index: 3;
+      left: 50%;
+      bottom: 88px;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 34px;
+      align-items: center;
+      white-space: nowrap;
+      font-size: var(--type-small);
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .transformation-equation b {
+      color: var(--teal);
+      font-size: var(--type-body);
+    }
+
+    /* 04 ONTOLOGY */
+    .platform-compare {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 0.78fr 1.22fr;
+      gap: 56px;
+      height: 500px;
+      margin-top: 50px;
+    }
+
+    .legacy-side,
+    .ontology-side {
+      position: relative;
+      overflow: hidden;
+      padding: 34px 42px;
+      border: 2px solid var(--line);
+      background: rgba(255, 255, 255, 0.58);
+      box-shadow: var(--shadow);
+    }
+
+    .legacy-side {
+      border-color: rgba(182, 91, 67, 0.26);
+    }
+
+    .ontology-side {
+      border-color: rgba(23, 98, 138, 0.28);
+    }
+
+    .compare-label {
+      font-size: var(--type-small);
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      color: var(--ink-faint);
+    }
+
+    .legacy-side h3 {
+      margin-top: 16px;
+      color: var(--copper);
+    }
+
+    .ontology-side h3 {
+      margin-top: 16px;
+      color: var(--blue);
+    }
+
+    .legacy-flow {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin-top: 26px;
+    }
+
+    .legacy-node {
+      display: grid;
+      place-items: center;
+      min-height: 84px;
+      border: 2px solid rgba(182, 91, 67, 0.26);
+      background: rgba(255, 255, 255, 0.7);
+      color: var(--ink-soft);
+      font-size: var(--type-small);
+      font-weight: 650;
+    }
+
+    .legacy-break {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 22px;
+      color: var(--copper);
+      font-size: var(--type-body);
+      font-weight: 700;
+    }
+
+    .legacy-break::before,
+    .legacy-break::after {
+      content: "";
+      flex: 1;
+      height: 3px;
+      background: repeating-linear-gradient(90deg, var(--copper) 0 16px, transparent 16px 27px);
+    }
+
+    .ontology-map {
+      position: relative;
+      height: 245px;
+      margin-top: 18px;
+    }
+
+    .ontology-core {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 150px;
+      height: 150px;
+      transform: translate(-50%, -50%);
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(246, 250, 251, 0.94);
+      border: 3px solid var(--blue);
+      box-shadow: 0 18px 42px rgba(16, 66, 96, 0.17);
+      z-index: 3;
+    }
+
+    .ontology-core img {
+      width: 118px;
+      height: 118px;
+      object-fit: contain;
+    }
+
+    .business-object {
+      position: absolute;
+      z-index: 4;
+      display: grid;
+      place-items: center;
+      width: 190px;
+      min-height: 70px;
+      padding: 12px;
+      border: 2px solid rgba(23, 98, 138, 0.30);
+      background: rgba(250, 251, 249, 0.96);
+      color: var(--ink);
+      font-size: var(--type-small);
+      font-weight: 700;
+      text-align: center;
+      box-shadow: 0 12px 26px rgba(31, 70, 95, 0.10);
+    }
+
+    .business-object.one { left: 16px; top: 8px; }
+    .business-object.two { right: 16px; top: 8px; }
+    .business-object.three { left: 16px; bottom: 8px; }
+    .business-object.four { right: 16px; bottom: 8px; }
+
+    .ontology-connector {
+      position: absolute;
+      z-index: 1;
+      left: 50%;
+      top: 50%;
+      width: 72%;
+      height: 2px;
+      background: var(--line-strong);
+      transform-origin: center;
+    }
+
+    .ontology-connector.a { transform: translate(-50%, -50%) rotate(23deg); }
+    .ontology-connector.b { transform: translate(-50%, -50%) rotate(-23deg); }
+
+    .ontology-vocabulary {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      margin-top: 4px;
+      color: var(--blue);
+      font-size: var(--type-small);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .ontology-definition {
+      position: relative;
+      z-index: 5;
+      left: auto;
+      bottom: auto;
+      transform: none;
+      width: 1380px;
+      margin: 18px auto 0;
+      padding: 18px 34px;
+      border-left: 7px solid var(--teal);
+      background: rgba(251, 250, 246, 0.92);
+      box-shadow: 0 14px 34px rgba(31, 59, 76, 0.10);
+      color: var(--ink-soft);
+      text-align: center;
+      font-size: 30px;
+      font-weight: 600;
+    }
+
+    .ontology-definition strong {
+      color: var(--teal);
+    }
+
+    /* 05 ARCHITECTURE */
+    .architecture-frame {
+      position: relative;
+      z-index: 2;
+      height: 610px;
+      margin-top: 50px;
+      padding: 40px 34px 28px;
+      border: 2px solid var(--line);
+      background: rgba(255, 255, 255, 0.50);
+      box-shadow: var(--shadow);
+    }
+
+    .architecture-questions {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 26px;
+      color: var(--ink-faint);
+      font-size: var(--type-small);
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .architecture-chain {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 26px;
+      margin-top: 34px;
+    }
+
+    .architecture-chain::before {
+      content: "";
+      position: absolute;
+      left: 12%;
+      right: 12%;
+      top: 57px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--blue), var(--blue-bright), var(--teal));
+      z-index: 0;
+    }
+
+    .architecture-stage {
+      position: relative;
+      z-index: 2;
+      min-height: 360px;
+      padding: 0 24px 28px;
+      text-align: center;
+    }
+
+    .stage-index {
+      display: grid;
+      place-items: center;
+      width: 116px;
+      height: 116px;
+      margin: 0 auto 30px;
+      border-radius: 50%;
+      border: 4px solid var(--blue);
+      background: var(--paper-bright);
+      color: var(--blue);
+      font-size: var(--type-subtitle);
+      font-weight: 700;
+      box-shadow: 0 12px 30px rgba(23, 79, 116, 0.14);
+    }
+
+    .architecture-stage:nth-child(3) .stage-index,
+    .architecture-stage:nth-child(4) .stage-index {
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+
+    .architecture-stage h3 {
+      font-size: 42px;
+      color: var(--ink);
+    }
+
+    .architecture-stage .module-name {
+      margin-top: 13px;
+      color: var(--blue);
+      font-size: var(--type-small);
+      font-weight: 700;
+    }
+
+    .architecture-stage:nth-child(3) .module-name,
+    .architecture-stage:nth-child(4) .module-name {
+      color: var(--teal);
+    }
+
+    .architecture-stage p {
+      margin-top: 16px;
+      color: var(--ink-soft);
+      font-size: var(--type-small);
+      line-height: 1.45;
+    }
+
+    .architecture-caption {
+      position: absolute;
+      left: 50%;
+      bottom: 14px;
+      transform: translateX(-50%);
+      width: 1240px;
+      color: var(--ink);
+      text-align: center;
+      font-size: 30px;
+      font-weight: 650;
+    }
+
+    /* 06 REPORT CENTER */
+    .report-layout {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 0.82fr 1.18fr;
+      gap: 44px;
+      height: 590px;
+      margin-top: 50px;
+    }
+
+    .observation-lane,
+    .artifact-lane {
+      position: relative;
+      padding: 44px 46px;
+      border: 2px solid var(--line);
+      background: rgba(255, 255, 255, 0.54);
+      box-shadow: var(--shadow);
+    }
+
+    .observation-lane h3 {
+      color: var(--blue);
+    }
+
+    .artifact-lane h3 {
+      color: var(--teal);
+    }
+
+    .lane-subtitle {
+      margin-top: 12px;
+      color: var(--ink-faint);
+    }
+
+    .observation-flow {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      grid-template-rows: auto auto;
+      gap: 26px 20px;
+      align-items: center;
+      margin-top: 52px;
+    }
+
+    .observation-step {
+      min-height: 122px;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      border-bottom: 4px solid var(--blue);
+      background: var(--paper-cold);
+      text-align: center;
+      color: var(--ink);
+      font-size: var(--type-small);
+      font-weight: 700;
+    }
+
+    .observation-arrow {
+      color: var(--blue);
+      font-size: var(--type-subtitle);
+      font-weight: 700;
+    }
+
+    .observation-step.full {
+      grid-column: 1 / 4;
+      min-height: 112px;
+      border-bottom-color: var(--teal);
+      background: var(--teal-soft);
+      color: var(--teal);
+    }
+
+    .artifact-flow {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px 22px;
+      margin-top: 30px;
+    }
+
+    .artifact-step {
+      position: relative;
+      min-height: 104px;
+      padding: 18px 12px 14px 50px;
+      border-top: 3px solid var(--line-strong);
+      color: var(--ink-soft);
+      font-size: var(--type-small);
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .artifact-step b {
+      position: absolute;
+      left: 0;
+      top: 14px;
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--teal);
+      color: white;
+      font-size: var(--type-small);
+    }
+
+    .artifact-step strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--ink);
+      font-size: 30px;
+    }
+
+    .artifact-output {
+      position: absolute;
+      left: 46px;
+      right: 46px;
+      bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 22px;
+      padding: 16px 22px;
+      background: var(--navy);
+      color: #eff7f7;
+    }
+
+    .artifact-output span {
+      font-size: 22px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .artifact-output strong {
+      color: #76d3ca;
+      font-size: 24px;
+      white-space: nowrap;
+    }
+
+    /* 07 SCENARIO MAP */
+    .scenario-map {
+      position: relative;
+      z-index: 2;
+      height: 650px;
+      margin-top: 34px;
+    }
+
+    .scenario-core {
+      position: absolute;
+      z-index: 5;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      display: grid;
+      place-items: center;
+      width: 276px;
+      height: 276px;
+      border-radius: 50%;
+      border: 4px solid var(--blue);
+      background: rgba(250, 251, 248, 0.98);
+      box-shadow: 0 22px 52px rgba(22, 70, 100, 0.18);
+    }
+
+    .scenario-core img {
+      width: 176px;
+      height: 176px;
+      object-fit: contain;
+    }
+
+    .scenario-core span {
+      position: absolute;
+      bottom: 22px;
+      color: var(--blue);
+      font-size: var(--type-small);
+      font-weight: 700;
+    }
+
+    .scenario-ring {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 770px;
+      height: 510px;
+      border: 3px dashed rgba(22, 79, 120, 0.26);
+      border-radius: 50%;
+    }
+
+    .scenario-card {
+      position: absolute;
+      z-index: 4;
+      width: 560px;
+      min-height: 228px;
+      padding: 34px 38px;
+      border: 2px solid var(--line);
+      background: rgba(251, 250, 246, 0.94);
+      box-shadow: 0 16px 38px rgba(30, 62, 82, 0.11);
+    }
+
+    .scenario-card.s001 { left: 0; top: 0; border-top: 7px solid var(--teal); }
+    .scenario-card.s002 { right: 0; top: 0; border-top: 7px solid var(--blue); }
+    .scenario-card.s003 { left: 0; bottom: 0; border-top: 7px solid var(--copper); }
+    .scenario-card.s004 { right: 0; bottom: 0; border-top: 7px solid var(--blue-bright); }
+
+    .scenario-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      font-size: var(--type-small);
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      color: var(--ink-faint);
+    }
+
+    .scenario-status {
+      padding: 6px 14px;
+      background: var(--paper-cold);
+      color: var(--blue);
+    }
+
+    .s001 .scenario-status { background: var(--teal-soft); color: var(--teal); }
+    .s003 .scenario-status { background: var(--copper-soft); color: var(--copper); }
+
+    .scenario-card h3 {
+      margin-top: 20px;
+      font-size: 42px;
+      color: var(--ink);
+    }
+
+    .scenario-card p {
+      margin-top: 16px;
+      color: var(--ink-soft);
+    }
+
+    .scenario-line {
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      top: 50%;
+      width: 52%;
+      height: 2px;
+      background: var(--line-strong);
+      transform-origin: center;
+    }
+
+    .scenario-line.a { transform: translate(-50%, -50%) rotate(24deg); }
+    .scenario-line.b { transform: translate(-50%, -50%) rotate(-24deg); }
+
+    /* 08 CLOSING */
+    .closing-shell {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 80px;
+      align-items: center;
+      padding-top: 76px;
+    }
+
+    .closing-brand {
+      position: absolute;
+      z-index: 4;
+      left: var(--pad-x);
+      top: 70px;
+      display: flex;
+      align-items: center;
+      min-height: 64px;
+      padding: 18px 26px;
+      background: rgba(249, 250, 247, 0.94);
+    }
+
+    .closing-brand img {
+      width: 610px;
+      height: auto;
+    }
+
+    .closing-copy {
+      position: relative;
+      z-index: 3;
+      padding-top: 80px;
+    }
+
+    .closing-copy h2 {
+      max-width: 1120px;
+      font-size: 82px;
+      line-height: 1.12;
+      color: #f4f8f8;
+    }
+
+    .closing-principles {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin-top: 62px;
+      border-top: 2px solid rgba(202, 229, 234, 0.26);
+      padding-top: 34px;
+    }
+
+    .closing-principle {
+      min-height: 150px;
+      color: #c8dce2;
+    }
+
+    .closing-principle strong {
+      display: block;
+      margin-bottom: 14px;
+      color: #76d3ca;
+      font-size: var(--type-subtitle);
+    }
+
+    .closing-mark-zone {
+      position: relative;
+      display: grid;
+      place-items: center;
+      height: 720px;
+    }
+
+    .closing-mark-zone::before,
+    .closing-mark-zone::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      border: 2px solid rgba(118, 211, 202, 0.28);
+    }
+
+    .closing-mark-zone::before { width: 650px; height: 650px; }
+    .closing-mark-zone::after { width: 520px; height: 520px; border-style: dashed; }
+
+    .closing-mark-zone img {
+      position: relative;
+      z-index: 3;
+      width: 520px;
+      height: 520px;
+      object-fit: contain;
+      filter: drop-shadow(0 22px 40px rgba(0, 0, 0, 0.28));
+    }
+
+    .closing-sequence {
+      position: absolute;
+      z-index: 4;
+      left: var(--pad-x);
+      right: var(--pad-x);
+      bottom: 90px;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      color: #9fc2cf;
+      font-size: var(--type-small);
+      letter-spacing: 0.12em;
+      font-weight: 700;
+    }
+
+    .closing-sequence b {
+      color: #76d3ca;
+      font-size: var(--type-body);
+    }
+
+    @media print {
+      .back-link {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="back-link" href="./index.html" aria-label="返回总览">返回</a>
+
+  <deck-stage width="1920" height="1080">
+    <section data-label="财务 AI 的可信经营闭环">
+      <div class="slide-shell cover-shell">
+        <div class="cover-brand">
+          <img src="./assets/group-brand-lockup.png" alt="集团品牌标识">
+        </div>
+        <div class="cover-grid">
+          <div class="cover-copy">
+            <div class="kicker">ONTOLOGY 3.0 · 财务 AI 项目大赛</div>
+            <h1 data-anim="fade-in" data-anim-duration="650">
+              <span>财务 AI 的</span>
+              <span>可信经营闭环</span>
+            </h1>
+            <p class="cover-subtitle">企业级「数据—语义—决策—行动」平台</p>
+            <div class="cover-sequence" aria-label="平台主链路">
+              <div class="sequence-item">数据</div>
+              <div class="sequence-item">语义</div>
+              <div class="sequence-item">决策</div>
+              <div class="sequence-item">行动</div>
+            </div>
+          </div>
+          <div class="cover-mark-wrap" aria-label="本体项目标识">
+            <img class="cover-mark" src="./assets/ontology-mark.png" alt="本体项目标识">
+            <span class="orbit-node one"></span>
+            <span class="orbit-node two"></span>
+            <span class="orbit-node three"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section data-label="跨专业融合的四人团队">
+      <div class="slide-shell">
+        <div class="deck-header">
+          <img class="brand-lockup" src="./assets/group-brand-lockup.png" alt="集团品牌标识">
+          <span class="page-no">02 / 08</span>
+        </div>
+        <div class="team-intro">
+          <h2>跨专业融合的<br />四人团队</h2>
+          <p class="lead-line">财务业务、数据语义、AI 产品与项目统筹共同工作，确保每项能力同时具备业务价值、技术边界与交付可行性。</p>
+        </div>
+        <div class="team-grid">
+          <article class="team-member">
+            <div class="portrait-slot" aria-label="张栋照片位置">张</div>
+            <div class="member-role">组长 · 平台架构</div>
+            <h3>张栋</h3>
+            <p class="member-dept">财务公司规划财务部</p>
+            <p class="member-duty">平台架构和功能建设</p>
+          </article>
+          <article class="team-member">
+            <div class="portrait-slot" aria-label="谢航雨照片位置">谢</div>
+            <div class="member-role">组员 · 债务风险</div>
+            <h3>谢航雨</h3>
+            <p class="member-dept">财务公司信贷融资部</p>
+            <p class="member-duty">集团债务风险监控场景开发</p>
+          </article>
+          <article class="team-member">
+            <div class="portrait-slot" aria-label="刘明明照片位置">刘</div>
+            <div class="member-role">组员 · 贷前报告</div>
+            <h3>刘明明</h3>
+            <p class="member-dept">财务公司信贷融资部</p>
+            <p class="member-duty">财务公司贷前报告场景开发</p>
+          </article>
+          <article class="team-member">
+            <div class="portrait-slot" aria-label="林擎妍照片位置">林</div>
+            <div class="member-role">组员 · 预算监督</div>
+            <h3>林擎妍</h3>
+            <p class="member-dept">苏州院财务部</p>
+            <p class="member-duty">预算管理监督场景开发</p>
+          </article>
+        </div>
+        <div class="slide-footer">
+          <span class="evidence-key">业务与技术共创</span>
+          <span>ONTOLOGY 3.0</span>
+        </div>
+      </div>
+    </section>
+
+    <section data-label="从看板到行动的关键断点">
+      <div class="slide-shell">
+        <div class="deck-header">
+          <img class="brand-lockup" src="./assets/group-brand-lockup.png" alt="集团品牌标识">
+          <span class="page-no">03 / 08</span>
+        </div>
+        <div class="title-row">
+          <h2>从看板到行动的关键断点</h2>
+          <p class="title-note">仅仅看见异常，不等于形成决策，更不等于行动已经完成。</p>
+        </div>
+        <div class="transformation-grid">
+          <article class="pain-field">
+            <h3>传统看板止步于「看见」</h3>
+            <ul class="field-list">
+              <li>指标散落在表与报表</li>
+              <li>异常缺少统一业务语义</li>
+              <li>建议依赖人工转述</li>
+              <li>决策与执行彼此断开</li>
+            </ul>
+          </article>
+          <div class="conversion-bridge" data-anim="wipe-in" data-anim-dir="left">
+            <span class="small">关键转化</span>
+            <div class="bridge-arrow"></div>
+            <div class="bridge-steps">
+              <span>可追溯证据</span>
+              <span>标准请求</span>
+              <span>人工确认</span>
+            </div>
+          </div>
+          <article class="solution-field">
+            <h3>经营闭环推进到「行动」</h3>
+            <ul class="field-list">
+              <li>对象与关系统一表达</li>
+              <li>指标与规则一次定义</li>
+              <li>AI 基于证据解释</li>
+              <li>确认后形成负责人待办</li>
+            </ul>
+          </article>
+        </div>
+        <div class="transformation-equation">
+          <span>看见问题</span><b>＋</b><span>解释原因</span><b>＋</b><span>确认行动</span><b>＋</b><span>追踪结果</span>
+        </div>
+      </div>
+    </section>
+
+    <section data-label="从表格平台到业务本体">
+      <div class="slide-shell">
+        <div class="deck-header">
+          <img class="brand-lockup" src="./assets/group-brand-lockup.png" alt="集团品牌标识">
+          <span class="page-no">04 / 08</span>
+        </div>
+        <div class="title-row">
+          <h2>从表格平台到业务本体</h2>
+          <p class="title-note">本体让不同系统、报表与 AI 使用同一套业务语言。</p>
+        </div>
+        <div class="platform-compare">
+          <article class="legacy-side">
+            <span class="compare-label">传统平台</span>
+            <h3>以表为中心</h3>
+            <div class="legacy-flow">
+              <div class="legacy-node">工作簿</div>
+              <div class="legacy-node">数据库</div>
+              <div class="legacy-node">系统接口</div>
+              <div class="legacy-node">报表口径</div>
+            </div>
+            <div class="legacy-break">重复加工与重复解释</div>
+          </article>
+          <article class="ontology-side">
+            <span class="compare-label">本体平台</span>
+            <h3>以真实业务对象为中心</h3>
+            <div class="ontology-map">
+              <span class="ontology-connector a"></span>
+              <span class="ontology-connector b"></span>
+              <div class="business-object one">融资主体</div>
+              <div class="business-object two">融资明细</div>
+              <div class="business-object three">金融机构</div>
+              <div class="business-object four">融资负责人</div>
+              <div class="ontology-core">
+                <img src="./assets/ontology-mark.png" alt="本体项目标识">
+              </div>
+            </div>
+            <div class="ontology-vocabulary">
+              <span>对象</span><span>关系</span><span>指标</span><span>规则</span><span>行动</span>
+            </div>
+          </article>
+        </div>
+        <div class="ontology-definition">
+          <strong>本体</strong>，是用业务对象、关系、指标、规则和行动描述企业如何运转的共享语义层。
+        </div>
+      </div>
+    </section>
+
+    <section data-label="领导视角的运行架构">
+      <div class="slide-shell">
+        <div class="deck-header">
+          <img class="brand-lockup" src="./assets/group-brand-lockup.png" alt="集团品牌标识">
+          <span class="page-no">05 / 08</span>
+        </div>
+        <div class="title-row">
+          <h2>领导视角的运行架构</h2>
+          <p class="title-note">从“数从哪里来”到“行动执行到哪”，每一层都有唯一责任与证据。</p>
+        </div>
+        <div class="architecture-frame">
+          <div class="architecture-questions">
+            <span>数从哪里来？</span>
+            <span>口径由谁定义？</span>
+            <span>AI 依据什么？</span>
+            <span>行动执行到哪？</span>
+          </div>
+          <div class="architecture-chain">
+            <article class="architecture-stage" data-anim="fade-in">
+              <div class="stage-index">01</div>
+              <h3>来源可信</h3>
+              <div class="module-name">数据工程</div>
+              <p>异构系统与工作簿进入统一资产链，保留版本、质量和截至时间。</p>
+            </article>
+            <article class="architecture-stage" data-anim="fade-in">
+              <div class="stage-index">02</div>
+              <h3>口径统一</h3>
+              <div class="module-name">本体管理</div>
+              <p>对象、关系、指标、规则和行动类型共享同一业务语义。</p>
+            </article>
+            <article class="architecture-stage" data-anim="fade-in">
+              <div class="stage-index">03</div>
+              <h3>洞察可用</h3>
+              <div class="module-name">智能问数 · Agent · 报告中心</div>
+              <p>问数、解释、驾驶舱与报告均引用固定版本和追溯证据。</p>
+            </article>
+            <article class="architecture-stage" data-anim="fade-in">
+              <div class="stage-index">04</div>
+              <h3>行动受控</h3>
+              <div class="module-name">决策中心</div>
+              <p>Action Request 经人工确认形成负责人待办，并持续追踪。</p>
+            </article>
+          </div>
+          <div class="architecture-caption">管理者看到的不是模块堆叠，而是一条可审计的经营运行链。</div>
+        </div>
+      </div>
+    </section>
+
+    <section data-label="报告中心的可信产物链">
+      <div class="slide-shell">
+        <div class="deck-header">
+          <img class="brand-lockup" src="./assets/group-brand-lockup.png" alt="集团品牌标识">
+          <span class="page-no">06 / 08</span>
+        </div>
+        <div class="title-row">
+          <h2>报告中心的可信产物链</h2>
+          <p class="title-note">一边持续观察经营，一边沉淀固定、可核验的正式结论。</p>
+        </div>
+        <div class="report-layout">
+          <article class="observation-lane">
+            <h3>持续经营观察</h3>
+            <p class="lane-subtitle">回答“发生了什么，经营情况怎样”</p>
+            <div class="observation-flow">
+              <div class="observation-step">集团 · 板块 · 单位</div>
+              <div class="observation-arrow">→</div>
+              <div class="observation-step">指标 · 结构 · 机构</div>
+              <div class="observation-step full">识别问题并受控发起 Action Request</div>
+            </div>
+          </article>
+          <article class="artifact-lane">
+            <h3>正式报告产物</h3>
+            <p class="lane-subtitle">回答“基于什么证据形成哪一版结论”</p>
+            <div class="artifact-flow">
+              <div class="artifact-step"><b>1</b><strong>报告定义</strong>目的、对象与模板</div>
+              <div class="artifact-step"><b>2</b><strong>冻结证据</strong>语义、数据与时点</div>
+              <div class="artifact-step"><b>3</b><strong>Agent 草稿</strong>结构化生成与引用</div>
+              <div class="artifact-step"><b>4</b><strong>确定性核验</strong>逐项核验</div>
+              <div class="artifact-step"><b>5</b><strong>人工复核</strong>退回与确认</div>
+              <div class="artifact-step"><b>6</b><strong>正式发布</strong>版本追溯</div>
+            </div>
+            <div class="artifact-output" data-anim="wipe-in" data-anim-dir="left">
+              <span>同一报告编号、内容版本与证据链</span>
+              <strong>受控 HTML + 同源 PDF</strong>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section data-label="四类场景共享同一语义底座">
+      <div class="slide-shell">
+        <div class="deck-header">
+          <img class="brand-lockup" src="./assets/group-brand-lockup.png" alt="集团品牌标识">
+          <span class="page-no">07 / 08</span>
+        </div>
+        <div class="title-row">
+          <h2>四类场景共享同一语义底座</h2>
+          <p class="title-note">每个场景拥有独立业务目标，平台资源按统一合同复用。</p>
+        </div>
+        <div class="scenario-map">
+          <span class="scenario-ring"></span>
+          <span class="scenario-line a"></span>
+          <span class="scenario-line b"></span>
+          <div class="scenario-core">
+            <img src="./assets/ontology-mark.png" alt="本体项目标识">
+            <span>共享语义底座</span>
+          </div>
+          <article class="scenario-card s001">
+            <div class="scenario-meta"><span>S001</span><span class="scenario-status">首个贯通场景</span></div>
+            <h3>集团融资成本与债务结构优化</h3>
+            <p>三家单位 · 三条规则 · 银行协商 · 行动闭环</p>
+          </article>
+          <article class="scenario-card s002">
+            <div class="scenario-meta"><span>S002</span><span class="scenario-status">规划接入</span></div>
+            <h3>预算管理</h3>
+            <p>预算执行 · 偏差解释 · 经营跟踪</p>
+          </article>
+          <article class="scenario-card s003">
+            <div class="scenario-meta"><span>S003</span><span class="scenario-status">数据兼容</span></div>
+            <h3>债务风险监测</h3>
+            <p>双成员输入 · 因子快照 · 版本追溯</p>
+          </article>
+          <article class="scenario-card s004">
+            <div class="scenario-meta"><span>S004</span><span class="scenario-status">规划接入</span></div>
+            <h3>财务公司贷款贷前调查</h3>
+            <p>Agent 草稿 · 人工复核 · HTML / PDF</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section data-label="可追溯、可决策、可行动">
+      <div class="slide-shell dark closing-shell">
+        <div class="closing-brand">
+          <img src="./assets/group-brand-lockup.png" alt="集团品牌标识">
+        </div>
+        <div class="closing-copy">
+          <div class="kicker">ONTOLOGY 3.0</div>
+          <h2>可追溯、可决策、可行动</h2>
+          <div class="closing-principles">
+            <div class="closing-principle">
+              <strong>可信</strong>
+              <p>每一个数字都能回到版本、时点与证据。</p>
+            </div>
+            <div class="closing-principle">
+              <strong>受控</strong>
+              <p>每一个建议都必须经过人工确认。</p>
+            </div>
+            <div class="closing-principle">
+              <strong>闭环</strong>
+              <p>每一个行动都有负责人、状态与结果。</p>
+            </div>
+          </div>
+        </div>
+        <div class="closing-mark-zone">
+          <img src="./assets/ontology-mark.png" alt="本体项目标识">
+        </div>
+        <div class="closing-sequence">
+          <span>DATA</span><b>→</b><span>SEMANTICS</span><b>→</b><span>DECISION</span><b>→</b><span>ACTION</span>
+        </div>
+      </div>
+    </section>
+  </deck-stage>
+
+  <script src="./deck-stage.js?v=20260811-2"></script>
+</body>
+</html>

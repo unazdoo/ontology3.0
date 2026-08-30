@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>本体管理 · 工作方式</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #122033;
+        --muted: #617086;
+        --line: #dfe5ec;
+        --surface: rgba(255, 255, 255, 0.92);
+        --blue: #2563eb;
+        --blue-soft: #eaf1ff;
+        --shadow: 0 18px 42px rgba(19, 38, 68, 0.12);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        font-family: -apple-system, "SF Pro Display", "PingFang SC", "Noto Sans SC", sans-serif;
+        background:
+          radial-gradient(circle at 14% 8%, rgba(85, 129, 255, 0.16), transparent 26rem),
+          radial-gradient(circle at 90% 18%, rgba(26, 178, 142, 0.11), transparent 24rem),
+          #f4f7fb;
+      }
+      main { width: min(1240px, calc(100% - 48px)); margin: 0 auto; padding: 64px 0 72px; }
+      .eyebrow { color: #55708f; font-size: 12px; font-weight: 700; letter-spacing: .14em; }
+      h1 { margin: 13px 0 12px; max-width: 760px; font-size: clamp(34px, 5vw, 56px); line-height: 1.06; letter-spacing: -.035em; }
+      .lead { max-width: 790px; margin: 0; color: var(--muted); font-size: 16px; line-height: 1.75; }
+      .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 38px; }
+      .card {
+        display: flex; flex-direction: column; min-height: 520px; padding: 16px; overflow: hidden;
+        border: 1px solid rgba(205, 215, 226, .88); border-radius: 22px; color: inherit;
+        background: var(--surface); box-shadow: var(--shadow); text-decoration: none;
+        transform: translateY(0); transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+      }
+      .card:hover { transform: translateY(-4px); border-color: #a9bce0; box-shadow: 0 24px 54px rgba(19, 38, 68, 0.16); }
+      .preview { position: relative; height: 250px; overflow: hidden; border-radius: 15px; background: #eef3f8; border: 1px solid #e0e7ef; }
+      .window { position: absolute; inset: 13px; display: grid; gap: 7px; padding: 7px; border: 1px solid #cdd7e2; border-radius: 10px; background: #fff; box-shadow: 0 8px 18px rgba(27, 49, 78, .08); }
+      .window::before { content: ""; position: absolute; top: 6px; left: 8px; width: 22px; height: 4px; border-radius: 9px; background: #b7c3d0; }
+      .model .window { grid-template: 20px 1fr 55px / 58px 1fr 78px; }
+      .model .window::after { content:""; grid-column: 1 / -1; grid-row: 1; border-bottom: 1px solid #e4e9ef; }
+      .model .left { grid-row: 2 / 4; background: #f2f5f8; border-radius: 5px; }
+      .model .canvas { position: relative; grid-row: 2; background: radial-gradient(#c5cfda 1px, transparent 1px); background-size: 12px 12px; }
+      .model .canvas::before, .model .canvas::after { content:""; position:absolute; width:42px; height:24px; border:1px solid #8ea6c6; border-radius:6px; background:#fff; }
+      .model .canvas::before { left:15%; top:25%; } .model .canvas::after { right:13%; bottom:20%; }
+      .model .right { grid-row: 2 / 4; background: #edf4ff; border-radius: 5px; }
+      .model .bottom { grid-column: 2; grid-row: 3; background: #f6f8fa; border-top: 1px solid #d8e0e8; }
+      .task .window { grid-template: 20px 40px 1fr / 1fr; }
+      .task .progress { grid-row: 2; border-radius: 6px; background: linear-gradient(90deg, #2e65d7 0 58%, #e4eaf1 58%); }
+      .task .steps { display:grid; grid-template-columns: 90px 1fr; gap:8px; }
+      .task .rail { background: #f1f4f8; border-radius: 6px; }
+      .task .content { display:grid; grid-template-rows: 50px repeat(3, 1fr); gap:7px; }
+      .task .content span { border: 1px solid #dbe3ec; border-radius: 6px; background:#fff; }
+      .task .content span:first-child { background:#edf4ff; border-color:#c2d4f8; }
+      .space .window { grid-template: 20px 1fr 44px / 1fr 82px; }
+      .space .stage { position:relative; grid-row:2; background: radial-gradient(#becad7 1px, transparent 1px); background-size: 14px 14px; }
+      .space .stage::before { content:""; position:absolute; inset:22% 14%; border:1px dashed #7f9cc5; border-radius:40%; transform:rotate(-7deg); }
+      .space .stage::after { content:""; position:absolute; left:36%; top:36%; width:66px; height:38px; border-radius:8px; background:#fff; border:2px solid #2e65d7; box-shadow:0 5px 12px rgba(46,101,215,.15); }
+      .space .inspector { grid-column:2; grid-row:2 / 4; background:#f6f8fa; border-left:1px solid #d9e2ec; }
+      .space .timeline { grid-row:3; background:#edf3fa; border-top:1px solid #d9e2ec; }
+      .meta { display:flex; align-items:center; gap:9px; margin:20px 4px 0; color:#426082; font-size:12px; font-weight:700; }
+      .letter { display:inline-grid; place-items:center; width:27px; height:27px; color:#fff; border-radius:8px; background:#1d4ed8; }
+      h2 { margin:11px 4px 7px; font-size:23px; letter-spacing:-.02em; }
+      .copy { margin:0 4px; min-height:72px; color:var(--muted); font-size:14px; line-height:1.65; }
+      .tags { display:flex; flex-wrap:wrap; gap:7px; margin:16px 4px 0; }
+      .tag { padding:6px 9px; color:#46617f; border:1px solid #dce4ed; border-radius:999px; background:#f6f8fb; font-size:11px; }
+      .open { display:flex; justify-content:space-between; align-items:center; margin:20px 4px 2px; padding-top:16px; border-top:1px solid #e4e9ef; color:#1d4ed8; font-size:13px; font-weight:700; }
+      .open span:last-child { font-size:20px; transition:transform 180ms ease; } .card:hover .open span:last-child { transform:translateX(3px); }
+      footer { display:flex; justify-content:space-between; gap:24px; margin-top:26px; color:#748196; font-size:12px; line-height:1.6; }
+      @media (max-width: 980px) { .cards { grid-template-columns:1fr; } .card { min-height: auto; } .preview { height:230px; } }
+      @media (max-width: 640px) { main { width:min(100% - 24px, 1240px); padding-top:34px; } footer { flex-direction:column; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="eyebrow">ONTOLOGY MANAGEMENT · WORKSPACES</div>
+      <h1>选择更适合团队的本体工作方式</h1>
+      <p class="lead">三种工作区覆盖相同的 Draft 建模、对象内数据映射、统一校验、语义发布、数据更新与正式切换能力。差异集中在理解路径、信息密度、画布占比与操作节奏。</p>
+      <section class="cards" aria-label="设计入口">
+        <a class="card" href="./model-first/index.html">
+          <div class="preview model"><div class="window"><div class="left"></div><div class="canvas"></div><div class="right"></div><div class="bottom"></div></div></div>
+          <div class="meta"><span class="letter">模</span><span>结构驱动</span></div>
+          <h2>模型工作台</h2>
+          <p class="copy">围绕对象、属性、关系、指标、规则与行动组织工作；资源树、模型画布、详情检查器和底部证据面板同时在场。</p>
+          <div class="tags"><span class="tag">高信息密度</span><span class="tag">专业建模</span><span class="tag">快速横跳</span></div>
+          <div class="open"><span>进入工作台</span><span>→</span></div>
+        </a>
+        <a class="card" href="./task-first/index.html">
+          <div class="preview task"><div class="window"><div class="progress"></div><div class="steps"><div class="rail"></div><div class="content"><span></span><span></span><span></span><span></span></div></div></div></div>
+          <div class="meta"><span class="letter">流</span><span>流程驱动</span></div>
+          <h2>本体建模工作台</h2>
+          <p class="copy">从 Draft 列表进入连续建模流程，把对象骨架、对象内映射、统一校验、语义发布、数据更新与正式切换串成清晰路径。</p>
+          <div class="tags"><span class="tag">低学习成本</span><span class="tag">阶段反馈</span><span class="tag">引导式操作</span></div>
+          <div class="open"><span>进入工作台</span><span>→</span></div>
+        </a>
+        <a class="card" href="./canvas-first/index.html">
+          <div class="preview space"><div class="window"><div class="stage"></div><div class="inspector"></div><div class="timeline"></div></div></div>
+          <div class="meta"><span class="letter">图</span><span>空间驱动</span></div>
+          <h2>空间画布</h2>
+          <p class="copy">以大画布承载语义结构、对象内映射与只读数据沿袭；通过检查器和版本上下文维持复杂模型操作效率。</p>
+          <div class="tags"><span class="tag">大画布</span><span class="tag">多图层</span><span class="tag">复杂模型</span></div>
+          <div class="open"><span>进入工作台</span><span>→</span></div>
+        </a>
+      </section>
+      <footer><span>每个工作区都可从 Draft 开始完成建模、发布、数据更新和失败恢复。</span><span>建议使用 1440 × 900 或更高桌面分辨率操作。</span></footer>
+    </main>
+  </body>
+</html>

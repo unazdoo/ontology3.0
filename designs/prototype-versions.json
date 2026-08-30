@@ -214,6 +214,31 @@
       "writePolicy": "controlled-merge-and-shared-shell-only",
       "reviewEntry": false,
       "acceptanceReady": false
+    },
+    {
+      "workspaceId": "v1.1.0-composite-rc1",
+      "version": "1.1.0-rc.1",
+      "status": "review-candidate",
+      "sourceProductBaseline": "1.0.7",
+      "governanceBaselineVersion": "1.0.3",
+      "parentVersion": "1.0.3",
+      "baselineVersion": "1.0.3",
+      "baselineSnapshotId": "BSL-S001-V103-DE0119608E26",
+      "scenarioScope": ["S001", "S002", "S003", "S004"],
+      "path": "prototype-work/v1.1.0-composite-rc1",
+      "pathType": "physical-worktree",
+      "gitWorktreePath": "../ontology3.0-worktrees/integration-composite-v1.1.0",
+      "prototypePath": "designs/prototype-work/v1.1.0",
+      "branch": "codex/v1.1.0-composite",
+      "workspaceRole": "四场景组合总装与受控合并候选",
+      "writePolicy": "controlled-composite-merge; no module-doc-or-original-workspace-writes",
+      "recommendedPort": 4340,
+      "mergedScenarios": ["S001", "S002", "S003", "S004"],
+      "compositeRunEvidence": "prototype-work/v1.1.0-composite-rc1/COMPOSITE-RUN-202608211618.json",
+      "entry": "prototype-work/v1.1.0-composite-rc1/s001-e2e-integration/index.html",
+      "reviewEntry": true,
+      "acceptanceReady": false,
+      "versionGovernanceNote": "v1.0.7 仍为 review-candidate；不得静默升级为正式 parentVersion"
     }
   ]
 }

@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ontology3.0｜让可信数据走向可执行决策</title>
+  <style>
+    :root{
+      --nav:#111c29;--nav2:#172435;--ink:#172234;--ink2:#334158;--muted:#66758a;
+      --line:#dce3eb;--line2:#aebbd0;--paper:#f5f7f9;--white:#fff;
+      --blue:#315fae;--cyan:#48a9e6;--green:#18765f;--amber:#a45c12;--red:#b83a3a;--purple:#71519a;
+      --font:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sans-serif;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08111b;font-family:var(--font)}
+    deck-stage:not(:defined){visibility:hidden}
+    section{font-family:var(--font);color:var(--ink);background:var(--paper);padding:84px 120px 78px}
+    section.dark{color:#f6f9fc;background:
+      radial-gradient(circle at 78% 22%,rgba(72,169,230,.11),transparent 31%),
+      radial-gradient(circle at 16% 82%,rgba(113,81,154,.12),transparent 29%),
+      linear-gradient(135deg,#0d1723 0%,#162435 62%,#111c29 100%)}
+    section.dark:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.14;background-image:linear-gradient(rgba(151,174,198,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(151,174,198,.18) 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent)}
+    .brand{position:absolute;left:120px;top:48px;width:470px;height:32px;object-fit:contain;object-position:left center}
+    .brand.dark-brand{filter:brightness(1.25) saturate(.9)}
+    .folio{position:absolute;right:120px;top:52px;font:600 21px/1 var(--font);letter-spacing:.14em;color:#7e8fa2}
+    .dark .folio{color:#71879c}
+    .eyebrow{font-size:24px;line-height:1.2;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:22px}
+    .dark .eyebrow{color:#75bfe9}
+    h1,h2,h3,p{margin:0}
+    h1{font-size:88px;line-height:1.12;letter-spacing:-.04em;font-weight:700}
+    h2{font-size:66px;line-height:1.18;letter-spacing:-.035em;font-weight:700;max-width:1580px}
+    h3{font-size:32px;line-height:1.35;font-weight:650}
+    p,li{font-size:29px;line-height:1.55}
+    .sub{font-size:34px;line-height:1.55;color:var(--muted)}
+    .dark .sub{color:#afbdcb}
+    .rule{height:2px;background:linear-gradient(90deg,var(--blue),rgba(49,95,174,0));margin:26px 0 38px}
+    .dark .rule{background:linear-gradient(90deg,var(--cyan),rgba(72,169,230,0))}
+    .glass{background:rgba(255,255,255,.055);border:1px solid rgba(181,205,229,.16);box-shadow:0 20px 60px rgba(0,0,0,.18);backdrop-filter:blur(12px)}
+    .project-mark{object-fit:contain;filter:drop-shadow(0 24px 38px rgba(0,63,155,.22))}
+    .accent{color:var(--cyan)}
+    .muted{color:var(--muted)}
+    .dark .muted{color:#a9b8c7}
+    .review-back{position:fixed;z-index:9999;right:18px;top:18px;padding:8px 12px;border:1px solid rgba(171,195,219,.24);border-radius:7px;background:rgba(10,18,28,.76);color:#d9e5ef;text-decoration:none;font:600 13px/1 var(--font);backdrop-filter:blur(10px);opacity:.35;transition:.15s}
+    .review-back:hover{opacity:1}
+
+    /* 01 cover */
+    .cover{padding-top:166px}
+    .cover-copy{position:relative;z-index:2;width:1120px}
+    .cover h1{font-size:96px;max-width:1120px}
+    .cover .platform-name{margin-top:38px;font-size:33px;line-height:1.5;color:#b8c6d5}
+    .cover .platform-name b{color:#fff;font-weight:650}
+    .cover .competition{margin-top:72px;display:flex;align-items:center;gap:20px;color:#86a0b7;font-size:25px}
+    .cover .competition:before{content:"";display:block;width:78px;height:2px;background:#48a9e6}
+    .cover-mark{position:absolute;right:86px;top:182px;width:720px;height:720px;opacity:.92}
+    .cover-orbit{position:absolute;right:118px;top:208px;width:660px;height:660px;border:1px solid rgba(87,176,228,.2);border-radius:50%}
+    .cover-orbit:before,.cover-orbit:after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(111,138,166,.14)}
+    .cover-orbit:before{inset:74px}.cover-orbit:after{inset:156px}
+
+    /* 02 team */
+    .team-intro{position:absolute;left:120px;top:230px;width:540px}
+    .team-intro .sub{margin-top:28px;font-size:31px}
+    .team-grid{position:absolute;left:720px;right:120px;top:220px;bottom:110px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
+    .person{position:relative;display:grid;grid-template-columns:132px 1fr;gap:26px;align-items:center;padding:30px 32px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 28px rgba(11,24,42,.055)}
+    .avatar{width:132px;height:152px;border:1px solid #bdc9d6;border-radius:9px;background:linear-gradient(150deg,#eef3f8,#f9fbfd);display:grid;place-items:center;color:#315fae;font-size:56px;font-weight:700}
+    .person.lead .avatar{background:linear-gradient(145deg,#e9f1fb,#f7faff);border-color:#9fb4cf}
+    .person .role{color:var(--blue);font-size:23px;font-weight:700;letter-spacing:.08em;margin-bottom:9px}
+    .person h3{font-size:38px;margin-bottom:8px}
+    .person .dept{font-size:24px;color:#66758a;margin-bottom:14px}
+    .person .duty{font-size:26px;line-height:1.45;color:#334158}
+    .team-path{position:absolute;left:648px;top:274px;bottom:174px;width:3px;background:linear-gradient(var(--blue),var(--cyan),var(--green))}
+    .team-path:before,.team-path:after{content:"";position:absolute;left:-7px;width:17px;height:17px;border-radius:50%;background:#fff;border:3px solid var(--blue)}
+    .team-path:before{top:0}.team-path:after{bottom:0;border-color:var(--green)}
+
+    /* 03 tension */
+    .tension-title{position:absolute;top:132px;left:120px;width:1600px}
+    .tension-body{position:absolute;left:120px;right:120px;top:340px;bottom:100px;display:grid;grid-template-columns:1fr 200px 1fr;align-items:center}
+    .side{height:100%;padding:44px 48px;border-radius:14px}
+    .side.before{background:#fff;border:1px solid #ead4d3;box-shadow:0 8px 28px rgba(75,22,22,.05)}
+    .side.after{background:#142335;border:1px solid rgba(90,171,221,.3);color:#f6f9fc;box-shadow:0 20px 55px rgba(10,31,54,.18)}
+    .side-label{font-size:24px;font-weight:750;letter-spacing:.1em;color:var(--red);margin-bottom:32px}
+    .after .side-label{color:#70bce8}
+    .break-list{display:grid;gap:26px}
+    .break{display:grid;grid-template-columns:54px 1fr;gap:20px;align-items:start}
+    .break b{display:grid;place-items:center;width:50px;height:50px;border-radius:50%;border:1px solid #d9a9a7;color:var(--red);font:700 22px/1 var(--font)}
+    .break strong{display:block;font-size:30px;margin-bottom:7px}.break span{font-size:25px;line-height:1.45;color:#66758a}
+    .after .break b{border-color:#4f8fb8;color:#72c4ee}.after .break span{color:#aebdcb}
+    .bridge{display:grid;place-items:center;color:#315fae}
+    .bridge .arrow{width:126px;height:2px;background:#315fae;position:relative}
+    .bridge .arrow:after{content:"";position:absolute;right:-1px;top:-7px;width:14px;height:14px;border-top:2px solid #315fae;border-right:2px solid #315fae;transform:rotate(45deg)}
+    .bridge small{display:block;margin-top:24px;font-size:20px;line-height:1.45;text-align:center;color:#66758a;font-weight:650}
+
+    /* 04 ontology */
+    .onto-title{position:absolute;left:120px;top:132px;width:1600px}
+    .onto-sub{position:absolute;left:120px;top:250px;width:990px}
+    .ontology-map{position:absolute;left:122px;top:390px;width:1050px;height:540px}
+    .map-line{position:absolute;height:2px;background:#a9b9c9;transform-origin:left center;z-index:0}
+    .map-line.active{height:3px;background:linear-gradient(90deg,#315fae,#48a9e6);box-shadow:0 0 12px rgba(72,169,230,.28)}
+    .entity{position:absolute;z-index:2;display:grid;place-items:center;width:214px;height:112px;border:1px solid #bdc9d6;border-radius:10px;background:#fff;box-shadow:0 8px 25px rgba(11,24,42,.07);font-size:28px;font-weight:700;text-align:center}
+    .entity small{display:block;margin-top:7px;font-size:18px;color:#78899a;font-weight:600}
+    .entity.core{left:402px;top:195px;width:250px;height:142px;border:2px solid #315fae;background:linear-gradient(145deg,#f8fbff,#eaf1fc);font-size:34px}
+    .entity.unit{left:28px;top:18px}.entity.bank{right:26px;top:16px}.entity.owner{left:28px;bottom:18px}.entity.metric{right:26px;bottom:18px}
+    .map-line.l1{left:230px;top:105px;width:262px;transform:rotate(24deg)}
+    .map-line.l2{left:630px;top:263px;width:296px;transform:rotate(-31deg)}
+    .map-line.l3{left:231px;top:456px;width:287px;transform:rotate(-31deg)}
+    .map-line.l4{left:627px;top:274px;width:286px;transform:rotate(34deg)}
+    .layers{position:absolute;right:120px;top:374px;width:560px;display:grid;gap:18px}
+    .layer{padding:27px 30px;border-left:4px solid var(--blue);background:#fff;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);box-shadow:0 6px 20px rgba(11,24,42,.04)}
+    .layer:nth-child(2){border-left-color:var(--purple)}.layer:nth-child(3){border-left-color:var(--green)}
+    .layer b{display:block;font-size:30px;margin-bottom:8px}.layer span{font-size:25px;line-height:1.45;color:#66758a}
+    .layer-num{display:inline-block;width:36px;color:var(--blue);font:700 19px/1 ui-monospace,monospace}
+
+    /* 05 architecture */
+    .arch-title{position:absolute;left:120px;top:130px;width:1680px}
+    .arch{position:absolute;left:120px;right:120px;top:335px;bottom:122px;display:grid;grid-template-columns:280px 360px 420px 1fr;gap:24px;align-items:stretch}
+    .arch-col{position:relative;border:1px solid rgba(164,188,210,.22);background:rgba(255,255,255,.035);border-radius:12px;padding:28px 24px}
+    .arch-col:after{content:"";position:absolute;right:-25px;top:50%;width:24px;height:2px;background:#45647f}
+    .arch-col:last-child:after{display:none}
+    .arch-label{font-size:21px;letter-spacing:.12em;color:#7dbce3;font-weight:750;margin-bottom:23px}
+    .arch-node{position:relative;margin-bottom:16px;padding:20px 22px;border:1px solid rgba(177,201,224,.2);border-radius:9px;background:rgba(255,255,255,.065)}
+    .arch-node b{display:block;font-size:29px;margin-bottom:7px}.arch-node span{font-size:22px;line-height:1.4;color:#aab9c7}
+    .arch-node.primary{border-color:rgba(72,169,230,.65);box-shadow:inset 3px 0 #48a9e6,0 8px 26px rgba(0,70,130,.12)}
+    .arch-consumers{display:grid;grid-template-columns:1fr 1fr;gap:14px}.arch-consumers .arch-node{margin:0;min-height:136px}
+    .decision-gate{margin-top:18px;padding:20px 22px;border:1px solid rgba(44,140,112,.65);background:rgba(24,118,95,.11);border-radius:9px}
+    .decision-gate b{display:block;color:#7dd8bb;font-size:26px;margin-bottom:5px}.decision-gate span{font-size:21px;color:#aebecb}
+    .arch-foot{position:absolute;left:120px;right:120px;bottom:60px;display:flex;justify-content:space-between;color:#8297aa;font-size:22px}
+    .arch-foot strong{color:#d6e3ee;font-weight:650}
+
+    /* 06 decision */
+    .decision-title{position:absolute;left:120px;top:130px;width:1500px}
+    .source-band{position:absolute;left:120px;right:120px;top:305px;display:flex;gap:18px;align-items:center}
+    .source{flex:1;padding:22px 16px;border:1px solid #c8d3df;border-radius:9px;background:#fff;text-align:center;font-size:27px;font-weight:650}
+    .source-arrow{font-size:34px;color:#315fae}
+    .decision-flow{position:absolute;left:120px;right:120px;top:480px;display:grid;grid-template-columns:1.2fr 78px 1fr 78px 1.2fr 78px 1fr 78px 1.15fr;align-items:center}
+    .d-node{min-height:210px;border:1px solid #c5d0dc;border-radius:12px;background:#fff;padding:32px 28px;box-shadow:0 8px 26px rgba(11,24,42,.055)}
+    .d-node.active{border-color:#315fae;box-shadow:inset 0 4px #315fae,0 12px 30px rgba(36,75,141,.12)}
+    .d-node.human{border-color:#b9a6cc;background:linear-gradient(145deg,#fff,#f6f1fa);box-shadow:inset 0 4px #71519a,0 12px 30px rgba(74,49,104,.09)}
+    .d-node.task{border-color:#94c6b7;background:linear-gradient(145deg,#fff,#eef8f4);box-shadow:inset 0 4px #18765f,0 12px 30px rgba(24,118,95,.09)}
+    .d-step{font:700 20px/1 ui-monospace,monospace;color:#7890a6;margin-bottom:22px}
+    .d-node b{display:block;font-size:31px;line-height:1.28;margin-bottom:13px}.d-node span{font-size:23px;line-height:1.45;color:#66758a}
+    .d-arrow{height:2px;background:#8fa6bd;position:relative}.d-arrow:after{content:"";position:absolute;right:0;top:-6px;border-left:11px solid #8fa6bd;border-top:7px solid transparent;border-bottom:7px solid transparent}
+    .decision-note{position:absolute;left:120px;right:120px;bottom:72px;display:flex;align-items:center;justify-content:center;gap:22px;color:#334158;font-size:28px}
+    .decision-note b{color:#71519a}.decision-note .lock{width:42px;height:42px;border:2px solid #71519a;border-radius:50%;display:grid;place-items:center;font-size:18px}
+
+    /* 07 S001 */
+    .journey-title{position:absolute;left:120px;top:128px;width:1680px}
+    .baseline{position:absolute;right:120px;top:265px;width:580px;padding:20px 26px;border:1px solid rgba(163,193,218,.22);border-radius:10px;background:rgba(255,255,255,.055)}
+    .baseline-label{font-size:20px;letter-spacing:.1em;color:#75bfe9;font-weight:700;margin-bottom:15px}
+    .baseline-row{display:flex;justify-content:flex-start;gap:25px}.baseline-row>div{display:flex;align-items:baseline;gap:5px;white-space:nowrap}.baseline-row b{font-size:32px}.baseline-row span{font-size:19px;color:#aebdcb}
+    .journey{position:absolute;left:120px;right:120px;top:390px;height:410px}
+    .track{position:absolute;left:60px;right:60px;top:190px;height:3px;background:linear-gradient(90deg,#48a9e6 0 64%,#18765f 64% 100%)}
+    .track:after{content:"";position:absolute;right:-1px;top:-7px;border-left:13px solid #18765f;border-top:8px solid transparent;border-bottom:8px solid transparent}
+    .j-step{position:absolute;top:108px;width:250px;text-align:center;transform:translateX(-50%)}
+    .j-step:nth-of-type(2){left:6%}.j-step:nth-of-type(3){left:24%}.j-step:nth-of-type(4){left:42%}.j-step:nth-of-type(5){left:60%}.j-step:nth-of-type(6){left:78%}.j-step:nth-of-type(7){left:95%}
+    .j-dot{width:68px;height:68px;margin:0 auto 24px;border:3px solid #48a9e6;border-radius:50%;background:#142535;box-shadow:0 0 0 9px rgba(72,169,230,.08);display:grid;place-items:center;font:700 20px/1 ui-monospace,monospace;color:#9bd7f5}
+    .j-step:nth-of-type(6) .j-dot{border-color:#8c70aa;color:#c7b6d9;box-shadow:0 0 0 9px rgba(113,81,154,.1)}
+    .j-step:nth-of-type(7) .j-dot{border-color:#45b08e;color:#96e0c6;box-shadow:0 0 0 9px rgba(24,118,95,.13)}
+    .j-step b{display:block;font-size:26px;line-height:1.35;color:#f5f8fb;margin-bottom:10px}.j-step span{display:block;font-size:21px;line-height:1.45;color:#9fb0c0}
+    .journey-callout{position:absolute;left:220px;right:220px;bottom:76px;display:flex;justify-content:space-between;gap:32px;color:#aebdcb;font-size:25px}
+    .journey-callout strong{color:#fff}.journey-callout em{font-style:normal;color:#7bd0ef}
+
+    /* 08 close */
+    .close{display:grid;place-items:center;text-align:center}
+    .close:after{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(transparent,rgba(72,169,230,.24),transparent)}
+    .close-inner{position:relative;z-index:2;width:1350px}
+    .close-mark{width:210px;height:210px;margin:0 auto 34px}
+    .close h2{font-size:80px;margin-bottom:28px}
+    .close .sub{font-size:34px;color:#b5c3d0}
+    .promise{margin:70px auto 0;display:flex;justify-content:center;gap:72px}
+    .promise span{position:relative;padding-left:22px;font-size:27px;color:#d6e2ec}
+    .promise span:before{content:"";position:absolute;left:0;top:13px;width:8px;height:8px;border-radius:50%;background:#48a9e6}
+    .close-foot{position:absolute;left:0;right:0;bottom:58px;text-align:center;color:#72879a;font-size:22px;letter-spacing:.04em}
+  </style>
+</head>
+<body>
+  <deck-stage width="1920" height="1080">
+    <section class="dark cover" data-label="封面">
+      <img class="brand dark-brand" src="assets/group-brand-lockup.png" alt="中广核集团标识与严慎细实" />
+      <div class="folio">FINANCE AI · 2026</div>
+      <div class="cover-copy">
+        <div class="eyebrow">ONTOLOGY 3.0</div>
+        <h1>让可信数据<br />走向<span class="accent">可执行决策</span></h1>
+        <p class="platform-name"><b>企业级“数据—语义—决策—行动”平台</b><br />为集团财务建立共同语言、可信分析与闭环行动能力</p>
+        <div class="competition">财务 AI 项目大赛</div>
+      </div>
+      <div class="cover-orbit"></div>
+      <img class="project-mark cover-mark" src="assets/ontology-mark.png" alt="ontology3.0 项目标识" data-anim="zoom-in" data-anim-duration="760" />
+    </section>
+
+    <section data-label="团队介绍">
+      <img class="brand" src="assets/group-brand-lockup.png" alt="中广核集团标识与严慎细实" />
+      <div class="folio">02</div>
+      <div class="team-intro">
+        <div class="eyebrow">ONE TEAM · ONE CHAIN</div>
+        <h2>四类专长，<br />共建财务决策链</h2>
+        <p class="sub">架构、融资风险、贷前报告与预算监督协同，让平台能力始终贴近真实财务工作。</p>
+      </div>
+      <div class="team-path" aria-hidden="true"></div>
+      <div class="team-grid">
+        <article class="person lead">
+          <div class="avatar">张</div>
+          <div><div class="role">组长</div><h3>张栋</h3><div class="dept">财务公司规划财务部</div><div class="duty">平台架构和功能建设</div></div>
+        </article>
+        <article class="person">
+          <div class="avatar">谢</div>
+          <div><div class="role">组员</div><h3>谢航雨</h3><div class="dept">财务公司信贷融资部</div><div class="duty">集团债务风险监控场景</div></div>
+        </article>
+        <article class="person">
+          <div class="avatar">刘</div>
+          <div><div class="role">组员</div><h3>刘明明</h3><div class="dept">财务公司信贷融资部</div><div class="duty">财务公司贷前报告场景</div></div>
+        </article>
+        <article class="person">
+          <div class="avatar">林</div>
+          <div><div class="role">组员</div><h3>林擎妍</h3><div class="dept">苏州院财务部</div><div class="duty">预算管理监督场景</div></div>
+        </article>
+      </div>
+    </section>
+
+    <section data-label="问题与回应">
+      <img class="brand" src="assets/group-brand-lockup.png" alt="中广核集团标识与严慎细实" />
+      <div class="folio">03</div>
+      <div class="tension-title"><div class="eyebrow">THE BROKEN HANDOFF</div><h2>问题往往不是看不见，而是看见之后走不下去</h2></div>
+      <div class="tension-body">
+        <div class="side before">
+          <div class="side-label">今天的管理断点</div>
+          <div class="break-list">
+            <div class="break"><b>1</b><div><strong>数字能查到</strong><span>版本、口径和截至时间却散落在不同文件与系统中。</span></div></div>
+            <div class="break"><b>2</b><div><strong>AI 能回答</strong><span>缺少固定证据和责任边界，难以进入正式判断。</span></div></div>
+            <div class="break"><b>3</b><div><strong>看板能发现</strong><span>后续仍靠线下沟通，谁确认、谁执行、结果如何难追踪。</span></div></div>
+          </div>
+        </div>
+        <div class="bridge" data-anim="wipe-in" data-anim-trigger="click"><div><div class="arrow"></div><small>连接事实<br />与行动</small></div></div>
+        <div class="side after">
+          <div class="side-label">平台改变工作方式</div>
+          <div class="break-list">
+            <div class="break"><b>1</b><div><strong>可信数据</strong><span>来源、版本、质量与消费时点统一留痕。</span></div></div>
+            <div class="break"><b>2</b><div><strong>共享语义</strong><span>对象、指标、规则与行动类型只定义一次。</span></div></div>
+            <div class="break"><b>3</b><div><strong>有人把关的闭环</strong><span>标准行动请求经人工确认，才形成负责人待办。</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section data-label="本体通俗解释">
+      <img class="brand" src="assets/group-brand-lockup.png" alt="中广核集团标识与严慎细实" />
+      <div class="folio">04</div>
+      <div class="onto-title"><div class="eyebrow">BUSINESS CONTEXT</div><h2>本体让同一笔融资，在每一步都保持同一身份</h2></div>
+      <p class="sub onto-sub">它不是把数据再存一遍，而是把企业业务世界变成机器能理解、人能共用、流程能执行的共同语言。</p>
+      <div class="ontology-map" aria-label="融资业务对象关系图">
+        <div class="map-line l1"></div><div class="map-line l2 active"></div><div class="map-line l3"></div><div class="map-line l4"></div>
+        <div class="entity unit">融资单位<small>业务主体</small></div>
+        <div class="entity bank">金融机构<small>资金来源</small></div>
+        <div class="entity owner">负责人<small>行动承接</small></div>
+        <div class="entity metric">指标与规则<small>判断依据</small></div>
+        <div class="entity core" data-anim="zoom-in">一笔融资<small>对象身份贯穿全链</small></div>
+      </div>
+      <div class="layers">
+        <div class="layer"><b><span class="layer-num">01</span>共同词典</b><span>统一“单位、融资、银行、负责人、融资成本”分别指什么。</span></div>
+        <div class="layer"><b><span class="layer-num">02</span>关系地图</b><span>看清谁有哪些融资、资金来自哪家银行、由谁负责。</span></div>
+        <div class="layer"><b><span class="layer-num">03</span>行动规则</b><span>定义何时发现问题、需要哪些证据、由谁确认、交给谁执行。</span></div>
+      </div>
+    </section>
+
+    <section class="dark" data-label="平台应用架构">
+      <img class="brand dark-brand" src="assets/group-brand-lockup.png" alt="中广核集团标识与严慎细实" />
+      <div class="folio">05</div>
+      <div class="arch-title"><div class="eyebrow">ONE TRUSTED CHAIN</div><h2>六个模块围绕同一业务对象协同，权威事实只维护一次</h2></div>
+      <div class="arch">
+        <div class="arch-col" data-anim="fade-in" data-anim-trigger="click">
+          <div class="arch-label">01 · 可信数据</div>
+          <div class="arch-node primary"><b>数据工程</b><span>来源、快照、管道、质量与数据资产版本</span></div>
+          <div class="arch-node"><b>异构来源</b><span>工作簿、共享文件夹及企业系统</span></div>
+        </div>
+        <div class="arch-col" data-anim="fade-in" data-anim-trigger="click">
+          <div class="arch-label">02 · 共同语言</div>
+          <div class="arch-node primary"><b>本体管理</b><span>对象、关系、指标、规则与行动类型</span></div>
+          <div class="arch-node"><b>Published 语义</b><span>绑定权威可消费数据版本</span></div>
+        </div>
+        <div class="arch-col" data-anim="fade-in" data-anim-trigger="click">
+          <div class="arch-label">03 · 智能消费</div>
+          <div class="arch-consumers">
+            <div class="arch-node"><b>智能问数</b><span>有口径、有版本、有证据</span></div>
+            <div class="arch-node"><b>Agent 应用</b><span>在固定证据上生成与解释</span></div>
+            <div class="arch-node primary"><b>报告中心</b><span>驾驶舱、专题分析与正式报告</span></div>
+            <div class="arch-node"><b>Rule 判断</b><span>确定性发现业务问题</span></div>
+          </div>
+        </div>
+        <div class="arch-col" data-anim="fade-in" data-anim-trigger="click">
+          <div class="arch-label">04 · 人工决策与行动</div>
+          <div class="arch-node primary"><b>决策中心</b><span>承接唯一标准入口 Action Request</span></div>
+          <div class="decision-gate"><b>人工确认门</b><span>未经确认，不创建负责人待办</span></div>
+          <div class="arch-node" style="margin-top:16px"><b>执行与追溯</b><span>负责人、状态、失败恢复与结果留痕</span></div>
+        </div>
+      </div>
+      <div class="arch-foot"><span><strong>LLM 只解释</strong>，不作为数据源、正式计算层或规则引擎</span><span><strong>一个权威来源</strong>，多个模块只读引用</span></div>
+    </section>
+
+    <section data-label="决策中心流程">
+      <img class="brand" src="assets/group-brand-lockup.png" alt="中广核集团标识与严慎细实" />
+      <div class="folio">06</div>
+      <div class="decision-title"><div class="eyebrow">HUMAN-IN-THE-LOOP</div><h2>建议必须经过人，确认之后才进入执行</h2></div>
+      <div class="source-band"><div class="source">Rule 命中</div><div class="source">智能问数</div><div class="source">Agent 应用</div><div class="source">仪表盘</div><div class="source-arrow">→</div><div class="source" style="border-color:#8fa8c9;background:#eef4fb;color:#244b8d">统一 Action Request</div></div>
+      <div class="decision-flow">
+        <div class="d-node active" data-anim="fade-in" data-anim-trigger="click"><div class="d-step">01</div><b>请求校验</b><span>引用已发布行动类型，带齐主体、规则与证据。</span></div><div class="d-arrow"></div>
+        <div class="d-node" data-anim="fade-in" data-anim-trigger="click"><div class="d-step">02</div><b>决策提醒</b><span>把需要判断的问题送到同一工作台。</span></div><div class="d-arrow"></div>
+        <div class="d-node human" data-anim="fade-in" data-anim-trigger="click"><div class="d-step">03</div><b>人工确认 / 拒绝</b><span>审阅事实、证据与建议，正式决定仍由人作出。</span></div><div class="d-arrow"></div>
+        <div class="d-node task" data-anim="fade-in" data-anim-trigger="click"><div class="d-step">04</div><b>负责人待办</b><span>仅在确认成功后创建，明确对象、任务与期限。</span></div><div class="d-arrow"></div>
+        <div class="d-node" data-anim="fade-in" data-anim-trigger="click"><div class="d-step">05</div><b>执行与追溯</b><span>状态、逾期、失败、纠正和结果全程留痕。</span></div>
+      </div>
+      <div class="decision-note"><div class="lock">人</div><span><b>AI 提供证据化建议</b>，不越过人工确认直接行动。</span></div>
+    </section>
+
+    <section class="dark" data-label="融资优化场景">
+      <img class="brand dark-brand" src="assets/group-brand-lockup.png" alt="中广核集团标识与严慎细实" />
+      <div class="folio">07</div>
+      <div class="journey-title"><div class="eyebrow">S001 · FINANCING OPTIMIZATION</div><h2>从融资成本异常，到银行协商与负责人行动</h2></div>
+      <div class="baseline"><div class="baseline-label">当前脱敏数据基线</div><div class="baseline-row"><div><b>5,218</b><span> 条融资明细</span></div><div><b>574</b><span> 家主体</span></div><div><b>24</b><span> 家机构</span></div></div></div>
+      <div class="journey">
+        <div class="track"></div>
+        <div class="j-step" data-anim="fade-in" data-anim-trigger="click"><div class="j-dot">01</div><b>发现异常</b><span>融资成本或债务结构出现偏离</span></div>
+        <div class="j-step" data-anim="fade-in" data-anim-trigger="click"><div class="j-dot">02</div><b>问清范围</b><span>比较两家、三家或集团综合成本</span></div>
+        <div class="j-step" data-anim="fade-in" data-anim-trigger="click"><div class="j-dot">03</div><b>定位证据</b><span>追到具体融资记录及相关银行</span></div>
+        <div class="j-step" data-anim="fade-in" data-anim-trigger="click"><div class="j-dot">04</div><b>解释判断</b><span>说明命中逻辑、计算口径和依据</span></div>
+        <div class="j-step" data-anim="fade-in" data-anim-trigger="click"><div class="j-dot">05</div><b>人工确认</b><span>审阅优先协商方向与行动建议</span></div>
+        <div class="j-step" data-anim="fade-in" data-anim-trigger="click"><div class="j-dot">06</div><b>行动到人</b><span>确认后形成对应负责人的待办</span></div>
+      </div>
+      <div class="journey-callout"><span>三家单位可分别验证三类识别逻辑：<strong>融资成本、短期债务、浮动利率</strong></span><span><em>AI 解释证据，人确认行动</em></span></div>
+    </section>
+
+    <section class="dark close" data-label="结束页">
+      <img class="brand dark-brand" src="assets/group-brand-lockup.png" alt="中广核集团标识与严慎细实" />
+      <div class="folio">08</div>
+      <div class="close-inner">
+        <img class="project-mark close-mark" src="assets/ontology-mark.png" alt="ontology3.0 项目标识" />
+        <h2>让每一个数字可追溯<br />让每一个建议可落地</h2>
+        <p class="sub">以融资优化闭环为起点，逐步承载预算管理、债务风险监测与贷前调查。</p>
+        <div class="promise"><span>共同业务语言</span><span>固定版本与证据</span><span>人工把关的行动闭环</span></div>
+      </div>
+      <div class="close-foot">ONTOLOGY 3.0 · DATA → SEMANTICS → DECISION → ACTION</div>
+    </section>
+  </deck-stage>
+  <a class="review-back" href="index.html" aria-label="返回评审入口">返回</a>
+  <script src="deck-stage.js?v=20260811-2"></script>
+</body>
+</html>

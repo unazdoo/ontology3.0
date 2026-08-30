@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ontology3.0 项目背景介绍｜三方案评审</title>
+  <style>
+    :root{--ink:#172234;--ink2:#334158;--muted:#66758a;--line:#dce3eb;--paper:#eef3f8;--nav:#111c29;--blue:#315fae;--cyan:#48a9e6;--green:#18765f;--amber:#9a6712;--red:#b83a3a;--purple:#71519a;--font:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sans-serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font-family:var(--font);background:linear-gradient(#eef3f8,#f7f9fb 44%,#eef3f8);min-height:100vh}
+    a{color:inherit}.shell{max-width:1500px;margin:auto;padding:34px 36px 80px}
+    .topbar{height:54px;display:flex;align-items:center;justify-content:space-between}
+    .group-brand{width:420px;height:30px;object-fit:contain;object-position:left center}
+    .meta{display:flex;align-items:center;gap:24px;color:#66758a;font-size:14px}.meta b{font-weight:700;color:#315fae}.meta i{width:1px;height:18px;background:#c7d2dd}
+    .hero{position:relative;overflow:hidden;margin-top:26px;min-height:410px;border-radius:14px;padding:68px 70px;color:#f5f9fc;background:radial-gradient(circle at 78% 24%,rgba(72,169,230,.19),transparent 30%),radial-gradient(circle at 15% 90%,rgba(113,81,154,.15),transparent 28%),linear-gradient(135deg,#0d1723,#17283a 62%,#111c29);box-shadow:0 24px 70px rgba(15,34,55,.18)}
+    .hero:before{content:"";position:absolute;inset:0;opacity:.16;background-image:linear-gradient(rgba(157,183,207,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(157,183,207,.2) 1px,transparent 1px);background-size:52px 52px;mask-image:linear-gradient(90deg,#000,transparent 72%)}
+    .hero-copy{position:relative;z-index:2;max-width:940px}.eyebrow{font-size:14px;letter-spacing:.15em;color:#7cc2eb;font-weight:750;margin-bottom:22px}.hero h1{margin:0;font-size:58px;line-height:1.17;letter-spacing:-.035em}.hero h1 span{color:#69c0ef}.hero p{margin:22px 0 0;max-width:820px;color:#b5c3d0;font-size:21px;line-height:1.65}.hero-tags{display:flex;gap:10px;margin-top:34px}.hero-tags span{padding:8px 12px;border:1px solid rgba(178,203,227,.2);border-radius:6px;background:rgba(255,255,255,.045);font-size:14px;color:#d1dde8}
+    .hero-mark{position:absolute;right:28px;top:8px;width:420px;height:420px;object-fit:contain;opacity:.83;filter:drop-shadow(0 24px 45px rgba(0,0,0,.26))}
+    .decision-note{display:flex;justify-content:space-between;gap:28px;align-items:center;margin:34px 2px 24px}.decision-note h2{margin:0;font-size:28px;letter-spacing:-.02em}.decision-note p{margin:7px 0 0;color:#66758a;font-size:16px}.decision-note .hint{font-size:14px;color:#66758a;border-left:3px solid #315fae;padding-left:14px;line-height:1.6}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .plan{position:relative;overflow:hidden;background:#fff;border:1px solid #d5dee8;border-radius:12px;box-shadow:0 8px 28px rgba(15,36,58,.07);transition:.18s ease}.plan:hover{transform:translateY(-3px);box-shadow:0 16px 42px rgba(15,36,58,.12)}
+    .preview{height:245px;position:relative;overflow:hidden;padding:30px}.preview:after{content:"";position:absolute;inset:0;pointer-events:none}
+    .preview-a{color:#fff;background:radial-gradient(circle at 75% 30%,rgba(72,169,230,.16),transparent 34%),linear-gradient(145deg,#0e1722,#17283a)}.preview-a:after{opacity:.22;background-image:linear-gradient(rgba(143,171,198,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(143,171,198,.18) 1px,transparent 1px);background-size:34px 34px}
+    .preview-b{background:#f7f7f3;color:#172234}.preview-b:after{opacity:.42;background-image:radial-gradient(#aab8c6 .8px,transparent .8px);background-size:18px 18px}
+    .preview-c{background:linear-gradient(90deg,#122031 0 46%,#f5f7f9 46%);color:#fff}.preview-c:after{background:linear-gradient(90deg,transparent 45.8%,#48a9e6 45.8% 46.2%,transparent 46.2%)}
+    .mini-label{position:relative;z-index:2;font-size:11px;letter-spacing:.13em;font-weight:750;color:#68bdea}.preview-b .mini-label{color:#315fae}.preview-c .mini-label{color:#79c9ef}
+    .mini-title{position:relative;z-index:2;margin-top:17px;font-size:31px;line-height:1.2;font-weight:750;letter-spacing:-.025em;max-width:310px}.preview-c .mini-title{max-width:185px;font-size:28px}
+    .mini-line{position:relative;z-index:2;margin-top:24px;width:140px;height:2px;background:#48a9e6}
+    .topology{position:absolute;right:34px;bottom:28px;width:190px;height:136px}.topology span{position:absolute;width:56px;height:34px;border:1px solid rgba(116,195,238,.55);border-radius:5px;background:rgba(255,255,255,.06)}.topology span:nth-child(1){left:66px;top:3px}.topology span:nth-child(2){left:0;bottom:5px}.topology span:nth-child(3){right:0;bottom:5px}.topology:before,.topology:after{content:"";position:absolute;left:60px;top:65px;width:76px;height:1px;background:#48a9e6;transform-origin:left}.topology:before{transform:rotate(27deg)}.topology:after{left:127px;transform:rotate(153deg)}
+    .value-bars{position:absolute;z-index:2;left:30px;right:30px;bottom:28px;display:grid;gap:10px}.value-bars div{height:24px;border-left:4px solid #18765f;background:#fff;border-top:1px solid #dce3eb;border-right:1px solid #dce3eb;border-bottom:1px solid #dce3eb;box-shadow:0 3px 10px rgba(11,24,42,.04)}.value-bars div:nth-child(2){width:78%;border-left-color:#9a6712}.value-bars div:nth-child(3){width:91%;border-left-color:#315fae}
+    .journey-track{position:absolute;z-index:2;left:58%;right:28px;top:118px;height:2px;background:#315fae}.journey-track:after{content:"";position:absolute;right:0;top:-5px;border-left:9px solid #315fae;border-top:6px solid transparent;border-bottom:6px solid transparent}.journey-track i{position:absolute;top:-9px;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid #315fae}.journey-track i:nth-child(1){left:5%}.journey-track i:nth-child(2){left:45%}.journey-track i:nth-child(3){left:82%;border-color:#18765f}
+    .plan-body{padding:26px 26px 24px}.plan-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.plan-title{margin:0;font-size:24px}.badge{font-size:12px;font-weight:700;color:#244b8d;background:#eaf1fc;border:1px solid #c9d8ed;border-radius:5px;padding:5px 7px;white-space:nowrap}.badge.recommend{color:#11634f;background:#e7f5f0;border-color:#bbdfd3}
+    .plan-desc{margin:13px 0 0;color:#66758a;font-size:15px;line-height:1.65;min-height:74px}.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}.fact{padding:11px 12px;background:#f7f9fc;border-left:3px solid #315fae}.fact b{display:block;font-size:12px;color:#66758a;margin-bottom:4px}.fact span{font-size:14px;color:#172234}.review-list{margin:0;padding:0;list-style:none;display:grid;gap:8px}.review-list li{font-size:13px;line-height:1.5;color:#66758a;padding-left:15px;position:relative}.review-list li:before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:#a5b3c1}.review-list strong{color:#334158}.open{display:flex;align-items:center;justify-content:center;height:44px;margin-top:22px;border-radius:7px;background:#172435;color:#fff;text-decoration:none;font-weight:700;font-size:15px;transition:.14s}.open:hover{background:#244b8d}.plan:nth-child(2) .open{background:#315fae}.plan:nth-child(3) .open{background:#18765f}
+    .outlines{margin-top:38px}.outlines>h2{font-size:30px;margin:0 0 8px}.outlines>p{margin:0 0 18px;color:#66758a;font-size:16px}.outline-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start}
+    details{background:#fff;border:1px solid #d5dee8;border-radius:10px;overflow:hidden}summary{cursor:pointer;padding:18px 20px;font-weight:750;font-size:17px;list-style:none;display:flex;justify-content:space-between;align-items:center}summary::-webkit-details-marker{display:none}summary:after{content:"＋";font-size:21px;color:#66758a}details[open] summary:after{content:"－"}details ol{counter-reset:item;margin:0;padding:6px 18px 20px 54px;columns:1;list-style:decimal-leading-zero}details li{padding:7px 0 7px 4px;border-bottom:1px solid #eef2f6;font-size:13px;line-height:1.42;color:#4f5f72;break-inside:avoid}details li::marker{color:#8da0b4;font-family:ui-monospace,monospace;font-size:11px}details li.sample{font-weight:750;color:#244b8d}details li.sample:after{content:"  样页";font-size:10px;color:#315fae;background:#eaf1fc;border-radius:3px;padding:2px 4px;margin-left:5px;vertical-align:1px}
+    .legend{margin-top:22px;padding:18px 20px;background:#fff;border:1px solid #d5dee8;border-radius:9px;color:#66758a;font-size:13px;line-height:1.65}.legend b{color:#334158}.footer{display:flex;justify-content:space-between;align-items:center;margin-top:28px;padding-top:22px;border-top:1px solid #ced8e2;color:#7b8b9b;font-size:13px}.footer img{width:36px;height:36px;object-fit:contain}
+    @media(max-width:1100px){.grid,.outline-grid{grid-template-columns:1fr}.hero-mark{opacity:.28}.hero-copy{max-width:760px}.plan-desc{min-height:0}}
+    @media(max-width:700px){.shell{padding:20px 14px 50px}.group-brand{width:270px}.meta{display:none}.hero{padding:42px 28px;min-height:420px}.hero h1{font-size:39px}.hero p{font-size:17px}.hero-mark{right:-120px;top:20px}.decision-note{display:block}.decision-note .hint{margin-top:15px}.grid{gap:16px}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <img class="group-brand" src="assets/group-brand-lockup.png" alt="中广核集团标识与严慎细实" />
+      <div class="meta"><span><b>20 分钟</b> 财务 AI 项目大赛</span><i></i><span>1920 × 1080</span><i></i><span>每套 8 张关键样页</span></div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">ONTOLOGY 3.0 · PROJECT STORY REVIEW</div>
+        <h1>同一平台事实，<br />三种<span>讲述方式</span></h1>
+        <p>三套方向共享同一模块边界、场景范围与平台视觉基因；差异集中在叙事入口、页面节奏与现场表达方式。每套均提供完整 32 页标题序列和 8 张关键样页。</p>
+        <div class="hero-tags"><span>集团财务与 IT 领导</span><span>财务 AI 大赛评委</span><span>专业 · 严谨 · 精密</span></div>
+      </div>
+      <img class="hero-mark" src="assets/ontology-mark.png" alt="ontology3.0 项目标识" />
+    </section>
+
+    <div class="decision-note">
+      <div><h2>请选择最适合现场表达的叙事路径</h2><p>点击“打开关键样页”，使用方向键翻页；按 T 打开页面导航，按 F 全屏。</p></div>
+      <div class="hint">本轮只比较叙事与视觉基调。<br />选定后再扩展完整页面并导出可编辑 PPTX。</div>
+    </div>
+
+    <section class="grid" aria-label="三套视觉方案">
+      <article class="plan">
+        <div class="preview preview-a"><div class="mini-label">DATA · SEMANTICS · ACTION</div><div class="mini-title">让可信数据走向可执行决策</div><div class="mini-line"></div><div class="topology"><span></span><span></span><span></span></div></div>
+        <div class="plan-body">
+          <div class="plan-head"><h3 class="plan-title">方案 A｜数智中枢型</h3><span class="badge">体系感最强</span></div>
+          <p class="plan-desc">从财务 AI 的组织级挑战出发，以本体为语义核心，逐层展开六模块、四场景与平台价值。</p>
+          <div class="facts"><div class="fact"><b>内容组织</b><span>行业变化 → 痛点 → 本体 → 架构 → 场景</span></div><div class="fact"><b>视觉系统</b><span>深色拓扑、青蓝数据流、克制毛玻璃</span></div></div>
+          <ul class="review-list"><li><strong>适用：</strong>强调技术体系、平台高度与 IT 协同。</li><li><strong>优势：</strong>视觉记忆强，六模块关系清晰。</li><li><strong>风险：</strong>暗色投影需高亮度；对非技术听众讲解要求更高。</li></ul>
+          <a class="open" href="方案A-数智中枢.html">打开关键样页</a>
+        </div>
+      </article>
+
+      <article class="plan">
+        <div class="preview preview-b"><div class="mini-label">MANAGEMENT VALUE</div><div class="mini-title">经营事实如何真正进入组织决策</div><div class="mini-line" style="background:#18765f"></div><div class="value-bars"><div></div><div></div><div></div></div></div>
+        <div class="plan-body">
+          <div class="plan-head"><h3 class="plan-title">方案 B｜经营价值型</h3><span class="badge">理解门槛最低</span></div>
+          <p class="plan-desc">从领导每天面对的经营问题切入，先讲工作方式如何改变，再用本体与架构解释支撑机制。</p>
+          <div class="facts"><div class="fact"><b>内容组织</b><span>管理问题 → 工作改变 → 场景价值 → 架构支撑</span></div><div class="fact"><b>视觉系统</b><span>浅色技术蓝图、青绿机制、铜红痛点</span></div></div>
+          <ul class="review-list"><li><strong>适用：</strong>财务领导占比高、希望快速理解业务价值。</li><li><strong>优势：</strong>逻辑稳健、阅读轻松、会议室投影可靠。</li><li><strong>风险：</strong>需靠关系图和证据线维持技术辨识度。</li></ul>
+          <a class="open" href="方案B-经营价值.html">打开关键样页</a>
+        </div>
+      </article>
+
+      <article class="plan">
+        <div class="preview preview-c"><div class="mini-label">ONE FINANCING JOURNEY</div><div class="mini-title">一笔融资<br />如何走到负责人待办</div><div class="journey-track"><i></i><i></i><i></i></div></div>
+        <div class="plan-body">
+          <div class="plan-head"><h3 class="plan-title">方案 C｜决策旅程型</h3><span class="badge recommend">推荐现场展示</span></div>
+          <p class="plan-desc">用“一次融资成本异常”贯穿数据、语义、问数、规则、人工确认和负责人待办，边讲故事边引出平台。</p>
+          <div class="facts"><div class="fact"><b>内容组织</b><span>异常事件 → 证据追踪 → 人工决策 → 平台推广</span></div><div class="fact"><b>视觉系统</b><span>深浅章节交替、对象身份色、路径逐步点亮</span></div></div>
+          <ul class="review-list"><li><strong>适用：</strong>20 分钟竞赛陈述与现场演示。</li><li><strong>优势：</strong>记忆点强，非技术听众易跟随。</li><li><strong>风险：</strong>故事可能遮蔽全貌，需用架构页及时收束。</li></ul>
+          <a class="open" href="方案C-决策旅程.html">打开关键样页</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="outlines">
+      <h2>完整标题序列</h2>
+      <p>蓝色条目为本轮已制作关键样页；其余标题用于验证完整 20 分钟叙事是否成立。</p>
+      <div class="outline-grid">
+        <details>
+          <summary>方案 A｜数智中枢型 · 32 页</summary>
+          <ol>
+            <li class="sample">让可信数据走向可执行决策</li><li class="sample">四类专长，共建一条财务决策链</li><li>财务 AI 正从个人工具走向组织能力</li><li>我们要连接的不是更多页面，而是一条可信业务链</li>
+            <li>表越做越宽，业务变化反而越慢</li><li>数据有了，却缺少统一业务含义</li><li>数据更新后，没人敢确定该信哪一版</li><li>权限管到了表，却还没有管到真实业务行动</li>
+            <li class="sample">AI 会回答，不等于答案可以进入正式判断</li><li>个人提效不等于组织提效</li><li>大量看板仍没有把问题推进到行动</li><li>没有证据与责任边界，AI 难以被信任</li>
+            <li>关键知识依赖少数专家，组织难以复用</li><li>财务人才转型需要新的工具与工作方式</li><li>共同词典让业务概念只定义一次</li><li>关系地图让业务对象在全链条保持同一身份</li>
+            <li class="sample">行动规则让问题、证据、确认与执行相互衔接</li><li>传统平台管理表，本体平台理解业务世界</li><li>一笔融资成本异常，如何走到负责人待办</li><li class="sample">六个模块围绕一条业务对象链协同</li>
+            <li>可信数据沿权威路径被智能应用消费</li><li class="sample">数据工程把变化来源变成可信资产</li><li>本体管理把数据资产变成共同语言</li><li>智能问数给出有口径、有版本、有证据的答案</li>
+            <li>Agent 在固定证据上生成，不越权算数</li><li>报告中心看清经营事实并沉淀正式结论</li><li>决策中心让建议经过人再进入执行</li><li class="sample">四个财务场景共享同一平台底座</li>
+            <li>融资优化率先贯通数据、语义、决策与行动</li><li>先完成核心闭环，再扩展场景深度与治理能力</li><li>以统一口径、可追溯与行动闭环衡量成功</li><li class="sample">让每一个数字可追溯，让每一个建议可落地</li>
+          </ol>
+        </details>
+
+        <details>
+          <summary>方案 B｜经营价值型 · 32 页</summary>
+          <ol>
+            <li class="sample">让经营事实真正进入组织决策</li><li class="sample">四类财务专长，围绕同一管理目标协同</li><li>领导需要的不是更多图，而是可靠判断与明确行动</li><li>平台把看见、理解、决定和执行连成一条线</li>
+            <li class="sample">看板说明发生了什么，却没有推进下一步</li><li>数据更新后，使用者仍在反复确认版本</li><li>同一个指标，在不同系统里可能不是同一含义</li><li>智能问数没有可信上下文，就会出现不稳定答案</li>
+            <li>AI 缺少证据与责任边界，难以进入正式流程</li><li>个人助手越多，组织知识反而可能越分散</li><li>大宽表与烟囱加工让业务调整牵一发动全身</li><li>权限必须逐步从系统层走向业务对象与行动</li>
+            <li>关键判断留在专家脑中，难复用也难追溯</li><li>财务人才转型不能只停留在自动取数</li><li>共同词典统一集团财务的业务概念</li><li>关系地图让单位、融资、银行和负责人相互连接</li>
+            <li>行动规则把发现问题延伸到有人承接</li><li class="sample">本体让工作从“找表找口径”转向“理解业务对象”</li><li>融资异常的价值，不在红灯，而在找到可执行抓手</li><li class="sample">四个财务场景共享数据、语义与行动机制</li>
+            <li class="sample">平台价值同时服务领导、财务、IT 与一线</li><li>成功标准是口径一致、证据完整、行动闭环</li><li class="sample">四层能力支撑财务管理工作方式改变</li><li>数据沿一条权威路径进入问数、驾驶舱与报告</li>
+            <li class="sample">报告中心看清经营事实，受控连接行动</li><li>智能问数让临时问题也能获得可信答案</li><li>Agent 基于固定证据生成与解释</li><li>决策中心只管理需要人判断和执行的事项</li>
+            <li>数据工程持续提供可追溯的数据资产</li><li>本体管理统一指标、规则与行动定义</li><li>以融资闭环起步，逐步扩展三个完整场景</li><li class="sample">共同语言，让财务与 IT 围绕同一事实协作</li>
+          </ol>
+        </details>
+
+        <details open>
+          <summary>方案 C｜决策旅程型 · 32 页</summary>
+          <ol>
+            <li class="sample">让可信数据走向可执行决策</li><li class="sample">四类专长，共建一条财务决策链</li><li>一次融资成本异常，提出了三个管理问题</li><li class="sample">问题不是看不见，而是看见之后走不下去</li>
+            <li>为了适应变化，表越做越宽，链条却越来越脆</li><li>同一笔融资，在不同系统里有不同名字和口径</li><li>新数据已经到来，旧版本却仍在被使用</li><li>智能问数不认识业务边界，就只能临时猜测</li>
+            <li>AI 没有固定证据，建议就无法进入正式判断</li><li>看板亮起红灯，后续推动仍回到线下</li><li>个人工具提高速度，却没有沉淀组织能力</li><li>关键判断依赖专家，换人就难以复用</li>
+            <li>权限要从“能看哪张表”走向“能对什么采取行动”</li><li>财务转型需要把更多时间放在判断与协同上</li><li>共同词典让这笔融资在全平台拥有同一含义</li><li class="sample">关系地图让单位、银行、负责人和证据始终相连</li>
+            <li>行动规则规定何时提醒、谁来确认、交给谁执行</li><li>传统平台止步于查询，本体平台连接到行动</li><li>一条融资旅程，串起全部平台能力</li><li>数据工程记录这笔融资从哪里来、何时更新</li>
+            <li>本体管理把它连接到指标、规则与行动类型</li><li>智能问数在统一口径下比较两家、三家综合成本</li><li>Agent 解释问题融资与优先协商方向</li><li>报告中心把集团、板块与单位事实放在同一视野</li>
+            <li>四类来源统一形成标准行动请求</li><li class="sample">人工确认后，行动才真正交给负责人</li><li class="sample">六个模块重新收束为一条可信业务链</li><li>同一平台继续承载预算、债务风险和贷前调查</li>
+            <li class="sample">融资优化用真实数据结构验证端到端闭环</li><li>平台价值落在领导判断、财务协同、IT 复用与一线执行</li><li>用可信、可控、可追溯和可行动衡量项目成功</li><li class="sample">让每一个数字可追溯，让每一个建议可落地</li>
+          </ol>
+        </details>
+      </div>
+      <div class="legend"><b>事实边界：</b>现有 5,218 条融资明细、574 家融资主体、24 家金融机构为当前脱敏数据与验收基线，不作为平台已运行成果；预算管理、债务风险监测和贷前调查均保留完整建设范围，但不在样页中虚构业务结果。</div>
+    </section>
+
+    <footer class="footer"><span>ontology3.0 · 第一轮叙事与视觉方向评审</span><img src="assets/ontology-mark.png" alt="ontology3.0 项目标识" /></footer>
+  </main>
+</body>
+</html>

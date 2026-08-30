@@ -1,0 +1,1623 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ontology3.0 中文项目介绍</title>
+  <style>
+    :root {
+      --ink: #111820;
+      --ink-2: #27313a;
+      --paper: #f4f5f6;
+      --surface: #ffffff;
+      --line: #d7dce1;
+      --line-strong: #9aa5ae;
+      --muted: #5b6770;
+      --dark: #090d10;
+      --dark-2: #111820;
+      --dark-3: #1a2228;
+      --dark-line: #3b454d;
+      --blue: #2d72d2;
+      --blue-soft: #e8f0fb;
+      --green: #2f8f5b;
+      --green-soft: #e8f4ed;
+      --type-cover: 60px;
+      --type-title: 56px;
+      --type-title-tight: 52px;
+      --type-subtitle: 36px;
+      --type-body: 27px;
+      --type-small: 24px;
+      --type-source: 20px;
+      --pad-top: 70px;
+      --pad-bottom: 82px;
+      --pad-x: 112px;
+      --gap-title: 34px;
+      --gap-item: 22px;
+      --rail-width: 76px;
+      --font-sans: -apple-system, "SF Pro Display", "SF Pro Text", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      --font-mono: "SFMono-Regular", "Cascadia Mono", Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #050709; }
+    body { font-family: var(--font-sans); color: var(--ink); letter-spacing: 0; }
+    button, input, textarea, select { font: inherit; }
+
+    /* deck-stage stretches the section but not its first child. */
+    section[data-label] > *:not(img):not(picture):not(video):not(svg):not(canvas) {
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    .slide {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    .slide.dark { background: var(--dark); color: #eef2f4; }
+
+    .system-rail {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--rail-width);
+      background: var(--ink-2);
+      border-right: 1px solid #4b565f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 3;
+    }
+
+    .dark .system-rail { background: #050709; border-color: var(--dark-line); }
+
+    .rail-brand {
+      width: 42px;
+      height: 42px;
+      margin-top: 28px;
+      border: 1px solid #8f9aa3;
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      font-family: var(--font-mono);
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .dark .rail-brand { border-color: #5d6870; color: #cfe3d8; }
+
+    .rail-track {
+      margin-top: 42px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .rail-node {
+      width: 24px;
+      height: 24px;
+      border: 1px solid #7c8993;
+      position: relative;
+    }
+
+    .rail-node::after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      left: 8px;
+      top: 8px;
+      background: #9ba7b0;
+    }
+
+    .rail-node.active { border-color: var(--blue); background: var(--blue); }
+    .rail-node.active::after { background: #ffffff; }
+    .dark .rail-node { border-color: #48535b; }
+    .dark .rail-node::after { background: #65717a; }
+    .dark .rail-node.active { border-color: var(--green); background: var(--green); }
+
+    .rail-folio {
+      margin-top: auto;
+      margin-bottom: 28px;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-family: var(--font-mono);
+      font-size: var(--type-source);
+      color: #d8e0e5;
+    }
+
+    .slide-canvas {
+      position: relative;
+      height: 100%;
+      margin-left: var(--rail-width);
+      padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
+    }
+
+    .slide-canvas::before,
+    .slide-canvas::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .slide-canvas::before {
+      top: 0;
+      bottom: 0;
+      right: 332px;
+      width: 1px;
+      background: rgba(17, 24, 32, 0.05);
+    }
+
+    .slide-canvas::after {
+      left: 0;
+      right: 0;
+      top: 506px;
+      height: 1px;
+      background: rgba(17, 24, 32, 0.045);
+    }
+
+    .dark .slide-canvas::before,
+    .dark .slide-canvas::after { background: rgba(215, 220, 225, 0.08); }
+
+    .slide-header {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 48px;
+      align-items: start;
+      min-height: 136px;
+      padding-bottom: 26px;
+      border-bottom: 1px solid var(--line-strong);
+    }
+
+    .dark .slide-header { border-color: var(--dark-line); }
+
+    .section-code {
+      display: block;
+      margin-bottom: 15px;
+      font-family: var(--font-mono);
+      font-size: var(--type-source);
+      color: var(--muted);
+    }
+
+    .dark .section-code { color: #87939b; }
+
+    h1, h2, h3, p { margin: 0; }
+
+    .slide-title {
+      max-width: 1510px;
+      font-size: var(--type-title);
+      line-height: 1.16;
+      font-weight: 680;
+      text-wrap: balance;
+    }
+
+    .slide-title.tight { font-size: var(--type-title-tight); }
+
+    .status-tag {
+      min-width: 176px;
+      min-height: 40px;
+      padding: 8px 14px;
+      border: 1px solid var(--line-strong);
+      border-radius: 2px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-size: var(--type-source);
+      color: var(--ink-2);
+      white-space: nowrap;
+    }
+
+    .status-tag::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .dark .status-tag { border-color: #56616a; color: #dce5e9; }
+
+    .slide-main {
+      position: absolute;
+      z-index: 1;
+      left: var(--pad-x);
+      right: var(--pad-x);
+      top: 230px;
+      bottom: 106px;
+    }
+
+    .source-footer {
+      position: absolute;
+      z-index: 2;
+      left: var(--pad-x);
+      right: var(--pad-x);
+      bottom: 23px;
+      min-height: 54px;
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 32px;
+      align-items: start;
+      padding-top: 12px;
+      font-size: var(--type-source);
+      line-height: 1.35;
+      color: var(--muted);
+    }
+
+    .dark .source-footer { border-color: var(--dark-line); color: #89969f; }
+    .source-footer .page-count { font-family: var(--font-mono); color: var(--ink-2); }
+    .dark .source-footer .page-count { color: #c5d0d5; }
+
+    .panel {
+      border: 1px solid var(--line-strong);
+      border-radius: 2px;
+      background: var(--surface);
+    }
+
+    .dark .panel {
+      border-color: var(--dark-line);
+      background: var(--dark-2);
+    }
+
+    .mono { font-family: var(--font-mono); }
+    .blue { color: var(--blue); }
+    .green { color: var(--green); }
+    .muted { color: var(--muted); }
+    .dark .muted { color: #8e9aa2; }
+
+    .icon {
+      width: 42px;
+      height: 42px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex: none;
+    }
+
+    .icon.small { width: 28px; height: 28px; }
+
+    /* Cover */
+    .cover .slide-canvas { padding-top: 54px; }
+    .cover .slide-canvas::before { right: 44%; background: #1d252a; }
+    .cover .slide-canvas::after { top: 764px; background: #1d252a; }
+
+    .cover-brand {
+      width: 680px;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      margin-bottom: 86px;
+    }
+
+    .cover-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(500px, 0.85fr);
+      gap: 92px;
+      align-items: stretch;
+      height: 572px;
+    }
+
+    .cover-copy {
+      padding-top: 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .cover-kicker {
+      font-family: var(--font-mono);
+      font-size: var(--type-small);
+      color: #8e9aa2;
+      margin-bottom: 24px;
+    }
+
+    .cover h1 {
+      font-size: var(--type-cover);
+      line-height: 1.04;
+      font-weight: 720;
+      color: #f2f5f6;
+    }
+
+    .cover-statement {
+      margin-top: 30px;
+      max-width: 820px;
+      font-size: 38px;
+      line-height: 1.42;
+      color: #c4cdd2;
+    }
+
+    .cover-taxonomy {
+      margin-top: auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-top: 1px solid #4d585f;
+      border-bottom: 1px solid #4d585f;
+    }
+
+    .cover-taxonomy span {
+      min-height: 78px;
+      padding: 20px 16px;
+      border-right: 1px solid #4d585f;
+      display: flex;
+      align-items: center;
+      font-size: var(--type-small);
+      color: #dbe2e6;
+    }
+
+    .cover-taxonomy span:last-child { border-right: 0; }
+
+    .cover-status {
+      border: 1px solid #56616a;
+      background: #0e1418;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100%;
+    }
+
+    .cover-status-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 23px 26px;
+      border-bottom: 1px solid #56616a;
+      font-family: var(--font-mono);
+      font-size: var(--type-source);
+      color: #aab5bb;
+    }
+
+    .cover-status-head strong { color: #77c59a; font-weight: 650; }
+
+    .cover-path {
+      padding: 38px 30px;
+      display: grid;
+      gap: 18px;
+      align-content: center;
+    }
+
+    .cover-path-row {
+      min-height: 72px;
+      border: 1px solid #3b454d;
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 18px;
+      align-items: center;
+      padding: 12px 18px;
+    }
+
+    .cover-path-row b {
+      font-family: var(--font-mono);
+      font-size: var(--type-source);
+      color: #74bf96;
+    }
+
+    .cover-path-row span { font-size: var(--type-small); color: #e5eaec; }
+
+    .cover-status-foot {
+      padding: 20px 26px;
+      border-top: 1px solid #56616a;
+      font-size: var(--type-small);
+      line-height: 1.45;
+      color: #aeb8bd;
+    }
+
+    /* Three conclusions */
+    .conclusion-grid {
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+      padding-bottom: 112px;
+    }
+
+    .conclusion-panel {
+      border: 1px solid var(--line-strong);
+      background: var(--surface);
+      padding: 28px 30px 30px;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      min-width: 0;
+    }
+
+    .conclusion-panel .panel-number {
+      font-family: var(--font-mono);
+      font-size: var(--type-source);
+      color: var(--blue);
+      margin-bottom: 30px;
+    }
+
+    .conclusion-panel .icon { color: var(--ink-2); margin-bottom: 24px; }
+
+    .conclusion-panel h3 {
+      font-size: 34px;
+      line-height: 1.25;
+      margin-bottom: 18px;
+    }
+
+    .conclusion-panel p {
+      font-size: var(--type-body);
+      line-height: 1.62;
+      color: var(--muted);
+    }
+
+    .conclusion-boundary {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      font-size: var(--type-small);
+      line-height: 1.45;
+      color: var(--ink-2);
+    }
+
+    .common-rule {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      min-height: 90px;
+      border: 1px solid var(--ink-2);
+      background: var(--ink-2);
+      display: grid;
+      grid-template-columns: 210px repeat(3, 1fr);
+      color: #ffffff;
+    }
+
+    .common-rule span {
+      padding: 24px 26px;
+      border-right: 1px solid #64717a;
+      display: flex;
+      align-items: center;
+      font-size: var(--type-small);
+      line-height: 1.35;
+    }
+
+    .common-rule span:first-child { color: #a9b5bc; font-family: var(--font-mono); }
+    .common-rule span:last-child { border-right: 0; }
+
+    /* Dataset scale */
+    .scale-layout {
+      height: 100%;
+      display: grid;
+      grid-template-columns: 520px 1fr;
+      gap: 28px;
+    }
+
+    .scale-anchor {
+      position: relative;
+      border: 1px solid var(--ink-2);
+      background: var(--ink-2);
+      color: #ffffff;
+      padding: 34px 36px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .scale-anchor::before,
+    .scale-anchor::after {
+      content: "";
+      position: absolute;
+      background: #6d7880;
+    }
+
+    .scale-anchor::before { left: 36px; right: 36px; top: 116px; height: 1px; }
+    .scale-anchor::after { top: 34px; bottom: 34px; right: 96px; width: 1px; }
+
+    .scale-anchor .dataset-label {
+      font-family: var(--font-mono);
+      font-size: var(--type-source);
+      color: #aeb8bd;
+      margin-bottom: 96px;
+    }
+
+    .scale-anchor strong {
+      font-family: var(--font-mono);
+      font-size: 92px;
+      line-height: 1;
+      color: #ffffff;
+      margin-bottom: 16px;
+    }
+
+    .scale-anchor .dataset-unit { font-size: 34px; }
+
+    .scale-anchor .dataset-dimensions {
+      margin-top: auto;
+      width: 100%;
+      padding-top: 24px;
+      border-top: 1px solid #6d7880;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      font-size: var(--type-small);
+      color: #d8e0e4;
+    }
+
+    .scale-map {
+      display: grid;
+      grid-template-rows: 1fr 142px;
+      gap: 22px;
+    }
+
+    .relation-field {
+      border: 1px solid var(--line-strong);
+      background: #f8f9fa;
+      padding: 30px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .scale-node {
+      border: 1px solid var(--line-strong);
+      background: var(--surface);
+      padding: 22px 24px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto 1fr;
+      gap: 12px 18px;
+      align-items: end;
+    }
+
+    .scale-node .node-label { font-size: var(--type-small); color: var(--muted); }
+    .scale-node strong { font-family: var(--font-mono); font-size: 52px; line-height: 1; }
+    .scale-node p { grid-column: 1 / -1; font-size: var(--type-small); line-height: 1.45; color: var(--ink-2); }
+    .scale-node.blue-line { border-top: 4px solid var(--blue); }
+    .scale-node.green-line { border-top: 4px solid var(--green); }
+
+    .dataset-evidence {
+      border: 1px solid var(--line-strong);
+      background: var(--surface);
+      display: grid;
+      grid-template-columns: 220px repeat(3, minmax(0, 1fr));
+    }
+
+    .dataset-evidence > div {
+      padding: 22px 24px;
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .dataset-evidence > div:last-child { border-right: 0; }
+    .dataset-evidence strong { font-size: var(--type-small); }
+    .dataset-evidence span { font-size: var(--type-source); line-height: 1.4; color: var(--muted); }
+
+    /* Data evidence pain */
+    .quality-layout {
+      height: 100%;
+      display: grid;
+      grid-template-columns: minmax(0, 1.38fr) minmax(390px, 0.62fr);
+      gap: 24px;
+    }
+
+    .quality-table {
+      border: 1px solid var(--line-strong);
+      background: var(--surface);
+      display: grid;
+      grid-template-rows: 64px repeat(3, 1fr) 84px;
+    }
+
+    .quality-row {
+      display: grid;
+      grid-template-columns: 280px 250px 1fr;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .quality-row > span,
+    .quality-row > strong,
+    .quality-row > div { padding: 0 24px; }
+
+    .quality-row > span { font-size: var(--type-small); color: var(--muted); }
+    .quality-row > strong { font-family: var(--font-mono); font-size: 32px; font-weight: 650; }
+    .quality-row > div { font-size: var(--type-small); line-height: 1.42; color: var(--ink-2); }
+
+    .quality-row.header {
+      background: var(--ink-2);
+      color: #ffffff;
+      grid-template-columns: 280px 250px 1fr;
+    }
+
+    .quality-row.header span { color: #d8e0e5; font-family: var(--font-mono); font-size: var(--type-source); }
+    .quality-row:last-child { border-bottom: 0; background: #f2f4f5; }
+    .quality-row:last-child strong { color: var(--blue); }
+
+    .blank-bar {
+      position: relative;
+      height: 14px;
+      margin: 10px 24px 0;
+      border: 1px solid var(--line-strong);
+      background: #f4f5f6;
+    }
+
+    .blank-bar i { display: block; height: 100%; background: var(--blue); }
+
+    .quality-mechanism {
+      border: 1px solid var(--ink-2);
+      background: var(--ink-2);
+      color: #ffffff;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .quality-mechanism h3 { font-size: 32px; }
+
+    .mechanism-step {
+      border: 1px solid #64717a;
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .mechanism-step b { font-family: var(--font-mono); color: #7fc7a0; font-size: var(--type-source); }
+    .mechanism-step span { font-size: var(--type-small); line-height: 1.42; color: #edf1f3; }
+
+    .quality-caution {
+      margin-top: auto;
+      padding-top: 20px;
+      border-top: 1px solid #64717a;
+      font-size: var(--type-small);
+      line-height: 1.46;
+      color: #b9c3c8;
+    }
+
+    /* Metric comparison */
+    .metric-layout {
+      height: 100%;
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(380px, 0.65fr);
+      gap: 24px;
+    }
+
+    .metric-compare {
+      border: 1px solid var(--line-strong);
+      background: var(--surface);
+      display: grid;
+      grid-template-rows: 1fr 1fr 108px;
+    }
+
+    .metric-method {
+      display: grid;
+      grid-template-columns: 220px 1fr 260px;
+      align-items: center;
+      gap: 24px;
+      padding: 24px 30px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .metric-method .method-name { font-size: 31px; font-weight: 650; line-height: 1.25; }
+    .metric-method .formula { font-family: var(--font-mono); font-size: var(--type-small); line-height: 1.5; color: var(--muted); }
+    .metric-method .result { font-family: var(--font-mono); font-size: 58px; text-align: right; }
+    .metric-method.primary { border-left: 5px solid var(--green); }
+    .metric-method.primary .result { color: var(--green); }
+
+    .metric-difference {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 30px;
+      align-items: center;
+      padding: 18px 30px;
+      background: var(--ink-2);
+      color: #ffffff;
+    }
+
+    .metric-difference span { font-size: var(--type-small); line-height: 1.45; }
+    .metric-difference strong { font-family: var(--font-mono); font-size: 42px; color: #8ad1a8; }
+
+    .metric-contract {
+      border: 1px solid var(--line-strong);
+      background: #f8f9fa;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .metric-contract h3 { font-size: 32px; }
+
+    .contract-row {
+      border-top: 1px solid var(--line-strong);
+      padding-top: 16px;
+      display: grid;
+      grid-template-columns: 116px 1fr;
+      gap: 14px;
+    }
+
+    .contract-row b { font-family: var(--font-mono); font-size: var(--type-source); color: var(--blue); }
+    .contract-row span { font-size: var(--type-small); line-height: 1.45; color: var(--ink-2); }
+
+    .metric-contract .impact {
+      margin-top: auto;
+      border: 1px solid var(--ink-2);
+      padding: 18px;
+      font-size: var(--type-small);
+      line-height: 1.45;
+      color: var(--ink-2);
+    }
+
+    /* AI evidence */
+    .evidence-layout {
+      height: 100%;
+      display: grid;
+      grid-template-rows: 1fr 146px;
+      gap: 22px;
+    }
+
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .evidence-slot {
+      border: 1px solid #4e5961;
+      background: #10161a;
+      padding: 22px 24px;
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      grid-template-rows: auto 1fr;
+      gap: 10px 18px;
+      align-items: start;
+    }
+
+    .evidence-slot .slot-index {
+      grid-row: 1 / 3;
+      font-family: var(--font-mono);
+      color: #72bd93;
+      font-size: var(--type-source);
+      padding-top: 4px;
+    }
+
+    .evidence-slot h3 { font-size: 30px; color: #eef2f4; }
+    .evidence-slot p { font-size: var(--type-small); line-height: 1.43; color: #aeb9bf; }
+
+    .llm-boundary {
+      border: 1px solid #56616a;
+      display: grid;
+      grid-template-columns: 1fr 74px 1fr 74px 1.25fr;
+      align-items: center;
+      background: #0c1115;
+    }
+
+    .llm-node { padding: 22px 26px; min-width: 0; }
+    .llm-node strong { display: block; font-size: 28px; margin-bottom: 8px; }
+    .llm-node span { font-size: var(--type-source); color: #9aa6ad; line-height: 1.4; }
+    .llm-arrow { font-family: var(--font-mono); font-size: 34px; color: #6fc091; text-align: center; }
+    .llm-node.limited { border: 1px solid var(--green); margin: 12px; }
+
+    /* Action flow */
+    .action-layout {
+      height: 100%;
+      display: grid;
+      grid-template-rows: 170px 76px 1fr;
+      gap: 18px;
+    }
+
+    .action-sources {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .source-node {
+      border: 1px solid var(--line-strong);
+      background: var(--surface);
+      padding: 22px 24px;
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      grid-template-rows: auto 1fr;
+      gap: 10px 16px;
+    }
+
+    .source-node .icon { grid-row: 1 / 3; color: var(--ink-2); }
+    .source-node h3 { font-size: 29px; }
+    .source-node p { font-size: var(--type-source); line-height: 1.45; color: var(--muted); }
+
+    .request-entry {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .entry-line { height: 1px; background: var(--blue); position: relative; }
+    .entry-line.right::after {
+      content: "";
+      position: absolute;
+      right: -1px;
+      top: -6px;
+      border-left: 10px solid var(--blue);
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+    }
+
+    .request-box {
+      min-width: 440px;
+      min-height: 68px;
+      border: 2px solid var(--blue);
+      background: var(--blue-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      font-family: var(--font-mono);
+      font-size: 29px;
+      color: #174f9f;
+    }
+
+    .decision-zone {
+      border: 1px solid var(--ink-2);
+      background: #edf0f2;
+      padding: 22px;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      position: relative;
+    }
+
+    .decision-zone::before {
+      content: "决策中心运行状态";
+      position: absolute;
+      left: 18px;
+      top: -17px;
+      background: var(--ink-2);
+      color: #ffffff;
+      padding: 5px 12px;
+      font-family: var(--font-mono);
+      font-size: var(--type-source);
+    }
+
+    .decision-step {
+      border: 1px solid var(--line-strong);
+      background: var(--surface);
+      padding: 22px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .decision-step b { font-family: var(--font-mono); color: var(--blue); font-size: var(--type-source); }
+    .decision-step strong { font-size: 27px; line-height: 1.3; }
+    .decision-step span { font-size: var(--type-source); line-height: 1.4; color: var(--muted); }
+    .decision-step.confirm { border-top: 4px solid var(--green); }
+    .decision-step.recovery { background: #f7f8f9; }
+
+    /* Ontology graph */
+    .ontology-layout {
+      height: 100%;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 390px;
+      gap: 24px;
+    }
+
+    .object-map {
+      position: relative;
+      border: 1px solid var(--line-strong);
+      background: #f8f9fa;
+      overflow: hidden;
+    }
+
+    .object-map .axis-v,
+    .object-map .axis-h {
+      position: absolute;
+      background: var(--line);
+    }
+
+    .object-map .axis-v { top: 0; bottom: 0; left: 50%; width: 1px; }
+    .object-map .axis-h { left: 0; right: 0; top: 50%; height: 1px; }
+
+    .graph-lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .graph-lines path { fill: none; stroke: #6b7780; stroke-width: 2; }
+
+    .object-node {
+      position: absolute;
+      width: 278px;
+      min-height: 118px;
+      border: 1px solid var(--ink-2);
+      border-top: 4px solid var(--blue);
+      background: var(--surface);
+      padding: 18px 20px;
+    }
+
+    .object-node.subject { left: 358px; top: 236px; border-top-color: var(--green); }
+    .object-node.detail { left: 56px; top: 60px; }
+    .object-node.institution { right: 54px; top: 62px; }
+    .object-node.owner { right: 54px; bottom: 54px; }
+
+    .object-node .object-type { font-family: var(--font-mono); font-size: var(--type-source); color: var(--muted); }
+    .object-node h3 { margin-top: 8px; font-size: 31px; }
+    .object-node p { margin-top: 10px; font-size: var(--type-source); line-height: 1.4; color: var(--muted); }
+
+    .link-label {
+      position: absolute;
+      padding: 7px 11px;
+      border: 1px solid var(--line-strong);
+      background: var(--surface);
+      font-size: var(--type-source);
+      color: var(--ink-2);
+      white-space: nowrap;
+    }
+
+    .link-label.owns { left: 286px; top: 154px; }
+    .link-label.provided { right: 306px; top: 156px; }
+    .link-label.responsible { right: 316px; bottom: 198px; }
+
+    .semantic-panel {
+      border: 1px solid var(--ink-2);
+      background: var(--ink-2);
+      color: #ffffff;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .semantic-panel h3 { font-size: 31px; margin-bottom: 12px; }
+    .semantic-panel > p { font-size: var(--type-small); line-height: 1.5; color: #bdc6cb; margin-bottom: 24px; }
+
+    .semantic-row {
+      border-top: 1px solid #64717a;
+      padding: 20px 0;
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .semantic-row strong { font-family: var(--font-mono); font-size: 34px; color: #78c79a; }
+    .semantic-row span { font-size: var(--type-small); line-height: 1.4; }
+    .semantic-note { margin-top: auto; padding-top: 20px; border-top: 1px solid #64717a; font-size: var(--type-source); line-height: 1.45; color: #aeb9bf; }
+
+    /* Architecture and chain */
+    .architecture-layout {
+      height: 100%;
+      display: grid;
+      grid-template-rows: 1fr 126px;
+      gap: 20px;
+    }
+
+    .module-map {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .module-card {
+      border: 1px solid #4c575f;
+      background: #10161a;
+      padding: 20px 22px;
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      grid-template-rows: auto auto 1fr;
+      gap: 8px 16px;
+      min-width: 0;
+    }
+
+    .module-card .icon { grid-row: 1 / 4; color: #aeb8bd; }
+    .module-card .module-id { font-family: var(--font-mono); font-size: var(--type-source); color: #70c092; }
+    .module-card h3 { font-size: 29px; }
+    .module-card p { font-size: var(--type-source); line-height: 1.42; color: #aeb9bf; }
+
+    .module-card.data { grid-column: 1; grid-row: 1 / 3; border-left: 4px solid var(--blue); }
+    .module-card.ontology { grid-column: 2; grid-row: 1 / 3; border-left: 4px solid var(--green); }
+    .module-card.query { grid-column: 3; grid-row: 1; }
+    .module-card.agent { grid-column: 3; grid-row: 2; }
+    .module-card.report { grid-column: 4; grid-row: 1; }
+    .module-card.decision { grid-column: 4; grid-row: 2; border-color: var(--green); }
+
+    .module-flow-marker {
+      position: absolute;
+      height: 1px;
+      background: #65717a;
+    }
+
+    .module-flow-marker.one { left: 24%; right: 49%; top: 50%; }
+    .module-flow-marker.two { left: 49%; right: 24%; top: 50%; }
+
+    .consumption-chain {
+      border: 1px solid #56616a;
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      background: #0c1115;
+    }
+
+    .chain-item {
+      position: relative;
+      padding: 18px 18px;
+      border-right: 1px solid #56616a;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .chain-item:last-child { border-right: 0; }
+    .chain-item b { font-family: var(--font-mono); font-size: var(--type-source); color: #71c093; }
+    .chain-item span { font-size: var(--type-source); line-height: 1.32; color: #dbe2e5; }
+    .chain-item::after {
+      content: "";
+      position: absolute;
+      right: -7px;
+      top: 50%;
+      width: 12px;
+      height: 12px;
+      transform: translateY(-50%) rotate(45deg);
+      border-top: 1px solid #7b878f;
+      border-right: 1px solid #7b878f;
+      background: #0c1115;
+      z-index: 2;
+    }
+
+    .chain-item:last-child::after { display: none; }
+
+    /* S001 track */
+    .s001-layout {
+      height: calc(100% - 66px);
+      display: grid;
+      grid-template-columns: 178px 1fr;
+      gap: 18px;
+    }
+
+    .s001-axis {
+      border: 1px solid #56616a;
+      background: #0d1216;
+      display: grid;
+      grid-template-rows: repeat(4, 1fr);
+    }
+
+    .s001-axis div {
+      border-bottom: 1px solid #56616a;
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .s001-axis div:last-child { border-bottom: 0; }
+    .s001-axis b { font-family: var(--font-mono); font-size: var(--type-source); color: #70bf92; }
+    .s001-axis span { font-size: var(--type-small); color: #dce3e6; }
+
+    .s001-tracks {
+      border: 1px solid #56616a;
+      display: grid;
+      grid-template-rows: repeat(4, 1fr);
+      background: #0b1013;
+    }
+
+    .s001-track {
+      border-bottom: 1px solid #56616a;
+      display: grid;
+      align-items: stretch;
+      min-width: 0;
+    }
+
+    .s001-track:last-child { border-bottom: 0; }
+    .s001-track.track-a { grid-template-columns: 1.1fr 1.1fr 1fr; }
+    .s001-track.track-b { grid-template-columns: 1fr 1.2fr; }
+    .s001-track.track-c { grid-template-columns: 1.15fr 0.9fr 1fr; }
+    .s001-track.track-d { grid-template-columns: 1fr 1fr; }
+
+    .tier-node {
+      position: relative;
+      border-right: 1px solid #4b565e;
+      padding: 18px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 7px;
+      min-width: 0;
+    }
+
+    .tier-node:last-child { border-right: 0; }
+    .tier-node strong { font-size: 28px; line-height: 1.25; color: #eef2f4; }
+    .tier-node span { font-size: var(--type-source); line-height: 1.4; color: #9ca8af; }
+    .tier-node.key { background: #1b2429; }
+    .tier-node.key strong { color: #83cca2; }
+    .tier-node.blue-node { background: #15202b; }
+    .tier-node.blue-node strong { color: #87abe0; }
+    .tier-node .mini-tag {
+      position: absolute;
+      right: 14px;
+      top: 12px;
+      border: 1px solid #5d6870;
+      padding: 3px 7px;
+      font-family: var(--font-mono);
+      font-size: var(--type-source);
+      color: #94a1a8;
+    }
+
+    .s001-boundary {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: calc(100% - 196px);
+      min-height: 56px;
+      border: 1px solid #56616a;
+      background: #0c1115;
+      padding: 11px 16px;
+      font-size: var(--type-source);
+      line-height: 1.42;
+      color: #aeb8bd;
+    }
+  </style>
+</head>
+<body>
+  <deck-stage width="1920" height="1080">
+    <section data-label="ontology3.0 统一数据版本、业务口径和行动责任" data-screen-label="01 ontology3.0 统一数据版本、业务口径和行动责任">
+      <div class="slide dark cover">
+        <aside class="system-rail" aria-hidden="true">
+          <div class="rail-brand">O3</div>
+          <div class="rail-track">
+            <span class="rail-node active"></span><span class="rail-node"></span><span class="rail-node"></span><span class="rail-node"></span><span class="rail-node"></span><span class="rail-node"></span>
+          </div>
+          <div class="rail-folio">01 / 10</div>
+        </aside>
+        <div class="slide-canvas">
+          <img class="cover-brand" src="./assets/group-brand-lockup.png" alt="集团品牌标识" />
+          <div class="cover-grid">
+            <div class="cover-copy">
+              <p class="cover-kicker">财务 AI 项目大赛 · 企业级平台</p>
+              <h1>ontology3.0</h1>
+              <p class="cover-statement">统一数据版本、业务口径和行动责任</p>
+              <div class="cover-taxonomy">
+                <span>数据版本</span><span>业务定义</span><span>决策运行</span><span>行动责任</span>
+              </div>
+            </div>
+            <div class="cover-status">
+              <div class="cover-status-head"><span>当前业务范围</span><strong>S001</strong></div>
+              <div class="cover-path">
+                <div class="cover-path-row"><b>01</b><span>融资数据形成可追溯资产版本</span></div>
+                <div class="cover-path-row"><b>02</b><span>主体、融资、机构和负责人采用统一定义</span></div>
+                <div class="cover-path-row"><b>03</b><span>Rule 与证据进入标准 Action Request</span></div>
+                <div class="cover-path-row"><b>04</b><span>人工确认后创建负责人待办</span></div>
+              </div>
+              <div class="cover-status-foot">S001 是当前首个完整闭环建设对象；其余场景按各自资料和建设状态推进。</div>
+            </div>
+          </div>
+          <footer class="source-footer">
+            <span>来源：ontology3.0 平台功能设计总控台账，§1.1–1.3、§2–3，更新日期 2026-08-11。</span>
+            <span class="page-count">01 / 10</span>
+          </footer>
+        </div>
+      </div>
+    </section>
+
+    <section data-label="本项目用三条边界控制数据、语义和执行" data-screen-label="02 本项目用三条边界控制数据、语义和执行">
+      <div class="slide">
+        <aside class="system-rail" aria-hidden="true">
+          <div class="rail-brand">O3</div>
+          <div class="rail-track">
+            <span class="rail-node"></span><span class="rail-node active"></span><span class="rail-node"></span><span class="rail-node"></span><span class="rail-node"></span><span class="rail-node"></span>
+          </div>
+          <div class="rail-folio">02 / 10</div>
+        </aside>
+        <div class="slide-canvas">
+          <header class="slide-header">
+            <div><span class="section-code">02 · 三项平台边界</span><h2 class="slide-title">本项目用三条边界控制数据、语义和执行</h2></div>
+            <span class="status-tag">已确认合同</span>
+          </header>
+          <main class="slide-main">
+            <div class="conclusion-grid">
+              <article class="conclusion-panel">
+                <span class="panel-number">01 / VERSION</span>
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="7" ry="3"></ellipse><path d="M5 5v7c0 1.7 3.1 3 7 3s7-1.3 7-3V5"></path><path d="M5 12v7c0 1.7 3.1 3 7 3s7-1.3 7-3v-7"></path></svg>
+                <div><h3>版本边界</h3><p>数据资产版本与 Published 语义版本分别发布，再由权威消费绑定固定精确组合。</p></div>
+                <div class="conclusion-boundary">不把“刚到达”“已发布”“可消费”和“当前权威”写成同一种状态。</div>
+              </article>
+              <article class="conclusion-panel">
+                <span class="panel-number">02 / SEMANTICS</span>
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="8.5" y="14" width="7" height="7"></rect><path d="M10 7h4M7 10v2l5 2m5-4v2l-5 2"></path></svg>
+                <div><h3>语义边界</h3><p>Metric、Rule、Action Type 的定义、依赖和 Published 生命周期归本体管理。</p></div>
+                <div class="conclusion-boundary">LLM 解释固定结果，不作为数据源、正式计算层或 Rule 引擎。</div>
+              </article>
+              <article class="conclusion-panel">
+                <span class="panel-number">03 / ACTION</span>
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v11H8l-4 4V4Z"></path><path d="M8 8h8M8 11h5"></path><path d="m16.5 16 1.5 1.5 3-3"></path></svg>
+                <div><h3>执行边界</h3><p>Rule、问数、Agent 和仪表盘只提交 Action Request，后续运行归决策中心。</p></div>
+                <div class="conclusion-boundary">未经人工确认不得创建负责人待办；确认与待办创建分别留痕。</div>
+              </article>
+            </div>
+            <div class="common-rule"><span>共同约束</span><span>不同版本不混用</span><span>模型不补数或改口径</span><span>未确认不创建待办</span></div>
+          </main>
+          <footer class="source-footer">
+            <span>来源：平台总控台账 C003、C005–C013、C019；本体管理 §1.2；智能问数 §3.6；决策中心 §3、§5–6。</span>
+            <span class="page-count">02 / 10</span>
+          </footer>
+        </div>
+      </div>
+    </section>
+
+    <section data-label="当前可核验数据集包含 5218 条融资明细、574 个借款人名称和 24 家机构" data-screen-label="03 当前可核验数据集规模">
+      <div class="slide">
+        <aside class="system-rail" aria-hidden="true">
+          <div class="rail-brand">O3</div>
+          <div class="rail-track">
+            <span class="rail-node"></span><span class="rail-node"></span><span class="rail-node active"></span><span class="rail-node"></span><span class="rail-node"></span><span class="rail-node"></span>
+          </div>
+          <div class="rail-folio">03 / 10</div>
+        </aside>
+        <div class="slide-canvas">
+          <header class="slide-header">
+            <div><span class="section-code">03 · 数据结构</span><h2 class="slide-title tight">当前可核验数据集包含 5,218 条融资明细、574 个借款人名称和 24 家机构</h2></div>
+            <span class="status-tag">工作簿复算</span>
+          </header>
+          <main class="slide-main">
+            <div class="scale-layout">
+              <div class="scale-anchor">
+                <span class="dataset-label">融资明细工作表</span>
+                <strong>5,218</strong>
+                <span class="dataset-unit">条融资记录</span>
+                <div class="dataset-dimensions"><span>数据行 2–5219</span><span>35 个字段</span></div>
+              </div>
+              <div class="scale-map">
+                <div class="relation-field">
+                  <article class="scale-node green-line"><span class="node-label">借款人名称</span><strong>574</strong><p>借款人字段 5,218 条非空，去重得到 574 个名称。</p></article>
+                  <article class="scale-node blue-line"><span class="node-label">融资机构名称</span><strong>24</strong><p>融资机构名称字段 5,218 条非空，去重得到 24 个名称。</p></article>
+                  <article class="scale-node"><span class="node-label">业务板块</span><strong>10</strong><p>当前工作簿中的标准化展示值。</p></article>
+                  <article class="scale-node"><span class="node-label">币种</span><strong>8</strong><p>来源字段中的非空币种去重。</p></article>
+                </div>
+                <div class="dataset-evidence">
+                  <div><strong>数据性质</strong><span>脱敏生成数据集</span></div>
+                  <div><strong>生成日期</strong><span>2026-08-09</span></div>
+                  <div><strong>业务截至时间</strong><span>源文件未提供</span></div>
+                  <div><strong>使用边界</strong><span>只用于结构、口径和流程核验</span></div>
+                </div>
+              </div>
+            </div>
+          </main>
+          <footer class="source-footer">
+            <span>来源：F001 脱敏生成融资工作簿，2-融资一览表明细!A1:AI5219、Sheet1!B4/B5/B9；按非空值去重。生成 2026-08-09，业务截至时间未提供。</span>
+            <span class="page-count">03 / 10</span>
+          </footer>
+        </div>
+      </div>
+    </section>
+
+    <section data-label="融资工作簿缺少业务截至时间，关键分析字段仍有空值" data-screen-label="04 融资工作簿证据问题">
+      <div class="slide">
+        <aside class="system-rail" aria-hidden="true">
+          <div class="rail-brand">O3</div>
+          <div class="rail-track">
+            <span class="rail-node"></span><span class="rail-node"></span><span class="rail-node"></span><span class="rail-node active"></span><span class="rail-node"></span><span class="rail-node"></span>
+          </div>
+          <div class="rail-folio">04 / 10</div>
+        </aside>
+        <div class="slide-canvas">
+          <header class="slide-header">
+            <div><span class="section-code">04 · 现状证据</span><h2 class="slide-title tight">融资工作簿缺少业务截至时间，关键分析字段仍有空值</h2></div>
+            <span class="status-tag">源文件事实</span>
+          </header>
+          <main class="slide-main">
+            <div class="quality-layout">
+              <div class="quality-table">
+                <div class="quality-row header"><span>检查项</span><span>复算结果</span><span>对财务分析的直接影响</span></div>
+                <div class="quality-row"><span>业务截至时间 T008</span><strong>未提供</strong><div>不能用文件生成时间替代业务时点，无法仅凭当前工作簿确认事实反映到何时。</div></div>
+                <div class="quality-row"><span>利率形式</span><strong>212 条空值</strong><div>占 5,218 条记录的 4.063%；空值不得自动解释为固定利率。<div class="blank-bar" aria-label="利率形式空值占比 4.063%"><i style="width: 4.063%;"></i></div></div></div>
+                <div class="quality-row"><span>担保方式</span><strong>1,868 条空值</strong><div>占 35.799%；会影响信用融资占比与担保结构解释。<div class="blank-bar" aria-label="担保方式空值占比 35.799%"><i style="width: 35.799%;"></i></div></div></div>
+                <div class="quality-row"><span>主体—负责人关系</span><strong>跨工作表</strong><div>574 条映射与融资事实分开维护；执行前必须用稳定主体身份建立关系。</div></div>
+              </div>
+              <aside class="quality-mechanism">
+                <h3>平台处理机制</h3>
+                <div class="mechanism-step"><b>01</b><span>原始快照登记读取时间、业务截至时间和内容指纹。</span></div>
+                <div class="mechanism-step"><b>02</b><span>质量门区分结构性空白、业务缺失、零值和不适用。</span></div>
+                <div class="mechanism-step"><b>03</b><span>受控处理后按四成员三关系形成同一数据资产版本包。</span></div>
+                <div class="mechanism-step"><b>04</b><span>本体消费时只采用通过门禁并固定到 T019 的精确版本组合。</span></div>
+                <p class="quality-caution">空值数量是可核验事实；不能把全部空值笼统写成质量缺陷。</p>
+              </aside>
+            </div>
+          </main>
+          <footer class="source-footer">
+            <span>来源：F001，2-融资一览表明细!A1:AI5219、单位负责人映射!A1:D577、Sheet1!B4/B5/B9；空值按去除首尾空格后为空计数。生成 2026-08-09，业务截至时间未提供；数据工程 §3.2、§8–10。</span>
+            <span class="page-count">04 / 10</span>
+          </footer>
+        </div>
+      </div>
+    </section>
+
+    <section data-label="平均融资成本必须按余额加权，简单平均会改变结果" data-screen-label="05 平均融资成本口径">
+      <div class="slide">
+        <aside class="system-rail" aria-hidden="true">
+          <div class="rail-brand">O3</div>
+          <div class="rail-track">
+            <span class="rail-node"></span><span class="rail-node"></span><span class="rail-node"></span><span class="rail-node"></span><span class="rail-node active"></span><span class="rail-node"></span>
+          </div>
+          <div class="rail-folio">05 / 10</div>
+        </aside>
+        <div class="slide-canvas">
+          <header class="slide-header">
+            <div><span class="section-code">05 · 业务口径</span><h2 class="slide-title">平均融资成本必须按余额加权，简单平均会改变结果</h2></div>
+            <span class="status-tag">可复算口径</span>
+          </header>
+          <main class="slide-main">
+            <div class="metric-layout">
+              <div class="metric-compare">
+                <div class="metric-method primary"><span class="method-name">按余额加权</span><span class="formula">Σ（融资明细人民币余额 × 当前利率）<br />÷ Σ 融资明细人民币余额</span><strong class="result">2.849%</strong></div>
+                <div class="metric-method"><span class="method-name">单位成本简单平均</span><span class="formula">（脱敏主体 553 单位成本 + 脱敏主体 561 单位成本）<br />÷ 2</span><strong class="result">2.555%</strong></div>
+                <div class="metric-difference"><span>同一两主体组合采用两种口径，复算结果相差 0.295 个百分点。</span><strong>差 0.295 个百分点</strong></div>
+              </div>
+              <aside class="metric-contract">
+                <h3>Metric 合同固定什么</h3>
+                <div class="contract-row"><b>对象范围</b><span>明确主体集合和去重规则。</span></div>
+                <div class="contract-row"><b>公式</b><span>在融资明细并集上按人民币余额加权。</span></div>
+                <div class="contract-row"><b>单位与时间</b><span>固定百分比口径、数据时点和评估时间。</span></div>
+                <div class="contract-row"><b>异常处理</b><span>区分零余额、缺失、重复和不可计算。</span></div>
+                <p class="impact">直接影响：单位与组合比较、Rule 评估和问数回答必须引用同一 Published Metric 定义。</p>
+              </aside>
+            </div>
+          </main>
+          <footer class="source-footer">
+            <span>来源：F001 / 场景问数样例!B15:H15；脱敏主体 553、561 的 125 条明细按人民币余额加权。生成 2026-08-09，业务截至时间未提供；本体管理 §1.5、§8。</span>
+            <span class="page-count">05 / 10</span>
+          </footer>
+        </div>
+      </div>
+    </section>
+
+    <section data-label="AI 回答必须同时引用主体、时点、口径和精确版本" data-screen-label="06 AI 回答证据要求">
+      <div class="slide dark">
+        <aside class="system-rail" aria-hidden="true">
+          <div class="rail-brand">O3</div>
+          <div class="rail-track">
+            <span class="rail-node"></span><span class="rail-node active"></span><span class="rail-node"></span><span class="rail-node"></span><span class="rail-node"></span><span class="rail-node"></span>
+          </div>
+          <div class="rail-folio">06 / 10</div>
+        </aside>
+        <div class="slide-canvas">
+          <header class="slide-header">
+            <div><span class="section-code">06 · 回答证据</span><h2 class="slide-title">AI 回答必须同时引用主体、时点、口径和精确版本</h2></div>
+            <span class="status-tag">输出门</span>
+          </header>
+          <main class="slide-main">
+            <div class="evidence-layout">
+              <div class="evidence-grid">
+                <article class="evidence-slot"><span class="slot-index">01</span><h3>对象范围</h3><p>所选主体稳定身份、去重结果和层级路径。</p></article>
+                <article class="evidence-slot"><span class="slot-index">02</span><h3>数据时点</h3><p>数据截至时间与生成时间分别显示；缺失时不得推断。</p></article>
+                <article class="evidence-slot"><span class="slot-index">03</span><h3>Metric 口径</h3><p>名称、定义、公式、单位、范围和异常处理。</p></article>
+                <article class="evidence-slot"><span class="slot-index">04</span><h3>数据版本</h3><p>查询上下文固定精确可消费数据版本与质量状态。</p></article>
+                <article class="evidence-slot"><span class="slot-index">05</span><h3>语义版本</h3><p>查询上下文固定精确 Published 本体版本与资源身份。</p></article>
+                <article class="evidence-slot"><span class="slot-index">06</span><h3>证据定位</h3><p>结构化结果、明细引用、Rule 条件和不可回答原因。</p></article>
+              </div>
+              <div class="llm-boundary">
+                <div class="llm-node"><strong>固定结构化结果</strong><span>先完成确定性计算、Rule 判断和证据映射</span></div>
+                <div class="llm-arrow">→</div>
+                <div class="llm-node limited"><strong>LLM 解释</strong><span>只组织文字，不补数、不改单位、不更换版本</span></div>
+                <div class="llm-arrow">→</div>
+                <div class="llm-node"><strong>文字 / 表格 / 图表</strong><span>听众可复核范围、时点和口径；呈现不形成新的业务结论版本</span></div>
+              </div>
+            </div>
+          </main>
+          <footer class="source-footer">
+            <span>来源：智能问数主文档 §3.6、§5–6；一期融资数据工作簿 / 场景问数样例“智能问数验收要求”。</span>
+            <span class="page-count">06 / 10</span>
+          </footer>
+        </div>
+      </div>
+    </section>
+
+    <section data-label="经营看板只提交 Action Request，决策中心负责确认和执行状态" data-screen-label="07 Action Request 与执行状态">
+      <div class="slide">
+        <aside class="system-rail" aria-hidden="true">
+          <div class="rail-brand">O3</div>
+          <div class="rail-track">
+            <span class="rail-node"></span><span class="rail-node"></span><span class="rail-node active"></span><span class="rail-node"></span><span class="rail-node"></span><span class="rail-node"></span>
+          </div>
+          <div class="rail-folio">07 / 10</div>
+        </aside>
+        <div class="slide-canvas">
+          <header class="slide-header">
+            <div><span class="section-code">07 · 决策运行</span><h2 class="slide-title tight">经营看板只提交 Action Request，决策中心负责确认和执行状态</h2></div>
+            <span class="status-tag">唯一运行入口</span>
+          </header>
+          <main class="slide-main">
+            <div class="action-layout">
+              <div class="action-sources">
+                <article class="source-node"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h10M4 19h16"></path><path d="m17 9 3 3-3 3"></path></svg><h3>Rule 命中</h3><p>带已发布 Rule、版本、条件和命中证据。</p></article>
+                <article class="source-node"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"></circle><path d="m14.5 14.5 5 5M7 10h6M10 7v6"></path></svg><h3>智能问数</h3><p>带问题、固定结果和证据；无 Rule 时明确“不适用”。</p></article>
+                <article class="source-node"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><circle cx="5" cy="7" r="2"></circle><circle cx="19" cy="6" r="2"></circle><circle cx="19" cy="18" r="2"></circle><path d="m7 8 3 2m4 0 3-3m-3 7 3 3"></path></svg><h3>Agent 应用</h3><p>带 Agent Run 和固定证据包；不得自动确认。</p></article>
+                <article class="source-node"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V9m5 10V5m6 14v-7m5 7V3"></path><path d="m3 13 6-5 6 2 6-6"></path></svg><h3>报告中心仪表盘</h3><p>带仪表盘版本、对象和组件上下文。</p></article>
+              </div>
+              <div class="request-entry"><span class="entry-line"></span><div class="request-box">ACTION REQUEST · C011</div><span class="entry-line right"></span></div>
+              <div class="decision-zone">
+                <article class="decision-step"><b>01</b><strong>请求校验</strong><span>主体、Published Action Type、适用的 Metric / Rule 或证据快照、双版本与时点。</span></article>
+                <article class="decision-step"><b>02</b><strong>形成提醒</strong><span>保留来源、状态和固定证据，不复制上游定义。</span></article>
+                <article class="decision-step confirm"><b>03</b><strong>人工确认 / 拒绝</strong><span>确认理由、负责人、到期时间分别记录。</span></article>
+                <article class="decision-step"><b>04</b><strong>创建待办</strong><span>确认成功后才尝试创建；不同主体不合并。</span></article>
+                <article class="decision-step recovery"><b>05</b><strong>状态与恢复</strong><span>创建失败可重试；确认事实不要求重复提交。</span></article>
+              </div>
+            </div>
+          </main>
+          <footer class="source-footer">
+            <span>来源：平台总控台账 C011–C013、C016、C019；决策中心主文档 §3、§5–7。确认成功与待办创建成功为不同运行事实。</span>
+            <span class="page-count">07 / 10</span>
+          </footer>
+        </div>
+      </div>
+    </section>
+
+    <section data-label="融资主体、融资明细、金融机构和负责人使用同一组业务定义" data-screen-label="08 S001 本体关系图">
+      <div class="slide">
+        <aside class="system-rail" aria-hidden="true">
+          <div class="rail-brand">O3</div>
+          <div class="rail-track">
+            <span class="rail-node"></span><span class="rail-node"></span><span class="rail-node"></span><span class="rail-node active"></span><span class="rail-node"></span><span class="rail-node"></span>
+          </div>
+          <div class="rail-folio">08 / 10</div>
+        </aside>
+        <div class="slide-canvas">
+          <header class="slide-header">
+            <div><span class="section-code">08 · 本体关系</span><h2 class="slide-title tight">融资主体、融资明细、金融机构和负责人使用同一组业务定义</h2></div>
+            <span class="status-tag">四对象 · 三关系</span>
+          </header>
+          <main class="slide-main">
+            <div class="ontology-layout">
+              <div class="object-map">
+                <span class="axis-v" aria-hidden="true"></span><span class="axis-h" aria-hidden="true"></span>
+                <svg class="graph-lines" viewBox="0 0 1120 640" preserveAspectRatio="none" aria-hidden="true">
+                  <defs><marker id="arrow-ontology" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8" fill="none" stroke="#6b7780" stroke-width="1.4"></path></marker></defs>
+                  <path d="M 495 280 C 390 220, 300 180, 200 150" marker-end="url(#arrow-ontology)"></path>
+                  <path d="M 330 120 C 520 68, 720 74, 840 128" marker-end="url(#arrow-ontology)"></path>
+                  <path d="M 635 330 C 730 390, 790 470, 850 520" marker-end="url(#arrow-ontology)"></path>
+                </svg>
+                <article class="object-node detail"><span class="object-type">OBJECT TYPE</span><h3>融资明细</h3><p>借据编号 · 余额 · 利率 · 到期日</p></article>
+                <article class="object-node subject"><span class="object-type">OBJECT TYPE</span><h3>融资主体</h3><p>单位编码 · 名称 · 所属板块</p></article>
+                <article class="object-node institution"><span class="object-type">OBJECT TYPE</span><h3>金融机构</h3><p>机构编码 · 名称 · 类别</p></article>
+                <article class="object-node owner"><span class="object-type">OBJECT TYPE</span><h3>融资负责人</h3><p>负责人标识 · 名称</p></article>
+                <span class="link-label owns">主体拥有融资</span>
+                <span class="link-label provided">融资由机构提供</span>
+                <span class="link-label responsible">主体由负责人承接优化待办</span>
+              </div>
+              <aside class="semantic-panel">
+                <h3>业务逻辑单独管理</h3>
+                <p>Metric、Rule 和 Action Type 是语义资源，不与对象节点混画。</p>
+                <div class="semantic-row"><strong>7</strong><span>融资 Metric<br />固定范围、口径、单位和时间</span></div>
+                <div class="semantic-row"><strong>3</strong><span>R01 / R02 / R03<br />版本化管理条件、阈值和证据</span></div>
+                <div class="semantic-row"><strong>1</strong><span>发起融资优化建议<br />固定参数与人工确认要求</span></div>
+                <p class="semantic-note">来源字段变化通过映射和兼容门处理；对象身份与关系定义不直接等同于表名或 Join。</p>
+              </aside>
+            </div>
+          </main>
+          <footer class="source-footer">
+            <span>来源：本体管理主文档 §1.5A–E、§4、§8–9；平台总控台账 C003–C006。节点和关系名称采用当前 S001 白名单基线。</span>
+            <span class="page-count">08 / 10</span>
+          </footer>
+        </div>
+      </div>
+    </section>
+
+    <section data-label="六个模块按 Owner 协作，消费链只传递已发布资源和标准请求" data-screen-label="09 六模块架构与完整消费链">
+      <div class="slide dark">
+        <aside class="system-rail" aria-hidden="true">
+          <div class="rail-brand">O3</div>
+          <div class="rail-track">
+            <span class="rail-node"></span><span class="rail-node"></span><span class="rail-node"></span><span class="rail-node"></span><span class="rail-node active"></span><span class="rail-node"></span>
+          </div>
+          <div class="rail-folio">09 / 10</div>
+        </aside>
+        <div class="slide-canvas">
+          <header class="slide-header">
+            <div><span class="section-code">09 · 模块架构与消费链</span><h2 class="slide-title tight">六个模块按 Owner 协作，消费链只传递已发布资源和标准请求</h2></div>
+            <span class="status-tag">六模块合同</span>
+          </header>
+          <main class="slide-main">
+            <div class="architecture-layout">
+              <div class="module-map">
+                <article class="module-card data" data-anim="wipe-in" data-anim-dir="right" data-anim-trigger="click" data-anim-order="1">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h5v5H4zM15 14h5v5h-5zM15 4h5v5h-5zM4 15h5v5H4z"></path><path d="m9 7.5 6-1M9 17.5l6-1M12 8v8"></path></svg>
+                  <span class="module-id">M02 · T001/T002/T003/T007</span><h3>数据工程</h3><p>把工作簿、快照和受控处理形成有质量、时点和来源链的数据资产版本；不维护业务指标和规则。</p>
+                </article>
+                <article class="module-card ontology" data-anim="wipe-in" data-anim-dir="right" data-anim-trigger="with" data-anim-order="2">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="8.5" y="14" width="7" height="7"></rect><path d="M10 7h4M7 10v2l5 2m5-4v2l-5 2"></path></svg>
+                  <span class="module-id">M01 · OBJECT/METRIC/RULE/ACTION/T019</span><h3>本体管理</h3><p>发布对象、关系、指标、规则和行动类型，并原子固定语义版本与可消费数据版本组合。</p>
+                </article>
+                <article class="module-card query" data-anim="wipe-in" data-anim-dir="right" data-anim-trigger="click" data-anim-order="3">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"></circle><path d="m14.5 14.5 5 5M7 10h6M10 7v6"></path></svg>
+                  <span class="module-id">M03 · C009/C010</span><h3>智能问数</h3><p>锁定上下文，生成有证据的结构化结果。</p>
+                </article>
+                <article class="module-card agent" data-anim="wipe-in" data-anim-dir="right" data-anim-trigger="with" data-anim-order="4">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><circle cx="5" cy="7" r="2"></circle><circle cx="19" cy="6" r="2"></circle><circle cx="19" cy="18" r="2"></circle><circle cx="5" cy="18" r="2"></circle><path d="m7 8 3 2m4 0 3-3m-3 7 3 3m-7-3-3 3"></path></svg>
+                  <span class="module-id">M05 · C014/C020/C025</span><h3>Agent 应用</h3><p>读取固定证据包，输出解释、洞察或草稿。</p>
+                </article>
+                <article class="module-card report" data-anim="wipe-in" data-anim-dir="right" data-anim-trigger="with" data-anim-order="5">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h10l4 4v14H5z"></path><path d="M15 3v5h4M8 12h8M8 16h8M8 8h3"></path></svg>
+                  <span class="module-id">M06 · C015/C016/C022</span><h3>报告中心</h3><p>管理驾驶舱、报告定义、复核与正式产物。</p>
+                </article>
+                <article class="module-card decision" data-anim="wipe-in" data-anim-dir="right" data-anim-trigger="click" data-anim-order="6">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v11H8l-4 4V4Z"></path><path d="M8 8h8M8 11h5"></path><path d="m16.5 16 1.5 1.5 3-3"></path></svg>
+                  <span class="module-id">M04 · C011/C012/C013/C019</span><h3>决策中心</h3><p>接收标准请求，处理提醒、人工确认、待办和恢复。</p>
+                </article>
+                <span class="module-flow-marker one" aria-hidden="true"></span><span class="module-flow-marker two" aria-hidden="true"></span>
+              </div>
+              <div class="consumption-chain">
+                <div class="chain-item"><b>T001/T002</b><span>来源与原始快照</span></div>
+                <div class="chain-item"><b>T007/T008</b><span>数据版本与业务时点</span></div>
+                <div class="chain-item"><b>C028/C029/T018</b><span>刷新结果与映射版本</span></div>
+                <div class="chain-item"><b>T019</b><span>权威双版本绑定</span></div>
+                <div class="chain-item"><b>C010/C020/C016</b><span>问数、洞察与仪表盘</span></div>
+                <div class="chain-item"><b>C011</b><span>Action Request</span></div>
+                <div class="chain-item"><b>C012/C013</b><span>确认与负责人待办</span></div>
+              </div>
+            </div>
+          </main>
+          <footer class="source-footer">
+            <span>来源：平台总控台账 D001、C001–C029、§3.1；六模块主文档的“定位与边界”。数据、语义、报告和运行状态分别由各自 Owner 管理。</span>
+            <span class="page-count">09 / 10</span>
+          </footer>
+        </div>
+      </div>
+    </section>
+
+    <section data-label="S001 完整链路范围包括规则命中、机构归因、人工确认和负责人待办" data-screen-label="10 S001 完整业务链">
+      <div class="slide dark">
+        <aside class="system-rail" aria-hidden="true">
+          <div class="rail-brand">O3</div>
+          <div class="rail-track">
+            <span class="rail-node"></span><span class="rail-node"></span><span class="rail-node"></span><span class="rail-node"></span><span class="rail-node"></span><span class="rail-node active"></span>
+          </div>
+          <div class="rail-folio">10 / 10</div>
+        </aside>
+        <div class="slide-canvas">
+          <header class="slide-header">
+            <div><span class="section-code">10 · S001 业务链</span><h2 class="slide-title tight">S001 完整链路范围：规则命中、机构归因、人工确认、负责人待办</h2></div>
+            <span class="status-tag">首个完整闭环建设对象</span>
+          </header>
+          <main class="slide-main">
+            <div class="s001-layout">
+              <div class="s001-axis">
+                <div><b>TIER 01</b><span>数据与语义</span></div>
+                <div><b>TIER 02</b><span>解释与归因</span></div>
+                <div><b>TIER 03</b><span>决策确认</span></div>
+                <div><b>TIER 04</b><span>执行状态</span></div>
+              </div>
+              <div class="s001-tracks">
+                <div class="s001-track track-a" data-anim="wipe-in" data-anim-dir="right" data-anim-trigger="click" data-anim-order="1">
+                  <div class="tier-node blue-node"><span class="mini-tag">T007/T019</span><strong>融资数据资产</strong><span>精确版本、T008、质量与四成员三关系</span></div>
+                  <div class="tier-node"><span class="mini-tag">METRIC</span><strong>余额加权融资成本</strong><span>集团、板块、单位和显式对象集合使用同一口径</span></div>
+                  <div class="tier-node key"><span class="mini-tag">RULE</span><strong>R01 / R02 / R03</strong><span>成本偏高、浮动利率暴露、短期债务集中</span></div>
+                </div>
+                <div class="s001-track track-b" data-anim="wipe-in" data-anim-dir="right" data-anim-trigger="click" data-anim-order="2">
+                  <div class="tier-node"><span class="mini-tag">C010</span><strong>结构化结果与证据</strong><span>主体、指标、规则、双版本和明细引用固定</span></div>
+                  <div class="tier-node key"><span class="mini-tag">LINK</span><strong>问题机构归因</strong><span>按 Rule 证据指出优先协商机构和关联借据</span></div>
+                </div>
+                <div class="s001-track track-c" data-anim="wipe-in" data-anim-dir="right" data-anim-trigger="click" data-anim-order="3">
+                  <div class="tier-node blue-node"><span class="mini-tag">C011</span><strong>Action Request</strong><span>单一主体、已发布 Action Type、固定证据和来源</span></div>
+                  <div class="tier-node"><span class="mini-tag">C012</span><strong>决策提醒</strong><span>等待用户处理，不自动执行</span></div>
+                  <div class="tier-node key"><span class="mini-tag">HUMAN</span><strong>人工确认 / 拒绝</strong><span>确认理由、负责人和到期时间分别记录</span></div>
+                </div>
+                <div class="s001-track track-d" data-anim="wipe-in" data-anim-dir="right" data-anim-trigger="click" data-anim-order="4">
+                  <div class="tier-node key"><span class="mini-tag">C013</span><strong>负责人待办</strong><span>确认成功后创建；保留建议机构与关联贷款</span></div>
+                  <div class="tier-node"><span class="mini-tag">C019</span><strong>状态、失败与纠正</strong><span>待处理、处理中、完成、取消、逾期、创建失败和纠正</span></div>
+                </div>
+              </div>
+            </div>
+            <p class="s001-boundary">边界：优先协商银行是建议和待办字段，不表示协商已经发生；LLM 只解释固定证据；未经人工确认不得创建负责人待办。</p>
+          </main>
+          <footer class="source-footer">
+            <span>来源：平台总控台账 §1.1–1.3、C005–C013；本体管理 §1.4–1.5；智能问数 §5–8；决策中心 §3–7、§12。</span>
+            <span class="page-count">10 / 10</span>
+          </footer>
+        </div>
+      </div>
+    </section>
+  </deck-stage>
+
+  <script src="./deck-stage-v2.js"></script>
+</body>
+</html>

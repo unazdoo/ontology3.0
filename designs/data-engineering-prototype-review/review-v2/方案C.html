@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="design_doc_mode" content="prototype" />
+  <title>数据工程评审原型 · 方案 C · 渐进展开关系卡片</title>
+  <style>:root {
+  --ink: #172336;
+  --ink-2: #34445a;
+  --muted: #68778a;
+  --faint: #8a97a8;
+  --line: #dce3eb;
+  --line-strong: #c9d3df;
+  --surface: #ffffff;
+  --surface-2: #f6f8fb;
+  --surface-3: #edf2f7;
+  --nav: #111c2a;
+  --nav-2: #1a2a3c;
+  --blue: #2e68d4;
+  --blue-soft: #e9f0ff;
+  --teal: #087f76;
+  --teal-soft: #e2f5f2;
+  --orange: #a46112;
+  --orange-soft: #fff2dc;
+  --red: #b53a44;
+  --red-soft: #fdebed;
+  --violet: #7153b6;
+  --violet-soft: #f0ebff;
+  --shadow: 0 10px 30px rgba(26, 42, 60, .08);
+  --shadow-pop: 0 18px 60px rgba(17, 28, 42, .20);
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; background: var(--surface-2); color: var(--ink); }
+body { font-family: -apple-system, "SF Pro Text", "PingFang SC", "Noto Sans SC", sans-serif; font-size: 14px; line-height: 1.65; overflow-x: hidden; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+.icon { width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 18px; }
+.icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sr-only { position: absolute; width: 1px; height: 1px; clip: rect(0,0,0,0); overflow: hidden; }
+
+.app-shell { min-height: 100vh; display: grid; grid-template-rows: 56px minmax(0, 1fr); }
+.topbar { background: var(--nav); color: #eef4fb; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 18px; position: sticky; top: 0; z-index: 50; }
+.brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
+.brand-mark { width: 32px; height: 32px; border: 1px solid rgba(255,255,255,.14); background: #285cb2; display: grid; place-items: center; border-radius: 7px; }
+.brand-copy { display: grid; line-height: 1.15; }
+.brand-title { font-size: 15px; font-weight: 700; letter-spacing: .01em; }
+.brand-sub { color: #9eb0c3; font-size: 12px; margin-top: 3px; }
+.top-actions { display: flex; align-items: center; gap: 8px; }
+.variant-chip { border: 1px solid #405065; background: #1b2a3b; color: #dce7f3; height: 32px; border-radius: 6px; padding: 0 11px; display: inline-flex; align-items: center; gap: 7px; font-size: 13px; }
+.variant-chip b { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 4px; background: var(--blue); color: white; }
+.review-link { height: 32px; padding: 0 11px; border: 1px solid #405065; border-radius: 6px; display: inline-flex; gap: 7px; align-items: center; color: #dce7f3; }
+.workspace { min-height: 0; display: grid; grid-template-columns: 196px minmax(0, 1fr); }
+.sidenav { background: #f9fbfd; border-right: 1px solid var(--line); display: flex; flex-direction: column; padding: 18px 12px; gap: 20px; }
+.nav-kicker { font-size: 12px; color: var(--faint); font-weight: 650; padding: 0 10px; letter-spacing: .08em; }
+.nav-list { display: grid; gap: 6px; }
+.nav-link { min-height: 44px; display: flex; align-items: center; gap: 11px; padding: 0 12px; border-radius: 7px; color: var(--ink-2); font-weight: 630; font-size: 14px; border: 1px solid transparent; }
+.nav-link:hover { background: #eef3f9; }
+.nav-link.active { color: #1f55ba; background: #e8f0ff; border-color: #d6e2fb; }
+.nav-link .count { margin-left: auto; color: var(--faint); font-size: 12px; font-weight: 600; }
+.nav-context { margin-top: auto; border-top: 1px solid var(--line); padding: 16px 10px 0; color: var(--muted); font-size: 12px; }
+.nav-context strong { color: var(--ink-2); display: block; font-size: 13px; margin-bottom: 4px; }
+.main { min-width: 0; padding: 24px; }
+.main.canvas-main { padding: 0; overflow: hidden; }
+.page { width: 100%; max-width: 1600px; margin: 0 auto; }
+.page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 18px; }
+.page-title { font-size: clamp(22px, 1.7vw, 24px); line-height: 1.3; margin: 0; letter-spacing: -.02em; }
+.page-subtitle { color: var(--muted); margin: 5px 0 0; font-size: 14px; }
+.header-actions, .button-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.btn { height: 38px; border: 1px solid var(--line-strong); background: white; border-radius: 7px; padding: 0 14px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; font-size: 14px; font-weight: 620; white-space: nowrap; transition: .16s ease; }
+.btn:hover:not(:disabled) { border-color: #9badc2; box-shadow: 0 2px 8px rgba(24,40,60,.08); transform: translateY(-1px); }
+.btn.primary { background: var(--blue); border-color: var(--blue); color: white; }
+.btn.soft { background: var(--blue-soft); border-color: #cbdafb; color: #2454ad; }
+.btn.danger { background: var(--red-soft); border-color: #f1c8cc; color: var(--red); }
+.btn:disabled { opacity: .46; cursor: not-allowed; }
+.btn.icon-only { width: 38px; padding: 0; }
+
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin-bottom: 18px; }
+.tab { height: 42px; border: 0; background: transparent; padding: 0 15px; color: var(--muted); font-weight: 620; position: relative; }
+.tab:hover { color: var(--ink); }
+.tab.active { color: var(--blue); }
+.tab.active::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: -1px; height: 2px; background: var(--blue); }
+.badge { display: inline-flex; align-items: center; gap: 5px; height: 25px; padding: 0 8px; border-radius: 999px; background: var(--surface-3); color: #526174; font-size: 12px; font-weight: 650; white-space: nowrap; }
+.badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .78; }
+.badge.success { background: var(--teal-soft); color: #076f67; }
+.badge.warning { background: var(--orange-soft); color: #8b560e; }
+.badge.danger { background: var(--red-soft); color: #a32f3a; }
+.badge.info { background: var(--blue-soft); color: #2457b7; }
+.badge.violet { background: var(--violet-soft); color: #6246a1; }
+.badge.neutral { background: #edf1f5; color: #667487; }
+.badge.plain::before { display: none; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 1px 2px rgba(24,40,60,.02); }
+.panel-head { min-height: 54px; padding: 0 16px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.panel-title { font-size: 17px; font-weight: 700; }
+.panel-body { padding: 16px; }
+.section-title { font-size: 18px; margin: 0; letter-spacing: -.01em; }
+.section-caption { color: var(--muted); font-size: 13px; }
+
+.filterbar { background: white; border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.search { position: relative; min-width: 210px; flex: 1; max-width: 360px; }
+.search input { width: 100%; height: 38px; border: 1px solid var(--line-strong); border-radius: 7px; padding: 0 12px 0 36px; background: #fbfcfe; }
+.search .icon { position: absolute; left: 11px; top: 10px; color: var(--faint); }
+.select { height: 38px; border: 1px solid var(--line-strong); border-radius: 7px; padding: 0 30px 0 10px; background: white; min-width: 126px; }
+.result-count { color: var(--muted); margin-left: auto; white-space: nowrap; }
+.view-toggle { border: 1px solid var(--line-strong); border-radius: 7px; display: flex; padding: 2px; gap: 2px; background: var(--surface-2); }
+.view-toggle button { width: 32px; height: 32px; border: 0; border-radius: 5px; background: transparent; color: var(--muted); display: grid; place-items: center; }
+.view-toggle button.active { background: white; color: var(--blue); box-shadow: 0 1px 4px rgba(24,40,60,.11); }
+
+.resource-layout { display: grid; min-height: 560px; gap: 14px; }
+.resource-layout.layout-a { grid-template-columns: minmax(390px, 1.15fr) 80px minmax(330px, .85fr); }
+.resource-column { min-width: 0; }
+.resource-column-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.resource-column-head h2 { font-size: 18px; margin: 0; }
+.source-groups { display: grid; gap: 10px; }
+.source-group { border: 1px solid var(--line); border-radius: 9px; background: white; overflow: hidden; }
+.group-head { width: 100%; border: 0; background: #f9fbfd; min-height: 43px; display: flex; align-items: center; gap: 9px; padding: 0 12px; font-weight: 700; }
+.group-head .muted { margin-left: auto; font-size: 12px; color: var(--muted); }
+.group-cards { padding: 10px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+.group-cards.list-mode { grid-template-columns: 1fr; }
+.resource-card { border: 1px solid var(--line); background: white; border-radius: 8px; padding: 13px; min-width: 0; text-align: left; position: relative; transition: .16s ease; }
+.resource-card.interactive:hover { border-color: #a9bce1; box-shadow: 0 6px 18px rgba(30,64,120,.08); transform: translateY(-1px); }
+.resource-card.selected { border-color: #7ba0e4; box-shadow: 0 0 0 2px rgba(46,104,212,.12); }
+.resource-card.demo { background: #f9fafc; color: #58677a; }
+.resource-card-title { display: flex; align-items: flex-start; gap: 9px; font-weight: 720; font-size: 15px; line-height: 1.4; }
+.resource-card-title .icon { color: var(--blue); margin-top: 1px; }
+.resource-card p { color: var(--muted); margin: 7px 0 10px; font-size: 13px; }
+.fact-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px 12px; }
+.fact { min-width: 0; }
+.fact-label { color: var(--faint); font-size: 12px; display: block; }
+.fact-value { color: var(--ink-2); font-size: 13px; font-weight: 620; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 12px; padding-top: 10px; border-top: 1px solid #edf1f5; }
+.card-link { border: 0; background: transparent; color: var(--blue); padding: 0; font-weight: 650; display: inline-flex; align-items: center; gap: 4px; }
+.relationship-bridge { min-height: 520px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--faint); gap: 10px; }
+.bridge-line { width: 100%; height: 2px; background: #cdd8e7; position: relative; }
+.bridge-line::before, .bridge-line::after { content: ""; width: 8px; height: 8px; position: absolute; top: -3px; border-radius: 50%; background: #a8b6c9; }
+.bridge-line::before { left: 0; }.bridge-line::after { right: 0; }
+.relationship-bridge.active { color: var(--blue); }
+.relationship-bridge.active .bridge-line { background: var(--blue); box-shadow: 0 0 0 4px rgba(46,104,212,.08); }
+.relationship-bridge.active .bridge-line::before, .relationship-bridge.active .bridge-line::after { background: var(--blue); }
+.asset-stack { display: grid; gap: 10px; }
+.asset-card { background: white; border: 1px solid var(--line); border-radius: 9px; padding: 16px; transition: .16s ease; }
+.asset-stack.list-mode .asset-card { padding: 12px 14px; }
+.asset-stack.list-mode .asset-card .asset-members { margin: 8px 0; }
+.asset-stack.list-mode .asset-card .fact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.asset-card.selected { border-color: #7ba0e4; box-shadow: 0 0 0 2px rgba(46,104,212,.12); }
+.asset-card h3 { margin: 0; font-size: 17px; }
+.asset-members { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+.empty-asset { border: 1px dashed #c9d3df; border-radius: 9px; padding: 18px; color: var(--muted); background: #fbfcfe; }
+
+.layout-b { grid-template-columns: 176px minmax(350px, .85fr) minmax(330px, 1.15fr); gap: 0; border: 1px solid var(--line); border-radius: 10px; background: white; overflow: hidden; }
+.category-rail { border-right: 1px solid var(--line); background: #f9fbfd; padding: 14px 10px; }
+.category-rail h2 { font-size: 14px; margin: 0 8px 10px; }
+.category-item { width: 100%; height: 42px; border: 0; background: transparent; border-radius: 7px; display: flex; align-items: center; gap: 8px; padding: 0 10px; color: var(--ink-2); }
+.category-item span:last-child { margin-left: auto; color: var(--faint); }
+.category-item.active { background: var(--blue-soft); color: #2457b7; font-weight: 680; }
+.master-pane { border-right: 1px solid var(--line); padding: 14px; min-width: 0; }
+.master-list { display: grid; gap: 8px; }
+.master-list.cards-mode .resource-card { padding: 14px; }
+.master-list.list-mode { align-content: start; }
+.master-row { border: 1px solid var(--line); background: white; border-radius: 8px; text-align: left; padding: 12px; }
+.master-row.selected { border-color: #7ba0e4; background: #f7faff; }
+.master-row strong { display: block; font-size: 14px; }
+.master-row small { color: var(--muted); font-size: 12px; }
+.inspector-pane { padding: 18px; min-width: 0; background: linear-gradient(180deg, #fff, #fbfcfe); }
+.inspector-hero { padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+.inspector-hero h2 { margin: 7px 0 4px; font-size: 19px; }
+.inspector-hero p { color: var(--muted); margin: 0; }
+.relation-summary { margin-top: 16px; padding: 13px; border-radius: 8px; background: var(--blue-soft); color: #2d579e; display: flex; align-items: center; gap: 10px; }
+
+.layout-c { display: block; }
+.view-switch-row { display: flex; justify-content: flex-end; align-items: center; gap: 18px; margin-bottom: 10px; color: var(--muted); font-size: 13px; }
+.view-switch-item { display: flex; align-items: center; gap: 8px; }
+.focus-stage { display: grid; grid-template-columns: minmax(0, 1fr) 100px minmax(0, .85fr); align-items: stretch; gap: 14px; }
+.focus-card { min-height: 320px; padding: 24px; border-radius: 12px; border: 1px solid var(--line); background: white; box-shadow: var(--shadow); }
+.focus-card h2 { margin: 8px 0 7px; font-size: 22px; }
+.focus-card .lead { color: var(--muted); max-width: 580px; }
+.focus-card .fact-grid { margin-top: 24px; gap: 18px; }
+.focus-bridge { display: grid; place-items: center; color: var(--blue); }
+.focus-bridge .bridge-line { width: 100%; }
+.resource-strip { margin-top: 16px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.resource-strip.list-mode { grid-template-columns: 1fr; }
+.strip-card { border: 1px solid var(--line); background: white; border-radius: 8px; padding: 12px; text-align: left; min-width: 0; }
+.strip-card strong { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.strip-card span { color: var(--muted); font-size: 12px; }
+
+.detail-hero { background: white; border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; margin-bottom: 16px; }
+.eyebrow { color: var(--blue); font-size: 12px; font-weight: 750; letter-spacing: .07em; text-transform: uppercase; }
+.detail-hero h1 { margin: 5px 0 4px; font-size: 23px; }
+.detail-hero p { color: var(--muted); margin: 0; }
+.hero-status { min-width: 230px; border-left: 1px solid var(--line); padding-left: 20px; display: grid; align-content: center; gap: 7px; }
+.content-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(270px, .7fr); gap: 14px; align-items: start; }
+.stack { display: grid; gap: 14px; }
+.summary-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.summary-tile { background: #f8fafc; border: 1px solid #e6ebf1; border-radius: 8px; padding: 12px; }
+.summary-tile span { color: var(--muted); font-size: 12px; display: block; }
+.summary-tile strong { font-size: 15px; display: block; margin-top: 4px; }
+.member-tabs { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; }
+.member-tab { border: 1px solid var(--line-strong); border-radius: 999px; padding: 6px 11px; background: white; font-size: 13px; }
+.member-tab.active { background: var(--blue-soft); border-color: #bdd0f5; color: #2457b7; font-weight: 680; }
+.member-card { border: 1px solid var(--line); border-radius: 8px; padding: 14px; }
+.member-card h3 { margin: 0 0 10px; font-size: 16px; }
+.member-card ul { margin: 10px 0 0; padding-left: 19px; color: var(--ink-2); }
+.member-card li { margin: 4px 0; }
+.notice { border: 1px solid #cbdafb; background: #f3f7ff; color: #2f5596; border-radius: 8px; padding: 12px 14px; display: flex; gap: 9px; align-items: flex-start; }
+.notice.warning { background: var(--orange-soft); border-color: #efd29f; color: #7b4b0a; }
+.notice.danger { background: var(--red-soft); border-color: #efc4c9; color: #942c36; }
+.notice.success { background: var(--teal-soft); border-color: #b8e3dc; color: #09665f; }
+.quality-groups { display: grid; gap: 10px; }
+.quality-group { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.quality-group-head { padding: 11px 13px; background: #fafbfd; display: flex; align-items: center; justify-content: space-between; }
+.check-row { border-top: 1px solid var(--line); padding: 12px 13px; display: grid; grid-template-columns: minmax(160px, .9fr) minmax(240px, 1.4fr) auto; gap: 12px; align-items: center; }
+.check-row strong { font-size: 14px; }
+.check-row p { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+.evidence-button { border: 0; background: transparent; color: var(--blue); font-weight: 650; white-space: nowrap; }
+.data-table-wrap { overflow: auto; border: 1px solid var(--line); border-radius: 8px; }
+.data-table { width: 100%; border-collapse: collapse; min-width: 640px; }
+.data-table th { text-align: left; background: #f4f7fa; color: #58677a; font-size: 12px; padding: 10px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.data-table td { padding: 11px 12px; border-bottom: 1px solid #edf1f5; vertical-align: top; font-size: 13px; }
+.data-table tr:last-child td { border-bottom: 0; }
+details.evidence { border: 1px solid var(--line); border-radius: 8px; background: #fbfcfd; }
+details.evidence summary { padding: 12px 14px; cursor: pointer; font-weight: 680; }
+details.evidence .evidence-body { padding: 0 14px 14px; color: var(--muted); overflow-wrap: anywhere; }
+
+.pipeline-page .tabs { margin-bottom: 14px; }
+.pipeline-list { display: grid; gap: 10px; }
+.pipeline-card { background: white; border: 1px solid var(--line); border-radius: 9px; padding: 16px; display: grid; grid-template-columns: minmax(260px, 1.1fr) minmax(300px, 1fr) auto; gap: 18px; align-items: center; }
+.pipeline-card h3 { margin: 0 0 4px; font-size: 17px; }
+.pipeline-card p { color: var(--muted); margin: 0; }
+.pipeline-meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 14px; }
+.pipeline-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 7px; }
+
+.canvas-shell { height: calc(100vh - 56px); min-height: 650px; display: grid; grid-template-rows: 58px minmax(0, 1fr); background: #e8edf3; }
+.canvas-toolbar { background: white; border-bottom: 1px solid var(--line); padding: 0 14px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.canvas-title { min-width: 0; }
+.canvas-title-line { display: flex; align-items: center; gap: 8px; }
+.canvas-title h1 { font-size: 16px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.save-state { color: var(--teal); font-size: 12px; }
+.canvas-actions { display: flex; align-items: center; gap: 7px; }
+.canvas-workbench { min-height: 0; display: grid; grid-template-columns: 178px minmax(0, 1fr) 316px; }
+.node-library { background: #f8fafc; border-right: 1px solid var(--line); padding: 14px 11px; min-width: 0; }
+.node-library h2 { font-size: 14px; margin: 0 0 4px; }
+.node-library p { color: var(--muted); margin: 0 0 12px; font-size: 12px; }
+.library-list { display: grid; gap: 8px; }
+.library-node { border: 1px solid var(--line-strong); background: white; min-height: 58px; border-radius: 7px; display: flex; align-items: center; gap: 9px; padding: 9px; text-align: left; }
+.library-node .node-icon { width: 30px; height: 30px; }
+.library-node strong { display: block; font-size: 13px; }.library-node small { color: var(--muted); font-size: 12px; }
+.canvas-stage { min-width: 0; min-height: 0; position: relative; overflow: auto; background-color: #edf2f7; background-image: radial-gradient(#cbd5e0 1px, transparent 1px); background-size: 20px 20px; }
+.canvas-status { position: sticky; z-index: 4; top: 10px; left: 10px; display: inline-flex; gap: 8px; align-items: center; margin: 10px; padding: 7px 10px; background: rgba(255,255,255,.94); border: 1px solid var(--line); border-radius: 7px; box-shadow: 0 4px 12px rgba(24,40,60,.07); }
+.flow { min-width: 650px; height: calc(100% - 62px); min-height: 390px; display: flex; align-items: center; justify-content: center; padding: 50px 28px 90px; gap: 0; }
+.flow-node { width: 154px; min-height: 132px; background: white; border: 1px solid #bfcbd9; border-top: 3px solid var(--node-color); border-radius: 7px; padding: 12px; box-shadow: 0 4px 14px rgba(28,44,64,.07); text-align: left; position: relative; transition: .2s ease; }
+.flow-node:hover, .flow-node.selected { border-color: var(--node-color); box-shadow: 0 0 0 3px color-mix(in srgb, var(--node-color) 14%, transparent), 0 8px 20px rgba(28,44,64,.10); transform: translateY(-2px); }
+.flow-node .node-number { color: var(--node-color); font-size: 12px; font-weight: 780; }
+.flow-node h3 { font-size: 14px; margin: 4px 0 6px; }
+.flow-node p { color: var(--muted); font-size: 12px; margin: 0; line-height: 1.45; min-height: 34px; }
+.node-state { margin-top: 9px; font-size: 12px; display: flex; align-items: center; gap: 5px; color: var(--muted); }
+.node-state.running { color: var(--blue); }.node-state.success { color: var(--teal); }.node-state.failed { color: var(--red); }.node-state.warning { color: var(--orange); }
+.flow-edge { width: clamp(26px, 3vw, 62px); height: 2px; background: #aebdce; position: relative; flex: 0 1 62px; }
+.flow-edge::after { content: ""; position: absolute; right: -1px; top: -4px; border-left: 7px solid #8799ad; border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+.canvas-shell.is-running .flow-edge.active { background: linear-gradient(90deg, #aebdce 0 30%, var(--blue) 45% 55%, #aebdce 70%); background-size: 180% 100%; animation: flow 1.3s linear infinite; }
+@keyframes flow { from { background-position: 100% 0; } to { background-position: -80% 0; } }
+.zoom-tools { position: absolute; bottom: 12px; left: 12px; display: flex; gap: 2px; background: white; border: 1px solid var(--line); border-radius: 7px; padding: 3px; box-shadow: var(--shadow); }
+.zoom-tools button { height: 30px; border: 0; background: white; padding: 0 9px; color: var(--ink-2); }
+.inspector { background: white; border-left: 1px solid var(--line); min-width: 0; overflow: auto; }
+.inspector-head { min-height: 60px; padding: 12px 14px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+.inspector-head h2 { margin: 0; font-size: 16px; }.inspector-head p { margin: 2px 0 0; color: var(--muted); font-size: 12px; }
+.inspector-tabs { display: flex; border-bottom: 1px solid var(--line); padding: 0 7px; }
+.inspector-tabs button { flex: 1; height: 40px; border: 0; background: transparent; font-size: 12px; color: var(--muted); position: relative; }
+.inspector-tabs button.active { color: var(--blue); font-weight: 680; }
+.inspector-tabs button.active::after { content: ""; position: absolute; left: 8px; right: 8px; bottom: 0; height: 2px; background: var(--blue); }
+.inspector-body { padding: 14px; display: grid; gap: 13px; }
+.field { display: grid; gap: 5px; }
+.field label { color: var(--ink-2); font-size: 12px; font-weight: 680; }
+.field input, .field textarea, .field select { width: 100%; border: 1px solid var(--line-strong); border-radius: 6px; background: white; padding: 8px 9px; font-size: 13px; }
+.field textarea { min-height: 72px; resize: vertical; }
+.field-help { color: var(--muted); font-size: 12px; }
+.code-block { background: #172130; color: #d9e5f5; border-radius: 8px; padding: 13px; font: 12px/1.7 "SFMono-Regular", Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+.result-card { border: 1px solid var(--line); border-radius: 7px; padding: 11px; }
+.result-card strong { font-size: 13px; }.result-card p { color: var(--muted); font-size: 12px; margin: 4px 0 0; }
+.handoff { border-top: 1px solid var(--line); padding: 13px 14px; background: #f8fafc; }
+.handoff h3 { font-size: 13px; margin: 0 0 7px; }.handoff p { color: var(--muted); font-size: 12px; margin: 0; }
+.handoff-grid { display: grid; gap: 7px; margin-top: 9px; }
+
+.modal-backdrop { position: fixed; inset: 0; background: rgba(11,20,31,.44); z-index: 100; display: grid; place-items: center; padding: 22px; animation: fade .16s ease; }
+.modal { width: min(760px, 96vw); max-height: 88vh; overflow: auto; background: white; border-radius: 11px; box-shadow: var(--shadow-pop); }
+.modal.small { width: min(560px, 96vw); }
+.modal-head { min-height: 62px; padding: 0 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--line); }
+.modal-head h2 { font-size: 18px; margin: 0; }
+.modal-body { padding: 18px; }
+.modal-foot { padding: 13px 18px; border-top: 1px solid var(--line); display: flex; justify-content: flex-end; gap: 8px; }
+.picker-list { display: grid; gap: 9px; margin-top: 14px; }
+.picker-row { width: 100%; border: 1px solid var(--line); background: white; border-radius: 8px; padding: 13px; text-align: left; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; }
+.picker-row:hover:not(:disabled) { border-color: #89a9e5; background: #f7faff; }
+.picker-row:disabled { opacity: .58; cursor: not-allowed; background: #f7f8fa; }
+.picker-row h3 { margin: 0; font-size: 15px; }.picker-row p { margin: 3px 0 0; color: var(--muted); font-size: 12px; }
+.confirm-list { display: grid; gap: 8px; margin: 14px 0; }
+.confirm-row { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; border-bottom: 1px solid #edf1f5; }
+.confirm-row span { color: var(--muted); }.confirm-row strong { text-align: right; }
+.toast { position: fixed; right: 20px; bottom: 20px; z-index: 150; background: #142236; color: white; padding: 11px 14px; border-radius: 8px; box-shadow: var(--shadow-pop); font-size: 13px; animation: rise .18s ease; }
+@keyframes fade { from { opacity: 0; } } @keyframes rise { from { transform: translateY(8px); opacity: 0; } }
+
+body[data-variant="A"] { --blue: #2f68cf; }
+body[data-variant="B"] { --blue: #3c61c6; --nav: #151f2c; }
+body[data-variant="B"] .panel, body[data-variant="B"] .resource-card { border-radius: 7px; }
+body[data-variant="C"] { --blue: #276a72; --blue-soft: #e7f3f3; --nav: #152526; --nav-2: #1c3436; }
+body[data-variant="C"] .main:not(.canvas-main) { padding: 30px; }
+body[data-variant="C"] .resource-card, body[data-variant="C"] .panel { border-radius: 12px; }
+
+@media (max-width: 1360px) {
+  .workspace { grid-template-columns: 174px minmax(0, 1fr); }
+  .main { padding: 18px; }
+  .resource-layout.layout-a { grid-template-columns: minmax(350px, 1.1fr) 58px minmax(300px, .9fr); }
+  .group-cards { grid-template-columns: 1fr; }
+  .canvas-workbench { grid-template-columns: 156px minmax(0, 1fr) 286px; }
+  .flow-node { width: 136px; padding: 10px; }
+  .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pipeline-card { grid-template-columns: minmax(240px, 1fr) minmax(260px, .9fr) auto; gap: 12px; }
+}
+@media (max-width: 1100px) {
+  .workspace { grid-template-columns: 68px minmax(0, 1fr); }
+  .sidenav { padding: 14px 8px; }
+  .nav-kicker, .nav-link span:not(.icon):not(.count), .nav-link .count, .nav-context { display: none; }
+  .nav-link { justify-content: center; padding: 0; }
+  .resource-layout.layout-a, .focus-stage { grid-template-columns: 1fr; }
+  .relationship-bridge, .focus-bridge { min-height: 30px; height: 30px; transform: rotate(90deg); }
+  .layout-b { grid-template-columns: 150px minmax(300px, 1fr); }
+  .layout-b .inspector-pane { grid-column: 1 / -1; border-top: 1px solid var(--line); }
+  .content-grid { grid-template-columns: 1fr; }
+  .canvas-workbench { grid-template-columns: 0 minmax(0, 1fr) 280px; }
+  .node-library { overflow: hidden; padding: 0; border: 0; }
+  .resource-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+</style>
+</head>
+<body data-variant="C">
+  <div id="app"></div>
+  <script>window.DE_VARIANT="C";window.DE_MANIFEST={"version":"review-v2.0","fixtureHash":"de-s001-s003-20260810","variants":[{"key":"A","title":"方案 A · 双栏关系目录","focus":"一眼看清来源、资产与引用关系","layout":"dual-relation"},{"key":"B","title":"方案 B · 主从三栏工作台","focus":"适合资源数量增长后的检索与管理","layout":"master-detail"},{"key":"C","title":"方案 C · 渐进展开关系卡片","focus":"低密度表达，适合业务演示与非技术用户","layout":"focus-cards"}],"screens":[{"id":"resource-directory","label":"数据资源目录","route":"#/resources"},{"id":"manual-source-detail","label":"手工上传数据源详情","route":"#/resources/source/src-finance-upload?tab=summary"},{"id":"s003-source-detail","label":"S003 兼容性详情","route":"#/resources/source/src-s003-workbook?tab=compatibility"},{"id":"asset-detail","label":"数据资产详情","route":"#/resources/asset/asset-finance?tab=summary"},{"id":"pipeline-list","label":"数据管道列表","route":"#/pipelines?tab=list"},{"id":"run-history","label":"运行历史","route":"#/pipelines?tab=runs"},{"id":"canvas-default","label":"管道画布默认态","route":"#/pipelines/pipe-finance/canvas?preset=default"},{"id":"source-node-config","label":"数据源节点配置","route":"#/pipelines/pipe-finance/canvas?preset=default&node=source&panel=config&overlay=source-picker"},{"id":"python-node-config","label":"Python 节点配置与代码","route":"#/pipelines/pipe-finance/canvas?preset=default&node=python&panel=config&nodeTab=code"},{"id":"quality-result","label":"数据检查结果","route":"#/pipelines/pipe-finance/canvas?preset=quality-warning&node=quality&panel=result"},{"id":"publish-config","label":"发布数据资产配置","route":"#/pipelines/pipe-finance/canvas?preset=default&node=publish&panel=config"},{"id":"running","label":"运行中","route":"#/pipelines/pipe-finance/canvas?preset=running&node=python&panel=result"},{"id":"quality-failed","label":"质量失败","route":"#/pipelines/pipe-finance/canvas?preset=quality-failed&node=quality&panel=result"},{"id":"publish-confirm","label":"发布前确认","route":"#/pipelines/pipe-finance/canvas?preset=publish-ready&node=publish&overlay=publish-confirm"}],"invariants":{"primaryNavigation":["数据资源","数据管道"],"pipelineCount":2,"financeNodeCount":4,"s003NodeCount":4,"s003RunCount":0,"s003PublishedAssetCount":0,"s003Consumption":"不可消费"},"entries":[{"source":"shared/shell.html","output":"方案A.html","variant":"A"},{"source":"shared/shell.html","output":"方案B.html","variant":"B"},{"source":"shared/shell.html","output":"方案C.html","variant":"C"},{"source":"shared/compare-shell.html","output":"逐页对比.html","variant":"COMPARE"}]};</script>
+  <script>window.DE_DATA = {
+  sources: [
+    {
+      id: "src-finance-upload", name: "融资明细一览表", group: "手工上传", type: "手工工作簿", scene: "S001 融资数据闭环",
+      description: "一期融资演示的真实工作簿来源", contents: "融资主体、融资明细、金融机构与负责人信息", t008: "2026-08-08",
+      updated: "2026-08-09 10:06", status: "可用", authenticity: "real", snapshots: 3, pipelineRefs: 1, assetRefs: 1, canOpen: true
+    },
+    {
+      id: "src-s003-workbook", name: "企业债务风险评估模版", group: "手工上传", type: "手工工作簿", scene: "S003 债务风险监测",
+      description: "已完成结构兼容性核验，等待真实登记与受控运行", contents: "财务数据、调节因子", t008: "2025-12-31",
+      updated: "2026-08-10 兼容性核验", status: "不可消费", authenticity: "real", snapshots: 0, pipelineRefs: 1, assetRefs: 0, canOpen: true,
+      note: "合同已批准·待真实登记和运行"
+    },
+    { id: "demo-sap-journal", name: "会计凭证行项目", group: "SAP", type: "SAP", scene: "未来扩展", description: "总账凭证明细", contents: "凭证、科目、金额", status: "未真实对接", authenticity: "demo", canOpen: false },
+    { id: "demo-sap-account", name: "会计科目主数据", group: "SAP", type: "SAP", scene: "未来扩展", description: "会计科目主数据", contents: "科目编码、名称、层级", status: "未真实对接", authenticity: "demo", canOpen: false },
+    { id: "demo-hub-fis", name: "FIS 业务流程表单", group: "数据中台", type: "数据中台", scene: "未来扩展", description: "FIS 表单数据", contents: "流程、表单、状态", status: "未真实对接", authenticity: "demo", canOpen: false },
+    { id: "demo-treasury-flow", name: "银行账户流水", group: "司库系统", type: "司库系统", scene: "未来扩展", description: "账户收支流水", contents: "账户、日期、收支金额", status: "未真实对接", authenticity: "demo", canOpen: false },
+    { id: "demo-treasury-finance", name: "融资明细", group: "司库系统", type: "司库系统", scene: "未来扩展", description: "司库融资台账", contents: "合同、借据、余额", status: "未真实对接", authenticity: "demo", canOpen: false }
+  ],
+  assets: [
+    {
+      id: "asset-finance", name: "融资标准化数据资产", currentVersion: "ASSET-FINANCE@2026.08.08-r2", t008: "2026-08-08",
+      members: ["融资主体参考", "融资明细", "金融机构参考", "融资负责人参考"], quality: "有警告·已确认",
+      sourceCount: 1, publishedAt: "2026-08-09 10:08", status: "消费就绪", sourceIds: ["src-finance-upload"], reusable: "CR-DE-007-candidate",
+      consumers: ["Published 本体 v1.0.0", "智能问数（经权威语义路径）"], owner: "数据工程（T006 / T007 Owner）"
+    }
+  ],
+  pipelines: [
+    {
+      id: "pipe-finance", name: "融资数据标准化与发布", version: "v1.0", purpose: "将融资工作簿标准化为四成员、三关系的可信数据资产",
+      source: "融资明细一览表", sourceId: "src-finance-upload", nodeCount: 4, output: "融资标准化数据资产", outputAssetId: "asset-finance",
+      latestRun: "2026-08-09 10:06", runStatus: "成功", modified: "2026-08-09 09:52", runEnabled: true, publishState: "has-history"
+    },
+    {
+      id: "pipe-s003-compat", name: "债务风险输入兼容性验证", version: "评审结构 · 非 T003", purpose: "验证财务数据与调节因子双成员的受控处理和不可消费版本包络；待真实配置，不能运行",
+      source: "企业债务风险评估模版", sourceId: "src-s003-workbook", nodeCount: 4, output: "尚未形成数据资产", outputAssetId: null,
+      latestRun: "无最近运行", runStatus: "尚未运行", modified: "2026-08-10 合同配置", runEnabled: false, publishState: "not-published"
+    }
+  ],
+  runs: [
+    { id: "RUN-FIN-20260809-002", pipeline: "融资数据标准化与发布", version: "v1.0", trigger: "手工上传", source: "融资明细一览表", snapshot: "SNAP-FIN-20260808-002", t008: "2026-08-08", start: "2026-08-09 10:06", end: "10:10", status: "成功", quality: "有警告·已确认", asset: "ASSET-FINANCE@2026.08.08-r2", failure: "—" },
+    { id: "RUN-FIN-20260809-003", pipeline: "融资数据标准化与发布", version: "v1.0", trigger: "手工检查共享文件夹", source: "融资共享文件夹", snapshot: "SNAP-FIN-20260801-003", t008: "2026-08-01", start: "2026-08-09 10:12", end: "10:12", status: "质量失败", quality: "1 项硬阻断", asset: "未形成", failure: "产业板块存在旧名称" },
+    { id: "TRIAL-FIN-20260809-001", pipeline: "融资数据标准化与发布", version: "v1.0", trigger: "画布调试", source: "融资明细一览表", snapshot: "SNAP-FIN-20260731-001", t008: "2026-07-31", start: "2026-08-09 09:55", end: "09:55", status: "调试完成", quality: "3 项警告", asset: "调试不发布", failure: "—" }
+  ],
+  financeMembers: [
+    { key: "subject", name: "融资主体参考", rows: "574 条", grain: "一行一融资主体", stableKey: "单位编码", fields: "单位编码、单位名称、统一产业板块、负责人标识" },
+    { key: "detail", name: "融资明细", rows: "5,218 条", grain: "一行一笔融资借据", stableKey: "借据编号", fields: "借据编号、单位编码、机构编码、融资余额、担保方式" },
+    { key: "institution", name: "金融机构参考", rows: "24 条", grain: "一行一金融机构", stableKey: "机构编码", fields: "机构编码、机构名称、机构类别" },
+    { key: "owner", name: "融资负责人参考", rows: "24 条", grain: "一行一负责人", stableKey: "负责人标识", fields: "负责人标识、负责人名称" }
+  ],
+  s003Members: [
+    { key: "financial", name: "财务数据", range: "财务数据!A1:AA22", rows: "21 条 · 27 列", grain: "一个企业在一个评估时点的财务输入", keyLabel: "单位名称规范值＋2025-12-31", facts: ["I 列为 2025 本年累计利润总额", "AA 列为 2024 上年本年累计利润总额", "546 个财务数据单元均为数值", "币种 CNY，金额单位为元"] },
+    { key: "factor", name: "调节因子", range: "调节因子!A1:I22", rows: "21 条 · 9 列", grain: "一个企业在一个评估时点的正式因子输入", keyLabel: "单位名称规范值＋2025-12-31", facts: ["两成员各 21 个单位，集合与顺序一致", "环保企业 G18:G21 为空，已确认语义为业务不适用", "其余非空值均在现有枚举内", "不承载评分、权重或风险等级"] }
+  ],
+  quality: {
+    warning: [
+      { name: "主体身份完整性", result: "通过", affected: "0 条", detail: "574 / 574 个主体可稳定识别", recovery: "无需处理" },
+      { name: "金融机构端点匹配", result: "通过", affected: "0 条", detail: "24 / 24 家机构均可匹配", recovery: "无需处理" },
+      { name: "产业板块有效值", result: "通过", affected: "0 条", detail: "全部使用 D007 有效板块值", recovery: "无需处理" },
+      { name: "利率形式完整性", result: "警告", affected: "212 条", detail: "允许为空，发布前需人工确认影响", recovery: "确认下游不依赖后放行" },
+      { name: "担保方式完整性", result: "警告", affected: "1,868 条", detail: "缺失值保留为未知，不自动填充", recovery: "确认缺失不影响当前消费" }
+    ],
+    failed: [
+      { name: "主体身份完整性", result: "通过", affected: "0 条", detail: "574 / 574 个主体可稳定识别", recovery: "无需处理" },
+      { name: "产业板块有效值", result: "硬阻断", affected: "1 条", detail: "单位A仍使用旧名称“新能源控股”", recovery: "将来源值改为 D007 有效板块后，从数据检查节点重试" },
+      { name: "融资余额非负", result: "通过", affected: "0 条", detail: "最小值 ≥ 0", recovery: "无需处理" }
+    ]
+  }
+};
+
+(function () {
+  "use strict";
+
+  const D = window.DE_DATA;
+  const M = window.DE_MANIFEST;
+  const V = window.DE_VARIANT;
+  const root = document.getElementById("app");
+  const ui = {
+    query: "", type: "全部来源", status: "全部状态", scene: "全部场景",
+    sourceView: "cards", assetView: "cards", selectedResource: "src-finance-upload",
+    collapsedGroups: new Set(), member: "subject", s003Member: "financial", toast: "", zoom: 100
+  };
+  let toastTimer = 0;
+  let runTimer = 0;
+
+  const iconPaths = {
+    database: '<ellipse cx="12" cy="5" rx="7" ry="3"></ellipse><path d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5"></path><path d="M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"></path>',
+    workflow: '<rect x="3" y="3" width="6" height="6" rx="1"></rect><rect x="15" y="15" width="6" height="6" rx="1"></rect><path d="M9 6h4a4 4 0 0 1 4 4v5"></path><path d="m14 12 3 3 3-3"></path>',
+    search: '<circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path>',
+    grid: '<rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect>',
+    list: '<path d="M8 6h13M8 12h13M8 18h13"></path><circle cx="4" cy="6" r="1"></circle><circle cx="4" cy="12" r="1"></circle><circle cx="4" cy="18" r="1"></circle>',
+    upload: '<path d="M12 16V4"></path><path d="m7 9 5-5 5 5"></path><path d="M5 15v4h14v-4"></path>',
+    package: '<path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"></path><path d="m4 7.5 8 4.5 8-4.5M12 12v9"></path>',
+    chevron: '<path d="m9 18 6-6-6-6"></path>',
+    down: '<path d="m6 9 6 6 6-6"></path>',
+    file: '<path d="M6 2h8l4 4v16H6z"></path><path d="M14 2v5h5M9 13h6M9 17h6"></path>',
+    shield: '<path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-10V6l-7-3Z"></path><path d="m9 12 2 2 4-4"></path>',
+    python: '<rect x="3" y="3" width="18" height="18" rx="3"></rect><path d="M9 8h4a2 2 0 0 1 2 2v4M15 16h-4a2 2 0 0 1-2-2v-4"></path><circle cx="11" cy="7" r=".5"></circle><circle cx="13" cy="17" r=".5"></circle>',
+    play: '<path d="m8 5 11 7-11 7V5Z"></path>',
+    bug: '<path d="M8 9h8M9 5l-2-2M15 5l2-2M5 13H2M22 13h-3M5 18l-2 2M19 18l2 2"></path><rect x="6" y="6" width="12" height="15" rx="6"></rect>',
+    save: '<path d="M5 3h12l2 2v16H5z"></path><path d="M8 3v6h8V3M8 21v-7h8v7"></path>',
+    undo: '<path d="m9 7-5 5 5 5"></path><path d="M4 12h9a6 6 0 0 1 6 6"></path>',
+    close: '<path d="m6 6 12 12M18 6 6 18"></path>',
+    check: '<path d="m5 12 4 4L19 6"></path>',
+    alert: '<path d="M12 3 2 21h20L12 3Z"></path><path d="M12 9v5M12 18h.01"></path>',
+    history: '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><path d="M3 3v5h5M12 7v5l3 2"></path>',
+    code: '<path d="m8 9-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"></path>',
+    info: '<circle cx="12" cy="12" r="9"></circle><path d="M12 11v6M12 7h.01"></path>',
+    link: '<path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.1 1.1"></path><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.1-1.1"></path>',
+    expand: '<path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"></path>',
+    more: '<circle cx="5" cy="12" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle>',
+    refresh: '<path d="M20 6v5h-5"></path><path d="M4 18v-5h5"></path><path d="M18 9a7 7 0 0 0-12-2L4 11M6 15a7 7 0 0 0 12 2l2-4"></path>'
+  };
+  function icon(name) { return `<span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24">${iconPaths[name] || iconPaths.info}</svg></span>`; }
+  function esc(value) { return String(value == null ? "" : value).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+  function badge(text, tone) { return `<span class="badge ${tone || "neutral"}">${esc(text)}</span>`; }
+  function button(label, action, kind, iconName, disabled, extra) {
+    return `<button class="btn ${kind || ""}" data-action="${action}" ${disabled ? "disabled" : ""} ${extra || ""}>${iconName ? icon(iconName) : ""}<span>${esc(label)}</span></button>`;
+  }
+  function fact(label, value) { return `<div class="fact"><span class="fact-label">${esc(label)}</span><span class="fact-value" title="${esc(value)}">${esc(value)}</span></div>`; }
+  function routeInfo() {
+    const raw = (location.hash || "#/resources").slice(1);
+    const qIndex = raw.indexOf("?");
+    const path = (qIndex >= 0 ? raw.slice(0, qIndex) : raw) || "/resources";
+    return { path, parts: path.split("/").filter(Boolean), params: new URLSearchParams(qIndex >= 0 ? raw.slice(qIndex + 1) : "") };
+  }
+  function routeWith(patch) {
+    const r = routeInfo();
+    Object.entries(patch).forEach(([k,v]) => v == null || v === "" ? r.params.delete(k) : r.params.set(k,v));
+    const q = r.params.toString();
+    return `#${r.path}${q ? "?" + q : ""}`;
+  }
+  function navigate(hash) { if (location.hash === hash) render(); else location.hash = hash; }
+  function showToast(message) {
+    ui.toast = message; render(); clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { ui.toast = ""; render(); }, 2800);
+  }
+  function variantTitle() { return M.variants.find(v => v.key === V)?.title || `方案 ${V}`; }
+  function sectionActive(section) { return routeInfo().parts[0] === section; }
+
+  function shell(content, canvas) {
+    return `<div class="app-shell">
+      <header class="topbar">
+        <div class="brand"><span class="brand-mark">${icon("workflow")}</span><span class="brand-copy"><span class="brand-title">数据工程</span><span class="brand-sub">可信数据资产工作区</span></span></div>
+        <div class="top-actions"><span class="variant-chip">${icon("info")}评审原型 · 交互夹具</span><span class="variant-chip"><b>${V}</b>${esc(variantTitle().split("·")[1] || variantTitle())}</span><a class="review-link" href="逐页对比.html">${icon("grid")}逐页对比</a></div>
+      </header>
+      <div class="workspace">
+        <aside class="sidenav">
+          <div class="nav-kicker">工作区</div>
+          <nav class="nav-list" aria-label="一级导航">
+            <a class="nav-link ${sectionActive("resources") ? "active" : ""}" href="#/resources">${icon("database")}<span>数据资源</span><span class="count">8</span></a>
+            <a class="nav-link ${sectionActive("pipelines") ? "active" : ""}" href="#/pipelines?tab=list">${icon("workflow")}<span>数据管道</span><span class="count">2</span></a>
+          </nav>
+          <div class="nav-context"><strong>演示账号</strong>单账号 · 无需切换角色<br />业务状态与评审模拟严格区分</div>
+        </aside>
+        <main class="main ${canvas ? "canvas-main" : ""}">${content}</main>
+      </div>
+      ${ui.toast ? `<div class="toast" role="status">${esc(ui.toast)}</div>` : ""}
+    </div>`;
+  }
+
+  function pageHeader(title, subtitle, actions) {
+    return `<div class="page-header"><div><h1 class="page-title">${esc(title)}</h1><p class="page-subtitle">${esc(subtitle)}</p></div><div class="header-actions">${actions || ""}</div></div>`;
+  }
+  function viewToggle(kind) {
+    const mode = kind === "source" ? ui.sourceView : ui.assetView;
+    return `<div class="view-toggle" aria-label="视图切换"><button data-action="view" data-kind="${kind}" data-value="cards" class="${mode === "cards" ? "active" : ""}" title="卡片视图">${icon("grid")}</button><button data-action="view" data-kind="${kind}" data-value="list" class="${mode === "list" ? "active" : ""}" title="列表视图">${icon("list")}</button></div>`;
+  }
+  function filterbar() {
+    const sourceCount = filteredSources().length;
+    const assetCount = filteredAssets().length;
+    return `<div class="filterbar">
+      <label class="search">${icon("search")}<input id="resource-search" type="search" placeholder="搜索数据源或资产" value="${esc(ui.query)}" /></label>
+      <select class="select" id="filter-type" aria-label="来源类型"><option>全部来源</option><option>手工工作簿</option><option>SAP</option><option>数据中台</option><option>司库系统</option></select>
+      <select class="select" id="filter-status" aria-label="状态"><option>全部状态</option><option>可用</option><option>消费就绪</option><option>不可消费</option><option>未真实对接</option></select>
+      <select class="select" id="filter-scene" aria-label="场景"><option>全部场景</option><option>S001 融资数据闭环</option><option>S003 债务风险监测</option><option>未来扩展</option></select>
+      <span class="result-count" id="resource-count">${sourceCount} 个来源 · ${assetCount} 个资产</span>
+    </div>`;
+  }
+  function filteredSources() {
+    const q = ui.query.trim().toLowerCase();
+    return D.sources.filter(s => (!q || [s.name,s.description,s.contents,s.scene].join(" ").toLowerCase().includes(q)) &&
+      (ui.type === "全部来源" || s.type === ui.type) && (ui.status === "全部状态" || s.status === ui.status) && (ui.scene === "全部场景" || s.scene === ui.scene));
+  }
+  function filteredAssets() {
+    const q = ui.query.trim().toLowerCase();
+    return D.assets.filter(a => {
+      const sources = (a.sourceIds || []).map(id => D.sources.find(s => s.id === id)).filter(Boolean);
+      const searchable = [a.name,a.currentVersion,a.t008,a.quality,a.status,...(a.members || []),...(a.consumers || [])].join(" ").toLowerCase();
+      const typeMatch = ui.type === "全部来源" || sources.some(s => s.type === ui.type);
+      const statusMatch = ui.status === "全部状态" || a.status === ui.status;
+      const sceneMatch = ui.scene === "全部场景" || sources.some(s => s.scene === ui.scene);
+      return (!q || searchable.includes(q)) && typeMatch && statusMatch && sceneMatch;
+    });
+  }
+  function sourceTone(s) { return s.status === "可用" ? "success" : s.status === "不可消费" ? "neutral" : "warning"; }
+  function sourceCard(s, compact) {
+    const selected = ui.selectedResource === s.id;
+    const open = s.canOpen ? `<button class="card-link" data-action="open-source" data-id="${s.id}">查看详情 ${icon("chevron")}</button>` : `<span class="section-caption">仅用于演示说明</span>`;
+    return `<article class="resource-card ${s.canOpen ? "interactive" : "demo"} ${selected ? "selected" : ""}" data-action="select-resource" data-id="${s.id}" tabindex="0">
+      <div class="resource-card-title">${icon(s.authenticity === "real" ? "file" : "database")}<span>${esc(s.name)}</span></div>
+      <p>${esc(s.description)}</p>
+      <div class="fact-grid">${fact("来源", s.type)}${fact("场景", s.scene)}${!compact ? fact("包含内容", s.contents) + fact("数据截至", s.t008 || "尚无真实数据") : ""}</div>
+      <div class="card-foot">${badge(s.authenticity === "demo" ? "演示连接器·未真实对接" : s.status, sourceTone(s))}${open}</div>
+    </article>`;
+  }
+  function sourceGroups(compact) {
+    const sources = filteredSources();
+    const groups = ["手工上传","SAP","数据中台","司库系统"];
+    return `<div class="source-groups">${groups.map(g => {
+      const items = sources.filter(s => s.group === g); if (!items.length) return "";
+      const collapsed = ui.collapsedGroups.has(g);
+      return `<section class="source-group"><button class="group-head" data-action="toggle-group" data-group="${g}">${icon(collapsed ? "chevron" : "down")}<span>${g}</span><span class="muted">${items.length} 个</span></button>${collapsed ? "" : `<div class="group-cards ${ui.sourceView === "list" ? "list-mode" : ""}">${items.map(s => sourceCard(s, compact)).join("")}</div>`}</section>`;
+    }).join("")}</div>`;
+  }
+  function assetCard(compact) {
+    const a = D.assets[0]; const selected = ui.selectedResource === a.id;
+    return `<article class="asset-card ${selected ? "selected" : ""}" data-action="select-resource" data-id="${a.id}" tabindex="0">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px"><div><span class="eyebrow">已发布数据资产</span><h3>${esc(a.name)}</h3></div>${badge(a.status,"success")}</div>
+      <div class="asset-members">${a.members.map(m => badge(m,"plain")).join("")}</div>
+      <div class="fact-grid">${fact("当前可信版本", a.currentVersion)}${fact("数据截至", a.t008)}${!compact ? fact("质量", a.quality) + fact("来源", a.sourceCount + " 个真实来源") : ""}</div>
+      <div class="card-foot"><span class="section-caption">CR-DE-007 候选：受门禁复用</span><button class="card-link" data-action="open-asset">查看资产 ${icon("chevron")}</button></div>
+    </article>`;
+  }
+  function selectedSource() {
+    const visible = filteredSources();
+    return visible.find(s => s.id === ui.selectedResource) || visible[0] || null;
+  }
+  function isRelated() { return filteredAssets().length > 0 && (ui.selectedResource === "src-finance-upload" || ui.selectedResource === "asset-finance"); }
+  function filteredAssetStack(compact) {
+    const assets = filteredAssets();
+    if (!assets.length) return `<div class="empty-asset"><strong>当前筛选下没有已发布数据资产</strong><br /><span>${ui.scene === "S003 债务风险监测" || ui.status === "不可消费" || ["债务","s003"].some(x=>ui.query.toLowerCase().includes(x)) ? "S003 只有真实来源和待运行管道，尚未形成资产。" : "请调整搜索或筛选条件。"}</span></div>`;
+    return assets.map(() => assetCard(compact)).join("");
+  }
+
+  function resourcesA() {
+    return `<div class="resource-layout layout-a">
+      <div class="resource-column"><div class="resource-column-head"><h2>数据源</h2>${viewToggle("source")}</div>${sourceGroups(true)}</div>
+      <div class="relationship-bridge ${isRelated() ? "active" : ""}"><span>${isRelated() ? "引用" : "无资产"}</span><div class="bridge-line"></div><small>${isRelated() ? "1 条直接关系" : "0 条"}</small></div>
+      <div class="resource-column"><div class="resource-column-head"><h2>已发布数据资产</h2>${viewToggle("asset")}</div><div class="asset-stack ${ui.assetView === "list" ? "list-mode" : ""}">${filteredAssetStack(ui.assetView === "list")}</div></div>
+    </div>`;
+  }
+  function resourcesB() {
+    const s = selectedSource();
+    const visibleSources = filteredSources();
+    const activeGroup = ui.type === "全部来源" ? "全部资源" : ui.type === "手工工作簿" ? "手工上传" : ui.type;
+    const detailAction=s&&s.canOpen?'<div class="button-row" style="margin-top:16px">'+button("查看来源详情","open-source","primary","chevron",false,'data-id="'+s.id+'"')+'</div>':"";
+    const masterContent = ui.sourceView === "cards"
+      ? visibleSources.map(x=>sourceCard(x,true)).join("")
+      : visibleSources.map(x=>`<button class="master-row ${ui.selectedResource===x.id?"selected":""}" data-action="select-resource" data-id="${x.id}"><strong>${esc(x.name)}</strong><small>${esc(x.group)} · ${esc(x.status)}</small></button>`).join("");
+    const inspectorContent = s
+      ? `<div class="inspector-hero">${badge(s.status,sourceTone(s))}<h2>${esc(s.name)}</h2><p>${esc(s.description)}</p></div><div class="summary-grid" style="margin-top:16px">${fact("来源类型",s.type)}${fact("场景",s.scene)}${fact("数据截至",s.t008||"无")}${fact("管道引用",(s.pipelineRefs||0)+" 条")}</div>${s.id==="src-finance-upload"&&filteredAssets().length?`<div class="relation-summary">${icon("link")}形成 ${D.assets[0].name} · ${D.assets[0].currentVersion}</div><div class="asset-stack ${ui.assetView === "list" ? "list-mode" : ""}">${filteredAssetStack(ui.assetView === "list")}</div>`:`<div class="notice ${s.authenticity==="demo"?"warning":""}" style="margin-top:16px">${icon("info")}<span>${s.id==="src-s003-workbook"?"已加入第二条管道评审结构，但尚无真实 T003、运行、资产版本或消费关系。":"演示连接器未真实对接，不可下钻、同步或作为管道输入。"}</span></div>`}${detailAction}`
+      : `<div class="empty-asset"><strong>${filteredAssets().length ? "当前筛选只命中已发布数据资产" : "当前筛选没有匹配结果"}</strong><br /><span>${filteredAssets().length ? "资产结果仍计入顶部数量；清除来源筛选可查看其直接来源。" : "请调整搜索或筛选条件。"}</span></div>${filteredAssets().length?`<div class="asset-stack ${ui.assetView === "list" ? "list-mode" : ""}" style="margin-top:14px">${filteredAssetStack(ui.assetView === "list")}</div>`:""}`;
+    return `<div class="resource-layout layout-b">
+      <aside class="category-rail"><h2>来源分组</h2>${["全部资源","手工上传","SAP","数据中台","司库系统"].map((g,i)=>`<button class="category-item ${activeGroup===g?"active":""}" data-action="category" data-value="${g}">${icon(i===0?"grid":"database")}<span>${g}</span><span>${i===0?D.sources.length:D.sources.filter(x=>x.group===g).length}</span></button>`).join("")}</aside>
+      <section class="master-pane"><div class="resource-column-head"><h2>数据源</h2>${viewToggle("source")}</div><div class="master-list ${ui.sourceView === "cards" ? "cards-mode" : "list-mode"}">${masterContent || '<div class="empty-asset">没有匹配的数据源</div>'}</div></section>
+      <section class="inspector-pane"><div class="resource-column-head"><h2>关系与详情</h2>${viewToggle("asset")}</div>${inspectorContent}</section>
+    </div>`;
+  }
+  function resourcesC() {
+    const s = selectedSource();
+    const detailAction=s&&s.canOpen?'<div class="button-row" style="margin-top:24px">'+button("查看完整详情","open-source","primary","chevron",false,'data-id="'+s.id+'"')+'</div>':s?'<div class="notice warning" style="margin-top:24px">演示连接器不提供下钻或运行入口。</div>':"";
+    const sourceFocus = s ? `<span class="eyebrow">当前数据源</span><h2>${esc(s.name)}</h2><p class="lead">${esc(s.description)}</p><div class="fact-grid">${fact("来源",s.type)}${fact("场景",s.scene)}${fact("数据截至",s.t008||"尚无真实数据")}${fact("当前状态",s.status)}</div>${detailAction}` : `<span class="eyebrow">当前数据源</span><h2>没有匹配的数据源</h2><p class="lead">${filteredAssets().length?"当前筛选只命中右侧已发布资产。":"请调整搜索或筛选条件。"}</p>`;
+    const assetFocus = s&&s.id==="src-finance-upload"&&filteredAssets().length ? filteredAssetStack(ui.assetView === "list") : filteredAssets().length&&!s ? filteredAssetStack(ui.assetView === "list") : `<h2>尚无已发布资产</h2><p class="lead">${s&&s.id==="src-s003-workbook"?"债务风险工作簿已进入管道评审结构，但须完成真实登记、T003、受控运行和质量门后才能形成资产。":"当前来源或筛选条件未建立已发布资产关系。"}</p>${badge("不可消费","neutral")}`;
+    return `<div class="resource-layout layout-c"><div class="view-switch-row"><div class="view-switch-item">来源视图 ${viewToggle("source")}</div><div class="view-switch-item">资产视图 ${viewToggle("asset")}</div></div><div class="focus-stage">
+      <section class="focus-card">${sourceFocus}</section>
+      <div class="focus-bridge"><div class="bridge-line"></div></div>
+      <section class="focus-card"><span class="eyebrow">直接形成的资产</span><div class="asset-stack ${ui.assetView === "list" ? "list-mode" : ""}">${assetFocus}</div></section>
+    </div><div class="resource-strip ${ui.sourceView === "list" ? "list-mode" : ""}">${filteredSources().map(x=>`<button class="strip-card" data-action="select-resource" data-id="${x.id}"><strong>${esc(x.name)}</strong><span>${esc(x.group)} · ${esc(x.status)}</span></button>`).join("")}</div></div>`;
+  }
+  function renderResourceDirectory() {
+    const layout = V === "A" ? resourcesA() : V === "B" ? resourcesB() : resourcesC();
+    return shell(`<div class="page" data-screen-label="数据资源目录">${pageHeader("数据资源","真实来源、演示连接器与已发布资产在同一工作区中清晰关联",button("手工上传文件","upload","primary","upload"))}${filterbar()}${layout}</div>`,false);
+  }
+
+  function detailTabs(active, isS003) {
+    const tabs = isS003 ? [["compatibility","兼容性结论"],["members","成员结构"],["quality","质量证据"],["consumption","被引用情况"]] : [["summary","来源概况"],["contents","包含内容"],["snapshots","快照历史"],["consumption","被引用情况"]];
+    return `<div class="tabs">${tabs.map(([id,label])=>`<button class="tab ${active===id?"active":""}" data-action="detail-tab" data-value="${id}">${label}</button>`).join("")}</div>`;
+  }
+  function financeSourceContent(tab) {
+    if (tab === "contents") return `<div class="panel"><div class="panel-head"><span class="panel-title">工作簿内容</span>${badge("四类业务内容","info")}</div><div class="panel-body"><div class="member-tabs">${D.financeMembers.map(m=>`<button class="member-tab ${ui.member===m.key?"active":""}" data-action="member" data-value="${m.key}">${m.name}</button>`).join("")}</div>${memberFinance(ui.member)}<div class="data-table-wrap" style="margin-top:14px"><table class="data-table"><thead><tr><th>借据编号</th><th>单位</th><th>产业板块</th><th>金融机构</th><th>融资余额（元）</th></tr></thead><tbody><tr><td>DEMO-DEBT-000001</td><td>单位A</td><td>境内新能源</td><td>银行A</td><td>1,250,000,000</td></tr><tr><td>DEMO-DEBT-000002</td><td>单位B</td><td>核能</td><td>银行D</td><td>820,000,000</td></tr><tr><td>DEMO-DEBT-000003</td><td>单位C</td><td>数字化</td><td>银行K</td><td>530,000,000</td></tr></tbody></table></div></div></div>`;
+    if (tab === "snapshots") return `<div class="panel"><div class="panel-head"><span class="panel-title">上传与快照历史</span><button class="card-link" data-action="toast" data-message="已打开完整上传历史（评审交互）">查看全部</button></div><div class="panel-body"><div class="data-table-wrap"><table class="data-table"><thead><tr><th>上传批次</th><th>文件名称</th><th>数据截至</th><th>上传时间</th><th>文件状态</th><th>管道使用</th><th>形成资产版本</th></tr></thead><tbody><tr><td>2026-08-09 / 02</td><td>融资一览表_20260808.xlsx</td><td>2026-08-08</td><td>10:04</td><td>${badge("已登记","success")}</td><td>已使用</td><td>2026.08.08-r2</td></tr><tr><td>2026-08-09 / 01</td><td>融资一览表_一期演示数据.xlsx</td><td>2026-07-31</td><td>09:58</td><td>${badge("历史","neutral")}</td><td>已使用</td><td>2026.07.31-r1</td></tr></tbody></table></div><details class="evidence" style="margin-top:12px"><summary>技术证据</summary><div class="evidence-body">精确快照标识、内容指纹、前序关系和受控运行引用在此折叠保存。</div></details></div></div>`;
+    if (tab === "consumption") return `<div class="panel"><div class="panel-head"><span class="panel-title">被引用情况</span>${badge("仍在使用","success")}</div><div class="panel-body"><div class="summary-grid">${fact("输入管道","融资数据标准化与发布")}${fact("形成资产","融资标准化数据资产")}${fact("最近使用","2026-08-09 10:06")}${fact("当前引用","1 条管道 · 1 个资产")}</div><div class="notice" style="margin-top:14px">${icon("info")}<span>本区域只展示数据层引用，不展示本体 Object、Metric、Rule 或其他模块业务逻辑。</span></div></div></div>`;
+    return `<div class="stack"><div class="panel"><div class="panel-head"><span class="panel-title">来源概况</span>${badge("当前可用","success")}</div><div class="panel-body"><div class="summary-grid">${fact("来源类型","手工工作簿")}${fact("读取方式","手工上传＋指定共享文件夹")}${fact("文件格式","Excel 工作簿")}${fact("数据负责人","数据工程演示账号")}${fact("数据截至","2026-08-08")}${fact("最近上传","2026-08-09 10:04")}${fact("快照数量","3 个")}${fact("当前状态","可作为管道输入")}</div><div class="button-row" style="margin-top:14px">${button("共享文件夹设置","shared-folder","soft","database")}</div></div></div><div class="panel"><div class="panel-head"><span class="panel-title">最近使用</span></div><div class="panel-body"><div class="notice success">${icon("check")}<span>最近快照已形成可信资产版本 ASSET-FINANCE@2026.08.08-r2，并经权威语义路径消费。</span></div></div></div></div>`;
+  }
+  function memberFinance(key) { const m = D.financeMembers.find(x=>x.key===key)||D.financeMembers[0]; return `<div class="member-card"><h3>${m.name}</h3><div class="summary-grid">${fact("数据规模",m.rows)}${fact("业务粒度",m.grain)}${fact("稳定键",m.stableKey)}${fact("主要字段",m.fields)}</div></div>`; }
+  function uploadModal() {
+    return `<div class="modal-backdrop" data-overlay="true"><section class="modal small" role="dialog" aria-modal="true" aria-label="上传新快照"><div class="modal-head"><div><h2>上传融资工作簿</h2><span class="section-caption">上传成功只登记原始快照，不自动运行或发布</span></div><button class="btn icon-only" data-action="close-overlay">${icon("close")}</button></div><div class="modal-body"><div class="field"><label>工作簿文件</label><input type="file" accept=".xlsx" /></div><div class="field"><label>数据截至时间</label><input type="date" value="2026-08-08" /></div><label style="display:flex;gap:8px;align-items:flex-start;margin-top:12px"><input type="checkbox" checked /><span><strong>这是独立完整的全量快照</strong><br/><span class="section-caption">不追加、不合并；重复内容只链接既有证据。</span></span></label><div class="notice" style="margin-top:14px">${icon("info")}<span>原型不会读取本机文件或生成快照编号。真实产品需先校验文件、Sheet、表头、T008 和内容重复。</span></div></div><div class="modal-foot">${button("取消","close-overlay")}${button("校验并登记","upload-confirm","primary","upload")}</div></section></div>`;
+  }
+  function sharedFolderModal() {
+    return `<div class="modal-backdrop" data-overlay="true"><section class="modal" role="dialog" aria-modal="true" aria-label="共享文件夹设置"><div class="modal-head"><div><h2>指定共享文件夹</h2><span class="section-caption">当前仅手工触发，不设置每 5 分钟或其他定时检查</span></div><button class="btn icon-only" data-action="close-overlay">${icon("close")}</button></div><div class="modal-body"><div class="notice">${icon("info")}<span>平台停止期间不扫描；恢复后补扫并按内容指纹去重。点击“立即检查”只在真实产品中启动完整周期，本评审原型不会生成快照或运行。</span></div><div class="field" style="margin-top:14px"><label>固定项目目录</label><input value="/Users/domi/Public/Vibecoding/ontology3.0/demo_shared/融资数据待处理/" readonly /></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label>文件名规则</label><input value="融资一览表_YYYYMMDD.xlsx" readonly /></div><div class="field"><label>T008 提取方式</label><input value="从文件名 YYYYMMDD 提取，不使用发现时间" readonly /></div></div><div class="summary-grid" style="margin-top:14px">${fact("当前状态","暂停")}${fact("检查计划","无定时计划")}${fact("触发方式","手工立即检查")}${fact("全量声明","每个文件是独立完整快照")}</div><div class="button-row" style="margin-top:16px">${button("测试访问","folder-test","","check")}${button("保存设置","folder-save","soft","save")}${button("立即检查","folder-check","primary","refresh")}${button("保持暂停","folder-pause","","alert")}</div></div><div class="modal-foot">${button("关闭","close-overlay")}</div></section></div>`;
+  }
+  function s003Content(tab) {
+    const m = D.s003Members.find(x=>x.key===ui.s003Member)||D.s003Members[0];
+    if (tab === "members") return `<div class="panel"><div class="panel-head"><span class="panel-title">双成员结构</span>${badge("合同结构兼容","success")}</div><div class="panel-body"><div class="notice">${icon("link")}<span>双成员通过“单位名称规范值＋评估时点”完成数据层完整性校验；这不是本体 Link。</span></div><div class="member-tabs" style="margin-top:14px">${D.s003Members.map(x=>`<button class="member-tab ${ui.s003Member===x.key?"active":""}" data-action="s003-member" data-value="${x.key}">${x.name}</button>`).join("")}</div><div class="member-card"><h3>${m.name}</h3><div class="summary-grid">${fact("来源范围",m.range)}${fact("数据规模",m.rows)}${fact("业务粒度",m.grain)}${fact("当前兼容键",m.keyLabel)}</div><ul>${m.facts.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><p class="section-caption">成员稳定标识：待真实受控处理生成，不在原型中编造。</p></div></div></div>`;
+      if (tab === "quality") return `<div class="panel"><div class="panel-head"><span class="panel-title">兼容性与质量证据</span>${badge("内容已确认","success")}</div><div class="panel-body"><div class="quality-groups"><section class="quality-group"><div class="quality-group-head"><strong>已核验通过</strong>${badge("6 项","success")}</div>${[["目标工作表与范围","财务数据、调节因子均存在"],["单位名称匹配","两边各 21 个，非空、唯一、集合和顺序一致"],["重复表头修正","AA1 已明确为上年累计；I/AA 业务值未改变"],["财务数据类型","546 个单元均为数值"],["时点与单位","2025-12-31 · CNY · 元"],["环保因子条件可空","G18:G21 为空已确认为业务不适用"]].map(x=>`<div class="check-row"><div><strong>${x[0]}</strong><p>${x[1]}</p></div><span>${badge("通过","success")}</span><button class="evidence-button" data-action="evidence">查看证据</button></div>`).join("")}</section><section class="quality-group"><div class="quality-group-head"><strong>待真实运行生成</strong>${badge("发布门未满足","neutral")}</div><div class="check-row"><div><strong>受控处理与版本证据</strong><p>尚无真实来源登记、快照、脚本运行、质量结论或双成员资产版本。</p></div><span>${badge("未运行","neutral")}</span><button class="evidence-button" data-action="open-s003-pipeline">查看管道配置</button></div></section></div></div></div>`;
+    if (tab === "consumption") return `<div class="panel"><div class="panel-head"><span class="panel-title">被引用情况</span>${badge("不可消费","neutral")}</div><div class="panel-body"><div class="summary-grid">${fact("管道配置引用","1 条")}${fact("真实运行使用","0 次")}${fact("已发布资产","0 个")}${fact("后续消费绑定","无")}</div><div class="notice warning" style="margin-top:14px">${icon("alert")}<span>S003 当前永久不进入本体刷新、权威采用或其他模块消费。兼容性验证不等于业务场景就绪。</span></div></div></div>`;
+    return `<div class="stack"><div class="notice warning">${icon("alert")}<span><strong>当前不能发布或消费。</strong> 已证明双成员结构可由现有数据资产合同表达，且数据内容已确认；尚未真实登记来源、快照和脚本版本，也没有受控运行与质量门证据。</span></div><div class="summary-grid">${["合同结构兼容|兼容","文件内容准备|已确认","受控发布治理|合同已批准·待运行","当前消费状态|不可消费"].map(x=>{const [a,b]=x.split("|");return `<div class="summary-tile"><span>${a}</span><strong>${b}</strong></div>`}).join("")}</div><div class="panel"><div class="panel-head"><span class="panel-title">下一步</span></div><div class="panel-body"><ol style="margin:0;padding-left:20px"><li>将当前校正工作簿登记为真实来源与原始快照。</li><li>登记受控的债务风险输入标准化脚本版本。</li><li>完成一次可追溯的受控运行与质量门。</li><li>仅在真实证据齐备后形成不可消费的兼容性资产版本。</li></ol><div class="button-row" style="margin-top:14px">${button("查看第二条管道配置","open-s003-pipeline","soft","workflow")}</div></div></div></div>`;
+  }
+  function sourceDetail(id) {
+    const s = D.sources.find(x=>x.id===id); if (!s || !s.canOpen) return renderResourceDirectory();
+    const isS003 = id === "src-s003-workbook"; const r = routeInfo(); const tab = r.params.get("tab") || (isS003 ? "compatibility" : "summary");
+    const actions = isS003 ? button("查看管道配置","open-s003-pipeline","soft","workflow") : button("共享文件夹设置","shared-folder","soft","database")+button("手工上传文件","upload","primary","upload");
+    const overlay=r.params.get("overlay");
+    return shell(`<div class="page" data-screen-label="${isS003?"S003 兼容性详情":"手工上传数据源详情"}">${pageHeader(isS003?"S003 兼容性详情":"手工上传数据源详情",isS003?"真实工作簿的结构、证据与未运行边界":"查看工作簿内容、快照与下游引用",actions)}<section class="detail-hero"><div><span class="eyebrow">${esc(s.scene)}</span><h1>${esc(s.name)}</h1><p>${esc(s.description)}</p></div><div class="hero-status">${badge(s.status,sourceTone(s))}${fact("数据截至",s.t008)}${fact("包含内容",s.contents)}</div></section>${detailTabs(tab,isS003)}<div class="content-grid"><div>${isS003?s003Content(tab):financeSourceContent(tab)}</div><aside class="stack"><div class="panel"><div class="panel-head"><span class="panel-title">来源身份</span></div><div class="panel-body"><div class="fact-grid">${fact("读取方式",isS003?"手工工作簿":"手工上传＋共享文件夹")}${fact("场景",s.scene)}${fact("管道引用",(s.pipelineRefs||0)+" 条")}${fact("资产引用",(s.assetRefs||0)+" 个")}</div></div></div>${isS003?`<details class="evidence"><summary>技术证据</summary><div class="evidence-body">工作簿：企业债务风险评估模版_S003兼容版.xlsx<br />当前 SHA-256：dbdab9c870d7f2e456c3a9e0f91b340b372da6d40eb241551e0ee8848cac42a0<br />尚无真实 T001 / T002 / T053 / T003 / T005 / T007。</div></details>`:""}</aside></div></div>${!isS003&&overlay==="shared-folder"?sharedFolderModal():!isS003&&overlay==="upload"?uploadModal():""}`,false);
+  }
+
+  function assetDetail() {
+    const a=D.assets[0]; const r=routeInfo(); const tab=r.params.get("tab")||"summary";
+    const tabs=[["summary","资产概况"],["members","成员与关系"],["versions","不可变版本"],["handoff","发布后交接"]];
+    let content="";
+    if(tab==="members") content=`<div class="panel"><div class="panel-head"><span class="panel-title">四成员结构</span>${badge("三条数据关系","info")}</div><div class="panel-body"><div class="member-tabs">${D.financeMembers.map(m=>`<button class="member-tab ${ui.member===m.key?"active":""}" data-action="member" data-value="${m.key}">${m.name}</button>`).join("")}</div>${memberFinance(ui.member)}<div class="data-table-wrap" style="margin-top:14px"><table class="data-table"><thead><tr><th>关系</th><th>来源字段</th><th>目标字段</th><th>基数</th><th>未匹配</th></tr></thead><tbody><tr><td>主体归属</td><td>融资明细.单位编码</td><td>融资主体参考.单位编码</td><td>多对一</td><td>0</td></tr><tr><td>机构归属</td><td>融资明细.机构编码</td><td>金融机构参考.机构编码</td><td>多对一</td><td>0</td></tr><tr><td>负责人归属</td><td>融资主体参考.负责人标识</td><td>融资负责人参考.负责人标识</td><td>多对一</td><td>0</td></tr></tbody></table></div></div></div>`;
+    else if(tab==="versions") content=`<div class="panel"><div class="panel-head"><span class="panel-title">不可变版本</span>${badge("上一可信版本持续服务","success")}</div><div class="panel-body"><div class="data-table-wrap"><table class="data-table"><thead><tr><th>版本</th><th>数据截至</th><th>发布时间</th><th>质量</th><th>消费状态</th></tr></thead><tbody><tr><td>ASSET-FINANCE@2026.08.08-r2</td><td>2026-08-08</td><td>2026-08-09 10:08</td><td>有警告·已确认</td><td>${badge("消费就绪","success")}</td></tr><tr><td>ASSET-FINANCE@2026.07.31-r1</td><td>2026-07-31</td><td>2026-08-09 10:02</td><td>有警告·已确认</td><td>${badge("历史可信","neutral")}</td></tr></tbody></table></div></div></div>`;
+    else if(tab==="handoff") content=`<div class="stack"><div class="notice">${icon("info")}<span>数据工程在发布后交接区创建并提交 C028 / T050 请求；画布不增加第五节点。交接区随后只读展示本体管理返回的 C029 / T051 回执与结果。</span></div><div class="panel"><div class="panel-head"><span class="panel-title">只读交接状态</span>${badge("已有回执","success")}</div><div class="panel-body"><div class="summary-grid">${fact("数据资产责任方",a.owner)}${fact("精确资产版本",a.currentVersion)}${fact("刷新请求","数据工程提交 C028 / T050")}${fact("结果与采用","本体管理拥有 C029 / T051，并唯一提交 T019")}</div><div class="handoff-grid"><div class="result-card"><strong>请求与回执</strong><p>请求从发布后交接区提交；回执及刷新结果在此只读显示，不作为画布节点。</p></div><div class="result-card"><strong>权威采用</strong><p>只有本体管理可提交 T019；智能问数、报告和 Agent 只能经 Published 本体及权威语义路径消费。</p></div></div></div></div></div>`;
+    else content=`<div class="stack"><div class="summary-grid">${fact("当前可信版本",a.currentVersion)}${fact("数据截至",a.t008)}${fact("质量状态",a.quality)}${fact("当前消费",a.status)}</div><div class="panel"><div class="panel-head"><span class="panel-title">资产说明</span>${badge("CR-DE-007 候选","info")}</div><div class="panel-body"><p>将融资工作簿标准化为可复现、不可变的四成员数据包，并保留三条成员间数据关系、来源快照和质量证据。</p><div class="asset-members">${a.members.map(m=>badge(m,"plain")).join("")}</div><div class="notice">${icon("info")}<span>已发布资产作为其他管道输入仍是 CR-DE-007 候选合同；需通过兼容性和防自循环门禁，当前融资管道不能选择自身 T006。</span></div></div></div></div>`;
+    return shell(`<div class="page" data-screen-label="数据资产详情">${pageHeader("融资标准化数据资产","精确版本、成员结构、质量与只读交接证据",button("查看复用候选规则","toast","soft","workflow",false,'data-message="CR-DE-007 仍为候选合同；当前不直接创建管道输入"'))}<section class="detail-hero"><div><span class="eyebrow">已发布数据资产</span><h1>${a.name}</h1><p>来源：融资明细一览表 · 最近发布 ${a.publishedAt}</p></div><div class="hero-status">${badge(a.status,"success")}${fact("成员","4 个")}${fact("关系","3 条")}</div></section><div class="tabs">${tabs.map(x=>`<button class="tab ${tab===x[0]?"active":""}" data-action="asset-tab" data-value="${x[0]}">${x[1]}</button>`).join("")}</div>${content}</div>`,false);
+  }
+
+  function pipelineTabs(active) { return `<div class="tabs"><button class="tab ${active==="list"?"active":""}" data-action="pipeline-tab" data-value="list">管道列表</button><button class="tab ${active==="runs"?"active":""}" data-action="pipeline-tab" data-value="runs">运行历史</button></div>`; }
+  function pipelineList() {
+    return `<div class="pipeline-list">${D.pipelines.map(p=>`<article class="pipeline-card"><div><span class="eyebrow">${p.version}</span><h3>${p.name}</h3><p>${p.purpose}</p></div><div class="pipeline-meta">${fact("输入来源",p.source)}${fact("节点",p.nodeCount+" 个")}${fact("输出资产",p.output)}${fact("最近修改",p.modified)}</div><div class="pipeline-actions">${badge(p.runStatus,p.id==="pipe-finance"?"success":"neutral")}<button class="card-link" data-action="open-pipeline" data-id="${p.id}">${p.id==="pipe-finance"?"打开画布":"查看配置"} ${icon("chevron")}</button>${p.id==="pipe-s003-compat"?'<span class="section-caption">0 次运行 · 不可消费</span>':""}</div></article>`).join("")}</div>`;
+  }
+  function runHistory() {
+    return `<div class="panel"><div class="panel-head"><span class="panel-title">数据管道运行历史</span><span class="section-caption">S003 尚无运行记录</span></div><div class="panel-body"><div class="data-table-wrap"><table class="data-table"><thead><tr><th>运行标识</th><th>管道 / 版本</th><th>触发方式</th><th>输入快照</th><th>数据截至</th><th>状态</th><th>质量</th><th>形成资产</th><th>失败与恢复</th></tr></thead><tbody>${D.runs.map(r=>`<tr><td><button class="card-link" data-action="run-detail" data-id="${r.id}">${r.id}</button></td><td>${r.pipeline}<br/><span class="section-caption">${r.version}</span></td><td>${r.trigger}</td><td>${r.snapshot}</td><td>${r.t008}</td><td>${badge(r.status,r.status==="成功"?"success":r.status.includes("失败")?"danger":"info")}</td><td>${r.quality}</td><td>${r.asset}</td><td>${r.failure}${r.status.includes("失败")?'<br/><button class="card-link" data-action="open-failure">定位并重试</button>':""}</td></tr>`).join("")}</tbody></table></div></div></div>`;
+  }
+  function runDetail(runId) {
+    const run=D.runs.find(x=>x.id===runId)||D.runs[0]; const failed=run.status.includes("失败"); const trial=run.status.includes("调试");
+    const statusFor=(key)=>failed?(key==="source"||key==="python"?badge("成功","success"):key==="quality"?badge("硬阻断","danger"):badge("未执行","neutral")):trial?(key==="publish"?badge("调试不执行","neutral"):badge("调试完成","info")):badge("成功","success");
+    const runNodes=[{key:"source",name:"数据源"},{key:"python",name:"Python 脚本"},{key:"quality",name:"数据检查"},{key:"publish",name:"发布数据资产"}];
+    return shell(`<div class="page pipeline-page" data-screen-label="运行详情">${pageHeader("运行详情",`${run.pipeline} · ${run.id}`,button("返回运行历史","back-runs","","history"))}<div class="notice">${icon("info")}<span>这是评审原型中的运行证据夹具，用于核对页面结构；不代表当前前端实际执行了后端管道。</span></div><div class="summary-grid" style="margin-top:14px">${fact("运行标识",run.id)}${fact("触发方式",run.trigger)}${fact("输入快照",run.snapshot)}${fact("数据截至",run.t008)}${fact("开始 / 结束",`${run.start} / ${run.end}`)}${fact("运行状态",run.status)}${fact("质量结论",run.quality)}${fact("形成资产",run.asset)}</div><div class="content-grid" style="margin-top:14px"><div class="stack"><div class="panel"><div class="panel-head"><span class="panel-title">四节点执行证据</span>${badge(run.status,failed?"danger":trial?"info":"success")}</div><div class="panel-body"><div class="quality-groups">${runNodes.map((n,i)=>`<div class="check-row"><div><strong>0${i+1} · ${n.name}</strong><p>${n.key==="source"?"锁定输入快照并读取结构":n.key==="python"?"执行受控融资标准化脚本":n.key==="quality"?run.quality:failed?"因质量硬阻断未执行":"形成不可变数据资产版本"}</p></div>${statusFor(n.key)}<button class="evidence-button" data-action="toast" data-message="已定位 ${n.name} 节点证据">查看证据</button></div>`).join("")}</div></div></div><div class="panel"><div class="panel-head"><span class="panel-title">质量、发布与交接</span></div><div class="panel-body">${failed?`<div class="notice danger">${icon("alert")}<span><strong>失败原因：</strong>${run.failure}<br/>发布节点未执行，未形成新资产版本，也未提交 C028 / T050。</span></div><div class="result-card" style="margin-top:12px"><strong>恢复方式</strong><p>修正来源中的旧板块名称，重新登记新快照；从数据检查节点重试时仍保留原失败运行证据。</p></div>`:trial?`<div class="notice">${icon("info")}<span>调试运行只验证节点配置和样例结果，不形成正式 T005、资产版本或交接请求。</span></div>`:`<div class="notice success">${icon("check")}<span>质量警告已人工确认，形成 ${run.asset}。数据工程随后提交 C028 / T050；本体回执和结果在资产交接区只读展示。</span></div>`}</div></div></div><aside class="stack"><div class="panel"><div class="panel-head"><span class="panel-title">输入与输出</span></div><div class="panel-body"><div class="fact-grid">${fact("输入来源",run.source)}${fact("输入快照",run.snapshot)}${fact("输出",run.asset)}${fact("失败阶段",failed?"数据检查":"—")}</div></div></div><details class="evidence"><summary>精确技术证据</summary><div class="evidence-body">管道版本 ${run.version}；运行触发、快照、节点结果、质量和资产版本均以只读方式长期保留。</div></details></aside></div></div>`,false);
+  }
+  function pipelinesHome() { const tab=routeInfo().params.get("tab")||"list"; return shell(`<div class="page pipeline-page" data-screen-label="${tab==="runs"?"运行历史":"数据管道列表"}">${pageHeader("数据管道",tab==="runs"?"查看每次数据管道运行、失败原因与恢复证据":"配置、运行并发布可复现的数据资产",button("新建管道","toast","primary","workflow",false,'data-message="一期仅支持从四个固定节点组装管道"'))}${pipelineTabs(tab)}${tab==="runs"?runHistory():pipelineList()}</div>`,false); }
+
+  const nodeDefs=[
+    {key:"source",name:"数据源",icon:"database",color:"#a66b2e",hint:"选择来源或可信资产"},
+    {key:"python",name:"Python 脚本",icon:"python",color:"#4667cf",hint:"选择预置受控脚本"},
+    {key:"quality",name:"数据检查",icon:"shield",color:"#087f76",hint:"执行固定质量门"},
+    {key:"publish",name:"发布数据资产",icon:"package",color:"#7653b6",hint:"形成不可变版本"}
+  ];
+  function nodeStatus(key,preset,isS003) {
+    if(isS003) return key==="source"?{label:"评审结构·待登记",tone:"warning"}:{label:"未执行",tone:"neutral"};
+    if(preset==="debug-running") return key==="source"?{label:"样例已读取",tone:"success"}:key==="python"?{label:"调试中",tone:"running"}:{label:"调试不执行",tone:"neutral"};
+    if(preset==="debug-complete") return ["source","python"].includes(key)?{label:"调试完成",tone:"success"}:{label:"调试不执行",tone:"neutral"};
+    if(preset==="running") return key==="source"?{label:"成功",tone:"success"}:key==="python"?{label:"运行中",tone:"running"}:{label:"等待",tone:"neutral"};
+    if(preset==="quality-failed") return ["source","python"].includes(key)?{label:"成功",tone:"success"}:key==="quality"?{label:"硬阻断",tone:"failed"}:{label:"未执行",tone:"neutral"};
+    if(preset==="quality-warning") return key==="publish"?{label:"等待确认",tone:"warning"}:{label:"成功",tone:"success"};
+    if(preset==="publish-ready") return {label:"校验通过",tone:"success"};
+    return {label:key==="source"?"已配置":"待运行",tone:key==="source"?"success":"neutral"};
+  }
+  function canvasToolbar(p,isS003,preset) {
+    const canPublish=!isS003&&preset==="publish-ready";
+    const saveState=isS003?`${icon("info")} 评审结构 · 未形成 T003`:`${icon("check")} 已保存`;
+    return `<div class="canvas-toolbar"><div class="canvas-title"><div class="canvas-title-line"><h1>${p.name}</h1>${badge(p.version,"plain")}<span class="save-state">${saveState}</span></div></div><div class="canvas-actions"><button class="btn icon-only" data-action="undo" title="撤销">${icon("undo")}</button><button class="btn" data-action="save" ${isS003?'disabled title="评审结构不能保存为平台管道版本"':""}>${icon("save")}保存</button><button class="btn" data-action="debug" ${isS003?"disabled title=\"尚无真实登记快照，不能调试\"":""}>${icon("bug")}调试</button><button class="btn primary" data-action="run" ${isS003?"disabled title=\"尚无真实登记快照，不能运行\"":""}>${icon("play")}正式运行</button><button class="btn soft" data-action="publish" ${canPublish?"":"disabled"}>${icon("package")}发布数据资产</button></div></div>`;
+  }
+  function nodeLibrary() { return `<aside class="node-library"><h2>节点库</h2><p>拖入画布后再配置</p><div class="library-list">${nodeDefs.map(n=>`<button class="library-node" data-action="toast" data-message="已添加一个未配置的${n.name}节点（评审交互）"><span class="node-icon" style="color:${n.color}">${icon(n.icon)}</span><span><strong>${n.name}</strong><small>${n.hint}</small></span></button>`).join("")}</div></aside>`; }
+  function canvasFlow(p,preset,selected,isS003) {
+    const descriptions=isS003?{source:"企业债务风险评估模版",python:"债务风险输入标准化",quality:"双成员兼容性检查",publish:"兼容性数据资产"}:{source:"融资工作簿快照",python:"融资标准化 v1",quality:"融资固定检查集",publish:"四成员 · 三关系"};
+    const canvasBadge=isS003?badge("尚无真实运行","neutral"):preset==="quality-failed"?badge("质量门硬阻断","danger"):preset==="debug-running"?badge("正在调试 Python 节点","info"):preset==="debug-complete"?badge("调试完成 · 未形成正式 T005","info"):preset==="running"?badge("正在正式运行 Python 节点","info"):preset==="publish-ready"?badge("可发布","success"):badge("评审配置","neutral");
+    const flowing=preset==="running"||preset==="debug-running";
+    return `<section class="canvas-stage"><div class="canvas-status">${canvasBadge}<span class="section-caption">${isS003?"合同已批准 · 待真实登记和运行":"T008 2026-08-08"}</span></div><div class="flow">${nodeDefs.map((n,i)=>{const st=nodeStatus(n.key,preset,isS003);return `${i?`<div class="flow-edge ${flowing&&i<=1?"active":""}"></div>`:""}<button class="flow-node ${selected===n.key?"selected":""}" style="--node-color:${n.color}" data-action="select-node" data-node="${n.key}"><span class="node-number">0${i+1}</span><h3>${n.name}</h3><p>${descriptions[n.key]}</p><span class="node-state ${st.tone}">${st.tone==="success"?icon("check"):st.tone==="failed"?icon("alert"):st.tone==="running"?icon("refresh"):""}${st.label}</span></button>`}).join("")}</div><div class="zoom-tools"><button data-action="zoom" data-value="-10">−</button><button>${ui.zoom}%</button><button data-action="zoom" data-value="10">＋</button><button data-action="fit">适应窗口</button></div></section>`;
+  }
+  function inspectorTabs(node,active) {
+    const tabs=node==="source"?[["config","配置"],["preview","内容预览"],["snapshots","快照历史"],["result","运行结果"]]:node==="python"?[["config","脚本配置"],["code","只读代码"],["result","运行结果"],["logs","日志"]]:node==="quality"?[["config","检查规则"],["result","质量结果"]]:[["config","发布配置"],["preview","发布预览"],["result","发布结果"]];
+    return `<div class="inspector-tabs">${tabs.map(x=>`<button class="${active===x[0]?"active":""}" data-action="node-tab" data-value="${x[0]}">${x[1]}</button>`).join("")}</div>`;
+  }
+  function sourceInspector(tab,isS003,preset) {
+    if(tab==="preview") return `<div class="inspector-body"><div class="result-card"><strong>${isS003?"2 个 Sheet / 2 个逻辑成员":"1 个工作簿 / 4 类业务内容"}</strong><p>${isS003?"财务数据 21×27；调节因子 21×9":"处理后预计形成 4 个成员"}</p></div><div class="data-table-wrap"><table class="data-table"><thead><tr><th>字段</th><th>类型</th><th>示例</th></tr></thead><tbody>${isS003?"<tr><td>单位名称</td><td>文本</td><td>企业A</td></tr><tr><td>评估时点</td><td>日期</td><td>2025-12-31</td></tr><tr><td>利润总额_本年累计数</td><td>小数</td><td>12800000</td></tr>":"<tr><td>单位名称</td><td>文本</td><td>单位A</td></tr><tr><td>借据编号</td><td>文本</td><td>DEMO-DEBT-000001</td></tr><tr><td>融资余额</td><td>小数</td><td>1250000000</td></tr>"}</tbody></table></div></div>`;
+    if(tab==="snapshots") return `<div class="inspector-body">${isS003?`<div class="notice warning">${icon("alert")}<span>尚无可用快照。当前文件只完成只读兼容性核验，尚未登记真实 T002。</span></div>`:`<div class="result-card"><strong>SNAP-FIN-20260808-002</strong><p>数据截至 2026-08-08 · 已锁定用于本次运行</p></div><div class="result-card"><strong>SNAP-FIN-20260731-001</strong><p>历史可信输入 · 形成 r1</p></div>`}</div>`;
+    if(tab==="result") return `<div class="inspector-body">${isS003?`<div class="notice">${icon("info")}<span>未运行，因此不展示读取成功、记录规模或快照锁定结果。</span></div>`:`<div class="result-card"><strong>读取成功</strong><p>锁定 1 个原始快照 · 5,218 条融资明细</p></div><div class="result-card"><strong>输入结构</strong><p>识别单位、借据、金融机构与负责人信息</p></div>`}</div>`;
+    return `<div class="inspector-body"><div class="field"><label>数据来源</label><button class="btn" data-action="source-picker">${icon("database")}${isS003?"企业债务风险评估模版":"融资明细一览表"}</button></div><div class="field"><label>输入快照</label><input value="${isS003?"待真实登记生成":"SNAP-FIN-20260808-002"}" readonly /></div><div class="field"><label>数据截至时间</label><input value="${isS003?"2025-12-31":"2026-08-08"}" readonly /></div><span class="field-help">已发布资产复用为 CR-DE-007 候选；必须满足兼容性与防自循环门禁。</span>${isS003?`<div class="notice warning">${icon("alert")}<span>当前只展示评审结构，尚未形成真实 T003；没有来源快照和脚本登记，不能保存、调试或运行。</span></div>`:""}</div>`;
+  }
+  function pythonInspector(tab,isS003,preset) {
+    const name=isS003?"债务风险输入标准化":"融资工作簿标准化";
+    if(tab==="code") return `<div class="inspector-body"><div class="notice">${icon("info")}<span>代码只读展示；一期不支持在线编辑或任意脚本上传。</span></div><pre class="code-block">def transform(workbook, as_of_date):
+    members = read_members(workbook)
+    normalized = normalize_keys(members)
+    return build_versioned_package(
+        normalized,
+        as_of_date=as_of_date
+    )</pre><span class="field-help">受控模块版本：${isS003?"待真实登记":"v1.0.0"}</span></div>`;
+    if(tab==="result") return `<div class="inspector-body">${isS003?`<div class="notice">${icon("info")}<span>未运行，不展示处理行数、结构变化或耗时。</span></div>`:preset==="debug-running"?`<div class="notice">${icon("refresh")}<span>正在用有限样例调试 Python 节点…</span></div><div class="result-card"><strong>样例进度 62%</strong><p>仅处理调试样例，不锁定正式输出。</p></div>`:preset==="debug-complete"?`<div class="notice success">${icon("check")}<span><strong>调试完成 · 无副作用</strong><br/>结果只用于检查节点配置，不形成正式 T005、资产版本或交接请求。</span></div><div class="result-card"><strong>样例输入 / 输出</strong><p>200 行 / 200 行；未进入正式数据检查与发布。</p></div>`:preset==="running"?`<div class="notice">${icon("refresh")}<span>正在标准化单位、金融机构和负责人键…</span></div><div class="result-card"><strong>当前进度 62%</strong><p>已处理 3,235 / 5,218 条</p></div>`:`<div class="result-card"><strong>处理完成 · 18.6 秒</strong><p>输入 5,218 行，输出 5,218 行；拆分 4 个成员，生成 3 条关系。</p></div>`}</div>`;
+    if(tab==="logs") return `<div class="inspector-body"><pre class="code-block">10:06:11 载入受控脚本
+10:06:12 规范化单位名称
+10:06:21 生成稳定业务键
+10:06:29 输出四成员数据包
+10:06:30 完成</pre></div>`;
+    return `<div class="inspector-body"><div class="field"><label>预置脚本</label><select><option>${name}</option></select></div><div class="field"><label>脚本版本</label><input value="${isS003?"待真实登记":"v1.0.0"}" readonly /></div><div class="field"><label>参数 · 评估/数据时点</label><input value="${isS003?"2025-12-31":"2026-08-08"}" /></div><div class="result-card"><strong>输入</strong><p>${isS003?"财务数据、调节因子":"融资工作簿快照"}</p></div><div class="result-card"><strong>输出</strong><p>${isS003?"双成员兼容性数据包（待运行）":"四成员、三关系标准化数据包"}</p></div></div>`;
+  }
+  function qualityInspector(tab,isS003,preset) {
+    if(tab==="config") return `<div class="inspector-body"><div class="result-card"><strong>${isS003?"双成员兼容性检查集":"融资固定检查集 v1.0"}</strong><p>${isS003?"工作表、表头、单位键、类型、因子枚举与适用性":"身份、端点、板块、必填、数值与规模变化"}</p></div><div class="field"><label>硬阻断策略</label><input value="任一硬阻断失败即停止发布" readonly /></div><div class="field"><label>警告策略</label><input value="需人工确认后方可发布" readonly /></div></div>`;
+    if(isS003) return `<div class="inspector-body"><div class="notice">${icon("info")}<span>静态核验事实不等同于正式质量门，不能冒充阶段通过。</span></div><div class="result-card"><strong>静态数据内容：已确认</strong><p>环保企业电价波动率为空表示业务不适用。</p></div><div class="result-card"><strong>合同结构：兼容</strong><p>双成员可由现有数据资产版本合同共同表达。</p></div><div class="result-card"><strong>正式 T005：未运行</strong><p>等待真实快照、脚本版本和受控运行。</p></div></div>`;
+    const failed=preset==="quality-failed"; const rows=failed?D.quality.failed:D.quality.warning;
+    return `<div class="inspector-body"><div class="notice ${failed?"danger":"warning"}">${icon(failed?"alert":"info")}<span><strong>${failed?"1 项硬阻断，禁止发布":"5 项通过，2 项警告"}</strong><br/>${failed?"已停止后续发布节点。":"警告需确认后才可进入发布。"}</span></div>${rows.map(x=>`<details class="result-card"><summary><strong>${x.name}</strong> ${badge(x.result,x.result==="通过"?"success":x.result==="硬阻断"?"danger":"warning")}</summary><p>${x.detail} · 影响 ${x.affected}</p><p><strong>恢复：</strong>${x.recovery}</p></details>`).join("")}${failed?button("从数据检查节点重试","retry","danger","refresh"):button("确认警告并继续","confirm-warning","soft","check")}</div>`;
+  }
+  function publishInspector(tab,isS003,preset) {
+    if(tab==="preview") return `<div class="inspector-body"><div class="result-card"><strong>${isS003?"最终发布物尚不能生成":"融资标准化数据资产"}</strong><p>${isS003?"双成员 · 仅兼容性验证 · 永久不可消费":"四成员 · 三关系 · 不可变资产版本"}</p></div><div class="summary-grid" style="grid-template-columns:1fr 1fr">${fact("数据截至",isS003?"2025-12-31":"2026-08-08")}${fact("质量",isS003?"待正式质量门":preset==="publish-ready"?"有警告·已人工确认":"有警告·待确认")}${fact("来源",isS003?"待登记工作簿":"精确融资快照")}${fact("复用输入",isS003?"永久不允许":"CR-DE-007 候选")}</div></div>`;
+    if(tab==="result") return `<div class="inspector-body">${isS003?`<div class="notice">${icon("info")}<span>未运行且未发布，不展示版本号或发布成功状态。</span></div>`:preset==="publish-ready"?`<div class="notice success">${icon("check")}<span>发布校验通过，等待人工确认形成不可变版本。</span></div>`:`<div class="notice">${icon("info")}<span>尚未执行发布。完成正式运行并通过质量门后显示发布结果。</span></div>`}</div>`;
+    return `<div class="inspector-body"><div class="field"><label>数据资产名称</label><input value="${isS003?"债务风险输入兼容性数据资产":"融资标准化数据资产"}" ${isS003?"readonly":""} /></div><div class="field"><label>业务用途</label><textarea ${isS003?"readonly":""}>${isS003?"仅验证双成员能否被现有数据资产合同表达，不进入业务消费。":"支撑融资主题 Published 本体及权威语义消费。"}</textarea></div><div class="field"><label>版本说明</label><input value="${isS003?"待真实运行后填写":"更新至 2026-08-08 可信快照"}" ${isS003?"readonly":""} /></div><div class="field"><label>成员结构</label><input value="${isS003?"财务数据、调节因子":"融资主体参考、融资明细、金融机构参考、融资负责人参考"}" readonly /></div><div class="field"><label>成员关系</label><input value="${isS003?"单位名称规范值＋评估时点（数据层匹配）":"三条多对一数据关系"}" readonly /></div><div class="field"><label>发布范围</label><select ${isS003?"disabled":""}><option>${isS003?"兼容性验证 · 永久不可消费":"可信资产目录 · CR-DE-007 候选（一期不可生效）"}</option></select></div>${isS003?`<div class="notice warning">${icon("alert")}<span>这里只读展示预期发布结构；当前不能保存或发布，也不会生成 T003/T007。</span></div>`:""}</div>`;
+  }
+  function inspector(p,isS003,preset,node,tab) {
+    const def=nodeDefs.find(x=>x.key===node)||nodeDefs[0];
+    const body=node==="source"?sourceInspector(tab,isS003,preset):node==="python"?pythonInspector(tab,isS003,preset):node==="quality"?qualityInspector(tab,isS003,preset):publishInspector(tab,isS003,preset);
+    return `<aside class="inspector"><div class="inspector-head"><div><h2>${def.name}</h2><p>${def.hint}</p></div>${badge(nodeStatus(node,preset,isS003).label,nodeStatus(node,preset,isS003).tone==="failed"?"danger":nodeStatus(node,preset,isS003).tone==="success"?"success":"neutral")}</div>${inspectorTabs(node,tab)}${body}${node==="publish"&&!isS003?`<div class="handoff"><h3>发布后交接（非画布节点）</h3><p>数据工程创建并提交 C028 / T050；本体管理拥有 C029 / T051 结果并唯一提交 T019。交接区只读展示回执和结果。</p></div>`:""}</aside>`;
+  }
+  function sourcePicker(isS003) {
+    return `<div class="modal-backdrop" data-overlay="true"><section class="modal" role="dialog" aria-modal="true" aria-label="选择数据源"><div class="modal-head"><div><h2>选择数据源</h2><span class="section-caption">真实来源；资产复用仍为 CR-DE-007 候选</span></div><button class="btn icon-only" data-action="close-overlay" aria-label="关闭">${icon("close")}</button></div><div class="modal-body"><label class="search" style="display:block;max-width:none">${icon("search")}<input placeholder="搜索已登记来源或数据资产" /></label><div class="picker-list">${D.sources.map(s=>`<button class="picker-row" ${isS003||s.authenticity==="demo"||s.id==="src-s003-workbook"?"disabled":""}><div><h3>${s.name}</h3><p>${s.type} · ${s.scene} · ${s.contents}</p></div>${badge(isS003?(s.id==="src-s003-workbook"?"待真实快照":"不属于此管道"):s.authenticity==="demo"?"演示连接器":s.id==="src-s003-workbook"?"无真实快照":"可用",!isS003&&s.id==="src-finance-upload"?"success":"neutral")}</button>`).join("")}<button class="picker-row" disabled><div><h3>融资标准化数据资产</h3><p>已发布数据资产 · 4 个成员 · 数据截至 2026-08-08</p></div>${badge(isS003?"S003 范围禁用资产复用":"同 T006 自循环禁止","neutral")}</button></div><div class="notice" style="margin-top:12px">${icon("info")}<span>跨管道复用须待 CR-DE-007 收敛并通过兼容性校验；当前选择器不提供可执行入口。</span></div></div><div class="modal-foot">${button("取消","close-overlay")}${button("确认选择","picker-confirm","primary","check",isS003)}</div></section></div>`;
+  }
+  function publishConfirm() {
+    return `<div class="modal-backdrop" data-overlay="true"><section class="modal small" role="dialog" aria-modal="true" aria-label="发布前确认"><div class="modal-head"><h2>确认发布不可变数据资产</h2><button class="btn icon-only" data-action="close-overlay">${icon("close")}</button></div><div class="modal-body"><div class="notice warning">${icon("alert")}<span>发布后该版本内容不可修改。后续更正将形成新版本。</span></div><div class="confirm-list"><div class="confirm-row"><span>资产</span><strong>融资标准化数据资产</strong></div><div class="confirm-row"><span>数据截至</span><strong>2026-08-08</strong></div><div class="confirm-row"><span>成员结构</span><strong>四成员 · 三关系</strong></div><div class="confirm-row"><span>质量结论</span><strong>有警告 · 已人工确认</strong></div><div class="confirm-row"><span>来源证据</span><strong>1 个精确快照</strong></div><div class="confirm-row"><span>发布后交接</span><strong>数据工程提交 C028 / T050；结果只读回显</strong></div></div><label style="display:flex;gap:8px;align-items:flex-start"><input type="checkbox" id="publish-check" /> <span>我已核对将发布的成员、粒度、稳定键、质量和来源。</span></label></div><div class="modal-foot">${button("返回检查","close-overlay")}${button("确认发布","confirm-publish","primary","package")}</div></section></div>`;
+  }
+  function canvasPage(id) {
+    const p=D.pipelines.find(x=>x.id===id)||D.pipelines[0]; const isS003=id==="pipe-s003-compat"; const r=routeInfo();
+    const preset=r.params.get("preset")||(isS003?"s003-never-run":"default"); const node=r.params.get("node")||"source"; const tab=r.params.get("nodeTab")||r.params.get("panel")||"config"; const overlay=r.params.get("overlay");
+    return shell(`<div class="canvas-shell ${preset==="running"||preset==="debug-running"?"is-running":""}" data-screen-label="管道画布">${canvasToolbar(p,isS003,preset)}<div class="canvas-workbench">${nodeLibrary()}${canvasFlow(p,preset,node,isS003)}${inspector(p,isS003,preset,node,tab)}</div></div>${overlay==="source-picker"?sourcePicker(isS003):overlay==="publish-confirm"&&!isS003?publishConfirm():""}`,true);
+  }
+
+  function render() {
+    const r=routeInfo(); const p=r.parts; let html;
+    if(p[0]==="resources"&&p[1]==="source") html=sourceDetail(p[2]);
+    else if(p[0]==="resources"&&p[1]==="asset") html=assetDetail();
+    else if(p[0]==="pipelines"&&p[2]==="canvas") html=canvasPage(p[1]);
+    else if(p[0]==="pipelines"&&p[2]==="runs"&&p[3]) html=runDetail(p[3]);
+    else if(p[0]==="pipelines") html=pipelinesHome();
+    else html=renderResourceDirectory();
+    root.innerHTML=html;
+    const type=document.getElementById("filter-type"), status=document.getElementById("filter-status"), scene=document.getElementById("filter-scene");
+    if(type)type.value=ui.type;if(status)status.value=ui.status;if(scene)scene.value=ui.scene;
+  }
+
+  document.addEventListener("click", function(e) {
+    const el=e.target.closest("[data-action]"); if(!el) return; const action=el.dataset.action;
+    if(el.disabled) return;
+    if(action==="view") { if(el.dataset.kind==="source")ui.sourceView=el.dataset.value;else ui.assetView=el.dataset.value;render(); }
+    else if(action==="toggle-group") { ui.collapsedGroups.has(el.dataset.group)?ui.collapsedGroups.delete(el.dataset.group):ui.collapsedGroups.add(el.dataset.group);render(); }
+    else if(action==="select-resource") { ui.selectedResource=el.dataset.id;render(); }
+    else if(action==="open-source") navigate(`#/resources/source/${el.dataset.id}?tab=${el.dataset.id==="src-s003-workbook"?"compatibility":"summary"}`);
+    else if(action==="open-asset") navigate("#/resources/asset/asset-finance?tab=summary");
+    else if(action==="detail-tab") navigate(routeWith({tab:el.dataset.value}));
+    else if(action==="asset-tab") navigate(routeWith({tab:el.dataset.value}));
+    else if(action==="member") { ui.member=el.dataset.value;render(); }
+    else if(action==="s003-member") { ui.s003Member=el.dataset.value;render(); }
+    else if(action==="pipeline-tab") navigate(`#/pipelines?tab=${el.dataset.value}`);
+    else if(action==="open-pipeline") navigate(`#/pipelines/${el.dataset.id}/canvas?preset=${el.dataset.id==="pipe-s003-compat"?"s003-never-run":"default"}&node=source&panel=config`);
+    else if(action==="open-s003-pipeline") navigate("#/pipelines/pipe-s003-compat/canvas?preset=s003-never-run&node=source&panel=config");
+    else if(action==="select-node") navigate(routeWith({node:el.dataset.node,panel:"config",nodeTab:null,overlay:null}));
+    else if(action==="node-tab") navigate(routeWith({nodeTab:el.dataset.value,panel:null}));
+    else if(action==="source-picker") navigate(routeWith({overlay:"source-picker"}));
+    else if(action==="close-overlay") navigate(routeWith({overlay:null}));
+    else if(action==="publish") navigate(routeWith({overlay:"publish-confirm"}));
+    else if(action==="confirm-warning") navigate(routeWith({preset:"publish-ready",node:"publish",panel:"config",nodeTab:null}));
+    else if(action==="debug") { navigate(routeWith({preset:"debug-running",node:"python",panel:"result",nodeTab:null})); clearTimeout(runTimer); runTimer=setTimeout(()=>navigate(routeWith({preset:"debug-complete",node:"python",panel:"result",nodeTab:null})),1600); }
+    else if(action==="run") { navigate(routeWith({preset:"running",node:"python",panel:"result",nodeTab:null})); clearTimeout(runTimer); runTimer=setTimeout(()=>navigate(routeWith({preset:"quality-warning",node:"quality",panel:"result",nodeTab:null})),1800); }
+    else if(action==="retry") navigate(routeWith({preset:"running",node:"quality",panel:"result"}));
+    else if(action==="open-failure") navigate("#/pipelines/pipe-finance/canvas?preset=quality-failed&node=quality&panel=result");
+    else if(action==="confirm-publish") { const cb=document.getElementById("publish-check"); if(!cb||!cb.checked){showToast("请先确认已核对发布内容");}else{navigate(routeWith({overlay:null}));setTimeout(()=>showToast("评审交互已完成：不会创建真实资产版本"),40);} }
+    else if(action==="picker-confirm") { navigate(routeWith({overlay:null}));setTimeout(()=>showToast("已选择融资明细一览表"),30); }
+    else if(action==="zoom") { ui.zoom=Math.max(70,Math.min(130,ui.zoom+Number(el.dataset.value)));render(); }
+    else if(action==="fit") { ui.zoom=100;showToast("画布已适应窗口"); }
+    else if(action==="save") showToast(routeInfo().parts[1]==="pipe-s003-compat"?"S003 仅为评审结构，不能保存为 T003":"管道配置已保存（评审交互）");
+    else if(action==="undo") showToast("没有可撤销的修改");
+    else if(action==="upload") navigate("#/resources/source/src-finance-upload?tab=summary&overlay=upload");
+    else if(action==="upload-confirm") showToast("评审原型不读取文件；真实产品将在校验后登记快照");
+    else if(action==="shared-folder") navigate(routeInfo().parts[1]==="source"?routeWith({overlay:"shared-folder"}):"#/resources/source/src-finance-upload?tab=summary&overlay=shared-folder");
+    else if(action==="folder-test") showToast("访问测试交互已触发；原型不伪造测试成功结果");
+    else if(action==="folder-save") showToast("共享文件夹设置已保存（评审交互）");
+    else if(action==="folder-check") showToast("真实产品将启动一次完整检查；原型不生成快照或运行");
+    else if(action==="folder-pause") showToast("来源保持暂停，不存在定时检查计划");
+    else if(action==="evidence") showToast("已展开对应工作簿核验证据");
+    else if(action==="run-detail") navigate(`#/pipelines/pipe-finance/runs/${el.dataset.id}`);
+    else if(action==="back-runs") navigate("#/pipelines?tab=runs");
+    else if(action==="toast") showToast(el.dataset.message||"操作已记录");
+    else if(action==="category") { ui.type=el.dataset.value==="全部资源"?"全部来源":el.dataset.value==="手工上传"?"手工工作簿":el.dataset.value;const visible=filteredSources();if(!visible.some(x=>x.id===ui.selectedResource))ui.selectedResource=visible[0]?.id||"";render(); }
+  });
+  document.addEventListener("input", function(e){ if(e.target.id==="resource-search"){ui.query=e.target.value;const visible=filteredSources();if(!visible.some(x=>x.id===ui.selectedResource))ui.selectedResource=visible[0]?.id||"";render();const n=document.getElementById("resource-search");if(n){n.focus();n.setSelectionRange(n.value.length,n.value.length);}} });
+  document.addEventListener("change", function(e){ if(e.target.id==="filter-type")ui.type=e.target.value;else if(e.target.id==="filter-status")ui.status=e.target.value;else if(e.target.id==="filter-scene")ui.scene=e.target.value;else return;const visible=filteredSources();if(!visible.some(x=>x.id===ui.selectedResource))ui.selectedResource=visible[0]?.id||"";render(); });
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape"&&routeInfo().params.get("overlay")){navigate(routeWith({overlay:null}));} if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="s"){e.preventDefault();showToast(routeInfo().parts[1]==="pipe-s003-compat"?"S003 仅为评审结构，不能保存为 T003":"管道配置已保存（评审交互）");} });
+  window.addEventListener("hashchange",render);
+  window.addEventListener("popstate",render);
+  if(!location.hash) history.replaceState(null,"","#/resources");
+  render();
+})();
+</script>
+</body>
+</html>
