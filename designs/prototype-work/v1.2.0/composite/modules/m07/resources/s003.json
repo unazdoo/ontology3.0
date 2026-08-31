@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "ofw.m07.validation-resource.v1",
+  "namespace": "ofw.m07.research.v1",
+  "researchOnly": true,
+  "modelingIntent": "SCORING",
+  "scenarioContext": {
+    "scenarioId": "S003",
+    "scenarioVersion": "S003-v1",
+    "scenarioRunId": "HOST_SCENARIO_CONTEXT_REQUIRED",
+    "scenarioName": "债务风险监测",
+    "formedAt": null,
+    "status": "host-required",
+    "dataAsOf": "2025-12-31",
+    "baselineStatus": "frozen-read-only"
+  },
+  "source": {
+    "root": "prototype-v1.1.0-frozen:S003",
+    "sourceAssetVersion": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+    "fixedResultSetId": "S003-C035-RISK-RESULTS-20251231-v2",
+    "dateRange": { "from": "2025-12-31", "to": "2025-12-31" },
+    "deidentification": "企业名称和标识均来自冻结脱敏场景资源；不包含真实企业身份。",
+    "snapshots": [
+      { "id": "snapshot:2025-12-31", "date": "2025-12-31", "version": "S003-T007-DEBT-RISK-20251231-v1", "sha256": "frozen-s003-source-reference" }
+    ]
+  },
+  "ontologyContext": {
+    "publishedSemanticVersionId": "SEM-S003-DEBT-RISK-v1",
+    "authoritativeBindingId": "MB-S003-DEBT-RISK-v1",
+    "definitionMode": "published-reference",
+    "publishedStatus": "published",
+    "warning": "M07 只读消费 S003 Published 企业与风险事实，不拥有模型、标签或评分。"
+  },
+  "roles": [
+    { "id": "m07.analyst", "label": "风险分析员", "policyVersion": "research-policy-v1" },
+    { "id": "m07.auditor", "label": "证据审计员", "policyVersion": "research-policy-v1" },
+    { "id": "m07.restricted", "label": "受限观察员", "policyVersion": "research-policy-v1" }
+  ],
+  "lensDefinitions": [
+    { "id": "lens.catalog.v1", "kind": "catalog", "owner": "M07", "version": "draft-1" },
+    { "id": "lens.object360.v1", "kind": "object360", "owner": "M07", "version": "draft-1" },
+    { "id": "lens.graph.v1", "kind": "graph", "owner": "M07", "version": "draft-1", "maxHops": 2 },
+    { "id": "lens.temporal.v1", "kind": "temporal", "owner": "M07", "version": "draft-1" },
+    { "id": "lens.spatial.v1", "kind": "spatial", "owner": "M07", "version": "draft-1" }
+  ],
+  "objects": [
+    {
+      "id": "S003-ASSESSMENT-20251231",
+      "objectTypeId": "m01.object-type.enterprise-assessment-context",
+      "title": "2025-12-31 债务风险评估上下文",
+      "subtitle": "21 家企业 · 归档正式结果只读",
+      "scenarioId": "S003",
+      "canonicalObjectRef": { "id": "S003-ASSESSMENT-20251231", "title": "2025-12-31 债务风险评估上下文", "objectTypeRef": "EnterpriseAssessmentContext" },
+      "properties": {
+        "assessmentAsOf": { "value": "2025-12-31", "quality": "passed" },
+        "enterpriseCount": { "value": 21, "unit": "家", "quality": "passed" },
+        "modelVersion": { "value": "S003-M01-DEBT-RISK-PKG@1.0.2", "quality": "passed" },
+        "outcomeLabelStatus": { "value": null, "state": "missing", "quality": "warning", "note": "冻结场景没有独立 Outcome/Label 数据，不能作为监督真值。" },
+        "geometry": { "value": null, "state": "not_applicable", "quality": "passed" }
+      },
+      "quality": "warning",
+      "qualityNotes": ["正式评分可读；监督标签未登记。"],
+      "permissions": ["m07.analyst", "m07.auditor", "m07.restricted"],
+      "sourceRefs": ["S003-T007-DEBT-RISK-20251231-v1", "S003-C035-RISK-RESULTS-20251231-v2"]
+    },
+    {
+      "id": "S003-ENT-020",
+      "objectTypeId": "m01.object-type.enterprise",
+      "title": "环保测试公司4",
+      "subtitle": "环保 · 红灯正式事实",
+      "scenarioId": "S003",
+      "canonicalObjectRef": { "id": "S003-ENT-020", "title": "环保测试公司4", "objectTypeRef": "Enterprise" },
+      "properties": {
+        "industry": { "value": "环保", "quality": "passed" },
+        "riskScore": { "value": 23.05, "unit": "score_0_100", "quality": "passed" },
+        "riskTier": { "value": "红灯", "quality": "passed" },
+        "labelUsage": { "value": "禁止作为监督标签", "quality": "warning" },
+        "geometry": { "value": null, "state": "not_applicable", "quality": "passed" }
+      },
+      "quality": "passed",
+      "permissions": ["m07.analyst", "m07.auditor"],
+      "sourceRefs": ["S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-020"]
+    },
+    {
+      "id": "S003-ENT-007",
+      "objectTypeId": "m01.object-type.enterprise",
+      "title": "风电测试公司07",
+      "subtitle": "新能源产业-风电 · 黄灯正式事实",
+      "scenarioId": "S003",
+      "canonicalObjectRef": { "id": "S003-ENT-007", "title": "风电测试公司07", "objectTypeRef": "Enterprise" },
+      "properties": {
+        "industry": { "value": "新能源产业-风电", "quality": "passed" },
+        "riskScore": { "value": 37.75, "unit": "score_0_100", "quality": "passed" },
+        "riskTier": { "value": "黄灯", "quality": "passed" },
+        "labelUsage": { "value": "禁止作为监督标签", "quality": "warning" },
+        "geometry": { "value": null, "state": "not_applicable", "quality": "passed" }
+      },
+      "quality": "passed",
+      "permissions": ["m07.analyst", "m07.auditor", "m07.restricted"],
+      "sourceRefs": ["S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-007"]
+    },
+    {
+      "id": "S003-ENT-017",
+      "objectTypeId": "m01.object-type.enterprise",
+      "title": "环保测试公司1",
+      "subtitle": "环保 · 黄灯正式事实",
+      "scenarioId": "S003",
+      "canonicalObjectRef": { "id": "S003-ENT-017", "title": "环保测试公司1", "objectTypeRef": "Enterprise" },
+      "properties": {
+        "industry": { "value": "环保", "quality": "passed" },
+        "riskScore": { "value": 30.52, "unit": "score_0_100", "quality": "passed" },
+        "riskTier": { "value": "黄灯", "quality": "passed" },
+        "labelUsage": { "value": "禁止作为监督标签", "quality": "warning" },
+        "geometry": { "value": null, "state": "not_applicable", "quality": "passed" }
+      },
+      "quality": "passed",
+      "permissions": ["m07.analyst", "m07.auditor", "m07.restricted"],
+      "sourceRefs": ["S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-017"]
+    }
+  ],
+  "links": [
+    { "id": "link:s003-context-ent020", "linkTypeId": "m07.link-type.assessment-has-enterprise", "label": "包含企业", "from": "S003-ASSESSMENT-20251231", "to": "S003-ENT-020", "quality": "passed" },
+    { "id": "link:s003-context-ent007", "linkTypeId": "m07.link-type.assessment-has-enterprise", "label": "包含企业", "from": "S003-ASSESSMENT-20251231", "to": "S003-ENT-007", "quality": "passed" },
+    { "id": "link:s003-context-ent017", "linkTypeId": "m07.link-type.assessment-has-enterprise", "label": "包含企业", "from": "S003-ASSESSMENT-20251231", "to": "S003-ENT-017", "quality": "passed" }
+  ],
+  "series": [
+    { "id": "series:S003-ENT-020:riskScore", "ownerObjectId": "S003-ENT-020", "propertyId": "m01.property.riskScore", "label": "正式风险评分", "unit": "score_0_100", "valueType": "number", "granularity": "AS_OF", "calendar": "assessment-date", "timezone": "Asia/Shanghai", "aggregationSemantics": "snapshot", "missingSemantics": ["not_observed"], "points": [{ "t": "2025-12-31", "v": 23.05, "state": "observed", "quality": "passed", "snapshotRef": "snapshot:2025-12-31" }] },
+    { "id": "series:S003-ENT-007:riskScore", "ownerObjectId": "S003-ENT-007", "propertyId": "m01.property.riskScore", "label": "正式风险评分", "unit": "score_0_100", "valueType": "number", "granularity": "AS_OF", "calendar": "assessment-date", "timezone": "Asia/Shanghai", "aggregationSemantics": "snapshot", "missingSemantics": ["not_observed"], "points": [{ "t": "2025-12-31", "v": 37.75, "state": "observed", "quality": "passed", "snapshotRef": "snapshot:2025-12-31" }] },
+    { "id": "series:S003-ENT-017:riskScore", "ownerObjectId": "S003-ENT-017", "propertyId": "m01.property.riskScore", "label": "正式风险评分", "unit": "score_0_100", "valueType": "number", "granularity": "AS_OF", "calendar": "assessment-date", "timezone": "Asia/Shanghai", "aggregationSemantics": "snapshot", "missingSemantics": ["not_observed"], "points": [{ "t": "2025-12-31", "v": 30.52, "state": "observed", "quality": "passed", "snapshotRef": "snapshot:2025-12-31" }] }
+  ],
+  "events": []
+}

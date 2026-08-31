@@ -54,7 +54,7 @@
     weightedAverageCost: "加权平均融资成本",
     floatingRateRatio: "浮动利率余额占比",
     shortTermDebtRatio: "短期债务余额占比",
-    sourceObjectId: "Published 对象类型",
+    sourceObjectId: "语义对象类型",
     unitRef: "融资主体引用",
     sourceCode: "来源编码",
     balance: "融资余额",
@@ -70,7 +70,7 @@
     currency: "币种",
     rateType: "利率形式",
     termType: "期限类型",
-    ruleId: "Published Rule",
+    ruleId: "Rule 引用",
     status: "求值状态",
     metricLabel: "指标名称",
     observedValue: "观测值",
@@ -107,12 +107,12 @@
 
   const MODULE_ACTIONS = {
     data: { label: "查看数据快照", target: "数据工程", detail: "核对来源、质量与资产版本", icon: "database" },
-    ontology: { label: "查看 Published 定义", target: "本体管理", detail: "核对对象类型、属性和关系定义", icon: "network" },
+    ontology: { label: "查看语义定义", target: "本体管理", detail: "核对对象类型、属性和关系定义", icon: "network" },
     query: { label: "带入智能问数", target: "智能问数", detail: "以当前对象作为问数范围", icon: "sparkles" },
     decision: { label: "查看关联决策", target: "决策中心", detail: "进入受控行动和人工确认入口", icon: "target" },
     agent: { label: "交给 Agent", target: "Agent 应用", detail: "以固定证据启动受控解释", icon: "bot" },
-    report: { label: "查看报告与证据", target: "报告中心", detail: "定位正式报告和证据锚点", icon: "file-text" },
-    dashboard: { label: "打开管理视图", target: "仪表盘", detail: "将探索范围带入正式驾驶舱", icon: "layout-dashboard" },
+    report: { label: "查看报告与证据", target: "报告中心", detail: "定位报告草稿和证据锚点", icon: "file-text" },
+    dashboard: { label: "打开管理视图", target: "仪表盘", detail: "将探索范围带入当前评价驾驶舱", icon: "layout-dashboard" },
     modeling: { label: "进入模型与模拟", target: "模型与模拟", detail: "把对象、Lens、时序范围和版本交给 M08", icon: "activity" },
   };
 
@@ -131,6 +131,7 @@
   let activeMap = null;
   let pendingModule = null;
   let state = null;
+  let returnedModelResult = null;
 
   function escape(value) { return C.escapeHtml(value); }
   function icon(name) { return `<i data-lucide="${name}"></i>`; }
@@ -158,6 +159,14 @@
       || resource.source?.sourceAssetVersion
       || resource.moduleResources?.dataEngineering?.assets?.[0]
       || `${resource.scenarioContext.scenarioId}-M07-RESEARCH`;
+  }
+
+  function isCandidateSemanticReference() {
+    return resource.ontologyContext?.definitionMode === "candidate-reference";
+  }
+
+  function semanticModeLabel() {
+    return isCandidateSemanticReference() ? "候选语义" : "Published";
   }
 
   function activeScenarioContext() {
@@ -356,14 +365,14 @@
 
   function projectionLabel(item) {
     if (item.objectTypeId?.startsWith("m07.")) return "证据引用";
-    if (item.sourceObjectId) return "Published 对象";
+    if (item.sourceObjectId) return isCandidateSemanticReference() ? "候选对象" : "Published 对象";
     return "场景容器";
   }
 
   function renderToolbar() {
     scenarioKicker.textContent = `${resource.scenarioContext.scenarioId} · 只读探索`;
     scenarioName.textContent = resource.scenarioContext.scenarioName || `${resource.scenarioContext.scenarioId} 场景`;
-    trustSummary.innerHTML = `<span><i></i>Published ${escape(resource.ontologyContext.publishedSemanticVersionId)}</span><span>截至 ${escape(scenarioAsOf())}</span>`;
+    trustSummary.innerHTML = `<span><i></i>${escape(semanticModeLabel())} ${escape(resource.ontologyContext.publishedSemanticVersionId)}</span><span>截至 ${escape(scenarioAsOf())}</span>`;
     roleLabelNode.textContent = roleMeta().label;
     objectSearch.value = state.search;
     qualityFilter.value = state.qualityFilter;
@@ -394,7 +403,7 @@
       </div>
       <div class="selection-meta">
         <div class="identity-token"><span>ObjectRef</span><code>${canRead ? escape(current?.id || "none") : "REDACTED"}</code></div>
-        <div class="identity-token"><span>Published</span><code>${escape(resource.ontologyContext.publishedSemanticVersionId)}</code></div>
+        <div class="identity-token"><span>${escape(semanticModeLabel())}</span><code>${escape(resource.ontologyContext.publishedSemanticVersionId)}</code></div>
         <div class="identity-token"><span>场景轮次</span><code>${escape(resource.scenarioContext.scenarioRunId)}</code></div>
       </div>`;
     selectionBar.querySelector("[data-clear-return]")?.addEventListener("click", () => setState({ returnFrom: null }));
@@ -506,11 +515,11 @@
     const propertyValues = Object.values(current.properties || {});
     const blocked = propertyValues.filter((item) => item?.state === "quality_blocked" || item?.quality === "blocked").length;
     const warning = propertyValues.filter((item) => item?.quality === "warning" || item?.state === "missing").length;
-    return `<div class="status-banner ${q.className}"><span>${icon(q.icon)}</span><div><h3>${escape(q.label)}</h3><p>${escape((current.qualityNotes || ["对象级质量状态已随当前 Published 投影读取。"])[0])}</p></div></div><dl class="fact-list"><div><dt>属性检查</dt><dd>${propertyValues.length} 项</dd></div><div><dt>质量警告</dt><dd>${warning} 项</dd></div><div><dt>质量阻断</dt><dd>${blocked} 项</dd></div><div><dt>传播规则</dt><dd>权限、质量、版本和证据独立传播</dd></div></dl>`;
+    return `<div class="status-banner ${q.className}"><span>${icon(q.icon)}</span><div><h3>${escape(q.label)}</h3><p>${escape((current.qualityNotes || [`对象级质量状态已随当前${semanticModeLabel()}投影读取。`])[0])}</p></div></div><dl class="fact-list"><div><dt>属性检查</dt><dd>${propertyValues.length} 项</dd></div><div><dt>质量警告</dt><dd>${warning} 项</dd></div><div><dt>质量阻断</dt><dd>${blocked} 项</dd></div><div><dt>传播规则</dt><dd>权限、质量、版本和证据独立传播</dd></div></dl>`;
   }
 
   function renderVersion(current) {
-    return `<dl class="fact-list"><div><dt>ObjectRef</dt><dd><code>${escape(current.id)}</code></dd></div><div><dt>对象类型</dt><dd><code>${escape(current.objectTypeId)}</code></dd></div><div><dt>Published 语义版本</dt><dd><code>${escape(resource.ontologyContext.publishedSemanticVersionId)}</code></dd></div><div><dt>权威消费绑定</dt><dd><code>${escape(resource.ontologyContext.authoritativeBindingId)}</code></dd></div><div><dt>数据版本</dt><dd><code>${escape(dataVersionId())}</code></dd></div><div><dt>稳定身份指纹</dt><dd><code>${escape(current.stableKeyFingerprint || "未提供")}</code></dd></div></dl><div class="section-row"><span class="section-icon">${icon("network")}</span><div class="section-row-copy"><strong>Published 定义由本体管理拥有</strong><span>M07 只保存精确引用，不复制定义或生命周期。</span></div><div class="section-row-actions"><button class="inline-button" data-module="ontology">在本体管理打开</button></div></div>`;
+    return `<dl class="fact-list"><div><dt>ObjectRef</dt><dd><code>${escape(current.id)}</code></dd></div><div><dt>对象类型</dt><dd><code>${escape(current.objectTypeId)}</code></dd></div><div><dt>${escape(semanticModeLabel())}版本</dt><dd><code>${escape(resource.ontologyContext.publishedSemanticVersionId)}</code></dd></div><div><dt>消费绑定</dt><dd><code>${escape(resource.ontologyContext.authoritativeBindingId)}</code></dd></div><div><dt>数据版本</dt><dd><code>${escape(dataVersionId())}</code></dd></div><div><dt>稳定身份指纹</dt><dd><code>${escape(current.stableKeyFingerprint || "未提供")}</code></dd></div></dl><div class="section-row"><span class="section-icon">${icon("network")}</span><div class="section-row-copy"><strong>${escape(semanticModeLabel())}定义由本体管理拥有</strong><span>M07 只保存精确引用，不复制定义或生命周期。</span></div><div class="section-row-actions"><button class="inline-button" data-module="ontology">在本体管理打开</button></div></div>`;
   }
 
   function renderEvidence(current) {
@@ -805,6 +814,19 @@
     return ["ontology", "query", "report"];
   }
 
+  function returnedModelResultMarkup() {
+    const envelope = returnedModelResult?.resultEnvelope;
+    if (!envelope) return "";
+    const items = Array.isArray(envelope.resultItems) ? envelope.resultItems.slice(0, 4) : [];
+    const itemValue = (item) => {
+      if (item.value == null) return item.missingReason || "无法评价";
+      if (Array.isArray(item.value)) return item.value.slice(0, 3).map((entry) => `${entry.name || entry.label || "贡献项"}${Number.isFinite(Number(entry.contribution)) ? ` ${Number(entry.contribution).toFixed(2)}` : ""}`).join("；") || "无贡献项";
+      if (typeof item.value === "object") return Object.entries(item.value).map(([key, value]) => `${key} ${value}`).join(" · ");
+      return `${item.value}${item.unit ? ` ${item.unit}` : ""}`;
+    };
+    return `<section class="inspector-section"><h3>M08 返回结果</h3><div class="state-list"><div class="state-line"><span>结果身份</span><strong>${escape(envelope.resultKind || "—")}</strong></div><div class="state-line"><span>Objective</span><strong>${escape(envelope.objectiveId || "—")}</strong></div><div class="state-line"><span>Model Version</span><strong>${escape(envelope.modelVersionId || "—")}</strong></div><div class="state-line"><span>Result ID</span><code>${escape(envelope.resultId || "—")}</code></div></div>${items.length ? `<div class="inspector-actions">${items.map((item) => `<div class="state-line"><span>${escape(item.label || item.outputId)}</span><strong>${escape(itemValue(item))}</strong></div>`).join("")}</div>` : ""}<p class="drawer-copy">该结果保持 ${escape(envelope.resultKind || "非事实")} 身份；M07 只读展示，不写事实或行动。</p></section>`;
+  }
+
   function renderInspector() {
     const target = inspectorTarget();
     const canRead = allowed(target);
@@ -821,7 +843,7 @@
       : state.lens === "graph" && target.id !== state.graphRootId
         ? `<button class="inspector-primary" data-refocus="${escape(target.id)}">${icon("focus")}以此对象为中心</button><button class="inline-button" style="width:100%;justify-content:center;margin-top:6px" data-open-object="${escape(target.id)}">打开对象全貌</button>`
         : `<button class="inspector-primary" data-open-lens="object360">${icon("scan-face")}查看对象全貌</button>`;
-    contextContent.innerHTML = `<section class="inspector-section"><div class="inspector-object"><span class="selection-symbol">${icon(typeMeta(target).icon)}</span><div><strong>${escape(target.title)}</strong><span>${escape(typeMeta(target).label)} · ${escape(target.subtitle || "")}</span></div></div><div class="inspector-facts"><div class="inspector-fact"><span>质量</span><strong>${escape(qualityMeta(target.quality).label)}</strong></div><div class="inspector-fact"><span>可见关系</span><strong>${links} 条</strong></div><div class="inspector-fact"><span>时序系列</span><strong>${series} 条</strong></div><div class="inspector-fact"><span>来源引用</span><strong>${sources} 个</strong></div></div><div style="margin-top:10px">${primaryAction}</div></section><section class="inspector-section"><h3>继续处理</h3><div class="inspector-actions">${contextualModules().map((id) => moduleActionHtml(id)).join("")}</div></section><section class="inspector-section"><h3>读取上下文</h3><div class="state-list"><div class="state-line"><span>Published</span><strong>${escape(resource.ontologyContext.publishedSemanticVersionId)}</strong></div><div class="state-line"><span>数据截至</span><strong>${escape(resource.scenarioContext.dataAsOf)}</strong></div><div class="state-line"><span>角色视图</span><strong>${escape(roleMeta().label)}</strong></div><div class="state-line"><span>当前 Lens</span><strong>${escape(LENSES.find((item) => item.id === state.lens)?.label)}</strong></div></div></section>`;
+    contextContent.innerHTML = `<section class="inspector-section"><div class="inspector-object"><span class="selection-symbol">${icon(typeMeta(target).icon)}</span><div><strong>${escape(target.title)}</strong><span>${escape(typeMeta(target).label)} · ${escape(target.subtitle || "")}</span></div></div><div class="inspector-facts"><div class="inspector-fact"><span>质量</span><strong>${escape(qualityMeta(target.quality).label)}</strong></div><div class="inspector-fact"><span>可见关系</span><strong>${links} 条</strong></div><div class="inspector-fact"><span>时序系列</span><strong>${series} 条</strong></div><div class="inspector-fact"><span>来源引用</span><strong>${sources} 个</strong></div></div><div style="margin-top:10px">${primaryAction}</div></section>${returnedModelResultMarkup()}<section class="inspector-section"><h3>继续处理</h3><div class="inspector-actions">${contextualModules().map((id) => moduleActionHtml(id)).join("")}</div></section><section class="inspector-section"><h3>读取上下文</h3><div class="state-list"><div class="state-line"><span>${escape(semanticModeLabel())}</span><strong>${escape(resource.ontologyContext.publishedSemanticVersionId)}</strong></div><div class="state-line"><span>数据截至</span><strong>${escape(resource.scenarioContext.dataAsOf)}</strong></div><div class="state-line"><span>角色视图</span><strong>${escape(roleMeta().label)}</strong></div><div class="state-line"><span>当前 Lens</span><strong>${escape(LENSES.find((item) => item.id === state.lens)?.label)}</strong></div></div></section>`;
     contextContent.querySelectorAll("[data-module]").forEach((button) => button.addEventListener("click", () => openHandoff(button.dataset.module)));
     contextContent.querySelectorAll("[data-open-object]").forEach((button) => button.addEventListener("click", () => openObject(button.dataset.openObject)));
     contextContent.querySelectorAll("[data-open-lens]").forEach((button) => button.addEventListener("click", () => openLens(button.dataset.openLens)));
@@ -924,7 +946,7 @@
   }
 
   function contextRows(target = object()) {
-    return `<div class="drawer-context"><div class="drawer-context-row"><span>ObjectRef</span><code>${allowed(target) ? escape(target.id) : "REDACTED"}</code></div><div class="drawer-context-row"><span>Lens</span><strong>${escape(LENSES.find((item) => item.id === state.lens)?.label)}</strong></div><div class="drawer-context-row"><span>Published</span><code>${escape(resource.ontologyContext.publishedSemanticVersionId)}</code></div><div class="drawer-context-row"><span>数据截至</span><strong>${escape(resource.scenarioContext.dataAsOf)}</strong></div><div class="drawer-context-row"><span>角色</span><strong>${escape(roleMeta().label)}</strong></div></div>`;
+    return `<div class="drawer-context"><div class="drawer-context-row"><span>ObjectRef</span><code>${allowed(target) ? escape(target.id) : "REDACTED"}</code></div><div class="drawer-context-row"><span>Lens</span><strong>${escape(LENSES.find((item) => item.id === state.lens)?.label)}</strong></div><div class="drawer-context-row"><span>${escape(semanticModeLabel())}</span><code>${escape(resource.ontologyContext.publishedSemanticVersionId)}</code></div><div class="drawer-context-row"><span>数据截至</span><strong>${escape(resource.scenarioContext.dataAsOf)}</strong></div><div class="drawer-context-row"><span>角色</span><strong>${escape(roleMeta().label)}</strong></div></div>`;
   }
 
   function openUseObjectDrawer() {
@@ -956,7 +978,6 @@
       .map((seriesId) => resource.series.find((series) => series.id === seriesId))
       .find(Boolean)
       || objectSeries(target)[0]
-      || objectSeries(object())[0]
       || null;
     const scenarioContext = activeScenarioContext();
     const localObjectRef = allowed(target) ? { id: target.id, title: target.title, objectTypeRef: target.objectTypeId } : null;
@@ -969,13 +990,39 @@
       dataVersionId: dataVersionId(),
       ontologyVersionId: resource.ontologyContext.publishedSemanticVersionId,
       bindingId: resource.ontologyContext.authoritativeBindingId,
+      usageIntent: resource.modelingIntent || "SIMULATION",
       scenarioContext
     });
     const isModelingHandoff = moduleId === "modeling";
+    const explorationResultEnvelope = isModelingHandoff && scenarioContext.scenarioId === "S005"
+      ? {
+          type: "OFW_S005_M07_EXPLORATION_RESULT",
+          schemaVersion: "ofw.s005.m07-exploration-result.v1",
+          moduleId: "M07",
+          scenarioContext,
+          result: {
+            clientResultId: `S005-M07-EXPLORATION-${scenarioContext.scenarioRunId}-${objectRef?.id || "none"}`,
+            outputKind: "M07_EXPLORATION_RESULT",
+            status: "complete",
+            producedAt: new Date().toISOString(),
+            explorationResultRef: `exploration://${scenarioContext.scenarioRunId}/${objectRef?.id || "none"}/${state.lens}`,
+            objectRef,
+            lensRef: handoffContext.lensRef,
+            seriesRef: handoffContext.seriesRef,
+            timeRange: handoffContext.timeRange,
+            dataVersionId: handoffContext.dataVersionId,
+            ontologyVersionId: handoffContext.ontologyVersionId,
+            bindingId: handoffContext.bindingId,
+            evidenceRefs: [objectRef?.id, handoffContext.dataVersionId, handoffContext.ontologyVersionId, handoffContext.seriesRef?.id || "SERIES_NOT_AVAILABLE"].filter(Boolean),
+            missingReasons: handoffContext.seriesRef ? [] : ["当前 InvestmentProduct 没有受治理的产品级时序系列。"]
+          }
+        }
+      : null;
     const envelope = {
       channel: HANDOFF_CHANNEL,
       operation: isModelingHandoff ? "open-m08" : "navigate-parent-module",
       ...(isModelingHandoff ? { type: "OFW_M07_OPEN_M08", payload: handoffContext } : {}),
+      ...(explorationResultEnvelope ? { explorationResultEnvelope } : {}),
       moduleId,
       route,
       sourceModuleId: MODULE_ID,
@@ -1026,7 +1073,7 @@
       : object(evidenceId) || null;
     const title = item?.title || (item?.date ? `${item.date} 受治理快照` : evidenceId.replace(/^ref:/, ""));
     const refs = item?.sourceRefs || current?.sourceRefs || [];
-    openDrawer(`${drawerHead("证据详情", "只读证据定位")}<div class="drawer-body"><p class="drawer-copy">证据定位用于解释当前对象与属性的来源，不在 M07 内创建报告或改写正式证据。</p><div class="drawer-object"><span class="selection-symbol">${icon("file-check-2")}</span><div><strong>${escape(title)}</strong><code>${escape(evidenceId)}</code></div></div><div class="drawer-section"><h3>证据身份</h3><div class="drawer-context"><div class="drawer-context-row"><span>数据截至</span><strong>${escape(item?.date || resource.scenarioContext.dataAsOf)}</strong></div><div class="drawer-context-row"><span>版本 / 摘要</span><code>${escape(item?.version || item?.sha256 || item?.stableKeyFingerprint || "由来源引用定位")}</code></div><div class="drawer-context-row"><span>来源引用</span><strong>${sourceRef(refs).length || sourceRef(current?.sourceRefs).length} 个</strong></div><div class="drawer-context-row"><span>Published</span><code>${escape(resource.ontologyContext.publishedSemanticVersionId)}</code></div></div></div><div class="drawer-section"><h3>继续核对</h3><div class="drawer-module-list">${moduleActionHtml("data")}${moduleActionHtml("report")}</div></div></div><footer class="drawer-foot"><button class="drawer-button" type="button" data-close-drawer>关闭</button></footer>`);
+    openDrawer(`${drawerHead("证据详情", "只读证据定位")}<div class="drawer-body"><p class="drawer-copy">证据定位用于解释当前对象与属性的来源，不在 M07 内创建报告或改写正式证据。</p><div class="drawer-object"><span class="selection-symbol">${icon("file-check-2")}</span><div><strong>${escape(title)}</strong><code>${escape(evidenceId)}</code></div></div><div class="drawer-section"><h3>证据身份</h3><div class="drawer-context"><div class="drawer-context-row"><span>数据截至</span><strong>${escape(item?.date || resource.scenarioContext.dataAsOf)}</strong></div><div class="drawer-context-row"><span>版本 / 摘要</span><code>${escape(item?.version || item?.sha256 || item?.stableKeyFingerprint || "由来源引用定位")}</code></div><div class="drawer-context-row"><span>来源引用</span><strong>${sourceRef(refs).length || sourceRef(current?.sourceRefs).length} 个</strong></div><div class="drawer-context-row"><span>${escape(semanticModeLabel())}</span><code>${escape(resource.ontologyContext.publishedSemanticVersionId)}</code></div></div></div><div class="drawer-section"><h3>继续核对</h3><div class="drawer-module-list">${moduleActionHtml("data")}${moduleActionHtml("report")}</div></div></div><footer class="drawer-foot"><button class="drawer-button" type="button" data-close-drawer>关闭</button></footer>`);
     drawer.querySelectorAll("[data-module]").forEach((button) => button.addEventListener("click", () => openHandoff(button.dataset.module)));
   }
 
@@ -1084,6 +1131,22 @@
       renderAll();
       restoreReturnPosition();
     });
+    window.addEventListener("message", (event) => {
+      if (event.origin !== location.origin || event.source !== window.parent || event.data?.type !== "OFW_M08_RETURN_TO_M07") return;
+      const payload = event.data.payload || {};
+      if (!SCENARIO_CONTEXT_FIELDS.every((field) => payload[field] === resource.scenarioContext[field])) return;
+      if (!payload.resultEnvelope?.resultId || !new Set(["PREDICTION", "SIMULATION"]).has(payload.resultEnvelope.resultKind)) return;
+      const inputObject = payload.inputManifest?.objectRef;
+      const activeObject = object();
+      const activeObjectRef = activeObject?.canonicalObjectRef || { id: activeObject?.id, objectTypeRef: activeObject?.objectTypeId };
+      const subjectRefs = Array.isArray(payload.resultEnvelope.subjectRefs) ? payload.resultEnvelope.subjectRefs : [];
+      if (!inputObject?.id || inputObject.id !== activeObjectRef?.id || inputObject.objectTypeRef !== activeObjectRef?.objectTypeRef) return;
+      if (!subjectRefs.some((subject) => subject?.id === inputObject.id && subject?.objectTypeRef === inputObject.objectTypeRef)) return;
+      if (payload.resultEnvelope.factWriteAllowed !== false || payload.resultEnvelope.actionWriteAllowed !== false || payload.resultEnvelope.actionSourceAllowed !== false || payload.resultEnvelope.sideEffectsEmitted !== 0) return;
+      returnedModelResult = payload;
+      renderInspector();
+      toast(`已读取 ${payload.resultEnvelope.resultKind} 结果；正式事实保持不变`, "success");
+    });
   }
 
   function restoreReturnPosition() {
@@ -1123,6 +1186,7 @@
       renderAll();
       restoreReturnPosition();
       showReturnReceipt();
+      if (window.parent !== window) window.parent.postMessage({ type: "OFW_M07_READY", moduleId: MODULE_ID, scenarioContext: activeScenarioContext() }, location.origin);
     } catch (error) {
       fatal(error);
     }

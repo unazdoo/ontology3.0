@@ -87,6 +87,33 @@
         "An incompatible or missing S005 input produces an unavailable-input state and never falls back to an S001 object or series.",
         "The returned inputManifest and resultEnvelope retain the exact active S005 identity and do not write facts or overwrite archived scenario state."
       ]
+    },
+    {
+      "id": "CR-M08-S003-MODEL-OWNER-MIGRATION",
+      "status": "CANDIDATE_BOUNDARY_IMPLEMENTED_PENDING_GOVERNANCE",
+      "severity": "non-blocking-prototype-boundary",
+      "type": "platform-owner-migration",
+      "title": "Migrate S003 model optimization ownership from the grandfathered M01 package to M08 resources",
+      "owners": ["M01", "M02", "M08", "S003", "Composite"],
+      "conflicts": [
+        "The frozen S003-M01-DEBT-RISK-PKG@1.0.2 owns weights, factors and risk tiers as a Published model definition, while the platform-level Objective-first contract assigns Model Version, Benchmark, Experiment, Release, Binding and Shadow Trial to M08.",
+        "T019 remains an Ontology binding owned by M01 and cannot be reused as a model registry or release pointer.",
+        "The archived S003 scenario run and C035 FACT results must remain immutable while M08 research runs use independent BENCHRUN, EXPRUN and SHADOWRUN identities."
+      ],
+      "evidence": [
+        "a943b1d89928b3b9ebf7ebc3b892d5dbf4908955:research/m08-digital-twin-modeling/待用户裁决与CR建议.md#CR-M08-004",
+        "designs/prototype-releases/v1.1.0/scenarios/s003/resources/m01/model-package.v2.json",
+        "sha256:c1bcfdf2c61313e57233ad4ecd471e24b09535aa7f62d4bfb97741e15ec9b014",
+        "composite/modules/modeling/validation/src/s003-runtime.mjs"
+      ],
+      "requiredDecision": "Confirm the future platform Owner and migration contract for S003 model parameters and release pointers while preserving M01 ownership of Published Ontology, Metric, Rule, Action Type and semantic contracts.",
+      "candidateImplementation": "The v1.2.0-rc.1 candidate wraps S003-M01-DEBT-RISK-PKG@1.0.2 as an immutable sourceRef/version/SHA baseline Model Version. M08 owns only research Objective, Benchmark, Insight, candidate branches, Release Candidate, Binding and Shadow Trial. No Published model, T019 model registration or production migration is performed.",
+      "minimumClosure": [
+        "Platform governance approves the future Model Version and Release/Binding Owner split.",
+        "M01 remains the sole owner of Published Ontology, Metric, Rule, Action Type and T019 semantic contracts.",
+        "A separate implementation migration preserves the frozen 1.0.2 package, C035 FACT results and archived S003 scenario run.",
+        "This prototype CR does not create an approval workflow or block high-fidelity walkthroughs."
+      ]
     }
   ]
 }

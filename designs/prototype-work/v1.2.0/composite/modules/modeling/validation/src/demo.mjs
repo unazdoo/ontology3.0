@@ -110,7 +110,16 @@ export async function runFixtureCase(caseId, { scenarioId = "S005", runNonce = n
     registry: createModelRegistry(),
     runNonce
   });
-  return { ...result, sourceContext: sourceContext ? structuredClone(sourceContext) : null };
+  return {
+    ...result,
+    fixture: {
+      fixtureId: fixture.fixtureId,
+      classification: fixture.classification,
+      containsSourceBusinessValues: fixture.containsSourceBusinessValues,
+      namespace: fixture.namespace
+    },
+    sourceContext: sourceContext ? structuredClone(sourceContext) : null
+  };
 }
 
 export async function requestReviewForScenario({ scenarioId = "S005", candidateId, sourceContext = null } = {}) {

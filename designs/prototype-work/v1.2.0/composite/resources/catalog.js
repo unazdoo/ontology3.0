@@ -41,40 +41,40 @@
       S002: { name: "预算问数配置", type: "QueryConfiguration", status: "available", refs: ["IQ-AGENT-S002-BUDGET", "RUN-S002-QUERY-001-PORTFOLIO", "C018-S002-v1"], summary: "覆盖预算执行、项目余额和采购占用问题。" },
       S003: { name: "债务风险问数配置", type: "QueryConfiguration", status: "available", refs: ["IQ-AGENT-S003-RISK", "S003-M03-QUERY-RESULTS-20260817-002"], summary: "覆盖风险分区、弱项指标和调节因子问题。" },
       S004: { name: "贷前调查问数登记", type: "QueryRegistration", status: "not_applicable", refs: [], summary: "该场景使用报告伴读，不启用标准智能问数。" },
-      S005: { name: "投后评价合规与横评输入", type: "QueryInputCandidate", status: "candidate", refs: ["S005-EVAL-INPUT-RESEARCH-v1", "s005-research-fixture.json#marketSeries"], summary: "支持持续合规与同类横评查看；评价结论仍为部分状态。" }
+      S005: { name: "投后评价合规与横评结果", type: "EvaluationReadOnlyConsumer", status: "candidate", refs: ["S005_CURRENT_EVALUATION_RESULT", "M03_COMPLIANCE_AND_MARKET_PEER_OUTPUT"], summary: "只读消费当前 S005 evaluation result；缺失指标保留无法评价或观察期不足状态。" }
     },
     decision: {
       S001: { name: "融资优化行动记录", type: "DecisionRecord", status: "confirmed", refs: ["AR-RUN-MSVJWKPO-002-UNIT-553", "TD-6872111633"], summary: "三条融资优化请求中一条经人工确认并形成负责人待办。" },
       S002: { name: "预算监督行动边界", type: "DecisionRegistration", status: "not_applicable", refs: [], summary: "当前授权范围不形成 Action Request。" },
       S003: { name: "债务风险处置记录", type: "DecisionRecord", status: "confirmed", refs: ["CP-S003-20260819141420000-c03838000038", "S003_RISK_FOLLOW_UP"], summary: "风险候选经人工确认后按成员单位接口人分办。" },
       S004: { name: "贷前调查人工复核边界", type: "DecisionRegistration", status: "not_applicable", refs: [], summary: "授信结论在报告流程内复核，不创建通用行动待办。" },
-      S005: { name: "投后评价池内选择复核", type: "DecisionInputCandidate", status: "read_only", refs: ["S005-EVAL-INPUT-RESEARCH-v1", "s005-research-fixture.json#selectionSeries"], summary: "只读呈现池内选择差异，不创建行动申请或交易指令。" }
+      S005: { name: "投后评价池内选择复核", type: "EvaluationReadOnlyConsumer", status: "read_only", refs: ["S005_CURRENT_EVALUATION_RESULT", "M04_SELECTION_READ_ONLY_OUTPUT"], summary: "明确 not_applicable / read_only；Action、提醒、审批、待办和交易均为 0。" }
     },
     agent: {
       S001: { name: "融资分析 Agent 组合", type: "AgentApplication", status: "available", refs: ["RUN-20260816-004", "RES-20260816-004"], summary: "包含融资洞察、报告生成和报告伴读能力。" },
       S002: { name: "预算分析 Agent 组合", type: "AgentApplication", status: "available", refs: ["AG-RUN-S002-ANOMALY-20260815", "AG-RUN-S002-REPORT-20260815"], summary: "包含预算异常分析和预算报告草稿能力。" },
       S003: { name: "债务风险报告伴读 Agent", type: "AgentApplication", status: "available", refs: ["AGENT-S003-RISK-REPORT-COPILOT-v1"], summary: "基于归档报告证据解释债务风险结论。" },
       S004: { name: "贷前调查 Agent 组合", type: "AgentApplication", status: "available", refs: ["AGENT-S004-PREFLIGHT-REPORT-002", "EVID-S004-20260815-0002"], summary: "包含贷前调查报告生成和伴读能力。" },
-      S005: { name: "投后交易与风险查看", type: "AgentInputCandidate", status: "read_only", refs: ["s005-research-fixture.json#riskLamps"], summary: "只读查看交易与风险信号，不启动 Agent 行动或外部副作用。" }
+      S005: { name: "投后交易与风险解释", type: "EvaluationReadOnlyConsumer", status: "read_only", refs: ["S005_CURRENT_EVALUATION_RESULT", "M05_RISK_EXPLANATION_OUTPUT"], summary: "只读解释当前 evaluation result，不重新计算、不启动 Agent 行动或外部副作用。" }
     },
     report: {
       S001: { name: "集团融资经营分析报告", type: "Report", status: "published", refs: ["RPT-20260816-092626-010", "EP-20260816-092248-003", "CMP-20260816-092853-001"], summary: "HTML 与 PDF 共用报告编号、内容版本和固定证据。" },
       S002: { name: "预算监督管理分析报告", type: "Report", status: "published", refs: ["RPT-S002-BUDGET-001", "VRF-RESULT-S002-REPORT-v1"], summary: "预算报告与确定性核验结果保存在归档运行中。" },
       S003: { name: "企业债务风险评估报告", type: "ReportCollection", status: "published", refs: ["S003-C035-RISK-RESULTS-20251231-v2", "21份企业风险报告"], summary: "二十一份企业风险报告使用同一归档评估结果。" },
       S004: { name: "财务公司贷款贷前调查报告", type: "Report", status: "published", refs: ["RPT-S004-20260815-0001", "RPT-S004-CGNPC-20260815-v2.0"], summary: "贷前调查报告保留 HTML、PDF 和证据引用。" },
-      S005: { name: "金融产品投后评价报告", type: "ReportDraft", status: "draft", refs: ["S005-EVAL-INPUT-RESEARCH-v1", "s005-research-fixture.json#kpis"], summary: "当前仅形成研究草稿，未进入正式发布结果。" }
+      S005: { name: "金融产品投后评价报告", type: "EvaluationReportDraft", status: "draft", refs: ["S005_CURRENT_EVALUATION_RUN", "S005_CURRENT_EVALUATION_RESULT", "M06_REPORT_DRAFT_OUTPUT"], summary: "汇总当前 run、复核状态和历史比较；仅形成草稿，未进入正式发布结果。" }
     },
     m07: {
       S001: { name: "融资多视图资源", type: "ExplorationResource", status: "available", refs: ["modules/m07/resources/s001.json", "FIN-ASSET-20251231-v02", "semantic-MSVJM48O-VJC6"], summary: "以融资主体、关系、时序和证据的脱敏投影进入多视图探索。", objectRef: { id: "s001.entity.553", objectTypeRef: "m01.object-type.financing-entity", title: "单位553" }, dataVersionId: "FIN-ASSET-20251231-v02", ontologyVersionId: "semantic-MSVJM48O-VJC6" },
       S002: { name: "预算多视图登记", type: "ExplorationRegistration", status: "not_registered", refs: ["SCENARIO-REGISTRY.json#S002"], summary: "当前候选未登记 S002 多视图资源；归档场景保持不变。" },
-      S003: { name: "债务风险多视图登记", type: "ExplorationRegistration", status: "not_registered", refs: ["SCENARIO-REGISTRY.json#S003"], summary: "当前候选未登记 S003 多视图资源；归档场景保持不变。" },
+      S003: { name: "债务风险对象探索", type: "ExplorationRegistration", status: "available", refs: ["composite/modules/m07/resources/s003.json", "MO-S003-DEBT-RISK-EARLY-WARNING-v1"], summary: "按 Enterprise / EnterpriseAssessmentContext 和 SCORING 意图发现兼容 Objective；正式评分只读且不作为监督标签。", objectRef: { id: "S003-ASSESSMENT-20251231", title: "2025-12-31 债务风险评估上下文", objectTypeRef: "EnterpriseAssessmentContext" }, dataVersionId: "S003-T007-DEBT-RISK-20251231-v1", ontologyVersionId: "SEM-S003-DEBT-RISK-v1" },
       S004: { name: "贷前调查多视图登记", type: "ExplorationRegistration", status: "not_registered", refs: ["SCENARIO-REGISTRY.json#S004"], summary: "当前候选未登记 S004 多视图资源；归档场景保持不变。" },
       S005: { name: "投后评价多视图资源", type: "ExplorationResource", status: "candidate", refs: ["modules/m07/resources/s005.json", "S005-DATA-AUDIT-79-SNAPSHOTS", "S005-SEMANTIC-CANDIDATE-v1"], summary: "五个规范 InvestmentProduct 引用进入对象、关系、时序和无底图空间视图。", objectRef: { id: "PRD-223C00000000A5FB", objectTypeRef: "InvestmentProduct", title: "基金 A" }, dataVersionId: "S005-DATA-AUDIT-79-SNAPSHOTS", ontologyVersionId: "S005-SEMANTIC-CANDIDATE-v1" }
     },
     modeling: {
       S001: { name: "融资模型目标", type: "ModelingObjective", status: "candidate", refs: ["MO-S001-COST-FORECAST-v1", "MO-S001-DEBT-STRUCTURE-OPT-v1"], summary: "登记融资成本预测与债务结构方案目标，不回写业务事实。", objectRef: { id: "s001.entity.553", objectTypeRef: "FinancingEntity", title: "单位553" }, dataVersionId: "FIN-ASSET-20251231-v02", ontologyVersionId: "semantic-MSVJM48O-VJC6", modelingObjectiveRef: "MO-S001-COST-FORECAST-v1" },
       S002: { name: "预算超支模型目标", type: "ModelingObjective", status: "candidate", refs: ["MO-S002-BUDGET-OVERRUN-v1"], summary: "登记预算超支预测目标，不改变 S002 归档运行。", modelingObjectiveRef: "MO-S002-BUDGET-OVERRUN-v1" },
-      S003: { name: "债务风险模型登记", type: "ModelingRegistration", status: "not_registered", refs: ["SCENARIO-REGISTRY.json#S003"], summary: "当前 M08 包未登记 S003 Objective；不得回退到其他场景。" },
+      S003: { name: "债务风险持续优化目标", type: "ModelingObjective", status: "candidate", refs: ["MO-S003-DEBT-RISK-EARLY-WARNING-v1", "S003-M01-DEBT-RISK-PKG@1.0.2", "BENCH-S003-LONGITUDINAL-v1"], summary: "监督式 synthetic Benchmark、确定性候选搜索、Shadow Trial 与统一 Result Envelope；不覆盖归档 S003 运行或正式事实。", objectRef: { id: "S003-ASSESSMENT-20251231", title: "2025-12-31 债务风险评估上下文", objectTypeRef: "EnterpriseAssessmentContext" }, dataVersionId: "S003-T007-FORMAL-CANDIDATE-20251231-v1", ontologyVersionId: "SEM-S003-DEBT-RISK-v1" },
       S004: { name: "贷前风险模型目标", type: "ModelingObjective", status: "candidate", refs: ["MO-S004-PRELOAN-RISK-v1"], summary: "登记贷前风险预测目标，不写入授信事实。", modelingObjectiveRef: "MO-S004-PRELOAN-RISK-v1" },
       S005: { name: "投后评价模型目标", type: "ModelingObjective", status: "candidate", refs: ["MO-S005-POST-INVESTMENT-RESEARCH-v1", "MB-S005-EVALUATION-v1"], summary: "使用 InvestmentProduct 输入形成 PREDICTION 或 SIMULATION 结果；不作为正式评价事实。", objectRef: { id: "PRD-223C00000000A5FB", objectTypeRef: "InvestmentProduct", title: "基金 A" }, dataVersionId: "S005-DATA-AUDIT-79-SNAPSHOTS", ontologyVersionId: "S005-SEMANTIC-CANDIDATE-v1", modelingObjectiveRef: "MO-S005-POST-INVESTMENT-RESEARCH-v1" }
     },
@@ -83,7 +83,7 @@
       S002: { name: "预算管理驾驶舱", type: "Dashboard", status: "published", refs: ["dashboard:budget"], summary: "展示归档预算执行和项目占用状态。" },
       S003: { name: "债务风险监测驾驶舱", type: "Dashboard", status: "published", refs: ["dashboard:risk"], summary: "展示归档风险分区与处置状态。" },
       S004: { name: "贷前调查驾驶舱登记", type: "DashboardRegistration", status: "not_applicable", refs: [], summary: "v1.1.0 场景未登记独立驾驶舱。" },
-      S005: { name: "投后评价概览", type: "DashboardInputCandidate", status: "candidate", refs: ["s005-research-fixture.json#sourceSummary", "s005-research-fixture.json#kpis"], summary: "汇总来源覆盖、评价范围和证据状态；结论仍为部分评价。" }
+      S005: { name: "投后评价六域驾驶舱", type: "CurrentEvaluationDashboard", status: "candidate", refs: ["S005_CURRENT_EVALUATION_RUN", "S005_CURRENT_EVALUATION_RESULT"], summary: "只汇总当前 scenarioRunId 对应的六评价域、覆盖率、缺失原因和证据；无当前 result 时显示等待评价。" }
     }
   };
 

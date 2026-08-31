@@ -63,6 +63,17 @@ test("module uses canonical M07 and parameterized scenario identity", async () =
   assert.match(source, /caseStudies/);
   assert.match(source, /OBJECT_INPUT_UNAVAILABLE/);
   assert.match(source, /SERIES_INPUT_UNAVAILABLE/);
+  assert.match(source, /SYNTHETIC_CANDIDATE_SIMULATION/);
+  assert.match(source, /simulation\?\.fixture\?\.classification/);
+  assert.match(source, /containsSourceBusinessValues: simulation\?\.fixture\?\.containsSourceBusinessValues/);
+  assert.match(source, /simulationStatus: simulation\?\.status/);
+  assert.match(source, /factWriteAllowed: simulation\?\.result\?\.factWriteAllowed/);
+  assert.match(source, /actionWriteAllowed: simulation\?\.result\?\.actionWriteAllowed/);
+  assert.match(source, /sideEffectsEmitted: simulation\?\.sideEffectAudit\?\.emitted/);
+  assert.doesNotMatch(source, /containsSourceBusinessValues === true|sideEffectAudit\?\.emitted \?\? 0/);
+  assert.match(source, /study\.m08\?\.inputMode \|\| "OBSERVED_SERIES_SIMULATION"/);
+  assert.match(data, /inputMode: "SYNTHETIC_CANDIDATE_SIMULATION"/);
+  assert.match(source, /事实覆盖增量 0/);
   assert.match(source, /item\.scenarioIds\?\.includes\(scenarioId\)/);
   assert.match(source, /暂无可用建模目标/);
   assert.match(source, /returnUrl: matches/);
@@ -74,6 +85,52 @@ test("module uses canonical M07 and parameterized scenario identity", async () =
   const fixture = await loadFixture({ scenarioId: "S099" });
   assert.equal(fixture.fixtureId, "FIX-S099-SYNTHETIC-v1");
   assert.doesNotMatch(JSON.stringify(fixture), /S005/);
+});
+
+test("module exposes a schema-driven Objective-first workspace and real S003 state chain", async () => {
+  const html = await read("module/content.html");
+  const source = await read("module/content.js");
+  const data = await read("module/data.js");
+  const css = await read("module/content.css");
+
+  assert.match(source, /catalogScope:\s*persisted\.catalogScope \|\| "SCENARIO"/);
+  assert.match(source, /data-catalog-scope="ALL"/);
+  assert.match(source, /data-catalog-scope="SCENARIO"/);
+  for (const kind of ["FORECAST", "CLASSIFICATION", "SCORING", "OPTIMIZATION"]) assert.match(source, new RegExp(kind));
+  for (const section of ["benchmark", "insights", "candidates", "binding", "consumption"]) assert.match(source, new RegExp(`"${section}"`));
+  const lifecycleSource = source.slice(source.indexOf("function lifecycle"), source.indexOf("function nextWorkspaceSection"));
+  for (const label of ["目标定义", "动态合同", "基准评测", "AI 洞察", "候选版本", "人工评审", "Release", "Binding", "消费跟踪"]) assert.match(lifecycleSource, new RegExp(label));
+  assert.doesNotMatch(lifecycleSource, /Simulation|隔离模拟|模拟使用/);
+
+  assert.match(source, /MO-S003-DEBT-RISK-EARLY-WARNING-v1/);
+  assert.match(data, /S003:\s*"MO-S003-DEBT-RISK-EARLY-WARNING-v1"/);
+  for (const path of ["workspace", "benchmark/run", "insights/generate", "candidates/generate", "candidates/evaluate", "shadow/start", "shadow/advance", "release-candidates/form", "bindings/validate", "bindings/apply-default", "results/recalculate"]) assert.match(source, new RegExp(`/v1/s003/${path.replace("/", "\\/")}`));
+  assert.match(source, /OFW_S003_MODELING_RECALCULATE_REQUEST/);
+  assert.match(source, /OFW_S003_MODELING_WORKSPACE/);
+  assert.match(source, /OFW_S003_MODELING_RESULT/);
+  assert.match(source, /scenarioContext:\s*structuredClone\(scenario\)/);
+  assert.match(source, /workspaceSnapshot/);
+  assert.match(source, /factWriteAllowed:\s*false/);
+  assert.match(source, /actionWriteAllowed:\s*false/);
+  assert.match(source, /actionSourceAllowed:\s*false/);
+  assert.match(source, /benchmarkRunId/);
+  assert.match(source, /experimentRunId/);
+  assert.match(source, /shadowRunId/);
+  assert.match(source, /ARCHIVED_SCENARIO_RUN_REUSE_REJECTED/);
+
+  for (const field of ["objectTypeRef", "propertyRef", "type", "unit", "timeGrain", "shape", "cardinality", "nullable", "required", "resultKind", "displayRole", "permissionScope", "consumers"]) assert.match(source, new RegExp(`port\\.${field}`));
+  assert.doesNotMatch(source, /"InvestmentProduct"|未来90日到期债务集中度|偿债覆盖和到期压力/);
+  assert.match(source, /NON_FACT_SOURCE_REJECTED/);
+  assert.match(source, /moduleByConsumer = \{ M07_EXPLORATION: "m07"/);
+  assert.match(source, /usage:\s*"simulation"/);
+  assert.match(source, /simulation:\s*"objective"/);
+  assert.match(source, /replace\(\/\^#\\\/\?\//);
+  assert.match(source, /handoff\.usageIntent \|\| handoff\.requestedUseKind \|\| "SIMULATION"/);
+  assert.match(html, /content\.css\?v=20260831-06/);
+  assert.match(html, /m07-m08-bridge\.js\?v=20260831-06/);
+  assert.match(html, /data\.js\?v=20260831-06/);
+  assert.match(html, /content\.js\?v=20260831-06/);
+  assert.match(css, /@media \(max-width: 420px\)[\s\S]*m08-workspace-strip/);
 });
 
 test("bridge enforces canonical M07 and exact round-trip identity", async () => {
@@ -96,11 +153,13 @@ test("bridge enforces canonical M07 and exact round-trip identity", async () => 
   assert.equal(delivered.payload.explorationHandoff.objectRef.objectTypeRef, "InvestmentProduct");
   const inputManifest = { ...scenario, objectRef: handoff.objectRef };
   const resultEnvelope = { resultId: "SIM-001", inputSnapshot: { ...scenario } };
-  const returned = bridge.returnMessage({ inputManifest, resultEnvelope }, scenario);
+  const returned = bridge.returnMessage({ inputManifest, resultEnvelope, simulationStatus: "SUCCEEDED" }, scenario);
   assert.equal(returned.type, "OFW_M08_RETURN_TO_M07");
   assert.equal(returned.targetRoute, "#module/m07");
   assert.deepEqual(returned.payload.inputManifest, inputManifest);
   assert.deepEqual(returned.payload.resultEnvelope, resultEnvelope);
+  assert.equal(returned.payload.status, "active");
+  assert.equal(returned.payload.simulationStatus, "SUCCEEDED");
   assert.throws(() => bridge.acceptM07Open({ type: "OFW_M07_OPEN_M08", payload: { ...scenario, scenarioRunId: "OTHER" } }, scenario));
 });
 

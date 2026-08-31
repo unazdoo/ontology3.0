@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "ofw.m08.synthetic-longitudinal-benchmark.v1",
+  "fixtureId": "FIX-S003-LONGITUDINAL-180D-v1",
+  "classification": "SYNTHETIC_DEIDENTIFIED_RESEARCH_ONLY",
+  "containsSourceBusinessValues": false,
+  "labelsDerivedFromModelOutput": false,
+  "labelsDerivedFromRiskLights": false,
+  "labelsDerivedFromReports": false,
+  "labelsDerivedFromM04Disposition": false,
+  "description": "脱敏 synthetic 企业纵向样本；风险结果由观察时点后180天独立事件确认，不作为模型有效性证明。",
+  "benchmark": {
+    "benchmarkVersion": "BENCH-S003-LONGITUDINAL-v1",
+    "datasetSplitVersion": "SPLIT-S003-TEMPORAL-v1",
+    "evaluatorVersion": "EVAL-S003-FIXED-CAPACITY-v1",
+    "metricSchemaVersion": "METRIC-S003-SUPERVISED-v1",
+    "featureSchemaVersion": "FEATURE-S003-15M-6F-v1",
+    "dataVersion": "DATA-SYN-S003-LONGITUDINAL-v1",
+    "outcomeDataVersion": "OUTCOME-SYN-S003-180D-v1",
+    "horizonDays": 180,
+    "fixedCapacityRatio": 0.2,
+    "minimumMaturedLabels": 12,
+    "primaryMetric": "recallAtFixedCapacity",
+    "holdoutPolicy": "SEALED_FINAL_CANDIDATE_ONCE"
+  },
+  "featureSemantics": {
+    "metricOrderSource": "S003-M01-DEBT-RISK-PKG@1.0.2#/indicatorOrder",
+    "factorOrderSource": "S003-M01-DEBT-RISK-PKG@1.0.2#/factors",
+    "metricValueMeaning": "NORMALIZED_RISK_SIGNAL_0_TO_1",
+    "factorValueMeaning": "NORMALIZED_ADVERSE_SIGNAL_0_TO_1",
+    "normalizationScope": "SYNTHETIC_BENCHMARK_ONLY",
+    "sourceConfigurationCopied": false,
+    "newFeatureAvailability": {
+      "future90dMaturityConcentration": {
+        "semanticDefinitionAvailable": false,
+        "historicalDataAvailable": false,
+        "status": "DATA_REQUIRED"
+      }
+    }
+  },
+  "observationWindows": [
+    { "windowId": "OBS-TRAIN-20240131", "split": "TRAIN", "predictionAsOf": "2024-01-31", "availableAt": "2024-01-30T18:00:00.000Z", "defaultOutcomeObservedAt": "2024-07-28T12:00:00.000Z", "featureShift": -0.04 },
+    { "windowId": "OBS-VALIDATION-20240731", "split": "VALIDATION", "predictionAsOf": "2024-07-31", "availableAt": "2024-07-30T18:00:00.000Z", "defaultOutcomeObservedAt": "2025-01-26T12:00:00.000Z", "featureShift": 0 },
+    { "windowId": "OBS-HOLDOUT-20250131", "split": "HOLDOUT", "predictionAsOf": "2025-01-31", "availableAt": "2025-01-30T18:00:00.000Z", "defaultOutcomeObservedAt": "2025-07-29T12:00:00.000Z", "featureShift": 0.025 },
+    { "windowId": "OBS-SHADOW-20251231", "split": "SHADOW", "predictionAsOf": "2025-12-31", "availableAt": "2025-12-31T08:00:00.000Z", "defaultOutcomeObservedAt": null, "featureShift": 0.045 }
+  ],
+  "maturityWindows": [
+    { "maturityWindowId": "MATURITY-W1", "maturedAt": "2026-02-28T23:59:59.000Z", "enterpriseIds": ["SYN-S003-ENT-001", "SYN-S003-ENT-002", "SYN-S003-ENT-003", "SYN-S003-ENT-004", "SYN-S003-ENT-005", "SYN-S003-ENT-006", "SYN-S003-ENT-007"] },
+    { "maturityWindowId": "MATURITY-W2", "maturedAt": "2026-05-31T23:59:59.000Z", "enterpriseIds": ["SYN-S003-ENT-008", "SYN-S003-ENT-009", "SYN-S003-ENT-010", "SYN-S003-ENT-011", "SYN-S003-ENT-012", "SYN-S003-ENT-013", "SYN-S003-ENT-014"] },
+    { "maturityWindowId": "MATURITY-W3", "maturedAt": "2026-06-28T23:59:59.000Z", "enterpriseIds": ["SYN-S003-ENT-015", "SYN-S003-ENT-016", "SYN-S003-ENT-017", "SYN-S003-ENT-018", "SYN-S003-ENT-019", "SYN-S003-ENT-020", "SYN-S003-ENT-021"] }
+  ],
+  "enterpriseProfiles": [
+    { "enterpriseId": "SYN-S003-ENT-001", "enterpriseName": "脱敏企业01", "industry": "新能源产业-风电", "operatingStage": "成熟期", "metricRiskSignals": [0.72,0.86,0.82,0.91,0.78,0.89,0.92,0.66,0.61,0.75,0.76,0.69,0.77,0.84,0.71], "factorRiskSignals": [0.82,0.62,0.72,0.78,0.54,0.95], "outcomes": [true,true,true,true], "interventionFlags": [false,false,false,false], "outcomeType": "PAYMENT_OVERDUE" },
+    { "enterpriseId": "SYN-S003-ENT-002", "enterpriseName": "脱敏企业02", "industry": "核电", "operatingStage": "成熟期", "metricRiskSignals": [0.68,0.76,0.79,0.84,0.81,0.86,0.83,0.62,0.60,0.67,0.70,0.64,0.73,0.79,0.66], "factorRiskSignals": [0.75,0.58,0.68,0.64,0.61,0.87], "outcomes": [true,true,true,true], "interventionFlags": [false,false,false,false], "outcomeType": "EXTENSION_RESTRUCTURING" },
+    { "enterpriseId": "SYN-S003-ENT-003", "enterpriseName": "脱敏企业03", "industry": "环保", "operatingStage": "成长期", "metricRiskSignals": [0.51,0.58,0.61,0.96,0.74,0.94,0.93,0.52,0.49,0.55,0.56,0.48,0.53,0.68,0.57], "factorRiskSignals": [0.69,0.46,0.61,0.40,0.55,0.92], "outcomes": [false,true,true,true], "interventionFlags": [false,false,false,false], "outcomeType": "FUNDING_GAP_REALIZED" },
+    { "enterpriseId": "SYN-S003-ENT-004", "enterpriseName": "脱敏企业04", "industry": "新能源产业-风电", "operatingStage": "成长期", "metricRiskSignals": [0.79,0.81,0.73,0.65,0.72,0.67,0.63,0.77,0.76,0.82,0.84,0.80,0.83,0.88,0.75], "factorRiskSignals": [0.71,0.75,0.66,0.72,0.57,0.68], "outcomes": [false,false,false,false], "interventionFlags": [true,true,true,true], "outcomeType": "NONE" },
+    { "enterpriseId": "SYN-S003-ENT-005", "enterpriseName": "脱敏企业05", "industry": "核电", "operatingStage": "成熟期", "metricRiskSignals": [0.75,0.79,0.70,0.31,0.59,0.38,0.34,0.72,0.74,0.78,0.80,0.76,0.77,0.81,0.73], "factorRiskSignals": [0.52,0.68,0.55,0.47,0.63,0.35], "outcomes": [false,false,false,false], "interventionFlags": [false,false,false,false], "outcomeType": "NONE" },
+    { "enterpriseId": "SYN-S003-ENT-006", "enterpriseName": "脱敏企业06", "industry": "环保", "operatingStage": "成熟期", "metricRiskSignals": [0.56,0.64,0.68,0.85,0.71,0.88,0.87,0.54,0.50,0.58,0.60,0.55,0.59,0.70,0.62], "factorRiskSignals": [0.64,0.52,0.59,0.34,0.48,0.86], "outcomes": [true,true,true,true], "interventionFlags": [false,false,false,false], "outcomeType": "EXTERNAL_RATING_DOWNGRADE" },
+    { "enterpriseId": "SYN-S003-ENT-007", "enterpriseName": "脱敏企业07", "industry": "新能源产业-风电", "operatingStage": "成熟期", "metricRiskSignals": [0.60,0.62,0.58,0.56,0.65,0.59,0.55,0.64,0.61,0.63,0.62,0.57,0.60,0.66,0.59], "factorRiskSignals": [0.58,0.49,0.54,0.61,0.42,0.57], "outcomes": [false,false,false,false], "interventionFlags": [false,false,false,false], "outcomeType": "NONE" },
+    { "enterpriseId": "SYN-S003-ENT-008", "enterpriseName": "脱敏企业08", "industry": "核电", "operatingStage": "成熟期", "metricRiskSignals": [0.53,0.56,0.55,0.51,0.62,0.54,0.50,0.57,0.58,0.59,0.57,0.55,0.56,0.61,0.54], "factorRiskSignals": [0.51,0.43,0.48,0.46,0.45,0.52], "outcomes": [false,false,false,false], "interventionFlags": [false,false,false,false], "outcomeType": "NONE" },
+    { "enterpriseId": "SYN-S003-ENT-009", "enterpriseName": "脱敏企业09", "industry": "环保", "operatingStage": "成长期", "metricRiskSignals": [0.48,0.54,0.59,0.88,0.69,0.87,0.90,0.47,0.45,0.50,0.52,0.46,0.49,0.63,0.51], "factorRiskSignals": [0.62,0.38,0.56,0.29,0.52,0.89], "outcomes": [true,true,true,true], "interventionFlags": [false,false,false,false], "outcomeType": "FUNDING_GAP_REALIZED" },
+    { "enterpriseId": "SYN-S003-ENT-010", "enterpriseName": "脱敏企业10", "industry": "新能源产业-风电", "operatingStage": "成长期", "metricRiskSignals": [0.55,0.57,0.52,0.48,0.58,0.51,0.47,0.60,0.59,0.56,0.55,0.54,0.57,0.60,0.53], "factorRiskSignals": [0.49,0.45,0.51,0.53,0.39,0.47], "outcomes": [false,false,false,false], "interventionFlags": [false,false,false,false], "outcomeType": "NONE" },
+    { "enterpriseId": "SYN-S003-ENT-011", "enterpriseName": "脱敏企业11", "industry": "核电", "operatingStage": "成熟期", "metricRiskSignals": [0.50,0.58,0.62,0.81,0.66,0.84,0.82,0.51,0.48,0.54,0.55,0.50,0.52,0.67,0.56], "factorRiskSignals": [0.59,0.44,0.53,0.49,0.50,0.83], "outcomes": [false,true,true,true], "interventionFlags": [false,false,false,false], "outcomeType": "PAYMENT_OVERDUE" },
+    { "enterpriseId": "SYN-S003-ENT-012", "enterpriseName": "脱敏企业12", "industry": "环保", "operatingStage": "成熟期", "metricRiskSignals": [0.47,0.49,0.46,0.44,0.54,0.46,0.43,0.52,0.51,0.50,0.49,0.47,0.48,0.55,0.46], "factorRiskSignals": [0.45,0.40,0.46,0.25,0.43,0.44], "outcomes": [false,false,false,false], "interventionFlags": [false,false,false,false], "outcomeType": "NONE" },
+    { "enterpriseId": "SYN-S003-ENT-013", "enterpriseName": "脱敏企业13", "industry": "新能源产业-风电", "operatingStage": "成熟期", "metricRiskSignals": [0.42,0.45,0.44,0.41,0.50,0.43,0.40,0.48,0.47,0.46,0.45,0.43,0.44,0.51,0.42], "factorRiskSignals": [0.42,0.37,0.43,0.45,0.35,0.41], "outcomes": [false,false,false,false], "interventionFlags": [false,false,false,false], "outcomeType": "NONE" },
+    { "enterpriseId": "SYN-S003-ENT-014", "enterpriseName": "脱敏企业14", "industry": "核电", "operatingStage": "成长期", "metricRiskSignals": [0.43,0.50,0.54,0.86,0.64,0.83,0.85,0.45,0.42,0.47,0.48,0.44,0.46,0.59,0.49], "factorRiskSignals": [0.57,0.39,0.52,0.43,0.47,0.85], "outcomes": [true,true,true,true], "interventionFlags": [false,false,false,false], "outcomeType": "EXTENSION_RESTRUCTURING" },
+    { "enterpriseId": "SYN-S003-ENT-015", "enterpriseName": "脱敏企业15", "industry": "环保", "operatingStage": "成熟期", "metricRiskSignals": [0.38,0.41,0.40,0.36,0.47,0.39,0.35,0.45,0.44,0.43,0.42,0.40,0.41,0.48,0.39], "factorRiskSignals": [0.39,0.34,0.41,0.22,0.37,0.38], "outcomes": [false,false,false,true], "interventionFlags": [false,false,false,false], "outcomeType": "EXTERNAL_RATING_DOWNGRADE" },
+    { "enterpriseId": "SYN-S003-ENT-016", "enterpriseName": "脱敏企业16", "industry": "新能源产业-风电", "operatingStage": "成长期", "metricRiskSignals": [0.71,0.73,0.69,0.60,0.68,0.62,0.58,0.70,0.68,0.72,0.74,0.69,0.71,0.77,0.67], "factorRiskSignals": [0.68,0.66,0.62,0.69,0.56,0.61], "outcomes": [false,false,false,false], "interventionFlags": [true,true,true,true], "outcomeType": "NONE" },
+    { "enterpriseId": "SYN-S003-ENT-017", "enterpriseName": "脱敏企业17", "industry": "核电", "operatingStage": "成熟期", "metricRiskSignals": [0.40,0.47,0.51,0.82,0.61,0.81,0.84,0.42,0.39,0.44,0.46,0.41,0.43,0.56,0.47], "factorRiskSignals": [0.54,0.36,0.49,0.42,0.44,0.82], "outcomes": [false,false,true,true], "interventionFlags": [false,false,false,false], "outcomeType": "EXTERNAL_RATING_DOWNGRADE" },
+    { "enterpriseId": "SYN-S003-ENT-018", "enterpriseName": "脱敏企业18", "industry": "环保", "operatingStage": "成熟期", "metricRiskSignals": [0.32,0.35,0.34,0.30,0.41,0.33,0.29,0.39,0.38,0.37,0.36,0.34,0.35,0.42,0.33], "factorRiskSignals": [0.35,0.31,0.37,0.20,0.32,0.34], "outcomes": [false,false,false,false], "interventionFlags": [false,false,false,false], "outcomeType": "NONE" },
+    { "enterpriseId": "SYN-S003-ENT-019", "enterpriseName": "脱敏企业19", "industry": "新能源产业-风电", "operatingStage": "成熟期", "metricRiskSignals": [0.28,0.31,0.30,0.27,0.37,0.29,0.26,0.35,0.34,0.33,0.32,0.30,0.31,0.38,0.29], "factorRiskSignals": [0.31,0.28,0.33,0.34,0.27,0.30], "outcomes": [false,false,false,false], "interventionFlags": [false,false,false,false], "outcomeType": "NONE" },
+    { "enterpriseId": "SYN-S003-ENT-020", "enterpriseName": "脱敏企业20", "industry": "环保", "operatingStage": "成长期", "metricRiskSignals": [0.36,0.43,0.48,0.79,0.58,0.78,0.80,0.38,0.36,0.41,0.42,0.37,0.40,0.53,0.44], "factorRiskSignals": [0.51,0.33,0.47,0.21,0.41,0.79], "outcomes": [false,false,true,true], "interventionFlags": [false,false,false,false], "outcomeType": "FUNDING_GAP_REALIZED" },
+    { "enterpriseId": "SYN-S003-ENT-021", "enterpriseName": "脱敏企业21", "industry": "核电", "operatingStage": "成熟期", "metricRiskSignals": [0.23,0.26,0.25,0.22,0.32,0.24,0.21,0.30,0.29,0.28,0.27,0.25,0.26,0.33,0.24], "factorRiskSignals": [0.27,0.24,0.29,0.23,0.22,0.26], "outcomes": [false,false,false,false], "interventionFlags": [false,false,false,false], "outcomeType": "NONE" }
+  ]
+}

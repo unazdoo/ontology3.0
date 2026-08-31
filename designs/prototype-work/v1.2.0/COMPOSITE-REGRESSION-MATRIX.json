@@ -25,7 +25,7 @@
         "390x844"
       ],
       "status": "passed",
-      "observedAt": "2026-08-29T08:54:35Z",
+      "observedAt": "2026-08-31T14:32:13Z",
       "evidence": [
         "composite/evidence/browser-regression.json#routeCoverage",
         "composite/evidence/screenshots/home-1440x900.png"
@@ -41,7 +41,7 @@
         "390x844"
       ],
       "status": "passed",
-      "observedAt": "2026-08-29T08:54:35Z",
+      "observedAt": "2026-08-31T14:32:13Z",
       "evidence": [
         "composite/evidence/browser-regression.json#routeCoverage",
         "node composite/tests/verify-candidate.mjs"
@@ -54,7 +54,7 @@
       "method": "static",
       "command": "node composite/tests/verify-candidate.mjs",
       "status": "passed",
-      "observedAt": "2026-08-29T08:54:35Z",
+      "observedAt": "2026-08-31T14:32:13Z",
       "evidence": [
         "node composite/tests/verify-candidate.mjs",
         "MODULE-REGISTRY.json"
@@ -66,7 +66,7 @@
       "requirement": "S001 至 S005 的资源在 M01 至 M08 和仪表盘的统一目录中按业务属性筛选，复合键不冲突",
       "method": "static-and-browser",
       "status": "passed",
-      "observedAt": "2026-08-29T08:54:35Z",
+      "observedAt": "2026-08-31T14:32:13Z",
       "evidence": [
         "node --test composite/resources/catalog.test.mjs",
         "composite/evidence/browser-regression.json#resourceCatalog"
@@ -79,7 +79,7 @@
       "method": "static-behavioral",
       "command": "node composite/tests/verify-candidate.mjs",
       "status": "passed",
-      "observedAt": "2026-08-29T08:54:35Z",
+      "observedAt": "2026-08-31T14:32:13Z",
       "evidence": [
         "node --test composite/s001-e2e-integration/state.contract.test.mjs",
         "SCENARIO-REGISTRY.json#archivedIdentityProtection"
@@ -91,7 +91,7 @@
       "requirement": "S005 从 M07 进入 M08 并返回 M07 后，五字段场景身份、对象、时间范围和读取位置一致",
       "method": "browser",
       "status": "passed",
-      "observedAt": "2026-08-29T08:54:35Z",
+      "observedAt": "2026-08-31T14:32:13Z",
       "evidence": [
         "composite/evidence/browser-regression.json#handoff",
         "node --test composite/tests/m07-m08-runtime.test.mjs"
@@ -104,7 +104,7 @@
       "method": "static-behavioral",
       "command": "node composite/tests/verify-candidate.mjs",
       "status": "passed",
-      "observedAt": "2026-08-29T08:54:35Z",
+      "observedAt": "2026-08-31T14:32:13Z",
       "evidence": [
         "node --test composite/tests/m07-m08-runtime.test.mjs",
         "node --test composite/modules/modeling/test/static-contract.test.mjs"
@@ -116,7 +116,7 @@
       "requirement": "在首页、M07、M08 和任一冻结模块刷新后恢复当前路由、场景与模块上下文",
       "method": "browser",
       "status": "passed",
-      "observedAt": "2026-08-29T08:54:35Z",
+      "observedAt": "2026-08-31T14:32:13Z",
       "evidence": [
         "composite/evidence/browser-regression.json#navigationState"
       ]
@@ -127,7 +127,7 @@
       "requirement": "浏览器后退和前进按历史顺序恢复首页、M07、M08 与返回后的 M07",
       "method": "browser",
       "status": "passed",
-      "observedAt": "2026-08-29T08:54:35Z",
+      "observedAt": "2026-08-31T14:32:13Z",
       "evidence": [
         "composite/evidence/browser-regression.json#navigationState"
       ]
@@ -150,7 +150,7 @@
         "#dashboard"
       ],
       "status": "passed",
-      "observedAt": "2026-08-29T08:54:35Z",
+      "observedAt": "2026-08-31T14:32:13Z",
       "evidence": [
         "composite/evidence/browser-regression.json#routeCoverage"
       ]
@@ -158,11 +158,11 @@
     {
       "id": "CRG-011",
       "area": "reset-isolation",
-      "requirement": "重置当前 S005 只生成新的 S005 scenarioRunId、封存上一轮并清除该轮交接，不触碰 S001 至 S004",
+      "requirement": "重置当前 S005 生成新 scenarioRunId 并回到 0/7，封存上一轮 evaluation run/result/module outputs，清除交接且不触碰 S001 至 S004",
       "method": "static-behavioral-and-browser",
       "command": "node composite/tests/verify-candidate.mjs",
       "status": "passed",
-      "observedAt": "2026-08-29T08:54:35Z",
+      "observedAt": "2026-08-31T14:32:13Z",
       "evidence": [
         "node --test composite/s001-e2e-integration/state.contract.test.mjs",
         "composite/evidence/browser-regression.json#resetIsolation"
@@ -175,7 +175,7 @@
       "method": "browser",
       "viewport": "1440x900",
       "status": "passed",
-      "observedAt": "2026-08-29T08:54:35Z",
+      "observedAt": "2026-08-31T14:32:13Z",
       "evidence": [
         "composite/evidence/browser-regression.json#viewports/0",
         "composite/evidence/screenshots/home-1440x900.png",
@@ -189,7 +189,7 @@
       "method": "browser",
       "viewport": "1280x720",
       "status": "passed",
-      "observedAt": "2026-08-29T08:54:35Z",
+      "observedAt": "2026-08-31T14:32:13Z",
       "evidence": [
         "composite/evidence/browser-regression.json#viewports/1",
         "composite/evidence/screenshots/home-1280x720.png",
@@ -203,7 +203,7 @@
       "method": "browser",
       "viewport": "390x844",
       "status": "passed",
-      "observedAt": "2026-08-29T08:54:35Z",
+      "observedAt": "2026-08-31T14:32:13Z",
       "evidence": [
         "composite/evidence/browser-regression.json#viewports/2",
         "composite/evidence/screenshots/home-390x844.png",
@@ -222,7 +222,7 @@
         "failedResourceRequests": 0
       },
       "status": "passed",
-      "observedAt": "2026-08-29T08:54:35Z",
+      "observedAt": "2026-08-31T14:32:13Z",
       "evidence": [
         "composite/evidence/browser-regression.json#runtimeErrors"
       ]
@@ -234,7 +234,7 @@
       "method": "static",
       "command": "node composite/tests/verify-candidate.mjs",
       "status": "passed",
-      "observedAt": "2026-08-29T08:54:35Z",
+      "observedAt": "2026-08-31T14:32:13Z",
       "evidence": [
         "node designs/prototype-releases/verify-release.mjs 1.1.0",
         "node designs/scenario-checkpoints/baselines/v1.1.0/verify-baseline.mjs"
@@ -247,7 +247,7 @@
       "method": "static",
       "command": "node composite/tests/verify-candidate.mjs",
       "status": "passed",
-      "observedAt": "2026-08-29T08:54:35Z",
+      "observedAt": "2026-08-31T14:32:13Z",
       "evidence": [
         "node composite/tests/verify-candidate.mjs",
         "COMPOSITE-MANIFEST.json#composition"
@@ -259,7 +259,7 @@
       "requirement": "产品可见文本不暴露内部制作标签；M08 的正式模块名和业务结果类型按注册合同保留",
       "method": "static-and-browser",
       "status": "passed",
-      "observedAt": "2026-08-29T08:54:35Z",
+      "observedAt": "2026-08-31T14:32:13Z",
       "evidence": [
         "node composite/tests/verify-candidate.mjs",
         "composite/evidence/browser-regression.json#routeCoverage"
@@ -272,7 +272,7 @@
       "method": "static",
       "command": "node composite/tests/verify-candidate.mjs",
       "status": "passed",
-      "observedAt": "2026-08-29T08:54:35Z",
+      "observedAt": "2026-08-31T14:32:13Z",
       "evidence": [
         "COMPOSITE-MANIFEST.json#stateSeparation",
         "node composite/tests/verify-candidate.mjs"
@@ -295,12 +295,12 @@
         "composite/evidence/screenshots/home-1440x900.png",
         "composite/evidence/screenshots/home-390x844.png"
       ],
-      "observedAt": "2026-08-29T08:54:35Z"
+      "observedAt": "2026-08-31T14:32:13Z"
     },
     {
       "id": "CRG-021",
       "area": "dashboard-s005-integration",
-      "requirement": "仪表盘保留 S001 至 S003 基线并在同一目录真实提供 S005 概览、产品、市场横评和选择证据视图",
+      "requirement": "仪表盘保留 S001 至 S003 基线，只读取当前 S005 scenarioRunId 的 evaluation run/result，并提供六评价域、覆盖率、缺失原因和证据下钻",
       "method": "static-and-browser",
       "viewports": [
         "1440x900",
@@ -314,14 +314,203 @@
         "composite/evidence/screenshots/dashboard-s005-1440x900.png",
         "composite/evidence/screenshots/dashboard-s005-390x844.png"
       ],
-      "observedAt": "2026-08-29T08:54:35Z"
+      "observedAt": "2026-08-31T14:32:13Z"
+    },
+    {
+      "id": "CRG-022",
+      "area": "s005-actual-module-chain",
+      "requirement": "M02、M01、M03、M04、M05、M07、M08、M06 以同一五字段身份回传可验证结果；M07 原子探索结果包随打开 M08 一次提交，M08 返回独立 simulationStatus；七阶段只由实际模块事件推进到 7/7，Dashboard 随当前 run 更新，重置后新 run 回到 0/7",
+      "method": "static-behavioral-and-browser",
+      "status": "passed",
+      "evidence": [
+        "node --test composite/s001-e2e-integration/state.contract.test.mjs",
+        "node --test composite/scenarios/s005/tests/evaluation-engine.test.mjs",
+        "composite/evidence/browser-regression.json#s005ActualChain"
+      ],
+      "observedAt": "2026-08-31T14:32:13Z"
+    },
+    {
+      "id": "CRG-023",
+      "area": "s005-evaluation-boundaries",
+      "requirement": "缺失指标保持 null 且不补零，周快照不计算日频 Sharpe；M08 的 simulationStatus、预测/模拟结果与事实评价分离，合成输出不进入事实覆盖率；M04 保持 not_applicable/read_only、零行动与零副作用；不形成 Published 本体、Metric、Rule 或 T019",
+      "method": "static-behavioral-and-browser",
+      "status": "passed",
+      "evidence": [
+        "node --test composite/scenarios/s005/tests/evaluation-engine.test.mjs",
+        "node --test composite/scenarios/s005/tests/module-workbench.contract.test.mjs",
+        "composite/evidence/browser-regression.json#s005Boundaries"
+      ],
+      "observedAt": "2026-08-31T14:32:13Z"
+    },
+    {
+      "id": "CRG-024",
+      "area": "m08-objective-discovery",
+      "requirement": "M08 默认显示当前场景但可切换全部目标，FORECAST、CLASSIFICATION、SCORING、OPTIMIZATION 四类均可发现",
+      "method": "static-and-browser",
+      "status": "passed",
+      "evidence": [
+        "node --test composite/modules/modeling/test/static-contract.test.mjs",
+        "composite/evidence/browser-regression.json#m08ObjectiveWorkspace",
+        "composite/evidence/screenshots/m08-all-objectives-1440x900.png"
+      ],
+      "observedAt": "2026-08-31T14:32:13Z"
+    },
+    {
+      "id": "CRG-025",
+      "area": "m08-dynamic-contract",
+      "requirement": "Objective schema 动态驱动对象、属性、类型、单位、粒度、shape、cardinality、nullable、required、结果角色、权限和消费者；Simulation 不属于生命周期阶段",
+      "method": "static-behavioral",
+      "status": "passed",
+      "evidence": [
+        "node --test composite/modules/modeling/test/static-contract.test.mjs",
+        "node --test composite/modules/modeling/validation/test/objective-registry.test.mjs"
+      ],
+      "observedAt": "2026-08-31T14:32:13Z"
+    },
+    {
+      "id": "CRG-026",
+      "area": "s003-source-integrity",
+      "requirement": "S003 1.0.2 基线模型和固定 FACT 结果通过精确 sourceRef、版本和 SHA-256 只读引用，不复制为第二套权威配置",
+      "method": "static-behavioral",
+      "status": "passed",
+      "evidence": [
+        "node --test composite/modules/modeling/validation/test/s003-continuous-optimization.test.mjs",
+        "SCENARIO-REGISTRY.json#scenarios/2/modelingResearch"
+      ],
+      "observedAt": "2026-08-31T14:32:13Z"
+    },
+    {
+      "id": "CRG-027",
+      "area": "s003-supervised-benchmark",
+      "requirement": "synthetic 纵向 Benchmark 无未来泄漏，固定 Top20% 指标齐全；标签不足返回 INSUFFICIENT_LABELS 且指标保持 null",
+      "method": "behavioral-and-browser",
+      "status": "passed",
+      "evidence": [
+        "node --test composite/modules/modeling/validation/test/s003-continuous-optimization.test.mjs",
+        "composite/evidence/browser-regression.json#s003ContinuousOptimization"
+      ],
+      "observedAt": "2026-08-31T14:32:13Z"
+    },
+    {
+      "id": "CRG-028",
+      "area": "s003-ai-candidate-comparison",
+      "requirement": "AI 只生成结构化洞察；A/B/C 候选使用同一 Benchmark、Split、Evaluator 和 MetricSchema，C 缺语义或历史数据时保持 DATA_REQUIRED",
+      "method": "behavioral-and-browser",
+      "status": "passed",
+      "evidence": [
+        "node --test composite/modules/modeling/validation/test/s003-continuous-optimization.test.mjs",
+        "composite/evidence/screenshots/m08-s003-candidates-1440x900.png"
+      ],
+      "observedAt": "2026-08-31T14:32:13Z"
+    },
+    {
+      "id": "CRG-029",
+      "area": "s003-shadow-holdout",
+      "requirement": "影子试用展示三个标签成熟窗口并可重新评测；封存 Holdout 只在最终 Release Candidate 时使用一次",
+      "method": "behavioral-and-browser",
+      "status": "passed",
+      "evidence": [
+        "node --test composite/modules/modeling/validation/test/s003-continuous-optimization.test.mjs",
+        "composite/evidence/screenshots/m08-s003-shadow-1440x900.png"
+      ],
+      "observedAt": "2026-08-31T14:32:13Z"
+    },
+    {
+      "id": "CRG-030",
+      "area": "s003-binding-application",
+      "requirement": "Binding 单位或时间粒度漂移被拒绝；应用为仪表盘默认候选只保留一次人工确认，Model Version 保持不可变",
+      "method": "behavioral-and-browser",
+      "status": "passed",
+      "evidence": [
+        "node --test composite/modules/modeling/validation/test/s003-continuous-optimization.test.mjs",
+        "composite/evidence/browser-regression.json#bindingAndTruthBoundaries"
+      ],
+      "observedAt": "2026-08-31T14:32:13Z"
+    },
+    {
+      "id": "CRG-031",
+      "area": "dashboard-s003-modeling",
+      "requirement": "S003 Dashboard 真实消费 21 家企业 Result Envelope，并提供正式结果、候选试算、差异、切片、迁移、逐户与贡献视图",
+      "method": "static-behavioral-and-browser",
+      "status": "passed",
+      "evidence": [
+        "node --test composite/dashboard/dashboard.contract.test.mjs",
+        "composite/evidence/browser-regression.json#s003DashboardProjection",
+        "composite/evidence/screenshots/dashboard-s003-diff-1440x900.png"
+      ],
+      "observedAt": "2026-08-31T14:32:13Z"
+    },
+    {
+      "id": "CRG-032",
+      "area": "modeling-consumers",
+      "requirement": "M07、M03、M05、M06 和 Dashboard 只读消费同一 Result Envelope；M04 对非 FACT 返回 NON_FACT_SOURCE_REJECTED",
+      "method": "static-behavioral-and-browser",
+      "status": "passed",
+      "evidence": [
+        "node --test composite/modules/modeling/consumer/result-projection.contract.test.mjs",
+        "node --test composite/modules/m07/tests/contracts.test.mjs",
+        "composite/evidence/browser-regression.json#modelingConsumers"
+      ],
+      "observedAt": "2026-08-31T14:32:13Z"
+    },
+    {
+      "id": "CRG-033",
+      "area": "result-kind-isolation",
+      "requirement": "FACT、PREDICTION、SIMULATION 三态隔离，非事实结果显式声明事实、行动和行动来源三重禁写且零外部副作用",
+      "method": "behavioral-and-browser",
+      "status": "passed",
+      "evidence": [
+        "node --test composite/s001-e2e-integration/state.contract.test.mjs",
+        "node --test composite/modules/modeling/validation/test/simulation.test.mjs",
+        "composite/evidence/browser-regression.json#bindingAndTruthBoundaries"
+      ],
+      "observedAt": "2026-08-31T14:32:13Z"
+    },
+    {
+      "id": "CRG-034",
+      "area": "s003-run-isolation",
+      "requirement": "S003 归档五字段身份保持不变，BENCHRUN、EXPRUN、SHADOWRUN 和 M08-S003-RECALC 使用独立研究身份",
+      "method": "behavioral-and-browser",
+      "status": "passed",
+      "evidence": [
+        "node --test composite/s001-e2e-integration/state.contract.test.mjs",
+        "node --test composite/modules/modeling/validation/test/s003-continuous-optimization.test.mjs",
+        "composite/evidence/browser-regression.json#s003ArchivedIdentity"
+      ],
+      "observedAt": "2026-08-31T14:32:13Z"
+    },
+    {
+      "id": "CRG-035",
+      "area": "s003-navigation-cache",
+      "requirement": "Dashboard→M08→Dashboard、M07→M08→M07 的目标、对象、Lens、时序和返回路径稳定；旧 hash、刷新、前进后退与候选缓存参数有效",
+      "method": "browser",
+      "status": "passed",
+      "evidence": [
+        "composite/evidence/browser-regression.json#launcherAndCache",
+        "composite/evidence/browser-regression.json#navigationState"
+      ],
+      "observedAt": "2026-08-31T14:32:13Z"
+    },
+    {
+      "id": "CRG-036",
+      "area": "unified-launch-mobile-runtime",
+      "requirement": "单一启动器同时提供统一 Shell 与 M08 确定性服务；390×844 无横向溢出且控制台、页面和资源错误为 0",
+      "method": "behavioral-and-browser",
+      "viewport": "390x844",
+      "status": "passed",
+      "evidence": [
+        "node --test composite/tests/start-candidate.test.mjs",
+        "composite/evidence/browser-regression.json#launcherAndCache",
+        "composite/evidence/screenshots/m08-s003-390x844.png"
+      ],
+      "observedAt": "2026-08-31T14:32:13Z"
     }
   ],
   "runSummary": {
-    "passed": 21,
+    "passed": 36,
     "failed": 0,
     "blocked": 0,
     "pending": 0,
-    "lastObservedAt": "2026-08-29T08:54:35Z"
+    "lastObservedAt": "2026-08-31T14:32:13Z"
   }
 }

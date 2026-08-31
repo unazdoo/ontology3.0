@@ -106,6 +106,7 @@ function stateContext() {
   const context = vm.createContext(sandbox);
   runScript(join(COMPOSITE_ROOT, "scenarios/s005/scenario-config.js"), context);
   runScript(join(COMPOSITE_ROOT, "scenarios/s005/scenario-adapter.js"), context);
+  runScript(join(COMPOSITE_ROOT, "scenarios/s005/evaluation-engine.js"), context);
   runScript(join(COMPOSITE_ROOT, "s001-e2e-integration/data.js"), context);
   runScript(join(COMPOSITE_ROOT, "s001-e2e-integration/state.js"), context);
   return sandbox;
@@ -206,6 +207,12 @@ check("canonical M07 and M08 implementation contracts", () => {
   const m08 = moduleRegistry.modules.find((module) => module.resourceOwnerId === "M08");
   assert.match(m07.entry, /\/workspace-v2\.html$/);
   assert.match(m08.entry, /\/content\.html$/);
+  assert.equal(m07.s003UsageIntent, "SCORING");
+  assert.deepEqual(m07.s003AcceptedObjectTypes, ["Enterprise", "EnterpriseAssessmentContext"]);
+  assert.deepEqual(m08.catalogScopes, ["ALL", "SCENARIO"]);
+  assert.deepEqual(m08.objectiveKinds, ["FORECAST", "CLASSIFICATION", "SCORING", "OPTIMIZATION"]);
+  assert.equal(m08.simulationRole, "objective-usage-mode-not-lifecycle-stage");
+  assert.deepEqual(m08.s003Messages, ["OFW_S003_MODELING_WORKSPACE", "OFW_S003_MODELING_RESULT", "OFW_S003_MODELING_RECALCULATE_REQUEST"]);
   const bridgeSource = source(join(COMPOSITE_ROOT, "modules/modeling/bridge/m07-m08-bridge.js"));
   for (const token of ["OFW_M07_OPEN_M08", "OFW_M08_DELIVER_CONTEXT", "OFW_M08_RETURN_TO_M07", "scenarioVersion", "formedAt"]) {
     assert(bridgeSource.includes(token), `bridge missing ${token}`);
@@ -240,6 +247,11 @@ check("S001-S005 scenario identities", () => {
   assert.equal(s005.scenarioRunIdPolicy.mode, "dynamic-per-run");
   assert.equal(s005.scenarioRunIdPolicy.historicalRunReuseAllowed, false);
   assert.equal(s005.resetPolicy.touchArchivedScenarios, false);
+  const s003 = scenarioRegistry.scenarios.find((scenario) => scenario.scenarioId === "S003");
+  assert.equal(s003.modelingResearch.objectiveId, "MO-S003-DEBT-RISK-EARLY-WARNING-v1");
+  assert.equal(s003.modelingResearch.benchmarkVersion, "BENCH-S003-LONGITUDINAL-v1");
+  assert.equal(s003.modelingResearch.fixedDataVersion, "S003-T007-FORMAL-CANDIDATE-20251231-v1");
+  assert.equal(s003.modelingResearch.actionSourceAllowed, false);
 });
 
 check("shell scenario definitions match the registry", () => {
@@ -290,6 +302,33 @@ check("current scenario reset is isolated", () => {
   const protectedReceipt = store.resetCurrentScenario("S001");
   assert.equal(protectedReceipt.changed, false);
   assert.deepEqual(store.get().scenarios.S001.scenarioContext, archivedBefore.S001);
+});
+
+check("S005 current-run evaluation chain and six-domain Dashboard contracts", () => {
+  const index = source(join(COMPOSITE_ROOT, "s001-e2e-integration/index.html"));
+  const shell = source(join(COMPOSITE_ROOT, "s001-e2e-integration/app.js"));
+  const state = source(join(COMPOSITE_ROOT, "s001-e2e-integration/state.js"));
+  const workbench = source(join(COMPOSITE_ROOT, "scenarios/s005/module-workbench.js"));
+  const engine = source(join(COMPOSITE_ROOT, "scenarios/s005/evaluation-engine.js"));
+  const dashboard = source(join(COMPOSITE_ROOT, "dashboard/app.js"));
+  assert.match(index, /evaluation-engine\.js/);
+  for (const token of ["OFW_S005_MODULE_RESULT", "recordS005ModuleEvent", "OFW_S005_M07_EXPLORATION_RESULT", "OFW_M08_RETURN_TO_M07", "OFW_S005_EVALUATION_CONTEXT"])
+    assert(shell.includes(token) || state.includes(token), `S005 host chain missing ${token}`);
+  for (const token of ["source_delivery", "semantic_candidate", "compliance_evaluation", "market_peer_evaluation", "selection_read_only", "risk_explanation", "report_draft"])
+    assert(workbench.includes(token), `S005 workbench operation missing ${token}`);
+  for (const token of ["productPerformance", "actualInvestorResult", "fixedIncomeRisk", "managementOperationsQuality", "continuingEligibilityCompliance", "selectionExecution", "SERIES_INPUT_UNAVAILABLE", "SYNTHETIC_RESEARCH_ONLY"])
+    assert(engine.includes(token), `S005 evaluation engine missing ${token}`);
+  for (const token of ["产品自身表现", "财务公司实际投资结果", "固定收益风险", "管理与运行质量", "持续准入合规", "选择与执行", "scored_coverage", "证据下钻"])
+    assert(dashboard.includes(token), `S005 Dashboard missing ${token}`);
+  assert.doesNotMatch(source(join(COMPOSITE_ROOT, "dashboard/data.js")), /sourceSummary|marketSeries|selectionSeries|riskLamps/);
+  assert.doesNotMatch(source(join(COMPOSITE_ROOT, "scenarios/s005/scenario-adapter.js")), /completeAll/);
+  for (const testPath of [
+    "composite/scenarios/s005/tests/evaluation-engine.test.mjs",
+    "composite/scenarios/s005/tests/module-workbench.contract.test.mjs"
+  ]) {
+    const result = spawnSync(process.execPath, ["--test", testPath], { cwd: WORK_ROOT, encoding: "utf8" });
+    assert.equal(result.status, 0, `${result.stdout || ""}${result.stderr || ""}`);
+  }
 });
 
 check("M07-M08-M07 bridge rejects identity drift", () => {
@@ -347,7 +386,7 @@ check("candidate contains no symlink or runtime snapshot", () => {
   assert.deepEqual(forbidden, []);
   assert.equal(manifest.runtimeState.included, false);
   assert.deepEqual(manifest.runtimeState.snapshotFiles, []);
-  assert.equal(manifest.stateSeparation.formalResult, "not included");
+  assert.equal(manifest.stateSeparation.formalResult, "frozen S003 FACT referenced read-only; not candidate-owned");
 });
 
 check("single platform shell contract", () => {
@@ -385,7 +424,7 @@ check("candidate Dashboard preserves baseline and integrates S005", () => {
   assert.equal(dashboard.entry, "composite/dashboard/index.html");
   assert.equal(dashboard.sourceEntry, "../../prototype-releases/v1.1.0/dashboard/index.html");
   assert.equal(dashboard.assetMode, "candidate-incremental-overlay");
-  assert.equal(browserData.OFW_V120_DATA.dashboard.source, "../dashboard/index.html?v=20260828-01");
+  assert.equal(browserData.OFW_V120_DATA.dashboard.source, "../dashboard/index.html?v=20260831-05");
   const testPath = "composite/dashboard/dashboard.contract.test.mjs";
   const result = spawnSync(process.execPath, ["--test", testPath], { cwd: WORK_ROOT, encoding: "utf8" });
   assert.equal(result.status, 0, `${result.stdout || ""}${result.stderr || ""}`);
@@ -435,9 +474,9 @@ check("artifact inventory matches candidate files", () => {
 });
 
 check("regression matrix is complete without unexecuted success claims", () => {
-  assert.equal(matrix.cases.length, 21);
+  assert.equal(matrix.cases.length, 36);
   assert.equal(new Set(matrix.cases.map((item) => item.id)).size, matrix.cases.length);
-  const requiredAreas = ["entry-and-routing", "single-shell", "resource-catalog", "handoff", "refresh", "history", "deep-link", "reset-isolation", "viewport-1440", "viewport-1280", "viewport-mobile", "runtime-errors", "frozen-integrity", "baseline-shell-home-parity", "dashboard-s005-integration"];
+  const requiredAreas = ["entry-and-routing", "single-shell", "resource-catalog", "handoff", "refresh", "history", "deep-link", "reset-isolation", "viewport-1440", "viewport-1280", "viewport-mobile", "runtime-errors", "frozen-integrity", "baseline-shell-home-parity", "dashboard-s005-integration", "s005-actual-module-chain", "s005-evaluation-boundaries", "m08-objective-discovery", "m08-dynamic-contract", "s003-source-integrity", "s003-supervised-benchmark", "s003-ai-candidate-comparison", "s003-shadow-holdout", "s003-binding-application", "dashboard-s003-modeling", "modeling-consumers", "result-kind-isolation", "s003-run-isolation", "s003-navigation-cache", "unified-launch-mobile-runtime"];
   for (const area of requiredAreas) assert(matrix.cases.some((item) => item.area === area), `matrix missing ${area}`);
   for (const item of matrix.cases) {
     assert(matrix.statusVocabulary.includes(item.status), `${item.id} has unsupported status`);
@@ -453,7 +492,7 @@ check("regression matrix is complete without unexecuted success claims", () => {
     }
   }
   assert.equal(matrix.runStatus, "passed");
-  assert.deepEqual(matrix.runSummary, { passed: 21, failed: 0, blocked: 0, pending: 0, lastObservedAt: browserEvidence.observedAt });
+  assert.deepEqual(matrix.runSummary, { passed: 36, failed: 0, blocked: 0, pending: 0, lastObservedAt: browserEvidence.observedAt });
   assert.equal(browserEvidence.routeCoverage.result, "passed");
   assert.equal(browserEvidence.routeCoverage.routes.length, 10);
   assert.equal(browserEvidence.routeCoverage.meaningfulContent, 10);
@@ -474,8 +513,30 @@ check("regression matrix is complete without unexecuted success claims", () => {
   assert.equal(browserEvidence.dashboardS005.scenarioId, "S005");
   assert.equal(browserEvidence.dashboardS005.scenarioVersion, "S005-v1");
   assert.equal(browserEvidence.dashboardS005.status, "部分评价");
-  assert.equal(browserEvidence.dashboardS005.productCount, 5);
   assert.equal(browserEvidence.dashboardS005.nestedPlatformShellCount, 0);
+  assert.equal(browserEvidence.dashboardS005.currentRunOnly, true);
+  assert.equal(browserEvidence.dashboardS005.domainCount, 6);
+  assert.equal(browserEvidence.dashboardS005.metricCount, 34);
+  assert.equal(browserEvidence.dashboardS005.fixedFixtureResultReadObserved, false);
+  assert.equal(browserEvidence.s005ActualChain.result, "passed");
+  assert.equal(browserEvidence.s005ActualChain.progressAfter, "7/7");
+  assert.equal(browserEvidence.s005ActualChain.dashboardUpdatedFromCurrentRun, true);
+  assert.equal(browserEvidence.s005ActualChain.resetProgress, "0/7");
+  assert.equal(browserEvidence.s005Boundaries.result, "passed");
+  assert.equal(browserEvidence.s005Boundaries.m04SideEffects, 0);
+  assert.equal(browserEvidence.s005Boundaries.modelingFactCoverageIncrement, 0);
+  assert.equal(browserEvidence.m08ObjectiveWorkspace.result, "passed");
+  assert.deepEqual(browserEvidence.m08ObjectiveWorkspace.objectiveKinds, ["FORECAST", "CLASSIFICATION", "SCORING", "OPTIMIZATION"]);
+  assert.equal(browserEvidence.s003ContinuousOptimization.result, "passed");
+  assert.equal(browserEvidence.s003ContinuousOptimization.candidateCount, 3);
+  assert.equal(browserEvidence.s003ContinuousOptimization.maturityWindows, 3);
+  assert.equal(browserEvidence.s003DashboardProjection.result, "passed");
+  assert.equal(browserEvidence.s003DashboardProjection.enterpriseCount, 21);
+  assert.equal(browserEvidence.modelingConsumers.result, "passed");
+  assert.deepEqual(browserEvidence.modelingConsumers.readOnlyModules, ["M03", "M05", "M06", "M07", "Dashboard"]);
+  assert.equal(browserEvidence.bindingAndTruthBoundaries.m04Code, "NON_FACT_SOURCE_REJECTED");
+  assert.equal(browserEvidence.s003ArchivedIdentity.archivedRunChanged, false);
+  assert.equal(browserEvidence.launcherAndCache.result, "passed");
   assert.deepEqual(browserEvidence.navigationState.historyForwardPath, ["#home", "#module/m07", "#module/modeling", "#module/m07"]);
   assert.deepEqual(browserEvidence.navigationState.historyBackSequence, ["#module/modeling", "#module/m07", "#home"]);
   assert.deepEqual(browserEvidence.navigationState.historyForwardSequence, ["#module/m07", "#module/modeling", "#module/m07"]);

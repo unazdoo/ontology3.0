@@ -17,63 +17,132 @@
     riskSector: "全部产业",
     riskSort: "risk",
     riskSearch: "",
-    riskModelSection: "overview",
+    riskModelingView: "formal",
+    riskModelingSelection: {
+      modelVersionId: "",
+      asOf: "2025-12-31",
+      dataVersionId: "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+      enterpriseScope: "ALL",
+      useKind: "SHADOW",
+    },
     riskActionStates: {},
-    riskModelDraft: null,
-    riskPublishedConfig: null,
-    riskModelStatus: "published",
-    riskModelValidation: null,
-    riskModelSavedAt: "",
-    riskModelPublishedVersion: "",
-    riskModelPublishedAt: "",
-    riskModelPublishReceipt: "",
-    riskModelPublishError: "",
-    riskDataCheckedAt: "",
-    riskRerunState: "idle",
-    riskRerunRunId: "",
-    riskRerunAt: "",
-    riskRerunError: "",
-    riskRerunResult: null,
-    riskRerunAttempts: 0,
     drawer: null,
   };
   const state = { ...DEFAULT_STATE };
+  const S005_CONTEXT_FIELDS = ["scenarioId", "scenarioVersion", "scenarioRunId", "formedAt", "status"];
+  const S005_DOMAIN_DEFINITIONS = Object.freeze([
+    {
+      id: "product-performance",
+      sourceKey: "productPerformance",
+      label: "产品自身表现",
+      icon: "chart-no-axes-combined",
+      metrics: [
+        { key: "twr", label: "TWR", aliases: ["timeWeightedReturn"] },
+        { key: "sharpe", label: "Sharpe", aliases: ["sharpeRatio"] },
+        { key: "sortino", label: "Sortino", aliases: ["sortinoRatio"] },
+        { key: "calmar", label: "Calmar", aliases: ["calmarRatio"] },
+        { key: "information-ratio", label: "信息比率", aliases: ["informationRatio"] },
+        { key: "volatility", label: "波动", aliases: ["annualizedVolatility"] },
+        { key: "max-drawdown", label: "最大回撤", aliases: ["maxDrawdown"] },
+        { key: "drawdown-recovery", label: "回撤恢复", aliases: ["drawdownRecovery"] },
+      ],
+    },
+    {
+      id: "actual-investment-result",
+      sourceKey: "actualInvestorResult",
+      label: "财务公司实际投资结果",
+      icon: "landmark",
+      metrics: [
+        { key: "actual-twr", label: "实际投资 TWR", aliases: ["actualTwr"] },
+        { key: "mwr-xirr", label: "MWR / XIRR", aliases: ["mwrXirr", "mwr", "xirr", "moneyWeightedReturn"] },
+        { key: "realized-return", label: "已实现收益", aliases: ["realizedReturn", "realizedPnl"] },
+        { key: "unrealized-return", label: "未实现收益", aliases: ["unrealizedReturn", "unrealizedPnl"] },
+        { key: "cash-flow", label: "现金流", aliases: ["cashFlow", "cashFlows"] },
+        { key: "fees", label: "费用", aliases: ["fee", "totalFees"] },
+      ],
+    },
+    {
+      id: "fixed-income-risk",
+      sourceKey: "fixedIncomeRisk",
+      label: "固定收益风险",
+      icon: "shield-alert",
+      metrics: [
+        { key: "duration", label: "久期", aliases: ["modifiedDuration"] },
+        { key: "rating-migration", label: "评级迁移", aliases: ["ratingMigration"] },
+        { key: "concentration", label: "集中度", aliases: ["portfolioConcentration"] },
+        { key: "liquidity", label: "流动性", aliases: ["liquidityRisk"] },
+        { key: "carry-attribution", label: "Carry 归因", aliases: ["carry", "carryAttribution"] },
+        { key: "roll-down-attribution", label: "Roll-down 归因", aliases: ["rollDown", "rollDownAttribution"] },
+        { key: "curve-attribution", label: "曲线归因", aliases: ["curve", "curveAttribution"] },
+        { key: "credit-attribution", label: "信用归因", aliases: ["credit", "creditAttribution"] },
+      ],
+    },
+    {
+      id: "management-operation-quality",
+      sourceKey: "managementOperationsQuality",
+      label: "管理与运行质量",
+      icon: "settings-2",
+      metrics: [
+        { key: "nav-publication-timeliness", label: "NAV 发布及时性", aliases: ["navPublicationTimeliness"] },
+        { key: "valuation-exception-count", label: "估值异常", aliases: ["valuationExceptionCount"] },
+        { key: "operation-incident-count", label: "运行事件", aliases: ["operationIncidentCount"] },
+      ],
+    },
+    {
+      id: "continuous-admission-compliance",
+      sourceKey: "continuingEligibilityCompliance",
+      label: "持续准入合规",
+      icon: "badge-check",
+      metrics: [
+        { key: "continuing-eligibility", label: "持续准入", aliases: ["continuingEligibility"] },
+        { key: "compliance-exceptions", label: "合规例外", aliases: ["complianceExceptions"] },
+        { key: "classification-confidence", label: "分类置信度", aliases: ["classificationConfidence"] },
+      ],
+    },
+    {
+      id: "selection-execution",
+      sourceKey: "selectionExecution",
+      label: "选择与执行",
+      icon: "route",
+      metrics: [
+        { key: "selection-attribution", label: "选择归因", aliases: ["selection", "selectionAttribution"] },
+        { key: "timing-attribution", label: "择时归因", aliases: ["timing", "timingAttribution"] },
+        { key: "next-available-nav", label: "下一可得 NAV", aliases: ["nextAvailableNav"] },
+        { key: "actual-nav", label: "实际 NAV", aliases: ["actualNav"] },
+        { key: "slippage", label: "滑点", aliases: ["executionSlippage"] },
+        { key: "settlement-status", label: "结算状态", aliases: ["settlementStatus"] },
+      ],
+    },
+  ]);
+  const s005Evaluation = {
+    scenarioContext: null,
+    evaluationRun: null,
+    evaluationResult: null,
+    receivedAt: "",
+    contractError: "",
+  };
+  const S003_MODELING_SCHEMA = DATA.consumerSchemas?.s003Modeling;
+  if (!S003_MODELING_SCHEMA) throw new Error("S003 Modeling 消费 schema 未加载");
+  const s003Modeling = {
+    workspace: null,
+    formalResult: null,
+    candidateResult: null,
+    receivedAt: "",
+    requestState: "idle",
+    contractError: "",
+    focusRequested: false,
+  };
   try {
     const current = localStorage.getItem("ofw.dashboard.workspace.v7");
     Object.assign(state, JSON.parse(current || "{}"));
-    if (!current) Object.assign(state, {
-      riskActionStates: {},
-      riskModelDraft: null,
-      riskPublishedConfig: null,
-      riskModelStatus: "published",
-      riskModelValidation: null,
-      riskModelSavedAt: "",
-      riskModelPublishedVersion: "",
-      riskModelPublishedAt: "",
-      riskModelPublishReceipt: "",
-      riskModelPublishError: "",
-      riskRerunState: "idle",
-      riskRerunRunId: "",
-      riskRerunAt: "",
-      riskRerunError: "",
-      riskRerunResult: null,
-      riskRerunAttempts: 0,
-    });
+    if (!current) Object.assign(state, { riskActionStates: {} });
     state.drawer = null;
   } catch (_) {}
 
   function clone(value) { return JSON.parse(JSON.stringify(value)); }
-  const initialRiskConfig = byId("risk").modelConfig;
-  if (!state.riskModelDraft) {
-    state.riskModelDraft = {
-      weights: clone(initialRiskConfig.weights),
-      factors: clone(initialRiskConfig.factors),
-      tiers: clone(initialRiskConfig.tiers),
-    };
-  }
-  if (!state.riskPublishedConfig) state.riskPublishedConfig = clone(state.riskModelDraft);
-  if (!state.riskModelPublishedVersion) state.riskModelPublishedVersion = initialRiskConfig.publishedVersion;
   if (!state.riskActionStates || typeof state.riskActionStates !== "object") state.riskActionStates = {};
+  if (!S003_MODELING_SCHEMA.views.some((item) => item.id === state.riskModelingView)) state.riskModelingView = "formal";
+  state.riskModelingSelection = { ...DEFAULT_STATE.riskModelingSelection, ...(objectRecord(state.riskModelingSelection) || {}) };
 
   function persist() {
     const copy = { ...state, drawer: null };
@@ -121,6 +190,248 @@
     return `${date.getFullYear()}-${part(date.getMonth() + 1)}-${part(date.getDate())} ${part(date.getHours())}:${part(date.getMinutes())}:${part(date.getSeconds())}`;
   }
 
+  function firstDefined(...values) {
+    return values.find((value) => value !== undefined && value !== null && value !== "");
+  }
+
+  function objectRecord(value) {
+    return value && typeof value === "object" && !Array.isArray(value) ? value : null;
+  }
+
+  function s005StatusMeta(value, hasValue = false) {
+    const normalized = String(value || "").trim().toUpperCase().replace(/[\s-]+/g, "_");
+    const entries = {
+      COMPLETE: { label: "完整评价", valueLabel: "已评价", tone: "success" },
+      COMPLETED: { label: "完整评价", valueLabel: "已评价", tone: "success" },
+      AVAILABLE: { label: "完整评价", valueLabel: "已评价", tone: "success" },
+      EVALUATED: { label: "完整评价", valueLabel: "已评价", tone: "success" },
+      SUCCESS: { label: "完整评价", valueLabel: "已评价", tone: "success" },
+      PARTIAL: { label: "部分评价", valueLabel: "部分评价", tone: "warning" },
+      PARTIALLY_EVALUATED: { label: "部分评价", valueLabel: "部分评价", tone: "warning" },
+      INSUFFICIENT_HISTORY: { label: "观察期不足", valueLabel: "观察期不足", tone: "plain" },
+      OBSERVATION_PERIOD_INSUFFICIENT: { label: "观察期不足", valueLabel: "观察期不足", tone: "plain" },
+      UNAVAILABLE: { label: "无法评价", valueLabel: "无法评价", tone: "plain" },
+      NOT_EVALUABLE: { label: "无法评价", valueLabel: "无法评价", tone: "plain" },
+      MISSING: { label: "无法评价", valueLabel: "无法评价", tone: "plain" },
+      NOT_APPLICABLE: { label: "不适用", valueLabel: "不适用", tone: "plain" },
+      READ_ONLY: { label: "只读", valueLabel: "只读", tone: "plain" },
+      PENDING: { label: "等待评价", valueLabel: "等待评价", tone: "plain" },
+      RUNNING: { label: "评价中", valueLabel: "评价中", tone: "warning" },
+      FAILED: { label: "无法评价", valueLabel: "无法评价", tone: "danger" },
+    };
+    if (entries[normalized]) return entries[normalized];
+    if (hasValue) return entries.COMPLETE;
+    return entries.UNAVAILABLE;
+  }
+
+  function s005Coverage(value, fallback = 0) {
+    if (typeof value === "string" && value.trim().endsWith("%")) {
+      const parsed = Number(value.replace("%", ""));
+      if (Number.isFinite(parsed)) return Math.max(0, Math.min(100, parsed));
+    }
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed)) return Math.max(0, Math.min(100, fallback));
+    return Math.max(0, Math.min(100, parsed <= 1 ? parsed * 100 : parsed));
+  }
+
+  function s005Confidence(value) {
+    if (value === undefined || value === null || value === "") return "无法评价";
+    if (objectRecord(value)) {
+      const score = firstDefined(value.score, value.value);
+      const level = firstDefined(value.level, value.label, "");
+      const levelLabel = ({ high: "高", medium: "中", low: "低", very_low: "很低" })[String(level).toLowerCase()] || level;
+      return `${score === undefined ? "无法评价" : `${s005Coverage(score).toFixed(1)}%`}${levelLabel ? ` · ${levelLabel}` : ""}`;
+    }
+    if (typeof value === "string" && !Number.isFinite(Number(value))) return String(value);
+    return `${s005Coverage(value).toFixed(1)}%`;
+  }
+
+  function s005DisplayValue(metric, statusMeta) {
+    const explicit = firstDefined(metric?.display, metric?.formattedValue, metric?.formatted, metric?.value);
+    if (explicit === undefined) return statusMeta.valueLabel;
+    if (objectRecord(explicit)) {
+      const eligible = firstDefined(explicit.eligible, explicit.admitted);
+      const reviewRequired = firstDefined(explicit.reviewRequired, explicit.pendingReview);
+      const unknown = firstDefined(explicit.unknown, explicit.unclassified);
+      const displayed = firstDefined(explicit.displayedProducts, explicit.displayed);
+      const total = firstDefined(explicit.candidateCount, explicit.total);
+      if ([eligible, reviewRequired, unknown, displayed, total].some((value) => value !== undefined)) {
+        const parts = [];
+        if (eligible !== undefined) parts.push(`准入 ${eligible}`);
+        if (reviewRequired !== undefined) parts.push(`需复核 ${reviewRequired}`);
+        if (unknown !== undefined) parts.push(`未知 ${unknown}`);
+        if (displayed !== undefined || total !== undefined) parts.push(`已列示 ${displayed ?? "—"}/${total ?? "—"}`);
+        return parts.join(" · ");
+      }
+      return statusMeta.valueLabel;
+    }
+    const rawUnit = firstDefined(metric?.unit, metric?.valueUnit, "");
+    const unit = ({ pct: "%", ratio: "", currency: "金额", years: "年", days: "天", count: "项", state: "", nav: "NAV" })[rawUnit] ?? rawUnit;
+    if (typeof explicit === "number") return `${explicit.toLocaleString("zh-CN", { maximumFractionDigits: 6 })}${unit ? ` ${unit}` : ""}`;
+    return `${String(explicit)}${unit && !String(explicit).includes(unit) ? ` ${unit}` : ""}`;
+  }
+
+  function s005DomainSource(result, definition) {
+    const domains = result?.domains || result?.evaluationDomains || result?.domainResults || result?.sixDomains;
+    if (Array.isArray(domains)) {
+      return domains.find((item) => [item?.id, item?.domainId, item?.key, item?.name, item?.label, item?.title].includes(definition.id)
+        || [item?.id, item?.domainId, item?.key, item?.name, item?.label, item?.title].includes(definition.sourceKey)
+        || [item?.id, item?.domainId, item?.key, item?.name, item?.label, item?.title].includes(definition.label)) || null;
+    }
+    if (objectRecord(domains)) return domains[definition.id] || domains[definition.sourceKey] || domains[definition.label] || null;
+    return null;
+  }
+
+  function s005MetricSource(domain, result, definition) {
+    const names = [definition.key, definition.label, ...(definition.aliases || [])];
+    const metricCollections = [domain?.metrics, domain?.metricResults, result?.metrics];
+    for (const metrics of metricCollections) {
+      if (Array.isArray(metrics)) {
+        const match = metrics.find((item) => names.includes(item?.key) || names.includes(item?.metricId) || names.includes(item?.id) || names.includes(item?.name) || names.includes(item?.label));
+        if (match) return match;
+      } else if (objectRecord(metrics)) {
+        for (const name of names) if (Object.hasOwn(metrics, name)) {
+          const value = metrics[name];
+          return objectRecord(value) || { value };
+        }
+      }
+    }
+    return null;
+  }
+
+  function s005MissingReasons(value) {
+    const list = Array.isArray(value) ? value : value ? [value] : [];
+    return list.map((item) => typeof item === "string" ? item : firstDefined(item?.reason, item?.message, item?.label)).filter(Boolean).map(String);
+  }
+
+  function s005EvidenceItems(value) {
+    const list = Array.isArray(value) ? value : value ? [value] : [];
+    return list.filter((item) => item !== undefined && item !== null).map((item) => {
+      if (typeof item === "string") return { label: item, ref: item };
+      return {
+        label: firstDefined(item.label, item.title, item.evidenceType, item.type, "证据引用"),
+        ref: firstDefined(item.ref, item.id, item.evidenceRef, item.uri, item.sourceRef, "未提供引用"),
+        asOf: firstDefined(item.asOf, item.dataAsOf, item.eventReadAt, ""),
+        status: firstDefined(item.status, item.state, ""),
+      };
+    });
+  }
+
+  function normalizedS005Domains() {
+    const result = s005Evaluation.evaluationResult;
+    return S005_DOMAIN_DEFINITIONS.map((definition) => {
+      const source = s005DomainSource(result, definition);
+      const metrics = definition.metrics.map((metricDefinition) => {
+        const metric = s005MetricSource(source, result, metricDefinition);
+        const explicitValue = firstDefined(metric?.display, metric?.formattedValue, metric?.formatted, metric?.value);
+        const hasValue = explicitValue !== undefined;
+        const status = s005StatusMeta(firstDefined(metric?.status, metric?.evaluationStatus, metric?.state), hasValue);
+        const missingReasons = s005MissingReasons(firstDefined(metric?.missingReasons, metric?.missingReason, metric?.reason));
+        if (!hasValue && !missingReasons.length) missingReasons.push(result ? "当前评价结果未提供该指标所需数据。" : "尚未收到当前评价轮次的可验证结果。");
+        return {
+          ...metricDefinition,
+          status,
+          display: s005DisplayValue(metric, result ? status : s005StatusMeta("PENDING")),
+          hasValue,
+          missingReasons,
+          evidence: s005EvidenceItems(firstDefined(metric?.evidence, metric?.evidenceRefs, metric?.evidences)),
+          formula: firstDefined(metric?.formula, metric?.formulaRef, ""),
+          observation: firstDefined(metric?.observationPeriod, metric?.window, ""),
+        };
+      });
+      const valued = metrics.filter((metric) => metric.hasValue).length;
+      const computedCoverage = metrics.length ? (valued / metrics.length) * 100 : 0;
+      const coverage = s005Coverage(firstDefined(source?.coverage, source?.scored_coverage, source?.scoredCoverage), computedCoverage);
+      const sourceStatus = firstDefined(source?.status, source?.evaluationStatus);
+      const status = result
+        ? sourceStatus
+          ? s005StatusMeta(sourceStatus, valued === metrics.length && metrics.length > 0)
+          : s005StatusMeta(valued === metrics.length && metrics.length > 0 ? "COMPLETE" : valued > 0 ? "PARTIAL" : "UNAVAILABLE")
+        : s005StatusMeta("PENDING");
+      const missingReasons = s005MissingReasons(firstDefined(source?.missingReasons, source?.missingReason, source?.reason));
+      if (coverage < 100 && !missingReasons.length) {
+        const metricReasons = [...new Set(metrics.flatMap((metric) => metric.missingReasons))];
+        missingReasons.push(...metricReasons.slice(0, 3));
+      }
+      return {
+        ...definition,
+        status,
+        coverage,
+        conclusion: firstDefined(source?.conclusion, source?.summary, result ? (coverage ? "仅对已覆盖指标形成部分结论。" : "当前证据不足，无法形成该域结论。") : "等待当前评价轮次产生该域结果。"),
+        missingReasons,
+        evidence: s005EvidenceItems(firstDefined(source?.evidence, source?.evidenceRefs, source?.evidences)),
+        metrics,
+      };
+    });
+  }
+
+  function validS005ScenarioContext(context) {
+    return objectRecord(context)
+      && S005_CONTEXT_FIELDS.every((field) => typeof context[field] === "string" && context[field].trim())
+      && context.scenarioId === "S005"
+      && context.scenarioVersion === "S005-v1";
+  }
+
+  function s005ContextRunId(value) {
+    return firstDefined(value?.scenarioRunId, value?.scenarioContext?.scenarioRunId, value?.context?.scenarioRunId);
+  }
+
+  function sameS005Identity(left, right) {
+    return validS005ScenarioContext(left) && validS005ScenarioContext(right)
+      && S005_CONTEXT_FIELDS.every((field) => left[field] === right[field]);
+  }
+
+  function acceptS005EvaluationContext(payload) {
+    const context = payload?.scenarioContext;
+    const hasEvaluationRun = objectRecord(payload) && Object.hasOwn(payload, "evaluationRun");
+    const hasEvaluationResult = objectRecord(payload) && Object.hasOwn(payload, "evaluationResult");
+    const rawEvaluationRun = payload?.evaluationRun;
+    const rawEvaluationResult = payload?.evaluationResult;
+    const evaluationRun = rawEvaluationRun === null ? null : objectRecord(rawEvaluationRun);
+    const evaluationResult = rawEvaluationResult === null ? null : objectRecord(rawEvaluationResult);
+    const contextRunId = context?.scenarioRunId;
+    const runScenarioId = s005ContextRunId(evaluationRun);
+    const resultScenarioId = s005ContextRunId(evaluationResult);
+    const evaluationRunId = firstDefined(evaluationRun?.evaluationRunId, evaluationRun?.runId, evaluationRun?.id);
+    const resultRunId = firstDefined(evaluationResult?.evaluationRunId, evaluationResult?.runId);
+    if (!validS005ScenarioContext(context)) return "消息缺少当前 S005 五字段身份。";
+    if (!hasEvaluationRun || !hasEvaluationResult) return "消息缺少 evaluation run/result 字段。";
+    if (rawEvaluationRun !== null && !evaluationRun) return "evaluation run 格式无效。";
+    if (rawEvaluationResult !== null && !evaluationResult) return "evaluation result 格式无效。";
+    if (!evaluationRun && evaluationResult) return "尚未建立 evaluation run 时不能提供 evaluation result。";
+    if (!evaluationRun) {
+      s005Evaluation.scenarioContext = { ...context };
+      s005Evaluation.evaluationRun = null;
+      s005Evaluation.evaluationResult = null;
+      s005Evaluation.receivedAt = localDateTime();
+      s005Evaluation.contractError = "";
+      return "";
+    }
+    if (!sameS005Identity(evaluationRun.scenarioContext, context)) return "evaluation run 的五字段场景身份不一致。";
+    if (typeof evaluationRunId !== "string" || !evaluationRunId.trim()) return "evaluation run 缺少可验证标识。";
+    if (runScenarioId && runScenarioId !== contextRunId) return "evaluation run 与当前 scenarioRunId 不一致。";
+    if (evaluationResult && !sameS005Identity(evaluationResult.scenarioContext, context)) return "evaluation result 的五字段场景身份不一致。";
+    if (evaluationResult && (typeof evaluationResult.evaluationResultId !== "string" || !evaluationResult.evaluationResultId.trim())) return "evaluation result 缺少可验证标识。";
+    if (evaluationResult && resultScenarioId !== contextRunId) return "evaluation result 与当前 scenarioRunId 不一致。";
+    if (evaluationResult && resultRunId !== evaluationRunId) return "evaluation run/result 标识不一致。";
+    s005Evaluation.scenarioContext = { ...context };
+    s005Evaluation.evaluationRun = evaluationRun;
+    s005Evaluation.evaluationResult = evaluationResult;
+    s005Evaluation.receivedAt = localDateTime();
+    s005Evaluation.contractError = "";
+    return "";
+  }
+
+  function requestS005Evaluation() {
+    const targetOrigin = location.origin && location.origin !== "null" ? location.origin : "*";
+    window.parent.postMessage({
+      type: "OFW_S005_EVALUATION_REQUEST",
+      scenarioId: "S005",
+      scenarioVersion: "S005-v1",
+      requestedAt: new Date().toISOString(),
+    }, targetOrigin);
+  }
+
   function shell(content) {
     app.className = "dash-app";
     app.innerHTML = `
@@ -134,26 +445,62 @@
     refreshIcons();
   }
 
+  function s005RunValue(...keys) {
+    const run = s005Evaluation.evaluationRun || {};
+    const result = s005Evaluation.evaluationResult || {};
+    return firstDefined(...keys.flatMap((key) => [result[key], run[key]]));
+  }
+
+  function s005OverallStatus() {
+    if (s005Evaluation.contractError) return { label: "读取失败", tone: "danger" };
+    if (!s005Evaluation.evaluationRun) return { label: "等待评价", tone: "plain" };
+    return s005StatusMeta(s005RunValue("evaluationStatus", "status"), Boolean(s005Evaluation.evaluationResult));
+  }
+
+  function s005DirectoryMetrics() {
+    const context = s005Evaluation.scenarioContext;
+    const domains = normalizedS005Domains();
+    const coveredDomains = domains.filter((domain) => domain.coverage > 0).length;
+    const scoredCoverage = s005Coverage(s005RunValue("scored_coverage", "scoredCoverage"), 0);
+    return [
+      { label: "当前轮次", display: context?.scenarioRunId || "等待当前轮次", unit: "" },
+      { label: "评价域覆盖", display: `${coveredDomains} / 6`, unit: "域" },
+      { label: "scored_coverage", display: `${scoredCoverage.toFixed(1)}%`, unit: "" },
+      { label: "置信度", display: s005Confidence(s005RunValue("confidence", "confidenceScore")), unit: "" },
+    ];
+  }
+
+  function s005DataAsOf() {
+    const run = s005Evaluation.evaluationRun || {};
+    const result = s005Evaluation.evaluationResult || {};
+    return firstDefined(result.statusBar?.dataAsOf, result.dataAsOf, result.sourceAudit?.asOf, run.sourceAudit?.asOf, "等待当前轮次");
+  }
+
   function renderDirectory() {
     const previews = {
       financing: `<div class="directory-capability"><strong>7 项核心指标</strong><span>单位比较 · 六类结构 · 三条规则</span></div>`,
       budget: `<div class="directory-capability"><strong>6 个监督专题</strong><span>预算执行 · 项目 · 差旅 · 计提 · 占用 · 供应商</span></div>`,
       risk: `<div class="mini-risk-bars"><i style="--w:76%;--c:#16806a"></i><i style="--w:19%;--c:#d39a2c"></i><i style="--w:5%;--c:#c84a43"></i></div>`,
-      "post-investment": `<div class="directory-capability"><strong>4 个评价视图</strong><span>评价概览 · 产品目录 · 市场横评 · 选择与证据</span></div>`,
+      "post-investment": `<div class="directory-capability"><strong>6 个评价域</strong><span>表现 · 投资结果 · 固收风险 · 运行质量 · 合规 · 选择执行</span></div>`,
     };
     shell(`
       <main class="page directory-page" data-screen-label="仪表盘目录">
         <header class="page-head directory-head"><div><span class="eyebrow">经营分析</span><h1>仪表盘</h1><p>从统一目录进入四套业务驾驶舱，按业务口径查看指标、趋势、专题和下钻明细。</p></div>${badge("4 个驾驶舱已登记", "plain")}</header>
         <section class="directory-grid">
-          ${DATA.dashboards.map((dash) => `
+          ${DATA.dashboards.map((dash) => {
+            const isS005 = dash.id === "post-investment";
+            const directoryStatus = isS005 ? s005OverallStatus() : { label: dash.status || "当前正式使用", tone: dash.status ? "warning" : "success" };
+            const directoryMetrics = isS005 ? s005DirectoryMetrics() : dash.metrics;
+            const directoryPeriod = isS005 ? s005DataAsOf() : displayAsOf(dash.period);
+            return `
             <article class="directory-card ${dash.id}">
-              <header class="directory-card-head"><span class="dash-symbol">${icon(dash.id === "financing" ? "landmark" : dash.id === "budget" ? "circle-dollar-sign" : dash.id === "risk" ? "shield-alert" : "chart-spline", "lg")}</span><div>${badge(dash.scenarioId, "plain")}${badge(dash.status || "当前正式使用", dash.status ? "warning" : "success")}</div></header>
+              <header class="directory-card-head"><span class="dash-symbol">${icon(dash.id === "financing" ? "landmark" : dash.id === "budget" ? "circle-dollar-sign" : dash.id === "risk" ? "shield-alert" : "chart-spline", "lg")}</span><div>${badge(dash.scenarioId, "plain")}${badge(directoryStatus.label, directoryStatus.tone)}</div></header>
               <div><h2>${esc(dash.name)}</h2><p>${esc(dash.description)}</p></div>
               <div class="directory-visual">${previews[dash.id]}</div>
-              <div class="directory-metrics">${dash.metrics.slice(0, 4).map((item) => `<div><span>${esc(item.label)}</span><strong>${esc(item.display)} <small>${esc(item.unit)}</small></strong></div>`).join("")}</div>
-              <footer class="directory-foot"><div><small>数据截至</small><strong>${esc(displayAsOf(dash.period))}</strong></div><a class="btn primary" href="${dashboardHref(dash.id)}">打开驾驶舱${icon("arrow-right", "sm")}</a></footer>
+              <div class="directory-metrics">${directoryMetrics.slice(0, 4).map((item) => `<div><span>${esc(item.label)}</span><strong>${esc(item.display)} <small>${esc(item.unit)}</small></strong></div>`).join("")}</div>
+              <footer class="directory-foot"><div><small>数据截至</small><strong>${esc(directoryPeriod)}</strong></div><a class="btn primary" href="${dashboardHref(dash.id)}">打开驾驶舱${icon("arrow-right", "sm")}</a></footer>
             </article>
-          `).join("")}
+          `; }).join("")}
         </section>
       </main>
     `);
@@ -434,6 +781,7 @@
     formedAt: "2026-08-17T16:30:00.000Z",
     status: "active",
   });
+  const S003_MODELING_CONTEXT = Object.freeze({ ...RISK_CONTEXT, status: "completed" });
   const C011_LEGACY_KEY = "ontology3.decision-center.c011.inbox.v1";
   const C011_LOGICAL_KEY = "decision-center.c011.inbox.v3";
 
@@ -611,226 +959,339 @@
     return `<section class="risk-action-workspace"><header class="risk-action-summary"><div><span class="eyebrow">风险处置工作区</span><h2>风险处置行动</h2><p>这里只呈现五条已触发预警、需要人工判断的事项，不混入正常企业明细。</p></div><div class="action-summary-counts"><span><b>${dash.actions.length}</b>预警事项</span><span><b>${counts.pending || 0}</b>待确认</span><span><b>${counts.confirmed || 0}</b>待发起</span><span><b>${(counts.submitted || 0) + (counts.handled || 0)}</b>已送达</span></div></header><div class="disposal-guidance"><span>${icon("route", "sm")}</span><div><strong>每条事项按同一顺序处理</strong><p>查看处置依据 → 确认需要处置 → 发起标准行动申请 → 到决策中心跟踪确认与负责人待办。</p></div></div><div class="risk-candidate-list">${dash.actions.map(riskActionCard).join("")}</div><footer class="risk-action-boundary">${icon("shield-check", "sm")}发起成功只表示行动申请已送达决策中心；接口人确认后才可形成负责人待办，本页不直接执行处置。</footer></section>`;
   }
 
-  function modelDraft() { return state.riskModelDraft; }
-
-  function modelHasChanges() {
-    return JSON.stringify(modelDraft()) !== JSON.stringify(state.riskPublishedConfig);
+  function sameS003Identity(value) {
+    const context = objectRecord(value);
+    return context && ["scenarioId", "scenarioVersion", "scenarioRunId", "formedAt", "status"]
+      .every((field) => typeof context[field] === "string" && context[field] === S003_MODELING_CONTEXT[field]);
   }
 
-  function syncModelEditControls() {
-    const bar = document.querySelector(".model-action-bar");
-    if (!bar) return;
-    const changed = modelHasChanges();
-    const candidateVersion = nextPatchVersion(state.riskModelPublishedVersion);
-    const title = bar.querySelector(":scope > div > strong");
-    const copy = bar.querySelector(":scope > div > span");
-    if (title) title.textContent = changed ? `准备形成模型 ${candidateVersion}` : "当前配置未修改";
-    if (copy) copy.textContent = changed ? "提交后将自动校验、发布并创建新的隔离评估。" : "修改任一参数后即可提交新的模型评估轮次。";
-    bar.querySelectorAll('[data-action="risk-model-save"], [data-action="risk-model-reset"], [data-action="risk-model-apply-run"]').forEach((button) => {
-      button.disabled = !changed || state.riskModelStatus === "publishing";
+  function s003PostMessage(type, detail = {}) {
+    const targetOrigin = location.origin && location.origin !== "null" ? location.origin : "*";
+    window.parent.postMessage({
+      type,
+      scenarioId: S003_MODELING_CONTEXT.scenarioId,
+      scenarioVersion: S003_MODELING_CONTEXT.scenarioVersion,
+      scenarioRunId: S003_MODELING_CONTEXT.scenarioRunId,
+      formedAt: S003_MODELING_CONTEXT.formedAt,
+      status: S003_MODELING_CONTEXT.status,
+      scenarioContext: clone(S003_MODELING_CONTEXT),
+      objectiveId: S003_MODELING_SCHEMA.objective.objectiveId,
+      consumerId: S003_MODELING_SCHEMA.consumerId,
+      ...detail,
+    }, targetOrigin);
+  }
+
+  function requestS003ModelingContext() {
+    s003PostMessage(S003_MODELING_SCHEMA.messages.contextRequest, { requestedAt: new Date().toISOString() });
+  }
+
+  function focusS003Scenario() {
+    if (s003Modeling.focusRequested) return;
+    s003Modeling.focusRequested = true;
+    s003PostMessage(S003_MODELING_SCHEMA.messages.scenarioFocus, { requestedAt: new Date().toISOString() });
+  }
+
+  function openS003Objective() {
+    s003PostMessage(S003_MODELING_SCHEMA.messages.openObjective, {
+      returnRoute: "#dashboard",
+      returnDashboardRoute: "#/view/risk/operations",
+      view: "consumption",
+      requestedAt: new Date().toISOString(),
     });
   }
 
-  function modelWeightTotal(category) {
-    return (modelDraft().weights[category] || []).reduce((sum, value) => sum + Number(value || 0), 0);
+  function s003CandidateCatalog() {
+    const workspace = s003Modeling.workspace || {};
+    const source = firstDefined(workspace.candidates, workspace.candidateVersions, workspace.modelVersions, []);
+    return (Array.isArray(source) ? source : []).map((item) => ({
+      id: firstDefined(item.candidateId, item.id, item.modelVersionId, item.modelVersion?.modelVersionId),
+      modelVersionId: firstDefined(item.modelVersionId, item.modelVersion?.modelVersionId, item.candidateId, item.id),
+      label: firstDefined(item.displayName, item.name, item.label, item.modelVersion?.name, item.version, item.modelVersionId, item.candidateId, item.id),
+      version: firstDefined(item.version, item.modelVersion?.modelVersion, item.modelVersionId, "候选"),
+      status: String(firstDefined(item.status, item.evaluationStatus, "待评测")),
+      blockedReason: firstDefined(item.blockedReason, item.missingReason, item.reason, ""),
+    })).filter((item) => item.id && item.modelVersionId);
   }
 
-  function validateRiskModelDraft() {
-    const draft = modelDraft();
-    const errors = [];
-    Object.entries(draft.weights || {}).forEach(([category, weights]) => {
-      weights.forEach((value, index) => {
-        if (!Number.isFinite(Number(value)) || Number(value) < 0 || Number(value) > 100) errors.push(`${category}的“${initialRiskConfig.indicators[index]}”权重必须在 0—100 之间`);
-      });
-      const total = weights.reduce((sum, value) => sum + Number(value || 0), 0);
-      if (Math.abs(total - 100) > 0.001) errors.push(`${category}权重合计为 ${fmt(total, 2)}%，必须等于 100%`);
-    });
-    (draft.factors || []).forEach((factor) => (factor.tiers || []).forEach((tier) => {
-      const value = Number(tier.coefficient);
-      if (!Number.isFinite(value) || value < -1 || value > 1) errors.push(`${factor.name}的“${tier.label}”系数必须在 -1—1 之间`);
-    }));
-    const tiers = draft.tiers || [];
-    tiers.forEach((tier) => {
-      const value = Number(tier.minInclusive);
-      if (!Number.isFinite(value) || value < 0 || value > 100) errors.push(`${tier.name}分数下限必须在 0—100 之间`);
-    });
-    if (Number(tiers.find((item) => item.tierId === "BLACK")?.minInclusive) !== 0) errors.push("黑灯分数下限必须固定为 0");
-    for (let index = 1; index < tiers.length; index += 1) {
-      if (Number(tiers[index - 1].minInclusive) <= Number(tiers[index].minInclusive)) errors.push(`${tiers[index - 1].name}与${tiers[index].name}阈值顺序不连续`);
-    }
-    return { ok: errors.length === 0, errors, checkedAt: localDateTime() };
-  }
-
-  function nextPatchVersion(value) {
-    const parts = String(value || "1.0.0").split(".").map(Number);
-    while (parts.length < 3) parts.push(0);
-    parts[2] = (Number.isFinite(parts[2]) ? parts[2] : 0) + 1;
-    return parts.slice(0, 3).join(".");
-  }
-
-  function tierRangeLabel(tiers, index) {
-    const tier = tiers[index];
-    const min = Number(tier.minInclusive);
-    return index === 0 ? `≥ ${min} 分` : `${min} ≤ 分值 < ${Number(tiers[index - 1].minInclusive)} 分`;
-  }
-
-  function modelStatusMeta() {
-    if (state.riskModelStatus === "publishing") return { label: "发布中", tone: "warning" };
-    if (state.riskModelStatus === "validated") return { label: "检查通过，待发布", tone: "warning" };
-    if (state.riskModelStatus === "draft" || state.riskModelStatus === "saved") return { label: state.riskModelStatus === "saved" ? "修改已暂存" : "存在未发布修改", tone: "warning" };
-    if (state.riskModelStatus === "invalid") return { label: "校验未通过", tone: "danger" };
-    return { label: "当前生效版本", tone: "success" };
-  }
-
-  function riskModelConfig(dash) {
-    const config = dash.modelConfig;
-    const draft = modelDraft();
-    const section = config.sections.find((item) => item.id === state.riskModelSection) || config.sections[0];
-    const status = modelStatusMeta();
-    const candidateVersion = nextPatchVersion(state.riskModelPublishedVersion);
-    const sectionTabs = config.sections.map((item) => `<button class="model-section-tab ${item.id === section.id ? "active" : ""}" type="button" data-action="risk-model-section" data-section="${attr(item.id)}">${icon(item.id === "weights" ? "scale" : item.id === "factors" ? "sliders-horizontal" : item.id === "tiers" ? "layers-3" : "file-check-2", "sm")}${esc(item.label)}</button>`).join("");
-    let body = "";
-    if (section.id === "overview") {
-      const nextVersion = nextPatchVersion(state.riskModelPublishedVersion);
-      body = `<section class="model-current-combination"><div><span class="eyebrow">当前正式评估组合</span><h3>模型 ${esc(state.riskModelPublishedVersion)} × 数据截至 2025-12-31</h3><p>最近正式评估覆盖 21 家企业。没有数据或模型变化时，无需重复运行。</p></div><dl><div><dt>模型生命周期</dt><dd>${esc(config.owner)}维护</dd></div><div><dt>业务参数</dt><dd>${esc(config.businessOwner)}维护</dd></div><div><dt>权威指针</dt><dd>${esc(config.pointerId)}</dd></div><div><dt>最近回执</dt><dd>${esc(state.riskModelPublishReceipt || "当前版本已生效")}</dd></div></dl></section><section class="rerun-path-grid"><article class="rerun-path-card data-path"><header><span class="path-number">01</span><div><strong>数据更新后重评</strong><p>模型不变，仅在新的正式数据资产或人工输入快照就绪后启动。</p></div>${badge("当前无新数据", "plain")}</header><div class="path-combination"><span>${icon("database", "sm")}当前数据 S003-T007-DEBT-RISK-20251231-v1</span><span>${icon("boxes", "sm")}当前模型 ${esc(state.riskModelPublishedVersion)}</span></div><footer><p>${state.riskDataCheckedAt ? `最近检查 ${esc(state.riskDataCheckedAt)}，未发现晚于当前评估时点的正式数据。` : "系统会先检查新的正式数据版本；版本未变化时不会产生重复评估。"}</p><button class="btn" type="button" data-action="risk-data-check">${icon("refresh-cw", "sm")}检查最新数据</button></footer></article><article class="rerun-path-card model-path"><header><span class="path-number">02</span><div><strong>模型调整后重评</strong><p>调整权重、因子或分档后，一次完成检查、发布和新一轮评估。</p></div>${badge(modelHasChanges() ? "有待发布修改" : `下一版本 ${nextVersion}`, modelHasChanges() ? "warning" : "plain")}</header><ol class="path-steps"><li><span>1</span>调整业务参数</li><li><span>2</span>系统校验并由本体管理发布</li><li><span>3</span>锁定新版本启动重评</li></ol><footer><p>原有模型版本、历史运行和报告保持只读，不会被覆盖。</p><button class="btn primary" type="button" data-action="risk-model-section" data-section="weights">${icon("sliders-horizontal", "sm")}${modelHasChanges() ? "继续调整" : "调整模型配置"}</button></footer></article></section><div class="model-owner-note">${icon("shield-check", "sm")}本页是模型配置的业务操作入口；权威版本、发布校验和生命周期仍由本体管理服务唯一维护。</div>`;
-    } else if (section.id === "weights") {
-      const categories = Object.keys(draft.weights || {});
-      body = `<div class="model-section-copy"><strong>${esc(section.description)}</strong><span>固定十五项指标；每类权重合计必须为 100%。</span></div><div class="table-wrap"><table class="data-table model-table editable-model-table"><thead><tr><th>指标</th>${categories.map((category) => `<th class="num">${esc(category)}</th>`).join("")}</tr></thead><tbody>${config.indicators.map((metric, index) => `<tr><td><strong>${esc(metric)}</strong></td>${categories.map((category) => `<td class="num"><label class="model-number-input"><input type="number" min="0" max="100" step="1" value="${attr(draft.weights[category][index])}" data-model-weight="${attr(category)}" data-model-index="${index}"><span>%</span></label></td>`).join("")}</tr>`).join("")}<tr class="total-row"><td><strong>权重合计</strong></td>${categories.map((category) => { const total = modelWeightTotal(category); return `<td class="num"><strong class="${Math.abs(total - 100) < .001 ? "text-success" : "text-danger"}">${fmt(total, 0)}%</strong></td>`; }).join("")}</tr></tbody></table></div>`;
-    } else if (section.id === "factors") {
-      body = `<div class="model-section-copy"><strong>${esc(section.description)}</strong><span>固定六项因子和分档，只允许调整已确认档位系数。</span></div><div class="model-factor-grid editable">${draft.factors.map((factor, factorIndex) => `<article class="model-factor-card"><header><span class="factor-index">F${String(factorIndex + 1).padStart(2, "0")}</span><div><strong>${esc(factor.name)}</strong><small>适用：${esc(factor.range)}</small></div></header><div class="factor-tier-editor">${factor.tiers.map((tier) => `<label><span><strong>${esc(tier.label)}</strong><small>${esc(tier.tierId)}</small></span><span class="model-number-input coefficient"><input type="number" min="-1" max="1" step="0.01" value="${attr(tier.coefficient)}" data-model-factor="${attr(factor.factorId)}" data-model-tier="${attr(tier.tierId)}"><em>${Number(tier.coefficient) > 0 ? "加分" : Number(tier.coefficient) < 0 ? "减分" : "中性"}</em></span></label>`).join("")}</div><footer><span>适用缺失：缺失套零档</span><span>业务不适用：不参与计算</span></footer></article>`).join("")}</div>`;
-    } else {
-      body = `<div class="model-section-copy"><strong>${esc(section.description)}</strong><span>固定绿、黄、红、黑四档；阈值必须连续且不重叠。</span></div><div class="tier-grid editable">${draft.tiers.map((tier, index) => `<article class="tier-card ${attr(tier.tone)}"><span>${esc(tier.name)}</span><label class="model-threshold-input"><input type="number" min="0" max="100" step="1" value="${attr(tier.minInclusive)}" data-model-risk-tier="${attr(tier.tierId)}" ${tier.tierId === "BLACK" ? "disabled" : ""}><em>分起</em></label><strong>${esc(tierRangeLabel(draft.tiers, index))}</strong><small>综合分按连续区间唯一归档</small></article>`).join("")}</div><div class="model-semantics">${config.semantics.map((item) => `<span>${icon("check", "sm")}${esc(item.replace("DEFAULTED_ZERO", "缺失套零档").replace("NOT_APPLICABLE", "业务不适用"))}</span>`).join("")}</div>`;
-    }
-    const validation = state.riskModelValidation;
-    const changed = modelHasChanges();
-    const persistentActions = section.id === "overview" ? "" : `<div class="model-action-bar"><div><strong>${changed ? `准备形成模型 ${esc(candidateVersion)}` : "当前配置未修改"}</strong><span>${changed ? "提交后将自动校验、发布并创建新的隔离评估。" : "修改任一参数后即可提交新的模型评估轮次。"}</span></div><div class="model-actions persistent"><button class="btn" type="button" data-action="risk-model-save" ${!changed || state.riskModelStatus === "publishing" ? "disabled" : ""}>${icon("save", "sm")}暂存修改</button><button class="btn ghost" type="button" data-action="risk-model-reset" ${!changed || state.riskModelStatus === "publishing" ? "disabled" : ""}>${icon("undo-2", "sm")}放弃修改</button><button class="btn primary" type="button" data-action="risk-model-apply-run" ${!changed || state.riskModelStatus === "publishing" ? "disabled" : ""}>${icon(state.riskModelStatus === "publishing" ? "loader-circle" : "play", "sm")}${state.riskModelStatus === "publishing" ? "正在发布" : "校验、发布并重评"}</button></div></div>`;
-    return `<section class="model-config-panel"><div class="model-config-head"><div><span class="eyebrow">债务风险评估</span><h2>模型配置与重评</h2><p>${esc(section.description)}</p></div>${badge(status.label, status.tone)}</div><nav class="model-section-tabs" aria-label="风险模型配置分区">${sectionTabs}</nav><div class="model-config-body">${body}${validation ? `<div class="model-validation ${validation.ok ? "success" : "danger"}">${icon(validation.ok ? "circle-check" : "circle-alert", "sm")}<div><strong>${validation.ok ? "参数检查通过，正在进入发布流程" : `发现 ${validation.errors.length} 项配置问题`}</strong><p>${validation.ok ? `已检查权重合计、因子系数、阈值顺序和固定语义。${validation.checkedAt}` : esc(validation.errors.slice(0, 4).join("；"))}</p></div></div>` : ""}${state.riskModelPublishError ? `<div class="model-validation danger">${icon("circle-alert", "sm")}<div><strong>发布没有完成</strong><p>${esc(state.riskModelPublishError)}</p></div></div>` : ""}${persistentActions}</div></section>`;
-  }
-
-  function riskRunResultSummary(dash) {
-    const counts = dash.companies.reduce((result, company) => {
-      const tiers = state.riskPublishedConfig?.tiers || dash.modelConfig.tiers;
-      const sorted = [...tiers].sort((a, b) => Number(b.minInclusive) - Number(a.minInclusive));
-      const tier = sorted.find((item) => company.finalScore >= Number(item.minInclusive)) || sorted.at(-1);
-      result[tier.tierId] = (result[tier.tierId] || 0) + 1;
-      return result;
-    }, { GREEN: 0, YELLOW: 0, RED: 0, BLACK: 0 });
-    return { counts, text: `21 家 · 绿 ${counts.GREEN} / 黄 ${counts.YELLOW} / 红 ${counts.RED} / 黑 ${counts.BLACK}` };
-  }
-
-  function riskRuns(dash) {
-    const history = [...dash.runHistory];
-    const modelVersion = state.riskModelPublishedVersion || dash.modelConfig.publishedVersion;
-    if (state.riskRerunRunId) history.unshift({ runId: state.riskRerunRunId, status: state.riskRerunState === "running" ? "评估中" : state.riskRerunState === "failed" ? "运行失败" : "隔离评估完成", model: modelVersion, data: "S003-T007-DEBT-RISK-20251231-v1", result: state.riskRerunState === "running" ? "正在计算 21 家企业" : state.riskRerunState === "failed" ? state.riskRerunError : state.riskRerunResult?.text || "21 家结果已形成", at: state.riskRerunAt });
-    const running = state.riskRerunState === "running";
-    const failed = state.riskRerunState === "failed";
-    return `<section class="run-history-section">${running ? `<article class="run-progress live-run"><span class="mini-spinner"></span><div><strong>正在执行新一轮确定性评估</strong><p>已锁定模型 ${esc(modelVersion)}、正式数据资产和人工输入快照；正在依次形成评分、分档与运行回执。</p><div class="run-stage-list"><span class="active">锁定输入</span><span class="active">评估企业</span><span>汇总结果</span><span>保存回执</span></div><div class="progress-bar"><i></i></div></div></article>` : failed ? `<article class="run-recovery"><span>${icon("circle-alert", "lg")}</span><div><strong>最近一次重评未完成</strong><p>${esc(state.riskRerunError)}。已锁定输入和上一正式结果均保留，可按原组合恢复。</p></div><button class="btn primary" type="button" data-action="risk-rerun">${icon("rotate-ccw", "sm")}按原组合重试</button></article>` : state.riskRerunRunId && state.riskRerunState === "complete" ? `<article class="run-result-note">${icon("shield-check", "sm")}新轮次 ${esc(state.riskRerunRunId)} 已完成，绑定模型 ${esc(modelVersion)}。结果独立保存，原正式轮次和历史行动状态未覆盖。</article>` : ""}<article class="panel run-history-panel"><div class="panel-head"><div><span class="eyebrow">不可变运行记录</span><h2>评估运行历史</h2><p>新评估只能由“新数据就绪”或“模型调整发布”触发。</p></div><span class="panel-note">历史轮次只读</span></div><div class="table-wrap"><table class="data-table run-table"><thead><tr><th>运行标识</th><th>状态</th><th>触发原因</th><th>模型</th><th>数据资产</th><th>结果</th><th>形成时间</th></tr></thead><tbody>${history.map((item, index) => `<tr><td><code>${esc(item.runId)}</code></td><td>${badge(item.status, item.status === "正式评估" || item.status === "上一正式运行" || item.status === "隔离评估完成" ? "success" : item.status === "运行失败" ? "danger" : "warning")}</td><td>${index === 0 && state.riskRerunRunId ? "模型调整后重评" : item.status === "正式评估" ? "年度正式数据就绪" : "历史评估归档"}</td><td>${esc(item.model)}</td><td>${esc(item.data)}</td><td>${esc(item.result)}</td><td>${esc(item.at)}</td></tr>`).join("")}</tbody></table></div></article></section>`;
-  }
-
-  async function publishRiskModel(startRun = false) {
-    const validation = validateRiskModelDraft();
-    state.riskModelValidation = validation;
-    if (!validation.ok) {
-      state.riskModelStatus = "invalid";
-      persist(); render(); toast("配置校验未通过，请先修正问题"); return;
-    }
-    state.riskModelStatus = "publishing";
-    state.riskModelPublishError = "";
-    persist(); render();
-    try {
-      await new Promise((resolve) => window.setTimeout(resolve, 900));
-      const now = new Date();
-      const version = nextPatchVersion(state.riskModelPublishedVersion);
-      const receiptId = `M01-PUBLISH-${now.getTime().toString(36).toUpperCase()}`;
-      state.riskPublishedConfig = clone(modelDraft());
-      state.riskModelPublishedVersion = version;
-      state.riskModelPublishedAt = localDateTime(now);
-      state.riskModelPublishReceipt = receiptId;
-      state.riskModelDraft = clone(state.riskPublishedConfig);
-      state.riskModelStatus = "published";
-      state.riskModelValidation = null;
-      state.riskModelSavedAt = "";
-      persist(); render(); toast(startRun ? `模型 ${version} 已取得发布回执，正在创建新评估` : `模型 ${version} 已取得发布回执，请启动新评估`);
-      if (startRun) await runRiskAssessment(byId("risk"));
-      return true;
-    } catch (error) {
-      state.riskModelStatus = "validated";
-      state.riskModelPublishError = error?.message || "权威发布服务暂时不可用，候选配置已保留";
-      persist(); render();
-      return false;
-    }
-  }
-
-  function publishedModelForRun(base) {
-    const config = state.riskPublishedConfig || modelDraft();
-    const tiers = config.tiers.map((tier, index, list) => ({
-      ...tier,
-      minInclusive: Number(tier.minInclusive),
-      maxExclusive: index === 0 ? null : Number(list[index - 1].minInclusive),
-    }));
+  function s003FormalEnvelope(dash) {
+    if (s003Modeling.formalResult) return s003Modeling.formalResult;
+    const binding = S003_MODELING_SCHEMA.formalBinding;
     return {
-      ...base,
-      packageVersion: state.riskModelPublishedVersion,
-      lifecycleStatus: "published",
-      weights: clone(config.weights),
-      factors: clone(config.factors),
-      riskTiers: tiers,
+      schemaVersion: S003_MODELING_SCHEMA.resultEnvelope.schemaVersion,
+      resultId: `S003-C035-${S003_MODELING_CONTEXT.scenarioRunId}`,
+      resultKind: "FACT",
+      useKind: "FORMAL",
+      objectiveId: S003_MODELING_SCHEMA.objective.objectiveId,
+      bindingRef: { bindingId: binding.bindingId, revision: binding.bindingRevision },
+      releaseSelector: { modelVersionId: binding.modelVersionId },
+      inputSnapshot: {
+        scenarioContext: clone(S003_MODELING_CONTEXT),
+        asOf: binding.assessmentAsOf,
+        dataVersionId: binding.dataVersionId,
+        ontologyVersionId: binding.ontologyVersionId,
+      },
+      outputs: dash.companies.map((item) => ({
+        enterpriseId: item.enterpriseId,
+        enterpriseName: item.enterpriseName,
+        industry: riskIndustry(item),
+        operatingStage: riskOperatingStage(item),
+        riskScore: item.finalScore,
+        riskIndex: item.finalScore,
+        predictedRiskTier: item.riskTier,
+        coverage: 1,
+        topContributors: [{ name: item.focus, kind: "METRIC", value: null, contribution: null, evidenceStatus: "归档结果仅保留重点项" }],
+        reportId: item.reportId,
+      })),
+      coverage: 1,
+      evidenceRefs: dash.companies.map((item) => item.reportId).filter(Boolean),
+      formedAt: S003_MODELING_CONTEXT.formedAt,
+      immutable: true,
     };
   }
 
-  async function runRiskAssessment(dash) {
-    if (state.riskRerunState === "running" || state.riskModelStatus !== "published") return;
-    const now = new Date();
-    const stamp = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}${String(now.getHours()).padStart(2, "0")}${String(now.getMinutes()).padStart(2, "0")}${String(now.getSeconds()).padStart(2, "0")}`;
-    state.riskRerunRunId = `S003-RUN-${stamp}-${now.getMilliseconds().toString().padStart(3, "0")}`;
-    state.riskRerunAt = localDateTime(now);
-    state.riskRerunState = "running";
-    state.riskRerunError = "";
-    state.riskRerunResult = null;
-    state.riskRerunAttempts = Number(state.riskRerunAttempts || 0) + 1;
-    persist(); render();
-    const startedAt = Date.now();
-    try {
-      if (!window.S003ScoreEngine?.scorePortfolio) throw new Error("评分服务尚未就绪，请重新读取后重试");
-      const [baseResponse, fixtureResponse] = await Promise.all([
-        fetch(`${BASELINE_ROOT}/scenarios/s003/resources/m01/model-package.v2.json`, { cache: "no-store" }),
-        fetch(`${BASELINE_ROOT}/scenarios/s003/fixtures/enterprise-fixture.v1.json`, { cache: "no-store" }),
-      ]);
-      if (!baseResponse.ok || !fixtureResponse.ok) throw new Error("无法读取当前模型或企业输入，请检查服务后重试");
-      const baseModel = await baseResponse.json();
-      const fixture = await fixtureResponse.json();
-      const result = window.S003ScoreEngine.scorePortfolio({
-        fixture,
-        modelPackage: publishedModelForRun(baseModel),
-        context: {
-          ...clone(RISK_CONTEXT),
-          scenarioRunId: state.riskRerunRunId,
-          publishedVersion: state.riskModelPublishedVersion,
-          dataVersion: "S003-T007-DEBT-RISK-20251231-v1",
-          manualInputVersion: "S003-T053-INPUT-20251231-v1",
-          assessmentAt: "2025-12-31",
-        },
-      });
-      const wait = Math.max(0, 1600 - (Date.now() - startedAt));
-      await new Promise((resolve) => window.setTimeout(resolve, wait));
-      const counts = result.summary.riskTierCounts;
-      state.riskRerunResult = {
-        enterpriseCount: result.enterpriseCount,
-        averageFinalScore: result.summary.averageFinalScore,
-        counts,
-        text: `${result.enterpriseCount} 家 · 绿 ${counts.GREEN || 0} / 黄 ${counts.YELLOW || 0} / 红 ${counts.RED || 0} / 黑 ${counts.BLACK || 0}`,
-        modelVersion: result.modelIdentity.packageVersion,
-      };
-      state.riskRerunState = "complete";
-      persist(); render(); toast("新一轮隔离评估已完成，历史结果未覆盖");
-    } catch (error) {
-      state.riskRerunState = "failed";
-      state.riskRerunError = error?.message || "本次评估未完成；锁定输入和上一成功运行均已保留";
-      persist(); render(); toast("本次评估未完成，可按原输入重试");
+  function s003TierLabel(value) {
+    const normalized = String(value || "").trim().toUpperCase();
+    return ({ GREEN: "绿灯", YELLOW: "黄灯", RED: "红灯", BLACK: "黑灯", "绿灯": "绿灯", "黄灯": "黄灯", "红灯": "红灯", "黑灯": "黑灯" })[normalized] || String(value || "未分档");
+  }
+
+  function s003EnvelopeOutputs(envelope) {
+    for (const key of S003_MODELING_SCHEMA.resultEnvelope.subjectCollectionAliases) {
+      if (Array.isArray(envelope?.[key])) return envelope[key];
     }
+    return [];
+  }
+
+  function s003AliasValue(record, aliases) {
+    for (const key of aliases) if (record?.[key] !== undefined && record?.[key] !== null && record?.[key] !== "") return record[key];
+    return undefined;
+  }
+
+  function s003SubjectId(record) {
+    return firstDefined(s003AliasValue(record, S003_MODELING_SCHEMA.resultEnvelope.subjectIdentityAliases), record?.objectRef?.id);
+  }
+
+  function s003SubjectContributors(record) {
+    const aliases = S003_MODELING_SCHEMA.resultEnvelope.contributorCollectionAliases;
+    const source = s003AliasValue(record, aliases);
+    return (Array.isArray(source) ? source : []).map((item) => ({
+      id: firstDefined(item.id, item.metricId, item.factorId, item.name, item.label, "contributor"),
+      name: firstDefined(item.name, item.label, item.metricName, item.factorName, item.id, "未命名贡献项"),
+      kind: String(firstDefined(item.kind, item.contributorKind, item.type, "METRIC")).toUpperCase(),
+      value: firstDefined(item.value, item.observedValue),
+      contribution: firstDefined(item.contribution, item.contributionValue, item.scoreContribution),
+      baselineContribution: firstDefined(item.baselineContribution, item.previousContribution),
+      delta: firstDefined(item.delta, item.contributionDelta),
+      evidenceRef: firstDefined(item.evidenceRef, item.sourceRef, ""),
+    }));
+  }
+
+  function s003NormalizedEnvelope(envelope, dash = byId("risk")) {
+    const formal = envelope?.resultKind === "FACT" ? null : s003NormalizedEnvelope(s003FormalEnvelope(dash), dash);
+    const baselineById = new Map((formal?.subjects || []).map((item) => [item.id, item]));
+    const subjects = s003EnvelopeOutputs(envelope).map((item) => {
+      const id = s003SubjectId(item);
+      const baseline = objectRecord(item.baseline) || baselineById.get(id) || null;
+      const score = s003AliasValue(item, S003_MODELING_SCHEMA.resultEnvelope.scoreAliases);
+      const tier = s003TierLabel(s003AliasValue(item, S003_MODELING_SCHEMA.resultEnvelope.tierAliases));
+      return {
+        id,
+        name: firstDefined(item.enterpriseName, item.objectName, item.subjectName, item.objectRef?.title, item.objectRef?.name, id),
+        industry: firstDefined(item.industry, item.category, item.objectRef?.industry, baseline?.industry, "未提供产业"),
+        operatingStage: firstDefined(item.operatingStage, item.stage, item.objectRef?.operatingStage, baseline?.operatingStage, "未提供经营阶段"),
+        score: Number.isFinite(Number(score)) ? Number(score) : null,
+        tier,
+        riskIndex: firstDefined(item.riskIndex, score),
+        coverage: firstDefined(item.coverage, envelope.coverage),
+        contributors: s003SubjectContributors(item),
+        baseline: baseline || item.baselineRiskScore !== undefined || item.baselineRiskTier !== undefined ? {
+          score: Number(firstDefined(baseline?.riskScore, baseline?.finalScore, baseline?.score, item.baselineRiskScore)),
+          tier: s003TierLabel(firstDefined(baseline?.predictedRiskTier, baseline?.riskTier, baseline?.tier, item.baselineRiskTier)),
+        } : null,
+        reportId: item.reportId,
+      };
+    }).filter((item) => item.id);
+    const tiers = ["绿灯", "黄灯", "红灯", "黑灯"];
+    const distribution = Object.fromEntries(tiers.map((tier) => [tier, subjects.filter((item) => item.tier === tier).length]));
+    const slice = (field) => Object.values(subjects.reduce((result, item) => {
+      const key = item[field];
+      result[key] ||= { name: key, count: 0, scoreTotal: 0, scoreCount: 0, alerts: 0 };
+      result[key].count += 1;
+      if (item.score !== null) { result[key].scoreTotal += item.score; result[key].scoreCount += 1; }
+      if (item.tier !== "绿灯") result[key].alerts += 1;
+      return result;
+    }, {})).map((item) => ({ ...item, average: item.scoreCount ? item.scoreTotal / item.scoreCount : null }));
+    const migration = Object.fromEntries(tiers.map((from) => [from, Object.fromEntries(tiers.map((to) => [to, 0]))]));
+    subjects.forEach((item) => { if (item.baseline && migration[item.baseline.tier]?.[item.tier] !== undefined) migration[item.baseline.tier][item.tier] += 1; });
+    return {
+      raw: envelope,
+      resultKind: String(envelope?.resultKind || "").toUpperCase(),
+      useKind: String(firstDefined(envelope?.useKind, envelope?.usageIntent, "FORMAL")).toUpperCase(),
+      resultId: firstDefined(envelope?.resultId, envelope?.resultEnvelopeId, envelope?.id, "未提供"),
+      modelVersionId: firstDefined(envelope?.releaseSelector?.modelVersionId, envelope?.modelVersionId, envelope?.modelVersion, S003_MODELING_SCHEMA.formalBinding.modelVersionId),
+      bindingId: firstDefined(envelope?.bindingRef?.bindingId, envelope?.bindingId, S003_MODELING_SCHEMA.formalBinding.bindingId),
+      bindingRevision: firstDefined(envelope?.bindingRef?.revision, envelope?.bindingRevision, envelope?.bindingRevisionId, S003_MODELING_SCHEMA.formalBinding.bindingRevision),
+      dataVersionId: firstDefined(envelope?.inputSnapshot?.dataVersionId, envelope?.dataVersionId, envelope?.dataVersion, S003_MODELING_SCHEMA.formalBinding.dataVersionId),
+      asOf: firstDefined(envelope?.inputSnapshot?.asOf, envelope?.assessmentAsOf, envelope?.asOf, S003_MODELING_SCHEMA.formalBinding.assessmentAsOf),
+      benchmark: firstDefined(envelope?.summaries?.benchmark, envelope?.benchmarkSummary, envelope?.benchmark, s003Modeling.workspace?.lastBenchmark, s003Modeling.workspace?.benchmarkReport, null),
+      coverage: firstDefined(envelope?.coverage, null),
+      subjects,
+      distribution,
+      industrySlices: slice("industry"),
+      stageSlices: slice("operatingStage"),
+      migration,
+      evidenceRefs: Array.isArray(envelope?.evidenceRefs) ? envelope.evidenceRefs : [],
+      formedAt: firstDefined(envelope?.formedAt, envelope?.completedAt, ""),
+    };
+  }
+
+  function validateS003CandidateEnvelope(envelope) {
+    if (!objectRecord(envelope)) return "消息缺少 Result Envelope。";
+    if (!S003_MODELING_SCHEMA.resultEnvelope.acceptedSchemaVersions.includes(envelope.schemaVersion)) return "Result Envelope schemaVersion 不受支持。";
+    const objectiveId = firstDefined(envelope.objectiveId, envelope.objectiveRevisionId);
+    if (!String(objectiveId || "").startsWith(S003_MODELING_SCHEMA.objective.objectiveId)) return "Result Envelope Objective 不匹配。";
+    if (String(envelope.resultKind).toUpperCase() !== "PREDICTION") return "候选试算必须返回 PREDICTION。";
+    const useKind = String(firstDefined(envelope.useKind, envelope.usageIntent, "")).toUpperCase();
+    if (!S003_MODELING_SCHEMA.resultEnvelope.acceptedCandidateUseKinds.includes(useKind)) return "候选试算用途必须为 WHAT_IF 或 SHADOW。";
+    const factWriteAllowed = firstDefined(envelope.factWriteAllowed, envelope.permissions?.factWriteAllowed);
+    const actionWriteAllowed = firstDefined(envelope.actionWriteAllowed, envelope.permissions?.actionWriteAllowed);
+    const actionSourceAllowed = firstDefined(envelope.actionSourceAllowed, envelope.permissions?.actionSourceAllowed);
+    if (factWriteAllowed !== false || actionWriteAllowed !== false || actionSourceAllowed !== false) return "候选结果未声明事实、行动和行动来源三重禁写。";
+    const scenarioContext = [envelope.inputSnapshot, envelope.inputSnapshot?.scenarioContext, envelope.scenarioContext].find(sameS003Identity);
+    if (!scenarioContext) return "Result Envelope 的五字段 S003 身份不匹配。";
+    const outputs = s003EnvelopeOutputs(envelope);
+    if (!outputs.length) return "Result Envelope 未提供企业级输出。";
+    const missingRequired = outputs.some((item) => s003SubjectId(item) === undefined
+      || s003AliasValue(item, S003_MODELING_SCHEMA.resultEnvelope.scoreAliases) === undefined
+      || s003AliasValue(item, S003_MODELING_SCHEMA.resultEnvelope.tierAliases) === undefined);
+    if (missingRequired) return "企业级输出缺少身份、评分或分档。";
+    return "";
+  }
+
+  function acceptS003ModelingContext(payload) {
+    if (!sameS003Identity(payload?.scenarioContext)) return "消息缺少匹配的 S003 五字段身份。";
+    if (payload.objectiveId !== S003_MODELING_SCHEMA.objective.objectiveId) return "消息 Objective 不匹配。";
+    if (objectRecord(payload.workspace)) s003Modeling.workspace = payload.workspace;
+    const formal = firstDefined(payload.formalResult, payload.workspace?.formalResult);
+    if (objectRecord(formal) && String(formal.resultKind).toUpperCase() === "FACT") s003Modeling.formalResult = formal;
+    const candidate = firstDefined(payload.candidateResult, payload.resultEnvelope, payload.workspace?.resultEnvelope);
+    if (candidate) {
+      const error = validateS003CandidateEnvelope(candidate);
+      if (error) return error;
+      s003Modeling.candidateResult = candidate;
+    }
+    const candidates = s003CandidateCatalog();
+    if (!state.riskModelingSelection.modelVersionId && candidates.length) state.riskModelingSelection.modelVersionId = candidates[0].modelVersionId;
+    s003Modeling.receivedAt = localDateTime();
+    s003Modeling.requestState = "idle";
+    s003Modeling.contractError = "";
+    return "";
+  }
+
+  function acceptS003ModelingResult(payload) {
+    if (!sameS003Identity(payload?.scenarioContext)) return "消息缺少匹配的 S003 五字段身份。";
+    if (payload.objectiveId !== S003_MODELING_SCHEMA.objective.objectiveId) return "消息 Objective 不匹配。";
+    const envelope = firstDefined(payload.resultEnvelope, payload.result);
+    const error = validateS003CandidateEnvelope(envelope);
+    if (error) return error;
+    if (objectRecord(payload.workspace)) s003Modeling.workspace = payload.workspace;
+    s003Modeling.candidateResult = envelope;
+    s003Modeling.receivedAt = localDateTime();
+    s003Modeling.requestState = "complete";
+    s003Modeling.contractError = "";
+    state.riskModelingView = "candidate";
+    persist();
+    return "";
+  }
+
+  function requestS003CandidateResult() {
+    const selection = state.riskModelingSelection;
+    const candidate = s003CandidateCatalog().find((item) => item.modelVersionId === selection.modelVersionId);
+    if (!candidate) return toast("请先从 M08 工作区选择可评测的候选版本");
+    if (/DATA_REQUIRED|数据待补齐/i.test(candidate.status)) return toast(candidate.blockedReason || "该候选缺少语义或历史数据，不能形成试算结果");
+    s003Modeling.requestState = "requesting";
+    s003Modeling.contractError = "";
+    s003PostMessage(S003_MODELING_SCHEMA.messages.recalculateRequest, {
+      candidateId: candidate.id,
+      modelVersionId: candidate.modelVersionId,
+      usageIntent: selection.useKind === "SHADOW" ? "SHADOW" : "WHAT_IF",
+      useKind: selection.useKind === "SHADOW" ? "SHADOW" : "WHAT_IF",
+      runMode: selection.useKind,
+      asOf: selection.asOf,
+      dataVersion: selection.dataVersionId,
+      dataVersionId: selection.dataVersionId,
+      enterpriseScope: selection.enterpriseScope,
+      requestedAt: new Date().toISOString(),
+    });
+    render();
+  }
+
+  function s003ResultRole(result) {
+    if (result.resultKind === "FACT") return { label: "FACT · 正式只读", tone: "success" };
+    return { label: `PREDICTION · ${result.useKind}`, tone: "warning" };
+  }
+
+  function s003Distribution(result) {
+    const colors = { "绿灯": "#16806a", "黄灯": "#d39a2c", "红灯": "#c84a43", "黑灯": "#344256" };
+    const total = result.subjects.length || 1;
+    return `<div class="s003-distribution">${Object.entries(result.distribution).map(([tier, count]) => `<article><i style="--tier-color:${colors[tier]};--tier-width:${count / total * 100}%"></i><span>${esc(tier)}</span><strong>${count}</strong><small>${fmt(count / total * 100, 1)}%</small></article>`).join("")}</div>`;
+  }
+
+  function s003SliceTable(result) {
+    const rows = [
+      ...result.industrySlices.map((item) => ({ ...item, type: "产业" })),
+      ...result.stageSlices.map((item) => ({ ...item, type: "经营阶段" })),
+    ];
+    return `<div class="table-wrap"><table class="data-table s003-slice-table"><thead><tr><th>切片</th><th>类型</th><th class="num">企业</th><th class="num">平均评分</th><th class="num">非绿灯</th></tr></thead><tbody>${rows.map((item) => `<tr><td><strong>${esc(item.name)}</strong></td><td>${esc(item.type)}</td><td class="num">${item.count}</td><td class="num">${item.average === null ? "无法评价" : fmt(item.average, 2)}</td><td class="num">${item.alerts}</td></tr>`).join("")}</tbody></table></div>`;
+  }
+
+  function s003EnterpriseTable(result) {
+    const candidate = result.resultKind !== "FACT";
+    return `<div class="table-wrap"><table class="data-table s003-enterprise-table"><thead><tr><th>企业</th><th>产业 / 经营阶段</th><th class="num">风险评分</th><th>分档</th><th>主要贡献</th><th>${candidate ? "结果边界" : "正式报告"}</th></tr></thead><tbody>${[...result.subjects].sort((a, b) => (a.score ?? 101) - (b.score ?? 101)).map((item) => `<tr><td><strong>${esc(item.name)}</strong><small class="cell-note">${esc(item.id)}</small></td><td><strong>${esc(item.industry)}</strong><small class="cell-note">${esc(item.operatingStage)}</small></td><td class="num"><strong>${item.score === null ? "无法评价" : fmt(item.score, 2)}</strong></td><td>${badge(item.tier, toneFor(item.tier))}</td><td>${item.contributors.length ? item.contributors.slice(0, 2).map((entry) => `<span class="s003-contributor">${esc(entry.kind === "FACTOR" ? "因子" : "指标")} · ${esc(entry.name)}${entry.contribution === undefined || entry.contribution === null ? "" : ` ${fmt(entry.contribution, 3)}`}</span>`).join("") : "未提供贡献分解"}</td><td>${candidate ? `<span class="candidate-readonly">${icon("shield-off", "sm")}无报告 / 无行动</span>` : `<a class="text-btn" href="${attr(riskReportHref({ ...item, enterpriseId: item.id }))}">查看报告</a>`}</td></tr>`).join("")}</tbody></table></div>`;
+  }
+
+  function s003BenchmarkSummary(result) {
+    const benchmark = objectRecord(result.benchmark);
+    if (!benchmark) return `<div class="s003-empty"><strong>等待 Benchmark 结果</strong><p>Dashboard 不自行生成模型有效性结论；请在 M08 使用成熟标签和锁定口径完成评测。</p></div>`;
+    const entries = Object.entries(firstDefined(benchmark.metrics, benchmark.summary, benchmark)).filter(([, value]) => ["string", "number", "boolean"].includes(typeof value));
+    return `<div class="s003-benchmark-grid">${entries.slice(0, 8).map(([key, value]) => `<div><span>${esc(key)}</span><strong>${typeof value === "number" ? fmt(value, 4) : esc(value)}</strong></div>`).join("")}</div>`;
+  }
+
+  function s003Difference(result) {
+    const tiers = ["绿灯", "黄灯", "红灯", "黑灯"];
+    const changed = result.subjects.filter((item) => item.baseline && (item.baseline.tier !== item.tier || item.baseline.score !== item.score));
+    const contributorChanges = changed.flatMap((item) => item.contributors.filter((entry) => entry.delta !== undefined || entry.baselineContribution !== undefined).map((entry) => ({ enterprise: item.name, ...entry })));
+    return `${panel("等级迁移矩阵", "行是当前正式分档，列是候选分档", `<div class="table-wrap"><table class="data-table migration-table"><thead><tr><th>正式 → 候选</th>${tiers.map((tier) => `<th class="num">${tier}</th>`).join("")}</tr></thead><tbody>${tiers.map((from) => `<tr><td><strong>${from}</strong></td>${tiers.map((to) => `<td class="num ${from === to ? "same" : "changed"}">${result.migration[from][to]}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`, "", "flush-body")}${panel("逐户升降与贡献变化", `${changed.length} 家企业评分或分档发生变化`, `<div class="table-wrap"><table class="data-table s003-diff-table"><thead><tr><th>企业</th><th>正式</th><th>候选</th><th class="num">评分变化</th><th>主要贡献变化</th></tr></thead><tbody>${changed.map((item) => { const contribution = item.contributors.find((entry) => entry.delta !== undefined || entry.baselineContribution !== undefined); return `<tr><td><strong>${esc(item.name)}</strong></td><td>${badge(item.baseline.tier, toneFor(item.baseline.tier))} ${fmt(item.baseline.score, 2)}</td><td>${badge(item.tier, toneFor(item.tier))} ${item.score === null ? "无法评价" : fmt(item.score, 2)}</td><td class="num">${item.score === null ? "—" : fmt(item.score - item.baseline.score, 2)}</td><td>${contribution ? `${esc(contribution.kind === "FACTOR" ? "因子" : "指标")} · ${esc(contribution.name)} ${contribution.delta === undefined ? "" : fmt(contribution.delta, 3)}` : "未提供可比较贡献"}</td></tr>`; }).join("") || `<tr><td colspan="5">候选与正式结果没有可验证差异，或 Envelope 未提供基线对照。</td></tr>`}</tbody></table></div>${contributorChanges.length ? `<small class="cell-note">已读取 ${contributorChanges.length} 条指标 / 因子贡献变化证据。</small>` : ""}`, "", "flush-body")}`;
+  }
+
+  function s003ModelingSelection() {
+    const candidates = s003CandidateCatalog();
+    const selection = state.riskModelingSelection;
+    const pending = s003Modeling.requestState === "requesting";
+    return `<section class="s003-trial-panel"><header><div><span class="eyebrow">固定输入候选试算</span><h2>选择 M08 候选结果</h2><p>固定数据版本和事实结果不变；计算、版本和运行身份均由 M08 管理。</p></div>${badge(candidates.length ? `${candidates.length} 个候选` : "等待 M08", candidates.length ? "plain" : "warning")}</header><div class="s003-trial-fields"><label><span>Model Version</span><select data-change="s003-model-version" ${candidates.length ? "" : "disabled"}>${candidates.length ? candidates.map((item) => `<option value="${attr(item.modelVersionId)}" ${item.modelVersionId === selection.modelVersionId ? "selected" : ""}>${esc(item.label)} · ${esc(item.status)}</option>`).join("") : `<option>暂无可评测候选</option>`}</select></label><label><span>asOf</span><input type="date" value="${attr(selection.asOf)}" data-change="s003-as-of"></label><label><span>固定 DataVersion</span><input type="text" value="${attr(selection.dataVersionId)}" readonly aria-readonly="true"></label><label><span>企业范围</span><select data-change="s003-enterprise-scope"><option value="ALL">全部 21 家企业</option></select></label><label><span>试算用途</span><select data-change="s003-use-kind"><option value="BENCHMARK" ${selection.useKind === "BENCHMARK" ? "selected" : ""}>Benchmark 固定口径</option><option value="SHADOW" ${selection.useKind === "SHADOW" ? "selected" : ""}>Shadow Trial</option></select></label><button class="btn primary" type="button" data-action="s003-modeling-recalculate" ${candidates.length && !pending ? "" : "disabled"}>${icon(pending ? "loader-circle" : "play", "sm")}${pending ? "等待 M08 返回" : "运行候选试算"}</button></div>${s003Modeling.contractError ? `<div class="model-validation danger">${icon("circle-alert", "sm")}<div><strong>候选结果未接入</strong><p>${esc(s003Modeling.contractError)}</p></div></div>` : ""}</section>`;
+  }
+
+  function riskModelingConsumer(dash) {
+    const binding = S003_MODELING_SCHEMA.formalBinding;
+    const workspace = s003Modeling.workspace || {};
+    const formal = s003NormalizedEnvelope(s003FormalEnvelope(dash), dash);
+    const candidate = s003Modeling.candidateResult ? s003NormalizedEnvelope(s003Modeling.candidateResult, dash) : null;
+    const view = state.riskModelingView;
+    const result = view === "formal" ? formal : candidate;
+    const shadow = firstDefined(workspace.activeShadowTrial, workspace.shadowTrial, workspace.activeShadow, null);
+    const benchmark = firstDefined(workspace.lastBenchmark, workspace.benchmarkReport, workspace.benchmarkRun, workspace.benchmark, null);
+    const activeShadow = firstDefined(shadow?.name, shadow?.shadowTrialId, shadow?.shadowRunId, "暂无活动影子候选");
+    const benchmarkStatus = firstDefined(benchmark?.status, S003_MODELING_SCHEMA.benchmark.status);
+    const tabsHtml = S003_MODELING_SCHEMA.views.map((item) => `<button type="button" class="segmented-btn ${view === item.id ? "active" : ""}" data-action="s003-modeling-view" data-view="${attr(item.id)}" ${item.id !== "formal" && !candidate ? "disabled" : ""}>${esc(item.label)}</button>`).join("");
+    const resultBody = !result
+      ? `<section class="s003-empty-state">${icon("chart-no-axes-combined", "lg")}<h2>等待候选 Result Envelope</h2><p>从 M08 选择候选并按固定 DataVersion 试算后，这里才会显示预测分布、企业分档和差异证据。</p></section>`
+      : view === "difference"
+        ? s003Difference(result)
+        : `${panel("四档风险分布", view === "formal" ? "当前归档正式 FACT" : "候选预测结果，不覆盖正式分档", s003Distribution(result))}<section class="grid-main">${panel("产业 / 经营阶段切片", "按 Result Envelope 企业输出实时汇总", s003SliceTable(result), "", "flush-body")}${panel("Benchmark 摘要", "评测结论由 M08 BenchmarkRun 提供", s003BenchmarkSummary(result))}</section>${panel("企业评分与分档", `${result.subjects.length} 家企业 · ${s003ResultRole(result).label}`, s003EnterpriseTable(result), "", "flush-body")}`;
+    return `<section class="s003-modeling-consumer"><header class="s003-modeling-hero"><div><span class="eyebrow">M08 Modeling Objective 消费端</span><h2>债务风险模型与运行</h2><p>${esc(S003_MODELING_SCHEMA.objective.businessQuestion)}</p></div><button class="btn primary" type="button" data-action="s003-open-modeling-objective">${icon("external-link", "sm")}进入 M08 优化模型</button></header><section class="s003-modeling-status"><div><span>当前正式模型</span><strong>${esc(binding.modelVersion)}</strong><small>${esc(binding.modelVersionId)}</small></div><div><span>Binding</span><strong>${esc(binding.bindingId)}</strong><small>Revision ${esc(binding.bindingRevision)}</small></div><div><span>DataVersion</span><strong>${esc(binding.dataVersionId)}</strong><small>asOf ${esc(binding.assessmentAsOf)}</small></div><div><span>最近 Benchmark</span><strong>${esc(benchmarkStatus)}</strong><small>${esc(firstDefined(benchmark?.benchmarkRunId, benchmark?.reportId, "未收到运行标识"))}</small></div><div><span>活动影子候选</span><strong>${esc(activeShadow)}</strong><small>${esc(firstDefined(shadow?.status, "只读跟踪"))}</small></div></section>${s003ModelingSelection()}<div class="s003-result-toolbar"><div class="segmented-control" aria-label="结果视图">${tabsHtml}</div>${result ? `<div class="s003-result-identity">${badge(s003ResultRole(result).label, s003ResultRole(result).tone)}<span>${esc(result.modelVersionId)}</span><span>${esc(result.dataVersionId)}</span></div>` : ""}</div><div class="s003-result-boundary">${icon("shield-check", "sm")}正式视图只读消费归档 FACT；候选与差异视图只读消费 PREDICTION + WHAT_IF / SHADOW，不写 C035、Published FACT、报告或处置状态。</div>${resultBody}${result ? `<details class="s003-evidence"><summary>查看 Result Envelope 与绑定证据</summary><dl><div><dt>resultId</dt><dd>${esc(result.resultId)}</dd></div><div><dt>Binding</dt><dd>${esc(result.bindingId)} · Revision ${esc(result.bindingRevision)}</dd></div><div><dt>Model Version</dt><dd>${esc(result.modelVersionId)}</dd></div><div><dt>DataVersion / asOf</dt><dd>${esc(result.dataVersionId)} · ${esc(result.asOf)}</dd></div><div><dt>formedAt</dt><dd>${esc(result.formedAt || "未提供")}</dd></div><div><dt>Evidence</dt><dd>${result.evidenceRefs.length ? result.evidenceRefs.map(esc).join(" · ") : "未提供独立证据引用"}</dd></div></dl></details>` : ""}</section>`;
   }
 
   function renderRisk(tab) {
+    focusS003Scenario();
     const dash = byId("risk");
     const normalizedTab = tab === "enterprises" ? "actions" : tab;
     const valid = ["overview", "analysis", "actions", "operations"].includes(normalizedTab) ? normalizedTab : "overview";
@@ -841,7 +1302,7 @@
       { id: "operations", label: "模型与运行", icon: "sliders-horizontal" }
     ];
     const actions = valid === "operations"
-      ? `<button class="btn" type="button" data-action="risk-read-model">${icon("refresh-cw", "sm")}重新读取当前模型</button>`
+      ? `<button class="btn" type="button" data-action="s003-request-modeling-context">${icon("refresh-cw", "sm")}重新读取 M08</button><button class="btn primary" type="button" data-action="s003-open-modeling-objective">${icon("external-link", "sm")}进入 M08</button>`
       : `<a class="btn" href="${dashboardHref("risk", "operations")}">${icon("sliders-horizontal", "sm")}模型与重跑</a><a class="btn" href="${BASELINE_ROOT}/report-center/review-lifecycle/index.html?scenarioId=S003#/reports?tab=products">${icon("library", "sm")}报告目录</a>`;
     const content = valid === "overview"
       ? riskOverview(dash)
@@ -849,80 +1310,103 @@
         ? riskAnalysis(dash)
       : valid === "actions"
         ? riskActions(dash)
-        : `${riskModelConfig(dash)}${riskRuns(dash)}`;
+        : riskModelingConsumer(dash);
     shell(`<main class="page dashboard-page risk-page" data-screen-label="债务风险监测驾驶舱">${dashboardHeader(dash, { actions })}${infoStrip(dash)}${tabs(tabItems, valid, "risk")}<div class="dashboard-content">${content}</div></main>`);
   }
 
-  function evidenceStatusMeta(status) {
-    const entries = {
-      COMPLETE: { label: "证据完整", tone: "success" },
-      PARTIAL: { label: "证据部分", tone: "warning" },
-      INSUFFICIENT_HISTORY: { label: "历史不足", tone: "plain" },
-    };
-    return entries[status] || { label: status || "未标注", tone: "plain" };
+  function s005IdentityStrip() {
+    const context = s005Evaluation.scenarioContext;
+    return `<section class="s005-identity-strip" aria-label="当前五字段场景身份">${S005_CONTEXT_FIELDS.map((field) => `<div><span>${esc(field)}</span><strong>${esc(context?.[field] || "等待当前轮次")}</strong></div>`).join("")}</section>`;
   }
 
-  function postInvestmentProductTable(dash, limit = 0) {
-    const rows = limit ? dash.products.slice(0, limit) : dash.products;
-    return `<div class="table-wrap"><table class="data-table s005-product-table"><thead><tr><th>评价对象</th><th>产品类别</th><th>范围状态</th><th>池内选择</th><th>证据状态</th><th></th></tr></thead><tbody>${rows.map((item) => {
-      const evidence = evidenceStatusMeta(item.evidenceStatus);
-      return `<tr><td><button class="table-link" type="button" data-action="s005-product-detail" data-object-id="${attr(item.objectRef.id)}">${esc(item.objectRef.title)}</button><small class="cell-note">${esc(item.objectRef.id)}</small></td><td>${esc(item.category)}</td><td>${badge(item.scopeStatus, item.scopeStatus === "符合范围" ? "success" : toneFor(item.scopeStatus))}</td><td>${badge(item.selectionStatus, item.selectionStatus === "已选" ? "success" : "plain")}</td><td>${badge(evidence.label, evidence.tone)}</td><td><button class="text-btn" type="button" data-action="s005-product-detail" data-object-id="${attr(item.objectRef.id)}">查看对象</button></td></tr>`;
-    }).join("")}</tbody></table></div>`;
-  }
-
-  function postInvestmentRiskList(dash) {
-    return `<div class="s005-status-list">${dash.riskLamps.map((item) => `<article><span class="status-mark ${esc(item.tone)}">${icon(item.tone === "success" ? "circle-check" : item.tone === "warning" ? "triangle-alert" : "circle-help", "sm")}</span><div><strong>${esc(item.label)}</strong><p>${esc(item.detail)}</p></div>${badge(item.state, item.tone)}</article>`).join("")}</div>`;
-  }
-
-  function postInvestmentOverview(dash) {
-    return `${metricsGrid(dash.metrics, { dashboard: "post-investment" })}<section class="grid-main wide">${panel("市场横评概览", "归一化序列以 100 为起点，当前仅用于同口径比较", comparisonLineChart(dash.marketSeries.labels, dash.marketSeries.series, { ariaLabel: "入池组合、同类与业绩基准比较" }), `<a class="text-btn" href="${dashboardHref("post-investment", "market")}">查看完整横评 ${icon("chevron-right", "sm")}</a>`, "s005-chart-panel")}${panel("风险与覆盖状态", "状态相互独立，不以单项正常抵销证据缺口", postInvestmentRiskList(dash), `<a class="text-btn" href="${dashboardHref("post-investment", "selection")}">查看选择证据 ${icon("chevron-right", "sm")}</a>`)}</section>${panel("代表性产品", "当前列示 5 只产品；评价输入共含 15 只候选产品", postInvestmentProductTable(dash, 5), `<a class="text-btn" href="${dashboardHref("post-investment", "products")}">打开产品目录 ${icon("chevron-right", "sm")}</a>`, "flush-body")}`;
-  }
-
-  function postInvestmentProducts(dash) {
-    const source = dash.sourceSummary;
-    const sourceBody = `<div class="s005-source-facts"><div><span>来源快照</span><strong>${source.snapshotCount} 份</strong><small>${esc(source.firstSnapshotDate)} 至 ${esc(source.lastSnapshotDate)}</small></div><div><span>表实例</span><strong>${source.sheetInstanceCount} 个</strong><small>按来源快照汇总</small></div><div><span>评价对象</span><strong>${source.candidateCount} 只</strong><small>当前列示 5 只代表性产品</small></div><div><span>原始身份</span><strong>${source.rawIdentitiesIncluded ? "已包含" : "未包含"}</strong><small>仅使用规范对象引用</small></div></div>`;
-    return `${panel("数据覆盖", "候选数据范围与产品列示范围分开呈现", sourceBody, `<button class="text-btn" type="button" data-action="s005-source-detail">查看版本引用 ${icon("chevron-right", "sm")}</button>`)}${panel("产品目录", "按产品类别、评价范围、池内选择与证据状态统一查看", postInvestmentProductTable(dash), "", "flush-body")}`;
-  }
-
-  function postInvestmentMarket(dash) {
-    const latestIndex = dash.marketSeries.labels.length - 1;
-    const rows = dash.marketSeries.series.map((item) => ({ ...item, latest: item.values[latestIndex], change: item.values[latestIndex] - item.values[0] }));
-    return `${panel("市场横评", "入池组合、同类分位与业绩基准使用相同归一化起点", comparisonLineChart(dash.marketSeries.labels, dash.marketSeries.series, { ariaLabel: "市场横评趋势" }), "", "s005-chart-panel")}${panel("期末比较", `数据截至 ${displayAsOf(dash.period)}，只比较同口径序列`, `<div class="table-wrap"><table class="data-table"><thead><tr><th>比较序列</th><th class="num">起点</th><th class="num">期末</th><th class="num">区间变化</th><th>当前说明</th></tr></thead><tbody>${rows.map((item) => `<tr><td><span class="series-name"><i style="--series-color:${attr(item.color)}"></i><strong>${esc(item.label)}</strong></span></td><td class="num">${fmt(item.values[0], 2)}</td><td class="num">${fmt(item.latest, 2)}</td><td class="num">+${fmt(item.change, 2)}</td><td>${item.id === "pool" ? badge("评价范围", "warning") : badge("比较基准", "plain")}</td></tr>`).join("")}</tbody></table></div>`, "", "flush-body")}`;
-  }
-
-  function postInvestmentSelection(dash) {
-    const selected = dash.selectionSeries.series[0];
-    const unselected = dash.selectionSeries.series[1];
-    const spread = dash.selectionSeries.expectedSpreadPct;
-    const versionRows = [
-      ["数据版本", dash.versionRefs.dataVersionId],
-      ["语义版本", dash.versionRefs.ontologyVersionId],
-      ["评价输入", dash.versionRefs.evaluationInputRef],
-      ["模型目标", dash.versionRefs.modelingObjectiveRef],
+  function s005StatusStrip() {
+    const run = s005Evaluation.evaluationRun || {};
+    const result = s005Evaluation.evaluationResult || {};
+    const statusBar = result.statusBar || {};
+    const sourceAudit = result.sourceAudit || run.sourceAudit || {};
+    const versions = result.versions || run.versions || result.metadata?.versions || run.metadata?.versions || {};
+    const overall = s005OverallStatus();
+    const items = [
+      ["评价日", firstDefined(statusBar.evaluationDate, result.evaluationDate, run.evaluationDate, "等待当前轮次")],
+      ["数据截至", firstDefined(statusBar.dataAsOf, result.dataAsOf, result.dataAsOfDate, sourceAudit.asOf, "等待当前轮次")],
+      ["Wind 批次", firstDefined(statusBar.windBatchId, result.windBatchId, sourceAudit.windBatchId, statusBar.windBatchMissingReason, sourceAudit.windBatchMissingReason, "等待当前轮次")],
+      ["事件读取时间", firstDefined(statusBar.eventReadAt, result.eventReadAt, run.eventReadAt, sourceAudit.eventReadAt, "等待当前轮次")],
+      ["公式 / 参数版本", `${firstDefined(statusBar.formulaVersion, result.formulaVersion, run.formulaVersion, versions.formulaVersion, "待定")} / ${firstDefined(statusBar.parameterVersion, result.parameterVersion, run.parameterVersion, versions.parameterVersion, "待定")}`],
+      ["scored_coverage", `${s005Coverage(firstDefined(statusBar.scoredCoverage, result.scored_coverage, result.scoredCoverage, run.scored_coverage, run.scoredCoverage), 0).toFixed(1)}%`],
+      ["置信度", s005Confidence(firstDefined(statusBar.confidence, result.confidence, result.confidenceScore, run.confidence, run.confidenceScore))],
+      ["评价状态", overall.label],
     ];
-    return `${panel("池内选择比较", "只比较选中产品与符合范围但未选产品，不把范围外对象作为负例", `${comparisonLineChart(dash.selectionSeries.labels, dash.selectionSeries.series, { ariaLabel: "选中产品与符合范围但未选产品比较" })}<div class="comparison-summary s005-selection-summary"><div><span>选中产品 T+60</span><strong>${fmt(selected.values.at(-1), 2)}</strong></div><div><span>符合范围但未选 T+60</span><strong>${fmt(unselected.values.at(-1), 2)}</strong></div><div><span>池内选择差异</span><strong class="text-success">+${fmt(spread, 2)} 个百分点</strong></div></div>`, "", "s005-chart-panel")}<section class="grid-main">${panel("产品证据状态", "证据完整度与范围状态分别保留", postInvestmentProductTable(dash), "", "flush-body")}${panel("版本引用", "当前评价结论可回溯到以下候选输入", `<dl class="detail-list compact s005-version-list">${versionRows.map(([label, value]) => `<div><dt>${esc(label)}</dt><dd><code>${esc(value)}</code></dd></div>`).join("")}</dl><div class="s005-boundary-note">${icon("shield-alert", "sm")}<p>当前结论仍为部分评价，不进入正式结果，也不据此创建行动或交易指令。</p></div>`)}</section>`;
+    return `<section class="s005-evaluation-strip" aria-label="当前评价轮次状态">${items.map(([label, value]) => `<div><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join("")}</section>`;
+  }
+
+  function s005MetricRows(domain) {
+    return `<div class="s005-metric-list" role="table" aria-label="${attr(domain.label)}指标"><div class="s005-metric-head" role="row"><span role="columnheader">指标</span><span role="columnheader">状态</span><span role="columnheader">当前结果</span><span role="columnheader">证据</span></div>${domain.metrics.map((metric) => `<div class="s005-metric-row" role="row"><strong role="cell">${esc(metric.label)}</strong><span role="cell">${badge(metric.status.valueLabel, metric.status.tone)}</span><span class="s005-metric-value" role="cell">${esc(metric.display)}</span><button class="icon-btn" type="button" data-action="s005-evidence-detail" data-domain-id="${attr(domain.id)}" data-metric-key="${attr(metric.key)}" aria-label="查看${attr(metric.label)}证据" title="查看证据">${icon("file-search-2", "sm")}</button></div>`).join("")}</div>`;
+  }
+
+  function s005DomainCard(domain, expanded = false) {
+    const reasons = domain.missingReasons.length ? domain.missingReasons : ["当前域没有额外缺失原因。"];
+    const evidenceCount = domain.evidence.length + domain.metrics.reduce((count, metric) => count + metric.evidence.length, 0);
+    return `<article class="s005-domain-card ${expanded ? "expanded" : ""}" data-domain="${attr(domain.id)}"><header class="s005-domain-head"><span class="s005-domain-icon">${icon(domain.icon, "sm")}</span><div><h2>${esc(domain.label)}</h2><p>${badge(domain.status.label, domain.status.tone)}<span>覆盖率 ${domain.coverage.toFixed(1)}%</span></p></div><a class="icon-btn" href="${dashboardHref("post-investment", domain.id)}" aria-label="打开${attr(domain.label)}">${icon("arrow-up-right", "sm")}</a></header><div class="s005-coverage" aria-label="覆盖率 ${domain.coverage.toFixed(1)}%"><i style="--coverage:${domain.coverage}%"></i></div>${s005MetricRows(domain)}<section class="s005-domain-conclusion"><span>结论</span><p>${esc(domain.conclusion)}</p></section><section class="s005-domain-missing"><span>缺失原因</span><ul>${reasons.map((reason) => `<li>${esc(reason)}</li>`).join("")}</ul></section><footer><button class="text-btn" type="button" data-action="s005-evidence-detail" data-domain-id="${attr(domain.id)}">${icon("folder-search-2", "sm")}证据下钻 <strong>${evidenceCount}</strong>${icon("chevron-right", "sm")}</button></footer></article>`;
+  }
+
+  function s005PendingNotice() {
+    const overall = s005OverallStatus();
+    const message = s005Evaluation.contractError
+      ? s005Evaluation.contractError
+      : s005Evaluation.evaluationResult
+        ? "仅汇总当前 scenarioRunId 对应的 evaluation run/result；缺失指标不补零。"
+        : s005Evaluation.evaluationRun
+          ? "当前 evaluation run 尚未返回可验证 result，所有未提供指标保持等待或无法评价。"
+          : "尚未收到当前 S005 evaluation run/result，当前覆盖率为 0%。";
+    return `<section class="s005-status-notice ${overall.tone}">${icon(overall.tone === "danger" ? "circle-alert" : "circle-dashed", "sm")}<div><strong>${esc(overall.label)}</strong><p>${esc(message)}</p></div>${badge(overall.label, overall.tone)}</section>`;
   }
 
   function renderPostInvestment(tab) {
     const dash = byId("post-investment");
-    const normalizedTab = tab === "evidence" ? "selection" : tab;
-    const valid = ["overview", "products", "market", "selection"].includes(normalizedTab) ? normalizedTab : "overview";
+    const domains = normalizedS005Domains();
+    const valid = ["overview", ...S005_DOMAIN_DEFINITIONS.map((domain) => domain.id)].includes(tab) ? tab : "overview";
     const tabItems = [
-      { id: "overview", label: "评价概览", icon: "layout-dashboard" },
-      { id: "products", label: "产品目录", icon: "library" },
-      { id: "market", label: "市场横评", icon: "chart-spline" },
-      { id: "selection", label: "选择与证据", icon: "list-checks" },
+      { id: "overview", label: "六域总览", icon: "layout-dashboard" },
+      ...S005_DOMAIN_DEFINITIONS.map((domain) => ({ id: domain.id, label: domain.label, icon: domain.icon })),
     ];
-    const content = valid === "overview"
-      ? postInvestmentOverview(dash)
-      : valid === "products"
-        ? postInvestmentProducts(dash)
-        : valid === "market"
-          ? postInvestmentMarket(dash)
-          : postInvestmentSelection(dash);
-    const actions = `<button class="btn" type="button" data-action="s005-source-detail">${icon("database", "sm")}查看数据范围</button><a class="btn" href="${dashboardHref("post-investment", "products")}">${icon("library", "sm")}产品目录</a>`;
-    const statusNotice = `<section class="s005-status-notice">${icon("circle-dashed", "sm")}<div><strong>当前结论为部分评价</strong><p>范围判断与证据覆盖尚未全部闭合；页面只呈现候选数据和可回溯依据。</p></div>${badge("候选", "warning")}</section>`;
-    shell(`<main class="page dashboard-page post-investment-page" data-screen-label="金融产品投后评价驾驶舱">${dashboardHeader(dash, { actions })}${infoStrip(dash)}${statusNotice}${tabs(tabItems, valid, "post-investment")}<div class="dashboard-content">${content}</div></main>`);
+    const selectedDomain = domains.find((domain) => domain.id === valid);
+    const content = selectedDomain
+      ? `<section class="s005-domain-detail">${s005DomainCard(selectedDomain, true)}</section>`
+      : `<section class="s005-domain-grid">${domains.map((domain) => s005DomainCard(domain)).join("")}</section>`;
+    const actions = `<button class="btn" type="button" data-action="s005-request-evaluation">${icon("refresh-cw", "sm")}读取当前轮次</button>`;
+    shell(`<main class="page dashboard-page post-investment-page" data-screen-label="金融产品投后评价六域驾驶舱">${dashboardHeader(dash, { actions })}${s005IdentityStrip()}${s005StatusStrip()}${s005PendingNotice()}${tabs(tabItems, valid, "post-investment")}<div class="dashboard-content">${content}<div class="s005-boundary-note">${icon("shield-alert", "sm")}<p>真实结果、预测结果和模拟结果严格隔离；当前页面不形成 Published 本体、Metric、Rule、T019、行动、审批、待办或交易。</p></div></div></main>`);
+  }
+
+  function openS005Evidence(domainId, metricKey = "") {
+    const domain = normalizedS005Domains().find((item) => item.id === domainId);
+    if (!domain) return;
+    const metric = metricKey ? domain.metrics.find((item) => item.key === metricKey) : null;
+    const evidence = metric
+      ? metric.evidence
+      : [...domain.evidence, ...domain.metrics.flatMap((item) => item.evidence.map((evidenceItem) => ({ ...evidenceItem, metricLabel: item.label })))];
+    const missingReasons = metric ? metric.missingReasons : domain.missingReasons;
+    const evidenceHtml = evidence.length
+      ? `<section class="s005-evidence-list"><h3>证据引用</h3>${evidence.map((item) => `<article><strong>${esc(item.metricLabel || item.label)}</strong><code>${esc(item.ref)}</code>${item.asOf ? `<small>数据截至 ${esc(item.asOf)}</small>` : ""}${item.status ? badge(item.status, toneFor(item.status)) : ""}</article>`).join("")}</section>`
+      : `<div class="drawer-note">${icon("circle-dashed", "sm")}<div><strong>没有可下钻证据</strong><p>当前 run 未回传该${metric ? "指标" : "评价域"}的证据引用，不以固定 fixture 或补零替代。</p></div></div>`;
+    const missingHtml = missingReasons.length
+      ? `<section class="s005-evidence-missing"><h3>缺失原因</h3><ul>${missingReasons.map((reason) => `<li>${esc(reason)}</li>`).join("")}</ul></section>`
+      : "";
+    state.drawer = {
+      eyebrow: "S005 当前轮次证据",
+      title: metric ? metric.label : domain.label,
+      subtitle: `${domain.status.label} · 覆盖率 ${domain.coverage.toFixed(1)}%`,
+      rows: [
+        ["scenarioRunId", s005Evaluation.scenarioContext?.scenarioRunId || "等待当前轮次"],
+        ["评价域", domain.label],
+        ["当前结果", metric?.display || domain.conclusion],
+        ["指标状态", metric?.status.valueLabel || domain.status.label],
+        ["公式引用", metric?.formula || "未提供"],
+        ["观察期", metric?.observation || "未提供"],
+      ],
+      html: `${evidenceHtml}${missingHtml}`,
+      note: "证据只来自当前 scenarioRunId 对应的 evaluation result；预测或模拟输出不得替代真实评价事实。",
+    };
+    render();
   }
 
   function riskActionByEnterpriseId(enterpriseId) {
@@ -1010,9 +1494,7 @@
       ? state.financeScopeId
       : dashboardId === "budget"
         ? state.budgetScope
-        : dashboardId === "post-investment"
-          ? "15 只候选产品"
-          : "全部企业";
+        : "全部企业";
     state.drawer = { eyebrow: "指标口径", title: metric.label, subtitle: `${metric.display} ${metric.unit}`, rows: [["当前范围", currentRange], ["数据截至", dash.period], ["业务定义", dash.semanticLabel], ["更新时间", dash.updatedAt]], note: metric.note };
     render();
   }
@@ -1034,7 +1516,8 @@
     if (action === "refresh") {
       if (route().id === "post-investment") {
         target.classList.add("is-reading");
-        window.setTimeout(() => location.reload(), 120);
+        requestS005Evaluation();
+        window.setTimeout(() => { target.classList.remove("is-reading"); toast("已请求读取当前 S005 评价轮次"); }, 320);
         return;
       }
       target.classList.add("is-reading");
@@ -1058,46 +1541,8 @@
       persist(); render(); return;
     }
     if (action === "metric-detail") { openMetric(target.dataset.dashboard, target.dataset.key); return; }
-    if (action === "s005-source-detail") {
-      const dash = byId("post-investment");
-      const source = dash.sourceSummary;
-      state.drawer = {
-        eyebrow: "数据范围",
-        title: "投后评价候选数据",
-        subtitle: `数据截至 ${dash.period}`,
-        rows: [
-          ["来源快照", `${source.snapshotCount} 份`],
-          ["表实例", `${source.sheetInstanceCount} 个`],
-          ["评价对象", `${source.candidateCount} 只`],
-          ["覆盖期间", `${source.firstSnapshotDate} 至 ${source.lastSnapshotDate}`],
-          ["数据版本", dash.versionRefs.dataVersionId],
-          ["语义版本", dash.versionRefs.ontologyVersionId],
-        ],
-        note: "日净值、现金流、信用穿透和久期证据尚未全部接入，当前结论保持部分评价。",
-      };
-      render(); return;
-    }
-    if (action === "s005-product-detail") {
-      const dash = byId("post-investment");
-      const item = dash.products.find((product) => product.objectRef.id === target.dataset.objectId);
-      if (!item) return;
-      const evidence = evidenceStatusMeta(item.evidenceStatus);
-      state.drawer = {
-        eyebrow: "评价对象",
-        title: item.objectRef.title,
-        subtitle: item.category,
-        rows: [
-          ["对象标识", item.objectRef.id],
-          ["对象类型", item.objectRef.objectTypeRef],
-          ["范围状态", item.scopeStatus],
-          ["池内选择", item.selectionStatus],
-          ["证据状态", evidence.label],
-          ["数据截至", dash.period],
-        ],
-        note: "对象详情只呈现当前评价输入，不改变产品范围、选择状态或任何正式结果。",
-      };
-      render(); return;
-    }
+    if (action === "s005-request-evaluation") { requestS005Evaluation(); toast("已请求读取当前 S005 评价轮次"); return; }
+    if (action === "s005-evidence-detail") { openS005Evidence(target.dataset.domainId, target.dataset.metricKey || ""); return; }
     if (action === "structure-detail") {
       const dash = byId("financing");
       const item = dash.structures.find((structure) => structure.id === target.dataset.id);
@@ -1134,7 +1579,10 @@
     if (action === "risk-sector-detail") { openRiskSectorDetail(target.dataset.sector); return; }
     if (action === "risk-search") { state.riskSearch = document.getElementById("risk-search")?.value || ""; persist(); render(); return; }
     if (action === "risk-filter-reset") { state.riskTier = "全部"; state.riskSector = "全部产业"; state.riskSort = "risk"; state.riskSearch = ""; persist(); render(); return; }
-    if (action === "risk-model-section") { state.riskModelSection = target.dataset.section || "overview"; persist(); render(); return; }
+    if (action === "s003-request-modeling-context") { requestS003ModelingContext(); toast("已请求重新读取 M08 工作区"); return; }
+    if (action === "s003-open-modeling-objective") { openS003Objective(); return; }
+    if (action === "s003-modeling-view") { state.riskModelingView = target.dataset.view || "formal"; persist(); render(); return; }
+    if (action === "s003-modeling-recalculate") { requestS003CandidateResult(); return; }
     if (action === "risk-open-decision") { if (window.parent !== window) window.parent.location.hash = "#module/decision"; else location.href = `${BASELINE_ROOT}/decision-center-prototype/index.html#workbench`; return; }
     if (action === "risk-action-evidence") { openRiskActionEvidence(riskActionByEnterpriseId(target.dataset.enterpriseId)); return; }
     if (action === "risk-action-confirm") {
@@ -1161,41 +1609,6 @@
       void submitRiskAction(item);
       return;
     }
-    if (action === "risk-model-save") {
-      state.riskModelSavedAt = localDateTime();
-      if (!["invalid", "validated"].includes(state.riskModelStatus)) state.riskModelStatus = "saved";
-      persist(); render(); toast("修改已暂存，当前生效模型没有改变"); return;
-    }
-    if (action === "risk-model-validate") {
-      const validation = validateRiskModelDraft();
-      state.riskModelValidation = validation;
-      state.riskModelStatus = validation.ok ? "validated" : "invalid";
-      state.riskModelPublishError = "";
-      persist(); render(); toast(validation.ok ? "配置校验通过，可以提交发布" : "配置校验未通过，请查看问题"); return;
-    }
-    if (action === "risk-model-publish") { void publishRiskModel(false); return; }
-    if (action === "risk-model-publish-run") { void publishRiskModel(true); return; }
-    if (action === "risk-model-apply-run") { void publishRiskModel(true); return; }
-    if (action === "risk-model-reset") {
-      state.riskModelDraft = clone(state.riskPublishedConfig);
-      state.riskModelStatus = "published";
-      state.riskModelValidation = null;
-      state.riskModelPublishError = "";
-      state.riskModelSavedAt = "";
-      persist(); render(); toast("未发布修改已放弃，已恢复当前生效配置"); return;
-    }
-    if (action === "risk-read-model") { target.classList.add("is-reading"); window.setTimeout(() => { target.classList.remove("is-reading"); toast("已重新读取当前生效模型"); }, 650); return; }
-    if (action === "risk-data-check") {
-      target.classList.add("is-reading");
-      window.setTimeout(() => {
-        state.riskDataCheckedAt = localDateTime();
-        persist(); render(); toast("已检查正式数据，当前没有需要重评的新版本");
-      }, 720);
-      return;
-    }
-    if (action === "risk-rerun") {
-      void runRiskAssessment(byId("risk")); return;
-    }
     if (action === "close-drawer") {
       if (target.classList.contains("drawer-backdrop") && event.target !== target) return;
       state.drawer = null;
@@ -1203,61 +1616,13 @@
     }
   });
 
-  document.addEventListener("input", (event) => {
-    const target = event.target;
-    let changed = false;
-    if (target.dataset.modelWeight) {
-      const category = target.dataset.modelWeight;
-      state.riskModelDraft.weights[category][Number(target.dataset.modelIndex)] = target.value === "" ? "" : Number(target.value);
-      changed = true;
-    }
-    if (target.dataset.modelFactor) {
-      const factor = state.riskModelDraft.factors.find((item) => item.factorId === target.dataset.modelFactor);
-      const tier = factor?.tiers.find((item) => item.tierId === target.dataset.modelTier);
-      if (tier) { tier.coefficient = target.value === "" ? "" : Number(target.value); changed = true; }
-    }
-    if (target.dataset.modelRiskTier) {
-      const tier = state.riskModelDraft.tiers.find((item) => item.tierId === target.dataset.modelRiskTier);
-      if (tier && tier.tierId !== "BLACK") { tier.minInclusive = target.value === "" ? "" : Number(target.value); changed = true; }
-    }
-    if (changed) {
-      state.riskModelStatus = "draft";
-      state.riskModelValidation = null;
-      state.riskModelPublishError = "";
-      persist();
-      syncModelEditControls();
-    }
-  });
-
   document.addEventListener("change", (event) => {
     const change = event.target.dataset.change;
-    if (event.target.dataset.modelWeight) {
-      const category = event.target.dataset.modelWeight;
-      const index = Number(event.target.dataset.modelIndex);
-      state.riskModelDraft.weights[category][index] = event.target.value === "" ? "" : Number(event.target.value);
-      state.riskModelStatus = "draft";
-      state.riskModelValidation = null;
-      state.riskModelPublishError = "";
-      persist(); render(); return;
-    }
-    if (event.target.dataset.modelFactor) {
-      const factor = state.riskModelDraft.factors.find((item) => item.factorId === event.target.dataset.modelFactor);
-      const tier = factor?.tiers.find((item) => item.tierId === event.target.dataset.modelTier);
-      if (tier) tier.coefficient = event.target.value === "" ? "" : Number(event.target.value);
-      state.riskModelStatus = "draft";
-      state.riskModelValidation = null;
-      state.riskModelPublishError = "";
-      persist(); render(); return;
-    }
-    if (event.target.dataset.modelRiskTier) {
-      const tier = state.riskModelDraft.tiers.find((item) => item.tierId === event.target.dataset.modelRiskTier);
-      if (tier && tier.tierId !== "BLACK") tier.minInclusive = event.target.value === "" ? "" : Number(event.target.value);
-      state.riskModelStatus = "draft";
-      state.riskModelValidation = null;
-      state.riskModelPublishError = "";
-      persist(); render(); return;
-    }
     if (!change) return;
+    if (change === "s003-model-version") state.riskModelingSelection.modelVersionId = event.target.value;
+    if (change === "s003-as-of") state.riskModelingSelection.asOf = event.target.value;
+    if (change === "s003-enterprise-scope") state.riskModelingSelection.enterpriseScope = event.target.value;
+    if (change === "s003-use-kind") state.riskModelingSelection.useKind = event.target.value;
     if (change === "finance-scope-id") state.financeScopeId = event.target.value;
     if (change === "budget-scope") { state.budgetScope = event.target.value; state.budgetExpanded = ""; }
     if (change === "risk-tier") state.riskTier = event.target.value;
@@ -1271,20 +1636,77 @@
     if (event.key === "Enter" && event.target.id === "risk-search") { state.riskSearch = event.target.value; persist(); render(); }
   });
 
+  addEventListener("message", (event) => {
+    if (window.parent !== window && event.source !== window.parent) return;
+    if (event.origin && event.origin !== "null" && event.origin !== location.origin) return;
+    if (event.data?.type === S003_MODELING_SCHEMA.messages.errorResponse) {
+      if (!sameS003Identity(event.data.scenarioContext) || event.data.objectiveId !== S003_MODELING_SCHEMA.objective.objectiveId) return;
+      s003Modeling.requestState = "failed";
+      s003Modeling.receivedAt = localDateTime();
+      s003Modeling.contractError = String(event.data.message || "M08 候选试算未完成。");
+      const current = route();
+      if (current.type === "view" && current.id === "risk" && current.tab === "operations") render();
+      return;
+    }
+    if (event.data?.type === S003_MODELING_SCHEMA.messages.contextResponse || event.data?.type === S003_MODELING_SCHEMA.messages.resultResponse) {
+      const contractError = event.data.type === S003_MODELING_SCHEMA.messages.contextResponse
+        ? acceptS003ModelingContext(event.data)
+        : acceptS003ModelingResult(event.data);
+      if (contractError) {
+        s003Modeling.requestState = "failed";
+        s003Modeling.receivedAt = localDateTime();
+        s003Modeling.contractError = contractError;
+      }
+      const current = route();
+      if (current.type === "view" && current.id === "risk" && current.tab === "operations") render();
+      return;
+    }
+    if (event.data?.type !== "OFW_S005_EVALUATION_CONTEXT") return;
+    const contractError = acceptS005EvaluationContext(event.data);
+    if (contractError) {
+      s005Evaluation.scenarioContext = null;
+      s005Evaluation.evaluationRun = null;
+      s005Evaluation.evaluationResult = null;
+      s005Evaluation.receivedAt = localDateTime();
+      s005Evaluation.contractError = contractError;
+    }
+    const current = route();
+    if (current.type === "directory" || current.id === "post-investment") render();
+  });
+
   addEventListener("hashchange", () => { state.drawer = null; window.scrollTo({ top: 0, behavior: "instant" }); render(); });
   window.OFW_RISK_DASHBOARD_TEST_API = Object.freeze({
     context: RISK_CONTEXT,
+    modelingContext: S003_MODELING_CONTEXT,
     state,
     riskActionRequestId,
     buildRiskActionRequest,
     writeRiskActionRequest,
     riskActionRecord,
     setRiskActionRecord,
-    validateRiskModelDraft,
-    nextPatchVersion,
-    publishedModelForRun,
-    modelHasChanges,
     riskIndustry,
+    modelingSchema: S003_MODELING_SCHEMA,
+    modelingState: s003Modeling,
+    formalEnvelope: s003FormalEnvelope,
+    normalizedEnvelope: s003NormalizedEnvelope,
+    validateCandidateEnvelope: validateS003CandidateEnvelope,
+    acceptModelingContext: acceptS003ModelingContext,
+    acceptModelingResult: acceptS003ModelingResult,
+    requestModelingContext: requestS003ModelingContext,
+    focusScenario: focusS003Scenario,
+    requestCandidateResult: requestS003CandidateResult,
   });
-  if (!window.__OFW_DASHBOARD_SKIP_RENDER__) render();
+  window.OFW_S005_DASHBOARD_TEST_API = Object.freeze({
+    contextFields: [...S005_CONTEXT_FIELDS],
+    domainDefinitions: S005_DOMAIN_DEFINITIONS,
+    evaluation: s005Evaluation,
+    acceptEvaluationContext: acceptS005EvaluationContext,
+    normalizedDomains: normalizedS005Domains,
+    requestEvaluation: requestS005Evaluation,
+  });
+  if (!window.__OFW_DASHBOARD_SKIP_RENDER__) {
+    render();
+    requestS005Evaluation();
+    requestS003ModelingContext();
+  }
 })();

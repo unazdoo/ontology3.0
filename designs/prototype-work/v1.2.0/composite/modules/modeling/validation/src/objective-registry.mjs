@@ -1,13 +1,14 @@
 import { NAMESPACE } from "./constants.mjs";
 import { assertContract } from "./errors.mjs";
 import { sha256 } from "./hash.mjs";
+import { S003_OBJECTIVE } from "./s003-contract.mjs";
 
 const FORBIDDEN_BINDING_KEYS = /endpoint|credential|secret|token|container|url|targetRid/i;
 
 const CONSUMERS = Object.freeze({
   M07_EXPLORATION: {
     consumerId: "M07_EXPLORATION",
-    moduleId: "exploration",
+    moduleId: "m07",
     name: "探索分析",
     allowed: true,
     permissionScope: "prediction.read",
@@ -109,6 +110,7 @@ const OBJECTIVES = Object.freeze([
       evidenceClass: "SYNTHETIC_CONTRACT_PREVIEW"
     }
   },
+  S003_OBJECTIVE,
   {
     resourceKind: "ModelingObjective",
     objectiveId: "MO-S001-DEBT-STRUCTURE-OPT-v1",
@@ -472,7 +474,9 @@ export function projectObjectiveForConsumer({ objectiveId, consumerId } = {}) {
       reason: consumer.blockedReason,
       resultKindAccepted: false,
       factWriteAllowed: false,
-      actionWriteAllowed: false
+      actionWriteAllowed: false,
+      actionSourceAllowed: false,
+      sideEffectsEmitted: 0
     };
   }
   const ports = projectedPorts(objective, consumer.fieldPolicy);
@@ -495,7 +499,9 @@ export function projectObjectiveForConsumer({ objectiveId, consumerId } = {}) {
     result: { ...clone(objective.sampleResult), outputs },
     concreteEndpointExposed: false,
     factWriteAllowed: false,
-    actionWriteAllowed: false
+    actionWriteAllowed: false,
+    actionSourceAllowed: false,
+    sideEffectsEmitted: 0
   };
 }
 

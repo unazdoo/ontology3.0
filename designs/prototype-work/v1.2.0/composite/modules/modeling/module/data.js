@@ -88,6 +88,7 @@
       dataVersionId: "DATA-SYN-S001-EVAL-v1",
       ontologyVersionId: "ONT-SYN-S001-FINANCING-v1",
       bindingId: "MB-S001-EVALUATION-v1",
+      asOf: "2025-12-31",
       timeRange: "2025-01 至 2025-12",
       purpose: "隔离验证 · 不进入正式工作流"
     },
@@ -114,6 +115,14 @@
       spatialReason: "S001 合成融资对象没有权威 GeoRef；不生成地图坐标。"
     },
     m08: {
+      inputMode: "OBSERVED_SERIES_SIMULATION",
+      requiresM07Handoff: false,
+      businessQuestion: "如果市场条件承压，当前对象所在组合会怎样？",
+      graphSteps: ["固定基线", "市场冲击", "评价模型"],
+      defaultTimeRanges: {
+        "6": { start: "2025-07-01", end: "2025-12-31", months: 6, label: "最近 6 个月" },
+        "12": { start: "2025-01-01", end: "2025-12-31", months: 12, label: "2025 年完整 12 个月" }
+      },
       defaultCaseId: "SC-S001-COMPOSITE-v1",
       cases: [
         { id: "SC-S001-SINGLE-RATE-v1", name: "利率上行 +100bp", detail: "只改变基准利率，观察市场冲击模型输出。", params: "利率 +100bp" },
@@ -131,6 +140,7 @@
       dataVersionId: "S005-DATA-AUDIT-79-SNAPSHOTS",
       ontologyVersionId: "S005-SEMANTIC-CANDIDATE-v1",
       bindingId: "MB-S005-EVALUATION-v1",
+      asOf: "2026-07-17",
       timeRange: "2026-01 至 2026-07",
       purpose: "投后评价与压力情景比较"
     },
@@ -150,6 +160,10 @@
       ]
     },
     m08: {
+      inputMode: "SYNTHETIC_CANDIDATE_SIMULATION",
+      requiresM07Handoff: true,
+      businessQuestion: "如果市场参数同时承压，当前对象所在组合会怎样？",
+      graphSteps: ["隔离候选基线", "参数冲击", "评价模型"],
       defaultCaseId: "SC-S005-COMPOSITE-v1",
       cases: [
         { id: "SC-S005-SINGLE-RATE-v1", name: "利率上行 +100bp", detail: "只改变基准利率，观察产品与组合评价变化。", params: "利率 +100bp" },
@@ -179,6 +193,7 @@
     defaultObjectiveByScenario: Object.freeze({
       S001: "MO-S001-COST-FORECAST-v1",
       S002: "MO-S002-BUDGET-OVERRUN-v1",
+      S003: "MO-S003-DEBT-RISK-EARLY-WARNING-v1",
       S004: "MO-S004-PRELOAN-RISK-v1",
       S005: "MO-S005-POST-INVESTMENT-RESEARCH-v1"
     }),

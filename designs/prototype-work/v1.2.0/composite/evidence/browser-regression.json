@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ofw.prototype.browser-regression.v1",
   "candidateVersion": "v1.2.0-rc.1",
-  "observedAt": "2026-08-29T08:54:35Z",
+  "observedAt": "2026-08-31T14:32:13Z",
   "entry": "http://127.0.0.1:4342/designs/prototype-work/v1.2.0/composite/s001-e2e-integration/index.html#home",
   "services": {
     "static": "http://127.0.0.1:4342",
@@ -111,15 +111,24 @@
     "scenarioId": "S005",
     "scenarioVersion": "S005-v1",
     "status": "部分评价",
-    "routes": [
-      "overview",
-      "products",
-      "market",
-      "selection"
-    ],
-    "productCount": 5,
-    "marketSeriesCount": 4,
-    "selectionSeriesCount": 2,
+    "currentRunOnly": true,
+    "domainCount": 6,
+    "metricCount": 34,
+    "scoredCoverage": "5.9%",
+    "confidence": "5.3% · 很低",
+    "structuredMetricDisplay": "准入 3 · 需复核 1 · 未知 1 · 已列示 5/15；选择归因 0.42%",
+    "fixedFixtureResultReadObserved": false,
+    "evidenceDrilldownObserved": true,
+    "zeroRunBrowserCheck": {
+      "scenarioRunId": "S005-RUN-20260830165752450-e56a7f755fb1",
+      "storageSchema": 2,
+      "progress": "0/7",
+      "evaluationRun": null,
+      "evaluationResult": null,
+      "domainCount": 6,
+      "waitingDomainCount": 6,
+      "contractErrors": 0
+    },
     "nestedPlatformShellCount": 0,
     "viewports": [
       "1440x900",
@@ -137,15 +146,177 @@
       "objectTypeRef": "InvestmentProduct",
       "title": "基金 A"
     },
-    "lensBefore": "temporal",
-    "lensAfter": "temporal",
+    "lensBefore": "object360",
+    "lensAfter": "object360",
     "objectRestored": true,
     "returnPositionRestored": "scroll:0",
     "seriesRef": null,
-    "missingSeriesState": "SERIES_INPUT_UNAVAILABLE",
+    "inputMode": "SYNTHETIC_CANDIDATE_SIMULATION",
+    "simulationRunId": "SIMRUN-3eb0a2ce4e65bbb03b61",
+    "simulationResultId": "SIMRES-3eb0a2ce4e65bbb03b61",
+    "simulationStatus": "SUCCEEDED",
+    "resultKind": "SIMULATION",
+    "inputClassification": "SYNTHETIC_RESEARCH_ONLY",
+    "containsSourceBusinessValues": false,
+    "factWriteAllowed": false,
+    "actionWriteAllowed": false,
+    "actionSourceAllowed": false,
+    "sideEffectsEmitted": 0,
     "crossObjectSeriesFallbackObserved": false,
     "returnedToM07": true,
-    "returnMode": "context-recovery-from-unavailable-state",
+    "returnMode": "candidate-simulation-result-with-context-recovery",
+    "result": "passed"
+  },
+  "s005ActualChain": {
+    "observedScenarioRunId": "S005-RUN-20260827142007230-3d7e7768a46c",
+    "progressBefore": "0/7",
+    "progressAfterM02": "1/7",
+    "progressAfterM01": "2/7",
+    "progressAfterM03Compliance": "3/7",
+    "progressAfterM03MarketPeer": "4/7",
+    "progressAfterM04": "5/7",
+    "progressAfterM05": "5/7",
+    "progressAfterM07": "5/7",
+    "progressAfterM08": "6/7",
+    "progressAfter": "7/7",
+    "moduleEvents": [
+      "M02_SOURCE_QUALITY_DELIVERED",
+      "M01_SEMANTIC_CANDIDATE_DELIVERED",
+      "M03_COMPLIANCE_RESULT_DELIVERED",
+      "M03_MARKET_PEER_RESULT_DELIVERED",
+      "M04_SELECTION_SCOPE_CONFIRMED",
+      "M05_RISK_RESULT_DELIVERED",
+      "M07_EXPLORATION_RESULT_DELIVERED",
+      "M08_CANDIDATE_MODEL_RESULT_DELIVERED",
+      "M06_REPORT_DRAFT_DELIVERED"
+    ],
+    "sameFiveFieldIdentity": true,
+    "dashboardUpdatedFromCurrentRun": true,
+    "resetProgress": "0/7",
+    "archivedScenariosChanged": 0,
+    "postHardeningNodeReplay": "123/123",
+    "result": "passed"
+  },
+  "s005Boundaries": {
+    "weeklySharpeAnnualizedAsDaily": false,
+    "missingMetricZeroFilled": false,
+    "m04SideEffects": 0,
+    "m04Applicability": "not_applicable/read_only",
+    "modelingFactCoverageIncrement": 0,
+    "modelingReplacedFacts": false,
+    "actualPredictionSimulationSeparated": true,
+    "publishedOntologyMetricRuleT019": 0,
+    "navigationOrQueryAdvancedStage": false,
+    "seriesInputUnavailableAdvancedStage": false,
+    "result": "passed"
+  },
+  "m08ObjectiveWorkspace": {
+    "scopes": [
+      "全部目标",
+      "当前场景"
+    ],
+    "objectiveKinds": [
+      "FORECAST",
+      "CLASSIFICATION",
+      "SCORING",
+      "OPTIMIZATION"
+    ],
+    "catalogObjectiveCount": 6,
+    "s003InputCount": 10,
+    "s003OutputCount": 5,
+    "simulationLifecycleStage": false,
+    "legacyHashRedirectedTo": "#objective",
+    "result": "passed"
+  },
+  "s003ContinuousOptimization": {
+    "objectiveId": "MO-S003-DEBT-RISK-EARLY-WARNING-v1",
+    "benchmarkVersion": "BENCH-S003-LONGITUDINAL-v1",
+    "benchmarkClassification": "SYNTHETIC_DEIDENTIFIED_LONGITUDINAL",
+    "benchmarkStatus": "EVALUATED",
+    "candidateCount": 3,
+    "evaluatedCandidates": 2,
+    "dataRequiredCandidates": 1,
+    "selectedCandidateId": "CAND-S003-B-CALIBRATION-v1",
+    "maturityWindows": 3,
+    "maturedLabels": 21,
+    "holdoutUseCount": 1,
+    "automaticChampionSelected": false,
+    "publishedModelCreated": false,
+    "result": "passed"
+  },
+  "s003DashboardProjection": {
+    "views": [
+      "正式结果",
+      "候选试算",
+      "差异"
+    ],
+    "enterpriseCount": 21,
+    "migrationMatrixCells": 16,
+    "candidateResultKind": "PREDICTION",
+    "candidateUseKind": "SHADOW",
+    "formalFactMutated": false,
+    "formalReportOpenedFromCandidate": false,
+    "result": "passed"
+  },
+  "modelingConsumers": {
+    "readOnlyModules": [
+      "M03",
+      "M05",
+      "M06",
+      "M07",
+      "Dashboard"
+    ],
+    "sharedResultId": "PRED-S003-MV-S003-CAND-B-CALIBRATION-0001-58c4ba7abd84",
+    "m07ObjectRestored": "S003-ENT-020",
+    "m07LensRestored": "temporal",
+    "m04Blocked": true,
+    "m04SideEffects": 0,
+    "result": "passed"
+  },
+  "s003ArchivedIdentity": {
+    "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+    "archivedRunChanged": false,
+    "researchRunPrefixes": [
+      "BENCHRUN-S003-",
+      "EXPRUN-S003-",
+      "SHADOWRUN-S003-",
+      "M08-S003-RECALC-"
+    ],
+    "scenarioRunReused": false,
+    "result": "passed"
+  },
+  "bindingAndTruthBoundaries": {
+    "bindingUnitDriftRejected": true,
+    "bindingTimeGrainDriftRejected": true,
+    "defaultCandidateConfirmationCount": 1,
+    "m04Code": "NON_FACT_SOURCE_REJECTED",
+    "factPredictionSimulationIsolated": true,
+    "factWriteAllowed": false,
+    "actionWriteAllowed": false,
+    "actionSourceAllowed": false,
+    "sideEffectsEmitted": 0,
+    "result": "passed"
+  },
+  "launcherAndCache": {
+    "singleLauncher": true,
+    "launcher": "node composite/start-candidate.mjs",
+    "staticPort": 4342,
+    "modelingPort": 4359,
+    "m08CandidateBuild": "20260831-07",
+    "legacyHashRedirected": true,
+    "mobileOuterHorizontalOverflow": 0,
+    "mobileIframeHorizontalOverflow": 0,
+    "result": "passed"
+  },
+  "chromeSmoke": {
+    "browser": "Chrome",
+    "uniqueEntryLoaded": true,
+    "baselineHomeHeadingPresent": true,
+    "modelingRouteLoaded": true,
+    "allObjectiveScopePresent": true,
+    "currentScenarioScopePresent": true,
+    "consoleErrors": 0,
+    "consoleWarnings": 0,
     "result": "passed"
   },
   "navigationState": {
@@ -183,7 +354,7 @@
     "browserBoundaryCopyObserved": true,
     "browserBoundaryCopy": "只重置当前 S005 轮次；S001-S004 和其他模块记录不会被修改",
     "behavioralTest": "node --test composite/s001-e2e-integration/state.contract.test.mjs",
-    "behavioralTestsPassed": 4,
+    "behavioralTestsPassed": 9,
     "archivedScenariosChanged": 0,
     "result": "passed"
   },
@@ -196,10 +367,20 @@
     "result": "passed"
   },
   "browserToolingNote": {
-    "knownObserverInjectionMessages": 1,
-    "signature": "MutationObserver.observe parameter 1 is not of type Node",
+    "knownObserverInjectionMessages": 0,
+    "signature": null,
     "applicationErrorCaptureCount": 0,
-    "excludedFromApplicationRuntimeCount": true
+    "excludedFromApplicationRuntimeCount": false
+  },
+  "v2BoundaryRecheck": {
+    "scenarioRunId": "S005-RUN-20260830165752450-e56a7f755fb1",
+    "dashboardNullRunAccepted": true,
+    "dashboardDomainCount": 6,
+    "dashboardContractErrors": 0,
+    "m07CandidateSemanticLabels": 3,
+    "m07PublishedCandidateLabels": 0,
+    "candidateBuild": "20260831-07",
+    "result": "passed"
   },
   "screenshots": [
     "composite/evidence/screenshots/home-1440x900.png",
@@ -210,7 +391,14 @@
     "composite/evidence/screenshots/m08-1440x900.png",
     "composite/evidence/screenshots/m08-390x844.png",
     "composite/evidence/screenshots/dashboard-s005-1440x900.png",
-    "composite/evidence/screenshots/dashboard-s005-390x844.png"
+    "composite/evidence/screenshots/dashboard-s005-390x844.png",
+    "composite/evidence/screenshots/m08-all-objectives-1440x900.png",
+    "composite/evidence/screenshots/m08-s003-candidates-1440x900.png",
+    "composite/evidence/screenshots/m08-s003-shadow-1440x900.png",
+    "composite/evidence/screenshots/dashboard-s003-diff-1440x900.png",
+    "composite/evidence/screenshots/modeling-consumer-m03-1440x900.png",
+    "composite/evidence/screenshots/m07-s003-return-1440x900.png",
+    "composite/evidence/screenshots/m08-s003-390x844.png"
   ],
   "acceptanceReady": false
 }

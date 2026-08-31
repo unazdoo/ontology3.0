@@ -17,6 +17,7 @@ import {
   projectObjectiveForConsumer,
   validateObjectiveBinding
 } from "./objective-registry.mjs";
+import { createS003Runtime, m04S003ResultGuard } from "./s003-runtime.mjs";
 
 const MAX_BODY_BYTES = 64 * 1024;
 
@@ -78,7 +79,7 @@ function isForbiddenPath(pathname) {
   return routeTerms.some((term) => normalized.includes(term.toLowerCase()));
 }
 
-export function createServer() {
+export function createServer({ s003Runtime = createS003Runtime() } = {}) {
   return http.createServer(async (request, response) => {
     const url = new URL(request.url, "http://127.0.0.1");
     try {
@@ -118,6 +119,64 @@ export function createServer() {
           objectives: listObjectives(),
           consumers: listConsumers().map(({ consumerId, moduleId, name, allowed }) => ({ consumerId, moduleId, name, allowed }))
         });
+        return;
+      }
+      if (request.method === "GET" && url.pathname === "/v1/s003/workspace") {
+        json(response, 200, s003Runtime.workspace());
+        return;
+      }
+      if (request.method === "POST" && url.pathname === "/v1/s003/reset") {
+        await readJsonBody(request);
+        json(response, 200, s003Runtime.reset());
+        return;
+      }
+      if (request.method === "POST" && url.pathname === "/v1/s003/benchmark/run") {
+        await readJsonBody(request);
+        json(response, 200, s003Runtime.runBenchmark());
+        return;
+      }
+      if (request.method === "POST" && url.pathname === "/v1/s003/insights/generate") {
+        await readJsonBody(request);
+        json(response, 200, s003Runtime.generateInsights());
+        return;
+      }
+      if (request.method === "POST" && url.pathname === "/v1/s003/candidates/generate") {
+        await readJsonBody(request);
+        json(response, 200, s003Runtime.generateCandidates());
+        return;
+      }
+      if (request.method === "POST" && url.pathname === "/v1/s003/candidates/evaluate") {
+        await readJsonBody(request);
+        json(response, 200, s003Runtime.evaluateCandidates());
+        return;
+      }
+      if (request.method === "POST" && url.pathname === "/v1/s003/shadow/start") {
+        json(response, 200, s003Runtime.startShadow(await readJsonBody(request)));
+        return;
+      }
+      if (request.method === "POST" && url.pathname === "/v1/s003/shadow/advance") {
+        json(response, 200, s003Runtime.advanceShadow(await readJsonBody(request)));
+        return;
+      }
+      if (request.method === "POST" && url.pathname === "/v1/s003/release-candidates/form") {
+        json(response, 200, s003Runtime.formReleaseCandidate(await readJsonBody(request)));
+        return;
+      }
+      if (request.method === "POST" && url.pathname === "/v1/s003/bindings/validate") {
+        json(response, 200, s003Runtime.validateBinding(await readJsonBody(request)));
+        return;
+      }
+      if (request.method === "POST" && url.pathname === "/v1/s003/bindings/apply-default") {
+        json(response, 200, s003Runtime.applyDefaultCandidate(await readJsonBody(request)));
+        return;
+      }
+      if (request.method === "POST" && url.pathname === "/v1/s003/results/recalculate") {
+        json(response, 200, s003Runtime.recalculate(await readJsonBody(request)));
+        return;
+      }
+      if (request.method === "POST" && url.pathname === "/v1/s003/m04/guard") {
+        const body = await readJsonBody(request);
+        json(response, 200, m04S003ResultGuard(body.resultEnvelope || body));
         return;
       }
       if (request.method === "GET" && url.pathname === "/v1/objectives/compatible") {

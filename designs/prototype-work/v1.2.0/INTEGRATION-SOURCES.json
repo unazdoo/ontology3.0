@@ -24,9 +24,28 @@
       "id": "M08",
       "sourceBranch": "codex/m08-digital-twin-modeling-research",
       "packagePath": "integration-exports/v1.2.0-rc.1/m08",
-      "sourceCommits": ["7f0a028f82c31c47d85061fcb28ed1a4fe28d082"],
+      "sourceCommits": [
+        "7f0a028f82c31c47d85061fcb28ed1a4fe28d082",
+        "a943b1d89928b3b9ebf7ebc3b892d5dbf4908955"
+      ],
+      "designSource": {
+        "commit": "a943b1d89928b3b9ebf7ebc3b892d5dbf4908955",
+        "prototypeVersion": "m08-s001-v1.1.0-baseline-additive.5",
+        "role": "complete-objective-first-design-and-validation-source"
+      },
+      "exportSource": {
+        "commit": "7f0a028f82c31c47d85061fcb28ed1a4fe28d082",
+        "role": "minimal-v1.2.0-rc.1-export-package"
+      },
+      "integrationScope": [
+        "platform Objective-first workspace restoration",
+        "S003 deterministic continuous optimization runtime",
+        "S003 Dashboard and M03/M05/M06/M07 read-only result projections",
+        "single candidate launcher for Shell and local M08 computation service"
+      ],
+      "changeRequestRef": "CR-M08-S003-MODEL-OWNER-MIGRATION",
       "assemblyCommits": ["1c43eb9"],
-      "status": "verified-and-imported"
+      "status": "additive.5-verified-and-incrementally-integrated"
     },
     {
       "id": "S005",

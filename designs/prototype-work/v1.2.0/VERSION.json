@@ -39,19 +39,79 @@
       "resourceOwnerId": "M08",
       "moduleId": "modeling",
       "route": "#module/modeling",
-      "mustAdaptToCanonicalM07": true
+      "mustAdaptToCanonicalM07": true,
+      "workspace": "objective-first-schema-driven",
+      "catalogScopes": [
+        "ALL",
+        "SCENARIO"
+      ],
+      "objectiveKinds": [
+        "FORECAST",
+        "CLASSIFICATION",
+        "SCORING",
+        "OPTIMIZATION"
+      ],
+      "lifecycle": "objective -> contract -> benchmark -> AI insight -> candidate -> human review -> release candidate -> binding -> consumption tracking",
+      "simulationRole": "usage-mode-not-lifecycle-stage"
+    },
+    "S003": {
+      "scenarioId": "S003",
+      "scenarioVersion": "S003-v1",
+      "archivedScenarioRunMutable": false,
+      "objectiveId": "MO-S003-DEBT-RISK-EARLY-WARNING-v1",
+      "objectiveRevisionId": "MOR-S003-DEBT-RISK-EARLY-WARNING-0001",
+      "baselineModelPackage": "S003-M01-DEBT-RISK-PKG@1.0.2",
+      "baselineModelVersionId": "MV-S003-DEBT-RISK-1.0.2-REFERENCE",
+      "benchmarkVersion": "BENCH-S003-LONGITUDINAL-v1",
+      "benchmarkClassification": "SYNTHETIC_DEIDENTIFIED_LONGITUDINAL",
+      "resultKind": "PREDICTION",
+      "researchRunPrefixes": [
+        "BENCHRUN-S003-",
+        "EXPRUN-S003-",
+        "SHADOWRUN-S003-",
+        "M08-S003-RECALC-"
+      ],
+      "consumers": [
+        "M07",
+        "Dashboard",
+        "M03",
+        "M05",
+        "M06"
+      ],
+      "m04NonFactCode": "NON_FACT_SOURCE_REJECTED",
+      "factWriteAllowed": false,
+      "actionWriteAllowed": false,
+      "actionSourceAllowed": false,
+      "changeRequestRef": "CR-M08-S003-MODEL-OWNER-MIGRATION"
     },
     "S005": {
       "scenarioId": "S005",
       "scenarioVersion": "S005-v1",
-      "assemblyMode": "scenario-package-in-shared-shell"
+      "assemblyMode": "scenario-package-in-shared-shell",
+      "identityFields": ["scenarioId", "scenarioVersion", "scenarioRunId", "formedAt", "status"],
+      "evaluationRuntime": "current-scenarioRunId-evaluation-run-result",
+      "stageFlow": ["M02", "M01", "M03", "M04", "M05", "M07", "M08", "M06", "Dashboard"],
+      "stageCompletionPolicy": "verified module result event only; navigation, query parameters and unavailable-series events do not complete a stage",
+      "evaluationDomains": [
+        "productPerformance",
+        "actualInvestorResult",
+        "fixedIncomeRisk",
+        "managementOperationsQuality",
+        "continuingEligibilityCompliance",
+        "selectionExecution"
+      ],
+      "missingDataPolicy": "null-with-reason; no zero fill or fabricated result",
+      "resetPolicy": "new run starts at 0/7; previous evaluation run/result/module outputs are retained"
     },
     "Dashboard": {
       "moduleId": "dashboard",
       "route": "#dashboard",
       "implementation": "candidate-incremental-overlay",
       "sourceBaseline": "prototype-v1.1.0-frozen/dashboard",
-      "increment": "S005-post-investment-dashboard"
+      "increments": [
+        "S003-modeling-result-consumer",
+        "S005-six-domain-current-run-evaluation-dashboard"
+      ]
     }
   },
   "uniqueEntry": "composite/s001-e2e-integration/index.html",
@@ -65,5 +125,17 @@
   "regressionMatrix": "COMPOSITE-REGRESSION-MATRIX.json",
   "browserRegression": "composite/evidence/browser-regression.json",
   "assemblyResult": "ASSEMBLY-RESULT.md",
+  "verification": {
+    "nodeTests": "123/123 passed",
+    "modelingStaticContract": "6/6 passed",
+    "modelingValidation": "59/59 passed",
+    "dashboardContracts": "12/12 passed",
+    "m07Contracts": "8/8 passed",
+    "modelingConsumerAndLauncherContracts": "4/4 passed",
+    "staticChecks": "20/20 passed",
+    "regressionCases": "36/36 passed",
+    "frozenIntegrity": "passed",
+    "fullRegressionStatus": "passed"
+  },
   "nextGate": "prototype walkthrough and explicit implementation handoff decision"
 }

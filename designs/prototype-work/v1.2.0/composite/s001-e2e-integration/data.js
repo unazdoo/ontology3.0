@@ -76,7 +76,7 @@
       short: "探索",
       icon: "scan-search",
       route: "#module/m07",
-      source: "../modules/m07/module/workspace-v2.html",
+      source: "../modules/m07/module/workspace-v2.html?v=20260831-05",
       rootHash: "",
       description: "按对象目录、对象全貌、关系、时序和空间视图读取业务资源。"
     },
@@ -88,7 +88,7 @@
       short: "建模",
       icon: "activity",
       route: "#module/modeling",
-      source: "../modules/modeling/module/content.html",
+      source: "../modules/modeling/module/content.html?v=20260831-07",
       rootHash: "#catalog",
       description: "管理建模目标、输入输出、候选评估、Binding 与隔离运行。"
     }
@@ -101,7 +101,7 @@
     short: "看板",
     icon: "layout-dashboard",
     route: "#dashboard",
-    source: "../dashboard/index.html?v=20260828-01",
+    source: "../dashboard/index.html?v=20260831-05",
     rootHash: "#/dashboards",
     description: "按业务场景查看已形成的指标、状态和行动。"
   };

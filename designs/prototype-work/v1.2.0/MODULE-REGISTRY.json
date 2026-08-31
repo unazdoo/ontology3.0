@@ -34,7 +34,9 @@
       "route": "#module/ontology",
       "entry": "../../prototype-releases/v1.1.0/ontology-management-review/canvas-first/index.html",
       "assetMode": "frozen-relative-reference",
-      "baselineBehavior": "preserve-v1.1.0"
+      "baselineBehavior": "preserve-v1.1.0",
+      "s005CandidateEntry": "composite/scenarios/s005/module-workbench.html?moduleId=M01",
+      "s005ResultOperation": "semantic_candidate"
     },
     {
       "resourceOwnerId": "M02",
@@ -43,7 +45,9 @@
       "route": "#module/data",
       "entry": "../../prototype-releases/v1.1.0/data-engineering-prototype-review/review-v3/方案B2.html",
       "assetMode": "frozen-relative-reference",
-      "baselineBehavior": "preserve-v1.1.0"
+      "baselineBehavior": "preserve-v1.1.0",
+      "s005CandidateEntry": "composite/scenarios/s005/module-workbench.html?moduleId=M02",
+      "s005ResultOperation": "source_delivery"
     },
     {
       "resourceOwnerId": "M03",
@@ -52,7 +56,14 @@
       "route": "#module/query",
       "entry": "../../prototype-releases/v1.1.0/intelligent-query-prototype/review-next/conversation-workspace/index.html",
       "assetMode": "frozen-relative-reference",
-      "baselineBehavior": "preserve-v1.1.0"
+      "baselineBehavior": "preserve-v1.1.0",
+      "s005CandidateEntry": "composite/scenarios/s005/module-workbench.html?moduleId=M03",
+      "s005ResultOperations": ["compliance_evaluation", "market_peer_evaluation"],
+      "s003ModelingConsumer": {
+        "entry": "composite/modules/modeling/consumer/result-projection.html",
+        "consumerId": "M03_QUERY",
+        "mode": "read-only-result-envelope"
+      }
     },
     {
       "resourceOwnerId": "M04",
@@ -61,7 +72,19 @@
       "route": "#module/decision",
       "entry": "../../prototype-releases/v1.1.0/decision-center-prototype/review-v2/action-portfolio.html",
       "assetMode": "frozen-relative-reference",
-      "baselineBehavior": "preserve-v1.1.0"
+      "baselineBehavior": "preserve-v1.1.0",
+      "s005CandidateEntry": "composite/scenarios/s005/module-workbench.html?moduleId=M04",
+      "s005ResultOperation": "selection_read_only",
+      "s005Boundary": "not_applicable-read_only-zero-action",
+      "nonFactBoundary": {
+        "code": "NON_FACT_SOURCE_REJECTED",
+        "appliesTo": ["PREDICTION", "SIMULATION"],
+        "actionRequestCreated": false,
+        "notificationCreated": false,
+        "approvalCreated": false,
+        "todoCreated": false,
+        "transactionCreated": false
+      }
     },
     {
       "resourceOwnerId": "M05",
@@ -70,7 +93,14 @@
       "route": "#module/agent",
       "entry": "../../prototype-releases/v1.1.0/agent-application/Agent应用.html",
       "assetMode": "frozen-relative-reference",
-      "baselineBehavior": "preserve-v1.1.0"
+      "baselineBehavior": "preserve-v1.1.0",
+      "s005CandidateEntry": "composite/scenarios/s005/module-workbench.html?moduleId=M05",
+      "s005ResultOperation": "risk_explanation",
+      "s003ModelingConsumer": {
+        "entry": "composite/modules/modeling/consumer/result-projection.html",
+        "consumerId": "M05_AGENT",
+        "mode": "read-only-result-explanation"
+      }
     },
     {
       "resourceOwnerId": "M06",
@@ -79,7 +109,14 @@
       "route": "#module/report",
       "entry": "../../prototype-releases/v1.1.0/report-center/review-lifecycle/index.html",
       "assetMode": "frozen-relative-reference",
-      "baselineBehavior": "preserve-v1.1.0"
+      "baselineBehavior": "preserve-v1.1.0",
+      "s005CandidateEntry": "composite/scenarios/s005/module-workbench.html?moduleId=M06",
+      "s005ResultOperation": "report_draft",
+      "s003ModelingConsumer": {
+        "entry": "composite/modules/modeling/consumer/result-projection.html",
+        "consumerId": "M06_REPORT",
+        "mode": "read-only-result-report-block"
+      }
     },
     {
       "resourceOwnerId": "M07",
@@ -89,7 +126,13 @@
       "entry": "composite/modules/m07/module/workspace-v2.html",
       "assetMode": "candidate-owned",
       "canonicalImplementation": "workspace-v2",
-      "secondaryImplementationsAllowed": false
+      "secondaryImplementationsAllowed": false,
+      "s005ResultEvent": "OFW_S005_M07_EXPLORATION_RESULT",
+      "s003Resource": "composite/modules/m07/resources/s003.json",
+      "s003AcceptedObjectTypes": ["Enterprise", "EnterpriseAssessmentContext"],
+      "s003UsageIntent": "SCORING",
+      "modelingReturnEvent": "OFW_M08_RETURN_TO_M07",
+      "modelingResultMode": "read-only-object-result-envelope"
     },
     {
       "resourceOwnerId": "M08",
@@ -99,7 +142,17 @@
       "entry": "composite/modules/modeling/module/content.html",
       "assetMode": "candidate-owned",
       "canonicalImplementation": "objective-first-content",
-      "contextSourceModuleId": "m07"
+      "contextSourceModuleId": "m07",
+      "catalogScopes": ["ALL", "SCENARIO"],
+      "objectiveKinds": ["FORECAST", "CLASSIFICATION", "SCORING", "OPTIMIZATION"],
+      "lifecycle": ["OBJECTIVE", "CONTRACT", "BENCHMARK", "AI_INSIGHT", "CANDIDATE", "HUMAN_REVIEW", "RELEASE_CANDIDATE", "BINDING", "CONSUMPTION_TRACKING"],
+      "simulationRole": "objective-usage-mode-not-lifecycle-stage",
+      "dynamicContractFields": ["objectTypeRef", "propertyRef", "type", "unit", "timeGrain", "shape", "cardinality", "nullable", "required", "resultKind", "displayRole", "permissionScope", "consumers"],
+      "candidateService": "composite/modules/modeling/validation/src/server.mjs",
+      "s003Messages": ["OFW_S003_MODELING_WORKSPACE", "OFW_S003_MODELING_RESULT", "OFW_S003_MODELING_RECALCULATE_REQUEST"],
+      "s005ResultEvent": "OFW_M08_RETURN_TO_M07",
+      "s005TruthBoundary": "prediction-simulation-isolated-from-fact",
+      "nonFactBoundary": "factWriteAllowed=false; actionWriteAllowed=false; actionSourceAllowed=false"
     },
     {
       "resourceOwnerId": "Dashboard",
@@ -109,8 +162,15 @@
       "entry": "composite/dashboard/index.html",
       "sourceEntry": "../../prototype-releases/v1.1.0/dashboard/index.html",
       "assetMode": "candidate-incremental-overlay",
-      "baselineBehavior": "preserve-v1.1.0-s001-s003",
-      "increment": "S005-post-investment-dashboard"
+      "baselineBehavior": "preserve-v1.1.0-s001-s002-and-s003-formal-fact",
+      "increments": ["S003-modeling-result-consumer", "S005-six-domain-current-evaluation-dashboard"],
+      "s003ModelingConsumer": {
+        "objectiveId": "MO-S003-DEBT-RISK-EARLY-WARNING-v1",
+        "views": ["FORMAL", "CANDIDATE", "DIFF"],
+        "formalFactMutable": false,
+        "candidateResultKind": "PREDICTION"
+      },
+      "s005Source": "current-scenarioRunId-evaluation-run-result"
     }
   ],
   "registrationPolicy": {

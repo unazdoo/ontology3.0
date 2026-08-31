@@ -27,6 +27,7 @@ test("candidate contains only the minimal M07 module and resource assets", () =>
     "module/workspace-v2.html",
     "module/workspace-v2.js",
     "resources/s001.json",
+    "resources/s003.json",
     "resources/s005.json"
   ];
   expected.forEach((relativePath) => assert.equal(fs.existsSync(path.join(root, relativePath)), true, relativePath));
@@ -40,6 +41,8 @@ test("M07 remains a single embedded workspace", () => {
   assert.match(runtime, /const MODULE_ID = "m07"/);
   assert.match(runtime, /const MODULE_ROUTE = "#module\/m07"/);
   assert.match(runtime, /type: "OFW_M07_OPEN_M08"/);
+  assert.match(runtime, /explorationResultEnvelope/);
+  assert.match(runtime, /window\.parent\.postMessage\(envelope, window\.location\.origin\)/);
 });
 
 test("unregistered scenarios have an embedded no-fallback state", () => {
@@ -59,9 +62,21 @@ test("S005 host identity, M08 handoff and return position are explicit", () => {
   assert.match(runtime, /formedAt: scenarioContext\.formedAt/);
   assert.match(runtime, /status: scenarioContext\.status/);
   assert.match(runtime, /scenarioContext,/);
+  assert.match(runtime, /definitionMode === "candidate-reference"/);
+  assert.match(runtime, /return isCandidateSemanticReference\(\) \? "候选语义" : "Published"/);
+  assert.match(runtime, /schemaVersion: "ofw\.s005\.m07-exploration-result\.v1"/);
+  assert.match(runtime, /\.\.\.\(explorationResultEnvelope \? \{ explorationResultEnvelope \} : \{\}\)/);
   assert.match(runtime, /state\.seriesIds[\s\S]+resource\.series\.find/);
+  assert.doesNotMatch(runtime, /objectSeries\(object\(\)\)\[0\]/, "M07 must not substitute the root object's series for the selected object");
   assert.match(runtime, /returnPosition = params\.get\("position"\)/);
   assert.match(runtime, /restoreReturnPosition\(\)/);
+  assert.match(runtime, /OFW_M08_RETURN_TO_M07/);
+  assert.match(runtime, /OFW_M07_READY/);
+  assert.match(runtime, /returnedModelResultMarkup/);
+  assert.match(runtime, /payload\.resultEnvelope\.subjectRefs/);
+  assert.match(runtime, /payload\.resultEnvelope\.actionSourceAllowed !== false/);
+  assert.match(runtime, /payload\.resultEnvelope\.sideEffectsEmitted !== 0/);
+  assert.match(runtime, /M07 只读展示，不写事实或行动/);
 });
 
 test("S005 products use the five canonical fixture ObjectRefs", () => {
@@ -86,9 +101,9 @@ test("space view performs no external tile request and page copy has no internal
   assert.match(runtime, /当前视图不加载外部底图/);
 });
 
-test("S001 and S005 still satisfy the shared visibility contract", () => {
+test("S001, S003 and S005 satisfy the shared visibility contract", () => {
   const core = loadCore();
-  for (const [file, scenarioId] of [["resources/s001.json", "S001"], ["resources/s005.json", "S005"]]) {
+  for (const [file, scenarioId] of [["resources/s001.json", "S001"], ["resources/s003.json", "S003"], ["resources/s005.json", "S005"]]) {
     const resource = json(file);
     assert.equal(resource.schemaVersion, "ofw.m07.validation-resource.v1");
     assert.equal(resource.scenarioContext.scenarioId, scenarioId);
@@ -99,4 +114,14 @@ test("S001 and S005 still satisfy the shared visibility contract", () => {
     assert.ok(rootObject);
     assert.ok(Array.isArray(core.visibleLinksForObject(resource, rootObject.id, "m07.analyst")));
   }
+});
+
+test("S003 exploration exposes Enterprise scoring intent without treating formal risk facts as labels", () => {
+  const resource = json("resources/s003.json");
+  assert.equal(resource.modelingIntent, "SCORING");
+  assert.equal(resource.source.sourceAssetVersion, "S003-T007-FORMAL-CANDIDATE-20251231-v1");
+  assert.ok(resource.objects.some((item) => item.canonicalObjectRef?.objectTypeRef === "Enterprise"));
+  assert.ok(resource.objects.some((item) => item.canonicalObjectRef?.objectTypeRef === "EnterpriseAssessmentContext"));
+  assert.match(JSON.stringify(resource), /禁止作为监督标签/);
+  assert.doesNotMatch(JSON.stringify(resource), /adverseOutcome|labelMatured/);
 });

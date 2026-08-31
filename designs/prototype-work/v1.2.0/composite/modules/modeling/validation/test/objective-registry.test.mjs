@@ -10,7 +10,7 @@ import {
 
 test("objective registry covers four reusable objective kinds", () => {
   const objectives = listObjectives();
-  assert.equal(objectives.length, 5);
+  assert.equal(objectives.length, 6);
   assert.deepEqual(
     [...new Set(objectives.map((item) => item.kind))].sort(),
     ["CLASSIFICATION", "FORECAST", "OPTIMIZATION", "SCORING"]
@@ -32,6 +32,13 @@ test("objective detail separates input, output, release, binding and consumers",
   assert.deepEqual(s005.scenarioIds, ["S005"]);
   assert.deepEqual(s005.acceptedObjectTypes, ["InvestmentProduct"]);
   assert.deepEqual(s005.resultKinds, ["PREDICTION", "SIMULATION"]);
+  const s003 = getObjective("MO-S003-DEBT-RISK-EARLY-WARNING-v1");
+  assert.equal(s003.kind, "SCORING");
+  assert.deepEqual(s003.acceptedObjectTypes, ["Enterprise", "EnterpriseAssessmentContext"]);
+  assert.equal(s003.baselineModelSource.sourceRef, "designs/prototype-releases/v1.1.0/scenarios/s003/resources/m01/model-package.v2.json");
+  assert.match(s003.baselineModelSource.sha256, /^[a-f0-9]{64}$/);
+  assert.equal(s003.baselineModelSource.copiedIntoM08, false);
+  assert.equal(s003.sampleResult.outputs.riskScore, null);
 });
 
 test("compatible objective lookup uses the requested Object Type instead of a scenario constant", () => {
@@ -43,6 +50,8 @@ test("compatible objective lookup uses the requested Object Type instead of a sc
   assert.deepEqual(s005.map((item) => item.objectiveId), ["MO-S005-POST-INVESTMENT-RESEARCH-v1"]);
   assert.deepEqual(findCompatibleObjectives({ objectTypeRef: "InvestmentProduct", useKind: "PREDICTION", scenarioId: "S005" }).map((item) => item.objectiveId), ["MO-S005-POST-INVESTMENT-RESEARCH-v1"]);
   assert.deepEqual(findCompatibleObjectives({ objectTypeRef: "InvestmentProduct", useKind: "SIMULATION", scenarioId: "S001" }), []);
+  const s003 = findCompatibleObjectives({ objectTypeRef: "Enterprise", useKind: "SCORING", scenarioId: "S003" });
+  assert.deepEqual(s003.map((item) => item.objectiveId), ["MO-S003-DEBT-RISK-EARLY-WARNING-v1"]);
 });
 
 test("generic binding validation passes exact Objective schema and hides runtime topology", () => {
@@ -71,6 +80,7 @@ test("consumer projections adapt one result contract to M07, M06, M03 and M05", 
   const m03 = projectObjectiveForConsumer({ objectiveId, consumerId: "M03_QUERY" });
   const m05 = projectObjectiveForConsumer({ objectiveId, consumerId: "M05_AGENT" });
   assert.equal(m07.displayMode, "TIMELINE_OVERLAY");
+  assert.equal(getObjective(objectiveId).consumers.find((item) => item.consumerId === "M07_EXPLORATION").moduleId, "m07");
   assert.equal(m06.displayMode, "REPORT_EVIDENCE_TABLE");
   assert.equal(m03.displayMode, "ANSWER_EVIDENCE_CARD");
   assert.equal(m05.displayMode, "EXPLANATION_PANEL");

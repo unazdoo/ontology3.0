@@ -33,12 +33,41 @@
       "id": "dashboard-s005-overlay",
       "entry": "composite/dashboard/index.html",
       "sourceEntry": "../../prototype-releases/v1.1.0/dashboard/index.html",
-      "rule": "preserve S001-S003 dashboards; append S005 post-investment views"
+      "rule": "preserve S001, S002 and S003 formal FACT dashboards; add the S003 M08 consumer; S005 reads only current scenarioRunId evaluation run/result and renders six evaluation domains"
+    },
+    {
+      "id": "s005-current-evaluation-runtime",
+      "entry": "composite/scenarios/s005/evaluation-engine.js",
+      "contentEntry": "composite/scenarios/s005/module-workbench.html",
+      "rule": "actual verified M01-M08 module outputs advance seven stages; missing data remains null; reset archives the previous run"
+    },
+    {
+      "id": "m08-objective-first-workspace",
+      "entry": "composite/modules/modeling/module/content.html",
+      "rule": "schema-driven ALL/SCENARIO catalog, four Objective kinds, dynamic contracts and lifecycle with Simulation outside lifecycle stages"
+    },
+    {
+      "id": "s003-continuous-optimization-runtime",
+      "entry": "composite/modules/modeling/validation/src/s003-runtime.mjs",
+      "fixture": "composite/modules/modeling/validation/fixtures/s003-longitudinal-benchmark.v1.json",
+      "rule": "deterministic synthetic longitudinal Benchmark, structured ModelInsight, three candidates, three Shadow windows, one-time holdout and immutable Result Envelope"
+    },
+    {
+      "id": "s003-modeling-consumers",
+      "entry": "composite/modules/modeling/consumer/result-projection.html",
+      "m07Resource": "composite/modules/m07/resources/s003.json",
+      "rule": "M03, M05, M06, M07 and Dashboard read one Result Envelope; M04 hard-rejects non-FACT sources"
+    },
+    {
+      "id": "single-candidate-launcher",
+      "entry": "composite/start-candidate.mjs",
+      "rule": "one local command starts the unified Shell and isolated M08 deterministic candidate service"
     }
   ],
   "uniqueEntry": "composite/s001-e2e-integration/index.html",
   "recommendedPort": 4342,
   "runtimeServices": {
+    "launcher": "node composite/start-candidate.mjs",
     "staticReviewPort": 4342,
     "modelingServicePort": 4359,
     "modelingServiceRole": "candidate-local-computation-only"
@@ -78,13 +107,83 @@
     "M08": {
       "resourceOwnerId": "M08",
       "moduleId": "modeling",
-      "route": "#module/modeling"
+      "route": "#module/modeling",
+      "implementation": "objective-first-schema-driven"
+    },
+    "S003": {
+      "scenarioId": "S003",
+      "scenarioVersion": "S003-v1",
+      "objectiveId": "MO-S003-DEBT-RISK-EARLY-WARNING-v1",
+      "archivedScenarioRunMutable": false
     },
     "S005": {
       "scenarioId": "S005",
       "scenarioVersion": "S005-v1",
       "scenarioRunIdMode": "dynamic-per-run"
     }
+  },
+  "s005EvaluationAssembly": {
+    "runtime": "composite/scenarios/s005/evaluation-engine.js",
+    "moduleWorkbench": "composite/scenarios/s005/module-workbench.html",
+    "identityFields": [
+      "scenarioId",
+      "scenarioVersion",
+      "scenarioRunId",
+      "formedAt",
+      "status"
+    ],
+    "moduleFlow": [
+      "M02",
+      "M01",
+      "M03",
+      "M04",
+      "M05",
+      "M07",
+      "M08",
+      "M06",
+      "Dashboard"
+    ],
+    "stageCount": 7,
+    "stageCompletionSource": "verified module result events applied by updateS005Stage",
+    "nonCompletionSignals": [
+      "resource-registration",
+      "query-parameter",
+      "page-navigation",
+      "completeAll()",
+      "SERIES_INPUT_UNAVAILABLE"
+    ],
+    "evaluationDomains": [
+      {
+        "id": "productPerformance",
+        "label": "产品自身表现"
+      },
+      {
+        "id": "actualInvestorResult",
+        "label": "财务公司实际投资结果"
+      },
+      {
+        "id": "fixedIncomeRisk",
+        "label": "固定收益风险"
+      },
+      {
+        "id": "managementOperationsQuality",
+        "label": "管理与运行质量"
+      },
+      {
+        "id": "continuingEligibilityCompliance",
+        "label": "持续准入合规"
+      },
+      {
+        "id": "selectionExecution",
+        "label": "选择与执行"
+      }
+    ],
+    "dashboardReadPolicy": "current scenarioRunId evaluation run/result only",
+    "m04Mode": "not_applicable/read_only with zero action, reminder, approval, task and trade writes",
+    "m07ResultPolicy": "atomic verifiable exploration result envelope travels with OFW_M07_OPEN_M08",
+    "m08ResultPolicy": "simulationStatus remains separate from factual evaluation; synthetic output adds zero factual coverage",
+    "missingDataPolicy": "null with missing reason; no zero fill, no fabricated values and no weekly-to-daily Sharpe conversion",
+    "resetPolicy": "new run starts at 0/7; previous evaluation run/result/module outputs are retained; S001-S004 remain unchanged"
   },
   "resourceCatalog": {
     "path": "composite/resources/catalog.js",
@@ -106,6 +205,13 @@
     "openEvent": "OFW_M07_OPEN_M08",
     "deliveryEvent": "OFW_M08_DELIVER_CONTEXT",
     "returnEvent": "OFW_M08_RETURN_TO_M07",
+    "m07ExplorationResultSchema": "ofw.s005.m07-exploration-result.v1",
+    "m07OpenAtomicResultRequired": true,
+    "m08SimulationStatusRequired": true,
+    "s003WorkspaceEvent": "OFW_S003_MODELING_WORKSPACE",
+    "s003ResultEvent": "OFW_S003_MODELING_RESULT",
+    "s003M07UsageIntent": "SCORING",
+    "s003ObjectResultReturnRequired": true,
     "persistenceOwner": "composite-host-session-storage",
     "exactIdentityMatchRequired": true
   },
@@ -113,7 +219,11 @@
     "configuration": "candidate-owned static definitions",
     "candidate": "candidate-owned resource and objective records",
     "runtime": "browser-local current scenario namespace",
-    "formalResult": "not included",
+    "formalResult": "frozen S003 FACT referenced read-only; not candidate-owned",
+    "evaluationRuntime": "browser-local current S005 scenarioRunId evaluation run/result",
+    "modelingResearchRuntime": "browser-local independent M08 workspaces/results keyed by scenario; never overwrites archived scenario state",
+    "modelingTruthBoundary": "PREDICTION and SIMULATION remain separate candidate results and add zero factual coverage",
+    "publishedGovernanceArtifactsCreated": false,
     "runtimeSnapshotIncluded": false
   },
   "runtimeState": {
@@ -168,40 +278,45 @@
     "root": "composite",
     "algorithm": "sha256",
     "generatedBy": "composite/tests/refresh-manifest.mjs",
-    "generatedAt": "2026-08-30T14:18:27.450Z",
+    "generatedAt": "2026-08-31T14:33:13.893Z",
     "status": "complete",
-    "fileCount": 69,
-    "totalBytes": 2806551,
+    "fileCount": 94,
+    "totalBytes": 4002374,
     "files": [
       {
         "path": "composite/dashboard/app.js",
-        "bytes": 115764,
-        "sha256": "9fb7a4a6ea70b31fb9fe3ec6ab29c8d162c9cc4dff955f5f95edaed8c672f656"
+        "bytes": 140907,
+        "sha256": "c0d30e11e435a60e7494fafa191a8294f857d566a822e50cc3bf7798babf9a9a"
       },
       {
         "path": "composite/dashboard/dashboard.contract.test.mjs",
-        "bytes": 3447,
-        "sha256": "7e4d9bfa15393adedf4df7b899fc03dadf84cf8f5d8466aebdf70e4f557a2d8c"
+        "bytes": 19377,
+        "sha256": "2160da7dfb45f481b2e83a7f0a09c7a3c0786daedd994c8d0330c468a90f8439"
       },
       {
         "path": "composite/dashboard/data.js",
-        "bytes": 36199,
-        "sha256": "31f10626793925b7abac4504d9497a53ec8a544422732b0f7f1b65348fec4a78"
+        "bytes": 34845,
+        "sha256": "150fde3b7351ec4d529d0f64dd4f8d64e18d7938a42ee60d84664cddcf6b4212"
       },
       {
         "path": "composite/dashboard/index.html",
-        "bytes": 1630,
-        "sha256": "f73cc3cf18e7a3d13b6fdf92965131234ad97cbd74a6d49065b2a0f7f481a5e2"
+        "bytes": 1512,
+        "sha256": "16f47b76598da1dacd59294a5abda7bce0b558d89244e9da6837b4a81f438299"
       },
       {
         "path": "composite/dashboard/styles.css",
-        "bytes": 63192,
-        "sha256": "842d4a66d258ac92d7307284de611cd01366c447bbc2490cd627c326b89f9b5d"
+        "bytes": 77123,
+        "sha256": "b10e6ae7383129c29506d15b75c90040953c1e71afd5876644d2e9ec757dfe6f"
       },
       {
         "path": "composite/evidence/browser-regression.json",
-        "bytes": 6222,
-        "sha256": "2c8e57ffb6a4c1e47eca4328042a222d65cd1b409dd53e48ba1d15738ecd8e6d"
+        "bytes": 12389,
+        "sha256": "d02e1b758e90bdcafd1077346713a7f510c32735d5927577a4b96a224c211a12"
+      },
+      {
+        "path": "composite/evidence/screenshots/dashboard-s003-diff-1440x900.png",
+        "bytes": 112390,
+        "sha256": "216d9894df296ddcee02fb19e73928bf3c93ce5c21aec9c6266ce5f5a5716590"
       },
       {
         "path": "composite/evidence/screenshots/dashboard-s005-1440x900.png",
@@ -239,6 +354,11 @@
         "sha256": "345997f2da9217c067cc6774b5d2ef76567e5f42049fe587aa2a6f69f7730ecb"
       },
       {
+        "path": "composite/evidence/screenshots/m07-s003-return-1440x900.png",
+        "bytes": 140550,
+        "sha256": "240a725deaf2ba88db88ac08f9779eaa6df882fba76136e4f845b48e9ee5821f"
+      },
+      {
         "path": "composite/evidence/screenshots/m08-1440x900.png",
         "bytes": 86702,
         "sha256": "b7bce26d7b3f9166243e95a047f95446c6debbdf58e103767f2ce3ba2f082b18"
@@ -249,9 +369,34 @@
         "sha256": "14ae1747d36c2ae79fcbe81572d4db537df1e6c16c03e6e0e9ea03f78687a3fe"
       },
       {
+        "path": "composite/evidence/screenshots/m08-all-objectives-1440x900.png",
+        "bytes": 113434,
+        "sha256": "cd32b201df13cb5113c83cc19c21a6a3e70b5438908654a16a930ca4bdb0a46d"
+      },
+      {
+        "path": "composite/evidence/screenshots/m08-s003-390x844.png",
+        "bytes": 37604,
+        "sha256": "097d0bbba77e5a0ccc110f6e5cba188c35f914118e4fe3b6fed571388480f2eb"
+      },
+      {
+        "path": "composite/evidence/screenshots/m08-s003-candidates-1440x900.png",
+        "bytes": 120090,
+        "sha256": "7d59307cd5b4a3a268d6176666751fb570325ea4da0cf09b08e83de88c5f1875"
+      },
+      {
+        "path": "composite/evidence/screenshots/m08-s003-shadow-1440x900.png",
+        "bytes": 122667,
+        "sha256": "0fa60393b90c079107422a24f10855a103bab7e03992fbc13d40a2ab3670e2f2"
+      },
+      {
+        "path": "composite/evidence/screenshots/modeling-consumer-m03-1440x900.png",
+        "bytes": 90781,
+        "sha256": "43be441e79371aab236e9b7fb0d9ce2529d2633928d173e93add1b363e8a94e1"
+      },
+      {
         "path": "composite/modules/m07/module/core.js",
-        "bytes": 17307,
-        "sha256": "75433ebbbb94dd643d1c28c2c4ed0b7737db0f40dd7dae0fa408c876174b1c58"
+        "bytes": 17550,
+        "sha256": "f1f9211e43264eb97b148dcbef180ca792585266adfc7d7b9a10fdd1a4b94b43"
       },
       {
         "path": "composite/modules/m07/module/unavailable.html",
@@ -285,18 +430,23 @@
       },
       {
         "path": "composite/modules/m07/module/workspace-v2.html",
-        "bytes": 5901,
-        "sha256": "1397aa2ef1065a12396fec246604feffb83675998fc8a929a637cea4b4942a00"
+        "bytes": 5915,
+        "sha256": "978a3ae0bd298a827cbd267476681a20f50d47685b4b303b5418afc45d84b638"
       },
       {
         "path": "composite/modules/m07/module/workspace-v2.js",
-        "bytes": 82736,
-        "sha256": "e3df53e50e578c48143d8170440c7cb4aa80a0685263dd596c2617e859266e99"
+        "bytes": 88080,
+        "sha256": "51c34636484b1d4c0fc8bab8f7f5e3244ff3777ebca87f8574461942f286c41a"
       },
       {
         "path": "composite/modules/m07/resources/s001.json",
         "bytes": 119116,
         "sha256": "dad1eb2259c57888ad32195fc534f95f238b43ac266a8171343f0af4cc9ec9e0"
+      },
+      {
+        "path": "composite/modules/m07/resources/s003.json",
+        "bytes": 8250,
+        "sha256": "bb93ffe4880c346d02cf1409e54d9fab4d5bb1ea91a276a628dbe2dbaae5905c"
       },
       {
         "path": "composite/modules/m07/resources/s005.json",
@@ -305,13 +455,33 @@
       },
       {
         "path": "composite/modules/m07/tests/contracts.test.mjs",
-        "bytes": 4868,
-        "sha256": "7418dceaf9180e1cbaea410a3b1fdd72928e56f8c52274e59e02ad68e048c61b"
+        "bytes": 6702,
+        "sha256": "69c35a8eac62760315ca1fe5551ab7ebbc95a5db1e67ac9ee5f75f5797022b84"
       },
       {
         "path": "composite/modules/modeling/bridge/m07-m08-bridge.js",
         "bytes": 4545,
         "sha256": "b7e50338d68d75782b8e448f1b35b01b4b2bc2284c278e4c82d48d022d267839"
+      },
+      {
+        "path": "composite/modules/modeling/consumer/result-projection.contract.test.mjs",
+        "bytes": 2106,
+        "sha256": "4b45928c7178b4c4abb10ebb1102c49354fcac76c9437339b32d633df2e2c474"
+      },
+      {
+        "path": "composite/modules/modeling/consumer/result-projection.css",
+        "bytes": 3225,
+        "sha256": "ab5703dd0460828c6da6fc3beff7e6ae1c17cb6b25fa05834557d1aceee75875"
+      },
+      {
+        "path": "composite/modules/modeling/consumer/result-projection.html",
+        "bytes": 553,
+        "sha256": "9bbb340f240eeae27791d2137fe318b36b9a082e87c8fed4ddc0ef74e2ac39bb"
+      },
+      {
+        "path": "composite/modules/modeling/consumer/result-projection.js",
+        "bytes": 7700,
+        "sha256": "005e24aea692d656dc320c4c1c004920bc719e7fac7b450bb29683b843413674"
       },
       {
         "path": "composite/modules/modeling/INTEGRATION-MANIFEST.json",
@@ -320,33 +490,38 @@
       },
       {
         "path": "composite/modules/modeling/module/content.css",
-        "bytes": 63084,
-        "sha256": "2e549c39a11773fb0be95efc8b1414550db72600073305439b44af03e621bf4f"
+        "bytes": 77591,
+        "sha256": "44aee8472ac9563395a2ac72eddde0f016dd30d03fa82a74f82cf8a017754126"
       },
       {
         "path": "composite/modules/modeling/module/content.html",
-        "bytes": 535,
-        "sha256": "c136ac1bda6996e0db9ec319c8668ceee0e800783bfb0a79b2a6dbd73ffe6cbd"
+        "bytes": 591,
+        "sha256": "bfaf08f409a6862792f14fd60b46ca16ebdad69edb690f02208b39a4b25f0ecc"
       },
       {
         "path": "composite/modules/modeling/module/content.js",
-        "bytes": 61543,
-        "sha256": "29e702f2bb23ed6b8a5fe7d0f62addedfc8a753fde8b521edd9cdf81192bea49"
+        "bytes": 113292,
+        "sha256": "32daec7808f875dc740086b3efbce77b6f3986e92da6615a0f15c3f40b07d93f"
       },
       {
         "path": "composite/modules/modeling/module/data.js",
-        "bytes": 9434,
-        "sha256": "d754a5390b3b17895bc3a05f93ee104dc54b38818e4ff9a25a0db6e1303d0b2a"
+        "bytes": 10263,
+        "sha256": "f15a66b35735f4216fe64662df8efe2cb4e522e530f51b7806b74e79ffb024a7"
       },
       {
         "path": "composite/modules/modeling/SHA256SUMS",
-        "bytes": 2173,
-        "sha256": "b07d53115eda9213887ef6c1b6d759f13403f41e495256d1bd48179618eb7b13"
+        "bytes": 3114,
+        "sha256": "7ef8a0d4ffeaf55c9e3bbd11c1f669e00746aa73b8928c34550190e4d4b7d7a8"
       },
       {
         "path": "composite/modules/modeling/test/static-contract.test.mjs",
-        "bytes": 6619,
-        "sha256": "365da8e86c2dbef92248c49a2abd44ffd8b9a16305ca356f88259a72c69f70d3"
+        "bytes": 10936,
+        "sha256": "0230da8bd52f0f5d29108bf9314277138b74a6102c63db7bac60d0c916c7323d"
+      },
+      {
+        "path": "composite/modules/modeling/validation/fixtures/s003-longitudinal-benchmark.v1.json",
+        "bytes": 11928,
+        "sha256": "60d431c0fbd1a7b9fe32b96a89f6c316c69cfc13df9af0b49100e4e9a8c61418"
       },
       {
         "path": "composite/modules/modeling/validation/fixtures/s005-synthetic.v1.json",
@@ -360,8 +535,8 @@
       },
       {
         "path": "composite/modules/modeling/validation/README.md",
-        "bytes": 965,
-        "sha256": "fd8a3daac836e979d598e918b2dc7054c5fb4d8026e6c115282925eb16d907ac"
+        "bytes": 2204,
+        "sha256": "d530e155d5fb07d828f92c87e3b2d704449577cdf3193f2c481ff43dec295ae9"
       },
       {
         "path": "composite/modules/modeling/validation/src/constants.mjs",
@@ -370,8 +545,8 @@
       },
       {
         "path": "composite/modules/modeling/validation/src/demo.mjs",
-        "bytes": 5715,
-        "sha256": "98203c3810c72c6062123d84957bdb11e81d522569121c80f79e89032302c72e"
+        "bytes": 5938,
+        "sha256": "9ff8c7c8037bf1f88824bea0e91874636e588918ed136aa51ba470a015d3f3b1"
       },
       {
         "path": "composite/modules/modeling/validation/src/errors.mjs",
@@ -395,13 +570,28 @@
       },
       {
         "path": "composite/modules/modeling/validation/src/objective-registry.mjs",
-        "bytes": 29438,
-        "sha256": "5804d5257832bbe3629395f89c307b50c22a362792e5c3cf1ac71fa758c07ace"
+        "bytes": 29624,
+        "sha256": "ea65b4a2809947055533cd3ba1a2e73c59657fc3f169990eac673ac230348ce8"
+      },
+      {
+        "path": "composite/modules/modeling/validation/src/s003-benchmark.mjs",
+        "bytes": 40456,
+        "sha256": "a6f31d37f31092e5b5eebb2d162d1a162c0a0adb8078d9f42e48310f9046eab0"
+      },
+      {
+        "path": "composite/modules/modeling/validation/src/s003-contract.mjs",
+        "bytes": 7065,
+        "sha256": "66605931aa0b4e7c1dab3a3f5127240ff0b0c0149525e59caea84c0861a614fc"
+      },
+      {
+        "path": "composite/modules/modeling/validation/src/s003-runtime.mjs",
+        "bytes": 31099,
+        "sha256": "db2eba5c81e6c06401645157e952bd12394cdc81c4d546c3969ac981b45cde46"
       },
       {
         "path": "composite/modules/modeling/validation/src/server.mjs",
-        "bytes": 11072,
-        "sha256": "b67a25d45f4fb7cb35eb42c527b41769b322a38f0e061cbe4d4d57e6425df64d"
+        "bytes": 13806,
+        "sha256": "e030a3bb4aa0ae7f0801a9ffe4e5518ed72c8e9c5f592756331ada0d08f5a9a8"
       },
       {
         "path": "composite/modules/modeling/validation/src/simulation.mjs",
@@ -415,13 +605,18 @@
       },
       {
         "path": "composite/modules/modeling/validation/test/objective-registry.test.mjs",
-        "bytes": 5087,
-        "sha256": "e60e45becd659a378d006027febbde6376c37f3dce5e0ca0fd6fb806eb82a698"
+        "bytes": 5949,
+        "sha256": "f465e1efa9b8458aaa35fc939996d85872288bef1e2c9f2d8576f9499fda656a"
+      },
+      {
+        "path": "composite/modules/modeling/validation/test/s003-continuous-optimization.test.mjs",
+        "bytes": 16295,
+        "sha256": "7423089ab724303ae010540a8f8b10538ad2dc1ddb800708ac3fc960187c4e7c"
       },
       {
         "path": "composite/modules/modeling/validation/test/server.test.mjs",
-        "bytes": 12255,
-        "sha256": "2cfd83cdc57bcff0dbb1d6374509fd52e3fb9921b23634608914329a33753b6e"
+        "bytes": 15648,
+        "sha256": "f7cd692ab2f8937ec5ee3ea94eeb6aafe0e20cddfca250ff14f9a6d2c72c0862"
       },
       {
         "path": "composite/modules/modeling/validation/test/simulation.test.mjs",
@@ -430,8 +625,8 @@
       },
       {
         "path": "composite/resources/catalog.js",
-        "bytes": 15706,
-        "sha256": "4522ce52ebe30d12b96de3f4968ccba76ba61a3d388e7cc6150e14b2aa66a333"
+        "bytes": 16651,
+        "sha256": "5459cd277c301219bcd020375911554073c4e2d8dce511ae70add382b845f534"
       },
       {
         "path": "composite/resources/catalog.test.mjs",
@@ -445,38 +640,58 @@
       },
       {
         "path": "composite/s001-e2e-integration/app.js",
-        "bytes": 67897,
-        "sha256": "302c34b3d44693c72eaf67947f0464842991afbdcd2c0d3bee2f8fe0ef205250"
+        "bytes": 91304,
+        "sha256": "9ac7e49bd49080708d0e7b10a849b36a5ea1f87b2d477c63edd781668d155f32"
       },
       {
         "path": "composite/s001-e2e-integration/baseline-parity.test.mjs",
-        "bytes": 5500,
-        "sha256": "0b2a9d20a04dcf901c3ee2e4daa006c7fccfa00853a433d59a171e8dbce95e60"
+        "bytes": 5574,
+        "sha256": "799818a645781d9b00699681b20fd844feef5bebaaa25ecc4716c9642b23ceee"
       },
       {
         "path": "composite/s001-e2e-integration/data.js",
-        "bytes": 6225,
-        "sha256": "3601d5d398c1b8eb9fa532175e6a61348f882e75bac6f126019360ed1afac99d"
+        "bytes": 6253,
+        "sha256": "78226044704f7389b03c258c60129df775b17af52f77b46c1a34b1415db53f32"
       },
       {
         "path": "composite/s001-e2e-integration/index.html",
-        "bytes": 2221,
-        "sha256": "8254e56d3136507cadcfd618ace72c86744026ad68bf425d81bec058b6c3248f"
+        "bytes": 2302,
+        "sha256": "520fb6391810c90c06ef31c131240ef8b1261e547382b5b291c505c961d2b663"
       },
       {
         "path": "composite/s001-e2e-integration/state.contract.test.mjs",
-        "bytes": 3775,
-        "sha256": "f0bdd536669b8f34662f051fb1126977249512fb824c3ab1c694eab45ad4cbe4"
+        "bytes": 19979,
+        "sha256": "26e569e98b77075d42c0148817ea7ace39013c827ef9ce78c2c7a01448ab3b39"
       },
       {
         "path": "composite/s001-e2e-integration/state.js",
-        "bytes": 12610,
-        "sha256": "027d3f4f9b1b3bac197a9cdf02176d5d6f07a36cdb5d67553e82247c0a81f8fe"
+        "bytes": 30064,
+        "sha256": "2aa97f44eb4c7c1c5e4a23e19d255d47bd7f57eafd6b28d5efbfd4a9bcbc0697"
       },
       {
         "path": "composite/s001-e2e-integration/styles.css",
         "bytes": 51159,
         "sha256": "5e602a0a018a8b4a8672409fc5bd70e4ccf7087f41d66ff5f94beceec3541b10"
+      },
+      {
+        "path": "composite/scenarios/s005/evaluation-engine.js",
+        "bytes": 55589,
+        "sha256": "f4823c7ddb88ab6b9f8837e336eb7432bc42b1c51d15d6c99fa8c054e4c1b913"
+      },
+      {
+        "path": "composite/scenarios/s005/module-workbench.css",
+        "bytes": 6679,
+        "sha256": "f7f3ac158b4a36838dd0c7099b86f56f70aaab172cf111ac4773098ed284c8c0"
+      },
+      {
+        "path": "composite/scenarios/s005/module-workbench.html",
+        "bytes": 655,
+        "sha256": "1abd03278465d73dac182e0d38e667f2c2f59e0f94835ab93280178c5c142bda"
+      },
+      {
+        "path": "composite/scenarios/s005/module-workbench.js",
+        "bytes": 15456,
+        "sha256": "d42de4d40886c1f2adb4f31a5407434926ac7a7390d849cc4f6a9535a8f68c84"
       },
       {
         "path": "composite/scenarios/s005/resources/s005-research-fixture.json",
@@ -485,8 +700,8 @@
       },
       {
         "path": "composite/scenarios/s005/scenario-adapter.js",
-        "bytes": 10335,
-        "sha256": "dbad81ddbc41c7bc5b29c2c69313e531eef8b53feb4950bacad55ff8d737c8fb"
+        "bytes": 10004,
+        "sha256": "86a3cb6326a8ba8b250d9c272f2032e1e626ca4c03dd7ac73f24ea9c2baf5ba9"
       },
       {
         "path": "composite/scenarios/s005/scenario-config.js",
@@ -494,9 +709,24 @@
         "sha256": "56dca3c10efaebaa83a6aa8a55a5695711390ef65aeca95d00d11133827da279"
       },
       {
+        "path": "composite/scenarios/s005/tests/evaluation-engine.test.mjs",
+        "bytes": 26035,
+        "sha256": "fc9f51fdb4f06c7c1b428bc7e4e952237c540c20fdc2e9e08a524d69d04dda8c"
+      },
+      {
+        "path": "composite/scenarios/s005/tests/module-workbench.contract.test.mjs",
+        "bytes": 3004,
+        "sha256": "5e4c5d1c9f7e1257ffd2ef27ceed78aec81716f7bcd483e2cfdffbacd4b5835e"
+      },
+      {
         "path": "composite/scenarios/s005/tests/runtime.test.mjs",
         "bytes": 3694,
         "sha256": "e7e1e6e4c342475516d953bf709e228208b01f61a3f5fb05cd5fdfe55bbc6f3e"
+      },
+      {
+        "path": "composite/start-candidate.mjs",
+        "bytes": 3537,
+        "sha256": "90d24cb9e16e5561f29eee132fc04ac32b3775afa881b63e763c39e7b51e2f56"
       },
       {
         "path": "composite/tests/m07-m08-runtime.test.mjs",
@@ -505,8 +735,8 @@
       },
       {
         "path": "composite/tests/record-regression.mjs",
-        "bytes": 8887,
-        "sha256": "e73e734d3311fa61298a47d7d1d4989d334c724bfb1dca30b4fbb053057b5f24"
+        "bytes": 15248,
+        "sha256": "52b5afe20c0e29eddd3e49987e93804c036d6d6d1ddb9dc61cbaa2c0c9ca68ee"
       },
       {
         "path": "composite/tests/refresh-manifest.mjs",
@@ -514,25 +744,43 @@
         "sha256": "4f157bd935b253ba639d062e775bd80909ac9186bd80533af5409626e3faecda"
       },
       {
+        "path": "composite/tests/start-candidate.test.mjs",
+        "bytes": 732,
+        "sha256": "65746b4d60a3861ae52e69d8b271af6bcffa092c17dc78edfeab8c8d8203d4ea"
+      },
+      {
         "path": "composite/tests/verify-candidate.mjs",
-        "bytes": 26511,
-        "sha256": "db561dcd6375fff36ce765ee8783b0131b2dd8cad6714434dcf218167a0e6284"
+        "bytes": 32061,
+        "sha256": "96a3186e82f766a59934f50448c7f00d73738a32427130a8a79614de153bfecb"
       }
     ]
   },
   "verification": {
     "staticCommand": "node composite/tests/verify-candidate.mjs",
-    "staticChecks": "19/19 passed",
-    "nodeTests": "77/77 passed",
+    "staticChecks": "20/20 passed",
+    "nodeTests": "123/123 passed",
+    "modelingStaticContract": "6/6 passed",
+    "modelingValidation": "59/59 passed",
+    "dashboardContract": "12/12 passed",
+    "m07Contract": "8/8 passed",
+    "modelingConsumerContract": "3/3 passed",
+    "singleLauncherContract": "1/1 passed",
     "baselineParityContract": "5/5 passed",
-    "dashboardS005Contract": "4/4 passed",
-    "regressionCases": "21/21 passed",
+    "s005EvaluationEngineContract": "8/8 passed",
+    "s005ModuleWorkbenchContract": "3/3 passed",
+    "s005HostStateAndAtomicHandoffContract": "9/9 passed",
+    "regressionCases": "36/36 passed",
     "inventoryRefreshCommand": "node composite/tests/refresh-manifest.mjs",
     "regressionRecordCommand": "node composite/tests/record-regression.mjs",
     "matrix": "COMPOSITE-REGRESSION-MATRIX.json",
     "browserEvidence": "composite/evidence/browser-regression.json",
+    "browserEvidenceObservedAt": "2026-08-31T14:32:13Z",
+    "browserEvidenceStatus": "passed-for-current-m08-s003-continuous-optimization-consumers-and-s005-chain",
+    "frozenReleaseVerification": "passed",
+    "frozenBaselineVerification": "passed",
     "fullRegressionStatus": "passed"
   },
+  "pendingCloseout": [],
   "boundaries": {
     "prototypeAssemblyOnly": true,
     "implementationTrackModified": false,

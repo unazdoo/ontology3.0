@@ -174,14 +174,6 @@
       return publish();
     }
 
-    function completeAll(optionsForRun) {
-      const runOptions = optionsForRun || {};
-      workflow.forEach((step, index) => {
-        updateStage(step.id, "complete", `research://${context.scenarioRunId}/${step.id}`, runOptions.now || new Date(Date.now() + index));
-      });
-      return snapshot();
-    }
-
     function reset(optionsForReset) {
       const previous = snapshot();
       history.push(previous);
@@ -205,7 +197,6 @@
       getHistory: () => clone(history),
       serialize,
       updateStage,
-      completeAll,
       reset
     });
   }

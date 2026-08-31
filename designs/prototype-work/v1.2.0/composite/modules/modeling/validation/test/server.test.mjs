@@ -31,7 +31,7 @@ test("objective registry API returns reusable objective kinds and full revisions
     const catalogResponse = await fetch(`${baseUrl}/v1/objectives`);
     const catalog = await catalogResponse.json();
     assert.equal(catalogResponse.status, 200);
-    assert.equal(catalog.objectives.length, 5);
+    assert.equal(catalog.objectives.length, 6);
     assert.deepEqual([...new Set(catalog.objectives.map((item) => item.kind))].sort(), ["CLASSIFICATION", "FORECAST", "OPTIMIZATION", "SCORING"]);
     const detailResponse = await fetch(`${baseUrl}/v1/objectives/MO-S001-COST-FORECAST-v1`);
     const detail = await detailResponse.json();
@@ -117,6 +117,8 @@ test("simulation run accepts a fresh research identity and CORS preflight", asyn
     assert.equal(body.result.resultKind, "SIMULATION");
     assert.equal(body.result.factWriteAllowed, false);
     assert.equal(body.result.actionWriteAllowed, false);
+    assert.equal(body.fixture.classification, "SYNTHETIC_RESEARCH_ONLY");
+    assert.equal(body.fixture.containsSourceBusinessValues, false);
     const secondResponse = await fetch(`${baseUrl}/v1/simulations/run`, {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -246,5 +248,62 @@ test("invalid JSON is rejected without changing state", async () => {
     const body = await response.json();
     assert.equal(response.status, 422);
     assert.equal(body.code, "INVALID_JSON");
+  });
+});
+
+test("S003 API executes the real benchmark, insight, candidate, shadow, release, binding and result chain", async () => {
+  await withServer(async (baseUrl) => {
+    const post = async (pathname, body = {}) => {
+      const response = await fetch(`${baseUrl}${pathname}`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      return { response, body: await response.json() };
+    };
+    let response = await fetch(`${baseUrl}/v1/s003/workspace`);
+    let workspace = await response.json();
+    assert.equal(workspace.status, "READY_TO_BENCHMARK");
+
+    ({ response, body: workspace } = await post("/v1/s003/benchmark/run"));
+    assert.equal(response.status, 200);
+    assert.match(workspace.benchmark.benchmarkRunId, /^BENCHRUN-S003-/);
+    assert.equal(workspace.benchmark.report.fixedContext.holdoutUsed, false);
+
+    ({ body: workspace } = await post("/v1/s003/insights/generate"));
+    assert.equal(workspace.insights.length, 3);
+    ({ body: workspace } = await post("/v1/s003/candidates/generate"));
+    assert.equal(workspace.candidates[2].status, "DATA_REQUIRED");
+    ({ body: workspace } = await post("/v1/s003/candidates/evaluate"));
+    assert.equal(workspace.experiments.length, 2);
+
+    ({ body: workspace } = await post("/v1/s003/shadow/start", { candidateId: "CAND-S003-A-REWEIGHT-v1" }));
+    assert.match(workspace.shadowTrial.shadowRunId, /^SHADOWRUN-S003-/);
+    for (let index = 0; index < 3; index += 1) {
+      ({ body: workspace } = await post("/v1/s003/shadow/advance", { decision: "CONTINUE" }));
+    }
+    assert.equal(workspace.shadowTrial.status, "MATURED");
+    assert.equal(workspace.trend.length, 3);
+
+    ({ body: workspace } = await post("/v1/s003/release-candidates/form", { candidateId: "CAND-S003-A-REWEIGHT-v1" }));
+    assert.equal(workspace.holdout.status, "CONSUMED_FINAL_ONCE");
+    ({ body: workspace } = await post("/v1/s003/bindings/validate"));
+    assert.equal(workspace.binding.validationStatus, "VALID");
+
+    let failed = await post("/v1/s003/bindings/apply-default", { candidateId: "CAND-S003-A-REWEIGHT-v1", confirmed: false });
+    assert.equal(failed.response.status, 422);
+    assert.equal(failed.body.code, "HUMAN_CONFIRMATION_REQUIRED");
+    ({ body: workspace } = await post("/v1/s003/bindings/apply-default", { candidateId: "CAND-S003-A-REWEIGHT-v1", confirmed: true, confirmedBy: "reviewer-api-001" }));
+    assert.equal(workspace.binding.applicationRole, "DASHBOARD_DEFAULT_CANDIDATE");
+
+    const recalculated = await post("/v1/s003/results/recalculate", { candidateId: "CAND-S003-A-REWEIGHT-v1", usageIntent: "SHADOW", dataVersion: "S003-T007-FORMAL-CANDIDATE-20251231-v1", asOf: "2025-12-31" });
+    assert.equal(recalculated.response.status, 200);
+    assert.equal(recalculated.body.resultEnvelope.subjects.length, 21);
+    assert.match(recalculated.body.resultEnvelope.runId, /^M08-S003-RECALC-/);
+    assert.equal(recalculated.body.resultEnvelope.actionSourceAllowed, false);
+
+    const m04 = await post("/v1/s003/m04/guard", { resultEnvelope: recalculated.body.resultEnvelope });
+    assert.equal(m04.body.code, "NON_FACT_SOURCE_REJECTED");
+    assert.equal(m04.body.sideEffectsEmitted, 0);
   });
 });

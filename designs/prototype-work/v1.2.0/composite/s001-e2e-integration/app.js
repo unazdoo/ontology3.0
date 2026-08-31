@@ -10,6 +10,13 @@
   const API_BASE = new URLSearchParams(global.location.search).get("m08ApiBase") || "http://127.0.0.1:4359";
   const ALLOWED_MODULES = new Set(DATA.modules.map((module) => module.id));
   const ARCHIVED_IDS = new Set(DATA.scenarios.filter((scenario) => scenario.archived).map((scenario) => scenario.id));
+  const S005_WORKBENCH_MODULES = new Map([["data", "M02"], ["ontology", "M01"], ["query", "M03"], ["decision", "M04"], ["agent", "M05"], ["report", "M06"]]);
+  const S003_MODEL_CONSUMERS = new Map([
+    ["query", { moduleId: "M03", consumerId: "M03_QUERY" }],
+    ["agent", { moduleId: "M05", consumerId: "M05_AGENT" }],
+    ["report", { moduleId: "M06", consumerId: "M06_REPORT" }]
+  ]);
+  const S003_OBJECTIVE_ID = "MO-S003-DEBT-RISK-EARLY-WARNING-v1";
   const HOME_DOMAIN_ORDER = ["foundation", "intelligence", "action"];
   const HOME_DOMAINS = Object.freeze({
     foundation: Object.freeze({
@@ -480,6 +487,7 @@
       const canonical = new URL(DATA.moduleById.m07.source, global.location.href);
       if (candidate.origin !== global.location.origin || candidate.pathname !== canonical.pathname) return null;
       applyContext(candidate, context);
+      candidate.searchParams.set("v", "20260831-05");
       candidate.searchParams.set("embedded", "1");
       candidate.searchParams.set("resource", resourcePathForM07(context.scenarioId));
       return candidate;
@@ -492,6 +500,22 @@
     const context = activeContext();
     const saved = STORE.activeScenario()?.navigation?.framePositions?.[module.id];
     const handoff = STORE.handoff(context?.scenarioRunId);
+    if (context?.scenarioId === "S003" && S003_MODEL_CONSUMERS.has(module.id)) {
+      const consumer = S003_MODEL_CONSUMERS.get(module.id);
+      const url = applyContext(new URL("../modules/modeling/consumer/result-projection.html", global.location.href), context);
+      url.searchParams.set("moduleId", consumer.moduleId);
+      url.searchParams.set("consumerId", consumer.consumerId);
+      url.searchParams.set("objectiveId", S003_OBJECTIVE_ID);
+      url.searchParams.set("routeModuleId", module.id);
+      url.searchParams.set("candidateBuild", "20260831-01");
+      return `${url.pathname}${url.search}`;
+    }
+    if (context?.scenarioId === "S005" && S005_WORKBENCH_MODULES.has(module.id)) {
+      const url = applyContext(new URL("../scenarios/s005/module-workbench.html", global.location.href), context);
+      url.searchParams.set("moduleId", S005_WORKBENCH_MODULES.get(module.id));
+      url.searchParams.set("candidateBuild", "20260831-05");
+      return `${url.pathname}${url.search}`;
+    }
     if (module.id === "m07") {
       const registration = catalog().resourcesFor("m07").find((item) => item.scenarioId === context.scenarioId);
       if (registration?.status === "not_registered") {
@@ -620,16 +644,159 @@
       payload: {
         scenarioContext: context,
         projection: activeResourceProjection("modeling"),
-        explorationHandoff: handoff?.m07?.context || null
+        explorationHandoff: handoff?.m07?.context || null,
+        modelingWorkspace: STORE.modelingWorkspace(context.scenarioId),
+        modelingReturnContext: STORE.modelingReturnContext(context.scenarioId)
       }
     }, global.location.origin);
   }
 
+  function buildS003M07ReturnPayload(context, handoff, projection) {
+    const exploration = handoff?.m07?.context;
+    const sourceEnvelope = projection?.resultEnvelope;
+    if (context?.scenarioId !== "S003" || !exploration?.objectRef || sourceEnvelope?.resultKind !== "PREDICTION") return null;
+    const workspace = projection?.workspace || {};
+    const objectiveRevisionId = sourceEnvelope.objectiveRevisionId || "MOR-S003-DEBT-RISK-EARLY-WARNING-0001";
+    const bindingRevisionId = sourceEnvelope.bindingRevisionId || workspace.binding?.bindingRevisionId || "MB-S003-DEBT-RISK-v1-R1";
+    const releaseId = sourceEnvelope.releaseId || workspace.releaseCandidate?.releaseCandidateId || "MREL-S003-DEBT-RISK-BASELINE-REFERENCE";
+    const inputManifest = {
+      ...context,
+      scenarioContext: clonePlain(context),
+      sourceKind: "S003_FIXED_DATA_PREDICTION",
+      usageIntent: sourceEnvelope.usageIntent || exploration.usageIntent || "SCORING",
+      objectRef: clonePlain(exploration.objectRef),
+      lensRef: clonePlain(exploration.lensRef),
+      seriesRef: clonePlain(exploration.seriesRef),
+      timeRange: clonePlain(exploration.timeRange),
+      dataVersionId: exploration.dataVersionId,
+      ontologyVersionId: exploration.ontologyVersionId,
+      bindingId: exploration.bindingId,
+      objectiveId: S003_OBJECTIVE_ID,
+      objectiveRevisionId,
+      bindingRevisionId,
+      releaseId,
+      modelVersionId: sourceEnvelope.modelVersionId
+    };
+    const subjects = Array.isArray(sourceEnvelope.subjects) ? sourceEnvelope.subjects : [];
+    const subjectRefs = subjects.map((subject) => ({ id: subject.objectId || subject.enterpriseId, title: subject.objectName || subject.enterpriseName, objectTypeRef: "Enterprise" })).filter((subject) => subject.id);
+    if (!subjectRefs.some((subject) => subject.id === exploration.objectRef.id)) subjectRefs.unshift(clonePlain(exploration.objectRef));
+    const focused = subjects.find((subject) => (subject.objectId || subject.enterpriseId) === exploration.objectRef.id);
+    const resultItems = focused ? [
+      { outputId: "riskScore", label: "预测风险评分", shape: "SCALAR", resultKind: "PREDICTION", value: focused.riskScore, unit: "score_0_100" },
+      { outputId: "predictedRiskTier", label: "预测风险分档", shape: "SCALAR", resultKind: "PREDICTION", value: focused.predictedRiskTierName || focused.predictedRiskTier, unit: "risk_tier" },
+      { outputId: "coverage", label: "结果覆盖率", shape: "SCALAR", resultKind: "PREDICTION", value: focused.coverage, unit: "ratio" },
+      { outputId: "topContributors", label: "主要贡献项", shape: "OBJECT_SET", resultKind: "PREDICTION", value: clonePlain(focused.topContributors || []), unit: "risk_contribution" }
+    ] : [
+      { outputId: "enterpriseCount", label: "企业范围", shape: "SCALAR", resultKind: "PREDICTION", value: subjects.length, unit: "enterprise" },
+      { outputId: "riskDistribution", label: "预测风险分布", shape: "OBJECT", resultKind: "PREDICTION", value: clonePlain(sourceEnvelope.summaries?.riskDistribution || null), unit: "enterprise_distribution" }
+    ];
+    const resultEnvelope = {
+      ...clonePlain(sourceEnvelope),
+      objectiveRevisionId,
+      bindingRevisionId,
+      releaseId,
+      subjectRefs,
+      resultItems,
+      inputSnapshot: {
+        ...(clonePlain(sourceEnvelope.inputSnapshot) || {}),
+        ...context,
+        scenarioContext: clonePlain(context),
+        dataVersionId: exploration.dataVersionId,
+        ontologyVersionId: exploration.ontologyVersionId,
+        timeRange: clonePlain(exploration.timeRange)
+      },
+      factWriteAllowed: false,
+      actionWriteAllowed: false,
+      actionSourceAllowed: false,
+      sideEffectsEmitted: 0
+    };
+    return {
+      ...context,
+      inputManifest,
+      resultEnvelope,
+      modelingRunId: resultEnvelope.runId,
+      modelingResultId: resultEnvelope.resultId,
+      sideEffectsEmitted: 0,
+      completedAt: resultEnvelope.formedAt || new Date().toISOString()
+    };
+  }
+
   function deliverM08Return(frame) {
     const context = activeContext();
-    const handoff = STORE.handoff(context?.scenarioRunId);
-    if (!frame?.contentWindow || !handoff?.m08Return) return;
-    frame.contentWindow.postMessage({ type: "OFW_M08_RETURN_TO_M07", targetModuleId: "m07", payload: handoff.m08Return }, global.location.origin);
+    let handoff = STORE.handoff(context?.scenarioRunId);
+    if (!frame?.contentWindow || !handoff) return;
+    let payload = handoff.m08Return;
+    if (!payload && context?.scenarioId === "S003") {
+      payload = buildS003M07ReturnPayload(context, handoff, STORE.modelingProjection("S003", "M07_EXPLORATION"));
+      if (payload) {
+        STORE.validateM08Return(payload, "S003");
+        STORE.saveM08Return(payload);
+        handoff = STORE.handoff(context.scenarioRunId);
+      }
+    }
+    if (!payload) return;
+    frame.contentWindow.postMessage({ type: "OFW_M08_RETURN_TO_M07", targetModuleId: "m07", payload: handoff?.m08Return || payload }, global.location.origin);
+  }
+
+  function isS005Workbench(module) {
+    return activeContext()?.scenarioId === "S005" && S005_WORKBENCH_MODULES.has(module?.id);
+  }
+
+  function isS003ModelConsumer(module) {
+    return activeContext()?.scenarioId === "S003" && S003_MODEL_CONSUMERS.has(module?.id);
+  }
+
+  function deliverModelingConsumerContext(frame, module) {
+    const consumer = S003_MODEL_CONSUMERS.get(module?.id);
+    const context = activeContext();
+    if (!consumer || context?.scenarioId !== "S003" || !frame?.contentWindow) return;
+    frame.contentWindow.postMessage({
+      type: "OFW_MODELING_CONSUMER_CONTEXT",
+      consumerId: consumer.consumerId,
+      scenarioContext: context,
+      projection: STORE.modelingProjection("S003", consumer.consumerId)
+    }, global.location.origin);
+  }
+
+  function deliverS003DashboardContext(frame) {
+    const context = activeContext();
+    if (context?.scenarioId !== "S003" || !frame?.contentWindow) return;
+    const projection = STORE.modelingProjection("S003", "Dashboard");
+    frame.contentWindow.postMessage({
+      type: "OFW_S003_MODELING_CONTEXT",
+      scenarioContext: context,
+      objectiveId: S003_OBJECTIVE_ID,
+      workspace: projection?.workspace || null,
+      candidateResult: projection?.resultEnvelope || null,
+      resultEnvelope: projection?.resultEnvelope || null
+    }, global.location.origin);
+  }
+
+  function deliverS005ModuleContext(frame, module) {
+    const ownerId = S005_WORKBENCH_MODULES.get(module?.id);
+    const context = activeContext();
+    if (!ownerId || context?.scenarioId !== "S005" || !frame?.contentWindow) return;
+    frame.contentWindow.postMessage({
+      type: "OFW_S005_MODULE_CONTEXT",
+      moduleId: ownerId,
+      scenarioContext: context,
+      payload: STORE.s005ModuleProjection(ownerId)
+    }, global.location.origin);
+  }
+
+  function deliverS005DashboardContext(frame) {
+    const context = activeContext();
+    if (context?.scenarioId !== "S005" || !frame?.contentWindow) return;
+    const projection = STORE.s005EvaluationProjection();
+    frame.contentWindow.postMessage({
+      type: "OFW_S005_EVALUATION_CONTEXT",
+      scenarioContext: context,
+      evaluationRun: projection?.evaluationRun || null,
+      evaluationResult: projection?.evaluationResult || null,
+      stages: projection?.stages || {},
+      progress: projection?.progress || STORE.s005Progress(),
+      historyCount: STORE.scenario("S005")?.runHistory?.length || 0
+    }, global.location.origin);
   }
 
   function adaptFrame(frame, module) {
@@ -637,7 +804,7 @@
       const doc = frame.contentDocument;
       if (!doc?.body) return;
       doc.title = `${module.name} · ${DATA.brand.zh}`;
-      if (!["m07", "modeling"].includes(module.id)) {
+      if (!["m07", "modeling"].includes(module.id) && !isS005Workbench(module) && !isS003ModelConsumer(module)) {
         let style = doc.getElementById("ofw-v120-shell-adapter");
         if (!style) { style = doc.createElement("style"); style.id = "ofw-v120-shell-adapter"; doc.head.appendChild(style); }
         style.textContent = frameAdapterCss(module.id);
@@ -660,24 +827,13 @@
         clearTimeout(frameSaveTimer);
         frameSaveTimer = setTimeout(captureFramePosition, 160);
       }, true);
-      if (doc.defaultView?.MutationObserver) {
-        let scrubTimer = null;
-        frame._ofwCopyObserver?.disconnect?.();
-        frame._ofwCopyObserver = new doc.defaultView.MutationObserver(() => {
-          if (!doc.body?.isConnected) {
-            frame._ofwCopyObserver?.disconnect?.();
-            return;
-          }
-          clearTimeout(scrubTimer);
-          scrubTimer = setTimeout(() => {
-            if (doc.body?.isConnected) scrubInternalCopy(doc);
-          }, 40);
-        });
-        frame._ofwCopyObserver.observe(doc.body, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ["title", "aria-label", "placeholder"] });
-      }
       frame.contentWindow.addEventListener("hashchange", () => setTimeout(() => syncFrameBreadcrumb(frame, module), 60));
       if (module.id === "modeling") deliverM08Context(frame);
       if (module.id === "m07") deliverM08Return(frame);
+      if (isS005Workbench(module)) deliverS005ModuleContext(frame, module);
+      if (isS003ModelConsumer(module)) deliverModelingConsumerContext(frame, module);
+      if (module.id === "dashboard") deliverS005DashboardContext(frame);
+      if (module.id === "dashboard") deliverS003DashboardContext(frame);
     } catch (_) {
       showToast("模块已打开", "当前内容仍可通过统一导航返回。", "warning");
     }
@@ -742,8 +898,67 @@
     return value == null ? value : JSON.parse(JSON.stringify(value));
   }
 
+  function recordS005M07Exploration(message) {
+    if (message?.schemaVersion !== "ofw.s005.m07-exploration-result.v1" || message?.moduleId !== "M07") throw new Error("M07 探索结果包络无效。");
+    const result = message.result;
+    if (!result?.clientResultId || !result?.explorationResultRef || !result?.producedAt || !result?.evidenceRefs?.length) throw new Error("M07 探索结果缺少标识、结果引用、时间或证据。");
+    if (!result.objectRef?.id || !result.objectRef?.objectTypeRef || !result.lensRef?.lensId || !result.timeRange?.start || !result.timeRange?.end) throw new Error("M07 探索结果缺少对象、Lens 或时间范围。");
+    if (!result.dataVersionId || !result.ontologyVersionId || !result.bindingId) throw new Error("M07 探索结果缺少数据、语义或 Binding 版本。");
+    return STORE.recordS005ModuleEvent({
+      moduleId: "M07",
+      operation: "exploration_result",
+      scenarioContext: message.scenarioContext,
+      occurredAt: result.producedAt,
+      payload: {
+        consumerResultRef: STORE.s005EvaluationProjection()?.evaluationResult?.evaluationResultId || null,
+        explorationResultRef: result.explorationResultRef,
+        objectRef: result.objectRef,
+        lensRef: result.lensRef,
+        seriesRef: result.seriesRef,
+        timeRange: result.timeRange,
+        dataVersionId: result.dataVersionId,
+        ontologyVersionId: result.ontologyVersionId,
+        bindingId: result.bindingId,
+        evidenceRefs: result.evidenceRefs,
+        missingReasons: result.missingReasons || []
+      }
+    });
+  }
+
+  function sameM07ExplorationResult(output, envelope) {
+    const saved = output?.payload;
+    const incoming = envelope?.result;
+    if (!saved || !incoming || saved.explorationResultRef !== incoming.explorationResultRef) return false;
+    const same = (left, right, fields) => fields.every((field) => (left?.[field] ?? null) === (right?.[field] ?? null));
+    return same(saved.objectRef, incoming.objectRef, ["id", "objectTypeRef"])
+      && same(saved.lensRef, incoming.lensRef, ["moduleId", "lensId", "route"])
+      && same(saved.seriesRef, incoming.seriesRef, ["id", "ownerObjectId"])
+      && same(saved.timeRange, incoming.timeRange, ["start", "end"])
+      && same(saved, incoming, ["dataVersionId", "ontologyVersionId", "bindingId"]);
+  }
+
   function handleM07Open(message) {
     const context = normalizeM07Handoff(message);
+    if (context.scenarioId === "S005") {
+      if (!message.explorationResultEnvelope) throw new Error("S005 打开 M08 必须携带可验证的 M07 探索结果包络。");
+      let output = STORE.s005ModuleProjection("M07")?.moduleOutputs?.at(-1);
+      if (!output && message.explorationResultEnvelope) {
+        recordS005M07Exploration(message.explorationResultEnvelope);
+        output = STORE.s005ModuleProjection("M07")?.moduleOutputs?.at(-1);
+        showToast("探索结果已固定", "M07 当前对象、Lens、版本和证据已回传。", "success");
+      }
+      if (!output || output.scenarioContext?.scenarioRunId !== context.scenarioRunId) throw new Error("M07 尚未形成当前轮次的可验证探索结果。");
+      if (message.explorationResultEnvelope && !sameM07ExplorationResult(output, message.explorationResultEnvelope)) throw new Error("M07 交接对象、Lens、系列、时间或版本与已固定探索结果不一致。");
+    }
+    if (context.scenarioId === "S003") {
+      STORE.saveModelingReturnContext(activeContext(), {
+        objectiveId: S003_OBJECTIVE_ID,
+        returnRoute: "#module/m07",
+        returnUrl: message.returnUrl || null,
+        view: "objective",
+        usageIntent: context.usageIntent || "SCORING"
+      });
+    }
     STORE.saveM07Handoff({
       scenarioId: context.scenarioId,
       scenarioVersion: context.scenarioVersion,
@@ -761,13 +976,80 @@
   function handleM08Return(message) {
     const context = activeContext();
     const payload = clonePlain(message.payload || {});
-    if (!context || payload.scenarioId !== context.scenarioId || payload.scenarioVersion !== context.scenarioVersion || payload.scenarioRunId !== context.scenarioRunId) {
-      throw new Error("M08 返回身份与当前场景轮次不一致。");
+    if (!context) throw new Error("M08 返回时没有当前场景身份。");
+    const validated = STORE.validateM08Return(payload);
+    if (context.scenarioId === "S005") {
+      STORE.recordS005ModuleEvent({
+        moduleId: "M08",
+        operation: "model_result",
+        scenarioContext: context,
+        occurredAt: payload.completedAt || new Date().toISOString(),
+        payload: {
+          consumerResultRef: STORE.s005EvaluationProjection()?.evaluationResult?.evaluationResultId || null,
+          outputRef: payload.resultEnvelope.resultId || payload.simulationResultId,
+          inputMode: validated.inputManifest.sourceKind,
+          objectiveId: validated.inputManifest.objectiveId,
+          objectiveRevisionId: validated.inputManifest.objectiveRevisionId,
+          bindingRevisionId: validated.inputManifest.bindingRevisionId,
+          releaseId: validated.inputManifest.releaseId,
+          modelVersionId: validated.inputManifest.modelVersionId,
+          objectRef: validated.inputManifest.objectRef,
+          lensRef: validated.inputManifest.lensRef,
+          seriesRef: validated.inputManifest.seriesRef,
+          timeRange: validated.inputManifest.timeRange,
+          dataVersionId: validated.inputManifest.dataVersionId,
+          ontologyVersionId: validated.inputManifest.ontologyVersionId,
+          bindingId: validated.inputManifest.bindingId,
+          resultKind: payload.resultEnvelope.resultKind,
+          resultStatus: payload.simulationStatus === "SUCCEEDED" ? "available" : "unavailable",
+          truthClass: "candidate",
+          replacesFact: false,
+          fixtureId: payload.resultEnvelope.fixtureId,
+          inputClassification: payload.resultEnvelope.inputClassification,
+          containsSourceBusinessValues: payload.resultEnvelope.containsSourceBusinessValues,
+          factWriteAllowed: payload.resultEnvelope.factWriteAllowed,
+          actionWriteAllowed: payload.resultEnvelope.actionWriteAllowed,
+          sideEffectsEmitted: payload.sideEffectsEmitted,
+          evidenceRefs: [payload.simulationRunId, payload.simulationResultId, payload.resultEnvelope.fixtureId].filter(Boolean)
+        }
+      });
     }
-    if (!payload.inputManifest || !payload.resultEnvelope) throw new Error("M08 返回缺少输入清单或结果包络。");
     STORE.saveM08Return(payload);
     navigate("#module/m07");
     showToast("上下文已返回", "已恢复多视图探索的对象、视图和读取位置。", "success");
+  }
+
+  async function runS003DashboardRecalculation(message, frame) {
+    const context = activeContext();
+    try {
+      if (context?.scenarioId !== "S003" || !message.scenarioContext || !["scenarioId", "scenarioVersion", "scenarioRunId", "formedAt", "status"].every((field) => message.scenarioContext[field] === context[field])) throw new Error("S003 候选试算身份不一致。");
+      const response = await fetch(`${API_BASE}/v1/s003/results/recalculate`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          scenarioContext: context,
+          candidateId: message.candidateId || message.modelVersionId || null,
+          modelVersionId: message.modelVersionId || null,
+          usageIntent: (message.usageIntent || message.useKind) === "SHADOW" ? "SHADOW" : "WHAT_IF",
+          asOf: message.asOf || "2025-12-31",
+          dataVersion: message.dataVersionId || message.dataVersion || "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          enterpriseScope: message.enterpriseScope || "ALL"
+        })
+      });
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok || !body.resultEnvelope) throw new Error(body.message || body.error || `候选试算服务返回 ${response.status}`);
+      const resultEnvelope = {
+        ...body.resultEnvelope,
+        inputSnapshot: { ...(body.resultEnvelope.inputSnapshot || {}), ...context, scenarioContext: context }
+      };
+      STORE.saveModelingResult(context, resultEnvelope, body.workspace || null);
+      deliverS003DashboardContext(frame);
+      frame.contentWindow.postMessage({ type: "OFW_S003_MODELING_RESULT", scenarioContext: context, objectiveId: S003_OBJECTIVE_ID, workspace: body.workspace || null, resultEnvelope }, global.location.origin);
+      showToast("候选试算已形成", "正式 C035、报告和处置状态保持不变。", "success");
+    } catch (error) {
+      frame?.contentWindow?.postMessage({ type: "OFW_S003_MODELING_ERROR", scenarioContext: context, objectiveId: S003_OBJECTIVE_ID, message: error.message }, global.location.origin);
+      showToast("候选试算未完成", error.message, "danger");
+    }
   }
 
   function handleFrameMessage(event) {
@@ -776,6 +1058,107 @@
     if (!frame || event.source !== frame.contentWindow) return;
     const message = event.data || {};
     try {
+      if (renderedModuleId === "m07" && message.type === "OFW_S005_M07_EXPLORATION_RESULT") {
+        recordS005M07Exploration(message);
+        showToast("探索结果已固定", "M07 当前对象、Lens、版本和证据已回传。", "success");
+        return;
+      }
+      if (message.type === "OFW_S005_MODULE_READY" && isS005Workbench(DATA.moduleById[renderedModuleId])) {
+        deliverS005ModuleContext(frame, DATA.moduleById[renderedModuleId]);
+        return;
+      }
+      if (message.type === "OFW_M07_READY" && renderedModuleId === "m07") {
+        const context = activeContext();
+        if (!message.scenarioContext || !["scenarioId", "scenarioVersion", "scenarioRunId", "formedAt", "status"].every((field) => message.scenarioContext[field] === context?.[field])) throw new Error("M07 ready 回传场景身份不一致。");
+        deliverM08Return(frame);
+        return;
+      }
+      if (message.type === "OFW_MODELING_CONSUMER_READY" && isS003ModelConsumer(DATA.moduleById[renderedModuleId])) {
+        deliverModelingConsumerContext(frame, DATA.moduleById[renderedModuleId]);
+        return;
+      }
+      if (message.type === "OFW_S003_MODELING_CONTEXT_REQUEST" && renderedModuleId === "dashboard" && activeContext()?.scenarioId === "S003") {
+        deliverS003DashboardContext(frame);
+        return;
+      }
+      if (message.type === "OFW_DASHBOARD_SCENARIO_FOCUS" && renderedModuleId === "dashboard" && DATA.scenarioById[message.scenarioId]) {
+        if (STORE.get().activeScenarioId === message.scenarioId) {
+          if (message.scenarioId === "S003") deliverS003DashboardContext(frame);
+          return;
+        }
+        const hash = frame.contentWindow?.location?.hash || "#/dashboards";
+        STORE.saveFramePosition("dashboard", { hash, windowY: 0, containerY: 0 }, message.scenarioId);
+        STORE.setActiveScenario(message.scenarioId, "dashboard-focus");
+        history.replaceState({ ...(history.state || {}), ofwShell: true, scenarioId: message.scenarioId }, "", "#dashboard");
+        render();
+        return;
+      }
+      if (message.type === "OFW_S003_MODELING_RECALCULATE_REQUEST" && renderedModuleId === "dashboard" && activeContext()?.scenarioId === "S003") {
+        void runS003DashboardRecalculation(message, frame);
+        return;
+      }
+      if (message.type === "OFW_S003_OPEN_MODELING_OBJECTIVE" && ["dashboard", "query", "agent", "report"].includes(renderedModuleId)) {
+        const context = activeContext();
+        if (context?.scenarioId !== "S003" || !message.scenarioContext || !["scenarioId", "scenarioVersion", "scenarioRunId", "formedAt", "status"].every((field) => message.scenarioContext[field] === context[field])) throw new Error("S003 M08 入口身份不一致。");
+        STORE.saveModelingReturnContext(context, {
+          objectiveId: message.objectiveId || S003_OBJECTIVE_ID,
+          returnRoute: message.returnRoute || (renderedModuleId === "dashboard" ? "#dashboard" : `#module/${renderedModuleId}`),
+          returnDashboardRoute: message.returnDashboardRoute || "#/view/risk/operations",
+          view: message.view || "objective"
+        });
+        navigate("#module/modeling");
+        return;
+      }
+      if (renderedModuleId === "modeling" && ["OFW_M08_WORKSPACE_STATE", "OFW_S003_MODELING_WORKSPACE"].includes(message.type)) {
+        const context = activeContext();
+        if (context?.scenarioId !== "S003" || !message.scenarioContext || !["scenarioId", "scenarioVersion", "scenarioRunId", "formedAt", "status"].every((field) => message.scenarioContext[field] === context[field])) throw new Error("S003 workspace 回传场景不一致。");
+        if (message.objectiveId && message.objectiveId !== S003_OBJECTIVE_ID) throw new Error("S003 workspace 回传 Objective 不一致。");
+        if (message.factWriteAllowed !== false || message.actionWriteAllowed !== false || message.actionSourceAllowed !== false) throw new Error("S003 workspace 未声明事实与行动三重禁写。");
+        STORE.saveModelingWorkspace(context, message.workspace || message.payload);
+        return;
+      }
+      if (renderedModuleId === "modeling" && message.type === "OFW_S003_MODELING_RESULT") {
+        const context = activeContext();
+        if (context?.scenarioId !== "S003" || !message.scenarioContext || !["scenarioId", "scenarioVersion", "scenarioRunId", "formedAt", "status"].every((field) => message.scenarioContext[field] === context[field])) throw new Error("S003 Result Envelope 身份不一致。");
+        const resultEnvelope = {
+          ...message.resultEnvelope,
+          inputSnapshot: { ...(message.resultEnvelope?.inputSnapshot || {}), ...context, scenarioContext: context }
+        };
+        const existingProjection = STORE.modelingProjection("S003", "M07_EXPLORATION");
+        if (existingProjection?.resultEnvelope?.resultId !== resultEnvelope.resultId) STORE.saveModelingResult(context, resultEnvelope, message.workspace || null);
+        else if (message.workspace) STORE.saveModelingWorkspace(context, message.workspace);
+        const returnContext = STORE.modelingReturnContext("S003");
+        const returnRoute = returnContext?.returnRoute || "#dashboard";
+        if (returnRoute === "#module/m07") {
+          const returnPayload = buildS003M07ReturnPayload(context, STORE.handoff(context.scenarioRunId), STORE.modelingProjection("S003", "M07_EXPLORATION"));
+          if (!returnPayload) throw new Error("S003 M07 返回缺少已保存的探索上下文或候选结果。");
+          STORE.validateM08Return(returnPayload, "S003");
+          STORE.saveM08Return(returnPayload);
+        }
+        if (returnRoute === "#dashboard") STORE.saveFramePosition("dashboard", { hash: returnContext?.returnDashboardRoute || "#/view/risk/operations", windowY: 0, containerY: 0 }, "S003");
+        navigate(returnRoute);
+        showToast("候选结果已返回", "S003 正式结果保持不变；可切换查看候选试算和差异。", "success");
+        return;
+      }
+      if (message.type === "OFW_S005_MODULE_RESULT" && isS005Workbench(DATA.moduleById[renderedModuleId])) {
+        const expectedOwnerId = S005_WORKBENCH_MODULES.get(renderedModuleId);
+        if (message.schemaVersion !== "ofw.s005.module-result.v1" || message.moduleId !== expectedOwnerId) throw new Error("模块结果包络与当前模块不一致。");
+        if (!message.result?.clientResultId || !message.result?.outputKind || !message.result?.status || !message.result?.producedAt || !message.result?.evidenceRefs?.length) throw new Error("模块结果缺少可验证标识、状态、时间或证据。");
+        const receipt = STORE.recordS005ModuleEvent({
+          moduleId: message.moduleId,
+          operation: message.operation,
+          scenarioContext: message.scenarioContext,
+          occurredAt: message.result.producedAt,
+          payload: message.result
+        });
+        deliverS005ModuleContext(frame, DATA.moduleById[renderedModuleId]);
+        showToast("模块结果已形成", `${message.moduleId} · ${receipt.progress.done}/${receipt.progress.total}`, "success");
+        return;
+      }
+      if (message.type === "OFW_S005_EVALUATION_REQUEST" && renderedModuleId === "dashboard") {
+        deliverS005DashboardContext(frame);
+        return;
+      }
       if (renderedModuleId === "m07" && (message.type === "OFW_M07_OPEN_M08" || message.operation === "open-m08")) {
         handleM07Open(message);
         return;
@@ -799,6 +1182,9 @@
         if (route === "#dashboard" || /^#module\/[a-z0-9-]+$/.test(route || "")) navigate(route);
       }
     } catch (error) {
+      if (message.type === "OFW_S005_MODULE_RESULT") {
+        frame.contentWindow.postMessage({ type: "OFW_S005_MODULE_ERROR", moduleId: message.moduleId, message: error.message }, global.location.origin);
+      }
       showToast("上下文未交接", error.message, "danger");
     }
   }

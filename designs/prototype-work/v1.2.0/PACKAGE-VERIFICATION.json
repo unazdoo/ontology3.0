@@ -1,6 +1,6 @@
 {
   "schemaVersion": "ofw.prototype.package-verification.v1",
-  "verifiedOn": "2026-08-29",
+  "verifiedOn": "2026-08-31",
   "targetPrototypeVersion": "v1.2.0-rc.1",
   "result": "PASSED",
   "acceptanceReady": false,
@@ -27,6 +27,7 @@
       "staticContractTests": "5/5 PASSED",
       "validationTests": "43/43 PASSED",
       "checksums": "24/24 PASSED",
+      "verificationRole": "source export package before candidate extensions",
       "cleanExport": true,
       "portable": true
     },
@@ -61,7 +62,7 @@
       "OFW_M08_RETURN_TO_M07"
     ],
     "result": "PASSED_WITH_CANDIDATE_ADAPTER_PENDING_GOVERNANCE",
-    "changeRequests": ["CR-V120-001", "CR-V120-002"],
+    "changeRequests": ["CR-V120-001", "CR-V120-002", "CR-M08-S003-MODEL-OWNER-MIGRATION"],
     "resolutionEvidence": [
       "Candidate M07 and host normalize the exact five-field active scenario context before M08 delivery.",
       "Candidate M07 maps the five S005 products to canonical InvestmentProduct PRD references and never reuses its source validation run id.",
@@ -70,20 +71,103 @@
       "Browser regression restores the same object, lens, time range and return position through M07 to M08 to M07."
     ]
   },
+  "candidateM08Extension": {
+    "staticContractTests": "6/6 PASSED",
+    "validationTests": "59/59 PASSED",
+    "consumerProjectionTests": "3/3 PASSED",
+    "dashboardContracts": "12/12 PASSED",
+    "m07Contracts": "8/8 PASSED",
+    "singleLauncherTest": "1/1 PASSED",
+    "checksums": "32/32 PASSED",
+    "objectiveKinds": [
+      "FORECAST",
+      "CLASSIFICATION",
+      "SCORING",
+      "OPTIMIZATION"
+    ],
+    "s003ApiChain": [
+      "benchmark",
+      "insight",
+      "candidate generation",
+      "candidate evaluation",
+      "shadow trial",
+      "release candidate",
+      "binding validation",
+      "fixed-data recalculation"
+    ],
+    "verifiedBoundaries": [
+      "future leakage rejected",
+      "INSUFFICIENT_LABELS keeps metrics null",
+      "candidate C remains DATA_REQUIRED",
+      "sealed holdout consumed once",
+      "unit and time-grain drift rejected",
+      "M04 returns NON_FACT_SOURCE_REJECTED",
+      "21-enterprise Result Envelope preserves archived FACT"
+    ]
+  },
   "candidateAssembly": {
     "uniqueEntry": "composite/s001-e2e-integration/index.html",
-    "staticVerification": "19/19 PASSED",
-    "nodeTests": "77/77 PASSED",
+    "staticVerification": "20/20 PASSED",
+    "nodeTests": "123/123 PASSED",
+    "s005FocusedContracts": "covered by current Dashboard, state, evaluation-engine, workbench and runtime suites",
     "baselineParityContract": "5/5 PASSED",
-    "dashboardS005Contract": "4/4 PASSED",
-    "regressionCases": "21/21 PASSED",
+    "dashboardContract": "12/12 PASSED",
+    "s005EvaluationEngineContract": "8/8 PASSED",
+    "s005ModuleWorkbenchContract": "3/3 PASSED",
+    "s005HostStateAndAtomicHandoffContract": "9/9 PASSED",
+    "regressionCases": "36/36 PASSED",
     "viewports": ["1440x900", "1280x720", "390x844"],
     "consoleErrors": 0,
     "pageErrors": 0,
     "failedResourceRequests": 0,
     "frozenIntegrity": "PASSED",
     "browserEvidence": "composite/evidence/browser-regression.json",
-    "browserToolingNoise": "1 known in-app observer injection message excluded; application capture remained 0"
+    "browserEvidenceObservedAt": "2026-08-31T14:32:13Z",
+    "browserEvidenceStatus": "PASSED_FOR_CURRENT_M08_S003_CONTINUOUS_OPTIMIZATION_CONSUMERS_AND_S005_CHAIN",
+    "artifactInventoryStatus": "COMPLETE: 94 files with size and SHA-256",
+    "browserToolingNoise": "0; DOM observer removed and current application capture remained 0"
+  },
+  "s003ModelingAssembly": {
+    "objectiveId": "MO-S003-DEBT-RISK-EARLY-WARNING-v1",
+    "baselineModelPackage": "S003-M01-DEBT-RISK-PKG@1.0.2",
+    "benchmarkVersion": "BENCH-S003-LONGITUDINAL-v1",
+    "benchmarkClassification": "SYNTHETIC_DEIDENTIFIED_LONGITUDINAL",
+    "candidateCount": 3,
+    "dataRequiredCandidateCount": 1,
+    "shadowMaturityWindows": 3,
+    "holdoutUsePolicy": "Release Candidate only; once",
+    "dashboardEnterpriseCount": 21,
+    "consumerModules": [
+      "M03",
+      "M05",
+      "M06",
+      "M07",
+      "Dashboard"
+    ],
+    "m04Boundary": "NON_FACT_SOURCE_REJECTED; zero Action, notification, approval, todo and transaction writes",
+    "archivedScenarioMutable": false,
+    "changeRequestRef": "CR-M08-S003-MODEL-OWNER-MIGRATION"
+  },
+  "s005EvaluationAssembly": {
+    "identityFields": ["scenarioId", "scenarioVersion", "scenarioRunId", "formedAt", "status"],
+    "moduleFlow": ["M02", "M01", "M03", "M04", "M05", "M07", "M08", "M06", "Dashboard"],
+    "stageCount": 7,
+    "stageCompletionSource": "verified module result events through updateS005Stage",
+    "nonCompletionSignals": ["resource registration", "query parameter", "page navigation", "completeAll()", "SERIES_INPUT_UNAVAILABLE"],
+    "evaluationDomains": [
+      "productPerformance",
+      "actualInvestorResult",
+      "fixedIncomeRisk",
+      "managementOperationsQuality",
+      "continuingEligibilityCompliance",
+      "selectionExecution"
+    ],
+    "dashboardSource": "current scenarioRunId evaluation run/result only",
+    "m07Handoff": "atomic exploration result envelope attached to OFW_M07_OPEN_M08",
+    "m08ResultBoundary": "simulationStatus is independent; SYNTHETIC_RESEARCH_ONLY output adds zero factual coverage and emits zero side effects",
+    "m04Boundary": "not_applicable/read_only; zero Action, reminder, approval, task and trade writes",
+    "missingDataPolicy": "null with reason; no zero fill or fabricated result",
+    "resetPolicy": "new S005 run returns to 0/7; previous evaluation run/result/module outputs retained; S001-S004 unchanged"
   },
   "forbiddenContent": {
     "absoluteFilesystemPaths": 0,

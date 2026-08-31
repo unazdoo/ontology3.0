@@ -23,6 +23,8 @@
     "m01.object-type.financial-institution": { label: "金融机构", icon: "landmark" },
     "m01.object-type.financing-owner": { label: "负责人", icon: "user-round" },
     "m01.object-type.financing-rule-result": { label: "规则命中", icon: "circle-alert" },
+    "m01.object-type.enterprise": { label: "企业", icon: "building-2" },
+    "m01.object-type.enterprise-assessment-context": { label: "企业评估上下文", icon: "clipboard-check" },
     "m07.object-type.report": { label: "报告", icon: "file-text" },
     "m07.object-type.report-evidence": { label: "报告证据", icon: "file-check-2" },
   };
@@ -330,6 +332,7 @@
       dataVersionId: value.dataVersionId || null,
       ontologyVersionId: value.ontologyVersionId || null,
       bindingId: value.bindingId || null,
+      usageIntent: value.usageIntent || "SIMULATION",
       scenarioContext: frozenScenario,
       ...frozenScenario
     });

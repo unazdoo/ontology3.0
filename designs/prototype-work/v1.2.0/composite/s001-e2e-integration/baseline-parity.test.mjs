@@ -45,6 +45,7 @@ function loadStore() {
   for (const file of [
     path.join(workRoot, "composite/scenarios/s005/scenario-config.js"),
     path.join(workRoot, "composite/scenarios/s005/scenario-adapter.js"),
+    path.join(workRoot, "composite/scenarios/s005/evaluation-engine.js"),
     path.join(root, "data.js"),
     path.join(root, "state.js")
   ]) vm.runInContext(read(file), context, { filename: file });
