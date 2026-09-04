@@ -1,0 +1,128 @@
+{
+  "schemaVersion": "ofw.prototype.integration-sources.v1",
+  "targetPrototypeVersion": "v1.3.1-rc.1",
+  "parentPrototype": {
+    "version": "v1.3.0-rc.1",
+    "commit": "e3990c69e77882062035490ef718fd93549bbf82",
+    "commitTree": "c061c21d814a0881f1e27189f83c6000d1686442",
+    "subtree": "a24109c8be2ffceca73e0fedbb9387f4b85a7176",
+    "path": "../v1.3.0",
+    "immutable": true,
+    "referenceMode": "read-only-relative",
+    "wholeTreeCopied": false
+  },
+  "upstreamPrototype": {
+    "version": "v1.2.0-rc.1",
+    "commit": "e4974c23bd223f26bfd04b08dc6f46eb4d9ae5e0",
+    "subtree": "e57caf36b4a815b4d363ca93ee69305c12228938",
+    "immutable": true
+  },
+  "frozenProductSource": {
+    "version": "v1.1.0",
+    "commit": "a8b023d7f8d49ad6ed6c24417b79b6f9df3fb716",
+    "subtree": "45ed88ea692016e674bfebc49c22456ca7a01ad1",
+    "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+    "immutable": true
+  },
+  "inputs": [
+    {
+      "id": "V130-SHELL",
+      "source": "../v1.3.0/composite/s001-e2e-integration/app.js",
+      "role": "single Shell and v1.2-derived navigation baseline",
+      "mode": "read-only baseline for a candidate-local derivative",
+      "localDerivative": "composite/s001-e2e-integration/app.js",
+      "wholeDirectoryCopied": false
+    },
+    {
+      "id": "V120-SHELL-CSS",
+      "source": "../v1.2.0/composite/s001-e2e-integration/styles.css",
+      "role": "proven Shell visual baseline",
+      "mode": "direct read-only stylesheet reference",
+      "localDerivative": "composite/s001-e2e-integration/styles.css",
+      "wholeDirectoryCopied": false
+    },
+    {
+      "id": "V110-REAL-MODULE-WORKSPACES",
+      "source": "../../prototype-releases/v1.1.0",
+      "role": "real M01-M06 workspaces retained by v1.2 and v1.3.0",
+      "mode": "direct read-only pages plus candidate-owned native integration",
+      "localDerivative": "composite/integrations/native-module-integrations.js",
+      "wholeDirectoryCopied": false
+    },
+    {
+      "id": "V130-MODEL-RUNTIME",
+      "source": "../v1.3.0/composite/runtime",
+      "role": "generic model portfolio, objective API, repository service and S001-S005 registrations",
+      "mode": "read-only process reuse through composite/start-candidate.mjs",
+      "wholeDirectoryCopied": false
+    },
+    {
+      "id": "V130-MODEL-REPOSITORIES",
+      "source": "../v1.3.0/composite/model-repositories/s003",
+      "role": "ten executable Python model repositories with README and tests",
+      "mode": "read-only runtime source; branch, commit and tag state stays in the candidate service process",
+      "wholeDirectoryCopied": false
+    },
+    {
+      "id": "V120-S005-EVALUATION",
+      "source": "../v1.2.0/composite/scenarios/s005/evaluation-engine.js",
+      "role": "retained seven-stage evaluation contracts used from real module pages",
+      "mode": "read-only runtime reuse",
+      "wholeDirectoryCopied": false
+    },
+    {
+      "id": "S003-FORMAL-MODEL",
+      "source": "../../prototype-releases/v1.1.0/scenarios/s003/resources/m01/model-package.v2.json",
+      "role": "formal 1.0.2 model baseline and fallback",
+      "immutable": true
+    },
+    {
+      "id": "S003-FORMAL-RESULTS",
+      "source": "../../prototype-releases/v1.1.0/scenarios/s003/resources/m01/c035-risk-results.v2.json",
+      "role": "21-enterprise formal FACT result set",
+      "immutable": true
+    }
+  ],
+  "candidateOwnedInputs": [
+    {
+      "id": "SINGLE-SHELL-DERIVATIVE",
+      "path": "composite/s001-e2e-integration",
+      "role": "fixed three-domain home, feature launcher, shared WorkspaceContext and stable iframe orchestration"
+    },
+    {
+      "id": "NATIVE-MODULE-INTEGRATIONS",
+      "path": "composite/integrations/native-module-integrations.js",
+      "role": "M01-M06 and Dashboard native catalogs, query animation, action flow, decision operations and context handoff"
+    },
+    {
+      "id": "BUSINESS-OBJECT-EXPLORER",
+      "path": "composite/modules/m07",
+      "role": "object discovery and six-Lens shared-context exploration over 56 registered objects"
+    },
+    {
+      "id": "MODELING-OBJECTIVE-CENTER",
+      "path": "composite/model-center",
+      "role": "objective directory, models and code, comparison, observation, release and consumer mapping"
+    },
+    {
+      "id": "OPERATING-COCKPIT",
+      "path": "composite/dashboard",
+      "role": "five business cockpits, shared context and formal/candidate/shadow/simulation/difference consumption"
+    },
+    {
+      "id": "M07-PORTFOLIO-RESOURCE",
+      "path": "composite/modules/m07/resources/portfolio.json",
+      "role": "56 objects, 49 links, 39 series and traceable evidence across five business domains"
+    }
+  ],
+  "prohibitedInputs": [
+    "complete copied v1.3.0 tree",
+    "second platform Shell",
+    "static replacement page for M01-M06",
+    "runtime snapshot packaged as a new formal run",
+    "production implementation source",
+    "real sensitive enterprise data"
+  ],
+  "inputGate": "passed",
+  "acceptanceReady": false
+}

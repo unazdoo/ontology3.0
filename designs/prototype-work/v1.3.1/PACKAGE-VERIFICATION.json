@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "ofw.prototype.package-verification.v3",
+  "verifiedOn": "2026-09-04",
+  "observedAt": "2026-09-04T18:11:41.045Z",
+  "targetPrototypeVersion": "v1.3.1-rc.1",
+  "result": "PASSED",
+  "acceptanceReady": false,
+  "parentPrototype": {
+    "version": "v1.3.0-rc.1",
+    "commit": "e3990c69e77882062035490ef718fd93549bbf82",
+    "subtree": "a24109c8be2ffceca73e0fedbb9387f4b85a7176",
+    "integrity": "PASSED"
+  },
+  "upstreamPrototype": {
+    "version": "v1.2.0-rc.1",
+    "commit": "e4974c23bd223f26bfd04b08dc6f46eb4d9ae5e0",
+    "runtimeTests": "3/3 PASSED",
+    "integrity": "PASSED"
+  },
+  "frozenSource": {
+    "version": "v1.1.0",
+    "commit": "a8b023d7f8d49ad6ed6c24417b79b6f9df3fb716",
+    "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+    "releaseVerification": "PASSED: 13 components, 10 entries"
+  },
+  "staticVerification": {
+    "v131Tests": "17/17 PASSED",
+    "parentModelAndStabilityTests": "28/28 PASSED",
+    "javascriptSyntax": "PASSED",
+    "jsonParsing": "PASSED",
+    "gitDiffCheck": "PASSED",
+    "symlinks": 0
+  },
+  "pythonVerification": {
+    "repositories": 10,
+    "tests": "30/30 PASSED",
+    "actualPythonProcess": true,
+    "dataVersionBound": true,
+    "semanticContractBound": true
+  },
+  "chromeVerification": {
+    "browser": "Google Chrome 152.0.7977.77",
+    "controlSurface": "Playwright direct to local Google Chrome",
+    "inAppBrowserUsed": false,
+    "scenarioRouteChecks": "50/50 PASSED",
+    "realModuleWorkflows": "PASSED",
+    "allFiveModelLifecycles": "PASSED",
+    "s005EvaluationStages": "7/7",
+    "s005ModuleOutputs": 9,
+    "viewports": {
+      "1440x900": "PASSED",
+      "1280x720": "PASSED",
+      "390x844": "PASSED"
+    },
+    "outerHorizontalOverflows": 0,
+    "moduleHorizontalOverflows": 0,
+    "blankPages": 0,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "failedResourceRequests": 0,
+    "crossTabReloads": 0,
+    "historyBackFrameLoadDelta": 0,
+    "evidence": "composite/evidence/browser-regression.json"
+  },
+  "mainChain": {
+    "scenarioId": "S003",
+    "cycleId": "CYCLE-S003-OPT-20260902-009",
+    "finalStatus": "BINDING_APPLIED",
+    "dataVersionId": "DV-S003-SYN-LONGITUDINAL-20260902-v1-C09",
+    "semanticContractVersionId": "SC-S003-MULTIMODEL-20260902-v1-C09",
+    "modelRuns": 9,
+    "benchmarkRuns": 10,
+    "shadowWindows": 3,
+    "releaseCandidateId": "RC-S003-009-299",
+    "bindingRevisionId": "CB-S003-DASHBOARD-MULTIMODEL-R8",
+    "simulationResultId": "SIMRES-009-304",
+    "formalModelPointerChanged": false,
+    "formalFactPointerChanged": false,
+    "sideEffectsEmitted": 0
+  },
+  "regressionMatrix": {
+    "cases": 48,
+    "passed": 48,
+    "failed": 0,
+    "blocked": 0
+  },
+  "disallowedClaimsConfirmedAbsent": [
+    "model validity formally proven",
+    "production rollout complete",
+    "user review passed",
+    "phase-one acceptance passed"
+  ]
+}

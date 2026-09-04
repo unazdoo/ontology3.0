@@ -1,0 +1,463 @@
+{
+  "schemaVersion": "ofw.composite-manifest.v3",
+  "candidateVersion": "v1.3.1-rc.1",
+  "parentVersion": "v1.3.0-rc.1",
+  "parentCommit": "e3990c69e77882062035490ef718fd93549bbf82",
+  "parentSubtree": "a24109c8be2ffceca73e0fedbb9387f4b85a7176",
+  "uniqueEntry": "composite/s001-e2e-integration/index.html",
+  "acceptanceReady": false,
+  "composition": {
+    "singleShell": true,
+    "secondShellPresent": false,
+    "wholeParentTreeCopied": false,
+    "parentRuntimeReusedReadOnly": true,
+    "inheritedRealModulePages": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "authorizedRedesignModules": [
+      "M07",
+      "M08",
+      "Dashboard"
+    ],
+    "globalScenarioSelectorVisible": false,
+    "iframeMenusHiddenWhenDuplicated": true
+  },
+  "homepage": {
+    "architectureDomains": [
+      "数据与本体",
+      "探索与建模",
+      "运营与智能"
+    ],
+    "fixedGeometry": true,
+    "featureEntriesPerDomain": 5,
+    "scenarioRunCardsVisible": false,
+    "moduleDirectoryVisible": false,
+    "unifiedResourceDirectoryVisible": false
+  },
+  "workspaceContext": {
+    "schemaVersion": "ofw.workspace-context.v1",
+    "fields": [
+      "objectSetRef",
+      "activeObjectRef",
+      "timeRange",
+      "comparisonRef",
+      "resultView",
+      "dataVersionRef",
+      "ontologyVersionRef",
+      "evidenceRefs"
+    ],
+    "consumers": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06",
+      "M07",
+      "M08",
+      "Dashboard"
+    ],
+    "sameFrameEchoPrevented": true,
+    "crossTabAutomaticReloadAllowed": false
+  },
+  "objectExplorer": {
+    "module": "M07",
+    "routes": [
+      "#discover",
+      "#explore"
+    ],
+    "lenses": [
+      "catalog",
+      "object360",
+      "graph",
+      "temporal",
+      "spatial",
+      "compare"
+    ],
+    "objectCount": 56,
+    "linkCount": 49,
+    "seriesCount": 39,
+    "explicitAndFilteredObjectSetsSeparated": true,
+    "m08RoundTrip": true
+  },
+  "modelingObjectiveCenter": {
+    "module": "M08",
+    "tasks": [
+      "objectives",
+      "models",
+      "compare",
+      "observe",
+      "release"
+    ],
+    "businessGoalCount": 5,
+    "objectiveFirst": true,
+    "modelRolesSeparated": true,
+    "comparisonPinsTwoVersions": true,
+    "pythonRepositoryDrilldown": true,
+    "repositoryCount": 10,
+    "consumerMap": [
+      "Dashboard",
+      "M07",
+      "M03",
+      "M05",
+      "M06"
+    ]
+  },
+  "formalBaseline": {
+    "modelPackage": "S003-M01-DEBT-RISK-PKG@1.0.2",
+    "modelVersionId": "MV-S003-DEBT-RISK-1.0.2-FORMAL",
+    "modelSourceSha256": "c1bcfdf2c61313e57233ad4ecd471e24b09535aa7f62d4bfb97741e15ec9b014",
+    "resultSetId": "S003-C035-RISK-RESULTS-20251231-v2",
+    "resultSourceSha256": "fbcbff5095a556293cf3ede0249c548bb9208da8a2e2f66139be418419fabf7a",
+    "immutable": true,
+    "formalPointerMutable": false
+  },
+  "modelPortfolio": {
+    "objectiveCount": 8,
+    "modelCount": 10,
+    "formalBaselineCount": 1,
+    "coreChallengerCount": 2,
+    "supplementalModelCount": 7,
+    "aggregateScoreCreated": false,
+    "automaticChampionSelectionAllowed": false,
+    "automaticReleaseAllowed": false,
+    "shadowMaturityWindows": 3
+  },
+  "dataEngineering": {
+    "classification": "SYNTHETIC_DEIDENTIFIED_LONGITUDINAL",
+    "enterpriseCount": 21,
+    "periodCount": 8,
+    "observationCount": 168,
+    "modelReadyDataAssetCount": 6,
+    "perModelSemanticBindingCount": 10,
+    "futureLeakageRows": 0,
+    "invalidOutcomeRows": 0,
+    "labelIndependence": "PASSED"
+  },
+  "resultContracts": {
+    "identities": [
+      "FACT",
+      "PREDICTION",
+      "SHADOW",
+      "SIMULATION",
+      "DIFFERENCE"
+    ],
+    "hardRejectModule": "M04",
+    "hardRejectCode": "NON_FACT_SOURCE_REJECTED",
+    "externalSideEffects": 0
+  },
+  "browserVerification": {
+    "evidence": "composite/evidence/browser-regression.json",
+    "scenarioRouteChecks": 50,
+    "viewports": [
+      "1440x900",
+      "1280x720",
+      "390x844"
+    ],
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "resourceErrors": 0,
+    "crossTabReloads": 0,
+    "historyBackFrameLoadDelta": 0
+  },
+  "governanceArtifacts": [
+    "VERSION.json",
+    "WORKSPACE.md",
+    "INTEGRATION-SOURCES.json",
+    "PACKAGE-VERIFICATION.json",
+    "MODULE-REGISTRY.json",
+    "SCENARIO-REGISTRY.json",
+    "COMPOSITE-MANIFEST.json",
+    "COMPOSITE-REGRESSION-MATRIX.json",
+    "ASSEMBLY-RESULT.md",
+    "ACTUAL-CHANGES.md",
+    "OPEN-ISSUES.md",
+    "PALANTIR-REFLECTION.md"
+  ],
+  "artifactInventory": {
+    "root": "composite",
+    "algorithm": "sha256",
+    "generatedBy": "composite/tests/refresh-manifest.mjs",
+    "generatedAt": "2026-09-04T18:11:41.045Z",
+    "status": "complete",
+    "fileCount": 54,
+    "totalBytes": 6140390,
+    "files": [
+      {
+        "path": "composite/dashboard/app.js",
+        "bytes": 181377,
+        "sha256": "e7b6f9a0d5def5ccf9c9e13d24ad9dfdd3a2f1d11ab1ce061f9904ed5900b0cc"
+      },
+      {
+        "path": "composite/dashboard/data.js",
+        "bytes": 39113,
+        "sha256": "fb010502aadfe49ff63cb7c7255082680ace7f454ea9e37d7d4b41a7f3ec6666"
+      },
+      {
+        "path": "composite/dashboard/index.html",
+        "bytes": 1462,
+        "sha256": "469063f4b30a427e9f5bc530d7c46a4b8d5292984f5f4e56ae9909ce56e21ea1"
+      },
+      {
+        "path": "composite/dashboard/styles.css",
+        "bytes": 94468,
+        "sha256": "668e67eadaaa8d218213a6ed7ebce480ed952d5405e519c11cdc6a671eee2fd8"
+      },
+      {
+        "path": "composite/evidence/browser-regression.json",
+        "bytes": 19740,
+        "sha256": "787cf54d2521c4a03ecde3329c02ba3c91a2a5bd9079b544fe293def92aa9dc0"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-dashboard-20260904-1280x720.png",
+        "bytes": 161548,
+        "sha256": "4ec9a652899d1293ad97c4b2635723584fa8dd840049c77ddf7a5065e8a9ccf5"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-dashboard-20260904-1440x900.png",
+        "bytes": 192705,
+        "sha256": "d143fd720f8329bee62b60fa19351a6dd841117374b7ff541f89edf11f45ee1a"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-dashboard-20260904-390x844.png",
+        "bytes": 71241,
+        "sha256": "b47f4e96685673cc88012373947f7bf4964350e577266d2bf58b190b60de8cb2"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-dashboard-detail-20260904-1440x900.png",
+        "bytes": 301090,
+        "sha256": "7cc349b72f16ecc89f4802f2ff6e20947720af57af7bff38e68605336bd8dcf1"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-dashboard-s004-20260904-1440x900.png",
+        "bytes": 210881,
+        "sha256": "2d7c3d08c853ee55733c2205ab5b521022c052224d79e744b9bdb3938c85cb32"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-home-20260904-1440x900.png",
+        "bytes": 172148,
+        "sha256": "56506f1e2035d6f22220ece07e8d69ee67262bc585dcc1cb48795d449729c13c"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m01-20260904-1440x900.png",
+        "bytes": 160886,
+        "sha256": "ea8afb17585352dc6bd658a106d9abc9c94fa1280dfa0b5fe9f91b1abd0349fc"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m02-20260904-1440x900.png",
+        "bytes": 270494,
+        "sha256": "968867afac9e2aad972e692f55d9907322cd74e8024b4c687d00ef43f1f3ef60"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m03-20260904-1280x720.png",
+        "bytes": 141332,
+        "sha256": "b592b263e9ddb56820f21c206a4870db42671a69e864fe9d89cf5cb989e73851"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m03-20260904-1440x900.png",
+        "bytes": 193979,
+        "sha256": "be4ab9d3bf7fb116100987f59b18eff69f1879737158ff70f9a7b03eeec7c726"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m03-20260904-390x844.png",
+        "bytes": 73803,
+        "sha256": "8d7d6c7e96c0f1725704a363abb0eee852f861eafd46b1ff332454a2bd20ee8f"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m03-answer-20260904-1440x900.png",
+        "bytes": 141778,
+        "sha256": "4231c231eed579ec449fdc202a56ae60aebdd5771ae2da679954ead4f1c81382"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m03-thinking-20260904-1440x900.png",
+        "bytes": 97480,
+        "sha256": "a7f48dde22e776a13b7517dcc6d3ac4e134aaa9d0acc968d27227941b55cd2f4"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m04-20260904-1440x900.png",
+        "bytes": 147873,
+        "sha256": "3aeb81aef71b16bf9c4332036a3a1ed31ee46be3f5fc444df79c29a605ec5432"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m05-20260904-1440x900.png",
+        "bytes": 167441,
+        "sha256": "05f5c0ec2b6f0db1ac0b88b97fdd14d483c40513c2a2b979a711bedf5d603009"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m06-20260904-1440x900.png",
+        "bytes": 195913,
+        "sha256": "b6633c9f624a86a9490c3adcce6765014e8ddd3e50db8335dd287cf9795736b4"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m07-20260904-1440x900.png",
+        "bytes": 169321,
+        "sha256": "9712f221c288338d37585179c6ab8b75f7d0b922c1e9b4cee3028273cb8d1ac2"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m08-20260904-1280x720.png",
+        "bytes": 147739,
+        "sha256": "91c3177a9cbdc766badc9514dbe7f5d0466d14af4fa58698a071ce85b2de84db"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m08-20260904-1440x900.png",
+        "bytes": 235649,
+        "sha256": "1d63cadc21e2d8b23e3c030c2bde306e0afdeae5994f972a56157bee972b0641"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m08-20260904-390x844.png",
+        "bytes": 58518,
+        "sha256": "f02fef44d9ce15bec82ee58cff0a3dd8a1de5f8162c6e276de64212b016370ee"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m08-compare-20260904-1440x900.png",
+        "bytes": 185074,
+        "sha256": "61c4c1d1787fdfaa453fa1731f313f8bc4d1070c72a0ab6eab9c1bd0ac3669ba"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m08-models-20260904-1440x900.png",
+        "bytes": 191486,
+        "sha256": "2c8130bf44545d561523a78b5eb16625263e6dedf02c98e903d07b1b7755e358"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m08-observe-20260904-1440x900.png",
+        "bytes": 185352,
+        "sha256": "2d684606845294019b9cc01c0dfd0b53e83494441b0037ffe55a28753e1d5cb9"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m08-repository-20260904-1440x900.png",
+        "bytes": 223775,
+        "sha256": "5af26c05d5af6cd8e3b82cae59c6883bff340103603135a6ab211a32a359c598"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-s002-m07-20260904-1440x900.png",
+        "bytes": 227774,
+        "sha256": "fe0eef8130926bba4841ea85ce592b9386aa16fdbc106d14b687c1ec32930b25"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-s004-m07-20260904-1440x900.png",
+        "bytes": 227744,
+        "sha256": "4bce395ab89359d941ba395c389d3246035d2b3c126d404d6006e826a63d49b0"
+      },
+      {
+        "path": "composite/integrations/native-module-integrations.js",
+        "bytes": 175086,
+        "sha256": "647bbf8862b36421a137e7fb409ecf0a366e58922a4fb54c648c5cb00dc5cd13"
+      },
+      {
+        "path": "composite/model-center/app.js",
+        "bytes": 91998,
+        "sha256": "b4820233ffa54d34bcd26cd6a684dfab30cc153794323e688e11fad168210f1e"
+      },
+      {
+        "path": "composite/model-center/index.html",
+        "bytes": 714,
+        "sha256": "60431ee80f5db7a74a027831e1f5f6a921d33902acefb872446f0ffb97f89bea"
+      },
+      {
+        "path": "composite/model-center/styles.css",
+        "bytes": 66156,
+        "sha256": "ff7451affc71f7db99d7939616180aa94af1f236ef7eafe8d1d14b6621f0c3f9"
+      },
+      {
+        "path": "composite/modules/m07/app.js",
+        "bytes": 121046,
+        "sha256": "2eab777ed161cdf0a526eb039abf3d9320dfade1bcb3f6463c78ca5aba2f9513"
+      },
+      {
+        "path": "composite/modules/m07/index.html",
+        "bytes": 6920,
+        "sha256": "50848ed1d0290d71d7f3d6e568986e73c2b1d4ca8ffd37f01ad2dbd79f06a897"
+      },
+      {
+        "path": "composite/modules/m07/resources/portfolio.json",
+        "bytes": 448821,
+        "sha256": "9bead9bd604b7b2fc87b879f9d7c1de37fe35d9c78a69f1f465e15474f898a50"
+      },
+      {
+        "path": "composite/modules/m07/styles.css",
+        "bytes": 79404,
+        "sha256": "32c2be459a9fed8a339257aa598ae18440bf87aeb75cf99400a11349cd4cfa3e"
+      },
+      {
+        "path": "composite/resources/catalog.js",
+        "bytes": 6808,
+        "sha256": "486373bd0dc036fb377ead52881412e313f07af7712e198fc5344379bc6db329"
+      },
+      {
+        "path": "composite/s001-e2e-integration/app.js",
+        "bytes": 108965,
+        "sha256": "91bcda3ea3356e8d5b6c5ab2af1e4acac37b5db514d7377fab9e5bad01868e53"
+      },
+      {
+        "path": "composite/s001-e2e-integration/data.js",
+        "bytes": 6604,
+        "sha256": "d03f0ecf50bc31d4f7201d5135f754b7fb4142048bfa295c5196b5f9cffa96c1"
+      },
+      {
+        "path": "composite/s001-e2e-integration/index.html",
+        "bytes": 2627,
+        "sha256": "ddbd63eb9c4da3ecac3539b7fe1e341ae073c9450c730c63b5ff6f815b3b03d9"
+      },
+      {
+        "path": "composite/s001-e2e-integration/state.js",
+        "bytes": 32291,
+        "sha256": "6d6b666448e2b708adb5d40c8533d228ffb40c2e5ce058d6d6ceaedb30521a46"
+      },
+      {
+        "path": "composite/s001-e2e-integration/styles.css",
+        "bytes": 10166,
+        "sha256": "5dd98aeee696a2bed8deaa4fe004aa18cd266c5ef5430de8d9ad530be6683e9e"
+      },
+      {
+        "path": "composite/start-candidate.mjs",
+        "bytes": 1141,
+        "sha256": "dd456dd8dc4f8c7804ac7867b8fd8c41dc04c9b5f35cbb30aee883a7c7ebf6de"
+      },
+      {
+        "path": "composite/tests/chrome-regression.mjs",
+        "bytes": 72746,
+        "sha256": "c5668b21521259f8aa337bb35d208e1e4994e3a66d3f6453aede1e09817d15f3"
+      },
+      {
+        "path": "composite/tests/parent-integrity.test.mjs",
+        "bytes": 1226,
+        "sha256": "18e800f0a02a71662131a53060cda586069514dca0837bd09a2ac2bc4874d720"
+      },
+      {
+        "path": "composite/tests/record-regression.mjs",
+        "bytes": 1206,
+        "sha256": "dfd2648cc317003445e7ed6b20646892aa7ff50bf0eaf7be4f19f2dec7cdd523"
+      },
+      {
+        "path": "composite/tests/refresh-manifest.mjs",
+        "bytes": 2077,
+        "sha256": "c130667014ef45c2a7bd2c55b23a5630d79959c12464b420c4e9c09b78c62e36"
+      },
+      {
+        "path": "composite/tests/server.test.mjs",
+        "bytes": 897,
+        "sha256": "fabdd44728d3f9861dc996d2e409630f4159584b737eabaa0b870eb2ac6ec102"
+      },
+      {
+        "path": "composite/tests/shell-contract.test.mjs",
+        "bytes": 5787,
+        "sha256": "1edcecd2aa3835ee120a3744258f37cef2697b5f779bcfd6025e413b76fad1a2"
+      },
+      {
+        "path": "composite/tests/stability-contract.test.mjs",
+        "bytes": 2668,
+        "sha256": "e4cfa5bf17fa053d13819ab854aae6ddfb4ca991a472c4e3357ed910d21b222f"
+      },
+      {
+        "path": "composite/tests/verify-candidate.mjs",
+        "bytes": 5852,
+        "sha256": "ccc5f4bebd39b5c4be4b38807461db2f5e2bb4cf09ae6a96b1036709b2798db6"
+      }
+    ]
+  }
+}

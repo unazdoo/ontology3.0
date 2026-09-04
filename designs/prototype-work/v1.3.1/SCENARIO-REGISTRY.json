@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "ofw.scenario-registry.v4",
+  "targetPrototypeVersion": "v1.3.1-rc.1",
+  "parentVersion": "v1.3.0-rc.1",
+  "parentCommit": "e3990c69e77882062035490ef718fd93549bbf82",
+  "presentationPolicy": "all five business domains are organized inside shared module catalogs; no global scenario selector is shown",
+  "stateNamespace": "ofw.prototype.v1.3.1.composite.state.v1",
+  "scenarios": [
+    {
+      "scenarioId": "S001",
+      "businessName": "融资成本洞察与结构优化",
+      "subjectLabel": "融资主体",
+      "formalRun": "archived-read-only",
+      "modelRuntime": "../v1.3.0/composite/runtime/scenario-model-registrations.mjs",
+      "fullLifecycle": true
+    },
+    {
+      "scenarioId": "S002",
+      "businessName": "预算风险与异常监测",
+      "subjectLabel": "预算单元",
+      "formalRun": "archived-read-only",
+      "modelRuntime": "../v1.3.0/composite/runtime/scenario-model-registrations.mjs",
+      "fullLifecycle": true
+    },
+    {
+      "scenarioId": "S003",
+      "businessName": "债务风险智能监测",
+      "subjectLabel": "企业",
+      "formalRun": "archived-read-only",
+      "formalBaseline": {
+        "modelPackage": "S003-M01-DEBT-RISK-PKG@1.0.2",
+        "modelVersionId": "MV-S003-DEBT-RISK-1.0.2-FORMAL",
+        "resultSetId": "S003-C035-RISK-RESULTS-20251231-v2",
+        "enterpriseCount": 21,
+        "immutable": true
+      },
+      "continuousOptimization": {
+        "objectiveCount": 8,
+        "modelCount": 10,
+        "formalBaselineCount": 1,
+        "coreChallengerCount": 2,
+        "supplementalModelCount": 7,
+        "modelReadyDataAssetCount": 6,
+        "perModelSemanticBindingCount": 10,
+        "pythonModelRepositoryCount": 10,
+        "shadowMaturityWindows": 3,
+        "resultKinds": ["FACT", "PREDICTION", "SHADOW", "SIMULATION"],
+        "automaticChampionSelectionAllowed": false,
+        "automaticReleaseAllowed": false
+      },
+      "fullLifecycle": true
+    },
+    {
+      "scenarioId": "S004",
+      "businessName": "贷前风险评估",
+      "subjectLabel": "借款主体",
+      "formalRun": "archived-read-only",
+      "dashboardWorkspace": "composite/dashboard/index.html#/view/preloan/overview",
+      "modelRuntime": "../v1.3.0/composite/runtime/scenario-model-registrations.mjs",
+      "fullLifecycle": true
+    },
+    {
+      "scenarioId": "S005",
+      "businessName": "投后评价与产品选择",
+      "subjectLabel": "金融产品",
+      "formalRun": "dynamic-candidate-run-with-history",
+      "evaluationEngine": "../v1.2.0/composite/scenarios/s005/evaluation-engine.js",
+      "evaluationStages": 7,
+      "moduleOutputCount": 9,
+      "modelRuntime": "../v1.3.0/composite/runtime/scenario-model-registrations.mjs",
+      "fullLifecycle": true
+    }
+  ],
+  "scenarioIsolation": {
+    "browserStateSeparated": true,
+    "optimizationCyclesSeparated": true,
+    "currentCycleResetScope": "current business cycle only",
+    "historyPreserved": true,
+    "formalFactsMutated": false,
+    "runtimeSnapshotIncluded": false
+  },
+  "sharedConsumption": ["Dashboard", "M07", "M03", "M05", "M06"],
+  "nonFactDecisionBoundary": {
+    "module": "M04",
+    "code": "NON_FACT_SOURCE_REJECTED",
+    "resultKinds": ["PREDICTION", "SHADOW", "SIMULATION"],
+    "sideEffectsEmitted": 0
+  },
+  "acceptanceReady": false
+}

@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "ofw.prototype.module-registry.v3",
+  "targetPrototypeVersion": "v1.3.1-rc.1",
+  "parentPrototype": {
+    "version": "v1.3.0-rc.1",
+    "commit": "e3990c69e77882062035490ef718fd93549bbf82",
+    "subtree": "a24109c8be2ffceca73e0fedbb9387f4b85a7176",
+    "referenceMode": "read-only-relative"
+  },
+  "shell": {
+    "count": 1,
+    "entry": "composite/s001-e2e-integration/index.html",
+    "renderer": "composite/s001-e2e-integration/app.js",
+    "rendererBaseline": "../v1.3.0/composite/s001-e2e-integration/app.js",
+    "styleBaseline": "../v1.2.0/composite/s001-e2e-integration/styles.css",
+    "styleDelta": "composite/s001-e2e-integration/styles.css",
+    "nestedPlatformShellAllowed": false,
+    "globalScenarioSwitcherVisible": false,
+    "secondaryNavigation": "one light vertical task navigation per module; mobile single selector; breadcrumb in global top bar",
+    "workspaceContext": "ofw.workspace-context.v1",
+    "crossTabAutomaticReloadAllowed": false
+  },
+  "moduleOrder": ["M01", "M02", "M03", "M04", "M05", "M06", "M07", "M08", "Dashboard"],
+  "modules": [
+    {
+      "resourceOwnerId": "M01",
+      "moduleId": "ontology",
+      "name": "本体管理",
+      "route": "#module/ontology",
+      "entry": "../../prototype-releases/v1.1.0/ontology-management-review/canvas-first/index.html",
+      "sourceMode": "read-only-real-workspace-plus-native-integration",
+      "replacementPageAllowed": false,
+      "capabilities": ["published-semantic-assets", "object-relation-metric-overview", "per-model-semantic-contract", "downstream-usage"]
+    },
+    {
+      "resourceOwnerId": "M02",
+      "moduleId": "data",
+      "name": "数据工程",
+      "route": "#module/data",
+      "entry": "../../prototype-releases/v1.1.0/data-engineering-prototype-review/review-v3/方案B2.html",
+      "sourceMode": "read-only-real-workspace-plus-native-integration",
+      "replacementPageAllowed": false,
+      "capabilities": ["data-source", "source-snapshot", "pipeline-definition", "pipeline-run", "data-version-freeze", "quality-and-leakage-check"]
+    },
+    {
+      "resourceOwnerId": "M03",
+      "moduleId": "query",
+      "name": "智能问数",
+      "route": "#module/query",
+      "entry": "../../prototype-releases/v1.1.0/intelligent-query-prototype/review-next/conversation-workspace/index.html",
+      "sourceMode": "read-only-real-workspace-plus-native-integration",
+      "replacementPageAllowed": false,
+      "capabilities": ["51-recommendations", "six-business-topic-tabs", "five-step-answer-animation", "result-focus", "action-request", "exploration-and-report-handoff"]
+    },
+    {
+      "resourceOwnerId": "M04",
+      "moduleId": "decision",
+      "name": "决策中心",
+      "route": "#module/decision",
+      "entry": "../../prototype-releases/v1.1.0/decision-center-prototype/review-v2/action-portfolio.html",
+      "sourceMode": "read-only-real-workspace-plus-native-integration",
+      "replacementPageAllowed": false,
+      "capabilities": ["decision-workbench", "decision-operations-cockpit", "action-request-tracking"],
+      "nonFactBoundary": {
+        "code": "NON_FACT_SOURCE_REJECTED",
+        "resultKinds": ["PREDICTION", "SHADOW", "SIMULATION"],
+        "sideEffectsEmitted": 0
+      }
+    },
+    {
+      "resourceOwnerId": "M05",
+      "moduleId": "agent",
+      "name": "Agent 应用",
+      "route": "#module/agent",
+      "entry": "../../prototype-releases/v1.1.0/agent-application/Agent应用.html",
+      "sourceMode": "read-only-real-workspace-plus-native-integration",
+      "replacementPageAllowed": false,
+      "capabilities": ["task-oriented-agent-directory", "result-explanation", "contribution-anomaly-relation-disagreement"]
+    },
+    {
+      "resourceOwnerId": "M06",
+      "moduleId": "report",
+      "name": "报告中心",
+      "route": "#module/report",
+      "entry": "../../prototype-releases/v1.1.0/report-center/review-lifecycle/index.html",
+      "sourceMode": "read-only-real-workspace-plus-native-integration",
+      "replacementPageAllowed": false,
+      "capabilities": ["report-catalog", "workspace-context-draft", "history-and-evidence", "review-required"]
+    },
+    {
+      "resourceOwnerId": "M07",
+      "moduleId": "m07",
+      "name": "业务对象探索",
+      "route": "#module/m07",
+      "entry": "composite/modules/m07/index.html",
+      "baselineEntry": "../v1.2.0/composite/modules/m07/module/workspace-v2.html",
+      "baselineResource": "../v1.3.0/composite/modules/m07/resources/portfolio.json",
+      "sourceMode": "candidate-local-object-explorer",
+      "replacementPageAllowed": true,
+      "routes": ["#discover", "#explore"],
+      "lenses": ["对象目录", "对象全貌", "关系网络", "时序分析", "地图", "对比分析"],
+      "resource": "composite/modules/m07/resources/portfolio.json",
+      "objectCount": 56
+    },
+    {
+      "resourceOwnerId": "M08",
+      "moduleId": "modeling",
+      "name": "模型目标与优化",
+      "route": "#module/modeling",
+      "entry": "composite/model-center/index.html",
+      "baselineEntry": "../v1.3.0/composite/model-center/index.html",
+      "sourceMode": "candidate-local-modeling-objective-center",
+      "replacementPageAllowed": true,
+      "tasks": ["目标目录", "模型与代码", "评测对比", "候选观察", "发布与消费"],
+      "runtime": "../v1.3.0/composite/runtime",
+      "repositoryService": "../v1.3.0/composite/runtime/model-repository-service.mjs",
+      "repositoryRoot": "../v1.3.0/composite/model-repositories/s003",
+      "modelRepositoryCount": 10
+    },
+    {
+      "resourceOwnerId": "Dashboard",
+      "moduleId": "dashboard",
+      "name": "经营驾驶舱",
+      "route": "#dashboard",
+      "entry": "composite/dashboard/index.html",
+      "baselineEntry": "../v1.3.0/composite/dashboard/index.html",
+      "sourceMode": "candidate-local-operating-cockpit",
+      "replacementPageAllowed": true,
+      "businessWorkspaces": ["融资管理", "预算监督", "债务风险", "贷前评估", "投后评价"],
+      "resultViews": ["正式结果", "候选试算", "影子观察", "压力模拟", "正式与候选差异"]
+    }
+  ],
+  "acceptanceReady": false
+}
