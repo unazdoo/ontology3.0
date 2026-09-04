@@ -1,0 +1,947 @@
+{
+  "schemaVersion": "ofw.prototype.composite-manifest.v3",
+  "manifestVersion": 3,
+  "candidateVersion": "v1.3.0-rc.1",
+  "status": "assembly-candidate-platform-home-native-catalogs-unified-navigation-stable-chrome-verified",
+  "acceptanceReady": false,
+  "parentPrototype": {
+    "version": "v1.2.0-rc.1",
+    "commit": "e4974c23bd223f26bfd04b08dc6f46eb4d9ae5e0",
+    "commitTree": "036ace4ea3954cfba9657ef273ea593d1fce78fd",
+    "subtree": "e57caf36b4a815b4d363ca93ee69305c12228938",
+    "path": "../v1.2.0",
+    "immutable": true
+  },
+  "composition": {
+    "mode": "selective-local-derivative-on-read-only-parent",
+    "parentTreeCopied": false,
+    "parentShellRendererExecuted": false,
+    "candidateLocalShellRenderer": "composite/s001-e2e-integration/app.js",
+    "parentShellRendererBaseline": "../v1.2.0/composite/s001-e2e-integration/app.js",
+    "parentShellStylesReferenced": true,
+    "candidateShellStyleRole": "platform capability homepage, top-bar breadcrumbs, higher-contrast secondary task navigation and responsive layout only",
+    "platformShellCount": 1,
+    "nestedPlatformShellAllowed": false,
+    "moduleScenarioLoaderCount": 0,
+    "absoluteSymlinksAllowed": false,
+    "runtimeSnapshotIncluded": false,
+    "redirectWrapperAllowed": false,
+    "backgroundPollingAllowed": false,
+    "crossTabAutomaticReloadAllowed": false,
+    "authorizedRedesignModules": [
+      "M08"
+    ],
+    "otherReplacementModulePagesAllowed": false,
+    "globalScenarioSwitcherVisible": false,
+    "unifiedResourceDirectoryVisible": false,
+    "homepageScenarioOperationsVisible": false,
+    "homepagePlatformArchitectureVisible": true,
+    "iframeLevelSecondaryNavigationVisible": false
+  },
+  "uniqueEntry": "composite/s001-e2e-integration/index.html",
+  "runtimeServices": {
+    "launcher": "node composite/start-candidate.mjs",
+    "staticReviewPort": 4362,
+    "modelingPort": 4363,
+    "modelingRole": "candidate-local S001-S005 model management, deterministic continuous optimization, Python model repositories and parent M08 compatibility",
+    "parentCompatibilityFixes": [
+      "serve parent M07 with the verified Leaflet CSS SRI without modifying the parent file",
+      "inject candidate-owned S002/S004 type labels into the served M07 response",
+      "serve one combined M07 portfolio resource without exposing scenario selection controls",
+      "return 200 NOT_READY plus missing reason for unavailable result kinds"
+    ],
+    "productionService": false
+  },
+  "incrementalComponents": [
+    {
+      "id": "v130-single-shell-overlay",
+      "entry": "composite/s001-e2e-integration/index.html",
+      "localRenderer": "composite/s001-e2e-integration/app.js",
+      "parentRendererBaseline": "../v1.2.0/composite/s001-e2e-integration/app.js",
+      "parentStyles": "../v1.2.0/composite/s001-e2e-integration/styles.css",
+      "rule": "preserve v1.2 Shell structure and visual language while keeping the homepage focused on platform capabilities, placing breadcrumbs in the top bar and providing one higher-contrast Shell-level secondary task navigation"
+    },
+    {
+      "id": "generic-continuous-optimization-engine",
+      "entry": "composite/runtime/model-portfolio-engine.mjs",
+      "rule": "scenario-neutral state machine for DataVersion, semantic contract, Benchmark, AI insight, immutable human review, ModelVersion, Shadow, Release, Binding, rollback and next cycle"
+    },
+    {
+      "id": "s001-s005-model-management-registrations",
+      "entry": "composite/runtime/scenario-model-registrations.mjs",
+      "scenarioIds": [
+        "S001",
+        "S002",
+        "S003",
+        "S004",
+        "S005"
+      ],
+      "rule": "register objectives, model portfolios and domain presentation metadata"
+    },
+    {
+      "id": "s003-model-portfolio-registration",
+      "entry": "composite/runtime/s003-registration.mjs",
+      "formalModelSource": "../../prototype-releases/v1.1.0/scenarios/s003/resources/m01/model-package.v2.json",
+      "formalResultSource": "../../prototype-releases/v1.1.0/scenarios/s003/resources/m01/c035-risk-results.v2.json",
+      "rule": "S003 owns debt-risk business questions, models, synthetic recipe and result calculations"
+    },
+    {
+      "id": "s003-python-model-repositories",
+      "entry": "composite/runtime/model-repository-service.mjs",
+      "repositoryRoot": "composite/model-repositories/s003",
+      "generator": "composite/scripts/generate-model-repositories.mjs",
+      "repositoryCount": 10,
+      "filesPerRepository": 6,
+      "rule": "each model has README, Python source, features, model card, requirements and tests; main is protected, commits and tags are immutable, and runs bind the frozen DataVersion and semantic contract"
+    },
+    {
+      "id": "parent-page-inheritance",
+      "entries": {
+        "M01": "../../prototype-releases/v1.1.0/ontology-management-review/canvas-first/index.html",
+        "M02": "../../prototype-releases/v1.1.0/data-engineering-prototype-review/review-v3/方案B2.html",
+        "M03": "../../prototype-releases/v1.1.0/intelligent-query-prototype/review-next/conversation-workspace/index.html",
+        "M04": "../../prototype-releases/v1.1.0/decision-center-prototype/review-v2/action-portfolio.html",
+        "M05": "../../prototype-releases/v1.1.0/agent-application/Agent应用.html",
+        "M06": "../../prototype-releases/v1.1.0/report-center/review-lifecycle/index.html",
+        "M07": "../v1.2.0/composite/modules/m07/module/workspace-v2.html",
+        "M08": "composite/model-center/index.html"
+      },
+      "rule": "load the real parent module workspace; M08 is the only replacement page"
+    },
+    {
+      "id": "native-five-scenario-module-integrations",
+      "entry": "composite/integrations/native-module-integrations.js",
+      "modules": [
+        "M01",
+        "M02",
+        "M03",
+        "M04",
+        "M05",
+        "M06",
+        "Dashboard"
+      ],
+      "rule": "mount executable actions in native resource catalogs, headers, composers and drawers; materialize DataVersion and Semantic Contract as first-class catalog resources; retain 51 recommendations in six business-topic tabs with zero-reload filtering; restore the parent five-step query animation; never prepend explanatory replacement panels"
+    },
+    {
+      "id": "m07-combined-business-portfolio",
+      "entries": [
+        "composite/modules/m07/resources/portfolio.json",
+        "composite/modules/m07/resources/s002.json",
+        "composite/modules/m07/resources/s004.json",
+        "composite/integrations/m07-type-overlays.js"
+      ],
+      "rule": "organize S001-S005 objects in one exact-parent M07 directory; the selected object supplies business context only when handed to another module"
+    },
+    {
+      "id": "model-optimization-center",
+      "entry": "composite/model-center/index.html",
+      "baseline": "../v1.2.0/composite/modules/modeling/module/content.html",
+      "rule": "authorized M08 redesign driven by five Shell-level vertical tasks with business objectives, Python IDE drill-down, Git-like immutable history, explicit human insight review, verified scrolling and real API operations"
+    },
+    {
+      "id": "five-scenario-dashboard-consumption",
+      "entry": "composite/dashboard/index.html",
+      "views": [
+        "FORMAL",
+        "CANDIDATE",
+        "SHADOW",
+        "SIMULATION",
+        "DIFF"
+      ],
+      "rule": "Dashboard remains a result consumer and contains five native workspaces; S004 is a real pre-loan dashboard rather than an injected entry card"
+    }
+  ],
+  "visualRework": {
+    "reason": "earlier v1.3 revisions replaced module content instead of assembling on the v1.2 pages",
+    "parentVisualLanguagePreserved": true,
+    "shellStructureBaseline": "v1.2.0 app.js",
+    "shellCssBaseline": "v1.2.0 styles.css",
+    "m01M02M04Baseline": "exact frozen pages used by v1.2; M02 and M01 receive native data-asset and semantic-asset catalog entries rather than scenario prompt panels",
+    "m03M05M06Baseline": "real intelligent-query, Agent and report lifecycle workspaces",
+    "m08Baseline": "v1.2 objective contracts retained behind the authorized 模型优化中心 redesign",
+    "m07Baseline": "exact v1.2.0 M07 workspace plus one combined 56-object portfolio built from all registered resources",
+    "s005Baseline": "real v1.2 module pages with the retained S005 evaluation engine; module-workbench routing removed",
+    "dashboardBaseline": "v1.2.0 Dashboard selectively extended to five result views and five directory entries",
+    "secondShellCreated": false,
+    "authorizedRedesignModules": [
+      "M08"
+    ],
+    "otherReplacementPagesCreated": false,
+    "nativeIntegrationPanelsPrependToPages": false,
+    "intelligentQueryInterface": "exact parent conversation workspace; 51 recommendations are grouped into 全部问题、融资成本、预算监督、债务风险、贷前评估和投后评价 tabs without replacing the workspace or reloading the iframe; parent and native model questions preserve the five-step 680ms processing animation",
+    "secondaryNavigation": "one higher-contrast Shell-level vertical task navigation for M01-M08 and Dashboard with larger text and targets; breadcrumb stays in the global top bar; mobile uses a single selector; internal module menus are hidden",
+    "modelCenterNavigation": "five tasks: optimization workspace, business objectives and models, benchmark, candidate observation, release and monitoring; repositories open from model detail",
+    "m07ScenarioReuse": "S001-S005 resources are combined in one object directory with no scenario selector; handoff derives the registered context from the selected object",
+    "homepage": "platform capability architecture only; no module directory, scenario run, progress, todo or global scenario switch components"
+  },
+  "stability": {
+    "storageEventAction": "toast-only; no location.reload",
+    "popstateAndHashchangeCoalesced": true,
+    "staleFrameBreadcrumbGuarded": true,
+    "pageInstanceCounter": true,
+    "frameLoadCounter": true,
+    "recommendationTabReloadCount": 0,
+    "locationReplaceCount": 0,
+    "setIntervalCount": 0,
+    "mutationObserverCount": 0,
+    "detachedIframeTasksDestroyedBeforeNavigation": true
+  },
+  "formalBaseline": {
+    "modelVersionId": "MV-S003-DEBT-RISK-1.0.2-FORMAL",
+    "modelPackage": "S003-M01-DEBT-RISK-PKG@1.0.2",
+    "resultSetId": "S003-C035-RISK-RESULTS-20251231-v2",
+    "enterpriseCount": 21,
+    "modelSourceSha256": "c1bcfdf2c61313e57233ad4ecd471e24b09535aa7f62d4bfb97741e15ec9b014",
+    "resultSourceSha256": "fbcbff5095a556293cf3ede0249c548bb9208da8a2e2f66139be418419fabf7a",
+    "immutable": true,
+    "formalPointerMutable": false
+  },
+  "dataEngineering": {
+    "classification": "SYNTHETIC_DEIDENTIFIED_LONGITUDINAL",
+    "enterpriseCount": 21,
+    "periodCount": 8,
+    "observationCount": 168,
+    "modelReadyDataAssetCount": 6,
+    "perModelSemanticBindingCount": 10,
+    "labelSource": "independent synthetic event ledger",
+    "futureLeakagePolicy": "featureAvailableAt <= predictionAsOf and outcomeObservedAt > predictionAsOf",
+    "freezeOwner": "M02",
+    "hiddenM08DataGenerationAllowed": false
+  },
+  "modelPortfolio": {
+    "objectiveCount": 8,
+    "modelCount": 10,
+    "formalBaselineCount": 1,
+    "coreChallengerCount": 2,
+    "supplementalModelCount": 7,
+    "pythonModelRepositoryCount": 10,
+    "repositoryFilesPerModel": 6,
+    "repositoryLifecycle": [
+      "protected-main",
+      "branch",
+      "immutable-commit",
+      "immutable-tag",
+      "code-release-candidate",
+      "python-test",
+      "data-version-bound-python-run"
+    ],
+    "allScenarioLifecycleVerified": true,
+    "allScenarioFinalStatus": {
+      "S001": "BINDING_APPLIED",
+      "S002": "BINDING_APPLIED",
+      "S003": "BINDING_APPLIED",
+      "S004": "BINDING_APPLIED",
+      "S005": "BINDING_APPLIED"
+    },
+    "allScenarioShadowWindowCount": 3,
+    "shadowMaturityWindowCount": 3,
+    "humanInsightReviewRequired": true,
+    "insightReviewReceiptImmutable": true,
+    "aggregateScoreCreated": false,
+    "automaticChampionSelectionAllowed": false,
+    "automaticReleaseAllowed": false
+  },
+  "mainFlow": [
+    "M02_BUILD_DATA",
+    "M02_VALIDATE_QUALITY_AND_LEAKAGE",
+    "M02_FREEZE_DATA_VERSION",
+    "M01_CREATE_SEMANTIC_CONTRACT",
+    "M08_MAINTAIN_PYTHON_MODEL_REPOSITORIES",
+    "M08_BRANCH_COMMIT_TAG_AND_CODE_RELEASE_CANDIDATE",
+    "M08_BENCHMARK_FORMAL_BASELINE",
+    "M08_RUN_CHALLENGERS_AND_SUPPLEMENTAL_MODELS",
+    "M08_GENERATE_EVIDENCE_BACKED_AI_INSIGHTS",
+    "M08_HUMAN_REVIEW_AI_INSIGHTS",
+    "M08_CREATE_IMMUTABLE_MODEL_VERSION",
+    "M08_START_SHADOW",
+    "M08_ADVANCE_THREE_MATURITY_WINDOWS",
+    "M08_REBENCHMARK_MATURED_LABELS",
+    "M08_FORM_RELEASE_CANDIDATE",
+    "M08_VALIDATE_BINDING",
+    "M08_HUMAN_APPLY_BINDING",
+    "DASHBOARD_CONSUME_FIVE_VIEWS",
+    "M07_M03_M05_M06_CONSUME_SAME_PACKAGE",
+    "M04_REJECT_NON_FACT",
+    "START_NEXT_OPTIMIZATION_CYCLE"
+  ],
+  "resultContracts": {
+    "resultEnvelopeSchema": "ofw.modeling.result-envelope.v2",
+    "resultPackageSchema": "ofw.modeling.result-package.v2",
+    "consumerProjectionSchema": "ofw.modeling.consumer-projection.v1",
+    "resultKinds": [
+      "FACT",
+      "PREDICTION",
+      "SHADOW",
+      "SIMULATION"
+    ],
+    "readOnlyConsumers": [
+      "Dashboard",
+      "M07_EXPLORATION",
+      "M03_QUERY",
+      "M05_EXPLANATION",
+      "M06_REPORT"
+    ],
+    "hardRejectConsumer": "M04_DECISION",
+    "hardRejectCode": "NON_FACT_SOURCE_REJECTED"
+  },
+  "stateSeparation": {
+    "parentBrowserState": "ofw.prototype.v1.2.0.*",
+    "candidateBrowserState": "ofw.prototype.v1.3.0.*",
+    "formalScenarioRun": "read-only",
+    "optimizationCycle": "independent mutable candidate runtime",
+    "cycleReset": "archive current cycle and start new identity",
+    "historicalCyclesPreserved": true,
+    "formalFactsMutated": false,
+    "externalSideEffects": 0
+  },
+  "registries": {
+    "modules": "MODULE-REGISTRY.json",
+    "scenarios": "SCENARIO-REGISTRY.json",
+    "regression": "COMPOSITE-REGRESSION-MATRIX.json"
+  },
+  "governanceArtifacts": [
+    "VERSION.json",
+    "WORKSPACE.md",
+    "INTEGRATION-SOURCES.json",
+    "PACKAGE-VERIFICATION.json",
+    "MODULE-REGISTRY.json",
+    "SCENARIO-REGISTRY.json",
+    "COMPOSITE-MANIFEST.json",
+    "COMPOSITE-REGRESSION-MATRIX.json",
+    "ASSEMBLY-RESULT.md",
+    "ACTUAL-CHANGES.md",
+    "OPEN-ISSUES.md"
+  ],
+  "artifactInventory": {
+    "root": "composite",
+    "algorithm": "sha256",
+    "generatedBy": "composite/tests/refresh-manifest.mjs",
+    "generatedAt": "2026-09-03T18:34:55.063Z",
+    "status": "complete",
+    "fileCount": 124,
+    "totalBytes": 6026197,
+    "files": [
+      {
+        "path": "composite/dashboard/app.js",
+        "bytes": 169727,
+        "sha256": "ca3ccaedcaefa086d0a63f6f62c2397b07d569a6dfb798a4998aef2f868550d2"
+      },
+      {
+        "path": "composite/dashboard/data.js",
+        "bytes": 39118,
+        "sha256": "0bde04db1086749ee2afc4d75336288b0ab606e02325cee9f3f37b05cac64173"
+      },
+      {
+        "path": "composite/dashboard/index.html",
+        "bytes": 1462,
+        "sha256": "dd9e09ef0ed4645efda7088028550d2401a4944a5256ba9e4b33e96c54a9a9bb"
+      },
+      {
+        "path": "composite/dashboard/styles.css",
+        "bytes": 87775,
+        "sha256": "c9ea13250bbafbc7d820e1f3c35c33d678e795f92401172c06e5a4f7aff1c1c9"
+      },
+      {
+        "path": "composite/evidence/browser-regression.json",
+        "bytes": 19565,
+        "sha256": "0a1e5dc27786affc539e74c3d18c759bda4cb2790d5f327fcbeb4a0d3aa0f5a5"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-dashboard-20260904-1280x720.png",
+        "bytes": 148744,
+        "sha256": "0cbf2e3856658597580853809efd443ef29413ec2520f8750e83a4695b2931b5"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-dashboard-20260904-1440x900.png",
+        "bytes": 184350,
+        "sha256": "b928fa91093471f0f9593879adf97ddbd1d2cb49c0a943c26149be8c89d1b9a5"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-dashboard-20260904-390x844.png",
+        "bytes": 74242,
+        "sha256": "a54a56a08fca04fb4d830ad309bd268fef0528e314a56f277223c1db16020b9d"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-dashboard-detail-20260904-1440x900.png",
+        "bytes": 292775,
+        "sha256": "5b4ee5d9a96859b06af8d979fa562195e595f9b1813cb9f3749adf9eed969f6a"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-dashboard-s004-20260904-1440x900.png",
+        "bytes": 192578,
+        "sha256": "81f9c2f1a180a8a32fd384cddb0a8a6a710dce49082c362430f8b40f634e02e4"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-home-20260904-1440x900.png",
+        "bytes": 131753,
+        "sha256": "f157256065f0719a632c5bd8adfd769122e97381078f9475f7d007a8ef2eee2c"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m01-20260904-1440x900.png",
+        "bytes": 156691,
+        "sha256": "abf064dc0ead8303cd7ca9d752b6c92092674700a35355ee385b9c70fe9be0df"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m02-20260904-1440x900.png",
+        "bytes": 265244,
+        "sha256": "ba7e99fa8433d322d47fa868a81f37ea88d4cae717eaf3739a418feeaab91910"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m03-20260904-1280x720.png",
+        "bytes": 138353,
+        "sha256": "b3b470c7f97baa79e6d3c976a88dd5c9058d464a76b7fdfd05f33f3596a2de6e"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m03-20260904-1440x900.png",
+        "bytes": 203153,
+        "sha256": "ddb561a7aaf9cb9a0bb1c5eefef7db6288b52c8636a3124dae365543aac29bdc"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m03-20260904-390x844.png",
+        "bytes": 76791,
+        "sha256": "c6d1a99f63ac744d82862669a49ae1fc5e6f319fa482e28e90f5a476fbc816b9"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m03-answer-20260904-1440x900.png",
+        "bytes": 145546,
+        "sha256": "33288442cd8f93557a3a9f4bcb4d0ae110e99d9971832a1328d3531af8099ef7"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m03-thinking-20260904-1440x900.png",
+        "bytes": 82798,
+        "sha256": "f83fa90f02dc3bd6df967fa6a6fe5ca4fe6d02342eeeb9bcb8340312f647d136"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m04-20260904-1440x900.png",
+        "bytes": 136644,
+        "sha256": "9079086bd838604ef4bc23e7e1d98879cacd40f610d97b034e580e6cff7c3015"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m05-20260904-1440x900.png",
+        "bytes": 155539,
+        "sha256": "728b0df19f4f96478f5d8f267c2e6cbfd42e6f872c65461455affeda5f1dfcbc"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m06-20260904-1440x900.png",
+        "bytes": 199843,
+        "sha256": "9d3a9ba7b5b4447cb6475213b78520bebae9983a596219bb1398351af7d40c78"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m07-20260904-1440x900.png",
+        "bytes": 227158,
+        "sha256": "c9d2138fc23b9200099beaac31c75971170d37c3f5e4136a21028c91943743cb"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m08-20260904-1280x720.png",
+        "bytes": 122822,
+        "sha256": "35b3d1d3961be0705a3ed645f9043d98ae2e9a78484fbde3fc7235574d2a3825"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m08-20260904-1440x900.png",
+        "bytes": 163305,
+        "sha256": "216fbbb17d16e015a4391c6ab86f01198f34cf864bbcea371fdcfa4d38ae17db"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m08-20260904-390x844.png",
+        "bytes": 71857,
+        "sha256": "7a614a0c9a65f5991c3e98931e5c8a1b5cc2fe70670cbbb637376e096fe43040"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m08-benchmark-20260904-1440x900.png",
+        "bytes": 180137,
+        "sha256": "f150ed6e5ad292de22a80b587579471c30c2618af1afd80510e662905b1006c1"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m08-portfolio-20260904-1440x900.png",
+        "bytes": 189365,
+        "sha256": "01b1f448e39c93c83a4334826f47c0f441005e282a39332c48027385c8930f8d"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m08-repository-20260904-1440x900.png",
+        "bytes": 220919,
+        "sha256": "d94832a548a1ddad25f15c7ac68d3c8a3db9929af72847b49faf60b81c4d15c8"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-m08-shadow-20260904-1440x900.png",
+        "bytes": 178291,
+        "sha256": "bda19ebbfe70f01c23f4452632fd97890671ea25c2d612f29c7714171169f035"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-s002-m07-20260904-1440x900.png",
+        "bytes": 227166,
+        "sha256": "0780fe4e20f524b887575f5fdd75e5732172d35d389d991849d770b556671187"
+      },
+      {
+        "path": "composite/evidence/screenshots/final-s004-m07-20260904-1440x900.png",
+        "bytes": 227166,
+        "sha256": "0780fe4e20f524b887575f5fdd75e5732172d35d389d991849d770b556671187"
+      },
+      {
+        "path": "composite/integrations/m07-type-overlays.js",
+        "bytes": 539,
+        "sha256": "0dcc7f0a07745f5b69129bb5b0fbe5170558fc3d806358c3552b381d54c47ce8"
+      },
+      {
+        "path": "composite/integrations/native-module-integrations.js",
+        "bytes": 138578,
+        "sha256": "c8fe10cdae3a62c4c38e9e0f2dbd928c434266ec2526f9ba5682973445181f6d"
+      },
+      {
+        "path": "composite/model-center/app.js",
+        "bytes": 57532,
+        "sha256": "1aa80c8b1660f76291c87fdf953ef6c00fad90f14378ef2f9716925d1d448d55"
+      },
+      {
+        "path": "composite/model-center/index.html",
+        "bytes": 711,
+        "sha256": "28d7b887c509aa850859be3d56d1008d8752f992b78b664f7d403695701c82dc"
+      },
+      {
+        "path": "composite/model-center/styles.css",
+        "bytes": 26881,
+        "sha256": "d89a88dbeb7aec252a959b9ef9c6257fa04b9d11a5baff65234800a5c3d5f8da"
+      },
+      {
+        "path": "composite/model-repositories/s003/anomaly/features.py",
+        "bytes": 1793,
+        "sha256": "7703b7033e620aaede6e229239fe02c3a7b9e0520d9aba4784f878ccb40634d9"
+      },
+      {
+        "path": "composite/model-repositories/s003/anomaly/model-card.json",
+        "bytes": 836,
+        "sha256": "e9877532be14df5f5d125a98fa8099c1557142de39feb32a3f3786a57be62b66"
+      },
+      {
+        "path": "composite/model-repositories/s003/anomaly/model.py",
+        "bytes": 6367,
+        "sha256": "3af789f9d5dcdf995c6d2950d575fb0aa897c80dce612e597553533a1e492bf2"
+      },
+      {
+        "path": "composite/model-repositories/s003/anomaly/README.md",
+        "bytes": 1246,
+        "sha256": "c096bcf516db517dd34eb43d8f298de503f2becbd3671abe48bd6c0aa9099185"
+      },
+      {
+        "path": "composite/model-repositories/s003/anomaly/requirements.txt",
+        "bytes": 57,
+        "sha256": "96e997126e9f4d0ffdd9c3c7b62861e5a4662ac305476a1eff5490dc195060bd"
+      },
+      {
+        "path": "composite/model-repositories/s003/anomaly/tests/test_model.py",
+        "bytes": 1139,
+        "sha256": "0c792f8f25a7d839af545f4f37612676853cf0cbf7934b38729b56b1d793f8bd"
+      },
+      {
+        "path": "composite/model-repositories/s003/calibrated-score/features.py",
+        "bytes": 1793,
+        "sha256": "7703b7033e620aaede6e229239fe02c3a7b9e0520d9aba4784f878ccb40634d9"
+      },
+      {
+        "path": "composite/model-repositories/s003/calibrated-score/model-card.json",
+        "bytes": 968,
+        "sha256": "f839e12ac099cff38efb63eb13fd31c910cbd06940b1642a5156bee21e7f4e33"
+      },
+      {
+        "path": "composite/model-repositories/s003/calibrated-score/model.py",
+        "bytes": 6483,
+        "sha256": "28d88b16d7b33d984290b32bdb118c4a83e441f46cbc9f609caf417ea4155f31"
+      },
+      {
+        "path": "composite/model-repositories/s003/calibrated-score/README.md",
+        "bytes": 1325,
+        "sha256": "48b6f4d6dd98c26e0a40aca31213eb2cd6bf521c4632c82a2eaa1265b77422e2"
+      },
+      {
+        "path": "composite/model-repositories/s003/calibrated-score/requirements.txt",
+        "bytes": 57,
+        "sha256": "96e997126e9f4d0ffdd9c3c7b62861e5a4662ac305476a1eff5490dc195060bd"
+      },
+      {
+        "path": "composite/model-repositories/s003/calibrated-score/tests/test_model.py",
+        "bytes": 1148,
+        "sha256": "c9dc5c98e071acd14222b864fe5a5343771bab963929cf366ae4dd2e99a96e01"
+      },
+      {
+        "path": "composite/model-repositories/s003/contagion/features.py",
+        "bytes": 1793,
+        "sha256": "7703b7033e620aaede6e229239fe02c3a7b9e0520d9aba4784f878ccb40634d9"
+      },
+      {
+        "path": "composite/model-repositories/s003/contagion/model-card.json",
+        "bytes": 839,
+        "sha256": "85499d7abe6421e31ab89e5c9f19d877574249112fffe36da35a1c02f94499ed"
+      },
+      {
+        "path": "composite/model-repositories/s003/contagion/model.py",
+        "bytes": 6354,
+        "sha256": "fbe34197bf862886901f55c0b3618f8f7d7386c42e961ce093abdd38ee91f0b4"
+      },
+      {
+        "path": "composite/model-repositories/s003/contagion/README.md",
+        "bytes": 1288,
+        "sha256": "37c498719e8ca8ff368aa65732eb88ce1c288b7725024b0c80bb797983830e60"
+      },
+      {
+        "path": "composite/model-repositories/s003/contagion/requirements.txt",
+        "bytes": 57,
+        "sha256": "96e997126e9f4d0ffdd9c3c7b62861e5a4662ac305476a1eff5490dc195060bd"
+      },
+      {
+        "path": "composite/model-repositories/s003/contagion/tests/test_model.py",
+        "bytes": 1141,
+        "sha256": "fff5fbe0f587b2e8af9e1d6a8b438b92f86eac4401a927dc59d18fe70d094b61"
+      },
+      {
+        "path": "composite/model-repositories/s003/event-type/features.py",
+        "bytes": 1793,
+        "sha256": "7703b7033e620aaede6e229239fe02c3a7b9e0520d9aba4784f878ccb40634d9"
+      },
+      {
+        "path": "composite/model-repositories/s003/event-type/model-card.json",
+        "bytes": 870,
+        "sha256": "9d10b91230c5b109ef4ee15aab5e60bf5417a4cbb3c45eac2e5055755658c746"
+      },
+      {
+        "path": "composite/model-repositories/s003/event-type/model.py",
+        "bytes": 6417,
+        "sha256": "9b9a3ed43d72ac9b14edc7383defec44cad663083f9e37b5d9b62ebaeaa23744"
+      },
+      {
+        "path": "composite/model-repositories/s003/event-type/README.md",
+        "bytes": 1253,
+        "sha256": "a3112759f3800e65177ab4a015e0afa9ca3968295ad1e183d941c91e6a3d13bf"
+      },
+      {
+        "path": "composite/model-repositories/s003/event-type/requirements.txt",
+        "bytes": 57,
+        "sha256": "96e997126e9f4d0ffdd9c3c7b62861e5a4662ac305476a1eff5490dc195060bd"
+      },
+      {
+        "path": "composite/model-repositories/s003/event-type/tests/test_model.py",
+        "bytes": 1142,
+        "sha256": "111839590a9fdca5e84b76cd983a089cab9a1fa12a1ee4f2d916e4d04fc630ea"
+      },
+      {
+        "path": "composite/model-repositories/s003/formal-score/features.py",
+        "bytes": 1793,
+        "sha256": "7703b7033e620aaede6e229239fe02c3a7b9e0520d9aba4784f878ccb40634d9"
+      },
+      {
+        "path": "composite/model-repositories/s003/formal-score/model-card.json",
+        "bytes": 765,
+        "sha256": "78279fc86200678b66c504a0554544526341553e36f28ed1b47a5ce29a4705ba"
+      },
+      {
+        "path": "composite/model-repositories/s003/formal-score/model.py",
+        "bytes": 6371,
+        "sha256": "3b568756ad3c113c21ead2e6edf5e455248fdaef9c45517b1408e5c8b4509540"
+      },
+      {
+        "path": "composite/model-repositories/s003/formal-score/README.md",
+        "bytes": 1165,
+        "sha256": "7db0c7b5a3dc2eb36ec754d7be00cf609eae8cddf002907ee10a6ad2e9fb882d"
+      },
+      {
+        "path": "composite/model-repositories/s003/formal-score/requirements.txt",
+        "bytes": 57,
+        "sha256": "96e997126e9f4d0ffdd9c3c7b62861e5a4662ac305476a1eff5490dc195060bd"
+      },
+      {
+        "path": "composite/model-repositories/s003/formal-score/tests/test_model.py",
+        "bytes": 1144,
+        "sha256": "25a60219d3b982235eb8444f32056ded952c90e724017250f851616cad1a9d35"
+      },
+      {
+        "path": "composite/model-repositories/s003/horizon-probability/features.py",
+        "bytes": 1793,
+        "sha256": "7703b7033e620aaede6e229239fe02c3a7b9e0520d9aba4784f878ccb40634d9"
+      },
+      {
+        "path": "composite/model-repositories/s003/horizon-probability/model-card.json",
+        "bytes": 1017,
+        "sha256": "fc7fa49dd63362a45bd8d06c54f5b9bba38edebca877bdc0d68caa56d1692182"
+      },
+      {
+        "path": "composite/model-repositories/s003/horizon-probability/model.py",
+        "bytes": 6493,
+        "sha256": "9fab94368a43704cb84973b0b05a40d62420fa569cb9f44608487320dadb8bdd"
+      },
+      {
+        "path": "composite/model-repositories/s003/horizon-probability/README.md",
+        "bytes": 1349,
+        "sha256": "82914fbe748e54c48cdad148f7394d5f7df697c0fd7fa252ac7391cb9e9f67e2"
+      },
+      {
+        "path": "composite/model-repositories/s003/horizon-probability/requirements.txt",
+        "bytes": 57,
+        "sha256": "96e997126e9f4d0ffdd9c3c7b62861e5a4662ac305476a1eff5490dc195060bd"
+      },
+      {
+        "path": "composite/model-repositories/s003/horizon-probability/tests/test_model.py",
+        "bytes": 1151,
+        "sha256": "31b0317d96cec541c62a76d62bdeb901680129294b6d34ff33bb59a16da9e060"
+      },
+      {
+        "path": "composite/model-repositories/s003/liquidity/features.py",
+        "bytes": 1793,
+        "sha256": "7703b7033e620aaede6e229239fe02c3a7b9e0520d9aba4784f878ccb40634d9"
+      },
+      {
+        "path": "composite/model-repositories/s003/liquidity/model-card.json",
+        "bytes": 976,
+        "sha256": "fbd3c1d23e9fb5c57cb75da21437c68e2a8dae5d6f33394ea99bcac23bf63381"
+      },
+      {
+        "path": "composite/model-repositories/s003/liquidity/model.py",
+        "bytes": 6456,
+        "sha256": "afc9673a4f8234f744e24b675f2df3d791063f4dbe06029f1748d0ba367ee3d4"
+      },
+      {
+        "path": "composite/model-repositories/s003/liquidity/README.md",
+        "bytes": 1319,
+        "sha256": "7ae50e05a7fde39e514df94d31c107bd1fdb52cdbab733b5c1037255dc12fa00"
+      },
+      {
+        "path": "composite/model-repositories/s003/liquidity/requirements.txt",
+        "bytes": 57,
+        "sha256": "96e997126e9f4d0ffdd9c3c7b62861e5a4662ac305476a1eff5490dc195060bd"
+      },
+      {
+        "path": "composite/model-repositories/s003/liquidity/tests/test_model.py",
+        "bytes": 1141,
+        "sha256": "fd7cd3d9270ee3977d04b5332658b28bbf3aa3509352d9dd1993b7fc08c94b05"
+      },
+      {
+        "path": "composite/model-repositories/s003/monotonic-table/features.py",
+        "bytes": 1793,
+        "sha256": "7703b7033e620aaede6e229239fe02c3a7b9e0520d9aba4784f878ccb40634d9"
+      },
+      {
+        "path": "composite/model-repositories/s003/monotonic-table/model-card.json",
+        "bytes": 969,
+        "sha256": "d7e0573019eee6f4bfd57d203db4fc84d86bd2366432f832b61b8143d9d58b6e"
+      },
+      {
+        "path": "composite/model-repositories/s003/monotonic-table/model.py",
+        "bytes": 6478,
+        "sha256": "fe0ac65ad8b4b0259d6b856751fbc202ca7ad1efd8f8fa2954f705ab63e04a92"
+      },
+      {
+        "path": "composite/model-repositories/s003/monotonic-table/README.md",
+        "bytes": 1326,
+        "sha256": "c3812183fae6503fa8c9fff214627add2b589a0fd5ee8581c8c611b385df72f9"
+      },
+      {
+        "path": "composite/model-repositories/s003/monotonic-table/requirements.txt",
+        "bytes": 57,
+        "sha256": "96e997126e9f4d0ffdd9c3c7b62861e5a4662ac305476a1eff5490dc195060bd"
+      },
+      {
+        "path": "composite/model-repositories/s003/monotonic-table/tests/test_model.py",
+        "bytes": 1147,
+        "sha256": "b3e4182fb8b933b614c80b1ee54c5496825232792b10cd055372a490dfa43a48"
+      },
+      {
+        "path": "composite/model-repositories/s003/repository-manifest.json",
+        "bytes": 2837,
+        "sha256": "e8903d3a7a44afec36989f6ef012a3df16b183e64eb5d4854a5965fe07aed5c0"
+      },
+      {
+        "path": "composite/model-repositories/s003/review-priority/features.py",
+        "bytes": 1793,
+        "sha256": "7703b7033e620aaede6e229239fe02c3a7b9e0520d9aba4784f878ccb40634d9"
+      },
+      {
+        "path": "composite/model-repositories/s003/review-priority/model-card.json",
+        "bytes": 963,
+        "sha256": "e2cb8bc97b83e111120352d9d82c1479780f4bd939635ba6884a773e5f54065e"
+      },
+      {
+        "path": "composite/model-repositories/s003/review-priority/model.py",
+        "bytes": 6487,
+        "sha256": "6ca04a8f5124b917a8f316e29161101ebf3494ad28b1d8ef0fc0990d5a9e04dd"
+      },
+      {
+        "path": "composite/model-repositories/s003/review-priority/README.md",
+        "bytes": 1269,
+        "sha256": "8cc167b7d8b941e97b8e9b6d8da7e2628ea7349775b895d3c9dfa71435e82289"
+      },
+      {
+        "path": "composite/model-repositories/s003/review-priority/requirements.txt",
+        "bytes": 57,
+        "sha256": "96e997126e9f4d0ffdd9c3c7b62861e5a4662ac305476a1eff5490dc195060bd"
+      },
+      {
+        "path": "composite/model-repositories/s003/review-priority/tests/test_model.py",
+        "bytes": 1147,
+        "sha256": "254fbec56320c1af8a0314500ae94ce828bc9dea759bafe7dd3c08b2110d0fcb"
+      },
+      {
+        "path": "composite/model-repositories/s003/survival/features.py",
+        "bytes": 1793,
+        "sha256": "7703b7033e620aaede6e229239fe02c3a7b9e0520d9aba4784f878ccb40634d9"
+      },
+      {
+        "path": "composite/model-repositories/s003/survival/model-card.json",
+        "bytes": 893,
+        "sha256": "230f58dc62cd0c90686ad062eaa9c71e95dda68470b197220bffdef172d747b8"
+      },
+      {
+        "path": "composite/model-repositories/s003/survival/model.py",
+        "bytes": 6444,
+        "sha256": "1810ec762f9af9da9ad09a3decbd091944ddb213333f026cd096a9dbc144c17e"
+      },
+      {
+        "path": "composite/model-repositories/s003/survival/README.md",
+        "bytes": 1234,
+        "sha256": "02ba09c9ca596b55a110733834458a6302e55cdf172b05bc9135fae9be022830"
+      },
+      {
+        "path": "composite/model-repositories/s003/survival/requirements.txt",
+        "bytes": 57,
+        "sha256": "96e997126e9f4d0ffdd9c3c7b62861e5a4662ac305476a1eff5490dc195060bd"
+      },
+      {
+        "path": "composite/model-repositories/s003/survival/tests/test_model.py",
+        "bytes": 1140,
+        "sha256": "e409fdc486c509c9f6613f50af5631720980f67cb39905e783caa599f145493d"
+      },
+      {
+        "path": "composite/modules/m07/resources/portfolio.json",
+        "bytes": 448821,
+        "sha256": "3681ca3e0fc10b4b1d210c80d8a3f88f42fd7d111999051240e16b7e54c7a7bb"
+      },
+      {
+        "path": "composite/modules/m07/resources/s002.json",
+        "bytes": 9067,
+        "sha256": "aec836a13855122952e0afc9a9396d116204548b798d96375896d4ccd0e966b1"
+      },
+      {
+        "path": "composite/modules/m07/resources/s004.json",
+        "bytes": 9319,
+        "sha256": "7721a344d8d744c1c1e2b6f7221e870d54a43c5a9a62b4d62418b37ac7e5b089"
+      },
+      {
+        "path": "composite/resources/catalog.js",
+        "bytes": 6747,
+        "sha256": "11d2d4c1f306a561a4f3ea76583cc335edbcbf87b528c5f7df4216c26a7ce60e"
+      },
+      {
+        "path": "composite/runtime/legacy-adapter.mjs",
+        "bytes": 23959,
+        "sha256": "e94ae1a9ae5e072661ab6047acc06c15a9b5b36cd39a918f72428cbd4c7caa88"
+      },
+      {
+        "path": "composite/runtime/model-portfolio-engine.mjs",
+        "bytes": 32723,
+        "sha256": "38a223dc0e91fc3f9287201237b24c398127f1154d5ffba58106909408532084"
+      },
+      {
+        "path": "composite/runtime/model-repository-service.mjs",
+        "bytes": 18795,
+        "sha256": "02ce47c9241c6432535195226525326fd86103f2e859ff2bf55677f77611a882"
+      },
+      {
+        "path": "composite/runtime/s003-registration.mjs",
+        "bytes": 63589,
+        "sha256": "254f433edb5e3ec964bcd8a66e4820ae974b928beec2c3ae042c02f6db95e263"
+      },
+      {
+        "path": "composite/runtime/scenario-model-registrations.mjs",
+        "bytes": 26852,
+        "sha256": "0234b158a77f4db9566c8d032b8acc2f4bf193d732c4b359fae89bc64b620d52"
+      },
+      {
+        "path": "composite/runtime/server.mjs",
+        "bytes": 23574,
+        "sha256": "2b94831a343376ce053216a48d634599fbb85c351a8cc1b6a55b65bcacb891e7"
+      },
+      {
+        "path": "composite/s001-e2e-integration/app.js",
+        "bytes": 95814,
+        "sha256": "aa89c15db40716dc0b640d6c4bff00b48407789c903162e29a448c588678a4ef"
+      },
+      {
+        "path": "composite/s001-e2e-integration/data.js",
+        "bytes": 6608,
+        "sha256": "cc12b3bb6f183bb03eac7d21106ee1368cabd9efc59b8087a8b50a5c4639cb9e"
+      },
+      {
+        "path": "composite/s001-e2e-integration/index.html",
+        "bytes": 2598,
+        "sha256": "88c78784efd88e2b8cf5f72e816eed8eeccb1d2a8e1ea04dbe1e91ed86146012"
+      },
+      {
+        "path": "composite/s001-e2e-integration/state.js",
+        "bytes": 30064,
+        "sha256": "c93620efad5d1f07145497b97c8c83c2ce1fc22c651e5e32186d8b35b931ca4d"
+      },
+      {
+        "path": "composite/s001-e2e-integration/styles.css",
+        "bytes": 5291,
+        "sha256": "a6e817c94f3cc337aecaf9b9c0fe8ffb674c338f8f7d0c2758b9d7f89af68127"
+      },
+      {
+        "path": "composite/scripts/generate-model-repositories.mjs",
+        "bytes": 15175,
+        "sha256": "67c3b95fab224c0923546cb2961cdc08c538d0430273da9833b7e58e4ef00dbc"
+      },
+      {
+        "path": "composite/start-candidate.mjs",
+        "bytes": 4782,
+        "sha256": "252a827eb7ec7e04a01f5cd088bc9878c6ca6a40c57888cc3cd587f88753aa27"
+      },
+      {
+        "path": "composite/tests/chrome-regression.mjs",
+        "bytes": 72039,
+        "sha256": "6fe55b701ebcf356adb23742e3e380075d98b115e4a022b011ff34f114ad1244"
+      },
+      {
+        "path": "composite/tests/model-portfolio.test.mjs",
+        "bytes": 16033,
+        "sha256": "5ecbb6e2758cf5a4bc176ba7791bfeffa0fe7cdd12c9c34080c8cf7742b2c0b7"
+      },
+      {
+        "path": "composite/tests/model-repository.test.mjs",
+        "bytes": 5448,
+        "sha256": "9276dca707741e2f68a79d7faa368b4b0c4d0869a3aaef9586960e463c89e16a"
+      },
+      {
+        "path": "composite/tests/parent-integrity.test.mjs",
+        "bytes": 1260,
+        "sha256": "d482ea7bcf3db80c34027842e9e98ba99f4c3e620566948c2d5efeb04941ccb2"
+      },
+      {
+        "path": "composite/tests/record-regression.mjs",
+        "bytes": 9442,
+        "sha256": "536bcb1f6ebf4075011b4076a06fa146e2bc20cdd41f0299843eb6c3d20d192f"
+      },
+      {
+        "path": "composite/tests/refresh-manifest.mjs",
+        "bytes": 2077,
+        "sha256": "c130667014ef45c2a7bd2c55b23a5630d79959c12464b420c4e9c09b78c62e36"
+      },
+      {
+        "path": "composite/tests/server.test.mjs",
+        "bytes": 7572,
+        "sha256": "a5f6061e60917b796986118d493c97ea843b4808078befeefe4c59fdde13c840"
+      },
+      {
+        "path": "composite/tests/shell-contract.test.mjs",
+        "bytes": 11588,
+        "sha256": "1f46631c37e30f056ef9282f12199d4c26fd48ce493cd0c03d615fe36edcfff2"
+      },
+      {
+        "path": "composite/tests/stability-contract.test.mjs",
+        "bytes": 3934,
+        "sha256": "b4e0d85136cbc43763947e6b8117046426274ce6c1920812356bafbb210b9197"
+      },
+      {
+        "path": "composite/tests/verify-candidate.mjs",
+        "bytes": 18911,
+        "sha256": "c7e29fbe93524bbe5e2864dbc89d5dc495b40fa00b8252f60a4b5c115bf8ebb4"
+      }
+    ]
+  },
+  "defaultShellContext": "S005 internal initial run identity only; no global scenario mode is shown"
+}

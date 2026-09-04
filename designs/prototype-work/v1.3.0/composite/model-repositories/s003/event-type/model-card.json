@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "ofw.model-card.v1",
+  "scenarioId": "S003",
+  "modelId": "MODEL-S003-EVENT-TYPE",
+  "modelVersionId": "MODEL-S003-EVENT-TYPE@0.1.0",
+  "name": "风险事件类型模型",
+  "role": "SUPPLEMENTAL",
+  "objectiveId": "MO-S003-EVENT-TYPE-v1",
+  "businessQuestion": "最可能出现哪类债务风险事件？",
+  "strategy": "event_type",
+  "inputProperties": [
+    "refinancePressure",
+    "liquidityCoverage",
+    "relationExposure",
+    "anomalyZ",
+    "eventLedger"
+  ],
+  "rawInputProperties": [
+    "refinancePressure",
+    "liquidityCoverage",
+    "relationExposure",
+    "anomalyZ"
+  ],
+  "outputProperties": [
+    "eventTypeProbabilities",
+    "mostLikelyEventType"
+  ],
+  "resultKind": "PREDICTION",
+  "dataContract": "M02 frozen DataVersion + M01 cycle semantic contract",
+  "formalModelMutable": false,
+  "automaticReleaseAllowed": false
+}

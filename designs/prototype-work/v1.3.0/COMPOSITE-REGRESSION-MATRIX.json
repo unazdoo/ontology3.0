@@ -1,0 +1,602 @@
+{
+  "schemaVersion": "ofw.composite-regression.v4",
+  "candidateVersion": "v1.3.0-rc.1",
+  "uniqueEntry": "composite/s001-e2e-integration/index.html",
+  "recommendedReviewUrl": "http://127.0.0.1:4362/designs/prototype-work/v1.3.0/composite/s001-e2e-integration/index.html?m08ApiBase=http%3A%2F%2F127.0.0.1%3A4363#home",
+  "runStatus": "passed",
+  "acceptanceReady": false,
+  "evidencePolicy": "A case may be passed only after its static command or Chrome step ran against the current artifact inventory.",
+  "cases": [
+    {
+      "id": "CRG-001",
+      "area": "parent-anchor",
+      "requirement": "v1.2.0-rc.1 is anchored to the exact parent commit and subtree",
+      "method": "git-static",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/parent-integrity.test.mjs",
+        "VERSION.json#parentCommit"
+      ]
+    },
+    {
+      "id": "CRG-002",
+      "area": "parent-integrity",
+      "requirement": "v1.2.0 and frozen v1.1.0 directories remain unchanged",
+      "method": "git-static",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/parent-integrity.test.mjs",
+        "node designs/prototype-releases/verify-release.mjs 1.1.0"
+      ]
+    },
+    {
+      "id": "CRG-003",
+      "area": "single-shell",
+      "requirement": "one platform Shell mounts home, M01-M08 and Dashboard",
+      "method": "static-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/shell-contract.test.mjs",
+        "node --test composite/tests/stability-contract.test.mjs",
+        "composite/evidence/browser-regression.json#scenarioCoverage"
+      ]
+    },
+    {
+      "id": "CRG-004",
+      "area": "routing",
+      "requirement": "home, M01-M08 and Dashboard are reachable from the unique entry",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#scenarioCoverage"
+      ]
+    },
+    {
+      "id": "CRG-005",
+      "area": "scenario-isolation",
+      "requirement": "S001-S005 states do not overwrite each other and v1.3 state is isolated from v1.2",
+      "method": "static-behavioral",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/shell-contract.test.mjs",
+        "SCENARIO-REGISTRY.json#scenarioIsolation"
+      ]
+    },
+    {
+      "id": "CRG-006",
+      "area": "formal-baseline",
+      "requirement": "formal model 1.0.2 and 21-enterprise FACT results remain immutable",
+      "method": "static-behavioral",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "COMPOSITE-MANIFEST.json#formalBaseline"
+      ]
+    },
+    {
+      "id": "CRG-007",
+      "area": "m02-data-build",
+      "requirement": "M02 creates a real synthetic longitudinal DataBuildRun and candidate DataVersion",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/browser-regression.json#dataEngineering"
+      ]
+    },
+    {
+      "id": "CRG-008",
+      "area": "m02-quality",
+      "requirement": "quality, missing reasons, availability time and future leakage checks are explicit",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/browser-regression.json#dataEngineering"
+      ]
+    },
+    {
+      "id": "CRG-009",
+      "area": "m02-freeze",
+      "requirement": "M02 freezes an immutable recomputable DataVersion before M08 consumption",
+      "method": "behavioral",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "composite/runtime/model-portfolio-engine.mjs",
+        "composite/runtime/s003-registration.mjs"
+      ]
+    },
+    {
+      "id": "CRG-010",
+      "area": "m01-contract",
+      "requirement": "M01 forms object, relationship, metric, unit, time-grain and result identity contracts",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/browser-regression.json#mainChain"
+      ]
+    },
+    {
+      "id": "CRG-011",
+      "area": "m08-objectives",
+      "requirement": "模型优化中心 exposes all registered objectives through five continuous vertical task pages, with model-repository drill-down and usable page and repository scrolling",
+      "method": "static-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/shell-contract.test.mjs",
+        "composite/evidence/browser-regression.json#modelManagement",
+        "composite/evidence/browser-regression.json#realModuleWorkflows/m08Scroll",
+        "composite/evidence/screenshots/final-m08-portfolio-20260904-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-012",
+      "area": "model-portfolio",
+      "requirement": "one formal baseline, two core Challengers and seven supplemental models have independent identities",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/browser-regression.json#modelPortfolio"
+      ]
+    },
+    {
+      "id": "CRG-013",
+      "area": "benchmark",
+      "requirement": "formal and Challenger comparisons share a fair benchmark while supplemental models retain objective-specific metrics",
+      "method": "behavioral",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "composite/runtime/model-portfolio-engine.mjs",
+        "composite/runtime/s003-registration.mjs",
+        "composite/evidence/screenshots/final-m08-benchmark-20260904-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-014",
+      "area": "benchmark-honesty",
+      "requirement": "coverage, calibration, drift, worst slice and missing reasons are explicit and synthetic validity is not claimed",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/browser-regression.json#modelPortfolio",
+        "composite/evidence/screenshots/final-m08-benchmark-20260904-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-015",
+      "area": "ai-boundary",
+      "requirement": "AI insights cannot mutate labels, calculate scores, select a champion or publish",
+      "method": "behavioral",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "composite/runtime/model-portfolio-engine.mjs",
+        "composite/runtime/s003-registration.mjs"
+      ]
+    },
+    {
+      "id": "CRG-016",
+      "area": "insight-review-and-model-version",
+      "requirement": "an immutable human insight-review receipt is required before optimization creates a new immutable Model Version",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "composite/runtime/model-portfolio-engine.mjs",
+        "composite/runtime/s003-registration.mjs",
+        "composite/evidence/screenshots/final-m08-20260904-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-017",
+      "area": "shadow",
+      "requirement": "one selected candidate advances through three independent label maturity windows",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/browser-regression.json#mainChain",
+        "composite/evidence/screenshots/final-m08-shadow-20260904-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-018",
+      "area": "rebenchmark",
+      "requirement": "matured labels trigger same-context rebenchmarking without automatic champion selection",
+      "method": "behavioral",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "composite/runtime/model-portfolio-engine.mjs",
+        "composite/runtime/s003-registration.mjs"
+      ]
+    },
+    {
+      "id": "CRG-019",
+      "area": "release",
+      "requirement": "Release Candidate consumes the sealed holdout once and remains non-production",
+      "method": "behavioral",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "composite/runtime/model-portfolio-engine.mjs",
+        "composite/runtime/s003-registration.mjs"
+      ]
+    },
+    {
+      "id": "CRG-020",
+      "area": "binding",
+      "requirement": "Dashboard Binding validation and two-step human application do not change formal pointers",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/screenshots/final-m08-20260904-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-021",
+      "area": "dashboard-views",
+      "requirement": "Dashboard provides five result views plus enterprise time, maturity, relation, anomaly, contribution, confidence and evidence drill-down without a composite score",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#dashboard",
+        "composite/evidence/screenshots/final-dashboard-20260904-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-022",
+      "area": "dashboard-detail",
+      "requirement": "enterprise detail includes formal score, horizons, timing, event type, gap, maturity wall, relation, anomaly, contributions, confidence and evidence",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#dashboard",
+        "composite/evidence/screenshots/final-dashboard-20260904-390x844.png"
+      ]
+    },
+    {
+      "id": "CRG-023",
+      "area": "m07-consumer",
+      "requirement": "M07 reuses one parent workspace and one combined object directory for S001-S005 resources, relation paths, temporal results and the same Result Package",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#realModuleWorkflows/modules/M07",
+        "composite/evidence/browser-regression.json#scenarioCoverage",
+        "composite/evidence/screenshots/final-m07-20260904-1440x900.png",
+        "composite/evidence/screenshots/final-s002-m07-20260904-1440x900.png",
+        "composite/evidence/screenshots/final-s004-m07-20260904-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-024",
+      "area": "m03-consumer",
+      "requirement": "M03 retains 51 recommendations in six business-topic tabs, classifies debt-structure questions under 债务风险 and queries the same Result Package without tab reloads",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#realModuleWorkflows/modules/M03",
+        "composite/evidence/browser-regression.json#realModuleWorkflows/m03Recommendations",
+        "composite/evidence/screenshots/final-m03-20260904-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-025",
+      "area": "m05-consumer",
+      "requirement": "M05 explains contributions, anomaly, relation path and disagreement without recomputation",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#realModuleWorkflows/modules/M05",
+        "composite/evidence/screenshots/final-m05-20260904-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-026",
+      "area": "m06-consumer",
+      "requirement": "M06 shows report draft boundaries, history, evolution and rollback path",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#realModuleWorkflows/modules/M06",
+        "composite/evidence/screenshots/final-m06-20260904-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-027",
+      "area": "m04-boundary",
+      "requirement": "M04 hard-rejects PREDICTION, SHADOW and SIMULATION with zero side effects",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/browser-regression.json#realModuleWorkflows/modules/M04"
+      ]
+    },
+    {
+      "id": "CRG-028",
+      "area": "consumer-consistency",
+      "requirement": "Dashboard, M07, M03, M05 and M06 share one Result Package ID and digest",
+      "method": "behavioral",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/browser-regression.json#realModuleWorkflows"
+      ]
+    },
+    {
+      "id": "CRG-029",
+      "area": "stress-simulation",
+      "requirement": "pressure simulation creates an independent SIMULATION envelope and never replaces FACT",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/browser-regression.json#dashboard"
+      ]
+    },
+    {
+      "id": "CRG-030",
+      "area": "cycle-reset",
+      "requirement": "next-cycle/reset archives only the current optimization cycle and preserves history and formal facts",
+      "method": "behavioral",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "composite/runtime/model-portfolio-engine.mjs",
+        "composite/runtime/s003-registration.mjs"
+      ]
+    },
+    {
+      "id": "CRG-031",
+      "area": "extensibility",
+      "requirement": "generic engine contains no S003, Enterprise or debt-specific registration logic",
+      "method": "static",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "composite/runtime/model-portfolio-engine.mjs"
+      ]
+    },
+    {
+      "id": "CRG-032",
+      "area": "refresh-deep-link",
+      "requirement": "refresh and deep links restore home, M01, M08, Dashboard and local subviews without query-tab or cross-tab refresh storms",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/stability-contract.test.mjs",
+        "composite/evidence/browser-regression.json#stability"
+      ]
+    },
+    {
+      "id": "CRG-033",
+      "area": "history-navigation",
+      "requirement": "browser back and forward preserve Shell routes and selected enterprise context",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/stability-contract.test.mjs",
+        "composite/evidence/browser-regression.json#stability",
+        "v1.2.0 parent regression 123/123"
+      ]
+    },
+    {
+      "id": "CRG-034",
+      "area": "viewport-1440",
+      "requirement": "1440x900 has no outer or module horizontal overflow",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#viewports/0",
+        "composite/evidence/screenshots/final-home-20260904-1440x900.png",
+        "composite/evidence/screenshots/final-m02-20260904-1440x900.png",
+        "composite/evidence/screenshots/final-m03-20260904-1440x900.png",
+        "composite/evidence/screenshots/final-m07-20260904-1440x900.png",
+        "composite/evidence/screenshots/final-m08-20260904-1440x900.png",
+        "composite/evidence/screenshots/final-dashboard-20260904-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-035",
+      "area": "viewport-1280",
+      "requirement": "1280x720 has no outer or module horizontal overflow",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#viewports/1",
+        "composite/evidence/screenshots/final-m08-20260904-1280x720.png",
+        "composite/evidence/screenshots/final-dashboard-20260904-1280x720.png"
+      ]
+    },
+    {
+      "id": "CRG-036",
+      "area": "viewport-mobile",
+      "requirement": "390x844 reorganizes hierarchy and tables without document horizontal overflow",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#viewports/2",
+        "composite/evidence/screenshots/final-m03-20260904-390x844.png",
+        "composite/evidence/screenshots/final-m08-20260904-390x844.png",
+        "composite/evidence/screenshots/final-dashboard-20260904-390x844.png"
+      ]
+    },
+    {
+      "id": "CRG-037",
+      "area": "runtime-errors",
+      "requirement": "application console, page and resource errors are zero",
+      "method": "chrome-instrumentation",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/stability-contract.test.mjs",
+        "composite/evidence/browser-regression.json#runtimeErrors",
+        "node composite/tests/verify-candidate.mjs"
+      ]
+    },
+    {
+      "id": "CRG-038",
+      "area": "truthful-claims",
+      "requirement": "candidate does not claim formal validity, production launch, user approval or acceptance",
+      "method": "static-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/shell-contract.test.mjs",
+        "node --test composite/tests/stability-contract.test.mjs",
+        "composite/evidence/browser-regression.json#scenarioCoverage",
+        "OPEN-ISSUES.md"
+      ]
+    },
+    {
+      "id": "CRG-039",
+      "area": "homepage-five-chain-portfolio",
+      "requirement": "homepage presents only the platform capability architecture without module directory, scenario run, progress, todo, global scenario switcher or unified resource directory components",
+      "method": "static-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/shell-contract.test.mjs",
+        "composite/evidence/browser-regression.json#realModuleWorkflows/homepage",
+        "composite/evidence/screenshots/final-home-20260904-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-040",
+      "area": "unified-secondary-navigation",
+      "requirement": "M01-M08 and Dashboard use one higher-contrast Shell-level vertical secondary navigation with larger text and targets, keep breadcrumbs in the top bar and hide iframe-level menus",
+      "method": "static-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/shell-contract.test.mjs",
+        "composite/evidence/browser-regression.json#modelManagement",
+        "composite/evidence/browser-regression.json#scenarioCoverage",
+        "composite/evidence/screenshots/final-m03-20260904-1440x900.png",
+        "composite/evidence/screenshots/final-m07-20260904-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-041",
+      "area": "m03-processing-animation",
+      "requirement": "intelligent query preserves the five-step v1.2 processing animation for parent and model questions and cancels stale runs before rendering answers",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#realModuleWorkflows/m03Animation",
+        "composite/evidence/screenshots/final-m03-thinking-20260904-1440x900.png",
+        "composite/evidence/screenshots/final-m03-answer-20260904-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-042",
+      "area": "model-python-repositories",
+      "requirement": "all ten S003 models have README and executable Python repositories with protected main, immutable commits, tags, release candidates, tests and DataVersion-bound runs",
+      "method": "node-python-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-repository.test.mjs",
+        "composite/runtime/model-repository-service.mjs",
+        "composite/model-repositories/s003/repository-manifest.json",
+        "composite/evidence/browser-regression.json#modelRepositories",
+        "composite/evidence/screenshots/final-m08-repository-20260904-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-043",
+      "area": "m02-m01-model-traceability",
+      "requirement": "the frozen DataVersion and Semantic Contract are native M02 and M01 catalog resources, expose six data members and ten per-model bindings, use no explanatory prompt panels and are cited by Python run receipts",
+      "method": "node-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/model-portfolio.test.mjs",
+        "node --test composite/tests/model-repository.test.mjs",
+        "composite/runtime/model-repository-service.mjs",
+        "composite/model-repositories/s003/repository-manifest.json",
+        "composite/evidence/browser-regression.json#realModuleWorkflows/s003Traceability",
+        "composite/evidence/screenshots/final-m02-20260904-1440x900.png",
+        "composite/evidence/screenshots/final-m01-20260904-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-044",
+      "area": "s004-real-dashboard",
+      "requirement": "S004 is a native fifth Dashboard workspace with applicant, evidence, missing-state and model-result drill-down",
+      "method": "static-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "node --test composite/tests/shell-contract.test.mjs",
+        "composite/evidence/browser-regression.json#dashboard/s004RealDashboard",
+        "composite/evidence/screenshots/final-dashboard-s004-20260904-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-045",
+      "area": "all-five-scenario-full-lifecycle",
+      "requirement": "S001-S005 each complete candidate creation, three Shadow windows, rebenchmark, Release Candidate, Binding application and pressure simulation",
+      "method": "api-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#realModuleWorkflows/allScenarioOptimization",
+        "composite/evidence/browser-regression.json#realModuleWorkflows/basicChains",
+        "composite/evidence/browser-regression.json#realModuleWorkflows/s005"
+      ]
+    }
+  ],
+  "runSummary": {
+    "passed": 45,
+    "failed": 0,
+    "blocked": 0,
+    "pending": 0,
+    "lastObservedAt": "2026-09-03T18:34:55.063Z"
+  }
+}

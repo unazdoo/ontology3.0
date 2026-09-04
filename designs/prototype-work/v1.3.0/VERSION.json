@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "ofw.prototype.version.v1",
+  "version": "1.3.0-rc.1",
+  "status": "assembly-candidate-v120-platform-home-native-catalogs-unified-navigation-stable-chrome-verified",
+  "releaseRole": "prototype-composite-review-candidate",
+  "createdAt": "2026-09-04",
+  "targetPrototypeVersion": "v1.3.0-rc.1",
+  "parentVersion": "v1.2.0-rc.1",
+  "parentCommit": "e4974c23bd223f26bfd04b08dc6f46eb4d9ae5e0",
+  "parentCommitTree": "036ace4ea3954cfba9657ef273ea593d1fce78fd",
+  "parentSubtree": "e57caf36b4a815b4d363ca93ee69305c12228938",
+  "parentPrototypePath": "../v1.2.0",
+  "parentPrototypePolicy": "read-only; never modify or overwrite",
+  "frozenSourceVersion": "v1.1.0",
+  "frozenSourceTag": "prototype-v1.1.0-frozen",
+  "frozenSourceCommit": "a8b023d7f8d49ad6ed6c24417b79b6f9df3fb716",
+  "frozenSourceSubtree": "45ed88ea692016e674bfebc49c22456ca7a01ad1",
+  "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+  "workspace": {
+    "path": "/Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-composite-v1.3.0",
+    "branch": "codex/prototype-v1.3.0-composite",
+    "role": "prototype assembly only"
+  },
+  "composition": {
+    "mode": "selective-local-derivative-on-read-only-v1.2.0-parent",
+    "parentTreeCopied": false,
+    "shellRenderer": "composite/s001-e2e-integration/app.js",
+    "shellRendererBaseline": "../v1.2.0/composite/s001-e2e-integration/app.js",
+    "shellRendererPolicy": "local derivative preserves the v1.2 Shell, keeps the home page platform-oriented without scenario operations or module directory, places breadcrumbs in the top bar, mounts one higher-contrast vertical secondary task navigation and destroys detached iframe tasks before navigation",
+    "parentShellStyles": "../v1.2.0/composite/s001-e2e-integration/styles.css",
+    "candidateShellStyleDelta": "composite/s001-e2e-integration/styles.css",
+    "isolatedBrowserState": "composite/s001-e2e-integration/state.js",
+    "platformShellCount": 1,
+    "pageInheritance": {
+      "M01_M02_M03_M04_M05_M06": "load the real v1.2 module workspace, hide duplicate iframe menus and mount executable capabilities inside native resource catalogs, headers, composers and drawers; M02 DataVersion and M01 Semantic Contract are native catalog entries, while M03 keeps 51 recommendations across six business-topic tabs",
+      "M07": "load the exact v1.2 M07 workspace with one combined 56-object portfolio resource; no scenario selector is shown, and the selected object binds the correct business context only during handoff",
+      "M08": "authorized redesign as 模型优化中心 with five Shell-level vertical tasks, verified vertical scrolling and Python model repositories reached through model drill-down",
+      "S005": "load the same real M01-M08 module pages and drive the retained v1.2 evaluation engine through native operations",
+      "Dashboard": "local selective derivative of the v1.2 Dashboard with a real fifth S004 workspace and five model-result views",
+      "authorizedRedesignModules": [
+        "M08"
+      ],
+      "otherReplacementPagesAllowed": false
+    },
+    "crossTabAutomaticReloadAllowed": false,
+    "redirectWrapperAllowed": false,
+    "backgroundPollingAllowed": false
+  },
+  "primaryScenario": "S003",
+  "formalBaseline": {
+    "modelPackage": "S003-M01-DEBT-RISK-PKG@1.0.2",
+    "modelVersionId": "MV-S003-DEBT-RISK-1.0.2-FORMAL",
+    "modelSourceSha256": "c1bcfdf2c61313e57233ad4ecd471e24b09535aa7f62d4bfb97741e15ec9b014",
+    "resultSetId": "S003-C035-RISK-RESULTS-20251231-v2",
+    "resultSourceSha256": "fbcbff5095a556293cf3ede0249c548bb9208da8a2e2f66139be418419fabf7a",
+    "immutable": true,
+    "rollbackRole": "stable-baseline-and-fallback"
+  },
+  "uniqueEntry": "composite/s001-e2e-integration/index.html",
+  "launcher": "node composite/start-candidate.mjs",
+  "recommendedStaticPort": 4362,
+  "recommendedModelingPort": 4363,
+  "runtimeSnapshotIncluded": false,
+  "acceptanceReady": false,
+  "editable": true,
+  "frozen": false,
+  "verification": {
+    "status": "passed-platform-home-native-catalog-resources-unified-secondary-navigation-business-topic-query-m08-five-task-three-viewports-local-chrome",
+    "packageVerification": "PACKAGE-VERIFICATION.json",
+    "regressionMatrix": "COMPOSITE-REGRESSION-MATRIX.json",
+    "browserEvidence": "composite/evidence/browser-regression.json",
+    "observedAt": "2026-09-03T18:34:55.063Z",
+    "allScenarioLifecycle": "S001-S005 all BINDING_APPLIED with three Shadow windows, Release Candidate and pressure simulation"
+  },
+  "disallowedClaims": [
+    "model validity formally proven",
+    "production rollout complete",
+    "user review passed",
+    "phase-one acceptance passed"
+  ],
+  "defaultShellContext": "S005 internal initial run identity only; no global scenario mode is exposed"
+}

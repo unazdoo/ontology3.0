@@ -1,0 +1,185 @@
+{
+  "schemaVersion": "ofw.prototype.integration-sources.v1",
+  "targetPrototypeVersion": "v1.3.0-rc.1",
+  "parentPrototype": {
+    "version": "v1.2.0-rc.1",
+    "commit": "e4974c23bd223f26bfd04b08dc6f46eb4d9ae5e0",
+    "commitTree": "036ace4ea3954cfba9657ef273ea593d1fce78fd",
+    "subtree": "e57caf36b4a815b4d363ca93ee69305c12228938",
+    "path": "../v1.2.0",
+    "immutable": true,
+    "referenceMode": "read-only-relative",
+    "wholeTreeCopied": false
+  },
+  "frozenProductSource": {
+    "version": "v1.1.0",
+    "tag": "prototype-v1.1.0-frozen",
+    "commit": "a8b023d7f8d49ad6ed6c24417b79b6f9df3fb716",
+    "subtree": "45ed88ea692016e674bfebc49c22456ca7a01ad1",
+    "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+    "immutable": true
+  },
+  "inputs": [
+    {
+      "id": "V120-SHELL",
+      "source": "../v1.2.0/composite/s001-e2e-integration/app.js",
+      "role": "single platform Shell structure and interaction baseline",
+      "mode": "read-only baseline for a candidate-local selective derivative",
+      "localDerivative": "composite/s001-e2e-integration/app.js",
+      "allowedDeltas": [
+        "platform capability homepage without scenario run or todo components",
+        "one higher-contrast Shell-level vertical secondary navigation, top-bar breadcrumb and mobile task selector",
+        "native M01-M06 and Dashboard integrations without replacement pages",
+        "parent intelligent-query five-step processing animation plus six stable business-topic recommendation tabs",
+        "one combined M07 object portfolio with business context bound only during object handoff",
+        "cross-tab no-reload guard",
+        "coalesced popstate/hashchange render",
+        "stale iframe breadcrumb guard",
+        "page and frame instance counters"
+      ],
+      "wholeDirectoryCopied": false
+    },
+    {
+      "id": "V120-SHELL-CSS",
+      "source": "../v1.2.0/composite/s001-e2e-integration/styles.css",
+      "role": "single platform Shell visual baseline",
+      "mode": "direct read-only stylesheet reference",
+      "wholeDirectoryCopied": false
+    },
+    {
+      "id": "V120-M08-VISUAL-AND-INTERACTION",
+      "source": "../v1.2.0/composite/modules/modeling/module/content.html",
+      "role": "M08 objective contracts and workflow baseline",
+      "mode": "read-only redesign baseline for 模型优化中心",
+      "wholeDirectoryCopied": false
+    },
+    {
+      "id": "V120-M07-VISUAL-AND-INTERACTION",
+      "source": "../v1.2.0/composite/modules/m07/module/workspace-v2.html",
+      "role": "exact M07 page for one cross-business object, relation and time-series directory",
+      "mode": "direct read-only page reference; launcher corrects stale Leaflet CSS SRI and injects a candidate-owned type-label overlay without changing the parent file",
+      "wholeDirectoryCopied": false
+    },
+    {
+      "id": "V120-REAL-MODULE-WORKSPACES",
+      "source": "../../prototype-releases/v1.1.0",
+      "role": "real M01-M06 workspaces used by v1.2, including the actual intelligent-query conversation, Agent catalog and report lifecycle",
+      "mode": "direct read-only page references with candidate-owned native integrations",
+      "wholeDirectoryCopied": false
+    },
+    {
+      "id": "V120-S005-EVALUATION-ENGINE",
+      "source": "../v1.2.0/composite/scenarios/s005/evaluation-engine.js",
+      "companionSource": "../v1.2.0/composite/scenarios/s005/scenario-config.js",
+      "role": "retained S005 seven-stage evaluation state machine and contracts",
+      "mode": "read-only runtime reuse from the real module pages; module-workbench routing is not used",
+      "wholeDirectoryCopied": false
+    },
+    {
+      "id": "V120-DASHBOARD",
+      "source": "../v1.2.0/composite/dashboard/",
+      "role": "Dashboard layout and interaction baseline",
+      "mode": "selective local derivative extended to five native business workspaces and five result identities",
+      "localDerivative": "composite/dashboard/",
+      "wholeDirectoryCopied": false
+    },
+    {
+      "id": "V120-M08-COMPATIBILITY",
+      "source": "../v1.2.0/composite/modules/modeling/validation/src/server.mjs",
+      "role": "non-S003 parent Objective and simulation compatibility",
+      "mode": "in-process route delegation",
+      "wholeDirectoryCopied": false
+    },
+    {
+      "id": "S003-FORMAL-MODEL",
+      "source": "../../prototype-releases/v1.1.0/scenarios/s003/resources/m01/model-package.v2.json",
+      "sha256": "c1bcfdf2c61313e57233ad4ecd471e24b09535aa7f62d4bfb97741e15ec9b014",
+      "role": "formal 1.0.2 model baseline and fallback",
+      "immutable": true
+    },
+    {
+      "id": "S003-FORMAL-RESULTS",
+      "source": "../../prototype-releases/v1.1.0/scenarios/s003/resources/m01/c035-risk-results.v2.json",
+      "sha256": "fbcbff5095a556293cf3ede0249c548bb9208da8a2e2f66139be418419fabf7a",
+      "role": "21-enterprise formal FACT result set",
+      "immutable": true
+    }
+  ],
+  "candidateOwnedInputs": [
+    {
+      "id": "GENERIC-CONTINUOUS-OPTIMIZATION-ENGINE",
+      "path": "composite/runtime/model-portfolio-engine.mjs",
+      "scenarioSpecificTermsAllowed": false
+    },
+    {
+      "id": "SCENARIO-MODEL-REGISTRATIONS",
+      "path": "composite/runtime/scenario-model-registrations.mjs",
+      "role": "S001-S005 model registrations and domain metadata"
+    },
+    {
+      "id": "S003-REGISTRATION",
+      "path": "composite/runtime/s003-registration.mjs",
+      "role": "S003 objectives, models, synthetic recipe and business copy"
+    },
+    {
+      "id": "NATIVE-MODULE-INTEGRATIONS",
+      "path": "composite/integrations/native-module-integrations.js",
+      "role": "native actions for M01-M06 and Dashboard across S001-S005, including DataVersion and Semantic Contract catalog resources, 51 M03 recommendations with zero-reload filtering, processing animation, Agent count synchronization and model traceability"
+    },
+    {
+      "id": "M07-TYPE-OVERLAY",
+      "path": "composite/integrations/m07-type-overlays.js",
+      "role": "S002/S004 business type labels injected into the read-only parent M07 response"
+    },
+    {
+      "id": "M07-PORTFOLIO-RESOURCE",
+      "path": "composite/modules/m07/resources/portfolio.json",
+      "role": "combined 56-object resource with cross-business objects, relations, events, series and traceable snapshots"
+    },
+    {
+      "id": "M07-S002-RESOURCE",
+      "path": "composite/modules/m07/resources/s002.json",
+      "role": "budget object, relation, event and time-series exploration"
+    },
+    {
+      "id": "M07-S004-RESOURCE",
+      "path": "composite/modules/m07/resources/s004.json",
+      "role": "pre-loan object, relation, event and time-series exploration"
+    },
+    {
+      "id": "MODEL-OPTIMIZATION-CENTER",
+      "path": "composite/model-center",
+      "role": "authorized M08 redesign with five task pages, verified scrolling, Python IDE drill-down, Git-like model history and real runtime actions"
+    },
+    {
+      "id": "MODEL-REPOSITORY-SERVICE",
+      "path": "composite/runtime/model-repository-service.mjs",
+      "role": "protected branches, immutable commits and tags, code release candidates, Python tests and DataVersion-bound model runs"
+    },
+    {
+      "id": "S003-PYTHON-MODEL-REPOSITORIES",
+      "path": "composite/model-repositories/s003",
+      "role": "ten executable S003 model repositories with README, source, model card, requirements and tests"
+    },
+    {
+      "id": "MODEL-REPOSITORY-GENERATOR",
+      "path": "composite/scripts/generate-model-repositories.mjs",
+      "role": "deterministically materialize repositories from the S003 model registration"
+    },
+    {
+      "id": "S004-NATIVE-DASHBOARD",
+      "path": "composite/dashboard",
+      "role": "real fifth pre-loan Dashboard workspace with applicant, evidence, missing-state and model-result drill-down"
+    }
+  ],
+  "prohibitedInputs": [
+    "complete copied v1.2.0 tree",
+    "second platform Shell",
+    "replacement module page for an inherited v1.2 route other than the authorized M08 redesign",
+    "runtime snapshot packaged as a new run",
+    "formal implementation source or production CI",
+    "real sensitive enterprise data"
+  ],
+  "inputGate": "passed",
+  "acceptanceReady": false
+}

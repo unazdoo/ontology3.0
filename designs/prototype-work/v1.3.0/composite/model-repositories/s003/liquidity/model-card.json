@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "ofw.model-card.v1",
+  "scenarioId": "S003",
+  "modelId": "MODEL-S003-LIQUIDITY",
+  "modelVersionId": "MODEL-S003-LIQUIDITY@0.1.0",
+  "name": "现金流与流动性缺口模型",
+  "role": "SUPPLEMENTAL",
+  "objectiveId": "MO-S003-LIQUIDITY-GAP-v1",
+  "businessQuestion": "未来现金流、债务到期与再融资压力会形成多大缺口？",
+  "strategy": "liquidity_gap",
+  "inputProperties": [
+    "cashAvailableMillions",
+    "cashFlowChange",
+    "debtDue90Millions",
+    "debtDue180Millions",
+    "refinancePressure"
+  ],
+  "rawInputProperties": [
+    "cashAvailableMillions",
+    "cashFlowChange",
+    "debtDue90Millions",
+    "debtDue180Millions",
+    "refinancePressure"
+  ],
+  "outputProperties": [
+    "liquidityGap",
+    "maturityWall",
+    "refinancePressure"
+  ],
+  "resultKind": "PREDICTION",
+  "dataContract": "M02 frozen DataVersion + M01 cycle semantic contract",
+  "formalModelMutable": false,
+  "automaticReleaseAllowed": false
+}

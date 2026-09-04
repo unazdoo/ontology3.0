@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "ofw.model-card.v1",
+  "scenarioId": "S003",
+  "modelId": "MODEL-S003-HORIZON-PROBABILITY",
+  "modelVersionId": "MODEL-S003-HORIZON-PROBABILITY@0.1.0",
+  "name": "分期限风险概率模型",
+  "role": "SUPPLEMENTAL",
+  "objectiveId": "MO-S003-HORIZON-PROBABILITY-v1",
+  "businessQuestion": "未来 30、90、180 天发生重大债务风险的概率是多少？",
+  "strategy": "horizon_probability",
+  "inputProperties": [
+    "liquidityCoverage",
+    "debtDue90Ratio",
+    "debtDue180Ratio",
+    "refinancePressure",
+    "relationExposure",
+    "anomalyZ"
+  ],
+  "rawInputProperties": [
+    "liquidityCoverage",
+    "debtDue90Ratio",
+    "debtDue180Ratio",
+    "refinancePressure",
+    "relationExposure",
+    "anomalyZ"
+  ],
+  "outputProperties": [
+    "probability30d",
+    "probability90d",
+    "probability180d"
+  ],
+  "resultKind": "PREDICTION",
+  "dataContract": "M02 frozen DataVersion + M01 cycle semantic contract",
+  "formalModelMutable": false,
+  "automaticReleaseAllowed": false
+}

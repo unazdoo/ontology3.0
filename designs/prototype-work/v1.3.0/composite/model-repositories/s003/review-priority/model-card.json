@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "ofw.model-card.v1",
+  "scenarioId": "S003",
+  "modelId": "MODEL-S003-REVIEW-PRIORITY",
+  "modelVersionId": "MODEL-S003-REVIEW-PRIORITY@0.1.0",
+  "name": "复核优先级模型",
+  "role": "SUPPLEMENTAL",
+  "objectiveId": "MO-S003-REVIEW-PRIORITY-v1",
+  "businessQuestion": "在固定复核能力下，应优先复核哪些企业？",
+  "strategy": "review_priority",
+  "inputProperties": [
+    "probability90d",
+    "liquidityGap",
+    "relationRiskScore",
+    "anomalyScore",
+    "confidence"
+  ],
+  "rawInputProperties": [
+    "liquidityCoverage",
+    "debtDue180Ratio",
+    "refinancePressure",
+    "relationExposure",
+    "anomalyZ",
+    "cashAvailableMillions",
+    "debtDue90Millions"
+  ],
+  "outputProperties": [
+    "reviewPriority",
+    "priorityReasons"
+  ],
+  "resultKind": "PREDICTION",
+  "dataContract": "M02 frozen DataVersion + M01 cycle semantic contract",
+  "formalModelMutable": false,
+  "automaticReleaseAllowed": false
+}

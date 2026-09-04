@@ -1,0 +1,282 @@
+{
+  "schemaVersion": "ofw.scenario-registry.v3",
+  "targetPrototypeVersion": "v1.3.0-rc.1",
+  "parentVersion": "v1.2.0-rc.1",
+  "parentCommit": "e4974c23bd223f26bfd04b08dc6f46eb4d9ae5e0",
+  "scenarios": [
+    {
+      "scenarioId": "S001",
+      "scenarioVersion": "S001-v1",
+      "lifecycle": "archived",
+      "mutable": false,
+      "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+      "formedAt": "2026-08-16T08:17:48.567Z",
+      "status": "completed",
+      "resetPolicy": "protected-no-change",
+      "v130Behavior": "parent-v1.2.0-pages-with-generic-model-management-registration",
+      "formalScenarioMutable": false,
+      "modelOptimization": {
+        "currentCycleMutable": true,
+        "historyPreserved": true,
+        "formalScenarioRunReused": false,
+        "engine": "composite/runtime/model-portfolio-engine.mjs",
+        "registration": "composite/runtime/scenario-model-registrations.mjs",
+        "cycleNamespace": "CYCLE-S001-MODEL-20260902-{sequence}",
+        "resetPolicy": "archive current optimization cycle only; preserve formal run and cycle history"
+      }
+    },
+    {
+      "scenarioId": "S002",
+      "scenarioVersion": "S002-v1",
+      "lifecycle": "archived",
+      "mutable": false,
+      "scenarioRunId": "S002-RUN-20260815080000000-6ef5d0ef82f9",
+      "formedAt": "2026-08-15T08:00:00.000Z",
+      "status": "completed",
+      "resetPolicy": "protected-no-change",
+      "v130Behavior": "parent-v1.2.0-pages-with-generic-model-management-registration",
+      "formalScenarioMutable": false,
+      "modelOptimization": {
+        "currentCycleMutable": true,
+        "historyPreserved": true,
+        "formalScenarioRunReused": false,
+        "engine": "composite/runtime/model-portfolio-engine.mjs",
+        "registration": "composite/runtime/scenario-model-registrations.mjs",
+        "cycleNamespace": "CYCLE-S002-MODEL-20260902-{sequence}",
+        "resetPolicy": "archive current optimization cycle only; preserve formal run and cycle history"
+      },
+      "m07Resource": "composite/modules/m07/resources/s002.json"
+    },
+    {
+      "scenarioId": "S003",
+      "scenarioVersion": "S003-v1",
+      "lifecycle": "archived-formal-scenario-with-independent-optimization-cycles",
+      "mutable": false,
+      "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+      "formedAt": "2026-08-17T16:30:00.000Z",
+      "status": "completed",
+      "identityPolicy": "formal-scenario-read-only; optimization cycles use independent identities",
+      "resetPolicy": "archived-scenario-protected; current optimization cycle may be archived and restarted",
+      "formalBaseline": {
+        "modelVersionId": "MV-S003-DEBT-RISK-1.0.2-FORMAL",
+        "modelPackage": "S003-M01-DEBT-RISK-PKG@1.0.2",
+        "resultSetId": "S003-C035-RISK-RESULTS-20251231-v2",
+        "enterpriseCount": 21,
+        "immutable": true
+      },
+      "continuousOptimization": {
+        "cycleNamespace": "CYCLE-S003-OPT-20260902-{sequence}",
+        "currentCycleMutable": true,
+        "historyPreserved": true,
+        "archivedScenarioRunReused": false,
+        "genericEngine": "composite/runtime/model-portfolio-engine.mjs",
+        "scenarioRegistration": "composite/runtime/s003-registration.mjs",
+        "dataClassification": "SYNTHETIC_DEIDENTIFIED_LONGITUDINAL",
+        "objectiveCount": 8,
+        "modelCount": 10,
+        "coreChallengerCount": 2,
+        "supplementalModelCount": 7,
+        "modelReadyDataAssetCount": 6,
+        "perModelSemanticBindingCount": 10,
+        "pythonModelRepositoryCount": 10,
+        "modelRepositoryService": "composite/runtime/model-repository-service.mjs",
+        "repositoryLifecycle": [
+          "protected-main",
+          "branch",
+          "immutable-commit",
+          "immutable-tag",
+          "code-release-candidate",
+          "python-test",
+          "data-version-bound-run"
+        ],
+        "shadowMaturityWindows": 3,
+        "resultKinds": [
+          "FACT",
+          "PREDICTION",
+          "SHADOW",
+          "SIMULATION"
+        ],
+        "dashboardViews": [
+          "FORMAL",
+          "CANDIDATE",
+          "SHADOW",
+          "SIMULATION",
+          "DIFF"
+        ],
+        "factWriteAllowed": false,
+        "actionWriteAllowed": false,
+        "automaticChampionSelectionAllowed": false,
+        "automaticReleaseAllowed": false
+      },
+      "formalScenarioMutable": false,
+      "modelOptimization": {
+        "currentCycleMutable": true,
+        "historyPreserved": true,
+        "formalScenarioRunReused": false,
+        "engine": "composite/runtime/model-portfolio-engine.mjs",
+        "registration": "composite/runtime/s003-registration.mjs",
+        "cycleNamespace": "CYCLE-S003-OPT-20260902-{sequence}",
+        "resetPolicy": "archive current optimization cycle only; preserve formal run and cycle history"
+      }
+    },
+    {
+      "scenarioId": "S004",
+      "scenarioVersion": "S004-v2.1.0",
+      "lifecycle": "archived",
+      "mutable": false,
+      "scenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+      "formedAt": "2026-08-15T23:30:00.000Z",
+      "status": "completed",
+      "resetPolicy": "protected-no-change",
+      "v130Behavior": "parent-v1.2.0-pages-with-generic-model-management-registration",
+      "formalScenarioMutable": false,
+      "modelOptimization": {
+        "currentCycleMutable": true,
+        "historyPreserved": true,
+        "formalScenarioRunReused": false,
+        "engine": "composite/runtime/model-portfolio-engine.mjs",
+        "registration": "composite/runtime/scenario-model-registrations.mjs",
+        "cycleNamespace": "CYCLE-S004-MODEL-20260902-{sequence}",
+        "resetPolicy": "archive current optimization cycle only; preserve formal run and cycle history"
+      },
+      "m07Resource": "composite/modules/m07/resources/s004.json",
+      "dashboardWorkspace": "composite/dashboard/index.html#/view/preloan/overview"
+    },
+    {
+      "scenarioId": "S005",
+      "scenarioVersion": "S005-v1",
+      "lifecycle": "active-candidate",
+      "mutable": true,
+      "status": "active",
+      "scenarioRunIdPolicy": "retain v1.2.0 dynamic-per-run policy in isolated v1.3 browser namespace",
+      "resetPolicy": "current S005 run only; preserve previous evaluation run/result/module outputs",
+      "v130Behavior": "parent-v1.2.0-module-pages-with-generic-model-management-registration",
+      "stateNamespace": "ofw.prototype.v1.3.0.composite.state.v2",
+      "formalScenarioMutable": false,
+      "modelOptimization": {
+        "currentCycleMutable": true,
+        "historyPreserved": true,
+        "formalScenarioRunReused": false,
+        "engine": "composite/runtime/model-portfolio-engine.mjs",
+        "registration": "composite/runtime/scenario-model-registrations.mjs",
+        "cycleNamespace": "CYCLE-S005-MODEL-20260902-{sequence}",
+        "resetPolicy": "archive current optimization cycle only; preserve formal run and cycle history"
+      },
+      "evaluationWorkflow": {
+        "stages": 7,
+        "moduleOutputs": 9,
+        "engine": "../v1.2.0/composite/scenarios/s005/evaluation-engine.js",
+        "routeMode": "real module pages with native operations",
+        "lastChromeResult": {
+          "progress": {
+            "done": 7,
+            "total": 7,
+            "active": 0,
+            "blocked": 0
+          },
+          "evaluationRunId": "S005-EVAL-RUN-2efce7479ca47c85",
+          "evaluationResultId": "S005-EVAL-RESULT-83e63477310c4cfd",
+          "moduleOutputCount": 9,
+          "reportDraftReady": true,
+          "externalSideEffects": 0
+        }
+      },
+      "defaultContext": "internal initial run identity only; not exposed as a global scenario mode"
+    }
+  ],
+  "scenarioIsolation": {
+    "formalArchivedScenarioIds": [
+      "S001",
+      "S002",
+      "S003",
+      "S004"
+    ],
+    "crossScenarioOverwriteAllowed": false,
+    "optimizationCycleMayOverwriteScenarioRun": false,
+    "browserStateSharedWithParent": false,
+    "runtimeSnapshotIncluded": false,
+    "globalScenarioModeVisible": false,
+    "homepagePresentation": "platform capability architecture only; no module directory, scenario run, progress, todo or global scenario switch components"
+  },
+  "uiInheritance": {
+    "shellBaseline": "v1.2.0 local selective derivative",
+    "parentAssetsReadOnly": true,
+    "singleShellCount": 1,
+    "M01_M02_M03_M04_M05_M06": "real module workspaces with native catalog resources, top-bar breadcrumbs and one higher-contrast Shell-level secondary navigation",
+    "M07": "exact v1.2 page with one combined 56-object directory and business context bound only during handoff",
+    "M08": "authorized 模型优化中心 redesign with five Shell-level vertical tasks, verified scrolling and Python model repositories",
+    "S005": "real v1.2 module pages with retained evaluation engine operations",
+    "Dashboard": "v1.2 selective derivative with five native Dashboard workspaces and five result views",
+    "authorizedRedesignModules": [
+      "M08"
+    ],
+    "otherReplacementModulePagesAllowed": false,
+    "crossTabAutomaticReloadAllowed": false,
+    "redirectWrapperAllowed": false,
+    "scenarioStateSharedWithParent": false
+  },
+  "resourceIntegration": {
+    "scenarioIds": [
+      "S001",
+      "S002",
+      "S003",
+      "S004",
+      "S005"
+    ],
+    "moduleIds": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06",
+      "M07",
+      "M08",
+      "Dashboard"
+    ],
+    "resourceCount": 45,
+    "collisionKey": "moduleId + scenarioId",
+    "crossScenarioFallbackAllowed": false
+  },
+  "modelManagementRegistrations": {
+    "registry": "composite/runtime/scenario-model-registrations.mjs",
+    "scenarioIds": [
+      "S001",
+      "S002",
+      "S003",
+      "S004",
+      "S005"
+    ],
+    "genericContextEndpoint": "/v1/model-management/context",
+    "genericActionEndpoint": "/v1/model-management/actions/{action}",
+    "repositoryCatalogEndpoint": "/v1/model-management/repositories",
+    "repositoryActionEndpoints": [
+      "run",
+      "test",
+      "branches",
+      "commits",
+      "tags",
+      "release-candidates"
+    ],
+    "allScenarioLifecycleLastChromeResult": {
+      "observedAt": "2026-09-03T18:34:55.063Z",
+      "S001": { "status": "BINDING_APPLIED", "shadowWindows": 3, "releaseCandidateId": "RC-S001-002-025", "simulationResultId": "RESULT-S001-v1-002-031" },
+      "S002": { "status": "BINDING_APPLIED", "shadowWindows": 3, "releaseCandidateId": "RC-S002-002-024", "simulationResultId": "RESULT-S002-v1-002-030" },
+      "S003": { "status": "BINDING_APPLIED", "shadowWindows": 3, "releaseCandidateId": "RC-S003-002-033", "simulationResultId": "SIMRES-002-038" },
+      "S004": { "status": "BINDING_APPLIED", "shadowWindows": 3, "releaseCandidateId": "RC-S004-002-024", "simulationResultId": "RESULT-S004-v2.1.0-002-030" },
+      "S005": { "status": "BINDING_APPLIED", "shadowWindows": 3, "releaseCandidateId": "RC-S005-002-024", "simulationResultId": "RESULT-S005-v1-002-030" }
+    },
+    "humanInsightReviewRequired": true,
+    "commonUiScenarioSpecificTermsAllowed": false
+  },
+  "acceptanceReady": false,
+  "pageInheritance": {
+    "M01_M02_M03_M04_M05_M06": "real parent workspaces",
+    "M07": "exact parent page plus the combined portfolio resource and S002/S004 source resources",
+    "M08": "authorized 模型优化中心 redesign",
+    "Dashboard": "v1.2 derivative with five-business directory and model result consumption",
+    "replacementPages": [
+      "M08"
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "ofw.model-card.v1",
+  "scenarioId": "S003",
+  "modelId": "MODEL-S003-SURVIVAL",
+  "modelVersionId": "MODEL-S003-SURVIVAL@0.1.0",
+  "name": "风险时间窗口模型",
+  "role": "SUPPLEMENTAL",
+  "objectiveId": "MO-S003-RISK-TIMING-v1",
+  "businessQuestion": "风险更可能在哪个时间窗口发生？",
+  "strategy": "survival_window",
+  "inputProperties": [
+    "probability30d",
+    "probability90d",
+    "probability180d",
+    "outcomeObservedAt"
+  ],
+  "rawInputProperties": [
+    "liquidityCoverage",
+    "debtDue90Ratio",
+    "debtDue180Ratio",
+    "refinancePressure",
+    "relationExposure",
+    "anomalyZ"
+  ],
+  "outputProperties": [
+    "survivalCurve",
+    "expectedRiskWindow"
+  ],
+  "resultKind": "PREDICTION",
+  "dataContract": "M02 frozen DataVersion + M01 cycle semantic contract",
+  "formalModelMutable": false,
+  "automaticReleaseAllowed": false
+}

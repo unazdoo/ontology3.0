@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "ofw.model-card.v1",
+  "scenarioId": "S003",
+  "modelId": "MODEL-S003-ANOMALY",
+  "modelVersionId": "MODEL-S003-ANOMALY@0.1.0",
+  "name": "自身与同行异常监测模型",
+  "role": "SUPPLEMENTAL",
+  "objectiveId": "MO-S003-ANOMALY-v1",
+  "businessQuestion": "相对自身历史和同行分布，哪些变化异常？",
+  "strategy": "anomaly",
+  "inputProperties": [
+    "anomalyZ",
+    "cashFlowChange",
+    "liquidityCoverage",
+    "peerDistribution",
+    "eventLedger"
+  ],
+  "rawInputProperties": [
+    "anomalyZ",
+    "cashFlowChange",
+    "liquidityCoverage"
+  ],
+  "outputProperties": [
+    "anomalyScore",
+    "anomalyEvents"
+  ],
+  "resultKind": "PREDICTION",
+  "dataContract": "M02 frozen DataVersion + M01 cycle semantic contract",
+  "formalModelMutable": false,
+  "automaticReleaseAllowed": false
+}

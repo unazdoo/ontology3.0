@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "ofw.model-card.v1",
+  "scenarioId": "S003",
+  "modelId": "MODEL-S003-FORMAL-SCORE",
+  "modelVersionId": "MODEL-S003-FORMAL-SCORE@1.0.2",
+  "name": "现行 1.0.2 评分模型",
+  "role": "FORMAL_BASELINE",
+  "objectiveId": "MO-S003-FORMAL-DEBT-RISK-SCORE-v1",
+  "businessQuestion": "企业当前正式债务风险评分与分档是什么？",
+  "strategy": "formal_baseline",
+  "inputProperties": [
+    "formalScore",
+    "formalTier"
+  ],
+  "rawInputProperties": [
+    "formalScore",
+    "formalTier"
+  ],
+  "outputProperties": [
+    "riskScore",
+    "riskTier"
+  ],
+  "resultKind": "FACT_READ_ONLY",
+  "dataContract": "M02 frozen DataVersion + M01 cycle semantic contract",
+  "formalModelMutable": false,
+  "automaticReleaseAllowed": false
+}

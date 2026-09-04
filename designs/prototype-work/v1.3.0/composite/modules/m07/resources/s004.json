@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "ofw.m07.validation-resource.v1",
+  "resourceVersion": "s004-preloan-v1.3.0",
+  "namespace": "ofw.m07.research.v1",
+  "researchOnly": true,
+  "scenarioContext": {
+    "scenarioId": "S004",
+    "scenarioVersion": "S004-v2.1.0",
+    "scenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+    "scenarioName": "贷款贷前调查闭环",
+    "formedAt": "2026-08-15T23:30:00.000Z",
+    "status": "completed",
+    "dataAsOf": "2026-08-15"
+  },
+  "ontologyContext": {
+    "publishedSemanticVersionId": "SEM-S004-PREFLIGHT-V1",
+    "authoritativeBindingId": "REC-T019-S004-20260815",
+    "definitionMode": "published-reference",
+    "publishedStatus": "published",
+    "warning": "M07 只读消费 S004 已归档贷前对象、关系、指标和证据，不形成授信结论。"
+  },
+  "source": {
+    "root": "prototype-v1.1.0-frozen:S004",
+    "sourceAssetVersion": "DATA-ASSET-S004-20260815-V01",
+    "asOf": "2026-08-15",
+    "dateRange": { "from": "2024-12-31", "to": "2026-08-15" },
+    "deidentification": "借款主体、人员和机构均使用脱敏名称，仅保留原型已展示的聚合调查指标。",
+    "snapshots": [
+      { "id": "s004.snapshot:2026-08-15", "date": "2026-08-15", "version": "DATA-ASSET-S004-20260815-V01" }
+    ]
+  },
+  "roles": [
+    { "id": "m07.analyst", "label": "贷前分析员", "policyVersion": "research-policy-v1" },
+    { "id": "m07.auditor", "label": "证据审计员", "policyVersion": "research-policy-v1" },
+    { "id": "m07.restricted", "label": "受限观察员", "policyVersion": "research-policy-v1" }
+  ],
+  "objects": [
+    {
+      "id": "S004-PRELOAN-CONTEXT-20260815",
+      "objectTypeId": "m01.object-type.loan-assessment-context",
+      "title": "2026-08-15 贷前调查上下文",
+      "subtitle": "财务、关系、资料与人工复核",
+      "scenarioId": "S004",
+      "properties": {
+        "dataAsOf": { "value": "2026-08-15", "quality": "passed" },
+        "applicantCount": { "value": 4, "unit": "家", "quality": "passed" },
+        "dataVersion": { "value": "DATA-ASSET-S004-20260815-V01", "quality": "passed" },
+        "geometry": { "value": null, "state": "not_applicable", "quality": "passed" }
+      },
+      "quality": "passed",
+      "permissions": ["m07.analyst", "m07.auditor", "m07.restricted"]
+    },
+    {
+      "id": "LoanApplicant-001",
+      "objectTypeId": "m01.object-type.loan-applicant",
+      "title": "申请主体A",
+      "subtitle": "贷前调查对象",
+      "scenarioId": "S004",
+      "properties": {
+        "dataCompleteness": { "value": 96, "unit": "%", "quality": "passed" },
+        "debtRatio": { "value": 48.6, "unit": "%", "quality": "passed" },
+        "reviewPriority": { "value": "常规", "quality": "passed" },
+        "evidenceStatus": { "value": "完整", "quality": "passed" },
+        "geometry": { "value": null, "state": "not_applicable", "quality": "passed" }
+      },
+      "quality": "passed",
+      "permissions": ["m07.analyst", "m07.auditor", "m07.restricted"]
+    },
+    {
+      "id": "LoanApplicant-002",
+      "objectTypeId": "m01.object-type.loan-applicant",
+      "title": "申请主体B",
+      "subtitle": "贷前调查对象",
+      "scenarioId": "S004",
+      "properties": {
+        "dataCompleteness": { "value": 88, "unit": "%", "quality": "warning" },
+        "debtRatio": { "value": 67.2, "unit": "%", "quality": "warning" },
+        "reviewPriority": { "value": "优先复核", "quality": "warning" },
+        "evidenceStatus": { "value": "部分", "quality": "warning" },
+        "geometry": { "value": null, "state": "not_applicable", "quality": "passed" }
+      },
+      "quality": "warning",
+      "permissions": ["m07.analyst", "m07.auditor"]
+    },
+    {
+      "id": "LoanApplicant-003",
+      "objectTypeId": "m01.object-type.loan-applicant",
+      "title": "申请主体C",
+      "subtitle": "贷前调查对象",
+      "scenarioId": "S004",
+      "properties": {
+        "dataCompleteness": { "value": 93, "unit": "%", "quality": "passed" },
+        "debtRatio": { "value": 55.1, "unit": "%", "quality": "passed" },
+        "reviewPriority": { "value": "常规", "quality": "passed" },
+        "evidenceStatus": { "value": "完整", "quality": "passed" },
+        "geometry": { "value": null, "state": "not_applicable", "quality": "passed" }
+      },
+      "quality": "passed",
+      "permissions": ["m07.analyst", "m07.auditor", "m07.restricted"]
+    },
+    {
+      "id": "LoanApplicant-004",
+      "objectTypeId": "m01.object-type.loan-applicant",
+      "title": "申请主体D",
+      "subtitle": "贷前调查对象",
+      "scenarioId": "S004",
+      "properties": {
+        "dataCompleteness": { "value": 76, "unit": "%", "quality": "warning" },
+        "debtRatio": { "value": null, "state": "missing", "quality": "warning", "note": "最新审计口径尚未取得。" },
+        "reviewPriority": { "value": "优先复核", "quality": "warning" },
+        "evidenceStatus": { "value": "观察期不足", "quality": "warning" },
+        "geometry": { "value": null, "state": "not_applicable", "quality": "passed" }
+      },
+      "quality": "warning",
+      "permissions": ["m07.analyst", "m07.auditor"]
+    }
+  ],
+  "links": [
+    { "id": "link:s004-context-applicant1", "linkTypeId": "m07.link-type.context-has-applicant", "label": "包含借款主体", "from": "S004-PRELOAN-CONTEXT-20260815", "to": "LoanApplicant-001", "quality": "passed" },
+    { "id": "link:s004-context-applicant2", "linkTypeId": "m07.link-type.context-has-applicant", "label": "包含借款主体", "from": "S004-PRELOAN-CONTEXT-20260815", "to": "LoanApplicant-002", "quality": "passed" },
+    { "id": "link:s004-context-applicant3", "linkTypeId": "m07.link-type.context-has-applicant", "label": "包含借款主体", "from": "S004-PRELOAN-CONTEXT-20260815", "to": "LoanApplicant-003", "quality": "passed" },
+    { "id": "link:s004-context-applicant4", "linkTypeId": "m07.link-type.context-has-applicant", "label": "包含借款主体", "from": "S004-PRELOAN-CONTEXT-20260815", "to": "LoanApplicant-004", "quality": "passed" }
+  ],
+  "series": [
+    { "id": "series:LoanApplicant-001:dataCompleteness", "ownerObjectId": "LoanApplicant-001", "propertyId": "m01.property.data-completeness", "label": "资料完整度", "unit": "%", "valueType": "number", "granularity": "AS_OF", "calendar": "evidence-date", "timezone": "Asia/Shanghai", "aggregationSemantics": "snapshot", "missingSemantics": ["not_observed"], "points": [{ "t": "2024-12-31", "v": 82, "quality": "passed" }, { "t": "2025-12-31", "v": 91, "quality": "passed" }, { "t": "2026-08-15", "v": 96, "quality": "passed" }] },
+    { "id": "series:LoanApplicant-002:dataCompleteness", "ownerObjectId": "LoanApplicant-002", "propertyId": "m01.property.data-completeness", "label": "资料完整度", "unit": "%", "valueType": "number", "granularity": "AS_OF", "calendar": "evidence-date", "timezone": "Asia/Shanghai", "aggregationSemantics": "snapshot", "missingSemantics": ["not_observed"], "points": [{ "t": "2024-12-31", "v": 70, "quality": "warning" }, { "t": "2025-12-31", "v": 81, "quality": "warning" }, { "t": "2026-08-15", "v": 88, "quality": "warning" }] },
+    { "id": "series:LoanApplicant-003:dataCompleteness", "ownerObjectId": "LoanApplicant-003", "propertyId": "m01.property.data-completeness", "label": "资料完整度", "unit": "%", "valueType": "number", "granularity": "AS_OF", "calendar": "evidence-date", "timezone": "Asia/Shanghai", "aggregationSemantics": "snapshot", "missingSemantics": ["not_observed"], "points": [{ "t": "2024-12-31", "v": 79, "quality": "passed" }, { "t": "2025-12-31", "v": 88, "quality": "passed" }, { "t": "2026-08-15", "v": 93, "quality": "passed" }] },
+    { "id": "series:LoanApplicant-004:dataCompleteness", "ownerObjectId": "LoanApplicant-004", "propertyId": "m01.property.data-completeness", "label": "资料完整度", "unit": "%", "valueType": "number", "granularity": "AS_OF", "calendar": "evidence-date", "timezone": "Asia/Shanghai", "aggregationSemantics": "snapshot", "missingSemantics": ["not_observed"], "points": [{ "t": "2024-12-31", "v": 58, "quality": "warning" }, { "t": "2025-12-31", "v": 69, "quality": "warning" }, { "t": "2026-08-15", "v": 76, "quality": "warning" }] }
+  ],
+  "events": [
+    { "id": "event:s004-applicant2-review", "ownerObjectId": "LoanApplicant-002", "eventType": "MANUAL_REVIEW_REQUIRED", "title": "杠杆水平与资料完整度需联合复核", "occurredAt": "2026-08-15", "severity": "warning", "evidenceRefs": ["DATA-ASSET-S004-20260815-V01#LoanApplicant-002"] },
+    { "id": "event:s004-applicant4-missing", "ownerObjectId": "LoanApplicant-004", "eventType": "EVIDENCE_INCOMPLETE", "title": "最新审计口径缺失", "occurredAt": "2026-08-15", "severity": "warning", "evidenceRefs": ["DATA-ASSET-S004-20260815-V01#LoanApplicant-004"] }
+  ],
+  "lensDefinitions": [
+    { "id": "lens.catalog.v1", "kind": "catalog", "owner": "M07", "version": "1" },
+    { "id": "lens.object360.v1", "kind": "object360", "owner": "M07", "version": "1" },
+    { "id": "lens.graph.v1", "kind": "graph", "owner": "M07", "version": "1", "maxHops": 2 },
+    { "id": "lens.temporal.v1", "kind": "temporal", "owner": "M07", "version": "1" },
+    { "id": "lens.spatial.v1", "kind": "spatial", "owner": "M07", "version": "1" }
+  ]
+}

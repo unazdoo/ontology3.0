@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "ofw.model-card.v1",
+  "scenarioId": "S003",
+  "modelId": "MODEL-S003-MONOTONIC-TABLE",
+  "modelVersionId": "MODEL-S003-MONOTONIC-TABLE@0.1.0",
+  "name": "单调约束表格学习模型",
+  "role": "CORE_CHALLENGER",
+  "objectiveId": "MO-S003-FORMAL-DEBT-RISK-SCORE-v1",
+  "businessQuestion": "企业当前正式债务风险评分与分档是什么？",
+  "strategy": "monotonic_score",
+  "inputProperties": [
+    "liquidityCoverage",
+    "debtDue180Ratio",
+    "refinancePressure",
+    "relationExposure",
+    "anomalyZ"
+  ],
+  "rawInputProperties": [
+    "liquidityCoverage",
+    "debtDue180Ratio",
+    "refinancePressure",
+    "relationExposure",
+    "anomalyZ"
+  ],
+  "outputProperties": [
+    "riskProbability180d",
+    "candidateRiskScore",
+    "candidateRiskTier"
+  ],
+  "resultKind": "PREDICTION",
+  "dataContract": "M02 frozen DataVersion + M01 cycle semantic contract",
+  "formalModelMutable": false,
+  "automaticReleaseAllowed": false
+}

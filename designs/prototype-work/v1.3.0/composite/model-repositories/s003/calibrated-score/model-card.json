@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "ofw.model-card.v1",
+  "scenarioId": "S003",
+  "modelId": "MODEL-S003-CALIBRATED-SCORE",
+  "modelVersionId": "MODEL-S003-CALIBRATED-SCORE@0.1.0",
+  "name": "概率校准评分模型",
+  "role": "CORE_CHALLENGER",
+  "objectiveId": "MO-S003-FORMAL-DEBT-RISK-SCORE-v1",
+  "businessQuestion": "企业当前正式债务风险评分与分档是什么？",
+  "strategy": "calibrated_score",
+  "inputProperties": [
+    "liquidityCoverage",
+    "debtDue180Ratio",
+    "refinancePressure",
+    "relationExposure",
+    "anomalyZ"
+  ],
+  "rawInputProperties": [
+    "liquidityCoverage",
+    "debtDue180Ratio",
+    "refinancePressure",
+    "relationExposure",
+    "anomalyZ"
+  ],
+  "outputProperties": [
+    "calibratedProbability",
+    "candidateRiskScore",
+    "candidateRiskTier"
+  ],
+  "resultKind": "PREDICTION",
+  "dataContract": "M02 frozen DataVersion + M01 cycle semantic contract",
+  "formalModelMutable": false,
+  "automaticReleaseAllowed": false
+}

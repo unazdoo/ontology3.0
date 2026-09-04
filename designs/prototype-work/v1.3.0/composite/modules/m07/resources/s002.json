@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "ofw.m07.validation-resource.v1",
+  "resourceVersion": "s002-budget-v1.3.0",
+  "namespace": "ofw.m07.research.v1",
+  "researchOnly": true,
+  "scenarioContext": {
+    "scenarioId": "S002",
+    "scenarioVersion": "S002-v1",
+    "scenarioRunId": "S002-RUN-20260815080000000-6ef5d0ef82f9",
+    "scenarioName": "预算监督管理闭环",
+    "formedAt": "2026-08-15T08:00:00.000Z",
+    "status": "completed",
+    "dataAsOf": "2025-12-31"
+  },
+  "ontologyContext": {
+    "publishedSemanticVersionId": "S002-ONTO-v1",
+    "authoritativeBindingId": "T019-S002-v1",
+    "definitionMode": "published-reference",
+    "publishedStatus": "published",
+    "warning": "M07 只读消费 S002 已归档预算对象、关系和时序，不改写预算事实。"
+  },
+  "source": {
+    "root": "prototype-v1.1.0-frozen:S002",
+    "sourceAssetVersion": "S002-DATA-v1",
+    "asOf": "2025-12-31",
+    "dateRange": { "from": "2025-01-31", "to": "2025-12-31" },
+    "deidentification": "仅使用原型中已展示的预算单元和聚合指标。",
+    "snapshots": [
+      { "id": "s002.snapshot:2025-12-31", "date": "2025-12-31", "version": "S002-DATA-v1" }
+    ]
+  },
+  "roles": [
+    { "id": "m07.analyst", "label": "预算分析员", "policyVersion": "research-policy-v1" },
+    { "id": "m07.auditor", "label": "证据审计员", "policyVersion": "research-policy-v1" },
+    { "id": "m07.restricted", "label": "受限观察员", "policyVersion": "research-policy-v1" }
+  ],
+  "objects": [
+    {
+      "id": "S002-BUDGET-CONTEXT-2025",
+      "objectTypeId": "m01.object-type.budget-context",
+      "title": "2025年度预算监测上下文",
+      "subtitle": "预算执行、项目占用与异常监测",
+      "scenarioId": "S002",
+      "properties": {
+        "dataAsOf": { "value": "2025-12-31", "quality": "passed" },
+        "budgetUnitCount": { "value": 4, "unit": "个", "quality": "passed" },
+        "dataVersion": { "value": "S002-DATA-v1", "quality": "passed" },
+        "geometry": { "value": null, "state": "not_applicable", "quality": "passed" }
+      },
+      "quality": "passed",
+      "permissions": ["m07.analyst", "m07.auditor", "m07.restricted"]
+    },
+    {
+      "id": "BudgetUnit-001",
+      "objectTypeId": "m01.object-type.budget-unit",
+      "title": "总部管理费用",
+      "subtitle": "预算单元 · 年度执行",
+      "scenarioId": "S002",
+      "properties": {
+        "budgetAmount": { "value": 12800, "unit": "万元", "quality": "passed" },
+        "actualAmount": { "value": 11960, "unit": "万元", "quality": "passed" },
+        "executionRate": { "value": 93.4, "unit": "%", "quality": "passed" },
+        "reviewStatus": { "value": "正常", "quality": "passed" },
+        "geometry": { "value": null, "state": "not_applicable", "quality": "passed" }
+      },
+      "quality": "passed",
+      "permissions": ["m07.analyst", "m07.auditor", "m07.restricted"]
+    },
+    {
+      "id": "BudgetUnit-002",
+      "objectTypeId": "m01.object-type.budget-unit",
+      "title": "信息科技费用",
+      "subtitle": "预算单元 · 年度执行",
+      "scenarioId": "S002",
+      "properties": {
+        "budgetAmount": { "value": 9600, "unit": "万元", "quality": "passed" },
+        "actualAmount": { "value": 10120, "unit": "万元", "quality": "warning" },
+        "executionRate": { "value": 105.4, "unit": "%", "quality": "warning" },
+        "reviewStatus": { "value": "需复核", "quality": "warning" },
+        "geometry": { "value": null, "state": "not_applicable", "quality": "passed" }
+      },
+      "quality": "warning",
+      "permissions": ["m07.analyst", "m07.auditor"]
+    },
+    {
+      "id": "BudgetUnit-003",
+      "objectTypeId": "m01.object-type.budget-unit",
+      "title": "市场推广费用",
+      "subtitle": "预算单元 · 年度执行",
+      "scenarioId": "S002",
+      "properties": {
+        "budgetAmount": { "value": 7200, "unit": "万元", "quality": "passed" },
+        "actualAmount": { "value": 6640, "unit": "万元", "quality": "passed" },
+        "executionRate": { "value": 92.2, "unit": "%", "quality": "passed" },
+        "reviewStatus": { "value": "正常", "quality": "passed" },
+        "geometry": { "value": null, "state": "not_applicable", "quality": "passed" }
+      },
+      "quality": "passed",
+      "permissions": ["m07.analyst", "m07.auditor", "m07.restricted"]
+    },
+    {
+      "id": "BudgetUnit-004",
+      "objectTypeId": "m01.object-type.budget-unit",
+      "title": "运营支持费用",
+      "subtitle": "预算单元 · 年度执行",
+      "scenarioId": "S002",
+      "properties": {
+        "budgetAmount": { "value": 8500, "unit": "万元", "quality": "passed" },
+        "actualAmount": { "value": 8020, "unit": "万元", "quality": "passed" },
+        "executionRate": { "value": 94.4, "unit": "%", "quality": "passed" },
+        "reviewStatus": { "value": "正常", "quality": "passed" },
+        "geometry": { "value": null, "state": "not_applicable", "quality": "passed" }
+      },
+      "quality": "passed",
+      "permissions": ["m07.analyst", "m07.auditor", "m07.restricted"]
+    }
+  ],
+  "links": [
+    { "id": "link:s002-context-unit1", "linkTypeId": "m07.link-type.context-has-budget-unit", "label": "包含预算单元", "from": "S002-BUDGET-CONTEXT-2025", "to": "BudgetUnit-001", "quality": "passed" },
+    { "id": "link:s002-context-unit2", "linkTypeId": "m07.link-type.context-has-budget-unit", "label": "包含预算单元", "from": "S002-BUDGET-CONTEXT-2025", "to": "BudgetUnit-002", "quality": "passed" },
+    { "id": "link:s002-context-unit3", "linkTypeId": "m07.link-type.context-has-budget-unit", "label": "包含预算单元", "from": "S002-BUDGET-CONTEXT-2025", "to": "BudgetUnit-003", "quality": "passed" },
+    { "id": "link:s002-context-unit4", "linkTypeId": "m07.link-type.context-has-budget-unit", "label": "包含预算单元", "from": "S002-BUDGET-CONTEXT-2025", "to": "BudgetUnit-004", "quality": "passed" }
+  ],
+  "series": [
+    { "id": "series:BudgetUnit-001:executionRate", "ownerObjectId": "BudgetUnit-001", "propertyId": "m01.property.budget-execution-rate", "label": "预算执行率", "unit": "%", "valueType": "number", "granularity": "MONTH", "calendar": "month-end", "timezone": "Asia/Shanghai", "aggregationSemantics": "snapshot", "missingSemantics": ["not_observed"], "points": [{ "t": "2025-03-31", "v": 22.6, "quality": "passed" }, { "t": "2025-06-30", "v": 48.8, "quality": "passed" }, { "t": "2025-09-30", "v": 72.4, "quality": "passed" }, { "t": "2025-12-31", "v": 93.4, "quality": "passed" }] },
+    { "id": "series:BudgetUnit-002:executionRate", "ownerObjectId": "BudgetUnit-002", "propertyId": "m01.property.budget-execution-rate", "label": "预算执行率", "unit": "%", "valueType": "number", "granularity": "MONTH", "calendar": "month-end", "timezone": "Asia/Shanghai", "aggregationSemantics": "snapshot", "missingSemantics": ["not_observed"], "points": [{ "t": "2025-03-31", "v": 25.3, "quality": "passed" }, { "t": "2025-06-30", "v": 54.1, "quality": "passed" }, { "t": "2025-09-30", "v": 82.7, "quality": "warning" }, { "t": "2025-12-31", "v": 105.4, "quality": "warning" }] },
+    { "id": "series:BudgetUnit-003:executionRate", "ownerObjectId": "BudgetUnit-003", "propertyId": "m01.property.budget-execution-rate", "label": "预算执行率", "unit": "%", "valueType": "number", "granularity": "MONTH", "calendar": "month-end", "timezone": "Asia/Shanghai", "aggregationSemantics": "snapshot", "missingSemantics": ["not_observed"], "points": [{ "t": "2025-03-31", "v": 19.8, "quality": "passed" }, { "t": "2025-06-30", "v": 45.2, "quality": "passed" }, { "t": "2025-09-30", "v": 68.5, "quality": "passed" }, { "t": "2025-12-31", "v": 92.2, "quality": "passed" }] },
+    { "id": "series:BudgetUnit-004:executionRate", "ownerObjectId": "BudgetUnit-004", "propertyId": "m01.property.budget-execution-rate", "label": "预算执行率", "unit": "%", "valueType": "number", "granularity": "MONTH", "calendar": "month-end", "timezone": "Asia/Shanghai", "aggregationSemantics": "snapshot", "missingSemantics": ["not_observed"], "points": [{ "t": "2025-03-31", "v": 21.2, "quality": "passed" }, { "t": "2025-06-30", "v": 46.7, "quality": "passed" }, { "t": "2025-09-30", "v": 70.6, "quality": "passed" }, { "t": "2025-12-31", "v": 94.4, "quality": "passed" }] }
+  ],
+  "events": [
+    { "id": "event:s002-unit2-overrun", "ownerObjectId": "BudgetUnit-002", "eventType": "BUDGET_OVERRUN", "title": "年度执行率超过预算", "occurredAt": "2025-12-31", "severity": "warning", "evidenceRefs": ["S002-DATA-v1#BudgetUnit-002"] }
+  ],
+  "lensDefinitions": [
+    { "id": "lens.catalog.v1", "kind": "catalog", "owner": "M07", "version": "1" },
+    { "id": "lens.object360.v1", "kind": "object360", "owner": "M07", "version": "1" },
+    { "id": "lens.graph.v1", "kind": "graph", "owner": "M07", "version": "1", "maxHops": 2 },
+    { "id": "lens.temporal.v1", "kind": "temporal", "owner": "M07", "version": "1" },
+    { "id": "lens.spatial.v1", "kind": "spatial", "owner": "M07", "version": "1" }
+  ]
+}

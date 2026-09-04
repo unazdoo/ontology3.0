@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "ofw.model-card.v1",
+  "scenarioId": "S003",
+  "modelId": "MODEL-S003-CONTAGION",
+  "modelVersionId": "MODEL-S003-CONTAGION@0.1.0",
+  "name": "关系传染风险模型",
+  "role": "SUPPLEMENTAL",
+  "objectiveId": "MO-S003-CONTAGION-v1",
+  "businessQuestion": "担保、股权、关联交易和共同债权人会形成哪些风险路径？",
+  "strategy": "contagion",
+  "inputProperties": [
+    "relationExposure",
+    "guaranteeEdges",
+    "ownershipEdges",
+    "relatedTradeEdges",
+    "sharedCreditorEdges"
+  ],
+  "rawInputProperties": [
+    "relationExposure"
+  ],
+  "outputProperties": [
+    "relationRiskScore",
+    "relationRiskPath"
+  ],
+  "resultKind": "PREDICTION",
+  "dataContract": "M02 frozen DataVersion + M01 cycle semantic contract",
+  "formalModelMutable": false,
+  "automaticReleaseAllowed": false
+}

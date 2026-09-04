@@ -1,0 +1,277 @@
+{
+  "schemaVersion": "ofw.prototype.module-registry.v2",
+  "targetPrototypeVersion": "v1.3.0-rc.1",
+  "parentPrototype": {
+    "version": "v1.2.0-rc.1",
+    "commit": "e4974c23bd223f26bfd04b08dc6f46eb4d9ae5e0",
+    "subtree": "e57caf36b4a815b4d363ca93ee69305c12228938",
+    "referenceMode": "read-only-relative"
+  },
+  "shell": {
+    "count": 1,
+    "owner": "composite-host",
+    "entry": "composite/s001-e2e-integration/index.html",
+    "renderer": "composite/s001-e2e-integration/app.js",
+    "rendererBaseline": "../v1.2.0/composite/s001-e2e-integration/app.js",
+    "rendererDeltaPolicy": "platform capability homepage without scenario operations, top-bar breadcrumbs, higher-contrast Shell-level secondary navigation, native catalog integrations and navigation stability only",
+    "styles": "../v1.2.0/composite/s001-e2e-integration/styles.css",
+    "styleDelta": "composite/s001-e2e-integration/styles.css",
+    "moduleMountMode": "same-origin-content-frame",
+    "pageInheritancePolicy": "load the real parent module workspace and mount registered business actions inside its native interaction surfaces without exposing module-level scenario selectors",
+    "nestedPlatformShellAllowed": false,
+    "moduleScenarioLoaderAllowed": false,
+    "crossTabAutomaticReloadAllowed": false,
+    "historyEventsCoalesced": true,
+    "redirectWrapperAllowed": false,
+    "globalScenarioSwitcherVisible": false,
+    "homepageMode": "platform-capability-navigation-without-scenario-run-or-todo-components",
+    "secondaryNavigation": "one higher-contrast Shell-level vertical task navigation per workspace; larger text and targets; mobile single selector; no standalone breadcrumb row"
+  },
+  "moduleOrder": [
+    "M01",
+    "M02",
+    "M03",
+    "M04",
+    "M05",
+    "M06",
+    "M07",
+    "M08",
+    "Dashboard"
+  ],
+  "modules": [
+    {
+      "resourceOwnerId": "M01",
+      "moduleId": "ontology",
+      "name": "本体管理",
+      "route": "#module/ontology",
+      "entry": "../../prototype-releases/v1.1.0/ontology-management-review/canvas-first/index.html",
+      "v120Behavior": "preserve frozen module page",
+      "replacementPageAllowed": false,
+      "publishedOntologyCreated": false,
+      "nativeIntegration": "composite/integrations/native-module-integrations.js#ontology",
+      "capabilities": [
+        "immutable-model-semantic-contract",
+        "scenario-aware-object-metric-unit-time-result-identities",
+        "ten-per-model-input-output-null-time-and-result-bindings",
+        "semantic-contract-as-native-semantic-catalog-resource"
+      ]
+    },
+    {
+      "resourceOwnerId": "M02",
+      "moduleId": "data",
+      "name": "数据工程",
+      "route": "#module/data",
+      "entry": "../../prototype-releases/v1.1.0/data-engineering-prototype-review/review-v3/方案B2.html",
+      "v120Behavior": "preserve frozen module page",
+      "replacementPageAllowed": false,
+      "syntheticClassification": "SYNTHETIC_DEIDENTIFIED_LONGITUDINAL",
+      "nativeIntegration": "composite/integrations/native-module-integrations.js#data",
+      "capabilities": [
+        "scenario-model-data-build",
+        "quality-and-leakage-validation",
+        "immutable-data-version-freeze",
+        "six-visible-model-ready-data-assets-with-lineage",
+        "data-version-as-native-data-asset-catalog-resource"
+      ],
+      "s003ModelDataAssetCount": 6
+    },
+    {
+      "resourceOwnerId": "M03",
+      "moduleId": "query",
+      "name": "智能问数",
+      "route": "#module/query",
+      "entry": "../../prototype-releases/v1.1.0/intelligent-query-prototype/review-next/conversation-workspace/index.html",
+      "v120Behavior": "preserve the real intelligent-query conversation workspace",
+      "replacementPageAllowed": false,
+      "consumerId": "M03_QUERY",
+      "accessMode": "read-only-result-package",
+      "nativeIntegration": "composite/integrations/native-module-integrations.js#query",
+      "interface": "parent-conversation-workspace-with-51-recommendations-six-business-topic-tabs-zero-reload-filtering-five-step-processing-animation-stale-run-cancellation-and-native-model-result-answers"
+    },
+    {
+      "resourceOwnerId": "M04",
+      "moduleId": "decision",
+      "name": "决策中心",
+      "route": "#module/decision",
+      "entry": "../../prototype-releases/v1.1.0/decision-center-prototype/review-v2/action-portfolio.html",
+      "v120Behavior": "preserve frozen module page",
+      "replacementPageAllowed": false,
+      "consumerId": "M04_DECISION",
+      "nonFactBoundary": {
+        "code": "NON_FACT_SOURCE_REJECTED",
+        "resultKinds": [
+          "PREDICTION",
+          "SHADOW",
+          "SIMULATION"
+        ],
+        "actionRequestCreated": false,
+        "approvalCreated": false,
+        "reminderCreated": false,
+        "todoCreated": false,
+        "notificationCreated": false,
+        "transactionCreated": false,
+        "sideEffectsEmitted": 0
+      },
+      "nativeIntegration": "composite/integrations/native-module-integrations.js#decision"
+    },
+    {
+      "resourceOwnerId": "M05",
+      "moduleId": "agent",
+      "name": "Agent 应用",
+      "route": "#module/agent",
+      "entry": "../../prototype-releases/v1.1.0/agent-application/Agent应用.html",
+      "v120Behavior": "preserve the real Agent catalog and runtime workspace",
+      "replacementPageAllowed": false,
+      "consumerId": "M05_EXPLANATION",
+      "accessMode": "read-only-contribution-anomaly-relation-disagreement-explanation",
+      "nativeIntegration": "composite/integrations/native-module-integrations.js#agent",
+      "agentCatalogCount": 10
+    },
+    {
+      "resourceOwnerId": "M06",
+      "moduleId": "report",
+      "name": "报告中心",
+      "route": "#module/report",
+      "entry": "../../prototype-releases/v1.1.0/report-center/review-lifecycle/index.html",
+      "v120Behavior": "preserve the real report catalog and lifecycle workspace",
+      "replacementPageAllowed": false,
+      "consumerId": "M06_REPORT",
+      "accessMode": "read-only-report-history-evolution-rollback",
+      "nativeIntegration": "composite/integrations/native-module-integrations.js#report",
+      "reportLifecycle": "candidate-draft-requires-review"
+    },
+    {
+      "resourceOwnerId": "M07",
+      "moduleId": "m07",
+      "name": "多视图探索",
+      "route": "#module/m07",
+      "entry": "../v1.2.0/composite/modules/m07/module/workspace-v2.html",
+      "v120Behavior": "reuse exact parent M07 page with one combined cross-business object portfolio",
+      "replacementPageAllowed": false,
+      "consumerId": "M07_EXPLORATION",
+      "acceptedObjectTypes": "resource registration owned; not hardcoded by the shared Shell",
+      "businessOrganization": "all registered objects are organized by object type and quality in one directory; selected objects bind their business context only when handed to another module",
+      "resourceOverlays": {
+        "portfolio": "composite/modules/m07/resources/portfolio.json",
+        "S002": "composite/modules/m07/resources/s002.json",
+        "S004": "composite/modules/m07/resources/s004.json",
+        "typeLabels": "composite/integrations/m07-type-overlays.js"
+      }
+    },
+    {
+      "resourceOwnerId": "M08",
+      "moduleId": "modeling",
+      "name": "模型优化中心",
+      "route": "#module/modeling",
+      "entry": "composite/model-center/index.html",
+      "baselineEntry": "../v1.2.0/composite/modules/modeling/module/content.html",
+      "redesignReason": "connect business objectives, Python model repositories, evaluation, shadow, release and binding within one maintainable workflow",
+      "navigationMode": "five Shell-level light vertical tasks; mobile-single-select; embedded M08 navigation hidden; model repositories open from model detail; long pages and repository panes verified scrollable",
+      "replacementPageAllowed": true,
+      "canonicalImplementation": "generic-continuous-optimization-engine-with-scenario-registration",
+      "genericEngine": "composite/runtime/model-portfolio-engine.mjs",
+      "scenarioRegistrations": "composite/runtime/scenario-model-registrations.mjs",
+      "s003Registration": "composite/runtime/s003-registration.mjs",
+      "modelRepositoryService": "composite/runtime/model-repository-service.mjs",
+      "modelRepositoryRoot": "composite/model-repositories/s003",
+      "modelRepositoryCount": 10,
+      "modelRepositoryFiles": [
+        "README.md",
+        "model.py",
+        "features.py",
+        "model-card.json",
+        "requirements.txt",
+        "tests/test_model.py"
+      ],
+      "modelVersionOperations": [
+        "protected-main",
+        "branch",
+        "immutable-commit",
+        "immutable-tag",
+        "code-release-candidate",
+        "python-test",
+        "data-version-bound-python-run"
+      ],
+      "catalogScopes": [
+        "PLATFORM",
+        "SCENARIO"
+      ],
+      "objectiveKinds": [
+        "FORECAST",
+        "CLASSIFICATION",
+        "SCORING",
+        "OPTIMIZATION"
+      ],
+      "lifecycle": [
+        "DATA_VERSION",
+        "SEMANTIC_CONTRACT",
+        "BENCHMARK",
+        "MODEL_PORTFOLIO",
+        "AI_INSIGHT",
+        "HUMAN_INSIGHT_REVIEW",
+        "MODEL_VERSION",
+        "SHADOW_TRIAL",
+        "REBENCHMARK",
+        "RELEASE_CANDIDATE",
+        "CONSUMER_BINDING",
+        "CONTINUOUS_MONITORING"
+      ],
+      "modelRoles": [
+        "FORMAL_BASELINE",
+        "CORE_CHALLENGER",
+        "SUPPLEMENTAL"
+      ],
+      "simulationRole": "independent-use-mode-not-lifecycle-shortcut",
+      "automaticChampionSelectionAllowed": false,
+      "automaticReleaseAllowed": false,
+      "humanInsightReviewRequired": true,
+      "formalModelMutationAllowed": false
+    },
+    {
+      "resourceOwnerId": "Dashboard",
+      "moduleId": "dashboard",
+      "name": "仪表盘",
+      "route": "#dashboard",
+      "entry": "composite/dashboard/index.html",
+      "baselineEntry": "../v1.2.0/composite/dashboard/index.html",
+      "v120Behavior": "selective derivative preserving parent Dashboard structure",
+      "replacementPageAllowed": false,
+      "consumerId": "Dashboard",
+      "views": [
+        "FORMAL",
+        "CANDIDATE",
+        "SHADOW",
+        "SIMULATION",
+        "DIFF"
+      ],
+      "aggregateScoreCreated": false,
+      "modelConfigurationOwned": false,
+      "nativeIntegration": "composite/integrations/native-module-integrations.js#dashboard",
+      "implementation": "v1.2 selective derivative with five native Dashboard workspaces, including a real S004 pre-loan workspace, plus five model-result identities",
+      "directoryScenarioIds": [
+        "S001",
+        "S002",
+        "S003",
+        "S004",
+        "S005"
+      ]
+    }
+  ],
+  "sharedContracts": {
+    "continuousOptimizationEngine": "composite/runtime/model-portfolio-engine.mjs",
+    "runtimeService": "composite/runtime/server.mjs",
+    "resultEnvelopeSchema": "ofw.modeling.result-envelope.v2",
+    "resultPackageSchema": "ofw.modeling.result-package.v2",
+    "consumerProjectionSchema": "ofw.modeling.consumer-projection.v1",
+    "browserStateNamespace": "ofw.prototype.v1.3.0"
+  },
+  "registrationPolicy": {
+    "routeUniqueness": "required",
+    "moduleIdentityUniqueness": "required",
+    "resourceCatalog": "composite/resources/catalog.js",
+    "scenarioIdUsage": "record-field-and-filter-only",
+    "crossScenarioFallbackAllowed": false,
+    "singleShellRequired": true
+  },
+  "acceptanceReady": false
+}
