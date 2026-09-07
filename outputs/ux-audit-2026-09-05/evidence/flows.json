@@ -1,0 +1,534 @@
+{
+  "evidence": {
+    "model-target-return": {
+      "before": "债务风险智能监测",
+      "after": "投后评价与产品选择",
+      "activeScenario": "S005",
+      "comparison": {
+        "id": "MO-S003-DEBT-RISK-EARLY-WARNING-v1",
+        "type": "modeling-objective-comparison",
+        "label": "债务风险智能监测",
+        "objectiveId": "MO-S003-DEBT-RISK-EARLY-WARNING-v1",
+        "modelVersionRefs": [
+          {
+            "id": "MODEL-S003-FORMAL-SCORE@1.0.2",
+            "label": "现行 1.0.2 评分模型",
+            "modelId": "MODEL-S003-FORMAL-SCORE"
+          },
+          {
+            "id": "MODEL-S003-CALIBRATED-SCORE@0.1.0",
+            "label": "概率校准评分模型",
+            "modelId": "MODEL-S003-CALIBRATED-SCORE"
+          }
+        ]
+      }
+    },
+    "query-draft-return": {
+      "before": "请分析当前对象在所选期间的成本变化",
+      "after": "请分析当前对象在所选期间的成本变化"
+    },
+    "decision-control-reachability": [
+      {
+        "width": 1440,
+        "geometry": {
+          "width": 1000,
+          "button": {
+            "x": 1160.984375,
+            "y": 677.109375,
+            "width": 89,
+            "height": 31,
+            "right": 1249.984375
+          },
+          "parents": [
+            {
+              "tag": "TD",
+              "class": "",
+              "rect": {
+                "x": 1149.984375,
+                "y": 656.609375,
+                "width": 0.015625,
+                "height": 72,
+                "right": 1150
+              },
+              "client": 0,
+              "scroll": 100,
+              "overflowX": "visible"
+            },
+            {
+              "tag": "TR",
+              "class": "",
+              "rect": {
+                "x": 30,
+                "y": 656.609375,
+                "width": 1120,
+                "height": 72,
+                "right": 1150
+              },
+              "client": 1120,
+              "scroll": 1220,
+              "overflowX": "visible"
+            },
+            {
+              "tag": "TBODY",
+              "class": "",
+              "rect": {
+                "x": 30,
+                "y": 656.609375,
+                "width": 1120,
+                "height": 360,
+                "right": 1150
+              },
+              "client": 1120,
+              "scroll": 1220,
+              "overflowX": "visible"
+            },
+            {
+              "tag": "TABLE",
+              "class": "record-table",
+              "rect": {
+                "x": 30,
+                "y": 585.734375,
+                "width": 1120,
+                "height": 431.375,
+                "right": 1150
+              },
+              "client": 1120,
+              "scroll": 1220,
+              "overflowX": "visible"
+            },
+            {
+              "tag": "DIV",
+              "class": "record-table-wrap portfolio-decision-table",
+              "rect": {
+                "x": 30,
+                "y": 585.734375,
+                "width": 940,
+                "height": 431.375,
+                "right": 970
+              },
+              "client": 940,
+              "scroll": 1220,
+              "overflowX": "auto"
+            },
+            {
+              "tag": "SECTION",
+              "class": "content-panel portfolio-workspace portfolio-decision-workspace s003-drawer-workspace",
+              "rect": {
+                "x": 18,
+                "y": 397.34375,
+                "width": 964,
+                "height": 631.765625,
+                "right": 982
+              },
+              "client": 962,
+              "scroll": 962,
+              "overflowX": "hidden"
+            },
+            {
+              "tag": "DIV",
+              "class": "screen-stage",
+              "rect": {
+                "x": 0,
+                "y": 92.984375,
+                "width": 1000,
+                "height": 842,
+                "right": 1000
+              },
+              "client": 1000,
+              "scroll": 1000,
+              "overflowX": "hidden"
+            },
+            {
+              "tag": "MAIN",
+              "class": "app-workspace",
+              "rect": {
+                "x": 0,
+                "y": 92.984375,
+                "width": 1000,
+                "height": 842,
+                "right": 1000
+              },
+              "client": 1000,
+              "scroll": 1000,
+              "overflowX": "hidden"
+            },
+            {
+              "tag": "DIV",
+              "class": "decision-app variant-portfolio",
+              "rect": {
+                "x": 0,
+                "y": 92.984375,
+                "width": 1000,
+                "height": 842,
+                "right": 1000
+              },
+              "client": 1000,
+              "scroll": 1000,
+              "overflowX": "hidden"
+            },
+            {
+              "tag": "DIV",
+              "class": "",
+              "rect": {
+                "x": 0,
+                "y": 92.984375,
+                "width": 1000,
+                "height": 842,
+                "right": 1000
+              },
+              "client": 1000,
+              "scroll": 1000,
+              "overflowX": "hidden"
+            },
+            {
+              "tag": "BODY",
+              "class": "",
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 842,
+                "right": 1000
+              },
+              "client": 1000,
+              "scroll": 1000,
+              "overflowX": "hidden"
+            },
+            {
+              "tag": "HTML",
+              "class": "",
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 842,
+                "right": 1000
+              },
+              "client": 1000,
+              "scroll": 1000,
+              "overflowX": "hidden"
+            }
+          ]
+        },
+        "click": true
+      },
+      {
+        "width": 390,
+        "geometry": {
+          "width": 390,
+          "button": {
+            "x": 1152.984375,
+            "y": 1074.234375,
+            "width": 89,
+            "height": 31,
+            "right": 1241.984375
+          },
+          "parents": [
+            {
+              "tag": "TD",
+              "class": "",
+              "rect": {
+                "x": 1141.984375,
+                "y": 1053.734375,
+                "width": 0.015625,
+                "height": 72,
+                "right": 1142
+              },
+              "client": 0,
+              "scroll": 100,
+              "overflowX": "visible"
+            },
+            {
+              "tag": "TR",
+              "class": "selected",
+              "rect": {
+                "x": 22,
+                "y": 1053.734375,
+                "width": 1120,
+                "height": 72,
+                "right": 1142
+              },
+              "client": 1120,
+              "scroll": 1220,
+              "overflowX": "visible"
+            },
+            {
+              "tag": "TBODY",
+              "class": "",
+              "rect": {
+                "x": 22,
+                "y": 1053.734375,
+                "width": 1120,
+                "height": 360,
+                "right": 1142
+              },
+              "client": 1120,
+              "scroll": 1220,
+              "overflowX": "visible"
+            },
+            {
+              "tag": "TABLE",
+              "class": "record-table",
+              "rect": {
+                "x": 22,
+                "y": 982.859375,
+                "width": 1120,
+                "height": 431.375,
+                "right": 1142
+              },
+              "client": 1120,
+              "scroll": 1220,
+              "overflowX": "visible"
+            },
+            {
+              "tag": "DIV",
+              "class": "record-table-wrap portfolio-decision-table",
+              "rect": {
+                "x": 22,
+                "y": 982.859375,
+                "width": 346,
+                "height": 431.375,
+                "right": 368
+              },
+              "client": 346,
+              "scroll": 1220,
+              "overflowX": "auto"
+            },
+            {
+              "tag": "SECTION",
+              "class": "content-panel portfolio-workspace portfolio-decision-workspace s003-drawer-workspace",
+              "rect": {
+                "x": 10,
+                "y": 646.671875,
+                "width": 370,
+                "height": 779.5625,
+                "right": 380
+              },
+              "client": 368,
+              "scroll": 368,
+              "overflowX": "hidden"
+            },
+            {
+              "tag": "DIV",
+              "class": "screen-stage",
+              "rect": {
+                "x": 0,
+                "y": 147.96875,
+                "width": 390,
+                "height": 726,
+                "right": 390
+              },
+              "client": 390,
+              "scroll": 390,
+              "overflowX": "hidden"
+            },
+            {
+              "tag": "MAIN",
+              "class": "app-workspace",
+              "rect": {
+                "x": 0,
+                "y": 147.96875,
+                "width": 390,
+                "height": 726,
+                "right": 390
+              },
+              "client": 390,
+              "scroll": 390,
+              "overflowX": "hidden"
+            },
+            {
+              "tag": "DIV",
+              "class": "decision-app variant-portfolio",
+              "rect": {
+                "x": 0,
+                "y": 147.96875,
+                "width": 390,
+                "height": 726,
+                "right": 390
+              },
+              "client": 390,
+              "scroll": 390,
+              "overflowX": "hidden"
+            },
+            {
+              "tag": "DIV",
+              "class": "",
+              "rect": {
+                "x": 0,
+                "y": 147.96875,
+                "width": 390,
+                "height": 726,
+                "right": 390
+              },
+              "client": 390,
+              "scroll": 390,
+              "overflowX": "hidden"
+            },
+            {
+              "tag": "BODY",
+              "class": "",
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 726,
+                "right": 390
+              },
+              "client": 390,
+              "scroll": 390,
+              "overflowX": "hidden"
+            },
+            {
+              "tag": "HTML",
+              "class": "",
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 726,
+                "right": 390
+              },
+              "client": 390,
+              "scroll": 390,
+              "overflowX": "hidden"
+            }
+          ]
+        },
+        "click": "locator.click: Timeout 2200ms exceeded."
+      }
+    ],
+    "m07-null-comparison": {
+      "text": "对比指标\n规则指标值 (%) · 3/3\n空间位置 · 3/3\n来源编码 · 3/3\n平均融资成本 (%) · 3/3\n融资笔数 (笔) · 3/3\n融资余额 (亿元) · 3/3\n融资余额 (亿元) · 3/3\n余额加权平均融资成本 (%) · 3/3\n3\n对比对象\n8\n共同指标\n%\n当前单位\nCOMPARISON\n规则指标值\n2024-12-31 至 2026-08-15\n1\n单位465\n融资主体\n100%\n2\n单位561\n融资主体\n93.55%\n3\n单位553\n融资主体\n2.88%\nDETAILS\n数值明细\n业务对象\t规则指标值\n%\n\t空间位置\t来源编码\t平均融资成本\n%\n\t融资笔数\n笔\n\t融资余额\n亿元\n\n\n单位465\n\t100\t0\t0\t2.2\t176\t770\n\n单位553\n\t2.88\t0\t0\t2.88\t75\t393.13\n\n单位561\n\t93.55\t0\t0\t2.23\t50\t20.02",
+      "options": "规则指标值 (%) · 3/3\n空间位置 · 3/3\n来源编码 · 3/3\n平均融资成本 (%) · 3/3\n融资笔数 (笔) · 3/3\n融资余额 (亿元) · 3/3\n融资余额 (亿元) · 3/3\n余额加权平均融资成本 (%) · 3/3"
+    },
+    "m07-save-filter-restore": {
+      "before": {
+        "objectSetRef": {
+          "id": "object-set:m07:e6u39t",
+          "title": "当前结果 2 个对象",
+          "count": 2,
+          "selectionMode": "FILTERED",
+          "filters": {
+            "query": "环保",
+            "objectTypeId": "all",
+            "quality": "all"
+          }
+        },
+        "activeObjectRef": {
+          "id": "S003-ENT-017",
+          "title": "环保测试公司1",
+          "objectTypeRef": "Enterprise",
+          "scenarioId": "S003",
+          "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+          "bindingId": "MB-S003-DEBT-RISK-v1"
+        },
+        "timeRange": {
+          "start": "2024-12-31",
+          "end": "2026-08-15",
+          "label": "2024-12-31 至 2026-08-15"
+        },
+        "lensRef": {
+          "moduleId": "m07",
+          "lensId": "compare",
+          "route": "#explore"
+        },
+        "dataVersionRef": {
+          "id": "S003-T007-FORMAL-CANDIDATE-20251231-v1"
+        },
+        "ontologyVersionRef": {
+          "id": "SEM-S003-DEBT-RISK-v1"
+        },
+        "evidenceRefs": [
+          "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-017",
+          "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "SEM-S003-DEBT-RISK-v1",
+          "risk::series:S003-ENT-017:riskScore"
+        ],
+        "sourceModuleId": "m07"
+      },
+      "after": {
+        "context": {
+          "objectSetRef": {
+            "id": "object-set:m07:o68gpn",
+            "title": "当前结果 9 个对象",
+            "count": 9,
+            "selectionMode": "FILTERED",
+            "filters": {
+              "query": "银行",
+              "objectTypeId": "all",
+              "quality": "all"
+            }
+          },
+          "activeObjectRef": {
+            "id": "S003-ENT-017",
+            "title": "环保测试公司1",
+            "objectTypeRef": "Enterprise",
+            "scenarioId": "S003",
+            "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+            "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+            "bindingId": "MB-S003-DEBT-RISK-v1"
+          },
+          "timeRange": {
+            "start": "2024-12-31",
+            "end": "2026-08-15",
+            "label": "2024-12-31 至 2026-08-15"
+          },
+          "lensRef": {
+            "moduleId": "m07",
+            "lensId": "compare",
+            "route": "#explore"
+          },
+          "dataVersionRef": {
+            "id": "S003-T007-FORMAL-CANDIDATE-20251231-v1"
+          },
+          "ontologyVersionRef": {
+            "id": "SEM-S003-DEBT-RISK-v1"
+          },
+          "evidenceRefs": [
+            "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-017",
+            "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+            "SEM-S003-DEBT-RISK-v1",
+            "risk::series:S003-ENT-017:riskScore"
+          ],
+          "sourceModuleId": "m07"
+        },
+        "state": {
+          "route": "explore",
+          "lens": "compare",
+          "search": "银行",
+          "typeFilter": "all",
+          "quality": "all",
+          "selectedIds": [],
+          "activeId": "risk::S003-ENT-017",
+          "previewId": "risk::S003-ENT-017",
+          "timeRange": {
+            "start": "2024-12-31",
+            "end": "2026-08-15",
+            "label": "2024-12-31 至 2026-08-15"
+          },
+          "objectTab": "properties",
+          "graphExpanded": [
+            "financing::s001.entity.553"
+          ],
+          "graphSelectedId": "financing::s001.entity.553",
+          "timelineSeriesIds": [],
+          "compareChart": "bar",
+          "compareMetric": "property:geometry",
+          "mapZoom": 1,
+          "mapLinks": true,
+          "pathSearch": ""
+        }
+      }
+    },
+    "report-formal-context-without-candidate": {
+      "text": "模型监测报告\n\nS003 · 报告中心\n\n×\n草稿编号\nRPT-DRAFT-S003-1-MTNPX5BZ\n状态\n结果未就绪\nResult Package\nCYCLE-S003-OPT-20260902-001-RESULT-PACKAGE-00\nModel Version\n尚未形成\nDataVersion\nS003-T007-FORMAL-CANDIDATE-20251231-v1\n形成时间\n2026-09-05T01:42:36.863Z\n已加入的业务上下文\n当前结果 9 个对象 · 环保测试公司1 · 2024-12-31 至 2026-08-15 · 正式结果\n当前没有可写入报告草稿的候选结果。\n关闭\n重新生成草稿",
+      "stored": {}
+    },
+    "service-failure-feedback": {
+      "shell": "服务正常",
+      "content": "MODELING OBJECTIVES\n模型目标与优化\n\n5 个业务目标 · 0 个模型版本 · 0 个目标持续监测\n\nLOAD_FAILED · 业务目标与模型状态暂时不可读取\n正在读取模型目标\n同步目标、模型、评测和消费状态。"
+    }
+  },
+  "errors": []
+}

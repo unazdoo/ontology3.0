@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <meta name="description" content="智财问策数据、本体、探索、模型与经营协同工作台。" />
+    <title>智财问策（Ontology Financial World）</title>
+    <link rel="icon" href="data:," />
+    <script>
+      window.__OFW_RUNTIME_ERRORS__ = [];
+      window.__OFW_FAILED_RESOURCES__ = [];
+      window.addEventListener("error", function (event) {
+        var target = event.target;
+        if (target && target !== window && (target.src || target.href)) {
+          window.__OFW_FAILED_RESOURCES__.push(String(target.src || target.href));
+          return;
+        }
+        window.__OFW_RUNTIME_ERRORS__.push(String(event.message || event.error || "window error"));
+      }, true);
+      window.addEventListener("unhandledrejection", function (event) {
+        window.__OFW_RUNTIME_ERRORS__.push(String(event.reason || "unhandled rejection"));
+      });
+    </script>
+    <script src="../../../../prototype-releases/v1.1.0/runtime-clock.js?v=20260904-01"></script>
+    <link rel="stylesheet" href="../../../../prototype-releases/v1.1.0/shared-type-scale.css?v=20260904-01" />
+    <link rel="stylesheet" href="../../../v1.2.0/composite/s001-e2e-integration/styles.css?v=20260904-01" />
+    <link rel="stylesheet" href="./styles.css?v=20260904-02" />
+    <link rel="stylesheet" href="../shared/experience.css?v=20260906-01" />
+  </head>
+  <body>
+    <div id="app" aria-live="polite"></div>
+    <div id="drawer-root"></div>
+    <div id="modal-root"></div>
+    <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+    <script src="../../../v1.2.0/composite/modules/m07/module/vendor/lucide.min.js"></script>
+    <script src="../../../../prototype-releases/v1.1.0/composite-resource-registry.js?v=20260904-01"></script>
+    <script src="../../../v1.2.0/composite/resources/catalog.js?v=20260904-01"></script>
+    <script src="../resources/enterprise-master.js?v=20260907-01"></script>
+    <script src="../resources/catalog.js?v=20260904-02"></script>
+    <script src="../../../v1.2.0/composite/scenarios/s005/scenario-config.js?v=20260904-01"></script>
+    <script src="../../../v1.2.0/composite/scenarios/s005/scenario-adapter.js?v=20260904-01"></script>
+    <script src="../../../v1.2.0/composite/scenarios/s005/evaluation-engine.js?v=20260904-01"></script>
+    <script src="./data.js?v=20260904-02"></script>
+    <script src="../shared/readability.js?v=20260907-01"></script>
+    <script src="../shared/workflow.js?v=20260906-01"></script>
+    <script src="../shared/report-editor.js?v=20260906-01"></script>
+    <script src="./state.js?v=20260904-02"></script>
+    <script src="../integrations/native-module-integrations.js?v=20260904-02"></script>
+    <script src="./app.js?v=20260904-02"></script>
+  </body>
+</html>

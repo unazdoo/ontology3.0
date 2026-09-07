@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "ofw.prototype.version.v1",
+  "version": "1.3.2-rc.1",
+  "targetPrototypeVersion": "v1.3.2-rc.1",
+  "parentVersion": "v1.3.0-rc.1",
+  "parentCommit": "e3990c69e77882062035490ef718fd93549bbf82",
+  "parentCommitTree": "c061c21d814a0881f1e27189f83c6000d1686442",
+  "parentSubtree": "a24109c8be2ffceca73e0fedbb9387f4b85a7176",
+  "parentPrototypePath": "../v1.3.0",
+  "parentPrototypePolicy": "read-only; never modify or overwrite",
+  "upstreamPrototypeVersion": "v1.2.0-rc.1",
+  "upstreamPrototypeCommit": "e4974c23bd223f26bfd04b08dc6f46eb4d9ae5e0",
+  "frozenSourceVersion": "v1.1.0",
+  "frozenSourceCommit": "a8b023d7f8d49ad6ed6c24417b79b6f9df3fb716",
+  "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+  "createdAt": "2026-09-06",
+  "status": "local-prototype-ux-closure-candidate",
+  "releaseRole": "prototype-composite-review-candidate",
+  "workspace": {
+    "path": "/Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-composite-v1.3.0",
+    "branch": "codex/prototype-v1.3.1-composite",
+    "role": "prototype assembly only"
+  },
+  "composition": {
+    "mode": "selective-local-derivative-on-read-only-v1.3.0-parent",
+    "parentTreeCopied": false,
+    "platformShellCount": 1,
+    "authorizedRedesignModules": [
+      "M07",
+      "M08",
+      "Dashboard"
+    ],
+    "inheritedRealWorkspaces": [
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06"
+    ],
+    "sharedWorkspaceContext": "ofw.workspace-context.v1",
+    "crossTabAutomaticReloadAllowed": false,
+    "redirectWrapperAllowed": false,
+    "backgroundPollingAllowed": false
+  },
+  "formalBaseline": {
+    "modelPackage": "S003-M01-DEBT-RISK-PKG@1.0.2",
+    "modelVersionId": "MV-S003-DEBT-RISK-1.0.2-FORMAL",
+    "resultSetId": "S003-C035-RISK-RESULTS-20251231-v2",
+    "immutable": true,
+    "rollbackRole": "stable-baseline-and-fallback"
+  },
+  "uniqueEntry": "composite/s001-e2e-integration/index.html",
+  "launcher": "node composite/start-candidate.mjs",
+  "recommendedStaticPort": 4372,
+  "recommendedModelingPort": 4373,
+  "runtimeReuse": "../v1.3.0/composite/runtime",
+  "runtimeSnapshotIncluded": false,
+  "verification": {
+    "status": "passed",
+    "browserEvidence": "composite/evidence/browser-regression.json",
+    "regressionMatrix": "COMPOSITE-REGRESSION-MATRIX.json",
+    "packageVerification": "PACKAGE-VERIFICATION.json"
+  },
+  "acceptanceReady": false,
+  "editable": true,
+  "frozen": false,
+  "disallowedClaims": [
+    "model validity formally proven",
+    "production rollout complete",
+    "user review passed",
+    "phase-one acceptance passed"
+  ],
+  "derivedFromPrototypeVersion": "v1.3.1-rc.1",
+  "derivedFromCommit": "0eed1d6322631d6fcdeca6fb1c23d01a5d5ee9ca"
+}

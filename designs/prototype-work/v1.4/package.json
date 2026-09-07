@@ -1,0 +1,29 @@
+{
+  "name": "ontology-financial-workbench-v14",
+  "version": "1.4.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "data": "node scripts/build-data.mjs",
+    "snapshots": "node scripts/build-snapshot-package.mjs",
+    "dev": "node server.mjs",
+    "build": "vite build",
+    "test": "node --test tests/*.test.mjs composite/tests/*.test.mjs",
+    "verify": "node tests/inherited-browser.mjs",
+    "verify:workbench": "node tests/browser.mjs",
+    "verify:home": "node tests/home-presentation.mjs",
+    "verify:layout": "node tests/cockpit-layout.mjs",
+    "verify:selection": "node tests/box-selection-browser.mjs",
+    "verify:snapshots": "node tests/cockpit-snapshot-browser.mjs",
+    "verify:baseline": "node composite/tests/chrome-regression.mjs"
+  },
+  "dependencies": {
+    "maplibre-gl": "5.6.2",
+    "decimal.js": "10.6.0",
+    "zod": "3.25.76",
+    "lucide": "0.468.0",
+    "d3": "7.9.0",
+    "topojson-client": "3.1.0"
+  },
+  "devDependencies": { "vite": "7.3.6", "playwright": "1.63.0" }
+}
