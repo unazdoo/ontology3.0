@@ -14,7 +14,7 @@ page.on('pageerror', e => { errors.push(e.message); void appendFile(path.join(ou
 page.on('request', r => void appendFile(path.join(out,'logs/requests.jsonl'), JSON.stringify({at:Date.now(),url:r.url()})+'\n'));
 page.on('response', r => void appendFile(path.join(out,'logs/responses.jsonl'), JSON.stringify({at:Date.now(),status:r.status(),url:r.url()})+'\n'));
 page.on('requestfailed', r => void appendFile(path.join(out,'logs/request-failures.jsonl'), JSON.stringify({url:r.url(),failure:r.failure()})+'\n'));
-if (page.url() === 'about:blank') await page.goto('http://127.0.0.1:4464/', {waitUntil:'commit', timeout:30000}).catch(error=>writeFile(out+'/logs/initial-navigation-frame-control.json',JSON.stringify({error:error.message,url:page.url()}))); 
+if (page.url() === 'about:blank') await page.goto('http://127.0.0.1:4464/', {waitUntil:'commit', timeout:30000}).catch(error=>writeFile(out+'/logs/initial-navigation-frame-control.json',JSON.stringify({error:error.message,url:page.url()})));
 await context.route(/https?:\/\/(?:localhost|127\.0\.0\.1):(?:4382|4383|4392|4393|4394)(?:\/|$)/, r => { void appendFile(path.join(out,'logs/blocked-main-ports.jsonl'),JSON.stringify({url:r.request().url()})+'\n'); return r.abort(); });
 const frame = async () => {
   await page.waitForFunction(() => document.querySelector('#module-frame')?.contentDocument?.body?.innerText.length > 20, null, {polling:100});
@@ -25,7 +25,7 @@ const frame = async () => {
 };
 const shot = async name => {
   const file=path.join(out,'screenshots',name+'.png');
-  const screenshotSession = await context.newCDPSession(page); const frameImage = await screenshotSession.send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false}); await writeFile(file,Buffer.from(frameImage.data,'base64')); await screenshotSession.detach(); 
+  const screenshotSession = await context.newCDPSession(page); const frameImage = await screenshotSession.send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false}); await writeFile(file,Buffer.from(frameImage.data,'base64')); await screenshotSession.detach();
   await writeFile(path.join(out,'logs',name+'.json'),JSON.stringify({url:page.url(),viewport:page.viewportSize(),frames:await Promise.all(page.frames().map(async f=>({url:f.url(),text:await f.locator('body').innerText().catch(()=>''),controls:await f.locator('button,input,select,textarea,a').evaluateAll(es=>es.map(e=>({tag:e.tagName,text:(e.innerText||e.getAttribute('aria-label')||e.getAttribute('placeholder')||'').slice(0,160),value:e.value,disabled:e.disabled,attrs:Object.fromEntries([...e.attributes].filter(a=>a.name.startsWith('data-')||a.name==='href'||a.name==='id').map(a=>[a.name,a.value]))}))).catch(()=>[])}))),errors},null,2));
   return file;
 };
