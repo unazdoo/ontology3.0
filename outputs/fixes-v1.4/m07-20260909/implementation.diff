@@ -1,0 +1,379 @@
+--- /Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-v1.4-review/outputs/review-v1.4/m07-review-20260909/snapshot/designs/prototype-work/v1.4/composite/modules/m07/app.js	2026-09-08 07:46:42
++++ /Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-composite-v1.3.0/designs/prototype-work/v1.4/composite/modules/m07/app.js	2026-09-09 20:23:26
+@@ -729,7 +729,7 @@
+     const headings = {
+       catalog: { title: "对象目录", subtitle: "扫描当前对象集并选择下一步分析对象", icon: "table-properties" },
+       object360: { title: active?.title || "对象全貌", subtitle: `${typeMeta(active).label} · 属性、关系、事件与证据`, icon: "scan-face" },
+-      graph: { title: "关系网络", subtitle: `以 ${active?.title || "当前对象"} 为中心展开业务关系`, icon: "share-2" },
++      graph: { title: "关系网络", subtitle: `关系中心：${(resolveObject(state.graphExpanded[0]) || active)?.title || "未选择"} · 当前节点：${active?.title || "未选择"}`, icon: "share-2" },
+       temporal: { title: "时序分析", subtitle: "多序列联动查看变化、异常与业务事件", icon: "chart-no-axes-combined" },
+       spatial: { title: "企业地图", subtitle: "城市级演示布点 · 颜色为债务风险分档", icon: "map" },
+       compare: { title: "对比分析", subtitle: "比较同类对象的指标、分布与差异", icon: "columns-3" }
+@@ -876,17 +876,18 @@
+     const nodes = [...depths.entries()].map(([id, depth]) => ({ item: resolveObject(id), depth })).filter((entry) => entry.item);
+     const links = [...visibleLinks.values()].filter((link) => depths.has(link.from) && depths.has(link.to));
+     const positions = new Map([[root.id, { x: 500, y: 285 }]]);
++    let previousRadius = 0;
+     [1, 2, 3].forEach((depth) => {
+-      const ring = nodes.filter((entry) => entry.depth === depth);
+-      const radiusX = [0, 210, 340, 420][depth];
+-      const radiusY = [0, 155, 225, 260][depth];
+-      ring.forEach((entry, index) => {
+-        const seed = parseInt(hashString(entry.item.id).slice(0, 5), 36) || index;
+-        const offset = (seed % 37) / 37 * Math.PI * 2;
+-        const angle = offset + (index / Math.max(1, ring.length)) * Math.PI * 2;
++      const ring = nodes.filter((entry) => entry.depth === depth).sort((a, b) => a.item.id.localeCompare(b.item.id));
++      if (!ring.length) return;
++      // Uniform angles and separated rings reserve space for circles, labels and handles.
++      const radius = Math.max(previousRadius + 190, ring.length > 1 ? 190 / (2 * Math.sin(Math.PI / ring.length)) : 190);
++      previousRadius = radius;
++      ring.forEach((entry, index) => {
++        const angle = -Math.PI / 2 + index / ring.length * Math.PI * 2;
+         positions.set(entry.item.id, {
+-          x: 500 + Math.cos(angle) * radiusX,
+-          y: 285 + Math.sin(angle) * radiusY
++          x: 500 + Math.cos(angle) * radius,
++          y: 285 + Math.sin(angle) * radius
+         });
+       });
+     });
+@@ -943,8 +944,10 @@
+     const xs = global.d3.extent(points, (point) => point.x), ys = global.d3.extent(points, (point) => point.y);
+     const width = Math.max(460, xs[1] - xs[0] + 180), height = Math.max(340, ys[1] - ys[0] + 180);
+     svg.setAttribute("viewBox", `${(xs[0] + xs[1] - width) / 2} ${(ys[0] + ys[1] - height) / 2} ${width} ${height}`);
++    svg.style.minWidth = `${Math.ceil(width * .75)}px`;
++    svg.style.minHeight = `${Math.ceil(height * .75)}px`;
+     const selection = global.d3.select(svg);
+-    const zoom = global.d3.zoom().scaleExtent([.5, 3]).filter((event) => event.type === "wheel" || !event.target.closest(".graph-node"))
++    const zoom = global.d3.zoom().scaleExtent([.75, 3]).filter((event) => event.type === "wheel" || !event.target.closest(".graph-node"))
+       .on("zoom", (event) => {
+         selection.select(".graph-viewport").attr("transform", event.transform);
+         state.graphTransform = { x: event.transform.x, y: event.transform.y, k: event.transform.k };
+@@ -1104,33 +1107,23 @@
+   }
+ 
+   function metricCandidates(items) {
+-    const definitions = new Map();
+-    items.forEach((item) => {
+-      propertyEntries(item).forEach(([key, property]) => {
+-        if (!numeric(property.value)) return;
+-        const id = `property:${key}:${property.unit || ""}`;
+-        if (!definitions.has(id)) definitions.set(id, { id, label: propertyLabel(key), unit: property.unit || "", kind: "property", key, coverage: 0 });
+-        definitions.get(id).coverage += 1;
+-      });
+-      objectSeries(item).forEach((series) => {
+-        if (!(series.points || []).some((point) => point.t >= state.timeRange.start && point.t <= state.timeRange.end && numeric(point.v))) return;
+-        const id = `series:${series.label}:${series.unit || ""}`;
+-        if (!definitions.has(id)) definitions.set(id, { id, label: series.label, unit: series.unit || "", kind: "series", seriesLabel: series.label, coverage: 0 });
+-        definitions.get(id).coverage += 1;
+-      });
+-    });
+-    return [...definitions.values()].filter((metric) => metric.coverage >= 2).sort((left, right) => right.coverage - left.coverage || left.label.localeCompare(right.label, "zh-CN"));
++    return comparisonPolicy().candidates(items, state.timeRange);
++  }
++
++  function comparisonPolicy() {
++    return global.OFW_M07_COMPARISON.create({ seriesFor: objectSeries, resources: resource.portfolioResources || [], labelFor: propertyLabel });
++  }
++
++  function metricTimeNote(items, metric) {
++    return comparisonPolicy().timeNote(items, metric, state.timeRange);
+   }
+ 
++  function metricLabel(metric) {
++    return `${metric.label} · ${metric.kind === "property" ? "静态快照" : "区间最新观测"}`;
++  }
++
+   function valueForMetric(item, metric) {
+-    if (metric.kind === "property") {
+-      const value = item.properties?.[metric.key]?.value;
+-      return numeric(value) && (item.properties[metric.key].unit || "") === metric.unit ? value : null;
+-    }
+-    const series = objectSeries(item).find((entry) => entry.label === metric.seriesLabel && (entry.unit || "") === metric.unit);
+-    if (!series) return null;
+-    const point = (series.points || []).filter((entry) => entry.t >= state.timeRange.start && entry.t <= state.timeRange.end && numeric(entry.v)).sort((a, b) => a.t.localeCompare(b.t)).at(-1);
+-    return point ? Number(point.v) : null;
++    return comparisonPolicy().observation(item, metric, state.timeRange).value;
+   }
+ 
+   function comparisonItems() {
+@@ -1162,6 +1155,7 @@
+ 
+   function renderDotComparison(items, metric) {
+     const values = items.map((item) => ({ item, value: valueForMetric(item, metric) })).filter((entry) => entry.value != null).sort((left, right) => left.value - right.value);
++    if (!comparisonPolicy().aligned(items, metric, state.timeRange)) return emptyInline("calendar-clock", "观测时点不一致或有缺失", "请使用同一实际观测日；此状态不计算中位数。 ");
+     let min = Math.min(...values.map((entry) => entry.value));
+     let max = Math.max(...values.map((entry) => entry.value));
+     if (min === max) { min -= 1; max += 1; }
+@@ -1170,8 +1164,10 @@
+     return `<div class="dot-comparison"><div class="dot-axis"><span>${escapeHtml(formatNumber(min))}</span><span>中位数 ${escapeHtml(formatNumber(median))}</span><span>${escapeHtml(formatNumber(max))} ${escapeHtml(metric.unit)}</span></div>${values.map((entry, index) => `<button type="button" class="dot-row ${entry.item.id === state.activeId ? "active" : ""}" data-set-active="${escapeHtml(entry.item.id)}"><span class="dot-label">${escapeHtml(entry.item.title)}</span><span class="dot-track"><i class="median" style="left:${position(median)}%"></i><i class="dot" style="left:${position(entry.value)}%;--dot-color:${CHART_COLORS[index % CHART_COLORS.length]}"></i><b style="left:${position(entry.value)}%">${escapeHtml(formatNumber(entry.value))}</b></span></button>`).join("")}</div>`;
+   }
+ 
+-  function renderRadarComparison(items, metrics) {
+-    const chosenMetrics = metrics.filter((metric) => items.slice(0, 4).every((item) => valueForMetric(item, metric) !== null)).slice(0, 5);
++  function renderRadarComparison(items, metrics, selected) {
++    const referenceDates = items.slice(0, 4).map(item => comparisonPolicy().observation(item, selected, state.timeRange).asOf).join();
++    const chosenMetrics = metrics.filter((metric) => metric.kind === selected.kind && comparisonPolicy().aligned(items.slice(0, 4), metric, state.timeRange)
++      && items.slice(0, 4).map(item => comparisonPolicy().observation(item, metric, state.timeRange).asOf).join() === referenceDates).slice(0, 5);
+     const chosenItems = items.slice(0, 4);
+     if (chosenMetrics.length < 3 || chosenItems.length < 2) return emptyInline("radar", "可对比指标不足", "选择至少两个同类对象，并确保存在三个共同数值指标。 ");
+     const width = 680;
+@@ -1210,10 +1206,13 @@
+       canvasStage.innerHTML = emptyLens("columns-3", "当前对象集无法形成有效对比", "请在对象发现中选择至少两个具有共同数值指标的对象。", "调整对象范围", "catalog");
+       return;
+     }
+-    const chart = state.compareChart === "dot" ? renderDotComparison(items, selected)
+-      : state.compareChart === "radar" ? renderRadarComparison(items, metrics)
+-        : renderBarComparison(items, selected);
+-    canvasStage.innerHTML = `<div class="compare-lens"><section class="compare-toolbar"><label><span>对比指标</span><select id="compare-metric">${metrics.map((metric) => `<option value="${escapeHtml(metric.id)}" ${metric.id === selected.id ? "selected" : ""}>${escapeHtml(metric.label)}${metric.unit ? ` (${escapeHtml(metric.unit)})` : ""} · ${metric.coverage}/${items.length}</option>`).join("")}</select></label><label><span>对象数量</span><select data-compare-limit aria-label="对比对象数量">${[8,16,1000].map((limit) => `<option value="${limit}" ${state.compareLimit === limit ? "selected" : ""}>${limit === 1000 ? "全部对象" : `前 ${limit} 个`}</option>`).join("")}</select></label><div class="compare-summary"><div><strong>${items.length}</strong><span>对比对象</span></div><div><strong>${metrics.length}</strong><span>共同指标</span></div><div><strong>${escapeHtml(selected.unit || "数值")}</strong><span>当前单位</span></div></div></section><section class="comparison-chart ${state.compareChart}"><header><div><span class="eyebrow">COMPARISON</span><h3>${escapeHtml(state.compareChart === "radar" ? "多指标轮廓（前4个对象，完整观测指标）" : selected.label)}</h3></div><span>${escapeHtml(state.timeRange.start)} 至 ${escapeHtml(state.timeRange.end)}</span></header>${chart}</section><section class="comparison-table"><header><div><span class="eyebrow">DETAILS</span><h3>数值明细</h3></div></header><div class="comparison-table-scroll"><table><thead><tr><th>业务对象</th>${metrics.slice(0, 6).map((metric) => `<th>${escapeHtml(metric.label)}${metric.unit ? `<small>${escapeHtml(metric.unit)}</small>` : ""}</th>`).join("")}</tr></thead><tbody>${items.map((item) => `<tr class="${item.id === state.activeId ? "active" : ""}" data-set-active="${escapeHtml(item.id)}"><td><div class="object-cell">${objectGlyph(item, "tiny")}<strong>${escapeHtml(item.title)}</strong></div></td>${metrics.slice(0, 6).map((metric) => { const value = valueForMetric(item, metric); return `<td>${value == null ? `<span class="missing-value">—</span>` : escapeHtml(formatNumber(value))}</td>`; }).join("")}</tr>`).join("")}</tbody></table></div></section></div>`;
++    const chart = !selected.available ? emptyInline("calendar-x", "所选区间无观测", "没有可比较的有效观测，不以旧快照补填。")
++      : !comparisonPolicy().aligned(items.filter(item => valueForMetric(item, selected) !== null), selected, state.timeRange)
++        ? emptyInline("calendar-clock", "观测时点不一致", "请核对下方真实时点，当前不进行排序或统计。")
++        : state.compareChart === "dot" ? renderDotComparison(items, selected)
++          : state.compareChart === "radar" ? renderRadarComparison(items, metrics, selected)
++            : renderBarComparison(items, selected);
++    canvasStage.innerHTML = `<div class="compare-lens"><section class="compare-toolbar"><label><span>对比指标</span><select id="compare-metric">${metrics.map((metric) => `<option value="${escapeHtml(metric.id)}" ${metric.id === selected.id ? "selected" : ""}>${escapeHtml(metricLabel(metric))}${metric.unit ? ` (${escapeHtml(metric.unit)})` : ""} · ${metric.coverage}/${items.length}</option>`).join("")}</select></label><label><span>对象数量</span><select data-compare-limit aria-label="对比对象数量">${[8,16,1000].map((limit) => `<option value="${limit}" ${state.compareLimit === limit ? "selected" : ""}>${limit === 1000 ? "全部对象" : `前 ${limit} 个`}</option>`).join("")}</select></label><div class="compare-summary"><div><strong>${items.length}</strong><span>对比对象</span></div><div><strong>${metrics.length}</strong><span>共同指标</span></div><div><strong>${escapeHtml(selected.unit || "数值")}</strong><span>当前单位</span></div></div></section><section class="comparison-chart ${state.compareChart}"><header><div><span class="eyebrow">COMPARISON</span><h3>${escapeHtml(state.compareChart === "radar" ? "多指标轮廓（前4个对象，完整观测指标）" : selected.label)}</h3></div><span>所选区间：${escapeHtml(state.timeRange.start)} 至 ${escapeHtml(state.timeRange.end)}</span></header><p class="comparison-time-note">${escapeHtml(metricTimeNote(items, selected))}</p>${chart}</section>${comparisonPolicy().excluded(items).length ? `<details class="comparison-exclusions"><summary>未参与比较的指标</summary>${comparisonPolicy().excluded(items).map(note => `<p>${escapeHtml(note)}</p>`).join("")}</details>` : ""}<section class="comparison-table"><header><div><span class="eyebrow">DETAILS</span><h3>数值明细</h3></div></header><div class="comparison-table-scroll"><table><thead><tr><th>业务对象</th>${metrics.slice(0, 6).map((metric) => `<th>${escapeHtml(metricLabel(metric))}${metric.unit ? `<small>${escapeHtml(metric.unit)}</small>` : ""}</th>`).join("")}</tr></thead><tbody>${items.map((item) => `<tr class="${item.id === state.activeId ? "active" : ""}" data-set-active="${escapeHtml(item.id)}"><td><div class="object-cell">${objectGlyph(item, "tiny")}<strong>${escapeHtml(item.title)}</strong></div></td>${metrics.slice(0, 6).map((metric) => { const observation = comparisonPolicy().observation(item, metric, state.timeRange); return `<td>${observation.value == null ? `<span class="missing-value">${escapeHtml(observation.reason)}</span>` : escapeHtml(formatNumber(observation.value))}<small>${escapeHtml(observation.asOf || "无有效观测日")}</small></td>`; }).join("")}</tr>`).join("")}</tbody></table></div></section></div>`;
+   }
+ 
+   function renderReturnedResult() {
+@@ -1237,7 +1236,7 @@
+     const ref = canonicalObjectRef(item);
+     const metrics = keyProperties(item, 4);
+     const relations = objectLinks(item).slice(0, 5);
+-    inspectorPane.innerHTML = `<header class="pane-heading"><div><span class="eyebrow">ACTIVE OBJECT</span><h2>当前对象</h2></div><button class="icon-button pane-close" type="button" data-close-mobile aria-label="关闭">${icon("x")}</button></header><div class="inspector-scroll"><section class="inspector-identity">${objectGlyph(item, "large")}<div><span class="type-label">${escapeHtml(typeMeta(item).label)}</span><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.subtitle || "")}</p></div>${qualityChip(item.quality, true)}</section><section class="inspector-metrics">${metrics.map(([key, property]) => `<div><span>${escapeHtml(propertyLabel(key))}</span><strong>${escapeHtml(formatValue(property))}</strong></div>`).join("") || `<div><span>对象标识</span><strong>${escapeHtml(ref?.id || item.id)}</strong></div>`}</section><section class="inspector-actions"><button class="button primary full" type="button" data-open-lens="object360">${icon("scan-face")}<span>查看对象全貌</span></button><div><button class="button quiet" type="button" data-open-lens="graph" title="关系网络">${icon("share-2")}</button><button class="button quiet" type="button" data-open-lens="temporal" title="时序分析">${icon("chart-no-axes-combined")}</button><button class="button quiet" type="button" data-open-lens="compare" title="对比分析">${icon("columns-3")}</button></div></section>${renderReturnedResult()}<section class="inspector-section"><header><h3>关联对象</h3><span>${objectLinks(item).length}</span></header>${relations.length ? `<div class="inspector-relations">${relations.map((link) => { const related = relatedObject(link, item.id); return related ? `<button type="button" data-set-active="${escapeHtml(related.id)}"><span><small>${escapeHtml(linkLabel(link))}</small><strong>${escapeHtml(related.title)}</strong></span>${qualityChip(link.quality || "passed", true)}</button>` : ""; }).join("")}</div>` : `<div class="empty-compact">${icon("unlink")}<span>没有已登记关系</span></div>`}</section><details class="version-details"><summary>${icon("fingerprint")}<span>版本与对象标识</span>${icon("chevron-down")}</summary><div><label>稳定对象</label><code>${escapeHtml(ref?.objectTypeRef || item.objectTypeId)} / ${escapeHtml(ref?.id || item.id)}</code><label>数据版本</label><code>${escapeHtml(ref?.dataVersionId || "未提供")}</code><label>语义版本</label><code>${escapeHtml(ref?.ontologyVersionId || "未提供")}</code><label>消费绑定</label><code>${escapeHtml(ref?.bindingId || "未提供")}</code></div></details></div>`;
++    inspectorPane.innerHTML = `<header class="pane-heading"><div><span class="eyebrow">ACTIVE OBJECT</span><h2>当前对象</h2></div><button class="icon-button pane-close" type="button" data-close-mobile aria-label="关闭">${icon("x")}</button></header><div class="inspector-scroll"><section class="inspector-identity">${objectGlyph(item, "large")}<div><span class="type-label">${escapeHtml(typeMeta(item).label)}</span><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.subtitle || "")}</p></div>${qualityChip(item.quality, true)}</section><section class="inspector-metrics">${metrics.map(([key, property]) => `<div><span>${escapeHtml(propertyLabel(key))}</span><strong>${escapeHtml(formatValue(property))}</strong>${numeric(property.value) ? `<small>静态快照 · ${escapeHtml(comparisonPolicy().propertyDate(item, property) || "截至日未提供")}</small>` : ""}</div>`).join("") || `<div><span>对象标识</span><strong>${escapeHtml(ref?.id || item.id)}</strong></div>`}</section><section class="inspector-actions"><button class="button primary full" type="button" data-open-lens="object360">${icon("scan-face")}<span>查看对象全貌</span></button><div><button class="button quiet" type="button" data-open-lens="graph" title="关系网络">${icon("share-2")}</button><button class="button quiet" type="button" data-open-lens="temporal" title="时序分析">${icon("chart-no-axes-combined")}</button><button class="button quiet" type="button" data-open-lens="compare" title="对比分析">${icon("columns-3")}</button></div></section>${renderReturnedResult()}<section class="inspector-section"><header><h3>关联对象</h3><span>${objectLinks(item).length}</span></header>${relations.length ? `<div class="inspector-relations">${relations.map((link) => { const related = relatedObject(link, item.id); return related ? `<button type="button" data-set-active="${escapeHtml(related.id)}"><span><small>${escapeHtml(linkLabel(link))}</small><strong>${escapeHtml(related.title)}</strong></span>${qualityChip(link.quality || "passed", true)}</button>` : ""; }).join("")}</div>` : `<div class="empty-compact">${icon("unlink")}<span>没有已登记关系</span></div>`}</section><details class="version-details"><summary>${icon("fingerprint")}<span>版本与对象标识</span>${icon("chevron-down")}</summary><div><label>稳定对象</label><code>${escapeHtml(ref?.objectTypeRef || item.objectTypeId)} / ${escapeHtml(ref?.id || item.id)}</code><label>数据版本</label><code>${escapeHtml(ref?.dataVersionId || "未提供")}</code><label>语义版本</label><code>${escapeHtml(ref?.ontologyVersionId || "未提供")}</code><label>消费绑定</label><code>${escapeHtml(ref?.bindingId || "未提供")}</code></div></details></div>`;
+   }
+ 
+   function syncBreadcrumb() {
+@@ -1265,6 +1264,7 @@
+     }
+     if (state.lens === "temporal" && options.keepSeries !== true) patch.timelineSeriesIds = objectSeries(item).slice(0, 4).map((series) => series.id);
+     setState(patch, { history: options.history || "replace" });
++    if (patch.selectedIds) toast(`已加入对象集：${item.title}（${typeMeta(item).label}）· 现有 ${patch.selectedIds.length} 个对象`, "success");
+   }
+ 
+   function openObject(objectId) {
+@@ -1427,7 +1427,8 @@
+ 
+   function openContinueDrawer() {
+     const item = activeObject();
+-    openDrawer(`${drawerHeader("继续分析", "带当前上下文前往")}<div class="drawer-body"><section class="handoff-object">${objectGlyph(item, "large")}<div><span>${escapeHtml(objectSetRef().title)}</span><strong>${escapeHtml(item?.title || "未选择对象")}</strong><small>${escapeHtml(state.timeRange.start)} 至 ${escapeHtml(state.timeRange.end)}</small></div></section><div class="target-list">${Object.entries(MODULE_TARGETS).map(([id, target]) => `<button type="button" data-navigate-module="${id}"><span>${icon(target.icon)}</span><div><strong>${escapeHtml(target.label)}</strong><small>${escapeHtml(target.detail)}</small></div>${icon("arrow-up-right")}</button>`).join("")}</div></div>`, "action-drawer");
++    const types = [...new Set(objectSetObjects().map(object => typeMeta(object).label))];
++    openDrawer(`${drawerHeader("继续分析", "带当前上下文前往")}<div class="drawer-body"><section class="handoff-object">${objectGlyph(item, "large")}<div><span>${escapeHtml(objectSetRef().title)}</span><strong>${escapeHtml(item?.title || "未选择对象")}</strong><small>${escapeHtml(state.timeRange.start)} 至 ${escapeHtml(state.timeRange.end)}</small></div></section><p class="handoff-scope-types">对象集类型：${escapeHtml(types.join("、"))}${types.length > 1 ? "；包含多种对象类型，目标模块将校验适用范围。" : ""}</p><div class="target-list">${Object.entries(MODULE_TARGETS).map(([id, target]) => `<button type="button" data-navigate-module="${id}"><span>${icon(target.icon)}</span><div><strong>${escapeHtml(target.label)}</strong><small>${escapeHtml(target.detail)}</small></div>${icon("arrow-up-right")}</button>`).join("")}</div></div>`, "action-drawer");
+   }
+ 
+   function openMobilePane(kind) {
+@@ -1524,7 +1525,7 @@
+       context,
+       contentBlock: moduleId === "report" ? {
+         type: "exploration", sourceModuleId: "m07", title: `${context.objectRef.title} · ${LENSES.find((item) => item.id === state.lens)?.label}`,
+-        text: `${objectSetRef().title}；${state.timeRange.label}`,
++        text: `${objectSetRef().title}；所选区间 ${state.timeRange.label}${state.lens === "compare" ? "。静态快照不受区间筛选影响，各行列示真实截至日；区间序列仅取范围内最新观测。" : ""}`,
+         resultMode: "formal", workspaceContext: workspaceContextPatch(),
+         dataVersionId: context.dataVersionId, ontologyVersionId: context.ontologyVersionId,
+         evidenceRefs: context.evidenceRefs, returnUrl: global.location.href,
+@@ -1920,7 +1921,12 @@
+   function reportRowsForLens() {
+     if (state.lens === "compare") {
+       const items = comparisonItems();
+-      return metricCandidates(items).flatMap((metric) => items.map((item) => ({ name: `${item.title} / ${metric.label}`, value: valueForMetric(item, metric), unit: metric.unit === "score_0_100" ? "分" : metric.unit, missingReason: valueForMetric(item, metric) === null ? "未提供可比较观测" : "" })));
++      return metricCandidates(items).flatMap((metric) => items.map((item) => {
++        const observation = comparisonPolicy().observation(item, metric, state.timeRange);
++        return { name: `${item.title} / ${metricLabel(metric)}`, value: observation.value, unit: metric.unit === "score_0_100" ? "分" : metric.unit,
++          status: metricTimeNote([item], metric), missingReason: observation.value === null ? `${observation.reason}；${metricTimeNote([item], metric)}` : "",
++          metricId: metric.metricId, sourceKind: metric.kind, asOf: observation.asOf, dataVersionId: metric.dataVersionId, ontologyVersionId: metric.ontologyVersionId };
++      }));
+     }
+     if (state.lens === "graph") return graphProjection().links.map((link) => ({ name: resolveObject(link.from)?.title || link.from, value: linkLabel(link), status: resolveObject(link.to)?.title || link.to }));
+     if (state.lens === "spatial") return geoObjects().map((item) => ({ name: item.title, value: formatValue(item.properties.geometry), status: "EPSG:4326" }));
+--- /Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-v1.4-review/outputs/review-v1.4/m07-review-20260909/snapshot/designs/prototype-work/v1.4/composite/modules/m07/styles.css	2026-09-07 14:33:54
++++ /Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-composite-v1.3.0/designs/prototype-work/v1.4/composite/modules/m07/styles.css	2026-09-09 20:23:14
+@@ -315,6 +315,7 @@
+ .canvas-title h1, .canvas-title p { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+ .canvas-title h1 { margin: 0; font-size: 16px; }
+ .canvas-title p { margin: 4px 0 0; color: var(--muted); font-size: 9px; }
++#app[data-lens="graph"] .canvas-title p { max-width: none; white-space: normal; overflow: visible; overflow-wrap: anywhere; line-height: 1.5; }
+ .canvas-controls { min-width: 0; display: flex; align-items: center; justify-content: flex-end; gap: 7px; }
+ .canvas-controls .button { min-height: 31px; font-size: 9px; }
+ .canvas-stage { min-width: 0; min-height: 0; padding: 12px 14px 24px; overflow: auto; overscroll-behavior: contain; }
+@@ -344,6 +345,7 @@
+ .inspector-metrics span, .inspector-metrics strong { display: block; }
+ .inspector-metrics span { color: var(--faint); font-size: 7px; }
+ .inspector-metrics strong { margin-top: 6px; overflow-wrap: anywhere; font-size: 10px; line-height: 1.35; }
++.inspector-metrics small { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; line-height: 1.4; overflow-wrap: anywhere; }
+ .inspector-actions { margin-top: 12px; display: grid; gap: 6px; }
+ .inspector-actions .button { min-height: 32px; font-size: 9px; }
+ .inspector-actions > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+@@ -458,20 +460,24 @@
+ 
+ /* Relationship graph */
+ .graph-lens { min-height: 520px; height: 100%; display: grid; grid-template-columns: minmax(0, 1fr) 210px; overflow: hidden; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+-.graph-canvas { min-width: 0; min-height: 0; position: relative; overflow: hidden; background: #f9fbfc; border-right: 1px solid var(--line); }
++.graph-canvas { min-width: 0; min-height: 0; position: relative; overflow: auto; background: #f9fbfc; border-right: 1px solid var(--line); }
+ .graph-canvas > svg { width: 100%; height: 100%; min-height: 510px; }
+ .graph-grid path { fill: none; stroke: #e5ebf0; stroke-width: 1; }
+ .graph-edge line { stroke: #9eafbd; stroke-width: 1.5; }
+ .graph-edge text { fill: #71808e; font-size: 9px; paint-order: stroke; stroke: #f9fbfc; stroke-width: 4px; }
+ .graph-edge.warning line { stroke: #bf8a42; stroke-dasharray: 7 4; }
+ .graph-edge.blocked line { stroke: #b96666; stroke-dasharray: 3 4; }
+-.graph-node { cursor: pointer; animation: graph-node-in 240ms ease both; }
++.graph-node { cursor: pointer; }
+ .graph-node > circle { stroke: #fff; stroke-width: 4; filter: url(#node-shadow); transition: r 150ms ease, stroke 150ms ease; }
+ .graph-node:hover > circle { stroke: #b9d2e5; }
+ .graph-node.active > circle { stroke: #183b5b; stroke-width: 5; }
+ .graph-node.root > circle { stroke: #2878bd; stroke-width: 5; }
+ .node-symbol { fill: #fff; font-size: 11px; font-weight: 800; pointer-events: none; }
+-.node-title { fill: var(--ink); font-size: 10px; font-weight: 700; paint-order: stroke; stroke: #f9fbfc; stroke-width: 4px; pointer-events: none; }
++.node-title { fill: var(--ink); font-size: 12px; font-weight: 700; paint-order: stroke; stroke: #f9fbfc; stroke-width: 4px; pointer-events: all; }
++.comparison-time-note, .comparison-exclusions, .handoff-scope-types { padding: 10px 14px; color: var(--ink); line-height: 1.6; overflow-wrap: anywhere; }
++.comparison-time-note { background: #eef4fa; border-block: 1px solid var(--line); }
++.comparison-table td small { display: block; font-size: 11px; color: var(--muted); }
++.comparison-chart > header > span { max-width: 45%; white-space: normal; }
+ .node-role { fill: var(--blue); font-size: 7px; font-weight: 700; pointer-events: none; }
+ .expand-handle circle { fill: #fff; stroke: #9bb6ca; stroke-width: 1.5; filter: none; }
+ .expand-handle text { fill: var(--blue); font-size: 12px; font-weight: 800; pointer-events: none; }
+@@ -621,9 +627,11 @@
+ @keyframes relation-flow { to { stroke-dashoffset: -24; } }
+ 
+ /* Comparison */
+-.compare-lens { display: grid; gap: 10px; }
+-.compare-toolbar { min-height: 68px; padding: 9px 12px; display: flex; align-items: center; justify-content: space-between; gap: 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+-.compare-toolbar label { min-width: 260px; display: grid; gap: 5px; }
++.compare-lens { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
++.compare-toolbar { min-width: 0; min-height: 68px; padding: 9px 12px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
++.compare-toolbar label { min-width: 0; flex: 1 1 180px; display: grid; gap: 5px; }
++.compare-toolbar select { width: 100%; min-width: 0; max-width: 100%; }
++.compare-toolbar .compare-summary { flex: 1 1 220px; }
+ .compare-toolbar label > span { color: var(--muted); font-size: 8px; }
+ .compare-toolbar select { height: 34px; padding: 0 28px 0 9px; color: var(--ink); background: var(--surface-soft); border: 1px solid var(--line-strong); border-radius: 4px; font-size: 10px; }
+ .compare-summary { display: grid; grid-template-columns: repeat(3, minmax(70px, 1fr)); border: 1px solid var(--line); border-radius: 5px; }
+@@ -632,10 +640,12 @@
+ .compare-summary strong, .compare-summary span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+ .compare-summary strong { font-size: 13px; }
+ .compare-summary span { margin-top: 3px; color: var(--faint); font-size: 7px; }
+-.comparison-chart, .comparison-table { overflow: hidden; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
++.comparison-chart, .comparison-table { min-width: 0; overflow: hidden; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+ .comparison-chart > header > span { color: var(--faint); font-size: 7px; }
+ .bar-comparison { padding: 13px 14px 18px; display: grid; gap: 5px; }
+-.bar-row { min-width: 0; min-height: 46px; padding: 5px 7px; display: grid; grid-template-columns: 170px minmax(120px, 1fr) 90px; align-items: center; gap: 12px; color: var(--ink); background: transparent; border-radius: 4px; text-align: left; }
++.bar-row { min-width: 0; min-height: 46px; padding: 5px 7px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(30px, 1fr) minmax(70px, auto); align-items: center; gap: 10px; color: var(--ink); background: transparent; border-radius: 4px; text-align: left; }
++.comparison-chart .empty-inline { min-width: 0; padding: 22px 14px; }
++.comparison-chart .empty-inline > div { min-width: 0; overflow-wrap: anywhere; }
+ .bar-row:hover, .bar-row.active { background: var(--surface-hover); }
+ .bar-row.active { box-shadow: inset 3px 0 0 var(--blue); }
+ .bar-label { min-width: 0; display: grid; grid-template-columns: 22px minmax(0, 1fr); align-items: center; gap: 7px; }
+@@ -671,7 +681,7 @@
+ .radar-legend button:hover, .radar-legend button.active { color: var(--ink); background: var(--surface-hover); }
+ .radar-legend i { width: 8px; height: 8px; background: var(--legend); border-radius: 50%; }
+ .comparison-table-scroll { overflow-x: auto; }
+-.comparison-table table { width: 100%; border-collapse: collapse; table-layout: fixed; }
++.comparison-table table { width: 100%; min-width: 760px; border-collapse: collapse; table-layout: fixed; }
+ .comparison-table th, .comparison-table td { min-width: 90px; height: 42px; padding: 7px 9px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: right; font-size: 8px; }
+ .comparison-table th:first-child, .comparison-table td:first-child { width: 180px; min-width: 180px; text-align: left; }
+ .comparison-table th { color: var(--muted); background: var(--surface-soft); font-size: 7px; }
+@@ -894,7 +904,8 @@
+   .spatial-lens { min-height: 430px; }
+   .map-surface svg { min-height: 430px; }
+   .compare-toolbar { min-height: auto; padding: 9px; align-items: stretch; flex-direction: column; }
+-  .compare-toolbar label { min-width: 0; }
++  .compare-toolbar label { min-width: 0; flex-basis: auto; }
++  .compare-toolbar .compare-summary { flex-basis: auto; }
+   .compare-summary { width: 100%; }
+   .bar-comparison { padding: 8px; }
+   .bar-row { grid-template-columns: minmax(95px, 1fr) minmax(80px, 1.3fr) 66px; gap: 7px; }
+--- /Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-v1.4-review/outputs/review-v1.4/m07-review-20260909/snapshot/designs/prototype-work/v1.4/composite/modules/m07/index.html	2026-09-07 14:33:54
++++ /Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-composite-v1.3.0/designs/prototype-work/v1.4/composite/modules/m07/index.html	2026-09-09 19:55:32
+@@ -154,6 +154,7 @@
+   <script src="../../resources/enterprise-master.js?v=20260907-01"></script>
+   <script src="../../dashboard/data.js"></script>
+   <script src="../../shared/workflow.js"></script>
++  <script src="comparison.js"></script>
+   <script src="app.js"></script>
+ </body>
+ </html>
+--- /dev/null	2026-09-09 20:39:53
++++ /Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-composite-v1.3.0/designs/prototype-work/v1.4/composite/modules/m07/comparison.js	2026-09-09 20:23:14
+@@ -0,0 +1,83 @@
++(function installComparison(global) {
++  'use strict';
++  const numeric = value => typeof value === 'number' && Number.isFinite(value);
++  const date = value => /^\d{4}-\d{2}-\d{2}$/.test(value || '') ? value : null;
++  const generic = new Set(['ruleMetricValue', 'observedValue', 'threshold', 'priorityRank']);
++  function create({ seriesFor, resources, labelFor }) {
++    const resourceFor = (item, value) => {
++      const domain = value.sourceScenarioId || value.scenarioId || item.scenarioId;
++      return resources.find(source => source.scenarioId === domain) || {};
++    };
++    function definition(item, kind, key, value) {
++      const source = resourceFor(item, value);
++      const domain = value.sourceScenarioId || value.scenarioId || item.scenarioId;
++      // Generic containers do not imply a metric. Labels alone cannot establish compatibility.
++      const metricId = value.metricId || value.propertyId || (kind === 'property' && !generic.has(key) ? `${domain}:${item.objectTypeId}:${key}` : null);
++      if (!metricId || !domain) return null;
++      const ontology = value.ontologyVersionId || source.ontologyVersionId || item.canonicalObjectRef?.ontologyVersionId;
++      if (!ontology) return null;
++      const version = value.dataVersionId || value.versionRef || value.timeSeriesRef?.dataVersion || source.dataVersionId || '';
++      const unit = value.unit || '';
++      const aggregation = kind === 'property' ? 'static' : value.aggregationSemantics;
++      const grain = kind === 'property' ? item.objectTypeId : value.granularity;
++      if (!aggregation || !grain) return null;
++      const id = JSON.stringify([kind, metricId, domain, ontology, version, unit, aggregation, grain, value.calendar || '', value.definitionVersion || '']);
++      return { id, kind, key, metricId, domain, ontologyVersionId: ontology, dataVersionId: version, unit,
++        label: kind === 'property' ? generic.has(key) ? value.metricLabel || item.properties?.ruleMetricLabel?.value || labelFor(key) : labelFor(key) : value.label,
++        aggregation, grain, coverage: 0 };
++    }
++    function propertyDate(item, property) {
++      const domain = property.sourceScenarioId || item.scenarioId;
++      const ownDate = item.sourceFacets?.[domain]?.properties?.dataAsOf?.value;
++      return date(property.asOf || property.dataAsOf) || date(ownDate) || date(resourceFor(item, property).dataAsOf);
++    }
++    function observation(item, metric, range) {
++      if (metric.kind === 'property') {
++        const property = item.properties?.[metric.key];
++        if (!property || definition(item, 'property', metric.key, property)?.id !== metric.id) return { value: null, asOf: null, reason: '指标定义或版本不兼容' };
++        return { value: numeric(property.value) ? property.value : null, asOf: propertyDate(item, property), reason: numeric(property.value) ? '' : '未提供快照值' };
++      }
++      const series = seriesFor(item).filter(s => definition(item, 'series', s.propertyId, s)?.id === metric.id);
++      if (series.length !== 1) return { value: null, asOf: null, reason: series.length ? '同一指标存在重复序列，需核对来源' : '没有同口径序列' };
++      const points = (series[0].points || []).filter(point => point.t >= range.start && point.t <= range.end && numeric(point.v) && !['missing', 'not_observed', 'quality_blocked', 'redacted'].includes(point.state));
++      points.sort((a, b) => a.t.localeCompare(b.t));
++      const latest = points.at(-1);
++      return latest ? { value: latest.v, asOf: latest.t, reason: '', seriesId: series[0].id } : { value: null, asOf: null, reason: '所选区间无观测' };
++    }
++    function candidates(items, range) {
++      const definitions = new Map();
++      for (const item of items) {
++        const seen = new Set();
++        const entries = [
++          ...Object.entries(item.properties || {}).filter(([, value]) => numeric(value.value)).map(([key, value]) => definition(item, 'property', key, value)),
++          ...seriesFor(item).map(series => definition(item, 'series', series.propertyId, series)),
++        ];
++        for (const metric of entries.filter(Boolean)) {
++          if (seen.has(metric.id)) continue;
++          seen.add(metric.id);
++          if (!definitions.has(metric.id)) definitions.set(metric.id, metric);
++          definitions.get(metric.id).coverage++;
++        }
++      }
++      return [...definitions.values()].filter(metric => metric.coverage >= 2).map(metric => ({ ...metric,
++        available: items.filter(item => observation(item, metric, range).value !== null).length,
++      })).sort((a, b) => b.coverage - a.coverage || a.label.localeCompare(b.label, 'zh-CN') || a.kind.localeCompare(b.kind));
++    }
++    function timeNote(items, metric, range) {
++      const observations = items.map(item => observation(item, metric, range));
++      const dates = [...new Set(observations.filter(o => o.value !== null).map(o => o.asOf || '截至日未提供'))].sort();
++      if (metric.kind === 'property') return `静态快照 · 截至 ${dates.join('、') || '未提供'} · 不受区间筛选影响${dates.some(d => d < range.start || d > range.end) ? ' · 快照不在所选区间' : ''}`;
++      return `区间最新观测 · ${range.start} 至 ${range.end} · ${dates.length ? `实际观测 ${dates.join('、')}` : '无观测'}`;
++    }
++    function excluded(items) {
++      return items.flatMap(item => [...generic].filter(key => numeric(item.properties?.[key]?.value) && !definition(item, 'property', key, item.properties[key]))
++        .map(key => `${item.title} · ${item.properties.ruleMetricLabel?.value || labelFor(key)}：缺少稳定指标身份，不参与共同指标比较`));
++    }
++    function aligned(items, metric, range) {
++      const observations = items.map(item => observation(item, metric, range));
++      return observations.every(o => o.value !== null && o.asOf) && new Set(observations.map(o => o.asOf)).size === 1;
++    }
++    return Object.freeze({ candidates, observation, timeNote, excluded, aligned, propertyDate });
++  }
++  global.OFW_M07_COMPARISON = Object.freeze({ create });
++})(window);

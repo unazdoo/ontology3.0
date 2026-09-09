@@ -1,0 +1,556 @@
+TAP version 13
+# Subtest: exact v1.2.0 parent and formal 1.0.2 baseline remain immutable
+ok 1 - exact v1.2.0 parent and formal 1.0.2 baseline remain immutable
+  ---
+  duration_ms: 5.658042
+  type: 'test'
+  ...
+# Subtest: M02 creates, validates and freezes a recomputable synthetic longitudinal DataVersion
+ok 2 - M02 creates, validates and freezes a recomputable synthetic longitudinal DataVersion
+  ---
+  duration_ms: 13.072125
+  type: 'test'
+  ...
+# Subtest: M01 forms a cycle-frozen multi-model semantic contract with explicit result identities
+ok 3 - M01 forms a cycle-frozen multi-model semantic contract with explicit result identities
+  ---
+  duration_ms: 11.837209
+  type: 'test'
+  ...
+# Subtest: M08 runs one formal baseline, two core Challengers and seven supplemental models
+ok 4 - M08 runs one formal baseline, two core Challengers and seven supplemental models
+  ---
+  duration_ms: 63.994541
+  type: 'test'
+  ...
+# Subtest: AI insights cannot mutate labels, select a champion or publish
+ok 5 - AI insights cannot mutate labels, select a champion or publish
+  ---
+  duration_ms: 84.605125
+  type: 'test'
+  ...
+# Subtest: human insight review is immutable and gates candidate creation
+ok 6 - human insight review is immutable and gates candidate creation
+  ---
+  duration_ms: 82.571292
+  type: 'test'
+  ...
+# Subtest: rejected insight review is preserved before a new insight batch is generated
+ok 7 - rejected insight review is preserved before a new insight batch is generated
+  ---
+  duration_ms: 76.88
+  type: 'test'
+  ...
+# Subtest: candidate creation uses a new immutable Model Version and survives Shadow/Release unchanged
+ok 8 - candidate creation uses a new immutable Model Version and survives Shadow/Release unchanged
+  ---
+  duration_ms: 169.801917
+  type: 'test'
+  ...
+# Subtest: three label windows mature, rebenchmark uses the same context, and holdout is consumed once
+ok 9 - three label windows mature, rebenchmark uses the same context, and holdout is consumed once
+  ---
+  duration_ms: 175.81225
+  type: 'test'
+  ...
+# Subtest: Dashboard Binding requires explicit confirmation and never changes the formal pointer
+ok 10 - Dashboard Binding requires explicit confirmation and never changes the formal pointer
+  ---
+  duration_ms: 182.667958
+  type: 'test'
+  ...
+# Subtest: Dashboard and all read-only consumers share one Result Package digest
+ok 11 - Dashboard and all read-only consumers share one Result Package digest
+  ---
+  duration_ms: 237.282541
+  type: 'test'
+  ...
+# Subtest: M04 hard-rejects every non-FACT result with zero side effects
+ok 12 - M04 hard-rejects every non-FACT result with zero side effects
+  ---
+  duration_ms: 0.676209
+  type: 'test'
+  ...
+# Subtest: rollback and next-cycle reset preserve history and formal results
+ok 13 - rollback and next-cycle reset preserve history and formal results
+  ---
+  duration_ms: 202.904
+  type: 'test'
+  ...
+# Subtest: a carried binding must be revalidated for the new cycle release
+ok 14 - a carried binding must be revalidated for the new cycle release
+  ---
+  duration_ms: 419.3355
+  type: 'test'
+  ...
+# Subtest: generic engine contains no S003, Enterprise or debt-specific registration logic
+ok 15 - generic engine contains no S003, Enterprise or debt-specific registration logic
+  ---
+  duration_ms: 5.647583
+  type: 'test'
+  ...
+# Subtest: S003 exposes ten Python repositories with README, model card and tests
+ok 16 - S003 exposes ten Python repositories with README, model card and tests
+  ---
+  duration_ms: 167.527542
+  type: 'test'
+  ...
+# Subtest: all ten repositories execute real Python tests and DataVersion-bound model runs
+ok 17 - all ten repositories execute real Python tests and DataVersion-bound model runs
+  ---
+  duration_ms: 948.214375
+  type: 'test'
+  ...
+# Subtest: model runs are blocked until M02 freezes data and M01 forms the semantic contract
+ok 18 - model runs are blocked until M02 freezes data and M01 forms the semantic contract
+  ---
+  duration_ms: 8.763333
+  type: 'test'
+  ...
+# Subtest: formal baseline and candidate main branches remain protected
+ok 19 - formal baseline and candidate main branches remain protected
+  ---
+  duration_ms: 8.003167
+  type: 'test'
+  ...
+# Subtest: branch, commit, tag and code release candidate form immutable history
+ok 20 - branch, commit, tag and code release candidate form immutable history
+  ---
+  duration_ms: 9.614583
+  type: 'test'
+  ...
+# Subtest: v1.2.0 parent directory exactly matches the anchored parent commit
+ok 21 - v1.2.0 parent directory exactly matches the anchored parent commit
+  ---
+  duration_ms: 58.077417
+  type: 'test'
+  ...
+# Subtest: v1.1.0 frozen release still matches its source commit
+ok 22 - v1.1.0 frozen release still matches its source commit
+  ---
+  duration_ms: 86.290333
+  type: 'test'
+  ...
+# Subtest: one launcher serves the unified Shell, continuous optimization API and parent M08 compatibility routes
+ok 23 - one launcher serves the unified Shell, continuous optimization API and parent M08 compatibility routes
+  ---
+  duration_ms: 98.723375
+  type: 'test'
+  ...
+# Subtest: not-yet-formed result kinds return an honest 200 NOT_READY envelope
+ok 24 - not-yet-formed result kinds return an honest 200 NOT_READY envelope
+  ---
+  duration_ms: 9.520125
+  type: 'test'
+  ...
+# Subtest: v1.2 M08 routes drive the v1.3 continuous runtime without wrapper redirects
+ok 25 - v1.2 M08 routes drive the v1.3 continuous runtime without wrapper redirects
+  ---
+  duration_ms: 414.497334
+  type: 'test'
+  ...
+# Subtest: generic model-management contract drives all five registered scenarios
+ok 26 - generic model-management contract drives all five registered scenarios
+  ---
+  duration_ms: 731.31325
+  type: 'test'
+  ...
+# Subtest: v1.3 unique entry preserves the parent Shell CSS and uses a minimal local renderer delta
+ok 27 - v1.3 unique entry preserves the parent Shell CSS and uses a minimal local renderer delta
+  ---
+  duration_ms: 3.162667
+  type: 'test'
+  ...
+# Subtest: shell registers M01-M08 and Dashboard once with the parent S005 default context
+ok 28 - shell registers M01-M08 and Dashboard once with the parent S005 default context
+  ---
+  duration_ms: 2.896292
+  type: 'test'
+  ...
+# Subtest: v1.3 browser state keys are isolated from v1.2 runtime state
+ok 29 - v1.3 browser state keys are isolated from v1.2 runtime state
+  ---
+  duration_ms: 0.203792
+  type: 'test'
+  ...
+# Subtest: resource catalog remains one 9x5 directory and adds S002/S004 exploration without replacing parent modules
+ok 30 - resource catalog remains one 9x5 directory and adds S002/S004 exploration without replacing parent modules
+  ---
+  duration_ms: 0.986125
+  type: 'test'
+  ...
+# Subtest: all scenarios use the real parent module workspaces with native closed-loop integrations
+ok 31 - all scenarios use the real parent module workspaces with native closed-loop integrations
+  ---
+  duration_ms: 7.512334
+  type: 'test'
+  ...
+# Subtest: M02 and M01 expose traceable S003 model data assets and per-model semantic bindings
+ok 32 - M02 and M01 expose traceable S003 model data assets and per-model semantic bindings
+  ---
+  duration_ms: 0.465959
+  type: 'test'
+  ...
+# Subtest: Dashboard registers S004 as a real fifth workspace instead of an injected shell card
+ok 33 - Dashboard registers S004 as a real fifth workspace instead of an injected shell card
+  ---
+  duration_ms: 3.158542
+  type: 'test'
+  ...
+# Subtest: v1.2-style Dashboard exposes five result views and no automatic release claims
+ok 34 - v1.2-style Dashboard exposes five result views and no automatic release claims
+  ---
+  duration_ms: 1.136292
+  type: 'test'
+  ...
+# Subtest: candidate pages contain no redirect wrappers or background polling loops
+ok 35 - candidate pages contain no redirect wrappers or background polling loops
+  ---
+  duration_ms: 3.416791
+  type: 'test'
+  ...
+# Subtest: cross-tab state changes never force a full page reload
+ok 36 - cross-tab state changes never force a full page reload
+  ---
+  duration_ms: 0.883917
+  type: 'test'
+  ...
+# Subtest: popstate and hashchange are coalesced into one iframe render
+ok 37 - popstate and hashchange are coalesced into one iframe render
+  ---
+  duration_ms: 0.806292
+  type: 'test'
+  ...
+# Subtest: stale iframe callbacks cannot overwrite the current module breadcrumb
+ok 38 - stale iframe callbacks cannot overwrite the current module breadcrumb
+  ---
+  duration_ms: 1.023667
+  type: 'test'
+  ...
+# Subtest: new multi-model table is reorganized as cards on narrow screens
+ok 39 - new multi-model table is reorganized as cards on narrow screens
+  ---
+  duration_ms: 1.037
+  type: 'test'
+  ...
+# Subtest: Dashboard enterprise detail exposes the full multi-model evidence chain
+ok 40 - Dashboard enterprise detail exposes the full multi-model evidence chain
+  ---
+  duration_ms: 1.141208
+  type: 'test'
+  ...
+# Subtest: model management UI uses one generic scenario contract and explicit review actions
+ok 41 - model management UI uses one generic scenario contract and explicit review actions
+  ---
+  duration_ms: 0.284041
+  type: 'test'
+  ...
+# Subtest: business-facing model screens do not expose raw evaluation status as primary copy
+ok 42 - business-facing model screens do not expose raw evaluation status as primary copy
+  ---
+  duration_ms: 1.249334
+  type: 'test'
+  ...
+# Subtest: 21 unique enterprise objects replace the three duplicate financing nodes
+ok 43 - 21 unique enterprise objects replace the three duplicate financing nodes
+  ---
+  duration_ms: 1.35175
+  type: 'test'
+  ...
+# Subtest: all financing, model, decision and risk aliases resolve to the same enterprise
+ok 44 - all financing, model, decision and risk aliases resolve to the same enterprise
+  ---
+  duration_ms: 2.3275
+  type: 'test'
+  ...
+# Subtest: all active relationships, events and series reference existing objects after consolidation
+ok 45 - all active relationships, events and series reference existing objects after consolidation
+  ---
+  duration_ms: 0.933667
+  type: 'test'
+  ...
+# Subtest: merged financing and risk facts retain their original version and values
+ok 46 - merged financing and risk facts retain their original version and values
+  ---
+  duration_ms: 0.192792
+  type: 'test'
+  ...
+# Subtest: coordinates are distributed, in China city ranges and explicitly synthetic
+ok 47 - coordinates are distributed, in China city ranges and explicitly synthetic
+  ---
+  duration_ms: 0.500875
+  type: 'test'
+  ...
+# Subtest: no financing values are invented for enterprises without a financing source
+ok 48 - no financing values are invented for enterprises without a financing source
+  ---
+  duration_ms: 0.242375
+  type: 'test'
+  ...
+# Subtest: host selection deduplicates aliases while preserving the requested business view
+ok 49 - host selection deduplicates aliases while preserving the requested business view
+  ---
+  duration_ms: 5.190625
+  type: 'test'
+  ...
+# Subtest: model consumers match both domains through the master without changing source envelopes
+ok 50 - model consumers match both domains through the master without changing source envelopes
+  ---
+  duration_ms: 0.909833
+  type: 'test'
+  ...
+# Subtest: v1.3.0 parent directory exactly matches the anchored parent commit
+ok 51 - v1.3.0 parent directory exactly matches the anchored parent commit
+  ---
+  duration_ms: 56.094875
+  type: 'test'
+  ...
+# Subtest: v1.2.0 and v1.1.0 baselines remain unchanged
+ok 52 - v1.2.0 and v1.1.0 baselines remain unchanged
+  ---
+  duration_ms: 83.98325
+  type: 'test'
+  ...
+# Subtest: readability distinguishes regular controls, headings and technical identifiers
+ok 53 - readability distinguishes regular controls, headings and technical identifiers
+  ---
+  duration_ms: 1.35725
+  type: 'test'
+  ...
+# Subtest: small CSS fonts are raised without reducing metric values or changing visibility
+ok 54 - small CSS fonts are raised without reducing metric values or changing visibility
+  ---
+  duration_ms: 1.068333
+  type: 'test'
+  ...
+# Subtest: responsive rules retain their font expression and newly loaded sheets are handled
+ok 55 - responsive rules retain their font expression and newly loaded sheets are handled
+  ---
+  duration_ms: 0.527
+  type: 'test'
+  ...
+# Subtest: supplementary data content is placed inside the scrolling page, never before a full-height app
+ok 56 - supplementary data content is placed inside the scrolling page, never before a full-height app
+  ---
+  duration_ms: 0.494625
+  type: 'test'
+  ...
+# Subtest: v1.3.2 candidate serves the local Shell and reused model runtime
+ok 57 - v1.3.2 candidate serves the local Shell and reused model runtime
+  ---
+  duration_ms: 42.489875
+  type: 'test'
+  ...
+# Subtest: v1.3.2 is a selective derivative of the exact v1.3.0 parent
+ok 58 - v1.3.2 is a selective derivative of the exact v1.3.0 parent
+  ---
+  duration_ms: 1.351167
+  type: 'test'
+  ...
+# Subtest: one Shell registers M01-M08 and the business cockpit once
+ok 59 - one Shell registers M01-M08 and the business cockpit once
+  ---
+  duration_ms: 0.359
+  type: 'test'
+  ...
+# Subtest: homepage keeps the fixed three-domain architecture and real feature launcher
+ok 60 - homepage keeps the fixed three-domain architecture and real feature launcher
+  ---
+  duration_ms: 0.472833
+  type: 'test'
+  ...
+# Subtest: all module tasks use one Shell-level vertical secondary navigation
+ok 61 - all module tasks use one Shell-level vertical secondary navigation
+  ---
+  duration_ms: 0.614125
+  type: 'test'
+  ...
+# Subtest: WorkspaceContext remains canonical and synchronized without a global context chip
+ok 62 - WorkspaceContext remains canonical and synchronized without a global context chip
+  ---
+  duration_ms: 0.44875
+  type: 'test'
+  ...
+# Subtest: M07 provides discovery plus six shared-context lenses
+ok 63 - M07 provides discovery plus six shared-context lenses
+  ---
+  duration_ms: 7.280708
+  type: 'test'
+  ...
+# Subtest: M08 is objective-centric, generic and retains the real Python/Git drilldown
+ok 64 - M08 is objective-centric, generic and retains the real Python/Git drilldown
+  ---
+  duration_ms: 0.502583
+  type: 'test'
+  ...
+# Subtest: inherited real workspaces retain query animation, action, decision and report flows
+ok 65 - inherited real workspaces retain query animation, action, decision and report flows
+  ---
+  duration_ms: 0.798167
+  type: 'test'
+  ...
+# Subtest: candidate pages contain no redirect wrappers or background polling loops
+ok 66 - candidate pages contain no redirect wrappers or background polling loops
+  ---
+  duration_ms: 6.237333
+  type: 'test'
+  ...
+# Subtest: cross-tab state changes never force a full page reload
+ok 67 - cross-tab state changes never force a full page reload
+  ---
+  duration_ms: 0.466625
+  type: 'test'
+  ...
+# Subtest: M07 receives host context only after its resource reports ready
+ok 68 - M07 receives host context only after its resource reports ready
+  ---
+  duration_ms: 0.292042
+  type: 'test'
+  ...
+# Subtest: Dashboard switches business views without rebuilding its iframe
+ok 69 - Dashboard switches business views without rebuilding its iframe
+  ---
+  duration_ms: 0.484458
+  type: 'test'
+  ...
+# Subtest: popstate, hashchange and stale frame callbacks remain guarded
+ok 70 - popstate, hashchange and stale frame callbacks remain guarded
+  ---
+  duration_ms: 1.654833
+  type: 'test'
+  ...
+# Subtest: required desktop and mobile layouts have explicit responsive rules
+ok 71 - required desktop and mobile layouts have explicit responsive rules
+  ---
+  duration_ms: 1.217584
+  type: 'test'
+  ...
+# Subtest: baseline query settings and Agent authoring routes remain reachable from the Shell
+ok 72 - baseline query settings and Agent authoring routes remain reachable from the Shell
+  ---
+  duration_ms: 2.480167
+  type: 'test'
+  ...
+# Subtest: model question history freezes the answer, result version and original object scope
+ok 73 - model question history freezes the answer, result version and original object scope
+  ---
+  duration_ms: 4.908708
+  type: 'test'
+  ...
+# Subtest: failed and cancelled queries do not get recorded as successful conversations
+ok 74 - failed and cancelled queries do not get recorded as successful conversations
+  ---
+  duration_ms: 3.235
+  type: 'test'
+  ...
+# Subtest: CSV preserves values and provenance while quoting delimiters and neutralizing formulas
+ok 75 - CSV preserves values and provenance while quoting delimiters and neutralizing formulas
+  ---
+  duration_ms: 0.958416
+  type: 'test'
+  ...
+# Subtest: decision projection distinguishes cancelled, failed and executing tasks
+ok 76 - decision projection distinguishes cancelled, failed and executing tasks
+  ---
+  duration_ms: 0.888667
+  type: 'test'
+  ...
+# Subtest: decision summary counts and detail filters use identical stage groups
+ok 77 - decision summary counts and detail filters use identical stage groups
+  ---
+  duration_ms: 0.614209
+  type: 'test'
+  ...
+# Subtest: task corrections take precedence over the original assignment without losing execution stage
+ok 78 - task corrections take precedence over the original assignment without losing execution stage
+  ---
+  duration_ms: 1.350042
+  type: 'test'
+  ...
+# Subtest: baseline business answers do not inherit a previously viewed model answer or model version
+ok 79 - baseline business answers do not inherit a previously viewed model answer or model version
+  ---
+  duration_ms: 0.754917
+  type: 'test'
+  ...
+# Subtest: baseline historyRuns are resolved by the selected run without falling back to a live answer
+ok 80 - baseline historyRuns are resolved by the selected run without falling back to a live answer
+  ---
+  duration_ms: 2.206542
+  type: 'test'
+  ...
+# Subtest: numeric input rejects null, empty, codes and booleans but retains zero and negatives
+ok 81 - numeric input rejects null, empty, codes and booleans but retains zero and negatives
+  ---
+  duration_ms: 1.708459
+  type: 'test'
+  ...
+# Subtest: requested result mode never falls through to another available envelope
+ok 82 - requested result mode never falls through to another available envelope
+  ---
+  duration_ms: 0.708042
+  type: 'test'
+  ...
+# Subtest: explicit current object, object set and all scopes are respected
+ok 83 - explicit current object, object set and all scopes are respected
+  ---
+  duration_ms: 1.178083
+  type: 'test'
+  ...
+# Subtest: explicit cross-module identity mappings do not guess other objects
+ok 84 - explicit cross-module identity mappings do not guess other objects
+  ---
+  duration_ms: 0.352625
+  type: 'test'
+  ...
+# Subtest: report snapshot retains exact result and model provenance without promoting null values
+ok 85 - report snapshot retains exact result and model provenance without promoting null values
+  ---
+  duration_ms: 0.744625
+  type: 'test'
+  ...
+# Subtest: report writes are idempotent, editable and isolated from older versions
+ok 86 - report writes are idempotent, editable and isolated from older versions
+  ---
+  duration_ms: 1.640041
+  type: 'test'
+  ...
+# Subtest: explicit target switch clears incompatible selection atomically and keeps target identity
+ok 87 - explicit target switch clears incompatible selection atomically and keeps target identity
+  ---
+  duration_ms: 1.993084
+  type: 'test'
+  ...
+# Subtest: metric lookup matches the selected version and never another version of the same model
+ok 88 - metric lookup matches the selected version and never another version of the same model
+  ---
+  duration_ms: 0.777792
+  type: 'test'
+  ...
+# Subtest: metric formatting uses metric types, not the magnitude of a value
+ok 89 - metric formatting uses metric types, not the magnitude of a value
+  ---
+  duration_ms: 1.584792
+  type: 'test'
+  ...
+# Subtest: candidate return cannot substitute simulation or another subject
+ok 90 - candidate return cannot substitute simulation or another subject
+  ---
+  duration_ms: 2.166834
+  type: 'test'
+  ...
+# Subtest: expanding both sides of a cyclic relationship terminates without duplicating nodes
+ok 91 - expanding both sides of a cyclic relationship terminates without duplicating nodes
+  ---
+  duration_ms: 0.919958
+  type: 'test'
+  ...
+1..91
+# tests 91
+# suites 0
+# pass 91
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1846.343708

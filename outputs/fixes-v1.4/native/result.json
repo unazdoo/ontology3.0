@@ -1,0 +1,198 @@
+{
+  "status": "passed",
+  "checks": [
+    "01-synthetic-baseline-no-fact-scores",
+    "02-group-answer-balance-and-cost",
+    "03-group-detail-export",
+    "04-budget-explorer-explicit-unmapped",
+    "05-unmapped-reload-and-recovery",
+    "06-preloan-explicit-no-data",
+    "07-post-model-compatible-target",
+    "08-risk-model-compatible-target"
+  ],
+  "errors": [],
+  "url": "http://127.0.0.1:62408",
+  "history": [
+    {
+      "id": "1152b3d0-a957-486e-923b-8b3e32a0cf28",
+      "savedAt": "2026-09-08T00:18:35.882Z",
+      "scenarioId": "S004",
+      "status": "failed",
+      "workspaceContext": {
+        "analysisScope": "all",
+        "sourceModuleId": "query",
+        "scopeNote": "已按新问题切换业务域，原域对象和版本未用于本次查询。",
+        "scenarioId": "S004",
+        "resultView": "formal",
+        "resultMode": {
+          "id": "formal",
+          "label": "正式结果"
+        }
+      },
+      "answer": {
+        "question": "哪些借款主体需要优先人工复核？",
+        "spec": {
+          "type": "ranking",
+          "question": "哪些借款主体需要优先人工复核？",
+          "label": "贷前复核",
+          "resultMode": "demo"
+        },
+        "queryScenarioId": "S004",
+        "ready": false,
+        "title": "暂无实际评价数据",
+        "summary": "当前只有演示基准，没有实际评分。请先完成相应模型评测；候选演示评分不能当作正式业务事实。",
+        "rows": [
+          {
+            "name": "申请主体A",
+            "primary": "无法评价",
+            "secondary": "无法评价",
+            "tertiary": "缺少依据",
+            "evidence": [
+              "DATA-SYN-S004-PRELOAN-v1#subject-1",
+              "ONT-SYN-S004-CREDIT-v1#LoanApplicant"
+            ],
+            "id": "LoanApplicant-001",
+            "objectType": "借款主体"
+          },
+          {
+            "name": "申请主体B",
+            "primary": "无法评价",
+            "secondary": "无法评价",
+            "tertiary": "缺少依据",
+            "evidence": [
+              "DATA-SYN-S004-PRELOAN-v1#subject-2",
+              "ONT-SYN-S004-CREDIT-v1#LoanApplicant"
+            ],
+            "id": "LoanApplicant-002",
+            "objectType": "借款主体"
+          },
+          {
+            "name": "申请主体C",
+            "primary": "无法评价",
+            "secondary": "无法评价",
+            "tertiary": "缺少依据",
+            "evidence": [
+              "DATA-SYN-S004-PRELOAN-v1#subject-3",
+              "ONT-SYN-S004-CREDIT-v1#LoanApplicant"
+            ],
+            "id": "LoanApplicant-003",
+            "objectType": "借款主体"
+          },
+          {
+            "name": "申请主体D",
+            "primary": "无法评价",
+            "secondary": "无法评价",
+            "tertiary": "缺少依据",
+            "evidence": [
+              "DATA-SYN-S004-PRELOAN-v1#subject-4",
+              "ONT-SYN-S004-CREDIT-v1#LoanApplicant"
+            ],
+            "id": "LoanApplicant-004",
+            "objectType": "借款主体"
+          }
+        ],
+        "kpis": [
+          {
+            "label": "结果身份",
+            "value": "演示基准 · 无正式评分"
+          }
+        ],
+        "workspaceContext": {
+          "analysisScope": "all",
+          "sourceModuleId": "query",
+          "scopeNote": "已按新问题切换业务域，原域对象和版本未用于本次查询。",
+          "scenarioId": "S004",
+          "resultView": "formal",
+          "resultMode": {
+            "id": "formal",
+            "label": "正式结果"
+          }
+        },
+        "runtimeContext": {
+          "ui": {
+            "moduleName": "模型优化中心",
+            "domain": "信贷管理",
+            "businessName": "贷前风险评估",
+            "subjectLabel": "借款主体",
+            "consumerLabel": "贷前风险评估驾驶舱"
+          },
+          "state": {
+            "scenario": {
+              "scenarioId": "S004",
+              "scenarioVersion": "S004-v2.1.0",
+              "archivedScenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+              "archivedScenarioMutable": false,
+              "businessName": "贷前风险评估",
+              "domain": "信贷管理",
+              "dataAsOf": "2026-08-15",
+              "subjectLabel": "借款主体"
+            },
+            "data": {
+              "dataVersionId": "DATA-SYN-S004-PRELOAN-v1"
+            },
+            "results": {
+              "formalEnvelope": {
+                "resultId": "DEMO-S004-BASELINE-READONLY",
+                "runId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+                "modelVersionId": "MV-S004-PRELOAN-BASELINE-1.0.0",
+                "dataVersionId": "DATA-SYN-S004-PRELOAN-v1",
+                "ontologyVersionId": null,
+                "semanticContractVersionId": null,
+                "resultKind": "DEMO_BASELINE",
+                "dataOrigin": "SYNTHETIC",
+                "provenance": {
+                  "kind": "DEMONSTRATION_FIXTURE",
+                  "source": "v1.3.0/scenario-model-registrations.mjs#resultSubjects",
+                  "method": "ordinal sample scores; not business evaluation",
+                  "actualCalculation": false
+                },
+                "formedAt": null,
+                "asOf": null
+              },
+              "resultPackage": {
+                "resultPackageId": "CYCLE-S004-MODEL-20260902-001-RESULT-PACKAGE-00"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "budgetContext": {
+    "schemaVersion": "ofw.workspace-context.v1",
+    "scenarioId": "S002",
+    "objectiveRef": null,
+    "objectSetRef": {
+      "selectionMode": "EXPLICIT",
+      "id": "query-run:RUN-S002-MTRX8FYR-002",
+      "label": "2025年部门费用预算执行",
+      "count": 3,
+      "objectIds": [
+        "dept-equipment",
+        "dept-technology",
+        "dept-safety"
+      ],
+      "title": "2025年部门费用预算执行"
+    },
+    "activeObjectRef": {
+      "id": "dept-equipment",
+      "label": "设备管理部",
+      "type": "业务对象",
+      "title": "设备管理部",
+      "objectTypeRef": "业务对象"
+    },
+    "timeRange": {
+      "start": "",
+      "end": "2025-12-31",
+      "label": "截至 2025-12-31"
+    },
+    "comparisonRef": null,
+    "resultView": "formal",
+    "dataVersionRef": null,
+    "ontologyVersionRef": null,
+    "evidenceRefs": [],
+    "sourceModuleId": "query",
+    "updatedAt": "2026-09-08T00:18:30.021Z",
+    "analysisScope": "set"
+  }
+}

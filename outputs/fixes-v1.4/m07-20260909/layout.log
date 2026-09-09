@@ -1,0 +1,17 @@
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+locator.evaluate: Error: strict mode violation: locator('[data-lens=compare]') resolved to 2 elements:
+    1) <main id="app" aria-busy="false" data-lens="compare" aria-current="page" data-route="explore" class="explorer-app active">…</main> aka getByText('业务对象 业务对象探索 对象发现 探索工作台 保存探索 继续分析 对象类型浏览目录 清除 全部对象71融资管理规则结果3集团融资1金融机构9融资明细3')
+    2) <button type="button" data-lens="compare" aria-current="page" class="lens-button active">…</button> aka getByRole('button', { name: '对比分析 指标与差异' })
+
+Call log:
+[2m  - waiting for locator('[data-lens=compare]')[22m
+
+    at click (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-composite-v1.3.0/designs/prototype-work/v1.4/tests/m07-final-layout-browser.mjs:13:45)
+    at /Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-composite-v1.3.0/designs/prototype-work/v1.4/tests/m07-final-layout-browser.mjs:23:50 {
+  log: [ "  - waiting for locator('[data-lens=compare]')" ]
+}
+
+Node.js v22.22.0

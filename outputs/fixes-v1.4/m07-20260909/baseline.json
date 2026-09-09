@@ -1,0 +1,92 @@
+{
+  "at": "2026-09-09T11:54:28.385Z",
+  "appSha256": "3b5b245f668ae74fd26be9291fe18301876cc8b648b86ee5a3814e48f6a6a14f",
+  "dataSha256": "5f28ad4a1a141d4c86eb12f83cc981f42bb1e64e1c3b72fd199ee4f342d75c9d",
+  "mixedRule": {
+    "definition": {
+      "id": "property:ruleMetricValue:%",
+      "label": "ruleMetricValue",
+      "unit": "%",
+      "kind": "property",
+      "key": "ruleMetricValue",
+      "coverage": 2
+    },
+    "values": [
+      {
+        "id": "ENT-017",
+        "label": "短期债务余额占比",
+        "value": 93.545164
+      },
+      {
+        "id": "ENT-020",
+        "label": "平均融资成本",
+        "value": 2.880984
+      }
+    ]
+  },
+  "outsideWindowRisk": [
+    {
+      "id": "ENT-017",
+      "value": 30.52
+    },
+    {
+      "id": "ENT-020",
+      "value": 23.05
+    }
+  ],
+  "graph": {
+    "nodes": [
+      "ENT-020",
+      "financing::s001.group",
+      "financing::s001.loanbook.553",
+      "financing::s001.owner.001",
+      "financing::s001.rule.r01.553",
+      "risk::S003-ASSESSMENT-20251231"
+    ],
+    "positions": [
+      [
+        "ENT-020",
+        {
+          "x": 500,
+          "y": 285
+        }
+      ],
+      [
+        "financing::s001.group",
+        {
+          "x": 348.38922026954987,
+          "y": 392.2505246915197
+        }
+      ],
+      [
+        "financing::s001.loanbook.553",
+        {
+          "x": 314.9543687868654,
+          "y": 211.71597240197028
+        }
+      ],
+      [
+        "financing::s001.owner.001",
+        {
+          "x": 305.8151479368404,
+          "y": 225.98817452348007
+        }
+      ],
+      [
+        "financing::s001.rule.r01.553",
+        {
+          "x": 501.78304467617477,
+          "y": 439.9944127849104
+        }
+      ],
+      [
+        "risk::S003-ASSESSMENT-20251231",
+        {
+          "x": 654.0563468305687,
+          "y": 179.66514100828266
+        }
+      ]
+    ],
+    "loanOwnerDistance": 16.947598978697858
+  }
+}

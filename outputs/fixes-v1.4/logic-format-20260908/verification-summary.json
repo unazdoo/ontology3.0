@@ -1,0 +1,40 @@
+{
+  "at": "2026-09-08T13:36:05.898Z",
+  "findings": [
+    {
+      "id": "R14-013",
+      "resolution": "Explicitly reject unsupported OR; union is not implemented",
+      "verified": true
+    },
+    {
+      "id": "R14-014",
+      "resolution": "Shared display precision for editor, preview and HTML; source values unchanged",
+      "verified": true
+    }
+  ],
+  "unit": {
+    "passed": 120,
+    "failed": 0
+  },
+  "browser": {
+    "checks": [
+      "01-or-condition",
+      "02-formatted-edit",
+      "03-preview-and-export",
+      "04-format-1280",
+      "04-format-390",
+      "04-format-320",
+      "05-refresh"
+    ],
+    "builtWorkbench": true,
+    "webglUnavailable": true,
+    "screenshotsEnabled": false
+  },
+  "limitations": [
+    "Normal WebGL startup timed out; validated in existing fallback mode",
+    "Full screenshots not completed; DOM values and actual HTML download verified",
+    "Natural-language inputs are not exhaustively verified"
+  ],
+  "sourceDigest": "90883f8deace5834e382a98d6a32d6b3c23032190921069e2cc928095e2f1486",
+  "htmlSha256": "542412a7136b1aca7e999d4af35c0c3a161ecbae0eee4283aa496cb73121e410"
+}

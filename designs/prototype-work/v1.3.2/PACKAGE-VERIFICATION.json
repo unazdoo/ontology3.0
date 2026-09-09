@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "ofw.prototype.package-verification.v3",
+  "verifiedOn": "2026-09-07",
+  "observedAt": "2026-09-07T03:27:45.578Z",
+  "targetPrototypeVersion": "v1.3.2-rc.1",
+  "result": "PASSED",
+  "acceptanceReady": false,
+  "parentPrototype": {
+    "version": "v1.3.0-rc.1",
+    "commit": "e3990c69e77882062035490ef718fd93549bbf82",
+    "subtree": "a24109c8be2ffceca73e0fedbb9387f4b85a7176",
+    "integrity": "PASSED"
+  },
+  "upstreamPrototype": {
+    "version": "v1.2.0-rc.1",
+    "commit": "e4974c23bd223f26bfd04b08dc6f46eb4d9ae5e0",
+    "runtimeTests": "Covered by current Node compatibility and integrity tests",
+    "integrity": "PASSED"
+  },
+  "frozenSource": {
+    "version": "v1.1.0",
+    "commit": "a8b023d7f8d49ad6ed6c24417b79b6f9df3fb716",
+    "baselineSnapshotId": "BSL-OFW-V110-94ABD0E991B7",
+    "releaseVerification": "Git integrity matches frozen source commit"
+  },
+  "staticVerification": {
+    "v132Tests": "49/49 PASSED",
+    "parentModelAndStabilityTests": "42/42 PASSED",
+    "javascriptSyntax": "PASSED",
+    "jsonParsing": "PASSED",
+    "historicalTrackedFilesChanged": 0,
+    "symlinks": 0
+  },
+  "pythonVerification": {
+    "repositories": 10,
+    "tests": "30/30 PASSED",
+    "actualPythonProcess": true,
+    "dataVersionBound": true,
+    "semanticContractBound": true
+  },
+  "chromeVerification": {
+    "browser": "Google Chrome 152.0.7977.77",
+    "controlSurface": "Playwright direct to local Google Chrome",
+    "inAppBrowserUsed": false,
+    "scenarioRouteChecks": "50/50 PASSED",
+    "realModuleWorkflows": "PASSED",
+    "allFiveModelLifecycles": "PASSED",
+    "s005EvaluationStages": "7/7",
+    "s005ModuleOutputs": 9,
+    "viewports": {
+      "1440x900": "PASSED",
+      "1280x720": "PASSED",
+      "390x844": "PASSED"
+    },
+    "outerHorizontalOverflows": 0,
+    "moduleHorizontalOverflows": 0,
+    "blankPages": 0,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "failedResourceRequests": 0,
+    "crossTabReloads": 0,
+    "historyBackFrameLoadDelta": 0,
+    "evidence": "composite/evidence/browser-regression.json"
+  },
+  "mainChain": {
+    "result": "passed",
+    "scenarioId": "S003",
+    "cycleId": "CYCLE-S003-OPT-20260902-002",
+    "finalStatus": "BINDING_APPLIED",
+    "dataVersionId": "DV-S003-SYN-LONGITUDINAL-20260902-v1-C02",
+    "semanticContractVersionId": "SC-S003-MULTIMODEL-20260902-v1-C02",
+    "modelRunCount": 9,
+    "benchmarkRunCount": 10,
+    "candidateModelVersionId": "MV-S003-BLEND-002-021-0.2.0-CANDIDATE",
+    "shadowTrialId": "SHADOW-TRIAL-002-023",
+    "releaseCandidateId": "RC-S003-002-033",
+    "bindingRevisionId": "CB-S003-DASHBOARD-MULTIMODEL-R1",
+    "bindingStatus": "APPLIED",
+    "resultPackageId": "CYCLE-S003-OPT-20260902-002-RESULT-PACKAGE-18",
+    "simulationResultId": "SIMRES-002-038",
+    "formalModelPointerChanged": false,
+    "formalFactPointerChanged": false,
+    "sideEffectsEmitted": 0
+  },
+  "regressionMatrix": {
+    "cases": 197,
+    "passed": 197,
+    "failed": 0,
+    "blocked": 0,
+    "total": 197
+  },
+  "disallowedClaimsConfirmedAbsent": [
+    "model validity formally proven",
+    "production rollout complete",
+    "user review passed",
+    "phase-one acceptance passed"
+  ],
+  "nodeRegression": {
+    "candidateVersion": "v1.3.2-rc.1",
+    "observedAt": "2026-09-07T03:29:17.547Z",
+    "status": "passed",
+    "testCount": 91,
+    "failed": 0,
+    "command": "node --test designs/prototype-work/v1.3.2/composite/tests/*.test.mjs designs/prototype-work/v1.3.0/composite/tests/*.test.mjs"
+  },
+  "uxRegression": {
+    "passed": 36,
+    "failed": 0,
+    "evidence": "composite/evidence/ux/regression.json"
+  },
+  "v11ParityRegression": {
+    "passed": 15,
+    "failed": 0,
+    "evidence": "composite/evidence/v11-parity/regression.json"
+  },
+  "readabilityRegression": {
+    "passed": 90,
+    "failed": 0,
+    "evidence": "composite/evidence/readability/regression.json"
+  },
+  "enterpriseIdentityRegression": {
+    "passed": 8,
+    "failed": 0,
+    "evidence": "composite/evidence/enterprise-identity/regression.json"
+  }
+}

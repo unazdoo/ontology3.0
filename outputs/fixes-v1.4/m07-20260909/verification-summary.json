@@ -1,0 +1,177 @@
+{
+  "at": "2026-09-09T12:39:57.133Z",
+  "findings": [
+    "R14-015",
+    "R14-016",
+    "R14-017"
+  ],
+  "status": "verified within documented acceptance",
+  "unit": {
+    "passed": 125,
+    "failed": 0
+  },
+  "browserChecks": [
+    "01-compatible-metrics",
+    "02-outside-window",
+    "03-node-hit-1440",
+    "03-node-hit-1280",
+    "03-node-hit-390",
+    "03-node-hit-320",
+    "04-mixed-scope-feedback",
+    "05-budget-q1",
+    "06-refresh-preserves-period"
+  ],
+  "layoutChecks": [
+    {
+      "width": 1440,
+      "boxes": [
+        {
+          "class": "compare-lens",
+          "width": 518,
+          "scroll": 518
+        },
+        {
+          "class": "compare-toolbar",
+          "width": 516,
+          "scroll": 516
+        },
+        {
+          "class": "comparison-chart bar",
+          "width": 516,
+          "scroll": 516
+        },
+        {
+          "class": "bar-row active",
+          "width": 488,
+          "scroll": 488
+        },
+        {
+          "class": "bar-row ",
+          "width": 488,
+          "scroll": 488
+        }
+      ],
+      "title": {
+        "width": 288,
+        "scroll": 288,
+        "height": 20,
+        "scrollHeight": 20
+      }
+    },
+    {
+      "width": 1280,
+      "boxes": [
+        {
+          "class": "compare-lens",
+          "width": 616,
+          "scroll": 616
+        },
+        {
+          "class": "compare-toolbar",
+          "width": 614,
+          "scroll": 614
+        },
+        {
+          "class": "comparison-chart bar",
+          "width": 614,
+          "scroll": 614
+        },
+        {
+          "class": "bar-row active",
+          "width": 586,
+          "scroll": 586
+        },
+        {
+          "class": "bar-row ",
+          "width": 586,
+          "scroll": 586
+        }
+      ],
+      "title": {
+        "width": 288,
+        "scroll": 288,
+        "height": 20,
+        "scrollHeight": 20
+      }
+    },
+    {
+      "width": 390,
+      "boxes": [
+        {
+          "class": "compare-lens",
+          "width": 374,
+          "scroll": 374
+        },
+        {
+          "class": "compare-toolbar",
+          "width": 372,
+          "scroll": 372
+        },
+        {
+          "class": "comparison-chart bar",
+          "width": 372,
+          "scroll": 372
+        },
+        {
+          "class": "bar-row active",
+          "width": 356,
+          "scroll": 356
+        },
+        {
+          "class": "bar-row ",
+          "width": 356,
+          "scroll": 356
+        }
+      ],
+      "title": {
+        "width": 288,
+        "scroll": 288,
+        "height": 20,
+        "scrollHeight": 20
+      }
+    },
+    {
+      "width": 320,
+      "boxes": [
+        {
+          "class": "compare-lens",
+          "width": 304,
+          "scroll": 304
+        },
+        {
+          "class": "compare-toolbar",
+          "width": 302,
+          "scroll": 302
+        },
+        {
+          "class": "comparison-chart bar",
+          "width": 302,
+          "scroll": 302
+        },
+        {
+          "class": "bar-row active",
+          "width": 286,
+          "scroll": 286
+        },
+        {
+          "class": "bar-row ",
+          "width": 286,
+          "scroll": 286
+        }
+      ],
+      "title": {
+        "width": 260,
+        "scroll": 260,
+        "height": 39,
+        "scrollHeight": 39
+      }
+    }
+  ],
+  "sourceResourceUnchanged": true,
+  "sourceDigest": "1ac13ba59356d76943e81e99b147314fe5952dff71c8ec43b37b4fc2b348b08a",
+  "limitations": [
+    "M07 uses SVG; no dashboard WebGL conclusion",
+    "Static snapshot policy retained with explicit dates",
+    "No exhaustive permission or multi-user validation"
+  ]
+}

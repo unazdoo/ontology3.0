@@ -1,0 +1,21 @@
+PASS 01-or-condition
+PASS 02-formatted-edit
+PASS 03-preview-and-export
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+locator.scrollIntoViewIfNeeded: Timeout 29925.067000000003ms exceeded.
+Call log:
+[2m  - attempting scroll into view action[22m
+[2m    - waiting for element to be stable[22m
+
+    at /Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-composite-v1.3.0/designs/prototype-work/v1.4/tests/review-logic-format-browser.mjs:111:58 {
+  log: [
+    '  - attempting scroll into view action',
+    '    - waiting for element to be stable'
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v22.22.0

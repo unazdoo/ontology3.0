@@ -1,0 +1,2278 @@
+{
+  "schemaVersion": "ofw.composite-regression.v5",
+  "candidateVersion": "v1.3.2-rc.1",
+  "uniqueEntry": "composite/s001-e2e-integration/index.html",
+  "recommendedReviewUrl": "http://127.0.0.1:4382/designs/prototype-work/v1.3.2/composite/s001-e2e-integration/index.html?m08ApiBase=http%3A%2F%2F127.0.0.1%3A4383#home",
+  "runStatus": "passed",
+  "acceptanceReady": false,
+  "evidencePolicy": "A case is passed only after static, API or local Google Chrome evidence has been produced against the v1.3.2 artifact.",
+  "cases": [
+    {
+      "id": "CRG-001",
+      "area": "parent-anchor",
+      "requirement": "v1.3.0-rc.1 is anchored to the exact parent commit and subtree",
+      "method": "git-static",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test composite/tests/parent-integrity.test.mjs",
+        "VERSION.json#parentCommit"
+      ]
+    },
+    {
+      "id": "CRG-002",
+      "area": "parent-integrity",
+      "requirement": "v1.3.0, v1.2.0 and frozen v1.1.0 directories remain unchanged",
+      "method": "git-static",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test composite/tests/parent-integrity.test.mjs",
+        "node designs/prototype-releases/verify-release.mjs 1.1.0"
+      ]
+    },
+    {
+      "id": "CRG-003",
+      "area": "single-shell",
+      "requirement": "one platform Shell mounts home, M01-M08 and Dashboard",
+      "method": "static-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test composite/tests/shell-contract.test.mjs",
+        "node --test composite/tests/stability-contract.test.mjs",
+        "composite/evidence/browser-regression.json#scenarioCoverage"
+      ]
+    },
+    {
+      "id": "CRG-004",
+      "area": "routing",
+      "requirement": "home, M01-M08 and Dashboard are reachable from the unique entry",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#scenarioCoverage"
+      ]
+    },
+    {
+      "id": "CRG-005",
+      "area": "scenario-isolation",
+      "requirement": "S001-S005 runtime states remain isolated and v1.3.2 browser state is separate from prior versions",
+      "method": "static-behavioral",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test composite/tests/shell-contract.test.mjs",
+        "SCENARIO-REGISTRY.json#scenarioIsolation"
+      ]
+    },
+    {
+      "id": "CRG-006",
+      "area": "formal-baseline",
+      "requirement": "formal model 1.0.2 and 21-enterprise FACT results remain immutable",
+      "method": "static-behavioral",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "COMPOSITE-MANIFEST.json#formalBaseline"
+      ]
+    },
+    {
+      "id": "CRG-007",
+      "area": "m02-data-build",
+      "requirement": "M02 creates a real synthetic longitudinal DataBuildRun and candidate DataVersion",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/browser-regression.json#dataEngineering"
+      ]
+    },
+    {
+      "id": "CRG-008",
+      "area": "m02-quality",
+      "requirement": "quality, missing reasons, availability time and future leakage checks are explicit",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/browser-regression.json#dataEngineering"
+      ]
+    },
+    {
+      "id": "CRG-009",
+      "area": "m02-freeze",
+      "requirement": "M02 freezes an immutable recomputable DataVersion before M08 consumption",
+      "method": "behavioral",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "../v1.3.0/composite/runtime/model-portfolio-engine.mjs",
+        "../v1.3.0/composite/runtime/s003-registration.mjs"
+      ]
+    },
+    {
+      "id": "CRG-010",
+      "area": "m01-contract",
+      "requirement": "M01 forms object, relationship, metric, unit, time-grain and result identity contracts",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/browser-regression.json#mainChain"
+      ]
+    },
+    {
+      "id": "CRG-011",
+      "area": "m08-objectives",
+      "requirement": "模型目标与优化 exposes all business objectives through five vertical task pages with Python repository drill-down and usable scrolling",
+      "method": "static-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test composite/tests/shell-contract.test.mjs",
+        "composite/evidence/browser-regression.json#modelManagement",
+        "composite/evidence/browser-regression.json#realModuleWorkflows/m08Scroll",
+        "composite/evidence/screenshots/final-m08-models-20260906-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-012",
+      "area": "model-portfolio",
+      "requirement": "one formal baseline, two core Challengers and seven supplemental models have independent identities",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/browser-regression.json#modelPortfolio"
+      ]
+    },
+    {
+      "id": "CRG-013",
+      "area": "benchmark",
+      "requirement": "formal and Challenger comparisons share a fair benchmark while supplemental models retain objective-specific metrics",
+      "method": "behavioral",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "../v1.3.0/composite/runtime/model-portfolio-engine.mjs",
+        "../v1.3.0/composite/runtime/s003-registration.mjs",
+        "composite/evidence/screenshots/final-m08-compare-20260906-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-014",
+      "area": "benchmark-honesty",
+      "requirement": "coverage, calibration, drift, worst slice and missing reasons are explicit and synthetic validity is not claimed",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/browser-regression.json#modelPortfolio",
+        "composite/evidence/screenshots/final-m08-compare-20260906-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-015",
+      "area": "ai-boundary",
+      "requirement": "AI insights cannot mutate labels, calculate scores, select a champion or publish",
+      "method": "behavioral",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "../v1.3.0/composite/runtime/model-portfolio-engine.mjs",
+        "../v1.3.0/composite/runtime/s003-registration.mjs"
+      ]
+    },
+    {
+      "id": "CRG-016",
+      "area": "insight-review-and-model-version",
+      "requirement": "an immutable human insight-review receipt is required before optimization creates a new immutable Model Version",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "../v1.3.0/composite/runtime/model-portfolio-engine.mjs",
+        "../v1.3.0/composite/runtime/s003-registration.mjs",
+        "composite/evidence/screenshots/final-m08-20260906-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-017",
+      "area": "shadow",
+      "requirement": "one selected candidate advances through three independent label maturity windows",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/browser-regression.json#mainChain",
+        "composite/evidence/screenshots/final-m08-observe-20260906-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-018",
+      "area": "rebenchmark",
+      "requirement": "matured labels trigger same-context rebenchmarking without automatic champion selection",
+      "method": "behavioral",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "../v1.3.0/composite/runtime/model-portfolio-engine.mjs",
+        "../v1.3.0/composite/runtime/s003-registration.mjs"
+      ]
+    },
+    {
+      "id": "CRG-019",
+      "area": "release",
+      "requirement": "Release Candidate consumes the sealed holdout once and remains non-production",
+      "method": "behavioral",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "../v1.3.0/composite/runtime/model-portfolio-engine.mjs",
+        "../v1.3.0/composite/runtime/s003-registration.mjs"
+      ]
+    },
+    {
+      "id": "CRG-020",
+      "area": "binding",
+      "requirement": "Dashboard Binding validation and two-step human application do not change formal pointers",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/screenshots/final-m08-20260906-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-021",
+      "area": "dashboard-views",
+      "requirement": "Dashboard provides five result views plus enterprise time, maturity, relation, anomaly, contribution, confidence and evidence drill-down without a composite score",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#dashboard",
+        "composite/evidence/screenshots/final-dashboard-20260906-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-022",
+      "area": "dashboard-detail",
+      "requirement": "enterprise detail includes formal score, horizons, timing, event type, gap, maturity wall, relation, anomaly, contributions, confidence and evidence",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#dashboard",
+        "composite/evidence/screenshots/final-dashboard-20260906-390x844.png"
+      ]
+    },
+    {
+      "id": "CRG-023",
+      "area": "m07-consumer",
+      "requirement": "M07 provides object discovery plus a six-Lens shared-context exploration workbench and returns the same object and result context",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#realModuleWorkflows/modules/M07",
+        "composite/evidence/browser-regression.json#scenarioCoverage",
+        "composite/evidence/screenshots/final-m07-20260906-1440x900.png",
+        "composite/evidence/screenshots/final-s002-m07-20260906-1440x900.png",
+        "composite/evidence/screenshots/final-s004-m07-20260906-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-024",
+      "area": "m03-consumer",
+      "requirement": "M03 retains 51 recommendations in six business-topic tabs, classifies debt-structure questions under 债务风险 and queries the same Result Package without tab reloads",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#realModuleWorkflows/modules/M03",
+        "composite/evidence/browser-regression.json#realModuleWorkflows/m03Recommendations",
+        "composite/evidence/screenshots/final-m03-20260906-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-025",
+      "area": "m05-consumer",
+      "requirement": "M05 explains contributions, anomaly, relation path and disagreement without recomputation",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#realModuleWorkflows/modules/M05",
+        "composite/evidence/screenshots/final-m05-20260906-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-026",
+      "area": "m06-consumer",
+      "requirement": "M06 shows report draft boundaries, history, evolution and rollback path",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#realModuleWorkflows/modules/M06",
+        "composite/evidence/screenshots/final-m06-20260906-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-027",
+      "area": "m04-boundary",
+      "requirement": "M04 hard-rejects PREDICTION, SHADOW and SIMULATION with zero side effects",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/browser-regression.json#realModuleWorkflows/modules/M04"
+      ]
+    },
+    {
+      "id": "CRG-028",
+      "area": "consumer-consistency",
+      "requirement": "Dashboard, M07, M03, M05 and M06 share one Result Package ID and digest",
+      "method": "behavioral",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/browser-regression.json#realModuleWorkflows"
+      ]
+    },
+    {
+      "id": "CRG-029",
+      "area": "stress-simulation",
+      "requirement": "pressure simulation creates an independent SIMULATION envelope and never replaces FACT",
+      "method": "behavioral-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "composite/evidence/browser-regression.json#dashboard"
+      ]
+    },
+    {
+      "id": "CRG-030",
+      "area": "cycle-reset",
+      "requirement": "next-cycle/reset archives only the current optimization cycle and preserves history and formal facts",
+      "method": "behavioral",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "../v1.3.0/composite/runtime/model-portfolio-engine.mjs",
+        "../v1.3.0/composite/runtime/s003-registration.mjs"
+      ]
+    },
+    {
+      "id": "CRG-031",
+      "area": "extensibility",
+      "requirement": "generic engine contains no S003, Enterprise or debt-specific registration logic",
+      "method": "static",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "../v1.3.0/composite/runtime/model-portfolio-engine.mjs"
+      ]
+    },
+    {
+      "id": "CRG-032",
+      "area": "refresh-deep-link",
+      "requirement": "refresh and deep links restore home, M01, M08, Dashboard and local subviews without query-tab or cross-tab refresh storms",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test composite/tests/stability-contract.test.mjs",
+        "composite/evidence/browser-regression.json#stability"
+      ]
+    },
+    {
+      "id": "CRG-033",
+      "area": "history-navigation",
+      "requirement": "browser back and forward preserve Shell routes and selected enterprise context",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test composite/tests/stability-contract.test.mjs",
+        "composite/evidence/browser-regression.json#stability",
+        "v1.2.0 parent regression 123/123"
+      ]
+    },
+    {
+      "id": "CRG-034",
+      "area": "viewport-1440",
+      "requirement": "1440x900 has no outer or module horizontal overflow",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#viewports/0",
+        "composite/evidence/screenshots/final-home-20260906-1440x900.png",
+        "composite/evidence/screenshots/final-m02-20260906-1440x900.png",
+        "composite/evidence/screenshots/final-m03-20260906-1440x900.png",
+        "composite/evidence/screenshots/final-m07-20260906-1440x900.png",
+        "composite/evidence/screenshots/final-m08-20260906-1440x900.png",
+        "composite/evidence/screenshots/final-dashboard-20260906-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-035",
+      "area": "viewport-1280",
+      "requirement": "1280x720 has no outer or module horizontal overflow",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#viewports/1",
+        "composite/evidence/screenshots/final-m08-20260906-1280x720.png",
+        "composite/evidence/screenshots/final-dashboard-20260906-1280x720.png"
+      ]
+    },
+    {
+      "id": "CRG-036",
+      "area": "viewport-mobile",
+      "requirement": "390x844 reorganizes hierarchy and tables without document horizontal overflow",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#viewports/2",
+        "composite/evidence/screenshots/final-m03-20260906-390x844.png",
+        "composite/evidence/screenshots/final-m08-20260906-390x844.png",
+        "composite/evidence/screenshots/final-dashboard-20260906-390x844.png"
+      ]
+    },
+    {
+      "id": "CRG-037",
+      "area": "runtime-errors",
+      "requirement": "application console, page and resource errors are zero",
+      "method": "chrome-instrumentation",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test composite/tests/stability-contract.test.mjs",
+        "composite/evidence/browser-regression.json#runtimeErrors",
+        "node composite/tests/verify-candidate.mjs"
+      ]
+    },
+    {
+      "id": "CRG-038",
+      "area": "truthful-claims",
+      "requirement": "candidate does not claim formal validity, production launch, user approval or acceptance",
+      "method": "static-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test composite/tests/shell-contract.test.mjs",
+        "node --test composite/tests/stability-contract.test.mjs",
+        "composite/evidence/browser-regression.json#scenarioCoverage",
+        "OPEN-ISSUES.md"
+      ]
+    },
+    {
+      "id": "CRG-039",
+      "area": "homepage-five-chain-portfolio",
+      "requirement": "homepage keeps the fixed three-domain architecture and exposes five real feature entries for the selected domain without scenario operations or a module directory",
+      "method": "static-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test composite/tests/shell-contract.test.mjs",
+        "composite/evidence/browser-regression.json#realModuleWorkflows/homepage",
+        "composite/evidence/screenshots/final-home-20260906-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-040",
+      "area": "unified-secondary-navigation",
+      "requirement": "M01-M08 and Dashboard use one light Shell-level vertical secondary navigation, top-bar breadcrumb and mobile task selector",
+      "method": "static-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test composite/tests/shell-contract.test.mjs",
+        "composite/evidence/browser-regression.json#modelManagement",
+        "composite/evidence/browser-regression.json#scenarioCoverage",
+        "composite/evidence/screenshots/final-m03-20260906-1440x900.png",
+        "composite/evidence/screenshots/final-m07-20260906-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-041",
+      "area": "m03-processing-animation",
+      "requirement": "intelligent query preserves the five-step v1.2 processing animation for parent and model questions and cancels stale runs before rendering answers",
+      "method": "chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#realModuleWorkflows/m03Animation",
+        "composite/evidence/screenshots/final-m03-thinking-20260906-1440x900.png",
+        "composite/evidence/screenshots/final-m03-answer-20260906-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-042",
+      "area": "model-python-repositories",
+      "requirement": "all ten S003 models have README and executable Python repositories with protected main, immutable commits, tags, release candidates, tests and DataVersion-bound runs",
+      "method": "node-python-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-repository.test.mjs",
+        "../v1.3.0/composite/runtime/model-repository-service.mjs",
+        "../v1.3.0/composite/model-repositories/s003/repository-manifest.json",
+        "composite/evidence/browser-regression.json#modelRepositories",
+        "composite/evidence/screenshots/final-m08-repository-20260906-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-043",
+      "area": "m02-m01-model-traceability",
+      "requirement": "the frozen DataVersion and Semantic Contract are native M02 and M01 catalog resources, expose six data members and ten per-model bindings, use no explanatory prompt panels and are cited by Python run receipts",
+      "method": "node-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test ../v1.3.0/composite/tests/model-portfolio.test.mjs",
+        "node --test ../v1.3.0/composite/tests/model-repository.test.mjs",
+        "../v1.3.0/composite/runtime/model-repository-service.mjs",
+        "../v1.3.0/composite/model-repositories/s003/repository-manifest.json",
+        "composite/evidence/browser-regression.json#realModuleWorkflows/s003Traceability",
+        "composite/evidence/screenshots/final-m02-20260906-1440x900.png",
+        "composite/evidence/screenshots/final-m01-20260906-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-044",
+      "area": "s004-real-dashboard",
+      "requirement": "S004 is a native fifth Dashboard workspace with applicant, evidence, missing-state and model-result drill-down",
+      "method": "static-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test composite/tests/shell-contract.test.mjs",
+        "composite/evidence/browser-regression.json#dashboard/s004RealDashboard",
+        "composite/evidence/screenshots/final-dashboard-s004-20260906-1440x900.png"
+      ]
+    },
+    {
+      "id": "CRG-045",
+      "area": "all-five-scenario-full-lifecycle",
+      "requirement": "S001-S005 each complete candidate creation, three Shadow windows, rebenchmark, Release Candidate, Binding application and pressure simulation",
+      "method": "api-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "composite/evidence/browser-regression.json#realModuleWorkflows/allScenarioOptimization",
+        "composite/evidence/browser-regression.json#realModuleWorkflows/basicChains",
+        "composite/evidence/browser-regression.json#realModuleWorkflows/s005"
+      ]
+    },
+    {
+      "id": "CRG-046",
+      "area": "workspace-context",
+      "requirement": "object set, active object, time range, comparison, result view, versions and evidence persist across query, exploration, modeling, dashboard and report without same-frame echo loops",
+      "method": "static-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test composite/tests/shell-contract.test.mjs",
+        "composite/evidence/browser-regression.json#realModuleWorkflows",
+        "PALANTIR-REFLECTION.md#已吸收的产品原则"
+      ]
+    },
+    {
+      "id": "CRG-047",
+      "area": "dashboard-no-reload",
+      "requirement": "switching among the five business cockpits remounts the native integration without rebuilding the dashboard iframe",
+      "method": "static-and-chrome",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "node --test composite/tests/stability-contract.test.mjs",
+        "composite/evidence/browser-regression.json#stability"
+      ]
+    },
+    {
+      "id": "CRG-048",
+      "area": "palantir-reflection",
+      "requirement": "the final architecture is re-evaluated against object-first, objective-first, shared application state and evidence-drilldown principles",
+      "method": "documented-review",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:27:45.578Z",
+      "evidence": [
+        "PALANTIR-REFLECTION.md",
+        "ACTUAL-CHANGES.md"
+      ]
+    },
+    {
+      "id": "UX-001",
+      "area": "v132-ux-closure",
+      "requirement": "1440: resource finder and domain filter",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/0"
+      ]
+    },
+    {
+      "id": "UX-002",
+      "area": "v132-ux-closure",
+      "requirement": "1440: all nine workspaces are nonblank and fit",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/1"
+      ]
+    },
+    {
+      "id": "UX-003",
+      "area": "v132-ux-closure",
+      "requirement": "1440: saved exploration restores search and object scope",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/2"
+      ]
+    },
+    {
+      "id": "UX-004",
+      "area": "v132-ux-closure",
+      "requirement": "1440: graph zoom, comparison and shared link",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/3"
+      ]
+    },
+    {
+      "id": "UX-005",
+      "area": "v132-ux-closure",
+      "requirement": "1440: S001 object to report and return",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/4"
+      ]
+    },
+    {
+      "id": "UX-006",
+      "area": "v132-ux-closure",
+      "requirement": "1440: S002 object to report and return",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/5"
+      ]
+    },
+    {
+      "id": "UX-007",
+      "area": "v132-ux-closure",
+      "requirement": "1440: S003 object to report and return",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/6"
+      ]
+    },
+    {
+      "id": "UX-008",
+      "area": "v132-ux-closure",
+      "requirement": "1440: S004 object to report and return",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/7"
+      ]
+    },
+    {
+      "id": "UX-009",
+      "area": "v132-ux-closure",
+      "requirement": "1440: S005 object to report and return",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/8"
+      ]
+    },
+    {
+      "id": "UX-010",
+      "area": "v132-ux-closure",
+      "requirement": "1440: report editing, reorder, delete, undo, export and reload",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/9"
+      ]
+    },
+    {
+      "id": "UX-011",
+      "area": "v132-ux-closure",
+      "requirement": "1440: model target survives module round trip",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/10"
+      ]
+    },
+    {
+      "id": "UX-012",
+      "area": "v132-ux-closure",
+      "requirement": "1440: unavailable model service can recover",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/11"
+      ]
+    },
+    {
+      "id": "UX-013",
+      "area": "v132-ux-closure",
+      "requirement": "1280: resource finder and domain filter",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/12"
+      ]
+    },
+    {
+      "id": "UX-014",
+      "area": "v132-ux-closure",
+      "requirement": "1280: all nine workspaces are nonblank and fit",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/13"
+      ]
+    },
+    {
+      "id": "UX-015",
+      "area": "v132-ux-closure",
+      "requirement": "1280: saved exploration restores search and object scope",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/14"
+      ]
+    },
+    {
+      "id": "UX-016",
+      "area": "v132-ux-closure",
+      "requirement": "1280: graph zoom, comparison and shared link",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/15"
+      ]
+    },
+    {
+      "id": "UX-017",
+      "area": "v132-ux-closure",
+      "requirement": "1280: S001 object to report and return",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/16"
+      ]
+    },
+    {
+      "id": "UX-018",
+      "area": "v132-ux-closure",
+      "requirement": "1280: S002 object to report and return",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/17"
+      ]
+    },
+    {
+      "id": "UX-019",
+      "area": "v132-ux-closure",
+      "requirement": "1280: S003 object to report and return",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/18"
+      ]
+    },
+    {
+      "id": "UX-020",
+      "area": "v132-ux-closure",
+      "requirement": "1280: S004 object to report and return",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/19"
+      ]
+    },
+    {
+      "id": "UX-021",
+      "area": "v132-ux-closure",
+      "requirement": "1280: S005 object to report and return",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/20"
+      ]
+    },
+    {
+      "id": "UX-022",
+      "area": "v132-ux-closure",
+      "requirement": "1280: report editing, reorder, delete, undo, export and reload",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/21"
+      ]
+    },
+    {
+      "id": "UX-023",
+      "area": "v132-ux-closure",
+      "requirement": "1280: model target survives module round trip",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/22"
+      ]
+    },
+    {
+      "id": "UX-024",
+      "area": "v132-ux-closure",
+      "requirement": "1280: unavailable model service can recover",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/23"
+      ]
+    },
+    {
+      "id": "UX-025",
+      "area": "v132-ux-closure",
+      "requirement": "390: resource finder and domain filter",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/24"
+      ]
+    },
+    {
+      "id": "UX-026",
+      "area": "v132-ux-closure",
+      "requirement": "390: all nine workspaces are nonblank and fit",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/25"
+      ]
+    },
+    {
+      "id": "UX-027",
+      "area": "v132-ux-closure",
+      "requirement": "390: saved exploration restores search and object scope",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/26"
+      ]
+    },
+    {
+      "id": "UX-028",
+      "area": "v132-ux-closure",
+      "requirement": "390: graph zoom, comparison and shared link",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/27"
+      ]
+    },
+    {
+      "id": "UX-029",
+      "area": "v132-ux-closure",
+      "requirement": "390: S001 object to report and return",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/28"
+      ]
+    },
+    {
+      "id": "UX-030",
+      "area": "v132-ux-closure",
+      "requirement": "390: S002 object to report and return",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/29"
+      ]
+    },
+    {
+      "id": "UX-031",
+      "area": "v132-ux-closure",
+      "requirement": "390: S003 object to report and return",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/30"
+      ]
+    },
+    {
+      "id": "UX-032",
+      "area": "v132-ux-closure",
+      "requirement": "390: S004 object to report and return",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/31"
+      ]
+    },
+    {
+      "id": "UX-033",
+      "area": "v132-ux-closure",
+      "requirement": "390: S005 object to report and return",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/32"
+      ]
+    },
+    {
+      "id": "UX-034",
+      "area": "v132-ux-closure",
+      "requirement": "390: report editing, reorder, delete, undo, export and reload",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/33"
+      ]
+    },
+    {
+      "id": "UX-035",
+      "area": "v132-ux-closure",
+      "requirement": "390: model target survives module round trip",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/34"
+      ]
+    },
+    {
+      "id": "UX-036",
+      "area": "v132-ux-closure",
+      "requirement": "390: unavailable model service can recover",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:29:48.737Z",
+      "evidence": [
+        "composite/evidence/ux/regression.json#checks/35"
+      ]
+    },
+    {
+      "id": "V11-001",
+      "area": "v11-baseline-parity",
+      "requirement": "1440: query settings and original view catalog",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:24:37.211Z",
+      "evidence": [
+        "composite/evidence/v11-parity/regression.json#checks/0"
+      ]
+    },
+    {
+      "id": "V11-002",
+      "area": "v11-baseline-parity",
+      "requirement": "1440: Agent configuration and orchestration creation",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:24:37.211Z",
+      "evidence": [
+        "composite/evidence/v11-parity/regression.json#checks/1"
+      ]
+    },
+    {
+      "id": "V11-003",
+      "area": "v11-baseline-parity",
+      "requirement": "1440: model answer CSV, persistent history and report handoff",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:24:37.211Z",
+      "evidence": [
+        "composite/evidence/v11-parity/regression.json#checks/2"
+      ]
+    },
+    {
+      "id": "V11-004",
+      "area": "v11-baseline-parity",
+      "requirement": "1440: decision summaries reach original request and trace pages",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:24:37.211Z",
+      "evidence": [
+        "composite/evidence/v11-parity/regression.json#checks/3"
+      ]
+    },
+    {
+      "id": "V11-005",
+      "area": "v11-baseline-parity",
+      "requirement": "1440: frozen report creation, reading, copilot and verification retained",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:24:37.211Z",
+      "evidence": [
+        "composite/evidence/v11-parity/regression.json#checks/4"
+      ]
+    },
+    {
+      "id": "V11-006",
+      "area": "v11-baseline-parity",
+      "requirement": "1280: query settings and original view catalog",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:24:37.211Z",
+      "evidence": [
+        "composite/evidence/v11-parity/regression.json#checks/5"
+      ]
+    },
+    {
+      "id": "V11-007",
+      "area": "v11-baseline-parity",
+      "requirement": "1280: Agent configuration and orchestration creation",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:24:37.211Z",
+      "evidence": [
+        "composite/evidence/v11-parity/regression.json#checks/6"
+      ]
+    },
+    {
+      "id": "V11-008",
+      "area": "v11-baseline-parity",
+      "requirement": "1280: model answer CSV, persistent history and report handoff",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:24:37.211Z",
+      "evidence": [
+        "composite/evidence/v11-parity/regression.json#checks/7"
+      ]
+    },
+    {
+      "id": "V11-009",
+      "area": "v11-baseline-parity",
+      "requirement": "1280: decision summaries reach original request and trace pages",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:24:37.211Z",
+      "evidence": [
+        "composite/evidence/v11-parity/regression.json#checks/8"
+      ]
+    },
+    {
+      "id": "V11-010",
+      "area": "v11-baseline-parity",
+      "requirement": "1280: frozen report creation, reading, copilot and verification retained",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:24:37.211Z",
+      "evidence": [
+        "composite/evidence/v11-parity/regression.json#checks/9"
+      ]
+    },
+    {
+      "id": "V11-011",
+      "area": "v11-baseline-parity",
+      "requirement": "390: query settings and original view catalog",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:24:37.211Z",
+      "evidence": [
+        "composite/evidence/v11-parity/regression.json#checks/10"
+      ]
+    },
+    {
+      "id": "V11-012",
+      "area": "v11-baseline-parity",
+      "requirement": "390: Agent configuration and orchestration creation",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:24:37.211Z",
+      "evidence": [
+        "composite/evidence/v11-parity/regression.json#checks/11"
+      ]
+    },
+    {
+      "id": "V11-013",
+      "area": "v11-baseline-parity",
+      "requirement": "390: model answer CSV, persistent history and report handoff",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:24:37.211Z",
+      "evidence": [
+        "composite/evidence/v11-parity/regression.json#checks/12"
+      ]
+    },
+    {
+      "id": "V11-014",
+      "area": "v11-baseline-parity",
+      "requirement": "390: decision summaries reach original request and trace pages",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:24:37.211Z",
+      "evidence": [
+        "composite/evidence/v11-parity/regression.json#checks/13"
+      ]
+    },
+    {
+      "id": "V11-015",
+      "area": "v11-baseline-parity",
+      "requirement": "390: frozen report creation, reading, copilot and verification retained",
+      "method": "chrome-ui",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:24:37.211Z",
+      "evidence": [
+        "composite/evidence/v11-parity/regression.json#checks/14"
+      ]
+    },
+    {
+      "id": "READ-001",
+      "area": "scroll-and-readability",
+      "requirement": "1440-home",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/0"
+      ]
+    },
+    {
+      "id": "READ-002",
+      "area": "scroll-and-readability",
+      "requirement": "1440-data-resources",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/1"
+      ]
+    },
+    {
+      "id": "READ-003",
+      "area": "scroll-and-readability",
+      "requirement": "1440-data-pipelines",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/2"
+      ]
+    },
+    {
+      "id": "READ-004",
+      "area": "scroll-and-readability",
+      "requirement": "1440-data-runs",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/3"
+      ]
+    },
+    {
+      "id": "READ-005",
+      "area": "scroll-and-readability",
+      "requirement": "1440-ontology-published",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/4"
+      ]
+    },
+    {
+      "id": "READ-006",
+      "area": "scroll-and-readability",
+      "requirement": "1440-ontology-modeling",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/5"
+      ]
+    },
+    {
+      "id": "READ-007",
+      "area": "scroll-and-readability",
+      "requirement": "1440-query-ask",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/6"
+      ]
+    },
+    {
+      "id": "READ-008",
+      "area": "scroll-and-readability",
+      "requirement": "1440-query-history",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/7"
+      ]
+    },
+    {
+      "id": "READ-009",
+      "area": "scroll-and-readability",
+      "requirement": "1440-query-settings",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/8"
+      ]
+    },
+    {
+      "id": "READ-010",
+      "area": "scroll-and-readability",
+      "requirement": "1440-decision-workbench",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/9"
+      ]
+    },
+    {
+      "id": "READ-011",
+      "area": "scroll-and-readability",
+      "requirement": "1440-decision-todos",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/10"
+      ]
+    },
+    {
+      "id": "READ-012",
+      "area": "scroll-and-readability",
+      "requirement": "1440-agent-agents",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/11"
+      ]
+    },
+    {
+      "id": "READ-013",
+      "area": "scroll-and-readability",
+      "requirement": "1440-agent-resources",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/12"
+      ]
+    },
+    {
+      "id": "READ-014",
+      "area": "scroll-and-readability",
+      "requirement": "1440-agent-orchestrations",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/13"
+      ]
+    },
+    {
+      "id": "READ-015",
+      "area": "scroll-and-readability",
+      "requirement": "1440-report-catalog",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/14"
+      ]
+    },
+    {
+      "id": "READ-016",
+      "area": "scroll-and-readability",
+      "requirement": "1440-report-create",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/15"
+      ]
+    },
+    {
+      "id": "READ-017",
+      "area": "scroll-and-readability",
+      "requirement": "1440-report-definitions",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/16"
+      ]
+    },
+    {
+      "id": "READ-018",
+      "area": "scroll-and-readability",
+      "requirement": "1440-m07-discover",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/17"
+      ]
+    },
+    {
+      "id": "READ-019",
+      "area": "scroll-and-readability",
+      "requirement": "1440-m07-explore",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/18"
+      ]
+    },
+    {
+      "id": "READ-020",
+      "area": "scroll-and-readability",
+      "requirement": "1440-modeling-objectives",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/19"
+      ]
+    },
+    {
+      "id": "READ-021",
+      "area": "scroll-and-readability",
+      "requirement": "1440-modeling-models",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/20"
+      ]
+    },
+    {
+      "id": "READ-022",
+      "area": "scroll-and-readability",
+      "requirement": "1440-modeling-compare",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/21"
+      ]
+    },
+    {
+      "id": "READ-023",
+      "area": "scroll-and-readability",
+      "requirement": "1440-modeling-observe",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/22"
+      ]
+    },
+    {
+      "id": "READ-024",
+      "area": "scroll-and-readability",
+      "requirement": "1440-modeling-release",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/23"
+      ]
+    },
+    {
+      "id": "READ-025",
+      "area": "scroll-and-readability",
+      "requirement": "1440-dashboard-directory",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/24"
+      ]
+    },
+    {
+      "id": "READ-026",
+      "area": "scroll-and-readability",
+      "requirement": "1440-dashboard-financing",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/25"
+      ]
+    },
+    {
+      "id": "READ-027",
+      "area": "scroll-and-readability",
+      "requirement": "1440-dashboard-budget",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/26"
+      ]
+    },
+    {
+      "id": "READ-028",
+      "area": "scroll-and-readability",
+      "requirement": "1440-dashboard-risk",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/27"
+      ]
+    },
+    {
+      "id": "READ-029",
+      "area": "scroll-and-readability",
+      "requirement": "1440-dashboard-preloan",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/28"
+      ]
+    },
+    {
+      "id": "READ-030",
+      "area": "scroll-and-readability",
+      "requirement": "1440-dashboard-post-investment",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/29"
+      ]
+    },
+    {
+      "id": "READ-031",
+      "area": "scroll-and-readability",
+      "requirement": "1280-home",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/30"
+      ]
+    },
+    {
+      "id": "READ-032",
+      "area": "scroll-and-readability",
+      "requirement": "1280-data-resources",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/31"
+      ]
+    },
+    {
+      "id": "READ-033",
+      "area": "scroll-and-readability",
+      "requirement": "1280-data-pipelines",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/32"
+      ]
+    },
+    {
+      "id": "READ-034",
+      "area": "scroll-and-readability",
+      "requirement": "1280-data-runs",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/33"
+      ]
+    },
+    {
+      "id": "READ-035",
+      "area": "scroll-and-readability",
+      "requirement": "1280-ontology-published",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/34"
+      ]
+    },
+    {
+      "id": "READ-036",
+      "area": "scroll-and-readability",
+      "requirement": "1280-ontology-modeling",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/35"
+      ]
+    },
+    {
+      "id": "READ-037",
+      "area": "scroll-and-readability",
+      "requirement": "1280-query-ask",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/36"
+      ]
+    },
+    {
+      "id": "READ-038",
+      "area": "scroll-and-readability",
+      "requirement": "1280-query-history",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/37"
+      ]
+    },
+    {
+      "id": "READ-039",
+      "area": "scroll-and-readability",
+      "requirement": "1280-query-settings",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/38"
+      ]
+    },
+    {
+      "id": "READ-040",
+      "area": "scroll-and-readability",
+      "requirement": "1280-decision-workbench",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/39"
+      ]
+    },
+    {
+      "id": "READ-041",
+      "area": "scroll-and-readability",
+      "requirement": "1280-decision-todos",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/40"
+      ]
+    },
+    {
+      "id": "READ-042",
+      "area": "scroll-and-readability",
+      "requirement": "1280-agent-agents",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/41"
+      ]
+    },
+    {
+      "id": "READ-043",
+      "area": "scroll-and-readability",
+      "requirement": "1280-agent-resources",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/42"
+      ]
+    },
+    {
+      "id": "READ-044",
+      "area": "scroll-and-readability",
+      "requirement": "1280-agent-orchestrations",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/43"
+      ]
+    },
+    {
+      "id": "READ-045",
+      "area": "scroll-and-readability",
+      "requirement": "1280-report-catalog",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/44"
+      ]
+    },
+    {
+      "id": "READ-046",
+      "area": "scroll-and-readability",
+      "requirement": "1280-report-create",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/45"
+      ]
+    },
+    {
+      "id": "READ-047",
+      "area": "scroll-and-readability",
+      "requirement": "1280-report-definitions",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/46"
+      ]
+    },
+    {
+      "id": "READ-048",
+      "area": "scroll-and-readability",
+      "requirement": "1280-m07-discover",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/47"
+      ]
+    },
+    {
+      "id": "READ-049",
+      "area": "scroll-and-readability",
+      "requirement": "1280-m07-explore",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/48"
+      ]
+    },
+    {
+      "id": "READ-050",
+      "area": "scroll-and-readability",
+      "requirement": "1280-modeling-objectives",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/49"
+      ]
+    },
+    {
+      "id": "READ-051",
+      "area": "scroll-and-readability",
+      "requirement": "1280-modeling-models",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/50"
+      ]
+    },
+    {
+      "id": "READ-052",
+      "area": "scroll-and-readability",
+      "requirement": "1280-modeling-compare",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/51"
+      ]
+    },
+    {
+      "id": "READ-053",
+      "area": "scroll-and-readability",
+      "requirement": "1280-modeling-observe",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/52"
+      ]
+    },
+    {
+      "id": "READ-054",
+      "area": "scroll-and-readability",
+      "requirement": "1280-modeling-release",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/53"
+      ]
+    },
+    {
+      "id": "READ-055",
+      "area": "scroll-and-readability",
+      "requirement": "1280-dashboard-directory",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/54"
+      ]
+    },
+    {
+      "id": "READ-056",
+      "area": "scroll-and-readability",
+      "requirement": "1280-dashboard-financing",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/55"
+      ]
+    },
+    {
+      "id": "READ-057",
+      "area": "scroll-and-readability",
+      "requirement": "1280-dashboard-budget",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/56"
+      ]
+    },
+    {
+      "id": "READ-058",
+      "area": "scroll-and-readability",
+      "requirement": "1280-dashboard-risk",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/57"
+      ]
+    },
+    {
+      "id": "READ-059",
+      "area": "scroll-and-readability",
+      "requirement": "1280-dashboard-preloan",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/58"
+      ]
+    },
+    {
+      "id": "READ-060",
+      "area": "scroll-and-readability",
+      "requirement": "1280-dashboard-post-investment",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/59"
+      ]
+    },
+    {
+      "id": "READ-061",
+      "area": "scroll-and-readability",
+      "requirement": "390-home",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/60"
+      ]
+    },
+    {
+      "id": "READ-062",
+      "area": "scroll-and-readability",
+      "requirement": "390-data-resources",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/61"
+      ]
+    },
+    {
+      "id": "READ-063",
+      "area": "scroll-and-readability",
+      "requirement": "390-data-pipelines",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/62"
+      ]
+    },
+    {
+      "id": "READ-064",
+      "area": "scroll-and-readability",
+      "requirement": "390-data-runs",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/63"
+      ]
+    },
+    {
+      "id": "READ-065",
+      "area": "scroll-and-readability",
+      "requirement": "390-ontology-published",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/64"
+      ]
+    },
+    {
+      "id": "READ-066",
+      "area": "scroll-and-readability",
+      "requirement": "390-ontology-modeling",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/65"
+      ]
+    },
+    {
+      "id": "READ-067",
+      "area": "scroll-and-readability",
+      "requirement": "390-query-ask",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/66"
+      ]
+    },
+    {
+      "id": "READ-068",
+      "area": "scroll-and-readability",
+      "requirement": "390-query-history",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/67"
+      ]
+    },
+    {
+      "id": "READ-069",
+      "area": "scroll-and-readability",
+      "requirement": "390-query-settings",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/68"
+      ]
+    },
+    {
+      "id": "READ-070",
+      "area": "scroll-and-readability",
+      "requirement": "390-decision-workbench",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/69"
+      ]
+    },
+    {
+      "id": "READ-071",
+      "area": "scroll-and-readability",
+      "requirement": "390-decision-todos",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/70"
+      ]
+    },
+    {
+      "id": "READ-072",
+      "area": "scroll-and-readability",
+      "requirement": "390-agent-agents",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/71"
+      ]
+    },
+    {
+      "id": "READ-073",
+      "area": "scroll-and-readability",
+      "requirement": "390-agent-resources",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/72"
+      ]
+    },
+    {
+      "id": "READ-074",
+      "area": "scroll-and-readability",
+      "requirement": "390-agent-orchestrations",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/73"
+      ]
+    },
+    {
+      "id": "READ-075",
+      "area": "scroll-and-readability",
+      "requirement": "390-report-catalog",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/74"
+      ]
+    },
+    {
+      "id": "READ-076",
+      "area": "scroll-and-readability",
+      "requirement": "390-report-create",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/75"
+      ]
+    },
+    {
+      "id": "READ-077",
+      "area": "scroll-and-readability",
+      "requirement": "390-report-definitions",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/76"
+      ]
+    },
+    {
+      "id": "READ-078",
+      "area": "scroll-and-readability",
+      "requirement": "390-m07-discover",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/77"
+      ]
+    },
+    {
+      "id": "READ-079",
+      "area": "scroll-and-readability",
+      "requirement": "390-m07-explore",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/78"
+      ]
+    },
+    {
+      "id": "READ-080",
+      "area": "scroll-and-readability",
+      "requirement": "390-modeling-objectives",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/79"
+      ]
+    },
+    {
+      "id": "READ-081",
+      "area": "scroll-and-readability",
+      "requirement": "390-modeling-models",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/80"
+      ]
+    },
+    {
+      "id": "READ-082",
+      "area": "scroll-and-readability",
+      "requirement": "390-modeling-compare",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/81"
+      ]
+    },
+    {
+      "id": "READ-083",
+      "area": "scroll-and-readability",
+      "requirement": "390-modeling-observe",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/82"
+      ]
+    },
+    {
+      "id": "READ-084",
+      "area": "scroll-and-readability",
+      "requirement": "390-modeling-release",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/83"
+      ]
+    },
+    {
+      "id": "READ-085",
+      "area": "scroll-and-readability",
+      "requirement": "390-dashboard-directory",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/84"
+      ]
+    },
+    {
+      "id": "READ-086",
+      "area": "scroll-and-readability",
+      "requirement": "390-dashboard-financing",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/85"
+      ]
+    },
+    {
+      "id": "READ-087",
+      "area": "scroll-and-readability",
+      "requirement": "390-dashboard-budget",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/86"
+      ]
+    },
+    {
+      "id": "READ-088",
+      "area": "scroll-and-readability",
+      "requirement": "390-dashboard-risk",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/87"
+      ]
+    },
+    {
+      "id": "READ-089",
+      "area": "scroll-and-readability",
+      "requirement": "390-dashboard-preloan",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/88"
+      ]
+    },
+    {
+      "id": "READ-090",
+      "area": "scroll-and-readability",
+      "requirement": "390-dashboard-post-investment",
+      "method": "chrome-wheel-and-layout",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:25:32.014Z",
+      "evidence": [
+        "composite/evidence/readability/regression.json#results/89"
+      ]
+    },
+    {
+      "id": "ENT-001",
+      "area": "enterprise-identity",
+      "requirement": "1440: all 21 enterprises on offline map",
+      "method": "chrome-ui-and-api",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:28:50.979Z",
+      "evidence": [
+        "composite/evidence/enterprise-identity/regression.json#checks/0"
+      ]
+    },
+    {
+      "id": "ENT-002",
+      "area": "enterprise-identity",
+      "requirement": "1440: financing and risk share one selected enterprise",
+      "method": "chrome-ui-and-api",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:28:50.979Z",
+      "evidence": [
+        "composite/evidence/enterprise-identity/regression.json#checks/1"
+      ]
+    },
+    {
+      "id": "ENT-003",
+      "area": "enterprise-identity",
+      "requirement": "S001: master identity survives model calculation and return",
+      "method": "chrome-ui-and-api",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:28:50.979Z",
+      "evidence": [
+        "composite/evidence/enterprise-identity/regression.json#checks/2"
+      ]
+    },
+    {
+      "id": "ENT-004",
+      "area": "enterprise-identity",
+      "requirement": "S003: master identity survives model calculation and return",
+      "method": "chrome-ui-and-api",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:28:50.979Z",
+      "evidence": [
+        "composite/evidence/enterprise-identity/regression.json#checks/3"
+      ]
+    },
+    {
+      "id": "ENT-005",
+      "area": "enterprise-identity",
+      "requirement": "1280: all 21 enterprises on offline map",
+      "method": "chrome-ui-and-api",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:28:50.979Z",
+      "evidence": [
+        "composite/evidence/enterprise-identity/regression.json#checks/4"
+      ]
+    },
+    {
+      "id": "ENT-006",
+      "area": "enterprise-identity",
+      "requirement": "1280: financing and risk share one selected enterprise",
+      "method": "chrome-ui-and-api",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:28:50.979Z",
+      "evidence": [
+        "composite/evidence/enterprise-identity/regression.json#checks/5"
+      ]
+    },
+    {
+      "id": "ENT-007",
+      "area": "enterprise-identity",
+      "requirement": "390: all 21 enterprises on offline map",
+      "method": "chrome-ui-and-api",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:28:50.979Z",
+      "evidence": [
+        "composite/evidence/enterprise-identity/regression.json#checks/6"
+      ]
+    },
+    {
+      "id": "ENT-008",
+      "area": "enterprise-identity",
+      "requirement": "390: financing and risk share one selected enterprise",
+      "method": "chrome-ui-and-api",
+      "status": "passed",
+      "observedAt": "2026-09-07T03:28:50.979Z",
+      "evidence": [
+        "composite/evidence/enterprise-identity/regression.json#checks/7"
+      ]
+    }
+  ],
+  "runSummary": {
+    "passed": 197,
+    "failed": 0,
+    "blocked": 0,
+    "pending": 0,
+    "lastObservedAt": "2026-09-07T03:27:45.578Z"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "generatedAt": "2026-09-08T02:24:57.377Z",
+  "scope": [
+    "R14-002",
+    "R14-011",
+    "R14-012"
+  ],
+  "outcome": "verified within documented acceptance and boundary cases",
+  "unit": {
+    "passed": 114,
+    "failed": 0
+  },
+  "browserChecks": [
+    "01-subject-and-parameter-boundaries",
+    "02-single-stage-decimals",
+    "03-source-title-and-snapshot",
+    "04-per-field-edit-order-deletion-protection",
+    "05-frozen-v1-independent-v2",
+    "06-report-1440",
+    "06-report-1280",
+    "06-report-390",
+    "06-report-320",
+    "07-delete-all-and-refresh"
+  ],
+  "ruleChecks": [
+    "Native catalog opens S003 owning draft",
+    "Native catalog opens S001 owning draft",
+    "Financing rule is a native resource in the owning ontology draft",
+    "Native rule editing persists threshold and validates the current definition",
+    "Ontology-owned rule drives the map and retains ontology identity in questions and reports",
+    "Map labels display enterprise name followed by city and selected popup remains readable",
+    "Rule condition changes are not silently replaced by the last verified condition",
+    "Debt maturity and funding-gap logic belong to the debt-risk ontology",
+    "Deprecated standalone rule tab resolves to the native ontology editor"
+  ],
+  "sourceDigest": "86ce8aadad13a56222584ac8e117917619f5f78492524a65e7830283d5fb308d",
+  "originalReviewNotModified": true,
+  "changedProducts": [
+    {
+      "path": "src/domain.js",
+      "before": "099d8c3db25c9c8951fea7fd3651d00aea4dcde821c6e6639d29a177c6d943e9",
+      "after": "23a05e5359f36df38b0d4904499d868176d0e86dbcf2ab4b427f00d6b642a917"
+    },
+    {
+      "path": "src/app.js",
+      "before": "dfdd09cdd001a2e6517c90650bfbb02d80c3fddaffffd736b19786b30560a8f5",
+      "after": "64e7c1acf32e1971392e58c6771103d83171c9e8f6dfad4c32bf575a616b622c"
+    },
+    {
+      "path": "composite/integrations/joint-workbench.js",
+      "before": "d1ca386ce92cdd5d840016dd6c87257eb3e3502a5bcd8aee3ed9e5bafe576356",
+      "after": "162a13faaca640fa6ca4f41af3367cc57354d760d0be086c16a3c1d26782f026"
+    },
+    {
+      "path": "composite/shared/report-editor.js",
+      "before": "38e18b56b75f5c50a296c7e1bd11e9c444145ed2c9973f8d7ddf6b6004008cf1",
+      "after": "13a4551bea2c7fc83632e2df1980b786cd75b8beac6c6f6b0e4780671c59db8e"
+    }
+  ]
+}

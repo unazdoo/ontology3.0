@@ -1,0 +1,2431 @@
+{
+  "schemaVersion": "ofw.modeling.continuous-optimization-cycle.v1",
+  "prototypeVersion": "v1.3.0-rc.1",
+  "scenario": {
+    "scenarioId": "S005",
+    "scenarioVersion": "S005-v1",
+    "archivedScenarioRunId": "S005-RUN-CURRENT",
+    "archivedScenarioMutable": false,
+    "businessName": "投后评价与产品选择",
+    "domain": "投资管理",
+    "dataAsOf": "2026-07-17",
+    "subjectLabel": "金融产品"
+  },
+  "cycle": {
+    "cycleId": "CYCLE-S005-MODEL-20260902-001",
+    "cycleNumber": 1,
+    "startedAt": "2026-09-02T00:00:00.000Z",
+    "archivedAt": null,
+    "status": "BINDING_APPLIED",
+    "stage": "CONTINUOUS_MONITORING",
+    "resetScope": "CURRENT_OPTIMIZATION_CYCLE_ONLY",
+    "historicalCyclesPreserved": true
+  },
+  "formalBaseline": {
+    "modelId": "MODEL-S005-BASELINE",
+    "modelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+    "name": "投后评价当前正式模型",
+    "modelVersion": "1.0.0",
+    "version": "1.0.0",
+    "modelRole": "FORMAL_BASELINE",
+    "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+    "outputIdentity": "预测评价分数 / 预测结果覆盖率",
+    "immutable": true,
+    "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+    "ontologyVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+    "publishedPointerMutableByPrototype": false,
+    "resultEnvelope": {
+      "schemaVersion": "ofw.modeling.result-envelope.v2",
+      "resultId": "DEMO-S005-BASELINE-READONLY",
+      "runId": "S005-RUN-CURRENT",
+      "resultKind": "DEMO_BASELINE",
+      "useKind": "DEMONSTRATION_REFERENCE",
+      "modelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+      "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+      "subjects": [
+        {
+          "subjectId": "InvestmentProduct-001",
+          "subjectName": "基金A",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "NOT_EVALUATED",
+          "score": null,
+          "confidence": null,
+          "missingReasons": [
+            "没有可追溯的实际评分，演示基准不代表正式评价。"
+          ],
+          "modelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-1",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        },
+        {
+          "subjectId": "InvestmentProduct-002",
+          "subjectName": "基金B",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "NOT_EVALUATED",
+          "score": null,
+          "confidence": null,
+          "missingReasons": [
+            "没有可追溯的实际评分，演示基准不代表正式评价。"
+          ],
+          "modelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-2",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        },
+        {
+          "subjectId": "InvestmentProduct-003",
+          "subjectName": "基金C",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "NOT_EVALUATED",
+          "score": null,
+          "confidence": null,
+          "missingReasons": [
+            "没有可追溯的实际评分，演示基准不代表正式评价。"
+          ],
+          "modelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-3",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        },
+        {
+          "subjectId": "InvestmentProduct-004",
+          "subjectName": "产品池组合",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "NOT_EVALUATED",
+          "score": null,
+          "confidence": null,
+          "missingReasons": [
+            "没有可追溯的实际评分，演示基准不代表正式评价。"
+          ],
+          "modelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-4",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        }
+      ],
+      "immutable": true,
+      "evidenceRefs": [
+        "S005-RUN-CURRENT",
+        "S005-DATA-AUDIT-79-SNAPSHOTS",
+        "S005-SEMANTIC-CANDIDATE-v1"
+      ],
+      "dataOrigin": "SYNTHETIC",
+      "provenance": {
+        "kind": "DEMONSTRATION_FIXTURE",
+        "source": "v1.3.0/scenario-model-registrations.mjs#resultSubjects",
+        "method": "ordinal sample scores; not business evaluation",
+        "actualCalculation": false
+      },
+      "actionSourceAllowed": false,
+      "factWriteAllowed": false,
+      "digest": "87a04dd39c61306fb689ff9058e495d291dabbacdfccb0975cf05211550f8dd8"
+    }
+  },
+  "objectives": [
+    {
+      "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+      "name": "金融产品投后评价",
+      "kind": "SCORING",
+      "businessQuestion": "当前金融产品的评价分数、覆盖情况和压力影响是什么？",
+      "intendedUse": "支持投后评价、池内比较和压力情景核查。",
+      "resultKinds": [
+        "PREDICTION",
+        "SIMULATION"
+      ],
+      "comparisonGroup": "PRIMARY_OBJECTIVE",
+      "outputIdentity": "预测评价分数 / 预测结果覆盖率",
+      "evidenceRefs": [
+        "S005-DATA-AUDIT-79-SNAPSHOTS",
+        "S005-SEMANTIC-CANDIDATE-v1",
+        "TX-SYN-S005-EVAL-0001"
+      ]
+    }
+  ],
+  "modelDefinitions": [
+    {
+      "modelId": "MODEL-S005-BASELINE",
+      "modelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+      "name": "投后评价当前正式模型",
+      "modelVersion": "1.0.0",
+      "version": "1.0.0",
+      "modelRole": "FORMAL_BASELINE",
+      "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+      "outputIdentity": "预测评价分数 / 预测结果覆盖率",
+      "immutable": true
+    },
+    {
+      "modelId": "CM-S005-BALANCED-v1",
+      "modelVersionId": "MV-S005-BALANCED-0001",
+      "name": "均衡评价候选",
+      "version": "0001",
+      "modelRole": "CORE_CHALLENGER",
+      "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+      "businessQuestion": "当前金融产品的评价分数、覆盖情况和压力影响是什么？",
+      "outputIdentity": "预测评价分数 / 预测结果覆盖率",
+      "evidenceRefs": [
+        "TX-SYN-S005-EVAL-0001",
+        "METRIC-ENGINEERING-FITNESS-v1"
+      ],
+      "displayOrder": 1
+    },
+    {
+      "modelId": "CM-S005-CONSERVATIVE-v1",
+      "modelVersionId": "MV-S005-CONSERVATIVE-0001",
+      "name": "审慎评价候选",
+      "version": "0001",
+      "modelRole": "CORE_CHALLENGER",
+      "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+      "businessQuestion": "当前金融产品的评价分数、覆盖情况和压力影响是什么？",
+      "outputIdentity": "预测评价分数 / 预测结果覆盖率",
+      "evidenceRefs": [
+        "TX-SYN-S005-EVAL-0001",
+        "METRIC-ENGINEERING-FITNESS-v1"
+      ],
+      "displayOrder": 2
+    }
+  ],
+  "data": {
+    "schemaVersion": "ofw.data-version.v1",
+    "dataBuildRunId": "DATABUILD-S005-001-001",
+    "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+    "sourceDataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+    "classification": "SYNTHETIC_OR_SCENARIO_CANDIDATE",
+    "synthetic": true,
+    "deidentified": true,
+    "recomputable": true,
+    "observationCount": 79,
+    "subjectCount": 4,
+    "observationAsOf": "2026-07-17",
+    "availableAt": "2026-07-17",
+    "validationStatus": "VALID",
+    "immutable": true,
+    "missingSummary": [
+      {
+        "field": "optionalHistory",
+        "reason": "部分对象观察期不足，结果保持部分评价。",
+        "affectedCount": 1
+      }
+    ],
+    "evidenceRefs": [
+      "S005-DATA-AUDIT-79-SNAPSHOTS",
+      "TX-SYN-S005-EVAL-0001"
+    ],
+    "qualityResultId": "QUALITY-S005-001-002",
+    "leakageCheckId": "LEAKAGE-S005-001-002",
+    "quality": {
+      "futureLeakageRows": 0,
+      "invalidOutcomeRows": 0,
+      "labelIndependence": "PASSED",
+      "missingReasonsPreserved": true
+    },
+    "status": "FROZEN",
+    "frozenAt": "2026-09-02T00:03:00.000Z",
+    "checksum": "30de989e1fb871436cccd53bb2ecdadafbba1fee1424bd33d58f99b0ec3fd0b0"
+  },
+  "semanticContract": {
+    "schemaVersion": "ofw.modeling.semantic-contract.v1",
+    "semanticContractVersionId": "S005-SEMANTIC-CANDIDATE-v1-C1",
+    "sourceSemanticContractVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+    "immutableWithinCycle": true,
+    "publishedOntology": false,
+    "objectTypes": [
+      "InvestmentProduct"
+    ],
+    "metrics": [
+      {
+        "propertyRef": "predictedEvaluationScore",
+        "label": "预测评价分数",
+        "unit": "score_0_100",
+        "timeGrain": "as_of",
+        "resultKind": "PREDICTION"
+      },
+      {
+        "propertyRef": "predictedEvaluationCoverage",
+        "label": "预测结果覆盖率",
+        "unit": "ratio",
+        "timeGrain": "as_of",
+        "resultKind": "PREDICTION"
+      }
+    ],
+    "resultIdentities": [
+      {
+        "resultKind": "FACT"
+      },
+      {
+        "resultKind": "PREDICTION"
+      },
+      {
+        "resultKind": "SHADOW"
+      },
+      {
+        "resultKind": "SIMULATION"
+      }
+    ],
+    "evidenceRefs": [
+      "S005-SEMANTIC-CANDIDATE-v1",
+      "S005-DATA-AUDIT-79-SNAPSHOTS-C1"
+    ]
+  },
+  "benchmarks": [
+    {
+      "schemaVersion": "ofw.modeling.benchmark-run.v2",
+      "benchmarkRunId": "BENCH-S005-BASELINE-001-006",
+      "reportId": "BENCHREPORT-S005-BASELINE-001-006",
+      "scope": "BASELINE_VALIDATION",
+      "status": "EVALUATED",
+      "modelId": "MODEL-S005-BASELINE",
+      "modelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+      "fixedContext": {
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+        "semanticContractVersionId": "S005-SEMANTIC-CANDIDATE-v1-C1",
+        "evaluatorVersion": "EVAL-M08-DETERMINISTIC-v1",
+        "metricSchemaVersion": "METRIC-ENGINEERING-FITNESS-v1",
+        "holdoutUsed": false
+      },
+      "metrics": {
+        "primaryMetric": 0.92,
+        "stability": 0.84,
+        "calibrationError": 0.24,
+        "coverage": 0.94
+      },
+      "metricCards": [
+        {
+          "id": "metric-1",
+          "label": "评价覆盖率",
+          "value": 0.92,
+          "format": "percent",
+          "direction": "higher",
+          "note": "使用同一数据版本、切分和评测口径。"
+        },
+        {
+          "id": "metric-2",
+          "label": "排序稳定性",
+          "value": 0.84,
+          "format": "percent",
+          "direction": "higher",
+          "note": "使用同一数据版本、切分和评测口径。"
+        },
+        {
+          "id": "metric-3",
+          "label": "压力一致性",
+          "value": 0.76,
+          "format": "percent",
+          "direction": "higher",
+          "note": "使用同一数据版本、切分和评测口径。"
+        },
+        {
+          "id": "metric-4",
+          "label": "数据覆盖率",
+          "value": 0.94,
+          "format": "percent",
+          "direction": "higher",
+          "note": "缺失项保留原因，不以补零代替。"
+        }
+      ],
+      "evidenceRefs": [
+        "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+        "S005-SEMANTIC-CANDIDATE-v1-C1",
+        "TX-SYN-S005-EVAL-0001"
+      ]
+    },
+    {
+      "schemaVersion": "ofw.modeling.benchmark-run.v2",
+      "benchmarkRunId": "BENCH-S005-PORTFOLIO-001-007",
+      "reportId": "BENCHREPORT-S005-PORTFOLIO-001-007",
+      "scope": "PORTFOLIO_COMPARISON",
+      "status": "EVALUATED",
+      "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+      "fixedContext": {
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+        "semanticContractVersionId": "S005-SEMANTIC-CANDIDATE-v1-C1",
+        "evaluatorVersion": "EVAL-M08-DETERMINISTIC-v1",
+        "metricSchemaVersion": "METRIC-ENGINEERING-FITNESS-v1",
+        "holdoutUsed": false
+      },
+      "metrics": {
+        "primaryMetric": 0.85,
+        "stability": 0.77,
+        "calibrationError": 0.31,
+        "coverage": 0.92
+      },
+      "metricCards": [
+        {
+          "id": "metric-1",
+          "label": "评价覆盖率",
+          "value": 0.85,
+          "format": "percent",
+          "direction": "higher",
+          "note": "使用同一数据版本、切分和评测口径。"
+        },
+        {
+          "id": "metric-2",
+          "label": "排序稳定性",
+          "value": 0.77,
+          "format": "percent",
+          "direction": "higher",
+          "note": "使用同一数据版本、切分和评测口径。"
+        },
+        {
+          "id": "metric-3",
+          "label": "压力一致性",
+          "value": 0.69,
+          "format": "percent",
+          "direction": "higher",
+          "note": "使用同一数据版本、切分和评测口径。"
+        },
+        {
+          "id": "metric-4",
+          "label": "数据覆盖率",
+          "value": 0.92,
+          "format": "percent",
+          "direction": "higher",
+          "note": "缺失项保留原因，不以补零代替。"
+        }
+      ],
+      "comparableModels": [
+        {
+          "modelId": "MODEL-S005-BASELINE",
+          "modelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+          "metrics": {
+            "primaryMetric": 0.69,
+            "coverage": 0.9
+          }
+        },
+        {
+          "modelId": "CM-S005-BALANCED-v1",
+          "modelVersionId": "MV-S005-BALANCED-0001",
+          "metrics": {
+            "primaryMetric": 0.87,
+            "coverage": 0.91
+          }
+        },
+        {
+          "modelId": "CM-S005-CONSERVATIVE-v1",
+          "modelVersionId": "MV-S005-CONSERVATIVE-0001",
+          "metrics": {
+            "primaryMetric": 0.71,
+            "coverage": 0.92
+          }
+        }
+      ],
+      "automaticChampionSelected": false,
+      "evidenceRefs": [
+        "MODELRUN-S005-1-001-007",
+        "MODELRUN-S005-2-001-007"
+      ]
+    },
+    {
+      "schemaVersion": "ofw.modeling.benchmark-run.v2",
+      "benchmarkRunId": "BENCH-S005-MATURED-001-022",
+      "reportId": "BENCHREPORT-S005-MATURED-001-022",
+      "baselineReportId": "BENCHREPORT-S005-MATURED-BASELINE-001-022",
+      "candidateReportId": "BENCHREPORT-S005-MATURED-CANDIDATE-001-022",
+      "scope": "MATURED_SHADOW_LABELS",
+      "status": "EVALUATED",
+      "fixedContext": {
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+        "semanticContractVersionId": "S005-SEMANTIC-CANDIDATE-v1-C1",
+        "evaluatorVersion": "EVAL-M08-DETERMINISTIC-v1",
+        "metricSchemaVersion": "METRIC-ENGINEERING-FITNESS-v1",
+        "holdoutUsed": false
+      },
+      "metrics": {
+        "primaryMetric": 0.91,
+        "stability": 0.83,
+        "calibrationError": 0.25,
+        "coverage": 0.93
+      },
+      "metricCards": [
+        {
+          "id": "metric-1",
+          "label": "评价覆盖率",
+          "value": 0.91,
+          "format": "percent",
+          "direction": "higher",
+          "note": "使用同一数据版本、切分和评测口径。"
+        },
+        {
+          "id": "metric-2",
+          "label": "排序稳定性",
+          "value": 0.83,
+          "format": "percent",
+          "direction": "higher",
+          "note": "使用同一数据版本、切分和评测口径。"
+        },
+        {
+          "id": "metric-3",
+          "label": "压力一致性",
+          "value": 0.75,
+          "format": "percent",
+          "direction": "higher",
+          "note": "使用同一数据版本、切分和评测口径。"
+        },
+        {
+          "id": "metric-4",
+          "label": "数据覆盖率",
+          "value": 0.93,
+          "format": "percent",
+          "direction": "higher",
+          "note": "缺失项保留原因，不以补零代替。"
+        }
+      ],
+      "evidenceRefs": [
+        "SHADOW-WINDOW-S005-001-016",
+        "SHADOW-WINDOW-S005-001-018",
+        "SHADOW-WINDOW-S005-001-020"
+      ]
+    }
+  ],
+  "modelRuns": [
+    {
+      "schemaVersion": "ofw.modeling.model-run.v1",
+      "modelRunId": "MODELRUN-S005-1-001-007",
+      "modelId": "CM-S005-BALANCED-v1",
+      "modelVersionId": "MV-S005-BALANCED-0001",
+      "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+      "status": "SUCCEEDED",
+      "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+      "semanticContractVersionId": "S005-SEMANTIC-CANDIDATE-v1-C1",
+      "factWriteAllowed": false,
+      "actionWriteAllowed": false,
+      "evidenceRefs": [
+        "TX-SYN-S005-EVAL-0001",
+        "METRIC-ENGINEERING-FITNESS-v1"
+      ]
+    },
+    {
+      "schemaVersion": "ofw.modeling.model-run.v1",
+      "modelRunId": "MODELRUN-S005-2-001-007",
+      "modelId": "CM-S005-CONSERVATIVE-v1",
+      "modelVersionId": "MV-S005-CONSERVATIVE-0001",
+      "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+      "status": "SUCCEEDED",
+      "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+      "semanticContractVersionId": "S005-SEMANTIC-CANDIDATE-v1-C1",
+      "factWriteAllowed": false,
+      "actionWriteAllowed": false,
+      "evidenceRefs": [
+        "TX-SYN-S005-EVAL-0001",
+        "METRIC-ENGINEERING-FITNESS-v1"
+      ]
+    }
+  ],
+  "insights": [
+    {
+      "schemaVersion": "ofw.modeling.model-insight.v1",
+      "insightId": "INSIGHT-S005-PERFORMANCE-001-009",
+      "title": "改善最弱业务切片的稳定性",
+      "businessInterpretation": "当前候选在整体指标上可比较，但最弱切片仍需降低波动并保留可解释边界。",
+      "evidenceRefs": [
+        "BENCHREPORT-S005-PORTFOLIO-001-007",
+        "BENCHREPORT-S005-PORTFOLIO-001-007#metricCards"
+      ],
+      "suggestedDiff": {
+        "operation": "CREATE_NEW_MODEL_VERSION",
+        "constraints": [
+          "same-data-version",
+          "same-evaluator",
+          "explainable-change"
+        ]
+      },
+      "expectedImprovement": "改善最弱切片，不预设模型有效性结论。",
+      "possibleRisk": "边界对象排序可能变化，必须进入影子试运行。",
+      "validationMethod": "同口径重新评测，并使用三个成熟标签窗口观察。",
+      "generatedBy": "STRUCTURED_AI_ASSISTANT",
+      "scoreCalculationPerformed": false,
+      "labelMutationAllowed": false,
+      "formalModelMutationAllowed": false,
+      "benchmarkMutationAllowed": false,
+      "automaticChampionSelectionAllowed": false,
+      "releaseAllowed": false,
+      "actionWriteAllowed": false,
+      "batchId": "INSIGHT-BATCH-001-009"
+    },
+    {
+      "schemaVersion": "ofw.modeling.model-insight.v1",
+      "insightId": "INSIGHT-S005-COVERAGE-001-009",
+      "title": "保留缺失原因并提高可评价覆盖率",
+      "businessInterpretation": "部分对象观察期不足；后续候选不得把缺失值填零或伪装成完整评价。",
+      "evidenceRefs": [
+        "QUALITY-S005-001-002",
+        "QUALITY-S005-001-002#optionalHistory"
+      ],
+      "suggestedDiff": {
+        "operation": "NEW_DATA_VERSION_AND_MODEL_VERSION",
+        "constraints": [
+          "availableAt-check",
+          "missing-reason-visible"
+        ]
+      },
+      "expectedImprovement": "提高覆盖率并保持结果身份清晰。",
+      "possibleRisk": "回补数据若晚于观察时点会造成未来信息泄漏。",
+      "validationMethod": "新 DataVersion 重新执行质量与泄漏校验。",
+      "generatedBy": "STRUCTURED_AI_ASSISTANT",
+      "scoreCalculationPerformed": false,
+      "labelMutationAllowed": false,
+      "formalModelMutationAllowed": false,
+      "benchmarkMutationAllowed": false,
+      "automaticChampionSelectionAllowed": false,
+      "releaseAllowed": false,
+      "actionWriteAllowed": false,
+      "batchId": "INSIGHT-BATCH-001-009"
+    }
+  ],
+  "insightHistory": [],
+  "insightReview": {
+    "schemaVersion": "ofw.modeling.insight-review-receipt.v1",
+    "reviewReceiptId": "INSIGHT-REVIEW-001-011",
+    "cycleId": "CYCLE-S005-MODEL-20260902-001",
+    "batchId": "INSIGHT-BATCH-001-009",
+    "insightRefs": [
+      "INSIGHT-S005-PERFORMANCE-001-009",
+      "INSIGHT-S005-COVERAGE-001-009"
+    ],
+    "proposedChangeDigest": "d730348be9a109c905681cf6af5f16652582158f21ea2d3452bbfbf11a35a7cb",
+    "decision": "APPROVED",
+    "reviewedBy": "本轮独立复核",
+    "reviewComment": "合成评测仅供候选比较，禁止作为正式事实消费。",
+    "reviewedAt": "2026-09-02T00:10:00.000Z",
+    "immutable": true,
+    "aiReviewerAllowed": false,
+    "candidateCreationAllowed": true,
+    "automaticChampionSelectionAllowed": false,
+    "automaticReleaseAllowed": false,
+    "receiptDigest": "5ddf4a3b9c879aaa6ed4fd925c33e398ccc630b076906d09d669c715f7b1c236"
+  },
+  "candidates": [
+    {
+      "schemaVersion": "ofw.modeling.model-version.v2",
+      "candidateId": "CAND-S005-001-013",
+      "modelId": "MODEL-S005-CONTROLLED-CANDIDATE",
+      "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+      "modelVersion": "0.2.0-candidate",
+      "name": "投后评价与产品选择受控优化候选",
+      "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+      "modelRole": "CORE_CHALLENGER",
+      "parentModelVersionIds": [
+        "MV-S005-BALANCED-0001"
+      ],
+      "insightRefs": [
+        "INSIGHT-S005-PERFORMANCE-001-009",
+        "INSIGHT-S005-COVERAGE-001-009"
+      ],
+      "insightReviewReceiptId": "INSIGHT-REVIEW-001-011",
+      "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+      "semanticContractVersionId": "S005-SEMANTIC-CANDIDATE-v1-C1",
+      "immutable": true,
+      "published": false,
+      "productionEligible": false,
+      "createdBy": "CONTROLLED_CANDIDATE_BUILDER",
+      "aiRole": "evidence-backed-diff-suggestion-only",
+      "versionDigest": "df03b2108e4b4443b3b175152db2ecc4e08d41e84484b62c1f038d20e7752882",
+      "experimentRunId": "EXPRUN-S005-CANDIDATE-001-012",
+      "status": "EVALUATED_AWAITING_SHADOW",
+      "metrics": {
+        "primaryMetric": 0.72,
+        "coverage": 0.93
+      },
+      "resultEnvelope": {
+        "schemaVersion": "ofw.modeling.result-envelope.v2",
+        "resultId": "RESULT-S005-v1-001-013",
+        "runId": "MODELRUN-S005-v1-001-013",
+        "resultKind": "PREDICTION",
+        "useKind": "CANDIDATE_EVALUATION",
+        "scenario": {
+          "scenarioId": "S005",
+          "scenarioVersion": "S005-v1",
+          "archivedScenarioRunId": "S005-RUN-CURRENT",
+          "archivedScenarioMutable": false,
+          "businessName": "投后评价与产品选择",
+          "domain": "投资管理",
+          "dataAsOf": "2026-07-17",
+          "subjectLabel": "金融产品"
+        },
+        "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+        "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+        "semanticContractVersionId": "S005-SEMANTIC-CANDIDATE-v1-C1",
+        "formedAt": "2026-09-02T00:12:00.000Z",
+        "subjects": [
+          {
+            "subjectId": "InvestmentProduct-001",
+            "subjectName": "基金A",
+            "subjectType": "InvestmentProduct",
+            "resultStatus": "EVALUATED",
+            "score": 66,
+            "confidence": 0.91,
+            "missingReasons": [],
+            "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+            "evidenceRefs": [
+              "S005-DATA-AUDIT-79-SNAPSHOTS#subject-1",
+              "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+            ]
+          },
+          {
+            "subjectId": "InvestmentProduct-002",
+            "subjectName": "基金B",
+            "subjectType": "InvestmentProduct",
+            "resultStatus": "EVALUATED",
+            "score": 72,
+            "confidence": 0.83,
+            "missingReasons": [],
+            "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+            "evidenceRefs": [
+              "S005-DATA-AUDIT-79-SNAPSHOTS#subject-2",
+              "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+            ]
+          },
+          {
+            "subjectId": "InvestmentProduct-003",
+            "subjectName": "基金C",
+            "subjectType": "InvestmentProduct",
+            "resultStatus": "EVALUATED",
+            "score": 78,
+            "confidence": 0.75,
+            "missingReasons": [],
+            "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+            "evidenceRefs": [
+              "S005-DATA-AUDIT-79-SNAPSHOTS#subject-3",
+              "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+            ]
+          },
+          {
+            "subjectId": "InvestmentProduct-004",
+            "subjectName": "产品池组合",
+            "subjectType": "InvestmentProduct",
+            "resultStatus": "PARTIAL",
+            "score": 84,
+            "confidence": 0.67,
+            "missingReasons": [
+              "部分历史观察期不足。"
+            ],
+            "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+            "evidenceRefs": [
+              "S005-DATA-AUDIT-79-SNAPSHOTS#subject-4",
+              "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+            ]
+          }
+        ],
+        "confidence": {
+          "status": "PARTIAL_EVALUATION_VISIBLE",
+          "score": 0.86,
+          "missingReasonsPreserved": true
+        },
+        "evidenceRefs": [
+          "EXPRUN-S005-CANDIDATE-001-012",
+          "df03b2108e4b4443b3b175152db2ecc4e08d41e84484b62c1f038d20e7752882",
+          "INSIGHT-REVIEW-001-011",
+          "S005-DATA-AUDIT-79-SNAPSHOTS",
+          "S005-SEMANTIC-CANDIDATE-v1"
+        ],
+        "factWriteAllowed": false,
+        "actionWriteAllowed": false,
+        "actionSourceAllowed": false,
+        "formalFactsMutated": false,
+        "sideEffectsEmitted": 0,
+        "digest": "5aa7895a93567ba2499e900b2678d148360302a2f02b7f646c4e840b67c3af25",
+        "dataOrigin": "SYNTHETIC",
+        "provenance": {
+          "kind": "DEMONSTRATION_FIXTURE",
+          "source": "v1.3.0/scenario-model-registrations.mjs#resultSubjects",
+          "method": "ordinal sample scores; not business evaluation",
+          "actualCalculation": false
+        }
+      },
+      "automaticChampionSelected": false,
+      "humanSelectionRequired": true,
+      "evidenceRefs": [
+        "EXPRUN-S005-CANDIDATE-001-012",
+        "df03b2108e4b4443b3b175152db2ecc4e08d41e84484b62c1f038d20e7752882",
+        "INSIGHT-REVIEW-001-011"
+      ],
+      "insightReviewDigest": "5ddf4a3b9c879aaa6ed4fd925c33e398ccc630b076906d09d669c715f7b1c236"
+    }
+  ],
+  "shadowTrial": {
+    "schemaVersion": "ofw.modeling.shadow-trial.v1",
+    "shadowTrialId": "SHADOW-TRIAL-001-014",
+    "shadowRunId": "SHADOW-RUN-001-014",
+    "candidateId": "CAND-S005-001-013",
+    "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+    "status": "MATURED",
+    "startedAt": "2026-09-02T00:14:00.000Z",
+    "maturityWindows": [
+      {
+        "maturityWindowId": "MW-S005-2026-02",
+        "label": "标签成熟窗口 1",
+        "maturedAt": "2026-02-28",
+        "newLabelCount": 6
+      },
+      {
+        "maturityWindowId": "MW-S005-2026-05",
+        "label": "标签成熟窗口 2",
+        "maturedAt": "2026-05-31",
+        "newLabelCount": 6
+      },
+      {
+        "maturityWindowId": "MW-S005-2026-08",
+        "label": "标签成熟窗口 3",
+        "maturedAt": "2026-08-31",
+        "newLabelCount": 6
+      }
+    ],
+    "maturedWindows": [
+      {
+        "windowResultId": "SHADOW-WINDOW-S005-001-016",
+        "maturityWindowId": "MW-S005-2026-02",
+        "label": "标签成熟窗口 1",
+        "maturedAt": "2026-02-28",
+        "newMaturedLabelCount": 6,
+        "cumulativeMaturedLabelCount": 6,
+        "baselineReportId": "SHADOW-BASELINE-S005-001-016",
+        "candidateReportId": "SHADOW-CANDIDATE-S005-001-016",
+        "baselineMetrics": {
+          "primaryMetric": 0.69
+        },
+        "candidateMetrics": {
+          "primaryMetric": 0.89
+        },
+        "shadowResultEnvelope": {
+          "schemaVersion": "ofw.modeling.result-envelope.v2",
+          "resultId": "RESULT-S005-v1-001-017",
+          "runId": "MODELRUN-S005-v1-001-017",
+          "resultKind": "SHADOW",
+          "useKind": "SHADOW_TRIAL",
+          "scenario": {
+            "scenarioId": "S005",
+            "scenarioVersion": "S005-v1",
+            "archivedScenarioRunId": "S005-RUN-CURRENT",
+            "archivedScenarioMutable": false,
+            "businessName": "投后评价与产品选择",
+            "domain": "投资管理",
+            "dataAsOf": "2026-07-17",
+            "subjectLabel": "金融产品"
+          },
+          "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+          "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+          "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+          "semanticContractVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+          "formedAt": "2026-09-02T00:16:00.000Z",
+          "subjects": [
+            {
+              "subjectId": "InvestmentProduct-001",
+              "subjectName": "基金A",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "EVALUATED",
+              "score": 65,
+              "confidence": 0.91,
+              "missingReasons": [],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-1",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-002",
+              "subjectName": "基金B",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "EVALUATED",
+              "score": 71,
+              "confidence": 0.83,
+              "missingReasons": [],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-2",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-003",
+              "subjectName": "基金C",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "EVALUATED",
+              "score": 77,
+              "confidence": 0.75,
+              "missingReasons": [],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-3",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-004",
+              "subjectName": "产品池组合",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "PARTIAL",
+              "score": 83,
+              "confidence": 0.67,
+              "missingReasons": [
+                "部分历史观察期不足。"
+              ],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-4",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            }
+          ],
+          "confidence": {
+            "status": "PARTIAL_EVALUATION_VISIBLE",
+            "score": 0.86,
+            "missingReasonsPreserved": true
+          },
+          "evidenceRefs": [
+            "MW-S005-2026-02",
+            "SHADOW-WINDOW-S005-001-016",
+            "S005-DATA-AUDIT-79-SNAPSHOTS",
+            "S005-SEMANTIC-CANDIDATE-v1"
+          ],
+          "factWriteAllowed": false,
+          "actionWriteAllowed": false,
+          "actionSourceAllowed": false,
+          "formalFactsMutated": false,
+          "sideEffectsEmitted": 0,
+          "digest": "ccf6fef31b363fd8cb7ba4e6cb0782d4d1cf2bb27361251a331e9f2dbb25971c",
+          "dataOrigin": "SYNTHETIC",
+          "provenance": {
+            "kind": "DEMONSTRATION_FIXTURE",
+            "source": "v1.3.0/scenario-model-registrations.mjs#resultSubjects",
+            "method": "ordinal sample scores; not business evaluation",
+            "actualCalculation": false
+          }
+        },
+        "automaticReleaseTriggered": false,
+        "formalFactsMutated": false
+      },
+      {
+        "windowResultId": "SHADOW-WINDOW-S005-001-018",
+        "maturityWindowId": "MW-S005-2026-05",
+        "label": "标签成熟窗口 2",
+        "maturedAt": "2026-05-31",
+        "newMaturedLabelCount": 6,
+        "cumulativeMaturedLabelCount": 12,
+        "baselineReportId": "SHADOW-BASELINE-S005-001-018",
+        "candidateReportId": "SHADOW-CANDIDATE-S005-001-018",
+        "baselineMetrics": {
+          "primaryMetric": 0.86
+        },
+        "candidateMetrics": {
+          "primaryMetric": 0.81
+        },
+        "shadowResultEnvelope": {
+          "schemaVersion": "ofw.modeling.result-envelope.v2",
+          "resultId": "RESULT-S005-v1-001-019",
+          "runId": "MODELRUN-S005-v1-001-019",
+          "resultKind": "SHADOW",
+          "useKind": "SHADOW_TRIAL",
+          "scenario": {
+            "scenarioId": "S005",
+            "scenarioVersion": "S005-v1",
+            "archivedScenarioRunId": "S005-RUN-CURRENT",
+            "archivedScenarioMutable": false,
+            "businessName": "投后评价与产品选择",
+            "domain": "投资管理",
+            "dataAsOf": "2026-07-17",
+            "subjectLabel": "金融产品"
+          },
+          "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+          "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+          "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+          "semanticContractVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+          "formedAt": "2026-09-02T00:18:00.000Z",
+          "subjects": [
+            {
+              "subjectId": "InvestmentProduct-001",
+              "subjectName": "基金A",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "EVALUATED",
+              "score": 66,
+              "confidence": 0.91,
+              "missingReasons": [],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-1",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-002",
+              "subjectName": "基金B",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "EVALUATED",
+              "score": 72,
+              "confidence": 0.83,
+              "missingReasons": [],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-2",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-003",
+              "subjectName": "基金C",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "EVALUATED",
+              "score": 78,
+              "confidence": 0.75,
+              "missingReasons": [],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-3",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-004",
+              "subjectName": "产品池组合",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "PARTIAL",
+              "score": 84,
+              "confidence": 0.67,
+              "missingReasons": [
+                "部分历史观察期不足。"
+              ],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-4",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            }
+          ],
+          "confidence": {
+            "status": "PARTIAL_EVALUATION_VISIBLE",
+            "score": 0.86,
+            "missingReasonsPreserved": true
+          },
+          "evidenceRefs": [
+            "MW-S005-2026-05",
+            "SHADOW-WINDOW-S005-001-018",
+            "S005-DATA-AUDIT-79-SNAPSHOTS",
+            "S005-SEMANTIC-CANDIDATE-v1"
+          ],
+          "factWriteAllowed": false,
+          "actionWriteAllowed": false,
+          "actionSourceAllowed": false,
+          "formalFactsMutated": false,
+          "sideEffectsEmitted": 0,
+          "digest": "1952f84bbec07615c6e268430a1074210384ab308d068d1ab2322196687ab36c",
+          "dataOrigin": "SYNTHETIC",
+          "provenance": {
+            "kind": "DEMONSTRATION_FIXTURE",
+            "source": "v1.3.0/scenario-model-registrations.mjs#resultSubjects",
+            "method": "ordinal sample scores; not business evaluation",
+            "actualCalculation": false
+          }
+        },
+        "automaticReleaseTriggered": false,
+        "formalFactsMutated": false
+      },
+      {
+        "windowResultId": "SHADOW-WINDOW-S005-001-020",
+        "maturityWindowId": "MW-S005-2026-08",
+        "label": "标签成熟窗口 3",
+        "maturedAt": "2026-08-31",
+        "newMaturedLabelCount": 6,
+        "cumulativeMaturedLabelCount": 18,
+        "baselineReportId": "SHADOW-BASELINE-S005-001-020",
+        "candidateReportId": "SHADOW-CANDIDATE-S005-001-020",
+        "baselineMetrics": {
+          "primaryMetric": 0.78
+        },
+        "candidateMetrics": {
+          "primaryMetric": 0.73
+        },
+        "shadowResultEnvelope": {
+          "schemaVersion": "ofw.modeling.result-envelope.v2",
+          "resultId": "RESULT-S005-v1-001-021",
+          "runId": "MODELRUN-S005-v1-001-021",
+          "resultKind": "SHADOW",
+          "useKind": "SHADOW_TRIAL",
+          "scenario": {
+            "scenarioId": "S005",
+            "scenarioVersion": "S005-v1",
+            "archivedScenarioRunId": "S005-RUN-CURRENT",
+            "archivedScenarioMutable": false,
+            "businessName": "投后评价与产品选择",
+            "domain": "投资管理",
+            "dataAsOf": "2026-07-17",
+            "subjectLabel": "金融产品"
+          },
+          "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+          "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+          "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+          "semanticContractVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+          "formedAt": "2026-09-02T00:20:00.000Z",
+          "subjects": [
+            {
+              "subjectId": "InvestmentProduct-001",
+              "subjectName": "基金A",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "EVALUATED",
+              "score": 67,
+              "confidence": 0.91,
+              "missingReasons": [],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-1",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-002",
+              "subjectName": "基金B",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "EVALUATED",
+              "score": 73,
+              "confidence": 0.83,
+              "missingReasons": [],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-2",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-003",
+              "subjectName": "基金C",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "EVALUATED",
+              "score": 79,
+              "confidence": 0.75,
+              "missingReasons": [],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-3",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-004",
+              "subjectName": "产品池组合",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "PARTIAL",
+              "score": 85,
+              "confidence": 0.67,
+              "missingReasons": [
+                "部分历史观察期不足。"
+              ],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-4",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            }
+          ],
+          "confidence": {
+            "status": "PARTIAL_EVALUATION_VISIBLE",
+            "score": 0.86,
+            "missingReasonsPreserved": true
+          },
+          "evidenceRefs": [
+            "MW-S005-2026-08",
+            "SHADOW-WINDOW-S005-001-020",
+            "S005-DATA-AUDIT-79-SNAPSHOTS",
+            "S005-SEMANTIC-CANDIDATE-v1"
+          ],
+          "factWriteAllowed": false,
+          "actionWriteAllowed": false,
+          "actionSourceAllowed": false,
+          "formalFactsMutated": false,
+          "sideEffectsEmitted": 0,
+          "digest": "356e254e3b68e342f60ae70cf5720d6f97693fd857038842e1ece9ca44f5dd1a",
+          "dataOrigin": "SYNTHETIC",
+          "provenance": {
+            "kind": "DEMONSTRATION_FIXTURE",
+            "source": "v1.3.0/scenario-model-registrations.mjs#resultSubjects",
+            "method": "ordinal sample scores; not business evaluation",
+            "actualCalculation": false
+          }
+        },
+        "automaticReleaseTriggered": false,
+        "formalFactsMutated": false
+      }
+    ],
+    "factWriteAllowed": false,
+    "actionWriteAllowed": false,
+    "actionSourceAllowed": false,
+    "automaticReleaseAllowed": false
+  },
+  "releaseCandidate": {
+    "schemaVersion": "ofw.modeling.release-candidate.v1",
+    "releaseCandidateId": "RC-S005-001-023",
+    "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+    "formedAt": "2026-09-02T00:23:00.000Z",
+    "holdoutReportId": "HOLDOUT-S005-001-024",
+    "holdoutMetrics": {
+      "primaryMetric": 0.84,
+      "coverage": 0.92
+    },
+    "published": false,
+    "productionEligible": false,
+    "automaticReleaseAllowed": false,
+    "evidenceRefs": [
+      "df03b2108e4b4443b3b175152db2ecc4e08d41e84484b62c1f038d20e7752882",
+      "SHADOW-WINDOW-S005-001-016",
+      "SHADOW-WINDOW-S005-001-018",
+      "SHADOW-WINDOW-S005-001-020"
+    ]
+  },
+  "consumerBinding": {
+    "schemaVersion": "ofw.modeling.consumer-binding.v2",
+    "bindingId": "CB-S005-DASHBOARD-MODEL-RESULTS",
+    "bindingRevisionId": "CB-S005-DASHBOARD-MODEL-RESULTS-R1",
+    "revision": 1,
+    "status": "APPLIED",
+    "validationStatus": "VALID",
+    "validationEvidenceRef": "BINDING-VALIDATION-S005-001-025",
+    "releaseCandidateId": "RC-S005-001-023",
+    "formalModelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+    "activeCandidateModelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+    "viewMappings": [
+      {
+        "view": "FORMAL",
+        "status": "VALID"
+      },
+      {
+        "view": "CANDIDATE",
+        "status": "VALID"
+      },
+      {
+        "view": "SHADOW",
+        "status": "VALID"
+      },
+      {
+        "view": "SIMULATION",
+        "status": "VALID"
+      },
+      {
+        "view": "DIFF",
+        "status": "VALID"
+      }
+    ],
+    "formalModelPointerChanged": false,
+    "formalFactPointerChanged": false,
+    "sideEffectsEmitted": 0,
+    "appliedAt": "2026-09-02T00:26:00.000Z",
+    "appliedBy": "本轮独立复核",
+    "previousCandidateModelVersionId": null,
+    "applicationRole": "DASHBOARD_CONSUMER_BINDING"
+  },
+  "results": {
+    "formalEnvelope": {
+      "schemaVersion": "ofw.modeling.result-envelope.v2",
+      "resultId": "DEMO-S005-BASELINE-READONLY",
+      "runId": "S005-RUN-CURRENT",
+      "resultKind": "DEMO_BASELINE",
+      "useKind": "DEMONSTRATION_REFERENCE",
+      "modelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+      "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+      "subjects": [
+        {
+          "subjectId": "InvestmentProduct-001",
+          "subjectName": "基金A",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "NOT_EVALUATED",
+          "score": null,
+          "confidence": null,
+          "missingReasons": [
+            "没有可追溯的实际评分，演示基准不代表正式评价。"
+          ],
+          "modelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-1",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        },
+        {
+          "subjectId": "InvestmentProduct-002",
+          "subjectName": "基金B",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "NOT_EVALUATED",
+          "score": null,
+          "confidence": null,
+          "missingReasons": [
+            "没有可追溯的实际评分，演示基准不代表正式评价。"
+          ],
+          "modelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-2",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        },
+        {
+          "subjectId": "InvestmentProduct-003",
+          "subjectName": "基金C",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "NOT_EVALUATED",
+          "score": null,
+          "confidence": null,
+          "missingReasons": [
+            "没有可追溯的实际评分，演示基准不代表正式评价。"
+          ],
+          "modelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-3",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        },
+        {
+          "subjectId": "InvestmentProduct-004",
+          "subjectName": "产品池组合",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "NOT_EVALUATED",
+          "score": null,
+          "confidence": null,
+          "missingReasons": [
+            "没有可追溯的实际评分，演示基准不代表正式评价。"
+          ],
+          "modelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-4",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        }
+      ],
+      "immutable": true,
+      "evidenceRefs": [
+        "S005-RUN-CURRENT",
+        "S005-DATA-AUDIT-79-SNAPSHOTS",
+        "S005-SEMANTIC-CANDIDATE-v1"
+      ],
+      "dataOrigin": "SYNTHETIC",
+      "provenance": {
+        "kind": "DEMONSTRATION_FIXTURE",
+        "source": "v1.3.0/scenario-model-registrations.mjs#resultSubjects",
+        "method": "ordinal sample scores; not business evaluation",
+        "actualCalculation": false
+      },
+      "actionSourceAllowed": false,
+      "factWriteAllowed": false,
+      "digest": "87a04dd39c61306fb689ff9058e495d291dabbacdfccb0975cf05211550f8dd8"
+    },
+    "candidateEnvelope": {
+      "schemaVersion": "ofw.modeling.result-envelope.v2",
+      "resultId": "RESULT-S005-v1-001-013",
+      "runId": "MODELRUN-S005-v1-001-013",
+      "resultKind": "PREDICTION",
+      "useKind": "CANDIDATE_EVALUATION",
+      "scenario": {
+        "scenarioId": "S005",
+        "scenarioVersion": "S005-v1",
+        "archivedScenarioRunId": "S005-RUN-CURRENT",
+        "archivedScenarioMutable": false,
+        "businessName": "投后评价与产品选择",
+        "domain": "投资管理",
+        "dataAsOf": "2026-07-17",
+        "subjectLabel": "金融产品"
+      },
+      "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+      "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+      "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+      "semanticContractVersionId": "S005-SEMANTIC-CANDIDATE-v1-C1",
+      "formedAt": "2026-09-02T00:12:00.000Z",
+      "subjects": [
+        {
+          "subjectId": "InvestmentProduct-001",
+          "subjectName": "基金A",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "EVALUATED",
+          "score": 66,
+          "confidence": 0.91,
+          "missingReasons": [],
+          "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-1",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        },
+        {
+          "subjectId": "InvestmentProduct-002",
+          "subjectName": "基金B",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "EVALUATED",
+          "score": 72,
+          "confidence": 0.83,
+          "missingReasons": [],
+          "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-2",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        },
+        {
+          "subjectId": "InvestmentProduct-003",
+          "subjectName": "基金C",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "EVALUATED",
+          "score": 78,
+          "confidence": 0.75,
+          "missingReasons": [],
+          "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-3",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        },
+        {
+          "subjectId": "InvestmentProduct-004",
+          "subjectName": "产品池组合",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "PARTIAL",
+          "score": 84,
+          "confidence": 0.67,
+          "missingReasons": [
+            "部分历史观察期不足。"
+          ],
+          "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-4",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        }
+      ],
+      "confidence": {
+        "status": "PARTIAL_EVALUATION_VISIBLE",
+        "score": 0.86,
+        "missingReasonsPreserved": true
+      },
+      "evidenceRefs": [
+        "EXPRUN-S005-CANDIDATE-001-012",
+        "df03b2108e4b4443b3b175152db2ecc4e08d41e84484b62c1f038d20e7752882",
+        "INSIGHT-REVIEW-001-011",
+        "S005-DATA-AUDIT-79-SNAPSHOTS",
+        "S005-SEMANTIC-CANDIDATE-v1"
+      ],
+      "factWriteAllowed": false,
+      "actionWriteAllowed": false,
+      "actionSourceAllowed": false,
+      "formalFactsMutated": false,
+      "sideEffectsEmitted": 0,
+      "digest": "5aa7895a93567ba2499e900b2678d148360302a2f02b7f646c4e840b67c3af25",
+      "dataOrigin": "SYNTHETIC",
+      "provenance": {
+        "kind": "DEMONSTRATION_FIXTURE",
+        "source": "v1.3.0/scenario-model-registrations.mjs#resultSubjects",
+        "method": "ordinal sample scores; not business evaluation",
+        "actualCalculation": false
+      }
+    },
+    "shadowEnvelope": {
+      "schemaVersion": "ofw.modeling.result-envelope.v2",
+      "resultId": "RESULT-S005-v1-001-021",
+      "runId": "MODELRUN-S005-v1-001-021",
+      "resultKind": "SHADOW",
+      "useKind": "SHADOW_TRIAL",
+      "scenario": {
+        "scenarioId": "S005",
+        "scenarioVersion": "S005-v1",
+        "archivedScenarioRunId": "S005-RUN-CURRENT",
+        "archivedScenarioMutable": false,
+        "businessName": "投后评价与产品选择",
+        "domain": "投资管理",
+        "dataAsOf": "2026-07-17",
+        "subjectLabel": "金融产品"
+      },
+      "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+      "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+      "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+      "semanticContractVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+      "formedAt": "2026-09-02T00:20:00.000Z",
+      "subjects": [
+        {
+          "subjectId": "InvestmentProduct-001",
+          "subjectName": "基金A",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "EVALUATED",
+          "score": 67,
+          "confidence": 0.91,
+          "missingReasons": [],
+          "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-1",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        },
+        {
+          "subjectId": "InvestmentProduct-002",
+          "subjectName": "基金B",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "EVALUATED",
+          "score": 73,
+          "confidence": 0.83,
+          "missingReasons": [],
+          "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-2",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        },
+        {
+          "subjectId": "InvestmentProduct-003",
+          "subjectName": "基金C",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "EVALUATED",
+          "score": 79,
+          "confidence": 0.75,
+          "missingReasons": [],
+          "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-3",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        },
+        {
+          "subjectId": "InvestmentProduct-004",
+          "subjectName": "产品池组合",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "PARTIAL",
+          "score": 85,
+          "confidence": 0.67,
+          "missingReasons": [
+            "部分历史观察期不足。"
+          ],
+          "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-4",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        }
+      ],
+      "confidence": {
+        "status": "PARTIAL_EVALUATION_VISIBLE",
+        "score": 0.86,
+        "missingReasonsPreserved": true
+      },
+      "evidenceRefs": [
+        "MW-S005-2026-08",
+        "SHADOW-WINDOW-S005-001-020",
+        "S005-DATA-AUDIT-79-SNAPSHOTS",
+        "S005-SEMANTIC-CANDIDATE-v1"
+      ],
+      "factWriteAllowed": false,
+      "actionWriteAllowed": false,
+      "actionSourceAllowed": false,
+      "formalFactsMutated": false,
+      "sideEffectsEmitted": 0,
+      "digest": "356e254e3b68e342f60ae70cf5720d6f97693fd857038842e1ece9ca44f5dd1a",
+      "dataOrigin": "SYNTHETIC",
+      "provenance": {
+        "kind": "DEMONSTRATION_FIXTURE",
+        "source": "v1.3.0/scenario-model-registrations.mjs#resultSubjects",
+        "method": "ordinal sample scores; not business evaluation",
+        "actualCalculation": false
+      }
+    },
+    "simulationEnvelope": {
+      "schemaVersion": "ofw.modeling.result-envelope.v2",
+      "resultId": "RESULT-S005-v1-001-029",
+      "runId": "MODELRUN-S005-v1-001-029",
+      "resultKind": "SIMULATION",
+      "useKind": "STRESS",
+      "scenario": {
+        "scenarioId": "S005",
+        "scenarioVersion": "S005-v1",
+        "archivedScenarioRunId": "S005-RUN-CURRENT",
+        "archivedScenarioMutable": false,
+        "businessName": "投后评价与产品选择",
+        "domain": "投资管理",
+        "dataAsOf": "2026-07-17",
+        "subjectLabel": "金融产品"
+      },
+      "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+      "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+      "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+      "semanticContractVersionId": "S005-SEMANTIC-CANDIDATE-v1-C1",
+      "formedAt": "2026-09-02T00:28:00.000Z",
+      "subjects": [
+        {
+          "subjectId": "InvestmentProduct-001",
+          "subjectName": "基金A",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "EVALUATED",
+          "score": 69,
+          "confidence": 0.91,
+          "missingReasons": [],
+          "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-1",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        },
+        {
+          "subjectId": "InvestmentProduct-002",
+          "subjectName": "基金B",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "EVALUATED",
+          "score": 75,
+          "confidence": 0.83,
+          "missingReasons": [],
+          "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-2",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        },
+        {
+          "subjectId": "InvestmentProduct-003",
+          "subjectName": "基金C",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "EVALUATED",
+          "score": 81,
+          "confidence": 0.75,
+          "missingReasons": [],
+          "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-3",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        },
+        {
+          "subjectId": "InvestmentProduct-004",
+          "subjectName": "产品池组合",
+          "subjectType": "InvestmentProduct",
+          "resultStatus": "PARTIAL",
+          "score": 87,
+          "confidence": 0.67,
+          "missingReasons": [
+            "部分历史观察期不足。"
+          ],
+          "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+          "evidenceRefs": [
+            "S005-DATA-AUDIT-79-SNAPSHOTS#subject-4",
+            "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+          ]
+        }
+      ],
+      "confidence": {
+        "status": "PARTIAL_EVALUATION_VISIBLE",
+        "score": 0.86,
+        "missingReasonsPreserved": true
+      },
+      "evidenceRefs": [
+        "STRESS-PARAMS:acea3ca90228de858884e459eda4484e0058964b42d7705f4900b7c786eefe70",
+        "S005-DATA-AUDIT-79-SNAPSHOTS",
+        "S005-SEMANTIC-CANDIDATE-v1"
+      ],
+      "factWriteAllowed": false,
+      "actionWriteAllowed": false,
+      "actionSourceAllowed": false,
+      "formalFactsMutated": false,
+      "sideEffectsEmitted": 0,
+      "parameters": {
+        "interestRateBps": 150,
+        "creditSpreadBps": 200,
+        "liquidityHaircutPct": 12,
+        "demandShockPct": 10
+      },
+      "simulationReplacesFact": false,
+      "digest": "66d6e8008cbad13ea21c7782d92a2b4f8bf8e9959d934f44f67a1dd7a22eaed7",
+      "dataOrigin": "SYNTHETIC",
+      "provenance": {
+        "kind": "DEMONSTRATION_FIXTURE",
+        "source": "v1.3.0/scenario-model-registrations.mjs#resultSubjects",
+        "method": "ordinal sample scores; not business evaluation",
+        "actualCalculation": false
+      }
+    },
+    "supplementalEnvelopes": [],
+    "resultPackage": {
+      "schemaVersion": "ofw.modeling.result-package.v2",
+      "resultPackageId": "CYCLE-S005-MODEL-20260902-001-RESULT-PACKAGE-18",
+      "scenario": {
+        "scenarioId": "S005",
+        "scenarioVersion": "S005-v1",
+        "archivedScenarioRunId": "S005-RUN-CURRENT",
+        "archivedScenarioMutable": false,
+        "businessName": "投后评价与产品选择",
+        "domain": "投资管理",
+        "dataAsOf": "2026-07-17",
+        "subjectLabel": "金融产品"
+      },
+      "cycleId": "CYCLE-S005-MODEL-20260902-001",
+      "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+      "semanticContractVersionId": "S005-SEMANTIC-CANDIDATE-v1-C1",
+      "consumerBindingRevisionId": "CB-S005-DASHBOARD-MODEL-RESULTS-R1",
+      "formedAt": "2026-09-02T00:29:00.000Z",
+      "envelopes": [
+        {
+          "schemaVersion": "ofw.modeling.result-envelope.v2",
+          "resultId": "DEMO-S005-BASELINE-READONLY",
+          "runId": "S005-RUN-CURRENT",
+          "resultKind": "DEMO_BASELINE",
+          "useKind": "DEMONSTRATION_REFERENCE",
+          "modelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+          "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+          "subjects": [
+            {
+              "subjectId": "InvestmentProduct-001",
+              "subjectName": "基金A",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "NOT_EVALUATED",
+              "score": null,
+              "confidence": null,
+              "missingReasons": [
+                "没有可追溯的实际评分，演示基准不代表正式评价。"
+              ],
+              "modelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-1",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-002",
+              "subjectName": "基金B",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "NOT_EVALUATED",
+              "score": null,
+              "confidence": null,
+              "missingReasons": [
+                "没有可追溯的实际评分，演示基准不代表正式评价。"
+              ],
+              "modelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-2",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-003",
+              "subjectName": "基金C",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "NOT_EVALUATED",
+              "score": null,
+              "confidence": null,
+              "missingReasons": [
+                "没有可追溯的实际评分，演示基准不代表正式评价。"
+              ],
+              "modelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-3",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-004",
+              "subjectName": "产品池组合",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "NOT_EVALUATED",
+              "score": null,
+              "confidence": null,
+              "missingReasons": [
+                "没有可追溯的实际评分，演示基准不代表正式评价。"
+              ],
+              "modelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-4",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            }
+          ],
+          "immutable": true,
+          "evidenceRefs": [
+            "S005-RUN-CURRENT",
+            "S005-DATA-AUDIT-79-SNAPSHOTS",
+            "S005-SEMANTIC-CANDIDATE-v1"
+          ],
+          "dataOrigin": "SYNTHETIC",
+          "provenance": {
+            "kind": "DEMONSTRATION_FIXTURE",
+            "source": "v1.3.0/scenario-model-registrations.mjs#resultSubjects",
+            "method": "ordinal sample scores; not business evaluation",
+            "actualCalculation": false
+          },
+          "actionSourceAllowed": false,
+          "factWriteAllowed": false,
+          "digest": "87a04dd39c61306fb689ff9058e495d291dabbacdfccb0975cf05211550f8dd8"
+        },
+        {
+          "schemaVersion": "ofw.modeling.result-envelope.v2",
+          "resultId": "RESULT-S005-v1-001-013",
+          "runId": "MODELRUN-S005-v1-001-013",
+          "resultKind": "PREDICTION",
+          "useKind": "CANDIDATE_EVALUATION",
+          "scenario": {
+            "scenarioId": "S005",
+            "scenarioVersion": "S005-v1",
+            "archivedScenarioRunId": "S005-RUN-CURRENT",
+            "archivedScenarioMutable": false,
+            "businessName": "投后评价与产品选择",
+            "domain": "投资管理",
+            "dataAsOf": "2026-07-17",
+            "subjectLabel": "金融产品"
+          },
+          "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+          "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+          "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+          "semanticContractVersionId": "S005-SEMANTIC-CANDIDATE-v1-C1",
+          "formedAt": "2026-09-02T00:12:00.000Z",
+          "subjects": [
+            {
+              "subjectId": "InvestmentProduct-001",
+              "subjectName": "基金A",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "EVALUATED",
+              "score": 66,
+              "confidence": 0.91,
+              "missingReasons": [],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-1",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-002",
+              "subjectName": "基金B",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "EVALUATED",
+              "score": 72,
+              "confidence": 0.83,
+              "missingReasons": [],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-2",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-003",
+              "subjectName": "基金C",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "EVALUATED",
+              "score": 78,
+              "confidence": 0.75,
+              "missingReasons": [],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-3",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-004",
+              "subjectName": "产品池组合",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "PARTIAL",
+              "score": 84,
+              "confidence": 0.67,
+              "missingReasons": [
+                "部分历史观察期不足。"
+              ],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-4",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            }
+          ],
+          "confidence": {
+            "status": "PARTIAL_EVALUATION_VISIBLE",
+            "score": 0.86,
+            "missingReasonsPreserved": true
+          },
+          "evidenceRefs": [
+            "EXPRUN-S005-CANDIDATE-001-012",
+            "df03b2108e4b4443b3b175152db2ecc4e08d41e84484b62c1f038d20e7752882",
+            "INSIGHT-REVIEW-001-011",
+            "S005-DATA-AUDIT-79-SNAPSHOTS",
+            "S005-SEMANTIC-CANDIDATE-v1"
+          ],
+          "factWriteAllowed": false,
+          "actionWriteAllowed": false,
+          "actionSourceAllowed": false,
+          "formalFactsMutated": false,
+          "sideEffectsEmitted": 0,
+          "digest": "5aa7895a93567ba2499e900b2678d148360302a2f02b7f646c4e840b67c3af25",
+          "dataOrigin": "SYNTHETIC",
+          "provenance": {
+            "kind": "DEMONSTRATION_FIXTURE",
+            "source": "v1.3.0/scenario-model-registrations.mjs#resultSubjects",
+            "method": "ordinal sample scores; not business evaluation",
+            "actualCalculation": false
+          }
+        },
+        {
+          "schemaVersion": "ofw.modeling.result-envelope.v2",
+          "resultId": "RESULT-S005-v1-001-021",
+          "runId": "MODELRUN-S005-v1-001-021",
+          "resultKind": "SHADOW",
+          "useKind": "SHADOW_TRIAL",
+          "scenario": {
+            "scenarioId": "S005",
+            "scenarioVersion": "S005-v1",
+            "archivedScenarioRunId": "S005-RUN-CURRENT",
+            "archivedScenarioMutable": false,
+            "businessName": "投后评价与产品选择",
+            "domain": "投资管理",
+            "dataAsOf": "2026-07-17",
+            "subjectLabel": "金融产品"
+          },
+          "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+          "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+          "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+          "semanticContractVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+          "formedAt": "2026-09-02T00:20:00.000Z",
+          "subjects": [
+            {
+              "subjectId": "InvestmentProduct-001",
+              "subjectName": "基金A",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "EVALUATED",
+              "score": 67,
+              "confidence": 0.91,
+              "missingReasons": [],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-1",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-002",
+              "subjectName": "基金B",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "EVALUATED",
+              "score": 73,
+              "confidence": 0.83,
+              "missingReasons": [],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-2",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-003",
+              "subjectName": "基金C",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "EVALUATED",
+              "score": 79,
+              "confidence": 0.75,
+              "missingReasons": [],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-3",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-004",
+              "subjectName": "产品池组合",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "PARTIAL",
+              "score": 85,
+              "confidence": 0.67,
+              "missingReasons": [
+                "部分历史观察期不足。"
+              ],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-4",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            }
+          ],
+          "confidence": {
+            "status": "PARTIAL_EVALUATION_VISIBLE",
+            "score": 0.86,
+            "missingReasonsPreserved": true
+          },
+          "evidenceRefs": [
+            "MW-S005-2026-08",
+            "SHADOW-WINDOW-S005-001-020",
+            "S005-DATA-AUDIT-79-SNAPSHOTS",
+            "S005-SEMANTIC-CANDIDATE-v1"
+          ],
+          "factWriteAllowed": false,
+          "actionWriteAllowed": false,
+          "actionSourceAllowed": false,
+          "formalFactsMutated": false,
+          "sideEffectsEmitted": 0,
+          "digest": "356e254e3b68e342f60ae70cf5720d6f97693fd857038842e1ece9ca44f5dd1a",
+          "dataOrigin": "SYNTHETIC",
+          "provenance": {
+            "kind": "DEMONSTRATION_FIXTURE",
+            "source": "v1.3.0/scenario-model-registrations.mjs#resultSubjects",
+            "method": "ordinal sample scores; not business evaluation",
+            "actualCalculation": false
+          }
+        },
+        {
+          "schemaVersion": "ofw.modeling.result-envelope.v2",
+          "resultId": "RESULT-S005-v1-001-029",
+          "runId": "MODELRUN-S005-v1-001-029",
+          "resultKind": "SIMULATION",
+          "useKind": "STRESS",
+          "scenario": {
+            "scenarioId": "S005",
+            "scenarioVersion": "S005-v1",
+            "archivedScenarioRunId": "S005-RUN-CURRENT",
+            "archivedScenarioMutable": false,
+            "businessName": "投后评价与产品选择",
+            "domain": "投资管理",
+            "dataAsOf": "2026-07-17",
+            "subjectLabel": "金融产品"
+          },
+          "objectiveId": "MO-S005-POST-INVESTMENT-RESEARCH-v1",
+          "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+          "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+          "semanticContractVersionId": "S005-SEMANTIC-CANDIDATE-v1-C1",
+          "formedAt": "2026-09-02T00:28:00.000Z",
+          "subjects": [
+            {
+              "subjectId": "InvestmentProduct-001",
+              "subjectName": "基金A",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "EVALUATED",
+              "score": 69,
+              "confidence": 0.91,
+              "missingReasons": [],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-1",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-002",
+              "subjectName": "基金B",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "EVALUATED",
+              "score": 75,
+              "confidence": 0.83,
+              "missingReasons": [],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-2",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-003",
+              "subjectName": "基金C",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "EVALUATED",
+              "score": 81,
+              "confidence": 0.75,
+              "missingReasons": [],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-3",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            },
+            {
+              "subjectId": "InvestmentProduct-004",
+              "subjectName": "产品池组合",
+              "subjectType": "InvestmentProduct",
+              "resultStatus": "PARTIAL",
+              "score": 87,
+              "confidence": 0.67,
+              "missingReasons": [
+                "部分历史观察期不足。"
+              ],
+              "modelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+              "evidenceRefs": [
+                "S005-DATA-AUDIT-79-SNAPSHOTS#subject-4",
+                "S005-SEMANTIC-CANDIDATE-v1#InvestmentProduct"
+              ]
+            }
+          ],
+          "confidence": {
+            "status": "PARTIAL_EVALUATION_VISIBLE",
+            "score": 0.86,
+            "missingReasonsPreserved": true
+          },
+          "evidenceRefs": [
+            "STRESS-PARAMS:acea3ca90228de858884e459eda4484e0058964b42d7705f4900b7c786eefe70",
+            "S005-DATA-AUDIT-79-SNAPSHOTS",
+            "S005-SEMANTIC-CANDIDATE-v1"
+          ],
+          "factWriteAllowed": false,
+          "actionWriteAllowed": false,
+          "actionSourceAllowed": false,
+          "formalFactsMutated": false,
+          "sideEffectsEmitted": 0,
+          "parameters": {
+            "interestRateBps": 150,
+            "creditSpreadBps": 200,
+            "liquidityHaircutPct": 12,
+            "demandShockPct": 10
+          },
+          "simulationReplacesFact": false,
+          "digest": "66d6e8008cbad13ea21c7782d92a2b4f8bf8e9959d934f44f67a1dd7a22eaed7",
+          "dataOrigin": "SYNTHETIC",
+          "provenance": {
+            "kind": "DEMONSTRATION_FIXTURE",
+            "source": "v1.3.0/scenario-model-registrations.mjs#resultSubjects",
+            "method": "ordinal sample scores; not business evaluation",
+            "actualCalculation": false
+          }
+        }
+      ],
+      "viewBindings": {
+        "formalResultId": "DEMO-S005-BASELINE-READONLY",
+        "candidateResultId": "RESULT-S005-v1-001-013",
+        "shadowResultId": "RESULT-S005-v1-001-021",
+        "simulationResultId": "RESULT-S005-v1-001-029",
+        "supplementalResultIds": []
+      },
+      "truthBoundary": {
+        "formalResultKind": "FACT",
+        "nonFactResultKinds": [
+          "PREDICTION",
+          "SHADOW",
+          "SIMULATION"
+        ],
+        "formalFactsMutated": false,
+        "actionWriteAllowed": false,
+        "sideEffectsEmitted": 0
+      },
+      "digest": "b248fadeee768fdb02094be1017fb0bf860524418cb036b43216a28fd16c049a"
+    }
+  },
+  "holdout": {
+    "status": "CONSUMED_ONCE",
+    "usedAt": "2026-09-02T00:23:00.000Z",
+    "usedByReleaseCandidateId": "RC-S005-001-023",
+    "repeatedUseAllowed": false
+  },
+  "operationLog": [
+    {
+      "operationId": "OP-001-002",
+      "action": "build-data",
+      "performedAt": "2026-09-02T00:01:00.000Z",
+      "artifactRefs": [
+        "DATABUILD-S005-001-001",
+        "S005-DATA-AUDIT-79-SNAPSHOTS-C1"
+      ],
+      "detail": {
+        "classification": "SYNTHETIC_OR_SCENARIO_CANDIDATE"
+      },
+      "formalBaselineMutated": false,
+      "externalSideEffects": 0
+    },
+    {
+      "operationId": "OP-001-003",
+      "action": "validate-data",
+      "performedAt": "2026-09-02T00:02:00.000Z",
+      "artifactRefs": [
+        "QUALITY-S005-001-002",
+        "LEAKAGE-S005-001-002"
+      ],
+      "detail": null,
+      "formalBaselineMutated": false,
+      "externalSideEffects": 0
+    },
+    {
+      "operationId": "OP-001-005",
+      "action": "freeze-data",
+      "performedAt": "2026-09-02T00:04:00.000Z",
+      "artifactRefs": [
+        "S005-DATA-AUDIT-79-SNAPSHOTS-C1",
+        "30de989e1fb871436cccd53bb2ecdadafbba1fee1424bd33d58f99b0ec3fd0b0"
+      ],
+      "detail": null,
+      "formalBaselineMutated": false,
+      "externalSideEffects": 0
+    },
+    {
+      "operationId": "OP-001-006",
+      "action": "create-contract",
+      "performedAt": "2026-09-02T00:05:00.000Z",
+      "artifactRefs": [
+        "S005-SEMANTIC-CANDIDATE-v1-C1",
+        "S005-SEMANTIC-CANDIDATE-v1",
+        "S005-DATA-AUDIT-79-SNAPSHOTS-C1"
+      ],
+      "detail": null,
+      "formalBaselineMutated": false,
+      "externalSideEffects": 0
+    },
+    {
+      "operationId": "OP-001-007",
+      "action": "benchmark-baseline",
+      "performedAt": "2026-09-02T00:06:00.000Z",
+      "artifactRefs": [
+        "BENCH-S005-BASELINE-001-006",
+        "BENCHREPORT-S005-BASELINE-001-006",
+        "MV-S005-EVALUATION-BASELINE-1.0.0"
+      ],
+      "detail": null,
+      "formalBaselineMutated": false,
+      "externalSideEffects": 0
+    },
+    {
+      "operationId": "OP-001-009",
+      "action": "run-models",
+      "performedAt": "2026-09-02T00:08:00.000Z",
+      "artifactRefs": [
+        "MODELRUN-S005-1-001-007",
+        "MODELRUN-S005-2-001-007",
+        "BENCH-S005-PORTFOLIO-001-007"
+      ],
+      "detail": null,
+      "formalBaselineMutated": false,
+      "externalSideEffects": 0
+    },
+    {
+      "operationId": "OP-001-010",
+      "action": "generate-insights",
+      "performedAt": "2026-09-02T00:09:00.000Z",
+      "artifactRefs": [
+        "INSIGHT-S005-PERFORMANCE-001-009",
+        "INSIGHT-S005-COVERAGE-001-009"
+      ],
+      "detail": {
+        "generatedBy": "STRUCTURED_AI_ASSISTANT",
+        "automaticChampionSelection": false
+      },
+      "formalBaselineMutated": false,
+      "externalSideEffects": 0
+    },
+    {
+      "operationId": "OP-001-012",
+      "action": "review-insights",
+      "performedAt": "2026-09-02T00:11:00.000Z",
+      "artifactRefs": [
+        "INSIGHT-REVIEW-001-011",
+        "5ddf4a3b9c879aaa6ed4fd925c33e398ccc630b076906d09d669c715f7b1c236",
+        "INSIGHT-S005-PERFORMANCE-001-009",
+        "INSIGHT-S005-COVERAGE-001-009"
+      ],
+      "detail": {
+        "decision": "APPROVED",
+        "humanReviewed": true
+      },
+      "formalBaselineMutated": false,
+      "externalSideEffects": 0
+    },
+    {
+      "operationId": "OP-001-014",
+      "action": "create-candidate",
+      "performedAt": "2026-09-02T00:13:00.000Z",
+      "artifactRefs": [
+        "CAND-S005-001-013",
+        "MV-S005-CANDIDATE-001-012-0.2.0",
+        "EXPRUN-S005-CANDIDATE-001-012",
+        "df03b2108e4b4443b3b175152db2ecc4e08d41e84484b62c1f038d20e7752882",
+        "INSIGHT-REVIEW-001-011"
+      ],
+      "detail": null,
+      "formalBaselineMutated": false,
+      "externalSideEffects": 0
+    },
+    {
+      "operationId": "OP-001-016",
+      "action": "start-shadow",
+      "performedAt": "2026-09-02T00:15:00.000Z",
+      "artifactRefs": [
+        "SHADOW-TRIAL-001-014",
+        "SHADOW-RUN-001-014",
+        "MV-S005-CANDIDATE-001-012-0.2.0"
+      ],
+      "detail": null,
+      "formalBaselineMutated": false,
+      "externalSideEffects": 0
+    },
+    {
+      "operationId": "OP-001-018",
+      "action": "advance-shadow",
+      "performedAt": "2026-09-02T00:17:00.000Z",
+      "artifactRefs": [
+        "SHADOW-WINDOW-S005-001-016",
+        "SHADOW-BASELINE-S005-001-016",
+        "SHADOW-CANDIDATE-S005-001-016",
+        "RESULT-S005-v1-001-017"
+      ],
+      "detail": null,
+      "formalBaselineMutated": false,
+      "externalSideEffects": 0
+    },
+    {
+      "operationId": "OP-001-020",
+      "action": "advance-shadow",
+      "performedAt": "2026-09-02T00:19:00.000Z",
+      "artifactRefs": [
+        "SHADOW-WINDOW-S005-001-018",
+        "SHADOW-BASELINE-S005-001-018",
+        "SHADOW-CANDIDATE-S005-001-018",
+        "RESULT-S005-v1-001-019"
+      ],
+      "detail": null,
+      "formalBaselineMutated": false,
+      "externalSideEffects": 0
+    },
+    {
+      "operationId": "OP-001-022",
+      "action": "advance-shadow",
+      "performedAt": "2026-09-02T00:21:00.000Z",
+      "artifactRefs": [
+        "SHADOW-WINDOW-S005-001-020",
+        "SHADOW-BASELINE-S005-001-020",
+        "SHADOW-CANDIDATE-S005-001-020",
+        "RESULT-S005-v1-001-021"
+      ],
+      "detail": null,
+      "formalBaselineMutated": false,
+      "externalSideEffects": 0
+    },
+    {
+      "operationId": "OP-001-023",
+      "action": "rebenchmark",
+      "performedAt": "2026-09-02T00:22:00.000Z",
+      "artifactRefs": [
+        "BENCH-S005-MATURED-001-022",
+        "BENCHREPORT-S005-MATURED-001-022",
+        "BENCHREPORT-S005-MATURED-BASELINE-001-022",
+        "BENCHREPORT-S005-MATURED-CANDIDATE-001-022"
+      ],
+      "detail": null,
+      "formalBaselineMutated": false,
+      "externalSideEffects": 0
+    },
+    {
+      "operationId": "OP-001-025",
+      "action": "form-release",
+      "performedAt": "2026-09-02T00:24:00.000Z",
+      "artifactRefs": [
+        "RC-S005-001-023",
+        "MV-S005-CANDIDATE-001-012-0.2.0",
+        "HOLDOUT-S005-001-024"
+      ],
+      "detail": null,
+      "formalBaselineMutated": false,
+      "externalSideEffects": 0
+    },
+    {
+      "operationId": "OP-001-026",
+      "action": "validate-binding",
+      "performedAt": "2026-09-02T00:25:00.000Z",
+      "artifactRefs": [
+        "CB-S005-DASHBOARD-MODEL-RESULTS",
+        "CB-S005-DASHBOARD-MODEL-RESULTS-R1",
+        "BINDING-VALIDATION-S005-001-025"
+      ],
+      "detail": {
+        "validationStatus": "VALID"
+      },
+      "formalBaselineMutated": false,
+      "externalSideEffects": 0
+    },
+    {
+      "operationId": "OP-001-028",
+      "action": "apply-binding",
+      "performedAt": "2026-09-02T00:27:00.000Z",
+      "artifactRefs": [
+        "CB-S005-DASHBOARD-MODEL-RESULTS-R1",
+        "MV-S005-CANDIDATE-001-012-0.2.0"
+      ],
+      "detail": {
+        "humanConfirmed": true,
+        "formalModelPointerChanged": false
+      },
+      "formalBaselineMutated": false,
+      "externalSideEffects": 0
+    },
+    {
+      "operationId": "OP-001-030",
+      "action": "run-stress",
+      "performedAt": "2026-09-02T00:29:00.000Z",
+      "artifactRefs": [
+        "MODELRUN-S005-v1-001-029",
+        "RESULT-S005-v1-001-029",
+        "STRESS-PARAMS:acea3ca90228de858884e459eda4484e0058964b42d7705f4900b7c786eefe70",
+        "S005-DATA-AUDIT-79-SNAPSHOTS",
+        "S005-SEMANTIC-CANDIDATE-v1"
+      ],
+      "detail": null,
+      "formalBaselineMutated": false,
+      "externalSideEffects": 0
+    }
+  ],
+  "triggers": [],
+  "boundaries": {
+    "formalModelMutable": false,
+    "formalResultsMutable": false,
+    "aiMayMutateLabels": false,
+    "aiMaySelectChampion": false,
+    "aiMayPublish": false,
+    "nonFactMayCreateAction": false,
+    "externalSideEffects": 0
+  },
+  "nextAction": {
+    "id": "start-next-cycle",
+    "moduleId": "M08",
+    "label": "等待新数据或标签并启动下一周期",
+    "reason": "当前周期已闭合；历史、版本和回退路径继续保留。"
+  },
+  "availableActions": {
+    "primary": {
+      "id": "start-next-cycle",
+      "moduleId": "M08",
+      "label": "等待新数据或标签并启动下一周期",
+      "reason": "当前周期已闭合；历史、版本和回退路径继续保留。"
+    },
+    "runStress": true,
+    "rollbackBinding": true,
+    "startNextCycle": true,
+    "resetCurrentCycle": true
+  },
+  "cycleHistory": [],
+  "bindingHistory": [
+    {
+      "schemaVersion": "ofw.modeling.consumer-binding.v2",
+      "bindingId": "CB-S005-DASHBOARD-MODEL-RESULTS",
+      "bindingRevisionId": "CB-S005-DASHBOARD-MODEL-RESULTS-R1",
+      "revision": 1,
+      "status": "APPLIED",
+      "validationStatus": "VALID",
+      "validationEvidenceRef": "BINDING-VALIDATION-S005-001-025",
+      "releaseCandidateId": "RC-S005-001-023",
+      "formalModelVersionId": "MV-S005-EVALUATION-BASELINE-1.0.0",
+      "activeCandidateModelVersionId": "MV-S005-CANDIDATE-001-012-0.2.0",
+      "viewMappings": [
+        {
+          "view": "FORMAL",
+          "status": "VALID"
+        },
+        {
+          "view": "CANDIDATE",
+          "status": "VALID"
+        },
+        {
+          "view": "SHADOW",
+          "status": "VALID"
+        },
+        {
+          "view": "SIMULATION",
+          "status": "VALID"
+        },
+        {
+          "view": "DIFF",
+          "status": "VALID"
+        }
+      ],
+      "formalModelPointerChanged": false,
+      "formalFactPointerChanged": false,
+      "sideEffectsEmitted": 0,
+      "appliedAt": "2026-09-02T00:26:00.000Z",
+      "appliedBy": "本轮独立复核",
+      "previousCandidateModelVersionId": null,
+      "applicationRole": "DASHBOARD_CONSUMER_BINDING"
+    }
+  ],
+  "parentReference": {
+    "parentVersion": "v1.2.0-rc.1",
+    "parentCommit": "e4974c23bd223f26bfd04b08dc6f46eb4d9ae5e0",
+    "parentSubtree": "e57caf36b4a815b4d363ca93ee69305c12228938",
+    "immutable": true
+  },
+  "acceptanceReady": false
+}

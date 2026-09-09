@@ -1,0 +1,2588 @@
+{
+  "schemaVersion": 6,
+  "stateModelVersion": 2,
+  "variant": "portfolio",
+  "stateRevision": 5,
+  "scenarioContext": {
+    "scenarioId": "PORTFOLIO",
+    "scenarioVersion": "v1.1.0-rc.3",
+    "scenarioRunId": "PORTFOLIO-RUN-CURRENT",
+    "formedAt": "2026-08-22T00:00:00.000Z",
+    "status": "active",
+    "source": "四场景组合资源注册表"
+  },
+  "requests": [
+    {
+      "id": "AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.1.0",
+      "reminderId": "DR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.1.0",
+      "subjectId": "S003-ENT-020",
+      "subjectName": "环保测试公司4",
+      "scenario": "债务风险监测",
+      "scenarioContext": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active",
+        "source": "S003 CP38"
+      },
+      "sourceType": "report",
+      "sourceRef": "债务风险仪表盘 · S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-020",
+      "requester": "集团债务风险管理人员",
+      "submittedBy": "集团债务风险管理人员",
+      "requestTime": "2026-08-17 16:37:00",
+      "generatedTime": "2026-08-17 16:37:00",
+      "actionType": {
+        "id": "S003_SPECIAL_DISPOSAL",
+        "name": "专项风险处置",
+        "description": "红灯按亮灯形成一条预警候选；驾驶舱显式提交后直接送达对应成员单位接口人（债务风险）。",
+        "managementHint": "接口人核实预警依据并选择本单位负责人后，沿用通用决策中心形成负责人待办；不经过集团管理员统一收件，不启动多级审批。",
+        "version": "1.0.2",
+        "status": "已发布"
+      },
+      "rule": null,
+      "ruleApplicability": "不适用；本次为集团债务风险管理人员从仪表盘提交的亮灯预警",
+      "metric": {
+        "id": "MET-S003-FINAL-RISK-SCORE",
+        "name": "企业最终风险评分",
+        "value": "23.05 分",
+        "explanation": "红灯预警已由对应成员单位接口人核实，并分办负责人落实改善措施。",
+        "evaluatedAt": "2026-08-17 16:37:00",
+        "scope": "环保测试公司4 · 环保"
+      },
+      "loanCount": 0,
+      "balance": "不适用",
+      "routingTarget": {
+        "type": "member-unit-decision-center",
+        "organizationId": "S003-UNIT-020",
+        "organizationName": "环保测试公司4"
+      },
+      "decisionRecipient": {
+        "enterpriseId": "S003-ENT-020",
+        "memberUnitId": "S003-UNIT-020",
+        "memberUnitName": "环保测试公司4",
+        "recipientId": "S003-CONTACT-020",
+        "recipientName": "环保测试公司4债务风险接口人",
+        "role": "成员单位债务风险接口人"
+      },
+      "recipientRole": "成员单位债务风险接口人",
+      "recipientName": "环保测试公司4债务风险接口人",
+      "recipientId": "S003-CONTACT-020",
+      "recommendedTaskOwner": "环保测试公司4债务风险处置负责人",
+      "recommendedTaskOwnerId": "S003-ENT-020-DEBT-RISK-OWNER",
+      "owner": "环保测试公司4债务风险处置负责人",
+      "ownerId": "S003-ENT-020-DEBT-RISK-OWNER",
+      "recommendation": "成员单位接口人已核实红灯预警，按通用决策中心框架分办专项处置任务。",
+      "riskEvidence": {
+        "rawScore": 41.9,
+        "factorSum": -0.45,
+        "compositeAdjustment": 0.55,
+        "finalScore": 23.05,
+        "riskTier": {
+          "tierId": "RED",
+          "name": "红灯",
+          "color": "#c95d54",
+          "minInclusive": 10,
+          "maxExclusive": 25
+        },
+        "lowestIndicators": [
+          {
+            "indicatorId": "-",
+            "name": "股东权益同比增长率",
+            "score": 0
+          },
+          {
+            "indicatorId": "-",
+            "name": "盈利稳定性",
+            "score": 0
+          },
+          {
+            "indicatorId": "-",
+            "name": "应收账款周转率",
+            "score": 25.91
+          }
+        ],
+        "factors": [
+          {
+            "factorId": "credit-utilization",
+            "name": "融资能力（已用授信余额/授信总额）",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "一般",
+            "tierId": "MID",
+            "tierLabel": "融资使用率大于50%且小于等于80%",
+            "coefficient": -0.1,
+            "majorRiskHit": null
+          },
+          {
+            "factorId": "guarantee",
+            "name": "担保情况",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "未涉及担保",
+            "tierId": "ZERO",
+            "tierLabel": "未涉及担保",
+            "coefficient": 0,
+            "majorRiskHit": null
+          },
+          {
+            "factorId": "headquarters-support",
+            "name": "总部支持程度",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "中",
+            "tierId": "ZERO",
+            "tierLabel": "总部持股比例50%以上且小于75%",
+            "coefficient": 0,
+            "majorRiskHit": null
+          },
+          {
+            "factorId": "electricity-price",
+            "name": "电价波动率",
+            "state": "NOT_APPLICABLE",
+            "marker": "NOT_APPLICABLE",
+            "applicable": false,
+            "inputValue": null,
+            "tierId": null,
+            "tierLabel": "不适用",
+            "coefficient": 0
+          },
+          {
+            "factorId": "litigation",
+            "name": "是否存在重大诉讼",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "一般性诉讼",
+            "tierId": "MID",
+            "tierLabel": "诉讼标的为净资产1%至5%",
+            "coefficient": -0.05,
+            "majorRiskHit": null
+          },
+          {
+            "factorId": "fund-gap",
+            "name": "资金余缺预警",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "当月资金余缺预警",
+            "tierId": "CURRENT",
+            "tierLabel": "当月资金余缺预警",
+            "coefficient": -0.3,
+            "majorRiskHit": "当月资金余缺预警"
+          }
+        ],
+        "resultId": "S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-020",
+        "resultVersion": "1.1.0",
+        "assessmentAt": "2025-12-31",
+        "reportId": null
+      },
+      "banks": [],
+      "loans": [],
+      "evidence": {
+        "semanticVersion": "S003-M01-DEBT-RISK-PKG 1.0.2",
+        "dataVersion": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "dataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "resultVersion": "1.1.0",
+        "cutoff": "2025-12-31",
+        "quality": "允许推进",
+        "qualitySource": {
+          "contractCode": "C017",
+          "gate": "request_receipt",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+          "summaryVersion": "current-2",
+          "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt"
+        },
+        "availability": "已按正式运行证据固定",
+        "availableSections": [
+          "企业风险评分",
+          "风险分档",
+          "Action Type",
+          "人工确认回执"
+        ],
+        "missingItems": [],
+        "ready": "消费就绪",
+        "snapshotId": "S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-020",
+        "freshness": "固定运行证据",
+        "declaredDataVersion": "1.0.0"
+      },
+      "status": "confirmed",
+      "confirmationEligibility": {
+        "allowed": true,
+        "requiresAcknowledgement": true,
+        "reason": "已由环保测试公司4债务风险接口人核实确认并分办"
+      },
+      "sourceEvents": [],
+      "supplementRequests": [],
+      "duplicateRequests": [],
+      "c017SafetyReads": [
+        {
+          "gate": "request_receipt",
+          "gateLabel": "行动申请接收前",
+          "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+          "summaryVersion": "current-2",
+          "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+          "readAt": "2026-08-17T16:36:00.000Z",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "财务来源、企业当期因子输入版本",
+          "reason": "当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败。",
+          "recovery": "无需恢复",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt",
+          "outcome": "allowed"
+        },
+        {
+          "gate": "confirmation_submit",
+          "gateLabel": "人工确认提交前",
+          "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+          "summaryVersion": "current-2",
+          "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+          "readAt": "2026-08-17T16:37:00.000Z",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "财务来源、企业当期因子输入版本",
+          "reason": "当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败。",
+          "recovery": "无需恢复",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/confirmation_submit",
+          "outcome": "allowed"
+        },
+        {
+          "gate": "task_formation",
+          "gateLabel": "负责人待办形成前",
+          "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+          "summaryVersion": "current-2",
+          "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+          "readAt": "2026-08-17T16:37:30.000Z",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "财务来源、企业当期因子输入版本",
+          "reason": "当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败。",
+          "recovery": "无需恢复",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/task_formation",
+          "outcome": "allowed"
+        }
+      ],
+      "c017ReadAttempts": {
+        "request_receipt": 1,
+        "confirmation_submit": 1,
+        "task_formation": 1
+      },
+      "taskId": "TODO-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.1.0",
+      "traceId": "TR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.1.0",
+      "requestGate": {
+        "status": "accepted",
+        "checkedAt": "2026-08-17 16:37:00",
+        "reason": "从已有不可变决策结果只读装入；本次界面未重新接收或确认",
+        "reminderCreated": true
+      },
+      "formation": {
+        "requestGateStatus": "accepted",
+        "requestGateCheckedAt": "2026-08-17 16:37:00",
+        "requestGateReason": "已存在正式 Action Request 快照",
+        "reminderCreated": true,
+        "confirmationGateStatus": "passed",
+        "confirmationGateReason": "已存在人工确认回执与负责人待办快照"
+      },
+      "decision": {
+        "type": "confirm",
+        "reason": "成员单位接口人已核实红灯预警，按通用决策中心框架分办专项处置任务。",
+        "operator": "环保测试公司4债务风险接口人",
+        "operatorRole": "成员单位债务风险接口人",
+        "time": "2026-08-17 16:37:00",
+        "scenarioContext": {
+          "scenarioId": "S003",
+          "scenarioVersion": "S003-v1",
+          "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+          "formedAt": "2026-08-17T16:30:00.000Z",
+          "status": "active",
+          "source": "S003 CP38"
+        },
+        "owner": "环保测试公司4债务风险处置负责人",
+        "dueDate": "2026-09-17",
+        "instructions": "核实到期债务、资金缺口与应急资金安排，形成处置进展记录。",
+        "banks": []
+      },
+      "actionRequestImmutable": true,
+      "formationEvidenceImmutable": true,
+      "snapshotProjection": false,
+      "projectionMode": "active-existing-result",
+      "sourceCandidateId": "S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.1.0",
+      "sourceResultVersion": "1.1.0",
+      "scenarioId": "S003",
+      "scenarioLabel": "债务风险监测",
+      "dataVersion": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+      "dataIdentityMigration": {
+        "from": "1.0.0",
+        "to": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "at": "2026-09-08T00:10:24.974Z",
+        "reason": "Separate source version number from exact T007 asset identity"
+      }
+    },
+    {
+      "id": "AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "reminderId": "DR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "candidateId": "S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "sourceCandidateId": "S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001"
+      },
+      "subjectId": "S003-ENT-018",
+      "subjectName": "环保测试公司2",
+      "scenario": "债务风险监测",
+      "sourceType": "report",
+      "sourceRef": "债务风险驾驶舱 · S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-018",
+      "requester": "集团债务风险管理人员",
+      "submittedBy": "集团债务风险管理人员",
+      "requestTime": "2026-08-17 16:30:00",
+      "generatedTime": "2026-08-17 16:30:00",
+      "actionType": {
+        "id": "S003_RISK_FOLLOW_UP",
+        "name": "风险分档跟踪",
+        "description": "黄灯按亮灯形成一条预警候选；驾驶舱显式提交后直接送达对应成员单位接口人（债务风险）。",
+        "version": "1.0.2",
+        "status": "已发布",
+        "managementHint": "接口人核实预警依据并选择本单位负责人后，沿用通用决策中心形成负责人待办；不经过集团管理员统一收件，不启动多级审批。"
+      },
+      "rule": null,
+      "ruleApplicability": "不适用；本次按黄灯、红灯或黑灯当前亮灯形成一企一预警",
+      "metric": {
+        "id": "MET-S003-FINAL-RISK-SCORE",
+        "name": "企业最终风险评分",
+        "value": "33.92 分",
+        "explanation": "本次评估为黄灯，已按当前亮灯形成预警并送达环保测试公司2接口人。",
+        "evaluatedAt": "2025-12-31",
+        "scope": "环保测试公司2 · 环保"
+      },
+      "owner": "集团资金管理岗",
+      "ownerId": null,
+      "recommendation": "黄灯企业按亮灯直接形成预警入口，由集团债务风险管理人员显式提交后送达对应成员单位接口人。 ",
+      "banks": [],
+      "loans": [],
+      "loanCount": 0,
+      "evidence": {
+        "semanticVersion": "S003-M01-DEBT-RISK-PKG 1.0.2",
+        "dataVersion": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "dataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "resultVersion": "1.1.0",
+        "cutoff": "2025-12-31",
+        "quality": "允许推进",
+        "availability": "完整可用",
+        "ready": "C017 接收安全门通过",
+        "snapshotId": "S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-018",
+        "freshness": "C017 摘要形成于 2026-08-17T16:32:00.000Z",
+        "qualitySource": {
+          "contractCode": "C017",
+          "gate": "request_receipt",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+          "summaryVersion": "current-2",
+          "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt"
+        },
+        "declaredDataVersion": "1.0.0"
+      },
+      "status": "awaiting",
+      "requestGate": {
+        "status": "accepted",
+        "checkedAt": "2026-08-17 16:36:00",
+        "reason": "C011 标准行动申请已接收，当前 C017 安全门允许推进",
+        "reminderCreated": true
+      },
+      "formation": {
+        "requestGateStatus": "accepted",
+        "requestGateCheckedAt": "2026-08-17 16:36:00",
+        "requestGateReason": "C011 标准行动申请已接收",
+        "reminderCreated": true,
+        "confirmationGateStatus": "not_reached",
+        "confirmationGateReason": "等待环保测试公司2债务风险接口人核实确认并选择实际负责人"
+      },
+      "confirmationEligibility": {
+        "allowed": true,
+        "requiresAcknowledgement": true,
+        "reason": "已送达环保测试公司2债务风险接口人，待成员单位接口人核实确认后分办"
+      },
+      "c017SafetyReads": [
+        {
+          "gate": "request_receipt",
+          "gateLabel": "行动申请接收前",
+          "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+          "summaryVersion": "current-2",
+          "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+          "readAt": "2026-08-17T16:36:00.000Z",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "财务来源、企业当期因子输入版本",
+          "reason": "当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败。",
+          "recovery": "无需恢复",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt",
+          "outcome": "allowed"
+        },
+        {
+          "gate": "confirmation_submit",
+          "gateLabel": "人工确认提交前",
+          "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+          "summaryVersion": "current-2",
+          "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+          "readAt": "2026-09-08 08:10:29",
+          "qualityStatus": "事后硬质量失败",
+          "hardFailure": "是",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "财务来源、企业当期因子输入版本",
+          "reason": "本轮回归注入：质量校验失败",
+          "recovery": "无需恢复",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/confirmation_submit",
+          "outcome": "rejected"
+        }
+      ],
+      "c017ReadAttempts": {
+        "request_receipt": 1,
+        "confirmation_submit": 1,
+        "task_formation": 0
+      },
+      "sourceEvents": [
+        {
+          "type": "驾驶舱人工提交",
+          "time": "2026-08-17 16:36:00",
+          "reason": "集团债务风险管理人员从仪表盘提交标准 Action Request，并送达环保测试公司2债务风险接口人"
+        }
+      ],
+      "supplementRequests": [],
+      "duplicateRequests": [],
+      "taskId": null,
+      "taskCreating": false,
+      "decision": null,
+      "automatic": false,
+      "actionRequestImmutable": false,
+      "projectionOnly": false,
+      "requestId": "AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "scenarioContext": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active",
+        "source": "S003 CP38"
+      },
+      "decisionRecipient": {
+        "enterpriseId": "S003-ENT-018",
+        "memberUnitId": "S003-UNIT-018",
+        "memberUnitName": "环保测试公司2",
+        "recipientId": "S003-CONTACT-018",
+        "recipientName": "环保测试公司2债务风险接口人",
+        "role": "成员单位债务风险接口人"
+      },
+      "routingTarget": {
+        "type": "member-unit-decision-center",
+        "organizationId": "S003-UNIT-018",
+        "organizationName": "环保测试公司2"
+      },
+      "recipientRole": "成员单位债务风险接口人",
+      "recommendedTaskOwner": "环保测试公司2债务风险责任人",
+      "recommendedTaskOwnerId": "S003-ENT-018-DEBT-RISK-OWNER",
+      "idempotencyKey": "S003-RUN-20260817163000000-c02200000001|S003-ENT-018|S003_RISK_FOLLOW_UP|2025-12-31|1.1.0",
+      "sourceResultId": "S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-018",
+      "sourceResultVersion": "1.1.0",
+      "c017ReceiptRead": {
+        "gate": "request_receipt",
+        "gateLabel": "行动申请接收前",
+        "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+        "summaryVersion": "current-2",
+        "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+        "readAt": "2026-08-17T16:36:00.000Z",
+        "qualityStatus": "允许推进",
+        "hardFailure": "否",
+        "detectedAt": "不适用",
+        "impactScope": "无硬质量失败影响",
+        "businessFieldCategories": "财务来源、企业当期因子输入版本",
+        "reason": "当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败。",
+        "recovery": "无需恢复",
+        "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt",
+        "outcome": "allowed"
+      },
+      "projectionMode": "active-submitted-request",
+      "snapshotProjection": false,
+      "riskEvidence": {
+        "rawScore": 42.4,
+        "factorSum": -0.2,
+        "compositeAdjustment": 0.8,
+        "finalScore": 33.92,
+        "riskTier": {
+          "tierId": "YELLOW",
+          "name": "黄灯",
+          "color": "#c8902f",
+          "minInclusive": 25,
+          "maxExclusive": 40
+        },
+        "lowestIndicators": [
+          {
+            "indicatorId": "-",
+            "name": "股东权益同比增长率",
+            "score": 0
+          },
+          {
+            "indicatorId": "-",
+            "name": "盈利稳定性",
+            "score": 0
+          },
+          {
+            "indicatorId": "-",
+            "name": "经营活动产生的现金流入",
+            "score": 26.15
+          }
+        ],
+        "factors": [
+          {
+            "factorId": "credit-utilization",
+            "name": "融资能力（已用授信余额/授信总额）",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "较差",
+            "tierId": "HIGH",
+            "tierLabel": "融资使用率大于80%",
+            "coefficient": -0.2,
+            "majorRiskHit": null
+          },
+          {
+            "factorId": "guarantee",
+            "name": "担保情况",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "未涉及担保",
+            "tierId": "ZERO",
+            "tierLabel": "未涉及担保",
+            "coefficient": 0,
+            "majorRiskHit": null
+          },
+          {
+            "factorId": "headquarters-support",
+            "name": "总部支持程度",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "较高",
+            "tierId": "HIGH",
+            "tierLabel": "总部持股比例75%以上且小于100%",
+            "coefficient": 0.05,
+            "majorRiskHit": null
+          },
+          {
+            "factorId": "electricity-price",
+            "name": "电价波动率",
+            "state": "NOT_APPLICABLE",
+            "marker": "NOT_APPLICABLE",
+            "applicable": false,
+            "inputValue": null,
+            "tierId": null,
+            "tierLabel": "不适用",
+            "coefficient": 0
+          },
+          {
+            "factorId": "litigation",
+            "name": "是否存在重大诉讼",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "无重大诉讼",
+            "tierId": "ZERO",
+            "tierLabel": "诉讼标的小于净资产1%",
+            "coefficient": 0,
+            "majorRiskHit": null
+          },
+          {
+            "factorId": "fund-gap",
+            "name": "资金余缺预警",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "未来第三个月资金余缺预警",
+            "tierId": "M3",
+            "tierLabel": "未来第三个月资金余缺预警",
+            "coefficient": -0.05,
+            "majorRiskHit": null
+          }
+        ],
+        "resultId": "S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-018",
+        "resultVersion": "1.1.0",
+        "assessmentAt": "2025-12-31",
+        "reportId": null
+      },
+      "blockReason": null,
+      "recovery": null,
+      "recipientName": "环保测试公司2债务风险接口人",
+      "recipientId": "S003-CONTACT-018",
+      "routingStatus": "member-unit-recipient-ready",
+      "scenarioId": "S003",
+      "scenarioLabel": "债务风险监测",
+      "dataVersion": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+      "dataIdentityMigration": {
+        "from": "1.0.0",
+        "to": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "at": "2026-09-08T00:10:24.974Z",
+        "reason": "Separate source version number from exact T007 asset identity"
+      },
+      "decisionAttempts": 1
+    },
+    {
+      "id": "AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-017-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "reminderId": "DR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-017-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "candidateId": "S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-017-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "sourceCandidateId": "S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-017-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001"
+      },
+      "subjectId": "S003-ENT-017",
+      "subjectName": "环保测试公司1",
+      "scenario": "债务风险监测",
+      "sourceType": "report",
+      "sourceRef": "债务风险驾驶舱 · S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-017",
+      "requester": "集团债务风险管理人员",
+      "submittedBy": "集团债务风险管理人员",
+      "requestTime": "2026-08-17 16:30:00",
+      "generatedTime": "2026-08-17 16:30:00",
+      "actionType": {
+        "id": "S003_RISK_FOLLOW_UP",
+        "name": "风险分档跟踪",
+        "description": "黄灯按亮灯形成一条预警候选；驾驶舱显式提交后直接送达对应成员单位接口人（债务风险）。",
+        "version": "1.0.2",
+        "status": "已发布",
+        "managementHint": "接口人核实预警依据并选择本单位负责人后，沿用通用决策中心形成负责人待办；不经过集团管理员统一收件，不启动多级审批。"
+      },
+      "rule": null,
+      "ruleApplicability": "不适用；本次按黄灯、红灯或黑灯当前亮灯形成一企一预警",
+      "metric": {
+        "id": "MET-S003-FINAL-RISK-SCORE",
+        "name": "企业最终风险评分",
+        "value": "30.52 分",
+        "explanation": "本次评估为黄灯，已按当前亮灯形成预警并送达环保测试公司1接口人。",
+        "evaluatedAt": "2025-12-31",
+        "scope": "环保测试公司1 · 环保"
+      },
+      "owner": "集团资金管理岗",
+      "ownerId": null,
+      "recommendation": "黄灯企业按亮灯直接形成预警入口，由集团债务风险管理人员显式提交后送达对应成员单位接口人。 补充关注：重大诉讼。",
+      "banks": [],
+      "loans": [],
+      "loanCount": 0,
+      "evidence": {
+        "semanticVersion": "S003-M01-DEBT-RISK-PKG 1.0.2",
+        "dataVersion": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "dataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "resultVersion": "1.1.0",
+        "cutoff": "2025-12-31",
+        "quality": "允许推进",
+        "availability": "完整可用",
+        "ready": "C017 接收安全门通过",
+        "snapshotId": "S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-017",
+        "freshness": "C017 摘要形成于 2026-08-17T16:32:00.000Z",
+        "qualitySource": {
+          "contractCode": "C017",
+          "gate": "request_receipt",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+          "summaryVersion": "current-2",
+          "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt"
+        },
+        "declaredDataVersion": "1.0.0"
+      },
+      "status": "awaiting",
+      "requestGate": {
+        "status": "accepted",
+        "checkedAt": "2026-08-17 16:36:00",
+        "reason": "C011 标准行动申请已接收，当前 C017 安全门允许推进",
+        "reminderCreated": true
+      },
+      "formation": {
+        "requestGateStatus": "accepted",
+        "requestGateCheckedAt": "2026-08-17 16:36:00",
+        "requestGateReason": "C011 标准行动申请已接收",
+        "reminderCreated": true,
+        "confirmationGateStatus": "not_reached",
+        "confirmationGateReason": "等待环保测试公司1债务风险接口人核实确认并选择实际负责人"
+      },
+      "confirmationEligibility": {
+        "allowed": true,
+        "requiresAcknowledgement": true,
+        "reason": "已送达环保测试公司1债务风险接口人，待成员单位接口人核实确认后分办"
+      },
+      "c017SafetyReads": [
+        {
+          "gate": "request_receipt",
+          "gateLabel": "行动申请接收前",
+          "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+          "summaryVersion": "current-2",
+          "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+          "readAt": "2026-08-17T16:36:00.000Z",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "财务来源、企业当期因子输入版本",
+          "reason": "当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败。",
+          "recovery": "无需恢复",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt",
+          "outcome": "allowed"
+        }
+      ],
+      "c017ReadAttempts": {
+        "request_receipt": 1,
+        "confirmation_submit": 0,
+        "task_formation": 0
+      },
+      "sourceEvents": [
+        {
+          "type": "驾驶舱人工提交",
+          "time": "2026-08-17 16:36:00",
+          "reason": "集团债务风险管理人员从仪表盘提交标准 Action Request，并送达环保测试公司1债务风险接口人"
+        }
+      ],
+      "supplementRequests": [],
+      "duplicateRequests": [],
+      "taskId": null,
+      "taskCreating": false,
+      "decision": null,
+      "automatic": false,
+      "actionRequestImmutable": false,
+      "projectionOnly": false,
+      "requestId": "AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-017-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "scenarioContext": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active",
+        "source": "S003 CP38"
+      },
+      "decisionRecipient": {
+        "enterpriseId": "S003-ENT-017",
+        "memberUnitId": "S003-UNIT-017",
+        "memberUnitName": "环保测试公司1",
+        "recipientId": "S003-CONTACT-017",
+        "recipientName": "环保测试公司1债务风险接口人",
+        "role": "成员单位债务风险接口人"
+      },
+      "routingTarget": {
+        "type": "member-unit-decision-center",
+        "organizationId": "S003-UNIT-017",
+        "organizationName": "环保测试公司1"
+      },
+      "recipientRole": "成员单位债务风险接口人",
+      "recommendedTaskOwner": "环保测试公司1债务风险责任人",
+      "recommendedTaskOwnerId": "S003-ENT-017-DEBT-RISK-OWNER",
+      "idempotencyKey": "S003-RUN-20260817163000000-c02200000001|S003-ENT-017|S003_RISK_FOLLOW_UP|2025-12-31|1.1.0",
+      "sourceResultId": "S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-017",
+      "sourceResultVersion": "1.1.0",
+      "c017ReceiptRead": {
+        "gate": "request_receipt",
+        "gateLabel": "行动申请接收前",
+        "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+        "summaryVersion": "current-2",
+        "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+        "readAt": "2026-08-17T16:36:00.000Z",
+        "qualityStatus": "允许推进",
+        "hardFailure": "否",
+        "detectedAt": "不适用",
+        "impactScope": "无硬质量失败影响",
+        "businessFieldCategories": "财务来源、企业当期因子输入版本",
+        "reason": "当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败。",
+        "recovery": "无需恢复",
+        "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt",
+        "outcome": "allowed"
+      },
+      "projectionMode": "active-submitted-request",
+      "snapshotProjection": false,
+      "riskEvidence": {
+        "rawScore": 43.6,
+        "factorSum": -0.3,
+        "compositeAdjustment": 0.7,
+        "finalScore": 30.52,
+        "riskTier": {
+          "tierId": "YELLOW",
+          "name": "黄灯",
+          "color": "#c8902f",
+          "minInclusive": 25,
+          "maxExclusive": 40
+        },
+        "lowestIndicators": [
+          {
+            "indicatorId": "-",
+            "name": "股东权益同比增长率",
+            "score": 0
+          },
+          {
+            "indicatorId": "-",
+            "name": "盈利稳定性",
+            "score": 0
+          },
+          {
+            "indicatorId": "-",
+            "name": "经营活动产生的现金流入",
+            "score": 25.92
+          }
+        ],
+        "factors": [
+          {
+            "factorId": "credit-utilization",
+            "name": "融资能力（已用授信余额/授信总额）",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "一般",
+            "tierId": "MID",
+            "tierLabel": "融资使用率大于50%且小于等于80%",
+            "coefficient": -0.1,
+            "majorRiskHit": null
+          },
+          {
+            "factorId": "guarantee",
+            "name": "担保情况",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "仅获得担保",
+            "tierId": "RECEIVED",
+            "tierLabel": "仅接受担保",
+            "coefficient": 0.05,
+            "majorRiskHit": null
+          },
+          {
+            "factorId": "headquarters-support",
+            "name": "总部支持程度",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "中",
+            "tierId": "ZERO",
+            "tierLabel": "总部持股比例50%以上且小于75%",
+            "coefficient": 0,
+            "majorRiskHit": null
+          },
+          {
+            "factorId": "electricity-price",
+            "name": "电价波动率",
+            "state": "NOT_APPLICABLE",
+            "marker": "NOT_APPLICABLE",
+            "applicable": false,
+            "inputValue": null,
+            "tierId": null,
+            "tierLabel": "不适用",
+            "coefficient": 0
+          },
+          {
+            "factorId": "litigation",
+            "name": "是否存在重大诉讼",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "重大诉讼",
+            "tierId": "HIGH",
+            "tierLabel": "诉讼标的大于净资产5%",
+            "coefficient": -0.15,
+            "majorRiskHit": "重大诉讼"
+          },
+          {
+            "factorId": "fund-gap",
+            "name": "资金余缺预警",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "未来第二个月资金余缺预警",
+            "tierId": "M2",
+            "tierLabel": "未来第二个月资金余缺预警",
+            "coefficient": -0.1,
+            "majorRiskHit": null
+          }
+        ],
+        "resultId": "S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-017",
+        "resultVersion": "1.1.0",
+        "assessmentAt": "2025-12-31",
+        "reportId": null
+      },
+      "blockReason": null,
+      "recovery": null,
+      "recipientName": "环保测试公司1债务风险接口人",
+      "recipientId": "S003-CONTACT-017",
+      "routingStatus": "member-unit-recipient-ready",
+      "scenarioId": "S003",
+      "scenarioLabel": "债务风险监测",
+      "dataVersion": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+      "dataIdentityMigration": {
+        "from": "1.0.0",
+        "to": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "at": "2026-09-08T00:10:24.974Z",
+        "reason": "Separate source version number from exact T007 asset identity"
+      }
+    },
+    {
+      "id": "AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-007-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "reminderId": "DR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-007-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "candidateId": "S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-007-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "sourceCandidateId": "S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-007-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "scenarioIdentity": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001"
+      },
+      "subjectId": "S003-ENT-007",
+      "subjectName": "风电测试公司07",
+      "scenario": "债务风险监测",
+      "sourceType": "report",
+      "sourceRef": "债务风险驾驶舱 · S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-007",
+      "requester": "集团债务风险管理人员",
+      "submittedBy": "集团债务风险管理人员",
+      "requestTime": "2026-08-17 16:30:00",
+      "generatedTime": "2026-08-17 16:30:00",
+      "actionType": {
+        "id": "S003_RISK_FOLLOW_UP",
+        "name": "风险分档跟踪",
+        "description": "黄灯按亮灯形成一条预警候选；驾驶舱显式提交后直接送达对应成员单位接口人（债务风险）。",
+        "version": "1.0.2",
+        "status": "已发布",
+        "managementHint": "接口人核实预警依据并选择本单位负责人后，沿用通用决策中心形成负责人待办；不经过集团管理员统一收件，不启动多级审批。"
+      },
+      "rule": null,
+      "ruleApplicability": "不适用；本次按黄灯、红灯或黑灯当前亮灯形成一企一预警",
+      "metric": {
+        "id": "MET-S003-FINAL-RISK-SCORE",
+        "name": "企业最终风险评分",
+        "value": "37.75 分",
+        "explanation": "本次评估为黄灯，已按当前亮灯形成预警并送达风电测试公司07接口人。",
+        "evaluatedAt": "2025-12-31",
+        "scope": "风电测试公司07 · 新能源产业-风电"
+      },
+      "owner": "集团资金管理岗",
+      "ownerId": null,
+      "recommendation": "黄灯企业按亮灯直接形成预警入口，由集团债务风险管理人员显式提交后送达对应成员单位接口人。 补充关注：重大诉讼。",
+      "banks": [],
+      "loans": [],
+      "loanCount": 0,
+      "evidence": {
+        "semanticVersion": "S003-M01-DEBT-RISK-PKG 1.0.2",
+        "dataVersion": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "dataAssetId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "resultVersion": "1.1.0",
+        "cutoff": "2025-12-31",
+        "quality": "允许推进",
+        "availability": "完整可用",
+        "ready": "C017 接收安全门通过",
+        "snapshotId": "S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-007",
+        "freshness": "C017 摘要形成于 2026-08-17T16:32:00.000Z",
+        "qualitySource": {
+          "contractCode": "C017",
+          "gate": "request_receipt",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+          "summaryVersion": "current-2",
+          "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt"
+        },
+        "declaredDataVersion": "1.0.0"
+      },
+      "status": "awaiting",
+      "requestGate": {
+        "status": "accepted",
+        "checkedAt": "2026-08-17 16:36:00",
+        "reason": "C011 标准行动申请已接收，当前 C017 安全门允许推进",
+        "reminderCreated": true
+      },
+      "formation": {
+        "requestGateStatus": "accepted",
+        "requestGateCheckedAt": "2026-08-17 16:36:00",
+        "requestGateReason": "C011 标准行动申请已接收",
+        "reminderCreated": true,
+        "confirmationGateStatus": "not_reached",
+        "confirmationGateReason": "等待风电测试公司07债务风险接口人核实确认并选择实际负责人"
+      },
+      "confirmationEligibility": {
+        "allowed": true,
+        "requiresAcknowledgement": true,
+        "reason": "已送达风电测试公司07债务风险接口人，待成员单位接口人核实确认后分办"
+      },
+      "c017SafetyReads": [
+        {
+          "gate": "request_receipt",
+          "gateLabel": "行动申请接收前",
+          "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+          "summaryVersion": "current-2",
+          "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+          "readAt": "2026-08-17T16:36:00.000Z",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "财务来源、企业当期因子输入版本",
+          "reason": "当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败。",
+          "recovery": "无需恢复",
+          "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt",
+          "outcome": "allowed"
+        }
+      ],
+      "c017ReadAttempts": {
+        "request_receipt": 1,
+        "confirmation_submit": 0,
+        "task_formation": 0
+      },
+      "sourceEvents": [
+        {
+          "type": "驾驶舱人工提交",
+          "time": "2026-08-17 16:36:00",
+          "reason": "集团债务风险管理人员从仪表盘提交标准 Action Request，并送达风电测试公司07债务风险接口人"
+        }
+      ],
+      "supplementRequests": [],
+      "duplicateRequests": [],
+      "taskId": null,
+      "taskCreating": false,
+      "decision": null,
+      "automatic": false,
+      "actionRequestImmutable": false,
+      "projectionOnly": false,
+      "requestId": "AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-007-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "scenarioContext": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active",
+        "source": "S003 CP38"
+      },
+      "decisionRecipient": {
+        "enterpriseId": "S003-ENT-007",
+        "memberUnitId": "S003-UNIT-007",
+        "memberUnitName": "风电测试公司07",
+        "recipientId": "S003-CONTACT-007",
+        "recipientName": "风电测试公司07债务风险接口人",
+        "role": "成员单位债务风险接口人"
+      },
+      "routingTarget": {
+        "type": "member-unit-decision-center",
+        "organizationId": "S003-UNIT-007",
+        "organizationName": "风电测试公司07"
+      },
+      "recipientRole": "成员单位债务风险接口人",
+      "recommendedTaskOwner": "风电测试公司07债务风险责任人",
+      "recommendedTaskOwnerId": "S003-ENT-007-DEBT-RISK-OWNER",
+      "idempotencyKey": "S003-RUN-20260817163000000-c02200000001|S003-ENT-007|S003_RISK_FOLLOW_UP|2025-12-31|1.1.0",
+      "sourceResultId": "S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-007",
+      "sourceResultVersion": "1.1.0",
+      "c017ReceiptRead": {
+        "gate": "request_receipt",
+        "gateLabel": "行动申请接收前",
+        "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+        "summaryVersion": "current-2",
+        "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+        "readAt": "2026-08-17T16:36:00.000Z",
+        "qualityStatus": "允许推进",
+        "hardFailure": "否",
+        "detectedAt": "不适用",
+        "impactScope": "无硬质量失败影响",
+        "businessFieldCategories": "财务来源、企业当期因子输入版本",
+        "reason": "当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败。",
+        "recovery": "无需恢复",
+        "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/request_receipt",
+        "outcome": "allowed"
+      },
+      "projectionMode": "active-submitted-request",
+      "snapshotProjection": false,
+      "riskEvidence": {
+        "rawScore": 75.5,
+        "factorSum": -0.5,
+        "compositeAdjustment": 0.5,
+        "finalScore": 37.75,
+        "riskTier": {
+          "tierId": "YELLOW",
+          "name": "黄灯",
+          "color": "#c8902f",
+          "minInclusive": 25,
+          "maxExclusive": 40
+        },
+        "lowestIndicators": [
+          {
+            "indicatorId": "-",
+            "name": "总资产收益率",
+            "score": 32.88
+          },
+          {
+            "indicatorId": "-",
+            "name": "应收账款周转率",
+            "score": 36.87
+          },
+          {
+            "indicatorId": "-",
+            "name": "销售毛利率",
+            "score": 41.07
+          }
+        ],
+        "factors": [
+          {
+            "factorId": "credit-utilization",
+            "name": "融资能力（已用授信余额/授信总额）",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "一般",
+            "tierId": "MID",
+            "tierLabel": "融资使用率大于50%且小于等于80%",
+            "coefficient": -0.1,
+            "majorRiskHit": null
+          },
+          {
+            "factorId": "guarantee",
+            "name": "担保情况",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "未涉及担保",
+            "tierId": "ZERO",
+            "tierLabel": "未涉及担保",
+            "coefficient": 0,
+            "majorRiskHit": null
+          },
+          {
+            "factorId": "headquarters-support",
+            "name": "总部支持程度",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "中",
+            "tierId": "ZERO",
+            "tierLabel": "总部持股比例50%以上且小于75%",
+            "coefficient": 0,
+            "majorRiskHit": null
+          },
+          {
+            "factorId": "electricity-price",
+            "name": "电价波动率",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "电价变化率小于等于-15%",
+            "tierId": "LOW",
+            "tierLabel": "电价变化率小于等于-15%",
+            "coefficient": -0.2,
+            "majorRiskHit": null
+          },
+          {
+            "factorId": "litigation",
+            "name": "是否存在重大诉讼",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "重大诉讼",
+            "tierId": "HIGH",
+            "tierLabel": "诉讼标的大于净资产5%",
+            "coefficient": -0.15,
+            "majorRiskHit": "重大诉讼"
+          },
+          {
+            "factorId": "fund-gap",
+            "name": "资金余缺预警",
+            "state": "APPLIED",
+            "marker": null,
+            "applicable": true,
+            "inputValue": "未来第三个月资金余缺预警",
+            "tierId": "M3",
+            "tierLabel": "未来第三个月资金余缺预警",
+            "coefficient": -0.05,
+            "majorRiskHit": null
+          }
+        ],
+        "resultId": "S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-007",
+        "resultVersion": "1.1.0",
+        "assessmentAt": "2025-12-31",
+        "reportId": null
+      },
+      "blockReason": null,
+      "recovery": null,
+      "recipientName": "风电测试公司07债务风险接口人",
+      "recipientId": "S003-CONTACT-007",
+      "routingStatus": "member-unit-recipient-ready",
+      "scenarioId": "S003",
+      "scenarioLabel": "债务风险监测",
+      "dataVersion": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+      "dataIdentityMigration": {
+        "from": "1.0.0",
+        "to": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "at": "2026-09-08T00:10:24.974Z",
+        "reason": "Separate source version number from exact T007 asset identity"
+      }
+    },
+    {
+      "id": "AR-RUN-MSVJWKPO-002-UNIT-553",
+      "requestId": "AR-RUN-MSVJWKPO-002-UNIT-553",
+      "idempotencyKey": "S001|S001-RUN-20260816081748567-705ac89fb83a|AR-RUN-MSVJWKPO-002-UNIT-553|V1|FIN-ASSET-20251231-v02",
+      "scenarioContext": {
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+        "formedAt": "2026-08-16T08:17:48.567Z",
+        "status": "active",
+        "source": "C008 权威投影"
+      },
+      "scenario": "集团融资成本与债务结构优化",
+      "sourceType": "qa",
+      "sourceRef": "智能问数运行 RUN-MSVJWKPO-002",
+      "requester": "智能问数",
+      "requestTime": "2026-08-16 09:16:18",
+      "generatedTime": "2026-08-16 09:19:37",
+      "subjectId": "UNIT-553",
+      "subjectName": "单位553",
+      "singleBusinessSubjectId": "UNIT-553",
+      "singleBusinessSubjectName": "单位553",
+      "actionType": {
+        "id": "ACTION-FINANCING-OPTIMIZATION",
+        "name": "发起融资优化建议",
+        "version": "V1",
+        "status": "已发布",
+        "publishedSemanticVersion": "V1"
+      },
+      "rule": {
+        "id": "RULE-HIGH-FINANCING-COST",
+        "name": "融资成本偏高",
+        "version": "V1",
+        "evaluatedAt": "2026-08-16 08:36:42",
+        "branch": "融资成本偏高",
+        "hitEvidence": "实际 2.881 / 阈值 2.622",
+        "publishedSemanticVersion": "V1"
+      },
+      "metric": {
+        "id": "MET-WAVG-FINANCING-COST",
+        "name": "余额加权平均融资成本",
+        "value": "实际 2.881 / 阈值 2.622%",
+        "explanation": "命中",
+        "evaluatedAt": "2026-08-16 08:36:42",
+        "scope": "单位553"
+      },
+      "owner": "融资负责人001",
+      "recommendation": "优先与欧陆银行、寰宇银行、海联银行核对并协商单位553的高成本融资",
+      "banks": [
+        {
+          "id": "INST-012",
+          "name": "欧陆银行",
+          "balance": "99.586亿元",
+          "contribution": "优先级 1",
+          "loanCount": 2,
+          "note": "机构稳定身份 INST-012 · 18 笔融资 · 成本偏离最高"
+        },
+        {
+          "id": "INST-007",
+          "name": "寰宇银行",
+          "balance": "83.260亿元",
+          "contribution": "优先级 2",
+          "loanCount": 1,
+          "note": "机构稳定身份 INST-007 · 15 笔融资 · 余额贡献第二"
+        },
+        {
+          "id": "INST-019",
+          "name": "海联银行",
+          "balance": "67.180亿元",
+          "contribution": "优先级 3",
+          "loanCount": 1,
+          "note": "机构稳定身份 INST-019 · 12 笔融资 · 可置换贷款集中"
+        }
+      ],
+      "loans": [
+        {
+          "id": "LOAN-553-041",
+          "bank": "欧陆银行",
+          "type": "融资借据",
+          "balance": "见固定证据",
+          "rate": "见固定证据"
+        },
+        {
+          "id": "LOAN-553-028",
+          "bank": "欧陆银行",
+          "type": "融资借据",
+          "balance": "见固定证据",
+          "rate": "见固定证据"
+        },
+        {
+          "id": "LOAN-553-063",
+          "bank": "寰宇银行",
+          "type": "融资借据",
+          "balance": "见固定证据",
+          "rate": "见固定证据"
+        },
+        {
+          "id": "LOAN-553-017",
+          "bank": "海联银行",
+          "type": "融资借据",
+          "balance": "见固定证据",
+          "rate": "见固定证据"
+        }
+      ],
+      "loanCount": 4,
+      "evidence": {
+        "semanticVersion": "V1",
+        "semanticVersionId": "semantic-MSVJM48O-VJC6",
+        "dataVersion": "FIN-ASSET-20251231-v02",
+        "cutoff": "2025-12-31",
+        "quality": "通过",
+        "freshness": "截至 2025-12-31",
+        "snapshotId": "RUN-MSVJWKPO-002-RESULT",
+        "evidenceIds": [
+          "RUN-MSVJWKPO-002-E01",
+          "RUN-MSVJWKPO-002-E02",
+          "RUN-MSVJWKPO-002-E03",
+          "RUN-MSVJWKPO-002-E04",
+          "RUN-MSVJWKPO-002-E05",
+          "RUN-MSVJWKPO-002-E06",
+          "RUN-MSVJWKPO-002-E07",
+          "RUN-MSVJWKPO-002-E08",
+          "RUN-MSVJWKPO-002-E09",
+          "RUN-MSVJWKPO-002-E10",
+          "RUN-MSVJWKPO-002-E11",
+          "RUN-MSVJWKPO-002-E12",
+          "RUN-MSVJWKPO-002-E13",
+          "RUN-MSVJWKPO-002-E14",
+          "RUN-MSVJWKPO-002-E15",
+          "RUN-MSVJWKPO-002-E16",
+          "RUN-MSVJWKPO-002-E17",
+          "RUN-MSVJWKPO-002-E18",
+          "RUN-MSVJWKPO-002-E19",
+          "RUN-MSVJWKPO-002-E20",
+          "RUN-MSVJWKPO-002-E21",
+          "RUN-MSVJWKPO-002-E22",
+          "RUN-MSVJWKPO-002-E23",
+          "RUN-MSVJWKPO-002-E24"
+        ],
+        "t019EvidenceCode": "EV-MSVJSKDO-4YNV",
+        "availability": "完整可用",
+        "ready": "可进入人工判断",
+        "availableSections": [
+          "指标快照",
+          "主体范围",
+          "银行归因",
+          "贷款明细",
+          "双版本证明"
+        ],
+        "missingItems": [],
+        "bankEvidenceStatus": "完整机构及贷款明细",
+        "bankEvidenceMessage": "机构与贷款级固定证据均已随本次请求提供"
+      },
+      "semanticVersion": "V1",
+      "dataVersion": "FIN-ASSET-20251231-v02",
+      "fixedResultId": "RUN-MSVJWKPO-002-RESULT",
+      "ruleEvidenceId": "RUN-MSVJWKPO-002-E01",
+      "evidenceIds": [
+        "RUN-MSVJWKPO-002-E01",
+        "RUN-MSVJWKPO-002-E02",
+        "RUN-MSVJWKPO-002-E03",
+        "RUN-MSVJWKPO-002-E04",
+        "RUN-MSVJWKPO-002-E05",
+        "RUN-MSVJWKPO-002-E06",
+        "RUN-MSVJWKPO-002-E07",
+        "RUN-MSVJWKPO-002-E08",
+        "RUN-MSVJWKPO-002-E09",
+        "RUN-MSVJWKPO-002-E10",
+        "RUN-MSVJWKPO-002-E11",
+        "RUN-MSVJWKPO-002-E12",
+        "RUN-MSVJWKPO-002-E13",
+        "RUN-MSVJWKPO-002-E14",
+        "RUN-MSVJWKPO-002-E15",
+        "RUN-MSVJWKPO-002-E16",
+        "RUN-MSVJWKPO-002-E17",
+        "RUN-MSVJWKPO-002-E18",
+        "RUN-MSVJWKPO-002-E19",
+        "RUN-MSVJWKPO-002-E20",
+        "RUN-MSVJWKPO-002-E21",
+        "RUN-MSVJWKPO-002-E22",
+        "RUN-MSVJWKPO-002-E23",
+        "RUN-MSVJWKPO-002-E24"
+      ],
+      "status": "confirmed",
+      "ruleApplicability": "适用",
+      "reminderId": "DR-RUN-MSVJWKPO-002-UNIT-553",
+      "traceId": "TR-RUN-MSVJWKPO-002-UNIT-553",
+      "requestGate": {
+        "status": "accepted",
+        "checkedAt": "2026-08-16 09:19:37",
+        "reason": "当前摘要证据完整，未登记硬质量失败，且本页面会话已重新读取本体正式采用证据",
+        "reminderCreated": true
+      },
+      "formation": {
+        "requestGateStatus": "accepted",
+        "requestGateCheckedAt": "2026-08-16 09:19:37",
+        "requestGateReason": "当前摘要证据完整，未登记硬质量失败，且本页面会话已重新读取本体正式采用证据",
+        "reminderCreated": true,
+        "confirmationGateStatus": "not_reached",
+        "confirmationGateReason": "等待用户提交正向人工确认时重新读取"
+      },
+      "confirmationEligibility": {
+        "allowed": true,
+        "requiresAcknowledgement": false,
+        "reason": "行动申请已通过接收门，可进入人工判断"
+      },
+      "c017SafetyReads": [
+        {
+          "gate": "request_receipt",
+          "gateLabel": "行动申请接收前",
+          "t007": "FIN-ASSET-20251231-v02",
+          "summaryId": "TRUST-STATE-FIN-ASSET-20251231-v02-03",
+          "summaryVersion": "v1.2",
+          "summaryFormedAt": "2026-08-16 08:33:58",
+          "readAt": "2026-08-16 09:19:37",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "无受影响业务字段类别",
+          "reason": "当前摘要证据完整，未登记硬质量失败，且本页面会话已重新读取本体正式采用证据",
+          "recovery": "无需恢复",
+          "evidenceLocator": "数据工程 / 数据可信度摘要 / TRUST-STATE-FIN-ASSET-20251231-v02-03",
+          "outcome": "allowed"
+        },
+        {
+          "gate": "confirmation_submit",
+          "gateLabel": "人工确认提交前",
+          "t007": "FIN-ASSET-20251231-v02",
+          "summaryId": "TRUST-STATE-FIN-ASSET-20251231-v02-03",
+          "summaryVersion": "v1.2",
+          "summaryFormedAt": "2026-08-16 08:33:58",
+          "readAt": "2026-08-16 09:21:50",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "无受影响业务字段类别",
+          "reason": "当前摘要证据完整，未登记硬质量失败，且本页面会话已重新读取本体正式采用证据",
+          "recovery": "无需恢复",
+          "evidenceLocator": "数据工程 / 数据可信度摘要 / TRUST-STATE-FIN-ASSET-20251231-v02-03",
+          "outcome": "allowed"
+        },
+        {
+          "gate": "task_formation",
+          "gateLabel": "负责人待办形成前",
+          "t007": "FIN-ASSET-20251231-v02",
+          "summaryId": "TRUST-STATE-FIN-ASSET-20251231-v02-03",
+          "summaryVersion": "v1.2",
+          "summaryFormedAt": "2026-08-16 08:33:58",
+          "readAt": "2026-08-16 09:21:51",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "无受影响业务字段类别",
+          "reason": "当前摘要证据完整，未登记硬质量失败，且本页面会话已重新读取本体正式采用证据",
+          "recovery": "无需恢复",
+          "evidenceLocator": "数据工程 / 数据可信度摘要 / TRUST-STATE-FIN-ASSET-20251231-v02-03",
+          "outcome": "allowed"
+        }
+      ],
+      "c017ReadAttempts": {
+        "request_receipt": 1,
+        "confirmation_submit": 1,
+        "task_formation": 1
+      },
+      "s001DataStructure": {
+        "members": [
+          "融资主体参考",
+          "融资明细",
+          "金融机构参考",
+          "融资负责人参考"
+        ],
+        "relations": [
+          "融资明细→融资主体",
+          "融资明细→金融机构",
+          "融资主体→融资负责人"
+        ]
+      },
+      "sourceEvents": [],
+      "supplementPolicy": {
+        "canRequest": true,
+        "editableUpstream": false,
+        "resolutionMode": "等待新申请或替代行动申请"
+      },
+      "supplementRequests": [],
+      "duplicateRequests": [],
+      "decision": {
+        "type": "confirm",
+        "reason": "三条规则证据及优先协商银行已核对，先推进单位553高成本融资优化。",
+        "operator": "财务运营账号",
+        "time": "2026-08-16 09:21:50",
+        "scenarioContext": {
+          "scenarioId": "S001",
+          "scenarioVersion": "S001-v1",
+          "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+          "formedAt": "2026-08-16T08:17:48.567Z",
+          "status": "active",
+          "source": "C008 权威投影"
+        },
+        "owner": "融资负责人001",
+        "dueDate": "2026-08-21",
+        "instructions": "优先与欧陆银行、寰宇银行、海联银行核对并协商单位553的高成本融资。",
+        "banks": [
+          "欧陆银行",
+          "寰宇银行",
+          "海联银行"
+        ]
+      },
+      "taskId": "TD-6872111633",
+      "taskCreating": false,
+      "contractFingerprint": "c011-v2:{\"actionType\":{\"id\":\"ACTION-FINANCING-OPTIMIZATION\",\"name\":\"发起融资优化建议\",\"publishedSemanticVersion\":\"V1\",\"status\":\"已发布\",\"version\":\"V1\"},\"assignment\":{\"owner\":\"融资负责人001\",\"recommendation\":\"优先与欧陆银行、寰宇银行、海联银行核对并协商单位553的高成本融资\",\"recommendedDirection\":null},\"evidence\":{\"allowUncertainResult\":null,\"bindingId\":null,\"consumableVersionId\":null,\"cutoff\":\"2025-12-31\",\"dataAssetVersionId\":null,\"dataVersion\":\"FIN-ASSET-20251231-v02\",\"declaredDataVersion\":\"FIN-ASSET-20251231-v02\",\"declaredSemanticVersion\":\"V1\",\"evidenceIds\":[\"RUN-MSVJWKPO-002-E01\",\"RUN-MSVJWKPO-002-E02\",\"RUN-MSVJWKPO-002-E03\",\"RUN-MSVJWKPO-002-E04\",\"RUN-MSVJWKPO-002-E05\",\"RUN-MSVJWKPO-002-E06\",\"RUN-MSVJWKPO-002-E07\",\"RUN-MSVJWKPO-002-E08\",\"RUN-MSVJWKPO-002-E09\",\"RUN-MSVJWKPO-002-E10\",\"RUN-MSVJWKPO-002-E11\",\"RUN-MSVJWKPO-002-E12\",\"RUN-MSVJWKPO-002-E13\",\"RUN-MSVJWKPO-002-E14\",\"RUN-MSVJWKPO-002-E15\",\"RUN-MSVJWKPO-002-E16\",\"RUN-MSVJWKPO-002-E17\",\"RUN-MSVJWKPO-002-E18\",\"RUN-MSVJWKPO-002-E19\",\"RUN-MSVJWKPO-002-E20\",\"RUN-MSVJWKPO-002-E21\",\"RUN-MSVJWKPO-002-E22\",\"RUN-MSVJWKPO-002-E23\",\"RUN-MSVJWKPO-002-E24\"],\"fingerprint\":null,\"freshness\":\"截至 2025-12-31\",\"quality\":\"通过\",\"ruleEvidenceId\":\"RUN-MSVJWKPO-002-E01\",\"semanticVersion\":\"V1\",\"semanticVersionId\":\"semantic-MSVJM48O-VJC6\",\"snapshotId\":\"RUN-MSVJWKPO-002-RESULT\",\"t019EvidenceCode\":\"EV-MSVJSKDO-4YNV\",\"trustReadAt\":null,\"trustSnapshot\":null},\"metric\":{\"evaluatedAt\":\"2026-08-16 08:36:42\",\"evidenceRefs\":null,\"explanation\":\"命中\",\"id\":\"MET-WAVG-FINANCING-COST\",\"name\":\"余额加权平均融资成本\",\"resultVersion\":null,\"scope\":\"单位553\",\"snapshot\":null,\"unit\":null,\"value\":\"实际 2.881 / 阈值 2.622%\"},\"navigation\":{\"filter\":null,\"returnPosition\":null,\"returnRoute\":null},\"requestId\":\"AR-RUN-MSVJWKPO-002-UNIT-553\",\"rule\":{\"branch\":\"融资成本偏高\",\"code\":null,\"evaluatedAt\":\"2026-08-16 08:36:42\",\"evaluationId\":null,\"evidence\":null,\"hitEvidence\":\"实际 2.881 / 阈值 2.622\",\"id\":\"RULE-HIGH-FINANCING-COST\",\"name\":\"融资成本偏高\",\"publishedSemanticVersion\":\"V1\",\"resultVersion\":null,\"version\":\"V1\"},\"scenario\":\"集团融资成本与债务结构优化\",\"scenarioContext\":{\"formedAt\":\"2026-08-16T08:17:48.567Z\",\"scenarioId\":\"S001\",\"scenarioRunId\":\"S001-RUN-20260816081748567-705ac89fb83a\",\"scenarioVersion\":\"S001-v1\",\"source\":\"C008 权威投影\",\"status\":\"active\"},\"source\":{\"initiator\":null,\"record\":null,\"ref\":\"智能问数运行 RUN-MSVJWKPO-002\",\"requestTime\":\"2026-08-16 09:16:18\",\"requester\":\"智能问数\",\"requesterId\":null,\"scene\":null,\"type\":\"qa\",\"typeLabel\":null},\"subject\":{\"id\":\"UNIT-553\",\"name\":\"单位553\",\"objectType\":null},\"targets\":{\"banks\":[{\"balance\":\"99.586亿元\",\"contribution\":\"优先级 1\",\"id\":\"INST-012\",\"loanCount\":2,\"name\":\"欧陆银行\",\"note\":\"机构稳定身份 INST-012 · 18 笔融资 · 成本偏离最高\"},{\"balance\":\"83.260亿元\",\"contribution\":\"优先级 2\",\"id\":\"INST-007\",\"loanCount\":1,\"name\":\"寰宇银行\",\"note\":\"机构稳定身份 INST-007 · 15 笔融资 · 余额贡献第二\"},{\"balance\":\"67.180亿元\",\"contribution\":\"优先级 3\",\"id\":\"INST-019\",\"loanCount\":1,\"name\":\"海联银行\",\"note\":\"机构稳定身份 INST-019 · 12 笔融资 · 可置换贷款集中\"}],\"candidateLoans\":null,\"loanCount\":4,\"loans\":[{\"balance\":\"见固定证据\",\"bank\":\"欧陆银行\",\"id\":\"LOAN-553-041\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"欧陆银行\",\"id\":\"LOAN-553-028\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"寰宇银行\",\"id\":\"LOAN-553-063\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"海联银行\",\"id\":\"LOAN-553-017\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"}],\"preferredInstitutions\":null}}",
+      "blockReason": null,
+      "recovery": null,
+      "decisionAttempts": 1,
+      "scenarioId": "S001",
+      "scenarioLabel": "集团融资成本与债务结构优化"
+    },
+    {
+      "id": "AR-RUN-MSVJWKPO-002-UNIT-465",
+      "requestId": "AR-RUN-MSVJWKPO-002-UNIT-465",
+      "idempotencyKey": "S001|S001-RUN-20260816081748567-705ac89fb83a|AR-RUN-MSVJWKPO-002-UNIT-465|V1|FIN-ASSET-20251231-v02",
+      "scenarioContext": {
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+        "formedAt": "2026-08-16T08:17:48.567Z",
+        "status": "active",
+        "source": "C008 权威投影"
+      },
+      "scenario": "集团融资成本与债务结构优化",
+      "sourceType": "qa",
+      "sourceRef": "智能问数运行 RUN-MSVJWKPO-002",
+      "requester": "智能问数",
+      "requestTime": "2026-08-16 08:37:17",
+      "generatedTime": "2026-08-16 08:39:01",
+      "subjectId": "UNIT-465",
+      "subjectName": "单位465",
+      "singleBusinessSubjectId": "UNIT-465",
+      "singleBusinessSubjectName": "单位465",
+      "actionType": {
+        "id": "ACTION-FINANCING-OPTIMIZATION",
+        "name": "发起融资优化建议",
+        "version": "V1",
+        "status": "已发布",
+        "publishedSemanticVersion": "V1"
+      },
+      "rule": {
+        "id": "RULE-FLOATING-RATE-EXPOSURE",
+        "name": "浮动利率暴露",
+        "version": "V1",
+        "evaluatedAt": "2026-08-16 08:36:42",
+        "branch": "浮动利率暴露偏高",
+        "hitEvidence": "实际 100.000 / 阈值 80.000",
+        "publishedSemanticVersion": "V1"
+      },
+      "metric": {
+        "id": "MET-FLOATING-RATE-BALANCE-RATIO",
+        "name": "浮动利率余额占比",
+        "value": "实际 100.000 / 阈值 80.000%",
+        "explanation": "命中",
+        "evaluatedAt": "2026-08-16 08:36:42",
+        "scope": "单位465"
+      },
+      "owner": "融资负责人009",
+      "recommendation": "优先与融通银行、启明银行、嘉禾银行核对并协商单位465的浮动利率融资",
+      "banks": [
+        {
+          "id": "INST-021",
+          "name": "融通银行",
+          "balance": "168.200亿元",
+          "contribution": "优先级 1",
+          "loanCount": 2,
+          "note": "机构稳定身份 INST-021 · 31 笔融资 · 浮动敞口最大"
+        },
+        {
+          "id": "INST-022",
+          "name": "启明银行",
+          "balance": "142.600亿元",
+          "contribution": "优先级 2",
+          "loanCount": 1,
+          "note": "机构稳定身份 INST-022 · 27 笔融资 · 重定价日期集中"
+        },
+        {
+          "id": "INST-023",
+          "name": "嘉禾银行",
+          "balance": "119.400亿元",
+          "contribution": "优先级 3",
+          "loanCount": 1,
+          "note": "机构稳定身份 INST-023 · 24 笔融资 · 浮动贷款笔数较多"
+        }
+      ],
+      "loans": [
+        {
+          "id": "LOAN-465-126",
+          "bank": "融通银行",
+          "type": "融资借据",
+          "balance": "见固定证据",
+          "rate": "见固定证据"
+        },
+        {
+          "id": "LOAN-465-098",
+          "bank": "融通银行",
+          "type": "融资借据",
+          "balance": "见固定证据",
+          "rate": "见固定证据"
+        },
+        {
+          "id": "LOAN-465-077",
+          "bank": "启明银行",
+          "type": "融资借据",
+          "balance": "见固定证据",
+          "rate": "见固定证据"
+        },
+        {
+          "id": "LOAN-465-051",
+          "bank": "嘉禾银行",
+          "type": "融资借据",
+          "balance": "见固定证据",
+          "rate": "见固定证据"
+        }
+      ],
+      "loanCount": 4,
+      "evidence": {
+        "semanticVersion": "V1",
+        "semanticVersionId": "semantic-MSVJM48O-VJC6",
+        "dataVersion": "FIN-ASSET-20251231-v02",
+        "cutoff": "2025-12-31",
+        "quality": "通过",
+        "freshness": "截至 2025-12-31",
+        "snapshotId": "RUN-MSVJWKPO-002-RESULT",
+        "evidenceIds": [
+          "RUN-MSVJWKPO-002-E01",
+          "RUN-MSVJWKPO-002-E02",
+          "RUN-MSVJWKPO-002-E03",
+          "RUN-MSVJWKPO-002-E04",
+          "RUN-MSVJWKPO-002-E05",
+          "RUN-MSVJWKPO-002-E06",
+          "RUN-MSVJWKPO-002-E07",
+          "RUN-MSVJWKPO-002-E08",
+          "RUN-MSVJWKPO-002-E09",
+          "RUN-MSVJWKPO-002-E10",
+          "RUN-MSVJWKPO-002-E11",
+          "RUN-MSVJWKPO-002-E12",
+          "RUN-MSVJWKPO-002-E13",
+          "RUN-MSVJWKPO-002-E14",
+          "RUN-MSVJWKPO-002-E15",
+          "RUN-MSVJWKPO-002-E16",
+          "RUN-MSVJWKPO-002-E17",
+          "RUN-MSVJWKPO-002-E18",
+          "RUN-MSVJWKPO-002-E19",
+          "RUN-MSVJWKPO-002-E20",
+          "RUN-MSVJWKPO-002-E21",
+          "RUN-MSVJWKPO-002-E22",
+          "RUN-MSVJWKPO-002-E23",
+          "RUN-MSVJWKPO-002-E24"
+        ],
+        "t019EvidenceCode": "EV-MSVJSKDO-4YNV",
+        "availability": "完整可用",
+        "ready": "可进入人工判断",
+        "availableSections": [
+          "指标快照",
+          "主体范围",
+          "银行归因",
+          "贷款明细",
+          "双版本证明"
+        ],
+        "missingItems": [],
+        "bankEvidenceStatus": "完整机构及贷款明细",
+        "bankEvidenceMessage": "机构与贷款级固定证据均已随本次请求提供"
+      },
+      "semanticVersion": "V1",
+      "dataVersion": "FIN-ASSET-20251231-v02",
+      "fixedResultId": "RUN-MSVJWKPO-002-RESULT",
+      "ruleEvidenceId": "RUN-MSVJWKPO-002-E02",
+      "evidenceIds": [
+        "RUN-MSVJWKPO-002-E01",
+        "RUN-MSVJWKPO-002-E02",
+        "RUN-MSVJWKPO-002-E03",
+        "RUN-MSVJWKPO-002-E04",
+        "RUN-MSVJWKPO-002-E05",
+        "RUN-MSVJWKPO-002-E06",
+        "RUN-MSVJWKPO-002-E07",
+        "RUN-MSVJWKPO-002-E08",
+        "RUN-MSVJWKPO-002-E09",
+        "RUN-MSVJWKPO-002-E10",
+        "RUN-MSVJWKPO-002-E11",
+        "RUN-MSVJWKPO-002-E12",
+        "RUN-MSVJWKPO-002-E13",
+        "RUN-MSVJWKPO-002-E14",
+        "RUN-MSVJWKPO-002-E15",
+        "RUN-MSVJWKPO-002-E16",
+        "RUN-MSVJWKPO-002-E17",
+        "RUN-MSVJWKPO-002-E18",
+        "RUN-MSVJWKPO-002-E19",
+        "RUN-MSVJWKPO-002-E20",
+        "RUN-MSVJWKPO-002-E21",
+        "RUN-MSVJWKPO-002-E22",
+        "RUN-MSVJWKPO-002-E23",
+        "RUN-MSVJWKPO-002-E24"
+      ],
+      "status": "awaiting",
+      "ruleApplicability": "适用",
+      "reminderId": "DR-RUN-MSVJWKPO-002-UNIT-465",
+      "traceId": "TR-RUN-MSVJWKPO-002-UNIT-465",
+      "requestGate": {
+        "status": "accepted",
+        "checkedAt": "2026-08-16 08:39:01",
+        "reason": "当前摘要证据完整，未登记硬质量失败，且本页面会话已重新读取本体正式采用证据",
+        "reminderCreated": true
+      },
+      "formation": {
+        "requestGateStatus": "accepted",
+        "requestGateCheckedAt": "2026-08-16 08:39:01",
+        "requestGateReason": "当前摘要证据完整，未登记硬质量失败，且本页面会话已重新读取本体正式采用证据",
+        "reminderCreated": true,
+        "confirmationGateStatus": "not_reached",
+        "confirmationGateReason": "等待用户提交正向人工确认时重新读取"
+      },
+      "confirmationEligibility": {
+        "allowed": true,
+        "requiresAcknowledgement": false,
+        "reason": "行动申请已通过接收门，可进入人工判断"
+      },
+      "c017SafetyReads": [
+        {
+          "gate": "request_receipt",
+          "gateLabel": "行动申请接收前",
+          "t007": "FIN-ASSET-20251231-v02",
+          "summaryId": "TRUST-STATE-FIN-ASSET-20251231-v02-03",
+          "summaryVersion": "v1.2",
+          "summaryFormedAt": "2026-08-16 08:33:58",
+          "readAt": "2026-08-16 08:39:01",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "无受影响业务字段类别",
+          "reason": "当前摘要证据完整，未登记硬质量失败，且本页面会话已重新读取本体正式采用证据",
+          "recovery": "无需恢复",
+          "evidenceLocator": "数据工程 / 数据可信度摘要 / TRUST-STATE-FIN-ASSET-20251231-v02-03",
+          "outcome": "allowed"
+        }
+      ],
+      "c017ReadAttempts": {
+        "request_receipt": 1,
+        "confirmation_submit": 0,
+        "task_formation": 0
+      },
+      "s001DataStructure": {
+        "members": [
+          "融资主体参考",
+          "融资明细",
+          "金融机构参考",
+          "融资负责人参考"
+        ],
+        "relations": [
+          "融资明细→融资主体",
+          "融资明细→金融机构",
+          "融资主体→融资负责人"
+        ]
+      },
+      "sourceEvents": [],
+      "supplementPolicy": {
+        "canRequest": true,
+        "editableUpstream": false,
+        "resolutionMode": "等待新申请或替代行动申请"
+      },
+      "supplementRequests": [],
+      "duplicateRequests": [],
+      "decision": null,
+      "taskId": null,
+      "taskCreating": false,
+      "contractFingerprint": "c011-v2:{\"actionType\":{\"id\":\"ACTION-FINANCING-OPTIMIZATION\",\"name\":\"发起融资优化建议\",\"publishedSemanticVersion\":\"V1\",\"status\":\"已发布\",\"version\":\"V1\"},\"assignment\":{\"owner\":\"融资负责人009\",\"recommendation\":\"优先与融通银行、启明银行、嘉禾银行核对并协商单位465的浮动利率融资\",\"recommendedDirection\":null},\"evidence\":{\"allowUncertainResult\":null,\"bindingId\":null,\"consumableVersionId\":null,\"cutoff\":\"2025-12-31\",\"dataAssetVersionId\":null,\"dataVersion\":\"FIN-ASSET-20251231-v02\",\"declaredDataVersion\":\"FIN-ASSET-20251231-v02\",\"declaredSemanticVersion\":\"V1\",\"evidenceIds\":[\"RUN-MSVJWKPO-002-E01\",\"RUN-MSVJWKPO-002-E02\",\"RUN-MSVJWKPO-002-E03\",\"RUN-MSVJWKPO-002-E04\",\"RUN-MSVJWKPO-002-E05\",\"RUN-MSVJWKPO-002-E06\",\"RUN-MSVJWKPO-002-E07\",\"RUN-MSVJWKPO-002-E08\",\"RUN-MSVJWKPO-002-E09\",\"RUN-MSVJWKPO-002-E10\",\"RUN-MSVJWKPO-002-E11\",\"RUN-MSVJWKPO-002-E12\",\"RUN-MSVJWKPO-002-E13\",\"RUN-MSVJWKPO-002-E14\",\"RUN-MSVJWKPO-002-E15\",\"RUN-MSVJWKPO-002-E16\",\"RUN-MSVJWKPO-002-E17\",\"RUN-MSVJWKPO-002-E18\",\"RUN-MSVJWKPO-002-E19\",\"RUN-MSVJWKPO-002-E20\",\"RUN-MSVJWKPO-002-E21\",\"RUN-MSVJWKPO-002-E22\",\"RUN-MSVJWKPO-002-E23\",\"RUN-MSVJWKPO-002-E24\"],\"fingerprint\":null,\"freshness\":\"截至 2025-12-31\",\"quality\":\"通过\",\"ruleEvidenceId\":\"RUN-MSVJWKPO-002-E02\",\"semanticVersion\":\"V1\",\"semanticVersionId\":\"semantic-MSVJM48O-VJC6\",\"snapshotId\":\"RUN-MSVJWKPO-002-RESULT\",\"t019EvidenceCode\":\"EV-MSVJSKDO-4YNV\",\"trustReadAt\":null,\"trustSnapshot\":null},\"metric\":{\"evaluatedAt\":\"2026-08-16 08:36:42\",\"evidenceRefs\":null,\"explanation\":\"命中\",\"id\":\"MET-FLOATING-RATE-BALANCE-RATIO\",\"name\":\"浮动利率余额占比\",\"resultVersion\":null,\"scope\":\"单位465\",\"snapshot\":null,\"unit\":null,\"value\":\"实际 100.000 / 阈值 80.000%\"},\"navigation\":{\"filter\":null,\"returnPosition\":null,\"returnRoute\":null},\"requestId\":\"AR-RUN-MSVJWKPO-002-UNIT-465\",\"rule\":{\"branch\":\"浮动利率暴露偏高\",\"code\":null,\"evaluatedAt\":\"2026-08-16 08:36:42\",\"evaluationId\":null,\"evidence\":null,\"hitEvidence\":\"实际 100.000 / 阈值 80.000\",\"id\":\"RULE-FLOATING-RATE-EXPOSURE\",\"name\":\"浮动利率暴露\",\"publishedSemanticVersion\":\"V1\",\"resultVersion\":null,\"version\":\"V1\"},\"scenario\":\"集团融资成本与债务结构优化\",\"scenarioContext\":{\"formedAt\":\"2026-08-16T08:17:48.567Z\",\"scenarioId\":\"S001\",\"scenarioRunId\":\"S001-RUN-20260816081748567-705ac89fb83a\",\"scenarioVersion\":\"S001-v1\",\"source\":\"C008 权威投影\",\"status\":\"active\"},\"source\":{\"initiator\":null,\"record\":null,\"ref\":\"智能问数运行 RUN-MSVJWKPO-002\",\"requestTime\":\"2026-08-16 08:37:17\",\"requester\":\"智能问数\",\"requesterId\":null,\"scene\":null,\"type\":\"qa\",\"typeLabel\":null},\"subject\":{\"id\":\"UNIT-465\",\"name\":\"单位465\",\"objectType\":null},\"targets\":{\"banks\":[{\"balance\":\"168.200亿元\",\"contribution\":\"优先级 1\",\"id\":\"INST-021\",\"loanCount\":2,\"name\":\"融通银行\",\"note\":\"机构稳定身份 INST-021 · 31 笔融资 · 浮动敞口最大\"},{\"balance\":\"142.600亿元\",\"contribution\":\"优先级 2\",\"id\":\"INST-022\",\"loanCount\":1,\"name\":\"启明银行\",\"note\":\"机构稳定身份 INST-022 · 27 笔融资 · 重定价日期集中\"},{\"balance\":\"119.400亿元\",\"contribution\":\"优先级 3\",\"id\":\"INST-023\",\"loanCount\":1,\"name\":\"嘉禾银行\",\"note\":\"机构稳定身份 INST-023 · 24 笔融资 · 浮动贷款笔数较多\"}],\"candidateLoans\":null,\"loanCount\":4,\"loans\":[{\"balance\":\"见固定证据\",\"bank\":\"融通银行\",\"id\":\"LOAN-465-126\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"融通银行\",\"id\":\"LOAN-465-098\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"启明银行\",\"id\":\"LOAN-465-077\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"嘉禾银行\",\"id\":\"LOAN-465-051\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"}],\"preferredInstitutions\":null}}",
+      "blockReason": null,
+      "recovery": null,
+      "scenarioId": "S001",
+      "scenarioLabel": "集团融资成本与债务结构优化"
+    },
+    {
+      "id": "AR-RUN-MSVJWKPO-002-UNIT-561",
+      "requestId": "AR-RUN-MSVJWKPO-002-UNIT-561",
+      "idempotencyKey": "S001|S001-RUN-20260816081748567-705ac89fb83a|AR-RUN-MSVJWKPO-002-UNIT-561|V1|FIN-ASSET-20251231-v02",
+      "scenarioContext": {
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+        "formedAt": "2026-08-16T08:17:48.567Z",
+        "status": "active",
+        "source": "C008 权威投影"
+      },
+      "scenario": "集团融资成本与债务结构优化",
+      "sourceType": "qa",
+      "sourceRef": "智能问数运行 RUN-MSVJWKPO-002",
+      "requester": "智能问数",
+      "requestTime": "2026-08-16 08:37:42",
+      "generatedTime": "2026-08-16 08:39:01",
+      "subjectId": "UNIT-561",
+      "subjectName": "单位561",
+      "singleBusinessSubjectId": "UNIT-561",
+      "singleBusinessSubjectName": "单位561",
+      "actionType": {
+        "id": "ACTION-FINANCING-OPTIMIZATION",
+        "name": "发起融资优化建议",
+        "version": "V1",
+        "status": "已发布",
+        "publishedSemanticVersion": "V1"
+      },
+      "rule": {
+        "id": "RULE-SHORT-TERM-DEBT-CONCENTRATION",
+        "name": "短期债务集中",
+        "version": "V1",
+        "evaluatedAt": "2026-08-16 08:36:42",
+        "branch": "短期债务集中",
+        "hitEvidence": "实际 93.545 / 阈值 30.000",
+        "publishedSemanticVersion": "V1"
+      },
+      "metric": {
+        "id": "MET-SHORT-TERM-DEBT-RATIO",
+        "name": "短期债务余额占比",
+        "value": "实际 93.545 / 阈值 30.000%",
+        "explanation": "命中",
+        "evaluatedAt": "2026-08-16 08:36:42",
+        "scope": "单位561"
+      },
+      "owner": "融资负责人009",
+      "recommendation": "优先与同州银行、星河银行、恒信银行核对并协商单位561的短期债务融资",
+      "banks": [
+        {
+          "id": "INST-031",
+          "name": "同州银行",
+          "balance": "5.860亿元",
+          "contribution": "优先级 1",
+          "loanCount": 2,
+          "note": "机构稳定身份 INST-031 · 11 笔融资 · 短期余额最高"
+        },
+        {
+          "id": "INST-032",
+          "name": "星河银行",
+          "balance": "4.320亿元",
+          "contribution": "优先级 2",
+          "loanCount": 1,
+          "note": "机构稳定身份 INST-032 · 9 笔融资 · 半年内到期集中"
+        },
+        {
+          "id": "INST-033",
+          "name": "恒信银行",
+          "balance": "3.180亿元",
+          "contribution": "优先级 3",
+          "loanCount": 1,
+          "note": "机构稳定身份 INST-033 · 8 笔融资 · 续作窗口临近"
+        }
+      ],
+      "loans": [
+        {
+          "id": "LOAN-561-043",
+          "bank": "同州银行",
+          "type": "融资借据",
+          "balance": "见固定证据",
+          "rate": "见固定证据"
+        },
+        {
+          "id": "LOAN-561-038",
+          "bank": "同州银行",
+          "type": "融资借据",
+          "balance": "见固定证据",
+          "rate": "见固定证据"
+        },
+        {
+          "id": "LOAN-561-024",
+          "bank": "星河银行",
+          "type": "融资借据",
+          "balance": "见固定证据",
+          "rate": "见固定证据"
+        },
+        {
+          "id": "LOAN-561-016",
+          "bank": "恒信银行",
+          "type": "融资借据",
+          "balance": "见固定证据",
+          "rate": "见固定证据"
+        }
+      ],
+      "loanCount": 4,
+      "evidence": {
+        "semanticVersion": "V1",
+        "semanticVersionId": "semantic-MSVJM48O-VJC6",
+        "dataVersion": "FIN-ASSET-20251231-v02",
+        "cutoff": "2025-12-31",
+        "quality": "通过",
+        "freshness": "截至 2025-12-31",
+        "snapshotId": "RUN-MSVJWKPO-002-RESULT",
+        "evidenceIds": [
+          "RUN-MSVJWKPO-002-E01",
+          "RUN-MSVJWKPO-002-E02",
+          "RUN-MSVJWKPO-002-E03",
+          "RUN-MSVJWKPO-002-E04",
+          "RUN-MSVJWKPO-002-E05",
+          "RUN-MSVJWKPO-002-E06",
+          "RUN-MSVJWKPO-002-E07",
+          "RUN-MSVJWKPO-002-E08",
+          "RUN-MSVJWKPO-002-E09",
+          "RUN-MSVJWKPO-002-E10",
+          "RUN-MSVJWKPO-002-E11",
+          "RUN-MSVJWKPO-002-E12",
+          "RUN-MSVJWKPO-002-E13",
+          "RUN-MSVJWKPO-002-E14",
+          "RUN-MSVJWKPO-002-E15",
+          "RUN-MSVJWKPO-002-E16",
+          "RUN-MSVJWKPO-002-E17",
+          "RUN-MSVJWKPO-002-E18",
+          "RUN-MSVJWKPO-002-E19",
+          "RUN-MSVJWKPO-002-E20",
+          "RUN-MSVJWKPO-002-E21",
+          "RUN-MSVJWKPO-002-E22",
+          "RUN-MSVJWKPO-002-E23",
+          "RUN-MSVJWKPO-002-E24"
+        ],
+        "t019EvidenceCode": "EV-MSVJSKDO-4YNV",
+        "availability": "完整可用",
+        "ready": "可进入人工判断",
+        "availableSections": [
+          "指标快照",
+          "主体范围",
+          "银行归因",
+          "贷款明细",
+          "双版本证明"
+        ],
+        "missingItems": [],
+        "bankEvidenceStatus": "完整机构及贷款明细",
+        "bankEvidenceMessage": "机构与贷款级固定证据均已随本次请求提供"
+      },
+      "semanticVersion": "V1",
+      "dataVersion": "FIN-ASSET-20251231-v02",
+      "fixedResultId": "RUN-MSVJWKPO-002-RESULT",
+      "ruleEvidenceId": "RUN-MSVJWKPO-002-E03",
+      "evidenceIds": [
+        "RUN-MSVJWKPO-002-E01",
+        "RUN-MSVJWKPO-002-E02",
+        "RUN-MSVJWKPO-002-E03",
+        "RUN-MSVJWKPO-002-E04",
+        "RUN-MSVJWKPO-002-E05",
+        "RUN-MSVJWKPO-002-E06",
+        "RUN-MSVJWKPO-002-E07",
+        "RUN-MSVJWKPO-002-E08",
+        "RUN-MSVJWKPO-002-E09",
+        "RUN-MSVJWKPO-002-E10",
+        "RUN-MSVJWKPO-002-E11",
+        "RUN-MSVJWKPO-002-E12",
+        "RUN-MSVJWKPO-002-E13",
+        "RUN-MSVJWKPO-002-E14",
+        "RUN-MSVJWKPO-002-E15",
+        "RUN-MSVJWKPO-002-E16",
+        "RUN-MSVJWKPO-002-E17",
+        "RUN-MSVJWKPO-002-E18",
+        "RUN-MSVJWKPO-002-E19",
+        "RUN-MSVJWKPO-002-E20",
+        "RUN-MSVJWKPO-002-E21",
+        "RUN-MSVJWKPO-002-E22",
+        "RUN-MSVJWKPO-002-E23",
+        "RUN-MSVJWKPO-002-E24"
+      ],
+      "status": "awaiting",
+      "ruleApplicability": "适用",
+      "reminderId": "DR-RUN-MSVJWKPO-002-UNIT-561",
+      "traceId": "TR-RUN-MSVJWKPO-002-UNIT-561",
+      "requestGate": {
+        "status": "accepted",
+        "checkedAt": "2026-08-16 08:39:01",
+        "reason": "当前摘要证据完整，未登记硬质量失败，且本页面会话已重新读取本体正式采用证据",
+        "reminderCreated": true
+      },
+      "formation": {
+        "requestGateStatus": "accepted",
+        "requestGateCheckedAt": "2026-08-16 08:39:01",
+        "requestGateReason": "当前摘要证据完整，未登记硬质量失败，且本页面会话已重新读取本体正式采用证据",
+        "reminderCreated": true,
+        "confirmationGateStatus": "not_reached",
+        "confirmationGateReason": "等待用户提交正向人工确认时重新读取"
+      },
+      "confirmationEligibility": {
+        "allowed": true,
+        "requiresAcknowledgement": false,
+        "reason": "行动申请已通过接收门，可进入人工判断"
+      },
+      "c017SafetyReads": [
+        {
+          "gate": "request_receipt",
+          "gateLabel": "行动申请接收前",
+          "t007": "FIN-ASSET-20251231-v02",
+          "summaryId": "TRUST-STATE-FIN-ASSET-20251231-v02-03",
+          "summaryVersion": "v1.2",
+          "summaryFormedAt": "2026-08-16 08:33:58",
+          "readAt": "2026-08-16 08:39:01",
+          "qualityStatus": "允许推进",
+          "hardFailure": "否",
+          "detectedAt": "不适用",
+          "impactScope": "无硬质量失败影响",
+          "businessFieldCategories": "无受影响业务字段类别",
+          "reason": "当前摘要证据完整，未登记硬质量失败，且本页面会话已重新读取本体正式采用证据",
+          "recovery": "无需恢复",
+          "evidenceLocator": "数据工程 / 数据可信度摘要 / TRUST-STATE-FIN-ASSET-20251231-v02-03",
+          "outcome": "allowed"
+        }
+      ],
+      "c017ReadAttempts": {
+        "request_receipt": 1,
+        "confirmation_submit": 0,
+        "task_formation": 0
+      },
+      "s001DataStructure": {
+        "members": [
+          "融资主体参考",
+          "融资明细",
+          "金融机构参考",
+          "融资负责人参考"
+        ],
+        "relations": [
+          "融资明细→融资主体",
+          "融资明细→金融机构",
+          "融资主体→融资负责人"
+        ]
+      },
+      "sourceEvents": [],
+      "supplementPolicy": {
+        "canRequest": true,
+        "editableUpstream": false,
+        "resolutionMode": "等待新申请或替代行动申请"
+      },
+      "supplementRequests": [],
+      "duplicateRequests": [],
+      "decision": null,
+      "taskId": null,
+      "taskCreating": false,
+      "contractFingerprint": "c011-v2:{\"actionType\":{\"id\":\"ACTION-FINANCING-OPTIMIZATION\",\"name\":\"发起融资优化建议\",\"publishedSemanticVersion\":\"V1\",\"status\":\"已发布\",\"version\":\"V1\"},\"assignment\":{\"owner\":\"融资负责人009\",\"recommendation\":\"优先与同州银行、星河银行、恒信银行核对并协商单位561的短期债务融资\",\"recommendedDirection\":null},\"evidence\":{\"allowUncertainResult\":null,\"bindingId\":null,\"consumableVersionId\":null,\"cutoff\":\"2025-12-31\",\"dataAssetVersionId\":null,\"dataVersion\":\"FIN-ASSET-20251231-v02\",\"declaredDataVersion\":\"FIN-ASSET-20251231-v02\",\"declaredSemanticVersion\":\"V1\",\"evidenceIds\":[\"RUN-MSVJWKPO-002-E01\",\"RUN-MSVJWKPO-002-E02\",\"RUN-MSVJWKPO-002-E03\",\"RUN-MSVJWKPO-002-E04\",\"RUN-MSVJWKPO-002-E05\",\"RUN-MSVJWKPO-002-E06\",\"RUN-MSVJWKPO-002-E07\",\"RUN-MSVJWKPO-002-E08\",\"RUN-MSVJWKPO-002-E09\",\"RUN-MSVJWKPO-002-E10\",\"RUN-MSVJWKPO-002-E11\",\"RUN-MSVJWKPO-002-E12\",\"RUN-MSVJWKPO-002-E13\",\"RUN-MSVJWKPO-002-E14\",\"RUN-MSVJWKPO-002-E15\",\"RUN-MSVJWKPO-002-E16\",\"RUN-MSVJWKPO-002-E17\",\"RUN-MSVJWKPO-002-E18\",\"RUN-MSVJWKPO-002-E19\",\"RUN-MSVJWKPO-002-E20\",\"RUN-MSVJWKPO-002-E21\",\"RUN-MSVJWKPO-002-E22\",\"RUN-MSVJWKPO-002-E23\",\"RUN-MSVJWKPO-002-E24\"],\"fingerprint\":null,\"freshness\":\"截至 2025-12-31\",\"quality\":\"通过\",\"ruleEvidenceId\":\"RUN-MSVJWKPO-002-E03\",\"semanticVersion\":\"V1\",\"semanticVersionId\":\"semantic-MSVJM48O-VJC6\",\"snapshotId\":\"RUN-MSVJWKPO-002-RESULT\",\"t019EvidenceCode\":\"EV-MSVJSKDO-4YNV\",\"trustReadAt\":null,\"trustSnapshot\":null},\"metric\":{\"evaluatedAt\":\"2026-08-16 08:36:42\",\"evidenceRefs\":null,\"explanation\":\"命中\",\"id\":\"MET-SHORT-TERM-DEBT-RATIO\",\"name\":\"短期债务余额占比\",\"resultVersion\":null,\"scope\":\"单位561\",\"snapshot\":null,\"unit\":null,\"value\":\"实际 93.545 / 阈值 30.000%\"},\"navigation\":{\"filter\":null,\"returnPosition\":null,\"returnRoute\":null},\"requestId\":\"AR-RUN-MSVJWKPO-002-UNIT-561\",\"rule\":{\"branch\":\"短期债务集中\",\"code\":null,\"evaluatedAt\":\"2026-08-16 08:36:42\",\"evaluationId\":null,\"evidence\":null,\"hitEvidence\":\"实际 93.545 / 阈值 30.000\",\"id\":\"RULE-SHORT-TERM-DEBT-CONCENTRATION\",\"name\":\"短期债务集中\",\"publishedSemanticVersion\":\"V1\",\"resultVersion\":null,\"version\":\"V1\"},\"scenario\":\"集团融资成本与债务结构优化\",\"scenarioContext\":{\"formedAt\":\"2026-08-16T08:17:48.567Z\",\"scenarioId\":\"S001\",\"scenarioRunId\":\"S001-RUN-20260816081748567-705ac89fb83a\",\"scenarioVersion\":\"S001-v1\",\"source\":\"C008 权威投影\",\"status\":\"active\"},\"source\":{\"initiator\":null,\"record\":null,\"ref\":\"智能问数运行 RUN-MSVJWKPO-002\",\"requestTime\":\"2026-08-16 08:37:42\",\"requester\":\"智能问数\",\"requesterId\":null,\"scene\":null,\"type\":\"qa\",\"typeLabel\":null},\"subject\":{\"id\":\"UNIT-561\",\"name\":\"单位561\",\"objectType\":null},\"targets\":{\"banks\":[{\"balance\":\"5.860亿元\",\"contribution\":\"优先级 1\",\"id\":\"INST-031\",\"loanCount\":2,\"name\":\"同州银行\",\"note\":\"机构稳定身份 INST-031 · 11 笔融资 · 短期余额最高\"},{\"balance\":\"4.320亿元\",\"contribution\":\"优先级 2\",\"id\":\"INST-032\",\"loanCount\":1,\"name\":\"星河银行\",\"note\":\"机构稳定身份 INST-032 · 9 笔融资 · 半年内到期集中\"},{\"balance\":\"3.180亿元\",\"contribution\":\"优先级 3\",\"id\":\"INST-033\",\"loanCount\":1,\"name\":\"恒信银行\",\"note\":\"机构稳定身份 INST-033 · 8 笔融资 · 续作窗口临近\"}],\"candidateLoans\":null,\"loanCount\":4,\"loans\":[{\"balance\":\"见固定证据\",\"bank\":\"同州银行\",\"id\":\"LOAN-561-043\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"同州银行\",\"id\":\"LOAN-561-038\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"星河银行\",\"id\":\"LOAN-561-024\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"恒信银行\",\"id\":\"LOAN-561-016\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"}],\"preferredInstitutions\":null}}",
+      "blockReason": null,
+      "recovery": null,
+      "scenarioId": "S001",
+      "scenarioLabel": "集团融资成本与债务结构优化"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "TODO-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.1.0",
+      "requestId": "AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.1.0",
+      "reminderId": "DR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.1.0",
+      "subjectId": "S003-ENT-020",
+      "subjectName": "环保测试公司4",
+      "sourceType": "report",
+      "scenarioContext": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active",
+        "source": "S003 CP38"
+      },
+      "owner": "环保测试公司4债务风险处置负责人",
+      "ownerId": "S003-ENT-020-DEBT-RISK-OWNER",
+      "assignedBy": "环保测试公司4债务风险接口人",
+      "title": "推进环保测试公司4专项风险处置",
+      "actionType": {
+        "id": "S003_SPECIAL_DISPOSAL",
+        "name": "专项风险处置",
+        "description": "红灯按亮灯形成一条预警候选；驾驶舱显式提交后直接送达对应成员单位接口人（债务风险）。",
+        "managementHint": "接口人核实预警依据并选择本单位负责人后，沿用通用决策中心形成负责人待办；不经过集团管理员统一收件，不启动多级审批。",
+        "version": "1.0.2",
+        "status": "已发布"
+      },
+      "ruleLabel": "不适用",
+      "metricLabel": "企业最终风险评分 23.05 分",
+      "metricSnapshotId": "S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-020",
+      "semanticVersion": "S003-M01-DEBT-RISK-PKG 1.0.2",
+      "dataVersion": "1.0.0",
+      "cutoff": "2025-12-31",
+      "sourceRef": "债务风险仪表盘 · S003-C035-S003-RUN-20260817163000000-c02200000001-S003-ENT-020",
+      "createdAt": "2026-08-17 16:37:30",
+      "dueDate": "2026-09-17",
+      "status": "pending",
+      "overdue": false,
+      "instructions": "成员单位接口人已核实红灯预警，按通用决策中心框架分办专项处置任务。",
+      "banks": [],
+      "decisionReason": "成员单位接口人已核实红灯预警，按通用决策中心框架分办专项处置任务。",
+      "progress": [],
+      "history": [
+        {
+          "time": "2026-08-17 16:37:00",
+          "label": "成员单位接口人确认并交办",
+          "detail": "环保测试公司4债务风险接口人 → 环保测试公司4债务风险处置负责人"
+        },
+        {
+          "time": "2026-08-17 16:37:30",
+          "label": "负责人待办创建",
+          "detail": "沿用决策中心通用框架；未触发通知或审批"
+        }
+      ],
+      "sourceChanged": false,
+      "failure": null,
+      "result": null,
+      "correction": null,
+      "updateAttempts": 0,
+      "c017SafetyRead": {
+        "gate": "task_formation",
+        "gateLabel": "负责人待办形成前",
+        "t007": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "summaryId": "C017-S003-T007-FORMAL-CANDIDATE-20251231-v1-CURRENT-2",
+        "summaryVersion": "current-2",
+        "summaryFormedAt": "2026-08-17T16:32:00.000Z",
+        "readAt": "2026-08-17T16:37:30.000Z",
+        "qualityStatus": "允许推进",
+        "hardFailure": "否",
+        "detectedAt": "不适用",
+        "impactScope": "无硬质量失败影响",
+        "businessFieldCategories": "财务来源、企业当期因子输入版本",
+        "reason": "当前摘要未标记该精确数据资产版本存在版本级或范围级硬质量失败。",
+        "recovery": "无需恢复",
+        "evidenceLocator": "resources/m02/c017-decision-projection.v2.json#/projections/0/gates/task_formation",
+        "outcome": "allowed"
+      },
+      "snapshotProjection": false,
+      "projectionMode": "active-owner-todo",
+      "scenarioId": "S003",
+      "scenarioLabel": "债务风险监测"
+    },
+    {
+      "id": "TD-6872111633",
+      "requestId": "AR-RUN-MSVJWKPO-002-UNIT-553",
+      "reminderId": "DR-RUN-MSVJWKPO-002-UNIT-553",
+      "subjectId": "UNIT-553",
+      "subjectName": "单位553",
+      "sourceType": "qa",
+      "scenarioContext": {
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+        "formedAt": "2026-08-16T08:17:48.567Z",
+        "status": "active",
+        "source": "C008 权威投影"
+      },
+      "owner": "融资负责人001",
+      "title": "推进单位553发起融资优化建议",
+      "actionType": {
+        "id": "ACTION-FINANCING-OPTIMIZATION",
+        "name": "发起融资优化建议",
+        "version": "V1",
+        "status": "已发布",
+        "publishedSemanticVersion": "V1"
+      },
+      "ruleLabel": "RULE-HIGH-FINANCING-COST 融资成本偏高 · V1",
+      "metricLabel": "余额加权平均融资成本 实际 2.881 / 阈值 2.622%",
+      "dataVersion": "FIN-ASSET-20251231-v02",
+      "cutoff": "2025-12-31",
+      "createdAt": "2026-08-16 09:21:51",
+      "dueDate": "2026-08-21",
+      "status": "assigned",
+      "overdue": false,
+      "instructions": "优先与欧陆银行、寰宇银行、海联银行核对并协商单位553的高成本融资。",
+      "banks": [
+        "欧陆银行",
+        "寰宇银行",
+        "海联银行"
+      ],
+      "decisionReason": "三条规则证据及优先协商银行已核对，先推进单位553高成本融资优化。",
+      "progress": [],
+      "history": [
+        {
+          "time": "2026-08-16 09:21:50",
+          "label": "人工确认",
+          "detail": "融资负责人001 · 三条规则证据及优先协商银行已核对，先推进单位553高成本融资优化。"
+        },
+        {
+          "time": "2026-08-16 09:21:51",
+          "label": "负责人待办创建",
+          "detail": "等待 融资负责人001 确认承接 · 到期日 2026-08-21"
+        }
+      ],
+      "sourceChanged": false,
+      "sourceChangeEvent": null,
+      "failure": null,
+      "result": null,
+      "correction": null,
+      "updateAttempts": 0,
+      "metricSnapshotId": "RUN-MSVJWKPO-002-RESULT",
+      "semanticVersion": "V1",
+      "sourceRef": "智能问数运行 RUN-MSVJWKPO-002",
+      "sourceRequestTime": "2026-08-16 09:16:18",
+      "c017SafetyRead": {
+        "gate": "task_formation",
+        "gateLabel": "负责人待办形成前",
+        "t007": "FIN-ASSET-20251231-v02",
+        "summaryId": "TRUST-STATE-FIN-ASSET-20251231-v02-03",
+        "summaryVersion": "v1.2",
+        "summaryFormedAt": "2026-08-16 08:33:58",
+        "readAt": "2026-08-16 09:21:51",
+        "qualityStatus": "允许推进",
+        "hardFailure": "否",
+        "detectedAt": "不适用",
+        "impactScope": "无硬质量失败影响",
+        "businessFieldCategories": "无受影响业务字段类别",
+        "reason": "当前摘要证据完整，未登记硬质量失败，且本页面会话已重新读取本体正式采用证据",
+        "recovery": "无需恢复",
+        "evidenceLocator": "数据工程 / 数据可信度摘要 / TRUST-STATE-FIN-ASSET-20251231-v02-03",
+        "outcome": "allowed"
+      },
+      "scenarioId": "S001",
+      "scenarioLabel": "集团融资成本与债务结构优化"
+    }
+  ],
+  "receipts": [
+    {
+      "receiptId": "ARR-71977561-04",
+      "requestId": "AR-RUN-MSVJWKPO-002-UNIT-553",
+      "receivedAt": "2026-08-16 09:19:37",
+      "scenarioContext": {
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+        "formedAt": "2026-08-16T08:17:48.567Z",
+        "status": "active",
+        "source": "C008 权威投影"
+      },
+      "idempotencyKey": "S001|S001-RUN-20260816081748567-705ac89fb83a|AR-RUN-MSVJWKPO-002-UNIT-553|V1|FIN-ASSET-20251231-v02",
+      "contractFingerprint": "c011-v2:{\"actionType\":{\"id\":\"ACTION-FINANCING-OPTIMIZATION\",\"name\":\"发起融资优化建议\",\"publishedSemanticVersion\":\"V1\",\"status\":\"已发布\",\"version\":\"V1\"},\"assignment\":{\"owner\":\"融资负责人001\",\"recommendation\":\"优先与欧陆银行、寰宇银行、海联银行核对并协商单位553的高成本融资\",\"recommendedDirection\":null},\"evidence\":{\"allowUncertainResult\":null,\"bindingId\":null,\"consumableVersionId\":null,\"cutoff\":\"2025-12-31\",\"dataAssetVersionId\":null,\"dataVersion\":\"FIN-ASSET-20251231-v02\",\"declaredDataVersion\":\"FIN-ASSET-20251231-v02\",\"declaredSemanticVersion\":\"V1\",\"evidenceIds\":[\"RUN-MSVJWKPO-002-E01\",\"RUN-MSVJWKPO-002-E02\",\"RUN-MSVJWKPO-002-E03\",\"RUN-MSVJWKPO-002-E04\",\"RUN-MSVJWKPO-002-E05\",\"RUN-MSVJWKPO-002-E06\",\"RUN-MSVJWKPO-002-E07\",\"RUN-MSVJWKPO-002-E08\",\"RUN-MSVJWKPO-002-E09\",\"RUN-MSVJWKPO-002-E10\",\"RUN-MSVJWKPO-002-E11\",\"RUN-MSVJWKPO-002-E12\",\"RUN-MSVJWKPO-002-E13\",\"RUN-MSVJWKPO-002-E14\",\"RUN-MSVJWKPO-002-E15\",\"RUN-MSVJWKPO-002-E16\",\"RUN-MSVJWKPO-002-E17\",\"RUN-MSVJWKPO-002-E18\",\"RUN-MSVJWKPO-002-E19\",\"RUN-MSVJWKPO-002-E20\",\"RUN-MSVJWKPO-002-E21\",\"RUN-MSVJWKPO-002-E22\",\"RUN-MSVJWKPO-002-E23\",\"RUN-MSVJWKPO-002-E24\"],\"fingerprint\":null,\"freshness\":\"截至 2025-12-31\",\"quality\":\"通过\",\"ruleEvidenceId\":\"RUN-MSVJWKPO-002-E01\",\"semanticVersion\":\"V1\",\"semanticVersionId\":\"semantic-MSVJM48O-VJC6\",\"snapshotId\":\"RUN-MSVJWKPO-002-RESULT\",\"t019EvidenceCode\":\"EV-MSVJSKDO-4YNV\",\"trustReadAt\":null,\"trustSnapshot\":null},\"metric\":{\"evaluatedAt\":\"2026-08-16 08:36:42\",\"evidenceRefs\":null,\"explanation\":\"命中\",\"id\":\"MET-WAVG-FINANCING-COST\",\"name\":\"余额加权平均融资成本\",\"resultVersion\":null,\"scope\":\"单位553\",\"snapshot\":null,\"unit\":null,\"value\":\"实际 2.881 / 阈值 2.622%\"},\"navigation\":{\"filter\":null,\"returnPosition\":null,\"returnRoute\":null},\"requestId\":\"AR-RUN-MSVJWKPO-002-UNIT-553\",\"rule\":{\"branch\":\"融资成本偏高\",\"code\":null,\"evaluatedAt\":\"2026-08-16 08:36:42\",\"evaluationId\":null,\"evidence\":null,\"hitEvidence\":\"实际 2.881 / 阈值 2.622\",\"id\":\"RULE-HIGH-FINANCING-COST\",\"name\":\"融资成本偏高\",\"publishedSemanticVersion\":\"V1\",\"resultVersion\":null,\"version\":\"V1\"},\"scenario\":\"集团融资成本与债务结构优化\",\"scenarioContext\":{\"formedAt\":\"2026-08-16T08:17:48.567Z\",\"scenarioId\":\"S001\",\"scenarioRunId\":\"S001-RUN-20260816081748567-705ac89fb83a\",\"scenarioVersion\":\"S001-v1\",\"source\":\"C008 权威投影\",\"status\":\"active\"},\"source\":{\"initiator\":null,\"record\":null,\"ref\":\"智能问数运行 RUN-MSVJWKPO-002\",\"requestTime\":\"2026-08-16 09:16:18\",\"requester\":\"智能问数\",\"requesterId\":null,\"scene\":null,\"type\":\"qa\",\"typeLabel\":null},\"subject\":{\"id\":\"UNIT-553\",\"name\":\"单位553\",\"objectType\":null},\"targets\":{\"banks\":[{\"balance\":\"99.586亿元\",\"contribution\":\"优先级 1\",\"id\":\"INST-012\",\"loanCount\":2,\"name\":\"欧陆银行\",\"note\":\"机构稳定身份 INST-012 · 18 笔融资 · 成本偏离最高\"},{\"balance\":\"83.260亿元\",\"contribution\":\"优先级 2\",\"id\":\"INST-007\",\"loanCount\":1,\"name\":\"寰宇银行\",\"note\":\"机构稳定身份 INST-007 · 15 笔融资 · 余额贡献第二\"},{\"balance\":\"67.180亿元\",\"contribution\":\"优先级 3\",\"id\":\"INST-019\",\"loanCount\":1,\"name\":\"海联银行\",\"note\":\"机构稳定身份 INST-019 · 12 笔融资 · 可置换贷款集中\"}],\"candidateLoans\":null,\"loanCount\":4,\"loans\":[{\"balance\":\"见固定证据\",\"bank\":\"欧陆银行\",\"id\":\"LOAN-553-041\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"欧陆银行\",\"id\":\"LOAN-553-028\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"寰宇银行\",\"id\":\"LOAN-553-063\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"海联银行\",\"id\":\"LOAN-553-017\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"}],\"preferredInstitutions\":null}}",
+      "outcome": "accepted",
+      "status": "请求已接收",
+      "reason": "当前摘要证据完整，未登记硬质量失败，且本页面会话已重新读取本体正式采用证据",
+      "requestRef": "AR-RUN-MSVJWKPO-002-UNIT-553",
+      "reminderRef": "DR-RUN-MSVJWKPO-002-UNIT-553",
+      "taskRef": null,
+      "traceRef": "TR-RUN-MSVJWKPO-002-UNIT-553"
+    },
+    {
+      "receiptId": "ARR-69541155-03",
+      "requestId": "AR-RUN-MSVJUDY8-001-UNIT-553",
+      "receivedAt": "2026-08-16 08:39:01",
+      "scenarioContext": {
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+        "formedAt": "2026-08-16T08:17:48.567Z",
+        "status": "active",
+        "source": "C008 权威投影"
+      },
+      "idempotencyKey": "S001|S001-RUN-20260816081748567-705ac89fb83a|AR-RUN-MSVJUDY8-001-UNIT-553|V1|FIN-ASSET-20251231-v02",
+      "contractFingerprint": "c011-v2:{\"actionType\":{\"id\":\"ACTION-FINANCING-OPTIMIZATION\",\"name\":\"发起融资优化建议\",\"publishedSemanticVersion\":\"V1\",\"status\":\"已发布\",\"version\":\"V1\"},\"assignment\":{\"owner\":\"融资负责人001\",\"recommendation\":\"优先与欧陆银行、寰宇银行、海联银行核对并协商单位553的高成本融资\",\"recommendedDirection\":null},\"evidence\":{\"allowUncertainResult\":null,\"bindingId\":null,\"consumableVersionId\":null,\"cutoff\":\"2025-12-31\",\"dataAssetVersionId\":null,\"dataVersion\":\"FIN-ASSET-20251231-v02\",\"declaredDataVersion\":\"FIN-ASSET-20251231-v02\",\"declaredSemanticVersion\":\"V1\",\"evidenceIds\":[\"RUN-MSVJUDY8-001-E01\",\"RUN-MSVJUDY8-001-E02\",\"RUN-MSVJUDY8-001-E03\",\"RUN-MSVJUDY8-001-E04\",\"RUN-MSVJUDY8-001-E05\",\"RUN-MSVJUDY8-001-E06\",\"RUN-MSVJUDY8-001-E07\",\"RUN-MSVJUDY8-001-E08\",\"RUN-MSVJUDY8-001-E09\",\"RUN-MSVJUDY8-001-E10\",\"RUN-MSVJUDY8-001-E11\"],\"fingerprint\":null,\"freshness\":\"截至 2025-12-31\",\"quality\":\"通过\",\"ruleEvidenceId\":null,\"semanticVersion\":\"V1\",\"semanticVersionId\":\"semantic-MSVJM48O-VJC6\",\"snapshotId\":\"RUN-MSVJUDY8-001-RESULT\",\"t019EvidenceCode\":\"EV-MSVJSKDO-4YNV\",\"trustReadAt\":null,\"trustSnapshot\":null},\"metric\":{\"evaluatedAt\":\"2026-08-16 08:34:59\",\"evidenceRefs\":null,\"explanation\":\"来自固定结构化语义结果\",\"id\":\"MET-FINANCING-BALANCE\",\"name\":\"融资余额\",\"resultVersion\":null,\"scope\":\"单位553\",\"snapshot\":null,\"unit\":null,\"value\":\"证据见固定结果\"},\"navigation\":{\"filter\":null,\"returnPosition\":null,\"returnRoute\":null},\"requestId\":\"AR-RUN-MSVJUDY8-001-UNIT-553\",\"rule\":{\"branch\":\"已发布 Rule 命中\",\"code\":null,\"evaluatedAt\":\"2026-08-16 08:34:59\",\"evaluationId\":null,\"evidence\":null,\"hitEvidence\":null,\"id\":\"RULE-HIGH-FINANCING-COST\",\"name\":\"融资成本偏高\",\"publishedSemanticVersion\":\"V1\",\"resultVersion\":null,\"version\":\"V1\"},\"scenario\":\"集团融资成本与债务结构优化\",\"scenarioContext\":{\"formedAt\":\"2026-08-16T08:17:48.567Z\",\"scenarioId\":\"S001\",\"scenarioRunId\":\"S001-RUN-20260816081748567-705ac89fb83a\",\"scenarioVersion\":\"S001-v1\",\"source\":\"C008 权威投影\",\"status\":\"active\"},\"source\":{\"initiator\":null,\"record\":null,\"ref\":\"智能问数运行 RUN-MSVJUDY8-001\",\"requestTime\":\"2026-08-16 08:36:08\",\"requester\":\"智能问数\",\"requesterId\":null,\"scene\":null,\"type\":\"qa\",\"typeLabel\":null},\"subject\":{\"id\":\"UNIT-553\",\"name\":\"单位553\",\"objectType\":null},\"targets\":{\"banks\":[{\"balance\":\"99.586亿元\",\"contribution\":\"优先级 1\",\"id\":\"INST-012\",\"loanCount\":2,\"name\":\"欧陆银行\",\"note\":\"机构稳定身份 INST-012 · 16 笔融资 · 平均成本 2.994%\"},{\"balance\":\"65.494亿元\",\"contribution\":\"优先级 2\",\"id\":\"INST-007\",\"loanCount\":2,\"name\":\"寰宇银行\",\"note\":\"机构稳定身份 INST-007 · 11 笔融资 · 平均成本 2.900%\"},{\"balance\":\"58.476亿元\",\"contribution\":\"优先级 3\",\"id\":\"INST-019\",\"loanCount\":2,\"name\":\"海联银行\",\"note\":\"机构稳定身份 INST-019 · 10 笔融资 · 平均成本 3.004%\"}],\"candidateLoans\":null,\"loanCount\":6,\"loans\":[{\"balance\":\"见固定证据\",\"bank\":\"欧陆银行\",\"id\":\"LOAN-004842\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"欧陆银行\",\"id\":\"LOAN-004791\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"寰宇银行\",\"id\":\"LOAN-003206\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"寰宇银行\",\"id\":\"LOAN-003241\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"海联银行\",\"id\":\"LOAN-002118\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"海联银行\",\"id\":\"LOAN-002164\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"}],\"preferredInstitutions\":null}}",
+      "outcome": "accepted",
+      "status": "请求已接收",
+      "reason": "当前摘要证据完整，未登记硬质量失败，且本页面会话已重新读取本体正式采用证据",
+      "requestRef": "AR-RUN-MSVJUDY8-001-UNIT-553",
+      "reminderRef": "DR-RUN-MSVJUDY8-001-UNIT-553",
+      "taskRef": null,
+      "traceRef": "TR-RUN-MSVJUDY8-001-UNIT-553"
+    },
+    {
+      "receiptId": "ARR-69541155-02",
+      "requestId": "AR-RUN-MSVJWKPO-002-UNIT-465",
+      "receivedAt": "2026-08-16 08:39:01",
+      "scenarioContext": {
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+        "formedAt": "2026-08-16T08:17:48.567Z",
+        "status": "active",
+        "source": "C008 权威投影"
+      },
+      "idempotencyKey": "S001|S001-RUN-20260816081748567-705ac89fb83a|AR-RUN-MSVJWKPO-002-UNIT-465|V1|FIN-ASSET-20251231-v02",
+      "contractFingerprint": "c011-v2:{\"actionType\":{\"id\":\"ACTION-FINANCING-OPTIMIZATION\",\"name\":\"发起融资优化建议\",\"publishedSemanticVersion\":\"V1\",\"status\":\"已发布\",\"version\":\"V1\"},\"assignment\":{\"owner\":\"融资负责人009\",\"recommendation\":\"优先与融通银行、启明银行、嘉禾银行核对并协商单位465的浮动利率融资\",\"recommendedDirection\":null},\"evidence\":{\"allowUncertainResult\":null,\"bindingId\":null,\"consumableVersionId\":null,\"cutoff\":\"2025-12-31\",\"dataAssetVersionId\":null,\"dataVersion\":\"FIN-ASSET-20251231-v02\",\"declaredDataVersion\":\"FIN-ASSET-20251231-v02\",\"declaredSemanticVersion\":\"V1\",\"evidenceIds\":[\"RUN-MSVJWKPO-002-E01\",\"RUN-MSVJWKPO-002-E02\",\"RUN-MSVJWKPO-002-E03\",\"RUN-MSVJWKPO-002-E04\",\"RUN-MSVJWKPO-002-E05\",\"RUN-MSVJWKPO-002-E06\",\"RUN-MSVJWKPO-002-E07\",\"RUN-MSVJWKPO-002-E08\",\"RUN-MSVJWKPO-002-E09\",\"RUN-MSVJWKPO-002-E10\",\"RUN-MSVJWKPO-002-E11\",\"RUN-MSVJWKPO-002-E12\",\"RUN-MSVJWKPO-002-E13\",\"RUN-MSVJWKPO-002-E14\",\"RUN-MSVJWKPO-002-E15\",\"RUN-MSVJWKPO-002-E16\",\"RUN-MSVJWKPO-002-E17\",\"RUN-MSVJWKPO-002-E18\",\"RUN-MSVJWKPO-002-E19\",\"RUN-MSVJWKPO-002-E20\",\"RUN-MSVJWKPO-002-E21\",\"RUN-MSVJWKPO-002-E22\",\"RUN-MSVJWKPO-002-E23\",\"RUN-MSVJWKPO-002-E24\"],\"fingerprint\":null,\"freshness\":\"截至 2025-12-31\",\"quality\":\"通过\",\"ruleEvidenceId\":\"RUN-MSVJWKPO-002-E02\",\"semanticVersion\":\"V1\",\"semanticVersionId\":\"semantic-MSVJM48O-VJC6\",\"snapshotId\":\"RUN-MSVJWKPO-002-RESULT\",\"t019EvidenceCode\":\"EV-MSVJSKDO-4YNV\",\"trustReadAt\":null,\"trustSnapshot\":null},\"metric\":{\"evaluatedAt\":\"2026-08-16 08:36:42\",\"evidenceRefs\":null,\"explanation\":\"命中\",\"id\":\"MET-FLOATING-RATE-BALANCE-RATIO\",\"name\":\"浮动利率余额占比\",\"resultVersion\":null,\"scope\":\"单位465\",\"snapshot\":null,\"unit\":null,\"value\":\"实际 100.000 / 阈值 80.000%\"},\"navigation\":{\"filter\":null,\"returnPosition\":null,\"returnRoute\":null},\"requestId\":\"AR-RUN-MSVJWKPO-002-UNIT-465\",\"rule\":{\"branch\":\"浮动利率暴露偏高\",\"code\":null,\"evaluatedAt\":\"2026-08-16 08:36:42\",\"evaluationId\":null,\"evidence\":null,\"hitEvidence\":\"实际 100.000 / 阈值 80.000\",\"id\":\"RULE-FLOATING-RATE-EXPOSURE\",\"name\":\"浮动利率暴露\",\"publishedSemanticVersion\":\"V1\",\"resultVersion\":null,\"version\":\"V1\"},\"scenario\":\"集团融资成本与债务结构优化\",\"scenarioContext\":{\"formedAt\":\"2026-08-16T08:17:48.567Z\",\"scenarioId\":\"S001\",\"scenarioRunId\":\"S001-RUN-20260816081748567-705ac89fb83a\",\"scenarioVersion\":\"S001-v1\",\"source\":\"C008 权威投影\",\"status\":\"active\"},\"source\":{\"initiator\":null,\"record\":null,\"ref\":\"智能问数运行 RUN-MSVJWKPO-002\",\"requestTime\":\"2026-08-16 08:37:17\",\"requester\":\"智能问数\",\"requesterId\":null,\"scene\":null,\"type\":\"qa\",\"typeLabel\":null},\"subject\":{\"id\":\"UNIT-465\",\"name\":\"单位465\",\"objectType\":null},\"targets\":{\"banks\":[{\"balance\":\"168.200亿元\",\"contribution\":\"优先级 1\",\"id\":\"INST-021\",\"loanCount\":2,\"name\":\"融通银行\",\"note\":\"机构稳定身份 INST-021 · 31 笔融资 · 浮动敞口最大\"},{\"balance\":\"142.600亿元\",\"contribution\":\"优先级 2\",\"id\":\"INST-022\",\"loanCount\":1,\"name\":\"启明银行\",\"note\":\"机构稳定身份 INST-022 · 27 笔融资 · 重定价日期集中\"},{\"balance\":\"119.400亿元\",\"contribution\":\"优先级 3\",\"id\":\"INST-023\",\"loanCount\":1,\"name\":\"嘉禾银行\",\"note\":\"机构稳定身份 INST-023 · 24 笔融资 · 浮动贷款笔数较多\"}],\"candidateLoans\":null,\"loanCount\":4,\"loans\":[{\"balance\":\"见固定证据\",\"bank\":\"融通银行\",\"id\":\"LOAN-465-126\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"融通银行\",\"id\":\"LOAN-465-098\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"启明银行\",\"id\":\"LOAN-465-077\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"嘉禾银行\",\"id\":\"LOAN-465-051\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"}],\"preferredInstitutions\":null}}",
+      "outcome": "accepted",
+      "status": "请求已接收",
+      "reason": "当前摘要证据完整，未登记硬质量失败，且本页面会话已重新读取本体正式采用证据",
+      "requestRef": "AR-RUN-MSVJWKPO-002-UNIT-465",
+      "reminderRef": "DR-RUN-MSVJWKPO-002-UNIT-465",
+      "taskRef": null,
+      "traceRef": "TR-RUN-MSVJWKPO-002-UNIT-465"
+    },
+    {
+      "receiptId": "ARR-69541155-01",
+      "requestId": "AR-RUN-MSVJWKPO-002-UNIT-561",
+      "receivedAt": "2026-08-16 08:39:01",
+      "scenarioContext": {
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+        "formedAt": "2026-08-16T08:17:48.567Z",
+        "status": "active",
+        "source": "C008 权威投影"
+      },
+      "idempotencyKey": "S001|S001-RUN-20260816081748567-705ac89fb83a|AR-RUN-MSVJWKPO-002-UNIT-561|V1|FIN-ASSET-20251231-v02",
+      "contractFingerprint": "c011-v2:{\"actionType\":{\"id\":\"ACTION-FINANCING-OPTIMIZATION\",\"name\":\"发起融资优化建议\",\"publishedSemanticVersion\":\"V1\",\"status\":\"已发布\",\"version\":\"V1\"},\"assignment\":{\"owner\":\"融资负责人009\",\"recommendation\":\"优先与同州银行、星河银行、恒信银行核对并协商单位561的短期债务融资\",\"recommendedDirection\":null},\"evidence\":{\"allowUncertainResult\":null,\"bindingId\":null,\"consumableVersionId\":null,\"cutoff\":\"2025-12-31\",\"dataAssetVersionId\":null,\"dataVersion\":\"FIN-ASSET-20251231-v02\",\"declaredDataVersion\":\"FIN-ASSET-20251231-v02\",\"declaredSemanticVersion\":\"V1\",\"evidenceIds\":[\"RUN-MSVJWKPO-002-E01\",\"RUN-MSVJWKPO-002-E02\",\"RUN-MSVJWKPO-002-E03\",\"RUN-MSVJWKPO-002-E04\",\"RUN-MSVJWKPO-002-E05\",\"RUN-MSVJWKPO-002-E06\",\"RUN-MSVJWKPO-002-E07\",\"RUN-MSVJWKPO-002-E08\",\"RUN-MSVJWKPO-002-E09\",\"RUN-MSVJWKPO-002-E10\",\"RUN-MSVJWKPO-002-E11\",\"RUN-MSVJWKPO-002-E12\",\"RUN-MSVJWKPO-002-E13\",\"RUN-MSVJWKPO-002-E14\",\"RUN-MSVJWKPO-002-E15\",\"RUN-MSVJWKPO-002-E16\",\"RUN-MSVJWKPO-002-E17\",\"RUN-MSVJWKPO-002-E18\",\"RUN-MSVJWKPO-002-E19\",\"RUN-MSVJWKPO-002-E20\",\"RUN-MSVJWKPO-002-E21\",\"RUN-MSVJWKPO-002-E22\",\"RUN-MSVJWKPO-002-E23\",\"RUN-MSVJWKPO-002-E24\"],\"fingerprint\":null,\"freshness\":\"截至 2025-12-31\",\"quality\":\"通过\",\"ruleEvidenceId\":\"RUN-MSVJWKPO-002-E03\",\"semanticVersion\":\"V1\",\"semanticVersionId\":\"semantic-MSVJM48O-VJC6\",\"snapshotId\":\"RUN-MSVJWKPO-002-RESULT\",\"t019EvidenceCode\":\"EV-MSVJSKDO-4YNV\",\"trustReadAt\":null,\"trustSnapshot\":null},\"metric\":{\"evaluatedAt\":\"2026-08-16 08:36:42\",\"evidenceRefs\":null,\"explanation\":\"命中\",\"id\":\"MET-SHORT-TERM-DEBT-RATIO\",\"name\":\"短期债务余额占比\",\"resultVersion\":null,\"scope\":\"单位561\",\"snapshot\":null,\"unit\":null,\"value\":\"实际 93.545 / 阈值 30.000%\"},\"navigation\":{\"filter\":null,\"returnPosition\":null,\"returnRoute\":null},\"requestId\":\"AR-RUN-MSVJWKPO-002-UNIT-561\",\"rule\":{\"branch\":\"短期债务集中\",\"code\":null,\"evaluatedAt\":\"2026-08-16 08:36:42\",\"evaluationId\":null,\"evidence\":null,\"hitEvidence\":\"实际 93.545 / 阈值 30.000\",\"id\":\"RULE-SHORT-TERM-DEBT-CONCENTRATION\",\"name\":\"短期债务集中\",\"publishedSemanticVersion\":\"V1\",\"resultVersion\":null,\"version\":\"V1\"},\"scenario\":\"集团融资成本与债务结构优化\",\"scenarioContext\":{\"formedAt\":\"2026-08-16T08:17:48.567Z\",\"scenarioId\":\"S001\",\"scenarioRunId\":\"S001-RUN-20260816081748567-705ac89fb83a\",\"scenarioVersion\":\"S001-v1\",\"source\":\"C008 权威投影\",\"status\":\"active\"},\"source\":{\"initiator\":null,\"record\":null,\"ref\":\"智能问数运行 RUN-MSVJWKPO-002\",\"requestTime\":\"2026-08-16 08:37:42\",\"requester\":\"智能问数\",\"requesterId\":null,\"scene\":null,\"type\":\"qa\",\"typeLabel\":null},\"subject\":{\"id\":\"UNIT-561\",\"name\":\"单位561\",\"objectType\":null},\"targets\":{\"banks\":[{\"balance\":\"5.860亿元\",\"contribution\":\"优先级 1\",\"id\":\"INST-031\",\"loanCount\":2,\"name\":\"同州银行\",\"note\":\"机构稳定身份 INST-031 · 11 笔融资 · 短期余额最高\"},{\"balance\":\"4.320亿元\",\"contribution\":\"优先级 2\",\"id\":\"INST-032\",\"loanCount\":1,\"name\":\"星河银行\",\"note\":\"机构稳定身份 INST-032 · 9 笔融资 · 半年内到期集中\"},{\"balance\":\"3.180亿元\",\"contribution\":\"优先级 3\",\"id\":\"INST-033\",\"loanCount\":1,\"name\":\"恒信银行\",\"note\":\"机构稳定身份 INST-033 · 8 笔融资 · 续作窗口临近\"}],\"candidateLoans\":null,\"loanCount\":4,\"loans\":[{\"balance\":\"见固定证据\",\"bank\":\"同州银行\",\"id\":\"LOAN-561-043\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"同州银行\",\"id\":\"LOAN-561-038\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"星河银行\",\"id\":\"LOAN-561-024\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"},{\"balance\":\"见固定证据\",\"bank\":\"恒信银行\",\"id\":\"LOAN-561-016\",\"rate\":\"见固定证据\",\"type\":\"融资借据\"}],\"preferredInstitutions\":null}}",
+      "outcome": "accepted",
+      "status": "请求已接收",
+      "reason": "当前摘要证据完整，未登记硬质量失败，且本页面会话已重新读取本体正式采用证据",
+      "requestRef": "AR-RUN-MSVJWKPO-002-UNIT-561",
+      "reminderRef": "DR-RUN-MSVJWKPO-002-UNIT-561",
+      "taskRef": null,
+      "traceRef": "TR-RUN-MSVJWKPO-002-UNIT-561"
+    }
+  ],
+  "auditHistory": [],
+  "aiSummaries": {
+    "workbench": {
+      "scope": "决策工作台",
+      "status": "idle",
+      "summary": null,
+      "filterSnapshot": null,
+      "dataCutoff": null,
+      "generatedAt": null,
+      "sourceRevision": null,
+      "attempts": 0,
+      "error": null,
+      "needsRefresh": false
+    },
+    "operationsOverview": {
+      "scope": "决策运营概览",
+      "status": "idle",
+      "summary": null,
+      "filterSnapshot": null,
+      "dataCutoff": null,
+      "generatedAt": null,
+      "sourceRevision": null,
+      "attempts": 0,
+      "error": null,
+      "needsRefresh": false
+    }
+  },
+  "pageStates": {
+    "workbench": {
+      "status": "ready",
+      "partial": false,
+      "error": null,
+      "lastSuccessfulAt": null,
+      "recoverable": true,
+      "restoreContext": {
+        "view": "reminders",
+        "search": "",
+        "source": "all",
+        "status": "all",
+        "layout": "list",
+        "scrollTop": 0
+      }
+    },
+    "taskWork": {
+      "status": "ready",
+      "partial": false,
+      "error": null,
+      "lastSuccessfulAt": null,
+      "recoverable": true,
+      "restoreContext": {
+        "owner": "all",
+        "status": "all",
+        "sort": "dueDate",
+        "scrollTop": 0
+      }
+    },
+    "operationsOverview": {
+      "status": "ready",
+      "partial": false,
+      "error": null,
+      "lastSuccessfulAt": null,
+      "recoverable": true,
+      "restoreContext": {
+        "timeRange": "all",
+        "source": "all",
+        "subject": "all",
+        "scrollTop": 0
+      }
+    }
+  },
+  "activity": [
+    {
+      "time": "2026-09-08 08:10:29",
+      "label": "C017 人工确认门硬失败拒绝",
+      "detail": "环保测试公司2 · 表单内容未提交",
+      "scenarioContext": {
+        "scenarioId": "PORTFOLIO",
+        "scenarioVersion": "v1.1.0-rc.3",
+        "scenarioRunId": "PORTFOLIO-RUN-CURRENT",
+        "formedAt": "2026-08-22T00:00:00.000Z",
+        "status": "active",
+        "source": "四场景组合资源注册表"
+      },
+      "requestId": "AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0",
+      "reminderId": "DR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0"
+    },
+    {
+      "time": "2026-08-17 16:38:00",
+      "label": "读取 S003 决策链结果",
+      "detail": "作为当前运行记录装入既有 1 条已由成员单位接口人确认的 Action Request、3 条待对应接口人核实的 Action Request 与 1 条负责人待办；其余亮灯预警仍在驾驶舱等待提交。",
+      "scenarioContext": {
+        "scenarioId": "S003",
+        "scenarioVersion": "S003-v1",
+        "scenarioRunId": "S003-RUN-20260817163000000-c02200000001",
+        "formedAt": "2026-08-17T16:30:00.000Z",
+        "status": "active",
+        "source": "S003 CP38"
+      },
+      "scenarioId": "S003",
+      "scenarioLabel": "债务风险监测"
+    },
+    {
+      "time": "2026-08-16 09:21:51",
+      "label": "负责人待办创建成功",
+      "detail": "单位553 · 融资负责人001 · 等待承接",
+      "scenarioContext": {
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+        "formedAt": "2026-08-16T08:17:48.567Z",
+        "status": "active",
+        "source": "平台入口上下文"
+      },
+      "requestId": "AR-RUN-MSVJWKPO-002-UNIT-553",
+      "reminderId": "DR-RUN-MSVJWKPO-002-UNIT-553",
+      "taskId": "TD-6872111633",
+      "scenarioId": "S001",
+      "scenarioLabel": "集团融资成本与债务结构优化"
+    },
+    {
+      "time": "2026-08-16 09:21:50",
+      "label": "人工确认已保存",
+      "detail": "单位553 · 融资负责人001",
+      "scenarioContext": {
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+        "formedAt": "2026-08-16T08:17:48.567Z",
+        "status": "active",
+        "source": "平台入口上下文"
+      },
+      "requestId": "AR-RUN-MSVJWKPO-002-UNIT-553",
+      "reminderId": "DR-RUN-MSVJWKPO-002-UNIT-553",
+      "scenarioId": "S001",
+      "scenarioLabel": "集团融资成本与债务结构优化"
+    },
+    {
+      "time": "2026-08-16 09:19:37",
+      "label": "行动申请接收并形成决策事项",
+      "detail": "单位553 · AR-RUN-MSVJWKPO-002-UNIT-553",
+      "scenarioContext": {
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+        "formedAt": "2026-08-16T08:17:48.567Z",
+        "status": "active",
+        "source": "平台入口上下文"
+      },
+      "requestId": "AR-RUN-MSVJWKPO-002-UNIT-553",
+      "reminderId": "DR-RUN-MSVJWKPO-002-UNIT-553",
+      "traceId": "TR-RUN-MSVJWKPO-002-UNIT-553",
+      "scenarioId": "S001",
+      "scenarioLabel": "集团融资成本与债务结构优化"
+    },
+    {
+      "time": "2026-08-16 08:40:13",
+      "label": "负责人待办创建成功",
+      "detail": "单位553 · 融资负责人001 · 等待承接",
+      "scenarioContext": {
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+        "formedAt": "2026-08-16T08:17:48.567Z",
+        "status": "active",
+        "source": "平台入口上下文"
+      },
+      "requestId": "AR-RUN-MSVJUDY8-001-UNIT-553",
+      "reminderId": "DR-RUN-MSVJUDY8-001-UNIT-553",
+      "taskId": "TD-6869613431",
+      "scenarioId": "S001",
+      "scenarioLabel": "集团融资成本与债务结构优化"
+    },
+    {
+      "time": "2026-08-16 08:40:12",
+      "label": "人工确认已保存",
+      "detail": "单位553 · 融资负责人001",
+      "scenarioContext": {
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+        "formedAt": "2026-08-16T08:17:48.567Z",
+        "status": "active",
+        "source": "平台入口上下文"
+      },
+      "requestId": "AR-RUN-MSVJUDY8-001-UNIT-553",
+      "reminderId": "DR-RUN-MSVJUDY8-001-UNIT-553",
+      "scenarioId": "S001",
+      "scenarioLabel": "集团融资成本与债务结构优化"
+    },
+    {
+      "time": "2026-08-16 08:39:01",
+      "label": "行动申请接收并形成决策事项",
+      "detail": "单位553 · AR-RUN-MSVJUDY8-001-UNIT-553",
+      "scenarioContext": {
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+        "formedAt": "2026-08-16T08:17:48.567Z",
+        "status": "active",
+        "source": "平台入口上下文"
+      },
+      "requestId": "AR-RUN-MSVJUDY8-001-UNIT-553",
+      "reminderId": "DR-RUN-MSVJUDY8-001-UNIT-553",
+      "traceId": "TR-RUN-MSVJUDY8-001-UNIT-553",
+      "scenarioId": "S001",
+      "scenarioLabel": "集团融资成本与债务结构优化"
+    },
+    {
+      "time": "2026-08-16 08:39:01",
+      "label": "行动申请接收并形成决策事项",
+      "detail": "单位465 · AR-RUN-MSVJWKPO-002-UNIT-465",
+      "scenarioContext": {
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+        "formedAt": "2026-08-16T08:17:48.567Z",
+        "status": "active",
+        "source": "平台入口上下文"
+      },
+      "requestId": "AR-RUN-MSVJWKPO-002-UNIT-465",
+      "reminderId": "DR-RUN-MSVJWKPO-002-UNIT-465",
+      "traceId": "TR-RUN-MSVJWKPO-002-UNIT-465",
+      "scenarioId": "S001",
+      "scenarioLabel": "集团融资成本与债务结构优化"
+    },
+    {
+      "time": "2026-08-16 08:39:01",
+      "label": "行动申请接收并形成决策事项",
+      "detail": "单位561 · AR-RUN-MSVJWKPO-002-UNIT-561",
+      "scenarioContext": {
+        "scenarioId": "S001",
+        "scenarioVersion": "S001-v1",
+        "scenarioRunId": "S001-RUN-20260816081748567-705ac89fb83a",
+        "formedAt": "2026-08-16T08:17:48.567Z",
+        "status": "active",
+        "source": "平台入口上下文"
+      },
+      "requestId": "AR-RUN-MSVJWKPO-002-UNIT-561",
+      "reminderId": "DR-RUN-MSVJWKPO-002-UNIT-561",
+      "traceId": "TR-RUN-MSVJWKPO-002-UNIT-561",
+      "scenarioId": "S001",
+      "scenarioLabel": "集团融资成本与债务结构优化"
+    }
+  ],
+  "resetAt": null,
+  "portfolioIntegrationVersion": "ofw.decision.portfolio.v3",
+  "portfolioBoundaries": {
+    "S001": "3 条 Action Request；1 条已确认并形成负责人待办",
+    "S002": "当前授权范围 0 条 Action Request / 0 条待办",
+    "S003": "CP38 既有 4 条 Action Request；1 条已确认并形成负责人待办",
+    "S004": "报告内人工复核，不进入通用行动队列"
+  },
+  "projectionCompatibility": null
+}

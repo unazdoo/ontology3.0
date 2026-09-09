@@ -1,0 +1,22 @@
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-module-task=situation]')[22m
+[2m    - locator resolved to <button type="button" data-module-id="dashboard" class="module-subnav-item " data-module-task="situation">…</button>[22m
+[2m  - attempting click action[22m
+[2m    - waiting for element to be visible, enabled and stable[22m
+
+    at /Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-composite-v1.3.0/designs/prototype-work/v1.4/tests/review-logic-format-browser.mjs:29:54 {
+  log: [
+    "  - waiting for locator('[data-module-task=situation]')",
+    '    - locator resolved to <button type="button" data-module-id="dashboard" class="module-subnav-item " data-module-task="situation">…</button>',
+    '  - attempting click action',
+    '    - waiting for element to be visible, enabled and stable'
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v22.22.0

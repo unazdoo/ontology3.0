@@ -1,0 +1,100 @@
+{
+  "returnWrongObject": {
+    "scenarioId": "S003",
+    "inputManifest": {
+      "scenarioId": "S003",
+      "scenarioContext": {
+        "scenarioId": "S003"
+      },
+      "sourceKind": "SYNTHETIC_CANDIDATE_SIMULATION",
+      "usageIntent": "STRESS",
+      "objectRef": {
+        "id": "B",
+        "title": "Object B",
+        "objectTypeRef": "BusinessObject"
+      },
+      "lensRef": {
+        "lensId": "object"
+      },
+      "seriesRef": null,
+      "timeRange": {
+        "start": "2025-01-01",
+        "end": "2025-12-31"
+      },
+      "dataVersionId": "DATA-B",
+      "ontologyVersionId": "SEM-B",
+      "objectiveId": "OBJ",
+      "objectiveRevisionId": "OBJ-REV-1",
+      "bindingRevisionId": "MB-S003-MODEL-R1",
+      "releaseId": "MREL-S003-CANDIDATE-REFERENCE"
+    },
+    "resultEnvelope": {
+      "schemaVersion": "ofw.modeling.result-envelope.v2",
+      "resultId": "M08-S003-SIMULATION-RESULT-CYCLE-00-B",
+      "runId": "M08-S003-SIMULATION-RUN-CYCLE-00-B",
+      "resultKind": "SIMULATION",
+      "useKind": "STRESS",
+      "scenario": {
+        "scenarioId": "S003"
+      },
+      "objectiveId": "OBJ",
+      "objectiveRevisionId": "OBJ-REV-1",
+      "bindingRevisionId": "MB-S003-MODEL-R1",
+      "releaseId": "MREL-S003-CANDIDATE-REFERENCE",
+      "dataVersionId": "DATA-B",
+      "semanticContractVersionId": "SEM-B",
+      "formedAt": "2026-09-05T01:42:18.067Z",
+      "subjectRefs": [
+        {
+          "id": "B",
+          "title": "Object B",
+          "objectTypeRef": "BusinessObject"
+        }
+      ],
+      "subjects": [
+        {
+          "subjectId": "B",
+          "subjectName": "Object B",
+          "subjectType": "BusinessObject",
+          "score": 73,
+          "confidence": "HIGH",
+          "missingReasons": [],
+          "evidenceRefs": [
+            "RESULT-A",
+            "DATA-B",
+            "SEM-B"
+          ]
+        }
+      ],
+      "inputSnapshot": {
+        "scenarioId": "S003",
+        "scenarioContext": {
+          "scenarioId": "S003"
+        },
+        "dataVersionId": "DATA-B",
+        "ontologyVersionId": "SEM-B",
+        "timeRange": {
+          "start": "2025-01-01",
+          "end": "2025-12-31"
+        }
+      },
+      "fixtureId": "S003-SYNTHETIC-RESEARCH-v1",
+      "inputClassification": "SYNTHETIC_RESEARCH_ONLY",
+      "containsSourceBusinessValues": false,
+      "factWriteAllowed": false,
+      "actionWriteAllowed": false,
+      "actionSourceAllowed": false,
+      "sideEffectsEmitted": 0
+    },
+    "simulationRunId": "M08-S003-SIMULATION-RUN-CYCLE-00-B",
+    "simulationResultId": "M08-S003-SIMULATION-RESULT-CYCLE-00-B",
+    "simulationStatus": "SUCCEEDED",
+    "sideEffectsEmitted": 0,
+    "completedAt": "2026-09-05T01:42:18.067Z"
+  },
+  "wrongVersionMetrics": {
+    "prAuc": 0.8
+  },
+  "nullAsZero": 0,
+  "unitLoss": "40%"
+}

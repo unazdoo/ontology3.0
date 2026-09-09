@@ -1,0 +1,75 @@
+/* Embedded presentation is shared by the initial HTML and the host fallback. */
+html[data-ofw-embedded-module],
+html[data-ofw-embedded-module] body {
+  width: 100% !important;
+  height: 100% !important;
+}
+html[data-ofw-embedded-module] body { overflow: hidden !important; }
+
+/* Reports, models and dashboards own document scrolling; other modules own panes. */
+html:is([data-ofw-embedded-module="report"], [data-ofw-embedded-module="modeling"], [data-ofw-embedded-module="dashboard"]),
+html:is([data-ofw-embedded-module="report"], [data-ofw-embedded-module="modeling"], [data-ofw-embedded-module="dashboard"]) body {
+  min-height: 100% !important;
+  height: auto !important;
+}
+html:is([data-ofw-embedded-module="report"], [data-ofw-embedded-module="modeling"], [data-ofw-embedded-module="dashboard"]) {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+html:is([data-ofw-embedded-module="report"], [data-ofw-embedded-module="modeling"], [data-ofw-embedded-module="dashboard"]) body {
+  overflow: visible !important;
+}
+
+/* Navigation already provided by the host stays out of the embedded layout. */
+html[data-ofw-embedded-module] :is([data-portfolio-filter], label.portfolio-filter),
+html[data-ofw-embedded-module] .app-shell > :is(.platform-rail, .product-nav),
+html[data-ofw-embedded-module] .app-workspace > .topbar,
+html[data-ofw-embedded-module="decision"] .decision-app > :is(.app-rail, .product-nav),
+html[data-ofw-embedded-module="decision"] .decision-app > .app-workspace > .app-topbar,
+html[data-ofw-embedded-module="agent"] .app-shell > .workspace > .topbar,
+html[data-ofw-embedded-module="report"] .module-nav,
+html[data-ofw-embedded-module="modeling"] :is(.center-nav, .center-mobile-select),
+html[data-ofw-embedded-module="dashboard"] .dashboard-shell > :is(.platform-rail, .global-nav, .topbar),
+html[data-ofw-embedded-module="dashboard"] .app-shell > .topbar,
+html[data-ofw-embedded-module="m07"] .app-bar > :is(.brand-lockup, .mode-switch) {
+  display: none !important;
+}
+
+html:is([data-ofw-embedded-module="data"], [data-ofw-embedded-module="ontology"], [data-ofw-embedded-module="query"], [data-ofw-embedded-module="agent"], [data-ofw-embedded-module="report"]) .app-shell,
+html[data-ofw-embedded-module="modeling"] .center-layout,
+html[data-ofw-embedded-module="decision"] .decision-app {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+html[data-ofw-embedded-module="query"] .app-shell,
+html[data-ofw-embedded-module="decision"] .decision-app {
+  grid-template-rows: minmax(0, 1fr) !important;
+}
+html:is([data-ofw-embedded-module="data"], [data-ofw-embedded-module="ontology"], [data-ofw-embedded-module="query"]) .app-shell > .app-workspace,
+html[data-ofw-embedded-module="decision"] .decision-app > .app-workspace,
+html[data-ofw-embedded-module="agent"] .app-shell > .workspace {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  grid-template-rows: minmax(0, 1fr) !important;
+}
+html[data-ofw-embedded-module="report"] .app-shell > .app-workspace {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+html[data-ofw-embedded-module="modeling"] .center-main {
+  padding: 18px 20px 48px !important;
+}
+
+/* Object exploration retains its useful analysis toolbar. */
+html[data-ofw-embedded-module="m07"] { --app-bar-height: 50px !important; }
+html[data-ofw-embedded-module="m07"] .app-bar {
+  grid-template-columns: minmax(0, 1fr) !important;
+  padding-inline: 12px !important;
+}
+html[data-ofw-embedded-module="m07"] .app-actions {
+  grid-column: 1 !important;
+  justify-self: end !important;
+}
+html[data-ofw-embedded-module="m07"] .explorer-app {
+  grid-template-rows: 50px minmax(0, 1fr) !important;
+}
