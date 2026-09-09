@@ -42,7 +42,7 @@
       core: "探索 · 问数 · 模型",
       entries: Object.freeze([
         Object.freeze({ label: "发现业务对象", detail: "搜索对象类型、对象集和已保存探索", moduleId: "m07", taskId: "discover", icon: "search" }),
-        Object.freeze({ label: "探索工作台", detail: "联动关系、时序、地图和对比", moduleId: "m07", taskId: "explore", icon: "scan-search" }),
+        Object.freeze({ label: "对象全景", detail: "了解业务情况、判断依据和办理进展", moduleId: "m07", taskId: "explore", icon: "scan-search" }),
         Object.freeze({ label: "智能问数", detail: "获得结论、证据和可继续处理的对象", moduleId: "query", taskId: "ask", icon: "message-square-text" }),
         Object.freeze({ label: "模型目标", detail: "查看业务问题、模型组合与当前状态", moduleId: "modeling", taskId: "objectives", icon: "target" }),
         Object.freeze({ label: "评测与差异", detail: "固定两个版本进行同口径比较", moduleId: "modeling", taskId: "compare", icon: "chart-no-axes-combined" })
@@ -99,7 +99,7 @@
     ]),
     m07: Object.freeze([
       Object.freeze({ id: "discover", label: "对象发现", icon: "search", hash: "#discover" }),
-      Object.freeze({ id: "explore", label: "探索工作台", icon: "scan-search", hash: "#explore" })
+      Object.freeze({ id: "explore", label: "对象全景", icon: "scan-search", hash: "#explore" })
     ]),
     modeling: Object.freeze([
       Object.freeze({ id: "objectives", label: "目标目录", icon: "target", hash: "#objectives" }),
@@ -309,6 +309,7 @@
         ${module ? `<nav class="top-breadcrumb" aria-label="当前位置"><button type="button" data-route="#home">首页</button>${icon("chevron-right", "xs")}<button type="button" data-action="module-root" data-module-id="${module.id}">${esc(currentName)}</button>${icon("chevron-right", "xs")}<strong id="frame-breadcrumb-current">${esc(currentTask)}</strong></nav>` : `<div><span>工作台</span><strong>首页</strong></div>`}
       </div>
       <div class="top-actions">
+        ${["decision", "query", "report"].includes(module?.id) && sessionStorage.getItem("ofw.m07.business-return") ? `<button class="button" data-action="return-business-overview">返回业务全景</button>` : ""}
         <button class="top-action" type="button" data-action="open-catalog" title="搜索业务资源" aria-label="搜索业务资源">${icon("search", "sm")}</button>
         <button class="top-action" type="button" data-action="open-recent" title="最近工作" aria-label="最近工作">${icon("history", "sm")}</button>
         ${module ? `<button class="top-action" type="button" data-action="reload-frame" title="重新读取当前模块" aria-label="重新读取当前模块">${icon("refresh-cw", "sm")}</button>` : ""}
@@ -820,7 +821,7 @@
       const doc = frame.contentDocument;
       const kicker = doc.getElementById("scenario-kicker");
       const name = doc.getElementById("scenario-name");
-      if (kicker) kicker.textContent = "业务对象探索";
+      if (kicker) kicker.textContent = "业务全景";
       if (name) name.textContent = "对象、关系与时序探索";
       doc.querySelectorAll(".selection-meta .identity-token").forEach((item) => {
         if (["场景轮次", "ObjectRef"].includes(item.querySelector("span")?.textContent.trim())) {
@@ -1369,7 +1370,7 @@
     }
     STORE.saveM08Return(payload);
     navigate("#module/m07");
-    showToast("上下文已返回", "已恢复业务对象探索的对象、视图和读取位置。", "success");
+    showToast("上下文已返回", "已恢复业务全景的对象、视图和读取位置。", "success");
   }
 
   async function runS003DashboardRecalculation(message, frame) {
@@ -1526,8 +1527,23 @@
         handleM07Open(message);
         return;
       }
+      if (renderedModuleId === "m07" && message.operation === "open-business-decision") {
+        const returnUrl = safeM07ReturnUrl(message.returnUrl, activeContext());
+        if (!returnUrl || !/^(request|task)\/[^/]+$/.test(message.route || "") || !DATA.scenarioById[message.scenarioId]) return;
+        const currentUrl = new URL(frame.contentWindow.location.href);
+        if (returnUrl.pathname !== currentUrl.pathname || returnUrl.searchParams.get("object") !== currentUrl.searchParams.get("object")) return;
+        sessionStorage.setItem("ofw.m07.business-return", returnUrl.href);
+        STORE.setActiveScenario(message.scenarioId, "m07-business-action");
+        const target = new URL(DATA.moduleById.decision.source, global.location.href);
+        target.hash = message.route;
+        STORE.saveFramePosition("decision", { href: target.href, hash: target.hash, windowY: 0, containerY: 0 });
+        navigate("#module/decision");
+        return;
+      }
       if (renderedModuleId === "m07" && message.operation === "navigate-parent-module") {
         const normalized = normalizeM07Handoff(message);
+        const businessReturn = safeM07ReturnUrl(message.returnUrl, activeContext());
+        if (businessReturn) sessionStorage.setItem("ofw.m07.business-return", businessReturn.href);
         if (STORE.get().activeScenarioId !== normalized.scenarioId) STORE.setActiveScenario(normalized.scenarioId, "m07-object-navigation");
         updateWorkspaceContext({ ...message.context, activeObjectRef: normalized.objectRef, scenarioId: normalized.scenarioId, sourceModuleId: "m07" }, "m07-navigation");
         if (message.route === "#module/report" && message.contentBlock) {
@@ -1541,6 +1557,7 @@
       if (renderedModuleId === "m07" && message.operation === "sync-breadcrumb") {
         const breadcrumb = document.getElementById("frame-breadcrumb-current");
         if (breadcrumb && message.label) breadcrumb.textContent = message.label;
+        syncSecondaryNavigation(frame, DATA.moduleById.m07);
         return;
       }
       if (renderedModuleId === "modeling" && message.type === "OFW_M08_RETURN_TO_M07") {
@@ -1732,6 +1749,15 @@
     }
     if (action === "close-drawer" && (event.target === actionButton || actionButton.closest(".resource-drawer"))) closeDrawer();
     if (action === "reload-frame") document.getElementById("module-frame")?.contentWindow?.location.reload();
+    if (action === "return-business-overview") {
+      const saved = safeM07ReturnUrl(sessionStorage.getItem("ofw.m07.business-return"), activeContext());
+      if (!saved) return;
+      const url = new URL(global.location.href);
+      url.searchParams.set("exploration", saved.href);
+      history.replaceState(history.state, "", url);
+      navigate("#module/m07");
+      return;
+    }
     if (action === "module-root") {
       const module = actionButton.dataset.moduleId === "dashboard" ? DATA.dashboard : DATA.moduleById[actionButton.dataset.moduleId];
       const frame = document.getElementById("module-frame");

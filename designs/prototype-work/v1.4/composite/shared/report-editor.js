@@ -86,6 +86,9 @@
         updateWorkspaceContext?.(block.workspaceContext || {});
         if (block.returnUrl && block.sourceModuleId === "m07") {
           global.OFW_V131_STORE?.saveFramePosition("m07", { href: block.returnUrl, hash: new URL(block.returnUrl, global.location.href).hash });
+          const shellUrl = new URL(global.location.href);
+          shellUrl.searchParams.set("exploration", block.returnUrl);
+          global.history.replaceState(global.history.state, "", shellUrl);
         }
         navigate?.(block.sourceModuleId === "dashboard" ? "#dashboard" : `#module/${block.sourceModuleId}`);
         return true;

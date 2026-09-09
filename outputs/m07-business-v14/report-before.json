@@ -1,0 +1,262 @@
+{
+  "reportId": "RPT-S003-mtuar2yv",
+  "title": "业务分析报告",
+  "formedAt": "2026-09-09T16:12:22.855Z",
+  "contentBlocks": [
+    {
+      "type": "exploration",
+      "sourceModuleId": "m07",
+      "title": "环保测试公司4 · 业务全景",
+      "text": "环保测试公司4；所选区间 2026-01-01 至 2026-08-15",
+      "resultMode": "formal",
+      "workspaceContext": {
+        "objectSetRef": {
+          "id": "object-set:m07:kxgc4l",
+          "title": "环保测试公司4",
+          "count": 1,
+          "selectionMode": "EXPLICIT",
+          "filters": null,
+          "objectIds": [
+            "ENT-020"
+          ],
+          "objectRefs": [
+            {
+              "id": "ENT-020",
+              "title": "环保测试公司4",
+              "objectTypeRef": "Enterprise",
+              "scenarioId": "S003",
+              "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+              "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+              "bindingId": "MB-S003-DEBT-RISK-v1",
+              "enterpriseId": "ENT-020",
+              "sourceObjectId": "S003-ENT-020",
+              "identityVersionId": "ENTERPRISE-MASTER-20260907-v1"
+            }
+          ]
+        },
+        "activeObjectRef": {
+          "id": "ENT-020",
+          "title": "环保测试公司4",
+          "objectTypeRef": "Enterprise",
+          "scenarioId": "S003",
+          "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+          "bindingId": "MB-S003-DEBT-RISK-v1",
+          "enterpriseId": "ENT-020",
+          "sourceObjectId": "S003-ENT-020",
+          "identityVersionId": "ENTERPRISE-MASTER-20260907-v1"
+        },
+        "timeRange": {
+          "start": "2026-01-01",
+          "end": "2026-08-15",
+          "label": "2026-01-01 至 2026-08-15"
+        },
+        "lensRef": {
+          "moduleId": "m07",
+          "lensId": "overview",
+          "route": "#explore"
+        },
+        "dataVersionRef": {
+          "id": "S003-T007-FORMAL-CANDIDATE-20251231-v1"
+        },
+        "ontologyVersionRef": {
+          "id": "SEM-S003-DEBT-RISK-v1"
+        },
+        "evidenceRefs": [
+          "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-020",
+          "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "SEM-S003-DEBT-RISK-v1",
+          "source:s001-data-js",
+          "source:s001-m01-seed",
+          "source:s001-registry",
+          "FIN-ASSET-20251231-v02",
+          "semantic-MSVJM48O-VJC6",
+          "ENTERPRISE-MASTER-20260907-v1",
+          "financing::series:s001.entity.553:balance",
+          "financing::series:s001.entity.553:cost",
+          "risk::series:S003-ENT-020:riskScore"
+        ],
+        "sourceModuleId": "m07"
+      },
+      "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+      "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+      "evidenceRefs": [
+        "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-020",
+        "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "SEM-S003-DEBT-RISK-v1",
+        "source:s001-data-js",
+        "source:s001-m01-seed",
+        "source:s001-registry",
+        "FIN-ASSET-20251231-v02",
+        "semantic-MSVJM48O-VJC6",
+        "ENTERPRISE-MASTER-20260907-v1",
+        "financing::series:s001.entity.553:balance",
+        "financing::series:s001.entity.553:cost",
+        "risk::series:S003-ENT-020:riskScore"
+      ],
+      "returnUrl": "http://127.0.0.1:4464/designs/prototype-work/v1.4/composite/modules/m07/index.html?embedded=1&resource=%2Fdesigns%2Fprototype-work%2Fv1.4%2Fcomposite%2Fmodules%2Fm07%2Fresources%2Fportfolio.json&v=20260904-02&businessScenario=S003&set=ENT-017%2CENT-020&object=ENT-020&lens=overview&from=2026-01-01&to=2026-08-15&expanded=ENT-020&series=financing%3A%3Aseries%3As001.entity.553%3Abalance%2Cfinancing%3A%3Aseries%3As001.entity.553%3Acost%2Crisk%3A%3Aseries%3AS003-ENT-020%3AriskScore&metric=%5B%22property%22%2C%22S003%3Am01.object-type.enterprise%3AriskScore%22%2C%22S003%22%2C%22SEM-S003-DEBT-RISK-v1%22%2C%22S003-T007-FORMAL-CANDIDATE-20251231-v1%22%2C%22score_0_100%22%2C%22static%22%2C%22m01.object-type.enterprise%22%2C%22%22%2C%22%22%5D#explore",
+      "rows": [
+        {
+          "name": "融资余额",
+          "value": 393.134,
+          "unit": "亿元",
+          "status": "数据截至 2025-12-31",
+          "dataVersionId": "FIN-ASSET-20251231-v02",
+          "ontologyVersionId": "semantic-MSVJM48O-VJC6",
+          "evidenceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        {
+          "name": "平均融资成本",
+          "value": 2.880984,
+          "unit": "%",
+          "status": "数据截至 2025-12-31",
+          "dataVersionId": "FIN-ASSET-20251231-v02",
+          "ontologyVersionId": "semantic-MSVJM48O-VJC6",
+          "evidenceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        {
+          "name": "融资笔数",
+          "value": 75,
+          "unit": "笔",
+          "status": "数据截至 2025-12-31",
+          "dataVersionId": "FIN-ASSET-20251231-v02",
+          "ontologyVersionId": "semantic-MSVJM48O-VJC6",
+          "evidenceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        {
+          "name": "数据截至",
+          "value": "2025-12-31",
+          "unit": "",
+          "status": "数据截至 2025-12-31",
+          "dataVersionId": "FIN-ASSET-20251231-v02",
+          "ontologyVersionId": "semantic-MSVJM48O-VJC6",
+          "evidenceRefs": [
+            "source:s001-registry"
+          ]
+        },
+        {
+          "name": "所属产业",
+          "value": "环保",
+          "unit": "",
+          "status": "数据截至 2025-12-31",
+          "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+          "evidenceRefs": [
+            "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-020",
+            "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+            "SEM-S003-DEBT-RISK-v1"
+          ]
+        },
+        {
+          "name": "风险评分",
+          "value": 23.05,
+          "unit": "分",
+          "status": "数据截至 2025-12-31",
+          "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+          "evidenceRefs": [
+            "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-020",
+            "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+            "SEM-S003-DEBT-RISK-v1"
+          ]
+        },
+        {
+          "name": "风险分档",
+          "value": "红灯",
+          "unit": "",
+          "status": "数据截至 2025-12-31",
+          "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+          "evidenceRefs": [
+            "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-020",
+            "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+            "SEM-S003-DEBT-RISK-v1"
+          ]
+        }
+      ],
+      "series": [],
+      "id": "9019c3bf-7b41-467f-b65d-1e8a2ea957ff",
+      "fingerprint": "[\"m07\",\"环保测试公司4 · 业务全景\",null,[{\"name\":\"融资余额\",\"value\":393.134,\"unit\":\"亿元\",\"status\":\"数据截至 2025-12-31\",\"dataVersionId\":\"FIN-ASSET-20251231-v02\",\"ontologyVersionId\":\"semantic-MSVJM48O-VJC6\",\"evidenceRefs\":[\"source:s001-data-js\"]},{\"name\":\"平均融资成本\",\"value\":2.880984,\"unit\":\"%\",\"status\":\"数据截至 2025-12-31\",\"dataVersionId\":\"FIN-ASSET-20251231-v02\",\"ontologyVersionId\":\"semantic-MSVJM48O-VJC6\",\"evidenceRefs\":[\"source:s001-data-js\"]},{\"name\":\"融资笔数\",\"value\":75,\"unit\":\"笔\",\"status\":\"数据截至 2025-12-31\",\"dataVersionId\":\"FIN-ASSET-20251231-v02\",\"ontologyVersionId\":\"semantic-MSVJM48O-VJC6\",\"evidenceRefs\":[\"source:s001-data-js\"]},{\"name\":\"数据截至\",\"value\":\"2025-12-31\",\"unit\":\"\",\"status\":\"数据截至 2025-12-31\",\"dataVersionId\":\"FIN-ASSET-20251231-v02\",\"ontologyVersionId\":\"semantic-MSVJM48O-VJC6\",\"evidenceRefs\":[\"source:s001-registry\"]},{\"name\":\"所属产业\",\"value\":\"环保\",\"unit\":\"\",\"status\":\"数据截至 2025-12-31\",\"dataVersionId\":\"S003-T007-FORMAL-CANDIDATE-20251231-v1\",\"ontologyVersionId\":\"SEM-S003-DEBT-RISK-v1\",\"evidenceRefs\":[\"S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-020\",\"S003-T007-FORMAL-CANDIDATE-20251231-v1\",\"SEM-S003-DEBT-RISK-v1\"]},{\"name\":\"风险评分\",\"value\":23.05,\"unit\":\"分\",\"status\":\"数据截至 2025-12-31\",\"dataVersionId\":\"S003-T007-FORMAL-CANDIDATE-20251231-v1\",\"ontologyVersionId\":\"SEM-S003-DEBT-RISK-v1\",\"evidenceRefs\":[\"S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-020\",\"S003-T007-FORMAL-CANDIDATE-20251231-v1\",\"SEM-S003-DEBT-RISK-v1\"]},{\"name\":\"风险分档\",\"value\":\"红灯\",\"unit\":\"\",\"status\":\"数据截至 2025-12-31\",\"dataVersionId\":\"S003-T007-FORMAL-CANDIDATE-20251231-v1\",\"ontologyVersionId\":\"SEM-S003-DEBT-RISK-v1\",\"evidenceRefs\":[\"S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-020\",\"S003-T007-FORMAL-CANDIDATE-20251231-v1\",\"SEM-S003-DEBT-RISK-v1\"]}],\"环保测试公司4；所选区间 2026-01-01 至 2026-08-15\",{\"objectSetRef\":{\"id\":\"object-set:m07:kxgc4l\",\"title\":\"环保测试公司4\",\"count\":1,\"selectionMode\":\"EXPLICIT\",\"filters\":null,\"objectIds\":[\"ENT-020\"],\"objectRefs\":[{\"id\":\"ENT-020\",\"title\":\"环保测试公司4\",\"objectTypeRef\":\"Enterprise\",\"scenarioId\":\"S003\",\"dataVersionId\":\"S003-T007-FORMAL-CANDIDATE-20251231-v1\",\"ontologyVersionId\":\"SEM-S003-DEBT-RISK-v1\",\"bindingId\":\"MB-S003-DEBT-RISK-v1\",\"enterpriseId\":\"ENT-020\",\"sourceObjectId\":\"S003-ENT-020\",\"identityVersionId\":\"ENTERPRISE-MASTER-20260907-v1\"}]},\"activeObjectRef\":{\"id\":\"ENT-020\",\"title\":\"环保测试公司4\",\"objectTypeRef\":\"Enterprise\",\"scenarioId\":\"S003\",\"dataVersionId\":\"S003-T007-FORMAL-CANDIDATE-20251231-v1\",\"ontologyVersionId\":\"SEM-S003-DEBT-RISK-v1\",\"bindingId\":\"MB-S003-DEBT-RISK-v1\",\"enterpriseId\":\"ENT-020\",\"sourceObjectId\":\"S003-ENT-020\",\"identityVersionId\":\"ENTERPRISE-MASTER-20260907-v1\"},\"timeRange\":{\"start\":\"2026-01-01\",\"end\":\"2026-08-15\",\"label\":\"2026-01-01 至 2026-08-15\"},\"lensRef\":{\"moduleId\":\"m07\",\"lensId\":\"overview\",\"route\":\"#explore\"},\"dataVersionRef\":{\"id\":\"S003-T007-FORMAL-CANDIDATE-20251231-v1\"},\"ontologyVersionRef\":{\"id\":\"SEM-S003-DEBT-RISK-v1\"},\"evidenceRefs\":[\"S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-020\",\"S003-T007-FORMAL-CANDIDATE-20251231-v1\",\"SEM-S003-DEBT-RISK-v1\",\"source:s001-data-js\",\"source:s001-m01-seed\",\"source:s001-registry\",\"FIN-ASSET-20251231-v02\",\"semantic-MSVJM48O-VJC6\",\"ENTERPRISE-MASTER-20260907-v1\",\"financing::series:s001.entity.553:balance\",\"financing::series:s001.entity.553:cost\",\"risk::series:S003-ENT-020:riskScore\"],\"sourceModuleId\":\"m07\"}]",
+      "createdAt": "2026-09-09T16:12:22.855Z"
+    }
+  ],
+  "workspaceContext": {
+    "objectSetRef": {
+      "id": "object-set:m07:kxgc4l",
+      "title": "环保测试公司4",
+      "count": 1,
+      "selectionMode": "EXPLICIT",
+      "filters": null,
+      "objectIds": [
+        "ENT-020"
+      ],
+      "objectRefs": [
+        {
+          "id": "ENT-020",
+          "title": "环保测试公司4",
+          "objectTypeRef": "Enterprise",
+          "scenarioId": "S003",
+          "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+          "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+          "bindingId": "MB-S003-DEBT-RISK-v1",
+          "enterpriseId": "ENT-020",
+          "sourceObjectId": "S003-ENT-020",
+          "identityVersionId": "ENTERPRISE-MASTER-20260907-v1"
+        }
+      ]
+    },
+    "activeObjectRef": {
+      "id": "ENT-020",
+      "title": "环保测试公司4",
+      "objectTypeRef": "Enterprise",
+      "scenarioId": "S003",
+      "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+      "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+      "bindingId": "MB-S003-DEBT-RISK-v1",
+      "enterpriseId": "ENT-020",
+      "sourceObjectId": "S003-ENT-020",
+      "identityVersionId": "ENTERPRISE-MASTER-20260907-v1"
+    },
+    "timeRange": {
+      "start": "2026-01-01",
+      "end": "2026-08-15",
+      "label": "2026-01-01 至 2026-08-15"
+    },
+    "lensRef": {
+      "moduleId": "m07",
+      "lensId": "overview",
+      "route": "#explore"
+    },
+    "dataVersionRef": {
+      "id": "S003-T007-FORMAL-CANDIDATE-20251231-v1"
+    },
+    "ontologyVersionRef": {
+      "id": "SEM-S003-DEBT-RISK-v1"
+    },
+    "evidenceRefs": [
+      "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-020",
+      "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+      "SEM-S003-DEBT-RISK-v1",
+      "source:s001-data-js",
+      "source:s001-m01-seed",
+      "source:s001-registry",
+      "FIN-ASSET-20251231-v02",
+      "semantic-MSVJM48O-VJC6",
+      "ENTERPRISE-MASTER-20260907-v1",
+      "financing::series:s001.entity.553:balance",
+      "financing::series:s001.entity.553:cost",
+      "risk::series:S003-ENT-020:riskScore"
+    ],
+    "sourceModuleId": "m07"
+  },
+  "resultMode": "formal",
+  "summary": "环保测试公司4；所选区间 2026-01-01 至 2026-08-15",
+  "updatedAt": "2026-09-09T16:12:22.855Z",
+  "status": "DRAFT_READY_FOR_REVIEW"
+}

@@ -1,0 +1,643 @@
+{
+  "url": "http://127.0.0.1:4464/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html?m08ApiBase=http%3A%2F%2F127.0.0.1%3A4464%2Fmodel-api#module/m07",
+  "viewport": {
+    "width": 320,
+    "height": 844
+  },
+  "frames": [
+    {
+      "url": "http://127.0.0.1:4464/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html?m08ApiBase=http%3A%2F%2F127.0.0.1%3A4464%2Fmodel-api#module/m07",
+      "text": "首页\n数据\n本体\n问数\n决策\nAgent\n报告\n探索\n模型\n驾驶舱\n模型服务已连接\nv1.4 · 本地原型\n业务全景\n对象全景\n对象发现\n对象全景",
+      "controls": [
+        {
+          "tag": "BUTTON",
+          "text": "\n        \n        智财问策Ontology Financial World\n      ",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "toggle-navigation"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "首页",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#home",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "数据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/data",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "本体",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/ontology",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "问数",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/query",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "决策",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/decision",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Agent",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/agent",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "报告",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/report",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "探索",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/m07",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "模型",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/modeling",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "驾驶舱",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#dashboard",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "模型服务已连接",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "retry-service",
+            "id": "service-status"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "返回",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "return"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "首页",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#home"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "业务全景",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "module-root",
+            "data-module-id": "m07"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "搜索业务资源",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "open-catalog"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "最近工作",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "open-recent"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "重新读取当前模块",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "reload-frame"
+          }
+        },
+        {
+          "tag": "SELECT",
+          "text": "对象发现\n对象全景",
+          "value": "explore",
+          "disabled": false,
+          "attrs": {
+            "data-module-task-select": "m07"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "对象发现",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "discover",
+            "data-module-id": "m07"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "对象全景",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "explore",
+            "data-module-id": "m07"
+          }
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:4464/designs/prototype-work/v1.4/composite/modules/m07/index.html?embedded=1&resource=%2Fdesigns%2Fprototype-work%2Fv1.4%2Fcomposite%2Fmodules%2Fm07%2Fresources%2Fportfolio.json&v=20260904-02&q=%E7%8E%AF%E4%BF%9D%E6%B5%8B%E8%AF%95%E5%85%AC%E5%8F%B84&businessScenario=S001&object=ENT-020&lens=overview&from=2024-12-31&to=2026-08-15&expanded=ENT-020&series=financing%3A%3Aseries%3As001.entity.553%3Abalance%2Cfinancing%3A%3Aseries%3As001.entity.553%3Acost%2Crisk%3A%3Aseries%3AS003-ENT-020%3AriskScore&metric=%5B%22property%22%2C%22S003%3Am01.object-type.enterprise%3AriskScore%22%2C%22S003%22%2C%22SEM-S003-DEBT-RISK-v1%22%2C%22S003-T007-FORMAL-CANDIDATE-20251231-v1%22%2C%22score_0_100%22%2C%22static%22%2C%22m01.object-type.enterprise%22%2C%22%22%2C%22%22%5D#explore",
+      "text": "业务视角\n债务风险\n融资分析\n业务全景\n对象目录\n环保测试公司4\n\n当前情况 · 判断依据 · 关联业务 · 办理进展\n\n企业\n环保测试公司4\n\n浙江 · 杭州 · 融资与债务风险 · 演示主体\n\n数据截至 2025-12-31\n红灯\n了解情况\n→\n理解判断\n→\n推进业务\n→\n跟踪结果\n当前业务情况\n数据与口径\n风险评分\n23.05 分\n截至 2025-12-31\n风险分档\n红灯\n截至 2025-12-31\n平均融资成本\n2.88 %\n截至 2025-12-31\n融资余额\n393.13 亿元\n截至 2025-12-31\n融资笔数\n75 笔\n截至 2025-12-31\n所属产业\n环保\n截至 2025-12-31\n查看业务关系\n查看企业分布\n选择同类对象比较\n需要关注的业务问题\n查看判断依据\nR01 · 融资成本偏高\n\n平均融资成本：2.88 %；判断条件 主体融资成本高于集团基准 0.25 个百分点，或高成本融资余额占比大于 20%（高成本阈值 2.75%）\n\n按已发布规则形成 · 数据截至 2025-12-31\n债务风险评估：红灯\n\n正式风险评分 23.05 分，按已发布风险模型分档。需结合薄弱指标开展业务跟踪。\n\n评估截至 2025-12-31\n关联业务\n5 项\n包含融资主体\n集团融资板块\n集团融资 →\n拥有融资明细\n单位553 · 融资明细集合\n融资明细 →\n由负责人承接\n负责人001\n业务负责人 →\n命中规则\nR01 · 融资成本偏高\n规则结果 →\n包含企业\n2025-12-31 债务风险评估上下文\n风险评估 →\n可采取的行动\n查看 / 办理待办 · 专项风险处置\n查看 / 办理待办 · 发起融资优化建议\n围绕此对象提问\n加入业务报告\n\n审批、分办、执行与反馈统一在决策中心办理；返回此处查看最新进展。\n\n办理进展与业务结果\n专项风险处置\n待开始\n\n责任人：环保测试公司4债务风险处置负责人 · 截止日期：2026-09-17\n\n成员单位接口人已核实红灯预警，按通用决策中心框架分办专项处置任务。\n\n来源：决策中心当前办理记录\n发起融资优化建议\n已完成\n\n责任人：融资负责人001 · 截止日期：2026-08-21\n\n优先与欧陆银行、寰宇银行、海联银行核对并协商单位553的高成本融资。\n\n办理反馈：已完成融资复核并明确下一期跟踪计划。本轮记录办理结果，融资余额和风险评分以后续正式数据更新为准。\n\n来源：决策中心当前办理记录\n\n办理状态与经营结果分别记录。成本、预算执行和风险分档以各自截至日的业务数据为准；待办完成后仍需依据后续数据评价业务效果。",
+      "controls": [
+        {
+          "tag": "BUTTON",
+          "text": "\n          对象发现\n        ",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "discover"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "\n          对象全景\n        ",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "explore"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "复制当前链接",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "id": "copy-link"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "保存探索",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "id": "save-exploration"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "已保存探索",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "id": "open-saved-explorations"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "id": "continue-analysis"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "清除",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "id": "clear-filters"
+          }
+        },
+        {
+          "tag": "INPUT",
+          "text": "搜索企业、预算、产品或负责人",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "id": "object-search"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "清除搜索",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "id": "clear-search"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "清除选择",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "id": "clear-selection"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "\n              进入对象全景\n            ",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "id": "explore-selection"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "discover"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "当前对象集1 个对象",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-open-mobile": "path"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "当前对象环保测试公司4",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-open-mobile": "inspector"
+          }
+        },
+        {
+          "tag": "SELECT",
+          "text": "债务风险\n融资分析",
+          "value": "S001",
+          "disabled": false,
+          "attrs": {
+            "data-enterprise-domain": ""
+          }
+        },
+        {
+          "tag": "INPUT",
+          "text": "",
+          "value": "2024-12-31",
+          "disabled": false,
+          "attrs": {
+            "id": "context-time-start"
+          }
+        },
+        {
+          "tag": "INPUT",
+          "text": "",
+          "value": "2026-08-15",
+          "disabled": false,
+          "attrs": {
+            "id": "context-time-end"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "打开对象集",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-open-mobile": "path"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "打开对象详情",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-open-mobile": "inspector"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "业务全景",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-lens": "overview"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "对象目录",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-lens": "catalog"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "关闭",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-close-mobile": ""
+          }
+        },
+        {
+          "tag": "INPUT",
+          "text": "在对象集中查找",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "id": "path-search"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "清除",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-clear-path-search": ""
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "环保测试公司4企业红灯",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-set-active": "ENT-020"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "调整对象范围",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "discover"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "了解情况",
+          "attrs": {
+            "href": "#business-facts"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "理解判断",
+          "attrs": {
+            "href": "#business-findings"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "推进业务",
+          "attrs": {
+            "href": "#business-actions"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "跟踪结果",
+          "attrs": {
+            "href": "#business-progress"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "数据与口径",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-business-basis": ""
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看业务关系",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-business-lens": "graph"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看企业分布",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-business-lens": "spatial"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "选择同类对象比较",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-business-lens": "compare"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看判断依据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-business-basis": ""
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "包含融资主体\n集团融资板块\n集团融资 →",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-business-related": "financing::s001.group"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "拥有融资明细\n单位553 · 融资明细集合\n融资明细 →",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-business-related": "financing::s001.loanbook.553"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "由负责人承接\n负责人001\n业务负责人 →",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-business-related": "financing::s001.owner.001"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "命中规则\nR01 · 融资成本偏高\n规则结果 →",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-business-related": "financing::s001.rule.r01.553"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "包含企业\n2025-12-31 债务风险评估上下文\n风险评估 →",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-business-related": "risk::S003-ASSESSMENT-20251231"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看 / 办理待办 · 专项风险处置",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-business-action": "AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.1.0"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看 / 办理待办 · 发起融资优化建议",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-business-action": "AR-RUN-MSVJWKPO-002-UNIT-553"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "围绕此对象提问",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-navigate-module": "query"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "加入业务报告",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-navigate-module": "report"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "关闭",
+          "value": "cancel",
+          "disabled": false,
+          "attrs": {}
+        },
+        {
+          "tag": "INPUT",
+          "text": "",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "id": "exploration-name"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "取消",
+          "value": "cancel",
+          "disabled": false,
+          "attrs": {}
+        },
+        {
+          "tag": "BUTTON",
+          "text": "保存",
+          "value": "default",
+          "disabled": false,
+          "attrs": {}
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

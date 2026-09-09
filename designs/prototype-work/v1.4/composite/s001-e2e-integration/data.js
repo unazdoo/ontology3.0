@@ -72,7 +72,7 @@
     {
       id: "m07",
       ownerId: "M07",
-      name: "业务对象探索",
+      name: "业务全景",
       short: "探索",
       icon: "scan-search",
       route: "#module/m07",

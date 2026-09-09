@@ -87,12 +87,15 @@ test("all original modules, five domains and resource content are inherited with
                 source: original.modules.find((item) => item.id === "ontology")
                   .source,
               }
-            : module,
+            : module.id === "m07"
+              ? { ...module, name: original.modules.find(item => item.id === "m07").name }
+              : module,
         ),
       ),
     ),
     JSON.parse(JSON.stringify(original.modules)),
   );
+  assert.equal(current.modules.find(item => item.id === "m07").name, "业务全景");
   assert.equal(
     current.modules.find((item) => item.id === "ontology").source,
     "../ontology/index.html?v=20260907-01",
