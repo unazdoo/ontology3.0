@@ -1,0 +1,139 @@
+{
+  "saved": [
+    {
+      "id": "EXP-MTTLN4HZ",
+      "name": "独立审查-环保2企与关联负责人",
+      "savedAt": "2026-09-09T04:29:27.815Z",
+      "route": "explore",
+      "lens": "spatial",
+      "selectedIds": [
+        "ENT-020",
+        "ENT-017",
+        "financing::s001.owner.001"
+      ],
+      "activeId": "financing::s001.owner.001",
+      "timeRange": {
+        "start": "2024-12-31",
+        "end": "2026-08-15",
+        "label": "2024-12-31 至 2026-08-15"
+      },
+      "objectTab": "evidence",
+      "graphExpanded": [
+        "ENT-020",
+        "financing::s001.loanbook.553"
+      ],
+      "timelineSeriesIds": [
+        "financing::series:s001.entity.553:balance",
+        "financing::series:s001.entity.553:cost",
+        "risk::series:S003-ENT-020:riskScore"
+      ],
+      "compareChart": "bar",
+      "compareMetric": "property:riskScore:score_0_100",
+      "compareLimit": 8,
+      "mapZoom": 1.003,
+      "mapLinks": true,
+      "graphSelectedId": "financing::s001.owner.001",
+      "graphTransform": {
+        "x": 0,
+        "y": 0,
+        "k": 1
+      },
+      "objectSetRef": {
+        "id": "object-set:m07:1crmdac",
+        "title": "已选 3 个对象",
+        "count": 3,
+        "selectionMode": "EXPLICIT",
+        "filters": null,
+        "objectIds": [
+          "ENT-020",
+          "ENT-017",
+          "s001.owner.001"
+        ],
+        "objectRefs": [
+          {
+            "id": "ENT-020",
+            "title": "环保测试公司4",
+            "objectTypeRef": "Enterprise",
+            "scenarioId": "S003",
+            "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+            "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+            "bindingId": "MB-S003-DEBT-RISK-v1",
+            "enterpriseId": "ENT-020",
+            "sourceObjectId": "S003-ENT-020",
+            "identityVersionId": "ENTERPRISE-MASTER-20260907-v1"
+          },
+          {
+            "id": "ENT-017",
+            "title": "环保测试公司1",
+            "objectTypeRef": "Enterprise",
+            "scenarioId": "S003",
+            "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+            "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+            "bindingId": "MB-S003-DEBT-RISK-v1",
+            "enterpriseId": "ENT-017",
+            "sourceObjectId": "S003-ENT-017",
+            "identityVersionId": "ENTERPRISE-MASTER-20260907-v1"
+          },
+          {
+            "id": "s001.owner.001",
+            "title": "负责人001",
+            "objectTypeRef": "m01.object-type.financing-owner",
+            "scenarioId": "S001",
+            "dataVersionId": "FIN-ASSET-20251231-v02",
+            "ontologyVersionId": "semantic-MSVJM48O-VJC6",
+            "bindingId": "T019-S001-v1"
+          }
+        ]
+      },
+      "filters": {
+        "search": "环保",
+        "typeFilter": "m01.object-type.enterprise",
+        "quality": "all"
+      },
+      "businessScenario": "S003"
+    }
+  ],
+  "link": "http://127.0.0.1:4434/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html?exploration=%2Fdesigns%2Fprototype-work%2Fv1.4%2Fcomposite%2Fmodules%2Fm07%2Findex.html%3Fembedded%3D1%26resource%3D%252Fdesigns%252Fprototype-work%252Fv1.4%252Fcomposite%252Fmodules%252Fm07%252Fresources%252Fportfolio.json%26v%3D20260904-02%26q%3D%25E7%258E%25AF%25E4%25BF%259D%26businessScenario%3DS003%26type%3Dm01.object-type.enterprise%26set%3DENT-020%252CENT-017%252Cfinancing%253A%253As001.owner.001%26object%3Dfinancing%253A%253As001.owner.001%26lens%3Dspatial%26from%3D2024-12-31%26to%3D2026-08-15%26tab%3Devidence%26expanded%3DENT-020%252Cfinancing%253A%253As001.loanbook.553%26series%3Dfinancing%253A%253Aseries%253As001.entity.553%253Abalance%252Cfinancing%253A%253Aseries%253As001.entity.553%253Acost%252Crisk%253A%253Aseries%253AS003-ENT-020%253AriskScore%26metric%3Dproperty%253AriskScore%253Ascore_0_100%26mapZoom%3D1.00%23explore&m08ApiBase=http%3A%2F%2F127.0.0.1%3A4434%2Fmodel-api#module/m07",
+  "state": {
+    "route": "explore",
+    "businessScenario": "S003",
+    "lens": "spatial",
+    "search": "环保",
+    "typeFilter": "m01.object-type.enterprise",
+    "quality": "all",
+    "selectedIds": [
+      "ENT-020",
+      "ENT-017",
+      "financing::s001.owner.001"
+    ],
+    "activeId": "financing::s001.owner.001",
+    "previewId": "financing::s001.owner.001",
+    "timeRange": {
+      "start": "2024-12-31",
+      "end": "2026-08-15",
+      "label": "2024-12-31 至 2026-08-15"
+    },
+    "objectTab": "evidence",
+    "graphExpanded": [
+      "ENT-020",
+      "financing::s001.loanbook.553"
+    ],
+    "graphSelectedId": "financing::s001.owner.001",
+    "graphTransform": {
+      "x": 0,
+      "y": 0,
+      "k": 1
+    },
+    "timelineSeriesIds": [
+      "financing::series:s001.entity.553:balance",
+      "financing::series:s001.entity.553:cost",
+      "risk::series:S003-ENT-020:riskScore"
+    ],
+    "compareChart": "bar",
+    "compareMetric": "property:riskScore:score_0_100",
+    "compareLimit": 8,
+    "mapZoom": 1.003,
+    "mapLinks": true,
+    "pathSearch": ""
+  }
+}

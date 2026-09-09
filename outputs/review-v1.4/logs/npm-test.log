@@ -1,0 +1,793 @@
+
+> ontology-financial-workbench-v14@1.4.0 test
+> node --test tests/*.test.mjs composite/tests/*.test.mjs
+
+TAP version 13
+# Subtest: 21 unique enterprise objects replace the three duplicate financing nodes
+ok 1 - 21 unique enterprise objects replace the three duplicate financing nodes
+  ---
+  duration_ms: 3.840875
+  type: 'test'
+  ...
+# Subtest: all financing, model, decision and risk aliases resolve to the same enterprise
+ok 2 - all financing, model, decision and risk aliases resolve to the same enterprise
+  ---
+  duration_ms: 5.393
+  type: 'test'
+  ...
+# Subtest: all active relationships, events and series reference existing objects after consolidation
+ok 3 - all active relationships, events and series reference existing objects after consolidation
+  ---
+  duration_ms: 0.9265
+  type: 'test'
+  ...
+# Subtest: merged financing and risk facts retain their original version and values
+ok 4 - merged financing and risk facts retain their original version and values
+  ---
+  duration_ms: 0.219541
+  type: 'test'
+  ...
+# Subtest: coordinates are distributed, in China city ranges and explicitly synthetic
+ok 5 - coordinates are distributed, in China city ranges and explicitly synthetic
+  ---
+  duration_ms: 0.701208
+  type: 'test'
+  ...
+# Subtest: no financing values are invented for enterprises without a financing source
+ok 6 - no financing values are invented for enterprises without a financing source
+  ---
+  duration_ms: 0.259625
+  type: 'test'
+  ...
+# Subtest: host selection deduplicates aliases while preserving the requested business view
+ok 7 - host selection deduplicates aliases while preserving the requested business view
+  ---
+  duration_ms: 7.455375
+  type: 'test'
+  ...
+# Subtest: model consumers match both domains through the master without changing source envelopes
+ok 8 - model consumers match both domains through the master without changing source envelopes
+  ---
+  duration_ms: 1.541166
+  type: 'test'
+  ...
+# Subtest: v1.3.0 parent directory exactly matches the anchored parent commit
+ok 9 - v1.3.0 parent directory exactly matches the anchored parent commit
+  ---
+  duration_ms: 107.134208
+  type: 'test'
+  ...
+# Subtest: v1.2.0 and v1.1.0 baselines remain unchanged
+ok 10 - v1.2.0 and v1.1.0 baselines remain unchanged
+  ---
+  duration_ms: 161.024375
+  type: 'test'
+  ...
+# Subtest: readability distinguishes regular controls, headings and technical identifiers
+ok 11 - readability distinguishes regular controls, headings and technical identifiers
+  ---
+  duration_ms: 1.703584
+  type: 'test'
+  ...
+# Subtest: small CSS fonts are raised without reducing metric values or changing visibility
+ok 12 - small CSS fonts are raised without reducing metric values or changing visibility
+  ---
+  duration_ms: 0.498834
+  type: 'test'
+  ...
+# Subtest: responsive rules retain their font expression and newly loaded sheets are handled
+ok 13 - responsive rules retain their font expression and newly loaded sheets are handled
+  ---
+  duration_ms: 0.288084
+  type: 'test'
+  ...
+# Subtest: supplementary data content is placed inside the scrolling page, never before a full-height app
+ok 14 - supplementary data content is placed inside the scrolling page, never before a full-height app
+  ---
+  duration_ms: 0.423625
+  type: 'test'
+  ...
+# Subtest: v1.4 candidate serves the local Shell and reused model runtime
+ok 15 - v1.4 candidate serves the local Shell and reused model runtime
+  ---
+  duration_ms: 315.591959
+  type: 'test'
+  ...
+# Subtest: v1.4 inherits v1.3.2 with the original frozen ancestor anchors
+ok 16 - v1.4 inherits v1.3.2 with the original frozen ancestor anchors
+  ---
+  duration_ms: 80.273041
+  type: 'test'
+  ...
+# Subtest: one Shell registers M01-M08 and the business cockpit once
+ok 17 - one Shell registers M01-M08 and the business cockpit once
+  ---
+  duration_ms: 0.946416
+  type: 'test'
+  ...
+# Subtest: homepage keeps the fixed three-domain architecture and real feature launcher
+ok 18 - homepage keeps the fixed three-domain architecture and real feature launcher
+  ---
+  duration_ms: 1.039083
+  type: 'test'
+  ...
+# Subtest: module tasks stay in the Shell with a shared horizontal cockpit layout
+ok 19 - module tasks stay in the Shell with a shared horizontal cockpit layout
+  ---
+  duration_ms: 1.640291
+  type: 'test'
+  ...
+# Subtest: WorkspaceContext remains canonical and synchronized without a global context chip
+ok 20 - WorkspaceContext remains canonical and synchronized without a global context chip
+  ---
+  duration_ms: 0.841375
+  type: 'test'
+  ...
+# Subtest: M07 provides discovery plus six shared-context lenses
+ok 21 - M07 provides discovery plus six shared-context lenses
+  ---
+  duration_ms: 10.215583
+  type: 'test'
+  ...
+# Subtest: M08 is objective-centric, generic and retains the real Python/Git drilldown
+ok 22 - M08 is objective-centric, generic and retains the real Python/Git drilldown
+  ---
+  duration_ms: 2.136583
+  type: 'test'
+  ...
+# Subtest: inherited real workspaces retain query animation, action, decision and report flows
+ok 23 - inherited real workspaces retain query animation, action, decision and report flows
+  ---
+  duration_ms: 1.293541
+  type: 'test'
+  ...
+# Subtest: candidate pages contain no redirect wrappers or background polling loops
+ok 24 - candidate pages contain no redirect wrappers or background polling loops
+  ---
+  duration_ms: 7.920083
+  type: 'test'
+  ...
+# Subtest: cross-tab state changes never force a full page reload
+ok 25 - cross-tab state changes never force a full page reload
+  ---
+  duration_ms: 0.981917
+  type: 'test'
+  ...
+# Subtest: M07 receives host context only after its resource reports ready
+ok 26 - M07 receives host context only after its resource reports ready
+  ---
+  duration_ms: 0.613833
+  type: 'test'
+  ...
+# Subtest: Dashboard switches business views without rebuilding its iframe
+ok 27 - Dashboard switches business views without rebuilding its iframe
+  ---
+  duration_ms: 2.710958
+  type: 'test'
+  ...
+# Subtest: popstate, hashchange and stale frame callbacks remain guarded
+ok 28 - popstate, hashchange and stale frame callbacks remain guarded
+  ---
+  duration_ms: 4.91475
+  type: 'test'
+  ...
+# Subtest: required desktop and mobile layouts have explicit responsive rules
+ok 29 - required desktop and mobile layouts have explicit responsive rules
+  ---
+  duration_ms: 3.21725
+  type: 'test'
+  ...
+# Subtest: baseline query settings and Agent authoring routes remain reachable from the Shell
+ok 30 - baseline query settings and Agent authoring routes remain reachable from the Shell
+  ---
+  duration_ms: 4.789125
+  type: 'test'
+  ...
+# Subtest: model question history freezes the answer, result version and original object scope
+ok 31 - model question history freezes the answer, result version and original object scope
+  ---
+  duration_ms: 3.417917
+  type: 'test'
+  ...
+# Subtest: failed and cancelled queries do not get recorded as successful conversations
+ok 32 - failed and cancelled queries do not get recorded as successful conversations
+  ---
+  duration_ms: 10.828625
+  type: 'test'
+  ...
+# Subtest: CSV preserves values and provenance while quoting delimiters and neutralizing formulas
+ok 33 - CSV preserves values and provenance while quoting delimiters and neutralizing formulas
+  ---
+  duration_ms: 1.523166
+  type: 'test'
+  ...
+# Subtest: decision projection distinguishes cancelled, failed and executing tasks
+ok 34 - decision projection distinguishes cancelled, failed and executing tasks
+  ---
+  duration_ms: 1.921791
+  type: 'test'
+  ...
+# Subtest: decision summary counts and detail filters use identical stage groups
+ok 35 - decision summary counts and detail filters use identical stage groups
+  ---
+  duration_ms: 1.876125
+  type: 'test'
+  ...
+# Subtest: task corrections take precedence over the original assignment without losing execution stage
+ok 36 - task corrections take precedence over the original assignment without losing execution stage
+  ---
+  duration_ms: 5.368208
+  type: 'test'
+  ...
+# Subtest: baseline business answers do not inherit a previously viewed model answer or model version
+ok 37 - baseline business answers do not inherit a previously viewed model answer or model version
+  ---
+  duration_ms: 2.056542
+  type: 'test'
+  ...
+# Subtest: baseline historyRuns are resolved by the selected run without falling back to a live answer
+ok 38 - baseline historyRuns are resolved by the selected run without falling back to a live answer
+  ---
+  duration_ms: 1.854375
+  type: 'test'
+  ...
+# Subtest: numeric input rejects null, empty, codes and booleans but retains zero and negatives
+ok 39 - numeric input rejects null, empty, codes and booleans but retains zero and negatives
+  ---
+  duration_ms: 3.270375
+  type: 'test'
+  ...
+# Subtest: requested result mode never falls through to another available envelope
+ok 40 - requested result mode never falls through to another available envelope
+  ---
+  duration_ms: 1.549416
+  type: 'test'
+  ...
+# Subtest: explicit current object, object set and all scopes are respected
+ok 41 - explicit current object, object set and all scopes are respected
+  ---
+  duration_ms: 3.2105
+  type: 'test'
+  ...
+# Subtest: explicit cross-module identity mappings do not guess other objects
+ok 42 - explicit cross-module identity mappings do not guess other objects
+  ---
+  duration_ms: 0.8365
+  type: 'test'
+  ...
+# Subtest: report snapshot retains exact result and model provenance without promoting null values
+ok 43 - report snapshot retains exact result and model provenance without promoting null values
+  ---
+  duration_ms: 1.154833
+  type: 'test'
+  ...
+# Subtest: report writes are idempotent, editable and isolated from older versions
+ok 44 - report writes are idempotent, editable and isolated from older versions
+  ---
+  duration_ms: 3.549458
+  type: 'test'
+  ...
+# Subtest: explicit target switch clears incompatible selection atomically and keeps target identity
+ok 45 - explicit target switch clears incompatible selection atomically and keeps target identity
+  ---
+  duration_ms: 4.357708
+  type: 'test'
+  ...
+# Subtest: metric lookup matches the selected version and never another version of the same model
+ok 46 - metric lookup matches the selected version and never another version of the same model
+  ---
+  duration_ms: 3.025292
+  type: 'test'
+  ...
+# Subtest: metric formatting uses metric types, not the magnitude of a value
+ok 47 - metric formatting uses metric types, not the magnitude of a value
+  ---
+  duration_ms: 1.001958
+  type: 'test'
+  ...
+# Subtest: candidate return cannot substitute simulation or another subject
+ok 48 - candidate return cannot substitute simulation or another subject
+  ---
+  duration_ms: 191.367375
+  type: 'test'
+  ...
+# Subtest: expanding both sides of a cyclic relationship terminates without duplicating nodes
+ok 49 - expanding both sides of a cyclic relationship terminates without duplicating nodes
+  ---
+  duration_ms: 14.408708
+  type: 'test'
+  ...
+# Subtest: box selection intersects rather than overwrites the original enterprise scope
+ok 50 - box selection intersects rather than overwrites the original enterprise scope
+  ---
+  duration_ms: 13.200416
+  type: 'test'
+  ...
+# Subtest: empty business/query scopes stay empty until the user explicitly shows all enterprises
+ok 51 - empty business/query scopes stay empty until the user explicitly shows all enterprises
+  ---
+  duration_ms: 160.9855
+  type: 'test'
+  ...
+# Subtest: named enterprise questions can leave the previous geographic box explicitly
+ok 52 - named enterprise questions can leave the previous geographic box explicitly
+  ---
+  duration_ms: 83.947625
+  type: 'test'
+  ...
+# Subtest: box filters persist and undo independently without deleting saved business records
+ok 53 - box filters persist and undo independently without deleting saved business records
+  ---
+  duration_ms: 0.889875
+  type: 'test'
+  ...
+# Subtest: restored box IDs are validated and deduplicated without broadening an empty scope
+ok 54 - restored box IDs are validated and deduplicated without broadening an empty scope
+  ---
+  duration_ms: 0.659708
+  type: 'test'
+  ...
+# Subtest: dataset identities, foreign keys and digest are valid
+ok 55 - dataset identities, foreign keys and digest are valid
+  ---
+  duration_ms: 7.279208
+  type: 'test'
+  ...
+# Subtest: invalid identity, dates, locations and ownership are rejected
+ok 56 - invalid identity, dates, locations and ownership are rejected
+  ---
+  duration_ms: 14.164875
+  type: 'test'
+  ...
+# Subtest: all three source financing aggregates reconcile exactly
+ok 57 - all three source financing aggregates reconcile exactly
+  ---
+  duration_ms: 6.588667
+  type: 'test'
+  ...
+# Subtest: cost is principal weighted, not average of enterprises
+ok 58 - cost is principal weighted, not average of enterprises
+  ---
+  duration_ms: 3.342375
+  type: 'test'
+  ...
+# Subtest: unique loan IDs counted once; guarantees and unused facilities not principal
+ok 59 - unique loan IDs counted once; guarantees and unused facilities not principal
+  ---
+  duration_ms: 14.398375
+  type: 'test'
+  ...
+# Subtest: empty object scope never becomes all; zero principal means no available cost
+ok 60 - empty object scope never becomes all; zero principal means no available cost
+  ---
+  duration_ms: 3.018375
+  type: 'test'
+  ...
+# Subtest: maturity window excludes asOf and includes the exact horizon endpoint
+ok 61 - maturity window excludes asOf and includes the exact horizon endpoint
+  ---
+  duration_ms: 0.868875
+  type: 'test'
+  ...
+# Subtest: facilities must remain valid through the end of the selected window
+ok 62 - facilities must remain valid through the end of the selected window
+  ---
+  duration_ms: 5.365334
+  type: 'test'
+  ...
+# Subtest: cash from a surplus enterprise cannot cancel another enterprise gap
+ok 63 - cash from a surplus enterprise cannot cancel another enterprise gap
+  ---
+  duration_ms: 4.115333
+  type: 'test'
+  ...
+# Subtest: scenario changes only scoped floating rates; input data and risk scores remain immutable
+ok 64 - scenario changes only scoped floating rates; input data and risk scores remain immutable
+  ---
+  duration_ms: 3.3505
+  type: 'test'
+  ...
+# Subtest: bank scoped scenario preserves every other bank and enterprise
+ok 65 - bank scoped scenario preserves every other bank and enterprise
+  ---
+  duration_ms: 0.621
+  type: 'test'
+  ...
+# Subtest: extension never resurrects expired or future-start loans
+ok 66 - extension never resurrects expired or future-start loans
+  ---
+  duration_ms: 1.496291
+  type: 'test'
+  ...
+# Subtest: scenario rejects data, ontology, parameters, scope and horizon mismatches
+ok 67 - scenario rejects data, ontology, parameters, scope and horizon mismatches
+  ---
+  duration_ms: 2.264333
+  type: 'test'
+  ...
+# Subtest: query preserves explicit empty and existing scopes; named aliases resolve canonical identities
+ok 68 - query preserves explicit empty and existing scopes; named aliases resolve canonical identities
+  ---
+  duration_ms: 38.432459
+  type: 'test'
+  ...
+# Subtest: query rejects unknown subjects, unsupported windows and unregistered financial requests
+ok 69 - query rejects unknown subjects, unsupported windows and unregistered financial requests
+  ---
+  duration_ms: 2.017708
+  type: 'test'
+  ...
+# Subtest: metric query does not silently narrow to enterprises with a gap
+ok 70 - metric query does not silently narrow to enterprises with a gap
+  ---
+  duration_ms: 15.742791
+  type: 'test'
+  ...
+# Subtest: selected enterprise is used only for an explicit singular reference
+ok 71 - selected enterprise is used only for an explicit singular reference
+  ---
+  duration_ms: 8.749166
+  type: 'test'
+  ...
+# Subtest: named bank returns only its actual loan exposure
+ok 72 - named bank returns only its actual loan exposure
+  ---
+  duration_ms: 3.002708
+  type: 'test'
+  ...
+# Subtest: query extracts independent rate, credit, extension and horizon parameters
+ok 73 - query extracts independent rate, credit, extension and horizon parameters
+  ---
+  duration_ms: 2.369292
+  type: 'test'
+  ...
+# Subtest: semantic threshold applies identically to query and filter rows
+ok 74 - semantic threshold applies identically to query and filter rows
+  ---
+  duration_ms: 9.451458
+  type: 'test'
+  ...
+# Subtest: task validation, deduplication and complete/reopen audit trail
+ok 75 - task validation, deduplication and complete/reopen audit trail
+  ---
+  duration_ms: 0.949667
+  type: 'test'
+  ...
+# Subtest: task requires the exact source plan identity and retains a deep snapshot
+ok 76 - task requires the exact source plan identity and retains a deep snapshot
+  ---
+  duration_ms: 0.242208
+  type: 'test'
+  ...
+# Subtest: report uses the recorded plan and cannot attach a different active plan
+ok 77 - report uses the recorded plan and cannot attach a different active plan
+  ---
+  duration_ms: 1.088917
+  type: 'test'
+  ...
+# Subtest: reports and CSV escape user controlled strings
+ok 78 - reports and CSV escape user controlled strings
+  ---
+  duration_ms: 22.158833
+  type: 'test'
+  ...
+# Subtest: store persists, restores and undoes filters without changing records
+ok 79 - store persists, restores and undoes filters without changing records
+  ---
+  duration_ms: 2.806708
+  type: 'test'
+  ...
+# Subtest: storage failure leaves a usable session and emits a persistence warning
+ok 80 - storage failure leaves a usable session and emits a persistence warning
+  ---
+  duration_ms: 0.163584
+  type: 'test'
+  ...
+# Subtest: facility drilldown uses exactly the same scenario values as enterprise credit totals
+ok 81 - facility drilldown uses exactly the same scenario values as enterprise credit totals
+  ---
+  duration_ms: 0.61225
+  type: 'test'
+  ...
+# Subtest: entity suffix boundaries and ambiguous condition groups never silently select a different scope
+ok 82 - entity suffix boundaries and ambiguous condition groups never silently select a different scope
+  ---
+  duration_ms: 1.865209
+  type: 'test'
+  ...
+# Subtest: task reassignment preserves execution status and original history
+ok 83 - task reassignment preserves execution status and original history
+  ---
+  duration_ms: 0.487417
+  type: 'test'
+  ...
+# Subtest: report evidence must match the exact result scope and horizon
+ok 84 - report evidence must match the exact result scope and horizon
+  ---
+  duration_ms: 0.340708
+  type: 'test'
+  ...
+# Subtest: risk explanation separates historical scoring from synthetic financing
+ok 85 - risk explanation separates historical scoring from synthetic financing
+  ---
+  duration_ms: 1.485583
+  type: 'test'
+  ...
+# Subtest: corrupted storage falls back; invalid historical plans cannot be active
+ok 86 - corrupted storage falls back; invalid historical plans cannot be active
+  ---
+  duration_ms: 0.556875
+  type: 'test'
+  ...
+# Subtest: geographic bounds support antimeridian crossing and include boundaries
+ok 87 - geographic bounds support antimeridian crossing and include boundaries
+  ---
+  duration_ms: 0.106917
+  type: 'test'
+  ...
+# Subtest: cross-module transfer preserves explicit empty scopes and never replaces non-enterprise objects with all enterprises
+ok 88 - cross-module transfer preserves explicit empty scopes and never replaces non-enterprise objects with all enterprises
+  ---
+  duration_ms: 1.117083
+  type: 'test'
+  ...
+# Subtest: every inherited v1.3.2 source file remains unchanged; all 45 inherited files exist
+ok 89 - every inherited v1.3.2 source file remains unchanged; all 45 inherited files exist
+  ---
+  duration_ms: 43.998
+  type: 'test'
+  ...
+# Subtest: all original modules, five domains and resource content are inherited without replacements
+not ok 90 - all original modules, five domains and resource content are inherited without replacements
+  ---
+  duration_ms: 12.534417
+  type: 'test'
+  location: '/Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-v1.4-review/designs/prototype-work/v1.4/tests/inheritance.test.mjs:64:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    ... Skipped lines
+    
+      [
+        {
+          description: '统一管理数据源、快照、管道、质量和已发布数据资产。',
+          icon: 'database',
+          id: 'data',
+    ...
+          short: '本体',
+    +     source: '../ontology/index.html?v=20260907-01'
+    -     source: '../../../../prototype-releases/v1.1.0/ontology-management-review/canvas-first/index.html?v=20260823-02'
+        },
+        {
+          description: '基于已发布业务定义回答问题，并保留版本与证据。',
+          icon: 'message-square-text',
+          id: 'query',
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0:
+      id: 'data'
+      ownerId: 'M02'
+      name: '数据工程'
+      short: '数据'
+      icon: 'database'
+      route: '#module/data'
+      source: '../../../../prototype-releases/v1.1.0/data-engineering-prototype-review/review-v3/方案B2.html?v=20260822-05'
+      rootHash: '#/resources'
+      description: '统一管理数据源、快照、管道、质量和已发布数据资产。'
+    1:
+      id: 'ontology'
+      ownerId: 'M01'
+      name: '本体管理'
+      short: '本体'
+      icon: 'network'
+      route: '#module/ontology'
+      source: '../../../../prototype-releases/v1.1.0/ontology-management-review/canvas-first/index.html?v=20260823-02'
+      rootHash: '#published'
+      description: '统一管理业务对象、关系、指标、规则、行动类型和语义版本。'
+    2:
+      id: 'query'
+      ownerId: 'M03'
+      name: '智能问数'
+      short: '问数'
+      icon: 'message-square-text'
+      route: '#module/query'
+      source: '../../../../prototype-releases/v1.1.0/intelligent-query-prototype/review-next/conversation-workspace/index.html?v=20260823-07'
+      rootHash: '#/ask'
+      description: '基于已发布业务定义回答问题，并保留版本与证据。'
+    3:
+      id: 'decision'
+      ownerId: 'M04'
+      name: '决策中心'
+      short: '决策'
+      icon: 'circle-dot-dashed'
+      route: '#module/decision'
+      source: '../../../../prototype-releases/v1.1.0/decision-center-prototype/review-v2/action-portfolio.html?prototypeBuild=20260823-15'
+      rootHash: '#workbench'
+      description: '承接受控行动申请，经人工确认后形成负责人待办。'
+    4:
+      id: 'agent'
+      ownerId: 'M05'
+      name: 'Agent 应用'
+      short: 'Agent'
+      icon: 'bot'
+      route: '#module/agent'
+      source: '../../../../prototype-releases/v1.1.0/agent-application/Agent应用.html?v=20260824-08'
+      rootHash: '#/agents'
+      description: '配置并运行受控任务，保存结果、证据与复核记录。'
+    5:
+      id: 'report'
+      ownerId: 'M06'
+      name: '报告中心'
+      short: '报告'
+      icon: 'files'
+      route: '#module/report'
+      source: '../../../../prototype-releases/v1.1.0/report-center/review-lifecycle/index.html?v=20260824-12'
+      rootHash: '#/catalog'
+      description: '统一创建、核验、发布和阅读报告及历史版本。'
+    6:
+      id: 'm07'
+      ownerId: 'M07'
+      name: '业务对象探索'
+      short: '探索'
+      icon: 'scan-search'
+      route: '#module/m07'
+      source: '../modules/m07/index.html?v=20260904-01'
+      rootHash: '#discover'
+      description: '从业务对象和对象集出发，联动关系、时序、地图、对比和证据。'
+    7:
+      id: 'modeling'
+      ownerId: 'M08'
+      resourceOwnerId: 'M08'
+      name: '模型目标与优化'
+      short: '模型'
+      icon: 'activity'
+      route: '#module/modeling'
+      source: '../model-center/index.html?v=20260904-01'
+      rootHash: '#objectives'
+      description: '围绕业务目标管理模型、代码、评测、候选观察和结果消费。'
+  actual:
+    0:
+      id: 'data'
+      ownerId: 'M02'
+      name: '数据工程'
+      short: '数据'
+      icon: 'database'
+      route: '#module/data'
+      source: '../../../../prototype-releases/v1.1.0/data-engineering-prototype-review/review-v3/方案B2.html?v=20260822-05'
+      rootHash: '#/resources'
+      description: '统一管理数据源、快照、管道、质量和已发布数据资产。'
+    1:
+      id: 'ontology'
+      ownerId: 'M01'
+      name: '本体管理'
+      short: '本体'
+      icon: 'network'
+      route: '#module/ontology'
+      source: '../ontology/index.html?v=20260907-01'
+      rootHash: '#published'
+      description: '统一管理业务对象、关系、指标、规则、行动类型和语义版本。'
+    2:
+      id: 'query'
+      ownerId: 'M03'
+      name: '智能问数'
+      short: '问数'
+      icon: 'message-square-text'
+      route: '#module/query'
+      source: '../../../../prototype-releases/v1.1.0/intelligent-query-prototype/review-next/conversation-workspace/index.html?v=20260823-07'
+      rootHash: '#/ask'
+      description: '基于已发布业务定义回答问题，并保留版本与证据。'
+    3:
+      id: 'decision'
+      ownerId: 'M04'
+      name: '决策中心'
+      short: '决策'
+      icon: 'circle-dot-dashed'
+      route: '#module/decision'
+      source: '../../../../prototype-releases/v1.1.0/decision-center-prototype/review-v2/action-portfolio.html?prototypeBuild=20260823-15'
+      rootHash: '#workbench'
+      description: '承接受控行动申请，经人工确认后形成负责人待办。'
+    4:
+      id: 'agent'
+      ownerId: 'M05'
+      name: 'Agent 应用'
+      short: 'Agent'
+      icon: 'bot'
+      route: '#module/agent'
+      source: '../../../../prototype-releases/v1.1.0/agent-application/Agent应用.html?v=20260824-08'
+      rootHash: '#/agents'
+      description: '配置并运行受控任务，保存结果、证据与复核记录。'
+    5:
+      id: 'report'
+      ownerId: 'M06'
+      name: '报告中心'
+      short: '报告'
+      icon: 'files'
+      route: '#module/report'
+      source: '../../../../prototype-releases/v1.1.0/report-center/review-lifecycle/index.html?v=20260824-12'
+      rootHash: '#/catalog'
+      description: '统一创建、核验、发布和阅读报告及历史版本。'
+    6:
+      id: 'm07'
+      ownerId: 'M07'
+      name: '业务对象探索'
+      short: '探索'
+      icon: 'scan-search'
+      route: '#module/m07'
+      source: '../modules/m07/index.html?v=20260904-01'
+      rootHash: '#discover'
+      description: '从业务对象和对象集出发，联动关系、时序、地图、对比和证据。'
+    7:
+      id: 'modeling'
+      ownerId: 'M08'
+      resourceOwnerId: 'M08'
+      name: '模型目标与优化'
+      short: '模型'
+      icon: 'activity'
+      route: '#module/modeling'
+      source: '../model-center/index.html?v=20260904-01'
+      rootHash: '#objectives'
+      description: '围绕业务目标管理模型、代码、评测、候选观察和结果消费。'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-v1.4-review/designs/prototype-work/v1.4/tests/inheritance.test.mjs:75:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: the default entry is the inherited platform, not the standalone map application
+ok 91 - the default entry is the inherited platform, not the standalone map application
+  ---
+  duration_ms: 2.84175
+  type: 'test'
+  ...
+# Subtest: joint views extend existing module task lists instead of removing originals
+ok 92 - joint views extend existing module task lists instead of removing originals
+  ---
+  duration_ms: 0.487917
+  type: 'test'
+  ...
+# Subtest: repeated joint-report sync preserves prose edited in the inherited editor
+ok 93 - repeated joint-report sync preserves prose edited in the inherited editor
+  ---
+  duration_ms: 7.831834
+  type: 'test'
+  ...
+# Subtest: all nine asset snapshots exactly match the currently consumed simulation data
+ok 94 - all nine asset snapshots exactly match the currently consumed simulation data
+  ---
+  duration_ms: 11.999917
+  type: 'test'
+  ...
+# Subtest: missing fields, duplicate primary keys and dangling references reject the snapshot
+ok 95 - missing fields, duplicate primary keys and dangling references reject the snapshot
+  ---
+  duration_ms: 10.779542
+  type: 'test'
+  ...
+# Subtest: Excel is a real complete workbook with the exact registered SHA-256 and byte length
+ok 96 - Excel is a real complete workbook with the exact registered SHA-256 and byte length
+  ---
+  duration_ms: 0.615958
+  type: 'test'
+  ...
+# Subtest: every exported Excel cell retains its value, date/percentage type, frozen headers and full record coverage
+ok 97 - every exported Excel cell retains its value, date/percentage type, frozen headers and full record coverage
+  ---
+  duration_ms: 761.439333
+  type: 'test'
+  ...
+1..97
+# tests 97
+# suites 0
+# pass 96
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1543.720666

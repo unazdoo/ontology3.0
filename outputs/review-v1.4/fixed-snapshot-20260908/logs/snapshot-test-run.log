@@ -1,0 +1,28 @@
+PASS Old situation deep links migrate to the business cockpit
+PASS Cockpit directory opens the interactive map; original five business views remain
+PASS Original asset directory supports card/list views, search and complete source registration
+PASS Asset drilldown includes all records, field definitions, search and pagination
+PASS Downloaded Excel bytes exactly match the displayed snapshot identity
+PASS HTTP failure and checksum mismatch block download and allow retry
+PASS Source snapshot contains all nine members and traceable asset relationships
+PASS Snapshot detail survives reload and returns to the cockpit with matching data digest
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+frame.waitForSelector: Timeout 12000ms exceeded.
+Call log:
+[2m  - waiting for locator('#global-map[data-map-ready=true]') to be visible[22m
+[2m    - locator resolved to visible <div id="global-map" aria-label="全球企业地图" data-choosing="false" data-map-ready="true" class="maplibregl-map">…</div>[22m
+
+    at /Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-v1.4-review/outputs/review-v1.4/fixed-snapshot-20260908/snapshot/designs/prototype-work/v1.4/tests/cockpit-snapshot-browser.mjs:304:15
+    at async check (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-v1.4-review/outputs/review-v1.4/fixed-snapshot-20260908/snapshot/designs/prototype-work/v1.4/tests/cockpit-snapshot-browser.mjs:70:3)
+    at async file:///Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-v1.4-review/outputs/review-v1.4/fixed-snapshot-20260908/snapshot/designs/prototype-work/v1.4/tests/cockpit-snapshot-browser.mjs:292:3 {
+  log: [
+    "  - waiting for locator('#global-map[data-map-ready=true]') to be visible",
+    '    - locator resolved to visible <div id="global-map" aria-label="全球企业地图" data-choosing="false" data-map-ready="true" class="maplibregl-map">…</div>'
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v22.22.0

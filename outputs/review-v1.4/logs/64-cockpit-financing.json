@@ -1,0 +1,575 @@
+{
+  "url": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html?m08ApiBase=http%3A%2F%2F127.0.0.1%3A4404%2Fmodel-api#dashboard",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "frames": [
+    {
+      "url": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html?m08ApiBase=http%3A%2F%2F127.0.0.1%3A4404%2Fmodel-api#dashboard",
+      "text": "智财问策\nOntology Financial World\n首页\n数据工程\n本体管理\n智能问数\n决策中心\nAgent 应用\n报告中心\n业务对象探索\n模型目标与优化\n经营驾驶舱\n模型服务已连接\nv1.4 · 本地原型\n首页\n经营驾驶舱\n融资管理\n管\n平台管理员\n驾驶舱目录\n融资管理\n预算监督\n债务风险\n贷前评估\n投后评价\n融资与风险态势",
+      "controls": [
+        {
+          "tag": "BUTTON",
+          "text": "智财问策\nOntology Financial World",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "toggle-navigation"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "首页",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#home",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "数据工程",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/data",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "本体管理",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/ontology",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "智能问数",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/query",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "决策中心",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/decision",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Agent 应用",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/agent",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "报告中心",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/report",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "业务对象探索",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/m07",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "模型目标与优化",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/modeling",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "经营驾驶舱",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#dashboard",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "模型服务已连接",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "retry-service",
+            "id": "service-status"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "返回",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "return"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "首页",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#home"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "经营驾驶舱",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "module-root",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "搜索业务资源",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "open-catalog"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "最近工作",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "open-recent"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "重新读取当前模块",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "reload-frame"
+          }
+        },
+        {
+          "tag": "SELECT",
+          "text": "驾驶舱目录融资管理预算监督债务风险贷前评估投后评价融资与风险态势",
+          "value": "financing",
+          "disabled": false,
+          "attrs": {
+            "data-module-task-select": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "驾驶舱目录",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "directory",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "融资管理",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "financing",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "预算监督",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "budget",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "债务风险",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "risk",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "贷前评估",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "preloan",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "投后评价",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "post-investment",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "融资与风险态势",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "situation",
+            "data-module-id": "dashboard"
+          }
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/dashboard/index.html?v=20260904-01&scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001&formedAt=2026-08-17T16%3A30%3A00.000Z&status=completed&contextCreatedAt=2026-08-17T16%3A30%3A00.000Z&contextStatus=completed&scenarioFormedAt=2026-08-17T16%3A30%3A00.000Z&scenarioStatus=completed#/view/financing/overview",
+      "text": "经营控制塔\nControl Tower\n控制塔首页\n重新读取\n业务驾驶舱\n集团融资驾驶舱\n\n从集团到板块、单位和融资机构，分析融资成本、债务结构与优化行动。\n\n结果视图\n查看融资报告\n保存当前视图\n数据范围\n融资数据 2025-12-31\n业务定义\n企业融资语义 3.8.1\n数据截至\n2025-12-31\n业务状态\n当前正式使用\n分析范围\n集团\n板块\n单位\n集团\n更新时间 2026-08-16 09:26\n数据已更新\n经营概览\n单位比较\n结构与机构\n规则与行动\n融资余额\n21,613.387\n亿元\n本期结果\n余额加权融资成本\n2.372231\n%\n集团范围\n浮动利率余额占比\n95.15\n%\n本期结构\n短期债务余额占比\n0.91\n%\n本期结构\n外币融资余额占比\n4.22\n%\n本期结构\n高成本融资余额占比\n9.86\n%\n当前规则口径\n信用融资余额占比\n34.68\n%\n本期结构\n融资成本快照\n\n当前已发布数据只提供本期结果，不展示无历史依据的趋势序列\n\n查看口径\n2.372231%\n余额加权融资成本 · 数据截至 2025-12-31\n\n趋势分析需要连续历史版本；当前工作台仅呈现本期确定性结果。\n\n债务结构\n\n当前融资余额结构\n\n查看全部\n利率结构\n浮动利率\n95.15%\n固定利率\n4.85%\n期限结构\n长期\n95.02%\n中期\n3.50%\n短期\n0.91%\n未知\n0.56%\n重点单位\n\n成本、结构和规则发现使用同一业务范围\n\n单位 / 板块\t余额（亿元）\t加权成本\t浮动利率\t主要发现\t\n单位553\n境外新能源\n\t393.134\t2.880984%\t79.21%\t高成本融资占比 77.34%\t查看详情\n单位465\n境内新能源\n\t770.000\t2.196617%\t100.00%\t浮动利率占比 100%\t查看详情\n单位561\n产业金融\n\t20.016\t2.228380%\t65.37%\t短期债务占比 93.55%\t查看详情\n经营解读\n\n基于当前业务事实形成\n\n01\n本期融资成本\n\n当前余额加权融资成本为 2.372231%，只引用本期正式结果。\n\n02\n浮动利率暴露较高\n\n浮动利率余额占比 95.15%，需持续关注市场利率变化。\n\n03\n单位差异需要分层处理\n\n单位553、单位465、单位561分别命中成本、利率和期限规则。\n\n继续问数\n查看规则与行动",
+      "controls": [
+        {
+          "tag": "A",
+          "text": "控制塔首页",
+          "attrs": {
+            "href": "#/dashboards"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "重新读取",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "refresh"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "返回经营控制塔",
+          "attrs": {
+            "href": "#/dashboards"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "结果视图",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-ofw-native-action": "dashboard-open",
+            "data-ofw-native-injected": "true"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "查看融资报告",
+          "attrs": {
+            "href": "../../../../prototype-releases/v1.1.0/report-center/review-lifecycle/index.html#/report/RPT-FIN-20260814-001"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "保存当前视图",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "save-view"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "集团",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "finance-scope",
+            "data-type": "group"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "板块",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "finance-scope",
+            "data-type": "board"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "单位",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "finance-scope",
+            "data-type": "unit"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "经营概览",
+          "attrs": {
+            "href": "#/view/financing/overview"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "单位比较",
+          "attrs": {
+            "href": "#/view/financing/compare"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "结构与机构",
+          "attrs": {
+            "href": "#/view/financing/structure"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "规则与行动",
+          "attrs": {
+            "href": "#/view/financing/rules"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "融资余额\n21,613.387\n亿元\n本期结果",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "metric-detail",
+            "data-dashboard": "financing",
+            "data-key": "balance"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "余额加权融资成本\n2.372231\n%\n集团范围",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "metric-detail",
+            "data-dashboard": "financing",
+            "data-key": "cost"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "浮动利率余额占比\n95.15\n%\n本期结构",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "metric-detail",
+            "data-dashboard": "financing",
+            "data-key": "floating"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "短期债务余额占比\n0.91\n%\n本期结构",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "metric-detail",
+            "data-dashboard": "financing",
+            "data-key": "shortTerm"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "外币融资余额占比\n4.22\n%\n本期结构",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "metric-detail",
+            "data-dashboard": "financing",
+            "data-key": "foreign"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "高成本融资余额占比\n9.86\n%\n当前规则口径",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "metric-detail",
+            "data-dashboard": "financing",
+            "data-key": "highCost"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "信用融资余额占比\n34.68\n%\n本期结构",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "metric-detail",
+            "data-dashboard": "financing",
+            "data-key": "credit"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看口径",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "metric-detail",
+            "data-dashboard": "financing",
+            "data-key": "cost"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "查看全部",
+          "attrs": {
+            "href": "#/view/financing/structure"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "利率结构\n浮动利率\n95.15%\n固定利率\n4.85%",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "structure-detail",
+            "data-id": "rate"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "期限结构\n长期\n95.02%\n中期\n3.50%\n短期\n0.91%\n未知\n0.56%",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "structure-detail",
+            "data-id": "term"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "单位553",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "finance-unit-detail",
+            "data-index": "0"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看详情",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "finance-unit-detail",
+            "data-index": "0"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "单位465",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "finance-unit-detail",
+            "data-index": "1"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看详情",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "finance-unit-detail",
+            "data-index": "1"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "单位561",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "finance-unit-detail",
+            "data-index": "2"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看详情",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "finance-unit-detail",
+            "data-index": "2"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "继续问数",
+          "attrs": {
+            "href": "../../../../prototype-releases/v1.1.0/intelligent-query-prototype/review-next/conversation-workspace/index.html#/ask"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "查看规则与行动",
+          "attrs": {
+            "href": "#/view/financing/rules"
+          }
+        }
+      ]
+    }
+  ],
+  "errors": [
+    "global.OFW_V14_JOINT.openOntology is not a function",
+    "global.OFW_V14_JOINT.openOntology is not a function",
+    "global.OFW_V14_JOINT.applyOwnedRule is not a function"
+  ]
+}

@@ -1,0 +1,5032 @@
+{
+  "source": {
+    "id": "743ac90e-26ce-4691-8b47-9493b1c8a01c",
+    "title": "复审-25bp规则基准报告-改名",
+    "notes": "独立复审最新结论：这是25bp规则范围的基准报告。",
+    "evidence": {
+      "dataVersion": "DATA-V14-20251231-DEMO-1",
+      "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+      "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+      "asOf": "2025-12-31",
+      "horizon": 90,
+      "objectIds": [
+        "ENT-019",
+        "ENT-013",
+        "ENT-021",
+        "ENT-012",
+        "ENT-014",
+        "ENT-005",
+        "ENT-006"
+      ],
+      "resultKind": "DEMO_BASELINE",
+      "planId": null,
+      "rule": {
+        "id": "RULE-OPS-FINANCING-PREMIUM",
+        "ontologyId": "ONT-GROUP-FINANCING-OPTIMIZATION",
+        "draftId": "DRAFT-V14-OPERATIONS-S001",
+        "draftRevision": 2,
+        "baseVersionId": "semantic-MSVJM48O-VJC6",
+        "condition": "融资成本偏离 > 25 bp",
+        "premiumThreshold": 25,
+        "resultId": "550fb3a8-784a-4d0a-a895-0a79edf524f5"
+      },
+      "bankId": null
+    }
+  },
+  "draft": {
+    "reportId": "RPT-S003-mtrzublc",
+    "title": "业务分析报告",
+    "formedAt": "2026-09-08T01:31:25.872Z",
+    "contentBlocks": [
+      {
+        "type": "result-summary",
+        "title": "企业融资与风险分析报告 · 融资余额",
+        "sourceModuleId": "dashboard",
+        "jointReportId": "743ac90e-26ce-4691-8b47-9493b1c8a01c",
+        "jointMetric": "balance",
+        "resultMode": "demo",
+        "resultId": "V14-REPORT-743ac90e-26ce-4691-8b47-9493b1c8a01c",
+        "modelVersionId": null,
+        "dataVersionId": "DATA-V14-20251231-DEMO-1",
+        "ontologyVersionId": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+        "text": "联合态势演示分析，非正式融资事实。90天窗口；独立复审最新结论：这是25bp规则范围的基准报告。",
+        "rows": [
+          {
+            "id": "ENT-005",
+            "name": "风电测试公司05",
+            "value": 7.04,
+            "unit": "亿元",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-005-1",
+              "LOAN-005-2",
+              "LOAN-005-3",
+              "LOAN-005-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-006",
+            "name": "风电测试公司06",
+            "value": 9.05,
+            "unit": "亿元",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-006-1",
+              "LOAN-006-2",
+              "LOAN-006-3",
+              "LOAN-006-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-012",
+            "name": "风电测试公司12",
+            "value": 15.91,
+            "unit": "亿元",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-012-1",
+              "LOAN-012-2",
+              "LOAN-012-3",
+              "LOAN-012-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-013",
+            "name": "风电测试公司13",
+            "value": 12.72,
+            "unit": "亿元",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-013-1",
+              "LOAN-013-2",
+              "LOAN-013-3",
+              "LOAN-013-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-014",
+            "name": "风电测试公司14",
+            "value": 14.73,
+            "unit": "亿元",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-014-1",
+              "LOAN-014-2",
+              "LOAN-014-3",
+              "LOAN-014-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-019",
+            "name": "环保测试公司3",
+            "value": 19.58,
+            "unit": "亿元",
+            "status": "黄灯",
+            "evidenceRefs": [
+              "LOAN-019-1",
+              "LOAN-019-2",
+              "LOAN-019-3",
+              "LOAN-019-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-021",
+            "name": "核电测试公司1",
+            "value": 18.4,
+            "unit": "亿元",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-021-1",
+              "LOAN-021-2",
+              "LOAN-021-3",
+              "LOAN-021-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          }
+        ],
+        "workspaceContext": {
+          "scenarioId": "S003",
+          "activeObjectRef": null,
+          "objectSetRef": {
+            "id": "V14-JOINT-SCOPE",
+            "title": "联合分析 · 7家企业",
+            "objectIds": [
+              "ENT-019",
+              "ENT-013",
+              "ENT-021",
+              "ENT-012",
+              "ENT-014",
+              "ENT-005",
+              "ENT-006"
+            ]
+          },
+          "analysisScope": "set",
+          "sourceModuleId": "joint-workbench",
+          "resultView": "demo",
+          "resultMode": {
+            "id": "demo",
+            "label": "演示基准"
+          },
+          "objectSet": {
+            "id": "V14-JOINT-SCOPE",
+            "title": "联合分析 · 7家企业",
+            "objectIds": [
+              "ENT-019",
+              "ENT-013",
+              "ENT-021",
+              "ENT-012",
+              "ENT-014",
+              "ENT-005",
+              "ENT-006"
+            ],
+            "label": "联合分析 · 7家企业",
+            "count": 7
+          },
+          "timeRange": {
+            "start": "2025-12-31",
+            "end": "2025-12-31",
+            "label": "截至2025-12-31 · 90天窗口"
+          },
+          "dataVersionRef": {
+            "id": "DATA-V14-20251231-DEMO-1"
+          },
+          "ontologyVersionRef": {
+            "id": "ONT-ENTERPRISE-FINANCE-RISK-1.4"
+          },
+          "evidenceRefs": [
+            "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+          ],
+          "jointEvidence": {
+            "dataVersion": "DATA-V14-20251231-DEMO-1",
+            "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+            "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+            "asOf": "2025-12-31",
+            "horizon": 90,
+            "objectIds": [
+              "ENT-019",
+              "ENT-013",
+              "ENT-021",
+              "ENT-012",
+              "ENT-014",
+              "ENT-005",
+              "ENT-006"
+            ],
+            "resultKind": "DEMO_BASELINE",
+            "planId": null,
+            "rule": {
+              "id": "RULE-OPS-FINANCING-PREMIUM",
+              "ontologyId": "ONT-GROUP-FINANCING-OPTIMIZATION",
+              "draftId": "DRAFT-V14-OPERATIONS-S001",
+              "draftRevision": 2,
+              "baseVersionId": "semantic-MSVJM48O-VJC6",
+              "condition": "融资成本偏离 > 25 bp",
+              "premiumThreshold": 25,
+              "resultId": "550fb3a8-784a-4d0a-a895-0a79edf524f5"
+            },
+            "bankId": null
+          }
+        },
+        "evidenceRefs": [
+          "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+          "V14-REPORT-743ac90e-26ce-4691-8b47-9493b1c8a01c"
+        ],
+        "jointSnapshot": {
+          "id": "743ac90e-26ce-4691-8b47-9493b1c8a01c",
+          "status": "DRAFT",
+          "version": 1,
+          "title": "企业融资与风险分析报告",
+          "notes": "7 家企业，融资余额 97.43 亿元，余额加权成本 3.00%；未来 90 天到期 56.81 亿元，测算缺口 20.92 亿元。",
+          "createdAt": "2026-09-08T01:31:25.807Z",
+          "rows": [
+            {
+              "id": "ENT-005",
+              "kind": "enterprise",
+              "name": "风电测试公司05",
+              "aliases": [
+                "S003-ENT-005",
+                "risk::S003-ENT-005"
+              ],
+              "aliasNames": [
+                "风电测试公司05"
+              ],
+              "industry": "风电",
+              "city": "张家口",
+              "province": "河北",
+              "coordinates": [
+                114.89,
+                40.77
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 57.3,
+              "riskTier": "绿灯",
+              "cash": 211.2,
+              "owner": "风电业务负责人01",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-005",
+                "title": "风电测试公司05",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-005"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 704,
+              "cost": 2.72,
+              "annualInterest": 19.1488,
+              "due": 492.8,
+              "dueRatio": 70,
+              "credit": 140.8,
+              "gap": 140.8,
+              "premium": 27,
+              "loanIds": [
+                "LOAN-005-1",
+                "LOAN-005-2",
+                "LOAN-005-3",
+                "LOAN-005-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-005-1",
+                "LOAN-005-2"
+              ],
+              "bankIds": [
+                "BANK-05",
+                "BANK-07",
+                "BANK-01"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-006",
+              "kind": "enterprise",
+              "name": "风电测试公司06",
+              "aliases": [
+                "S003-ENT-006",
+                "risk::S003-ENT-006"
+              ],
+              "aliasNames": [
+                "风电测试公司06"
+              ],
+              "industry": "风电",
+              "city": "白城",
+              "province": "吉林",
+              "coordinates": [
+                122.84,
+                45.62
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 60.64,
+              "riskTier": "绿灯",
+              "cash": 72.4,
+              "owner": "风电业务负责人02",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-006",
+                "title": "风电测试公司06",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-006"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 905,
+              "cost": 2.89,
+              "annualInterest": 26.1545,
+              "due": 633.5,
+              "dueRatio": 70,
+              "credit": 181,
+              "gap": 380.1,
+              "premium": 44,
+              "loanIds": [
+                "LOAN-006-1",
+                "LOAN-006-2",
+                "LOAN-006-3",
+                "LOAN-006-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-006-1",
+                "LOAN-006-2"
+              ],
+              "bankIds": [
+                "BANK-06",
+                "BANK-08",
+                "BANK-02"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-012",
+              "kind": "enterprise",
+              "name": "风电测试公司12",
+              "aliases": [
+                "S003-ENT-012",
+                "risk::S003-ENT-012"
+              ],
+              "aliasNames": [
+                "风电测试公司12"
+              ],
+              "industry": "风电",
+              "city": "大同",
+              "province": "山西",
+              "coordinates": [
+                113.3,
+                40.09
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 54,
+              "riskTier": "绿灯",
+              "cash": 214.785,
+              "owner": "风电业务负责人04",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-012",
+                "title": "风电测试公司12",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-012"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 1591,
+              "cost": 2.72,
+              "annualInterest": 43.2752,
+              "due": 1113.7,
+              "dueRatio": 70,
+              "credit": 318.2,
+              "gap": 580.715,
+              "premium": 27,
+              "loanIds": [
+                "LOAN-012-1",
+                "LOAN-012-2",
+                "LOAN-012-3",
+                "LOAN-012-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-012-1",
+                "LOAN-012-2"
+              ],
+              "bankIds": [
+                "BANK-03",
+                "BANK-05",
+                "BANK-08"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-013",
+              "kind": "enterprise",
+              "name": "风电测试公司13",
+              "aliases": [
+                "S003-ENT-013",
+                "risk::S003-ENT-013"
+              ],
+              "aliasNames": [
+                "风电测试公司13"
+              ],
+              "industry": "风电",
+              "city": "莆田",
+              "province": "福建",
+              "coordinates": [
+                119.01,
+                25.43
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 43.96,
+              "riskTier": "绿灯",
+              "cash": 241.68,
+              "owner": "风电业务负责人01",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-013",
+                "title": "风电测试公司13",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-013"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 1272,
+              "cost": 2.89,
+              "annualInterest": 36.7608,
+              "due": 890.4,
+              "dueRatio": 70,
+              "credit": 254.4,
+              "gap": 394.32,
+              "premium": 44,
+              "loanIds": [
+                "LOAN-013-1",
+                "LOAN-013-2",
+                "LOAN-013-3",
+                "LOAN-013-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-013-1",
+                "LOAN-013-2"
+              ],
+              "bankIds": [
+                "BANK-04",
+                "BANK-06",
+                "BANK-09"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-014",
+              "kind": "enterprise",
+              "name": "风电测试公司14",
+              "aliases": [
+                "S003-ENT-014",
+                "risk::S003-ENT-014"
+              ],
+              "aliasNames": [
+                "风电测试公司14"
+              ],
+              "industry": "风电",
+              "city": "阳江",
+              "province": "广东",
+              "coordinates": [
+                111.98,
+                21.86
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 54.57,
+              "riskTier": "绿灯",
+              "cash": 360.885,
+              "owner": "风电业务负责人02",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-014",
+                "title": "风电测试公司14",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-014"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 1473,
+              "cost": 3.06,
+              "annualInterest": 45.0738,
+              "due": 1031.1,
+              "dueRatio": 70,
+              "credit": 294.6,
+              "gap": 375.615,
+              "premium": 61,
+              "loanIds": [
+                "LOAN-014-1",
+                "LOAN-014-2",
+                "LOAN-014-3",
+                "LOAN-014-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-014-1",
+                "LOAN-014-2"
+              ],
+              "bankIds": [
+                "BANK-05",
+                "BANK-07",
+                "BANK-01"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-019",
+              "kind": "enterprise",
+              "name": "环保测试公司3",
+              "aliases": [
+                "S003-ENT-019",
+                "risk::S003-ENT-019"
+              ],
+              "aliasNames": [
+                "环保测试公司3"
+              ],
+              "industry": "环保",
+              "city": "郑州",
+              "province": "河南",
+              "coordinates": [
+                113.63,
+                34.75
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 37.31,
+              "riskTier": "黄灯",
+              "cash": 479.71,
+              "owner": "环保业务负责人03",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-019",
+                "title": "环保测试公司3",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-019"
+              ],
+              "benchmarkRate": 2.65,
+              "balance": 1958,
+              "cost": 3.04,
+              "annualInterest": 59.5232,
+              "due": 783.2,
+              "dueRatio": 40,
+              "credit": 391.6,
+              "gap": 0,
+              "premium": 39,
+              "loanIds": [
+                "LOAN-019-1",
+                "LOAN-019-2",
+                "LOAN-019-3",
+                "LOAN-019-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-019-1"
+              ],
+              "bankIds": [
+                "BANK-01",
+                "BANK-03",
+                "BANK-06"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-021",
+              "kind": "enterprise",
+              "name": "核电测试公司1",
+              "aliases": [
+                "S003-ENT-021",
+                "risk::S003-ENT-021"
+              ],
+              "aliasNames": [
+                "核电测试公司1"
+              ],
+              "industry": "核电",
+              "city": "防城港",
+              "province": "广西",
+              "coordinates": [
+                108.35,
+                21.69
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 45.1,
+              "riskTier": "绿灯",
+              "cash": 147.2,
+              "owner": "核电业务负责人01",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-021",
+                "title": "核电测试公司1",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-021"
+              ],
+              "benchmarkRate": 2.1,
+              "balance": 1840,
+              "cost": 3.38,
+              "annualInterest": 62.192,
+              "due": 736,
+              "dueRatio": 40,
+              "credit": 368,
+              "gap": 220.8,
+              "premium": 128,
+              "loanIds": [
+                "LOAN-021-1",
+                "LOAN-021-2",
+                "LOAN-021-3",
+                "LOAN-021-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-021-1"
+              ],
+              "bankIds": [
+                "BANK-03",
+                "BANK-05",
+                "BANK-08"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            }
+          ],
+          "loans": [
+            {
+              "id": "LOAN-005-1",
+              "kind": "loan",
+              "name": "风电测试公司05 · 1号融资",
+              "enterpriseId": "ENT-005",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-005",
+              "principal": 281.6,
+              "rate": 3.02,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-01-29",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-005-2",
+              "kind": "loan",
+              "name": "风电测试公司05 · 2号融资",
+              "enterpriseId": "ENT-005",
+              "bankId": "BANK-07",
+              "projectId": "PRJ-005",
+              "principal": 211.2,
+              "rate": 2.52,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-09",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-005-3",
+              "kind": "loan",
+              "name": "风电测试公司05 · 3号融资",
+              "enterpriseId": "ENT-005",
+              "bankId": "BANK-01",
+              "projectId": "PRJ-005",
+              "principal": 140.8,
+              "rate": 2.82,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-06-21",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-005-4",
+              "kind": "loan",
+              "name": "风电测试公司05 · 4号融资",
+              "enterpriseId": "ENT-005",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-005",
+              "principal": 70.4,
+              "rate": 1.92,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-03-20",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-006-1",
+              "kind": "loan",
+              "name": "风电测试公司06 · 1号融资",
+              "enterpriseId": "ENT-006",
+              "bankId": "BANK-06",
+              "projectId": "PRJ-006",
+              "principal": 362,
+              "rate": 3.19,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-01-30",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-006-2",
+              "kind": "loan",
+              "name": "风电测试公司06 · 2号融资",
+              "enterpriseId": "ENT-006",
+              "bankId": "BANK-08",
+              "projectId": "PRJ-006",
+              "principal": 271.5,
+              "rate": 2.69,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-11",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-006-3",
+              "kind": "loan",
+              "name": "风电测试公司06 · 3号融资",
+              "enterpriseId": "ENT-006",
+              "bankId": "BANK-02",
+              "projectId": "PRJ-006",
+              "principal": 181,
+              "rate": 2.99,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-06-29",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-006-4",
+              "kind": "loan",
+              "name": "风电测试公司06 · 4号融资",
+              "enterpriseId": "ENT-006",
+              "bankId": "BANK-06",
+              "projectId": "PRJ-006",
+              "principal": 90.5,
+              "rate": 2.09,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-03-26",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-012-1",
+              "kind": "loan",
+              "name": "风电测试公司12 · 1号融资",
+              "enterpriseId": "ENT-012",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-012",
+              "principal": 636.4,
+              "rate": 3.02,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-05",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-012-2",
+              "kind": "loan",
+              "name": "风电测试公司12 · 2号融资",
+              "enterpriseId": "ENT-012",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-012",
+              "principal": 477.3,
+              "rate": 2.52,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-23",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-012-3",
+              "kind": "loan",
+              "name": "风电测试公司12 · 3号融资",
+              "enterpriseId": "ENT-012",
+              "bankId": "BANK-08",
+              "projectId": "PRJ-012",
+              "principal": 318.2,
+              "rate": 2.82,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-08-16",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-012-4",
+              "kind": "loan",
+              "name": "风电测试公司12 · 4号融资",
+              "enterpriseId": "ENT-012",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-012",
+              "principal": 159.1,
+              "rate": 1.92,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-05-01",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-013-1",
+              "kind": "loan",
+              "name": "风电测试公司13 · 1号融资",
+              "enterpriseId": "ENT-013",
+              "bankId": "BANK-04",
+              "projectId": "PRJ-013",
+              "principal": 508.8,
+              "rate": 3.19,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-06",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-013-2",
+              "kind": "loan",
+              "name": "风电测试公司13 · 2号融资",
+              "enterpriseId": "ENT-013",
+              "bankId": "BANK-06",
+              "projectId": "PRJ-013",
+              "principal": 381.6,
+              "rate": 2.69,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-25",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-013-3",
+              "kind": "loan",
+              "name": "风电测试公司13 · 3号融资",
+              "enterpriseId": "ENT-013",
+              "bankId": "BANK-09",
+              "projectId": "PRJ-013",
+              "principal": 254.4,
+              "rate": 2.99,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-08-24",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-013-4",
+              "kind": "loan",
+              "name": "风电测试公司13 · 4号融资",
+              "enterpriseId": "ENT-013",
+              "bankId": "BANK-04",
+              "projectId": "PRJ-013",
+              "principal": 127.2,
+              "rate": 2.09,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-05-07",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-014-1",
+              "kind": "loan",
+              "name": "风电测试公司14 · 1号融资",
+              "enterpriseId": "ENT-014",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-014",
+              "principal": 589.2,
+              "rate": 3.36,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-07",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-014-2",
+              "kind": "loan",
+              "name": "风电测试公司14 · 2号融资",
+              "enterpriseId": "ENT-014",
+              "bankId": "BANK-07",
+              "projectId": "PRJ-014",
+              "principal": 441.9,
+              "rate": 2.86,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-27",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-014-3",
+              "kind": "loan",
+              "name": "风电测试公司14 · 3号融资",
+              "enterpriseId": "ENT-014",
+              "bankId": "BANK-01",
+              "projectId": "PRJ-014",
+              "principal": 294.6,
+              "rate": 3.16,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-09-01",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-014-4",
+              "kind": "loan",
+              "name": "风电测试公司14 · 4号融资",
+              "enterpriseId": "ENT-014",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-014",
+              "principal": 147.3,
+              "rate": 2.26,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-05-13",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-019-1",
+              "kind": "loan",
+              "name": "环保测试公司3 · 1号融资",
+              "enterpriseId": "ENT-019",
+              "bankId": "BANK-01",
+              "projectId": "PRJ-019",
+              "principal": 783.2,
+              "rate": 3.34,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-12",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-019-2",
+              "kind": "loan",
+              "name": "环保测试公司3 · 2号融资",
+              "enterpriseId": "ENT-019",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-019",
+              "principal": 587.4,
+              "rate": 2.84,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-04-06",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-019-3",
+              "kind": "loan",
+              "name": "环保测试公司3 · 3号融资",
+              "enterpriseId": "ENT-019",
+              "bankId": "BANK-06",
+              "projectId": "PRJ-019",
+              "principal": 391.6,
+              "rate": 3.14,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-10-11",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-019-4",
+              "kind": "loan",
+              "name": "环保测试公司3 · 4号融资",
+              "enterpriseId": "ENT-019",
+              "bankId": "BANK-01",
+              "projectId": "PRJ-019",
+              "principal": 195.8,
+              "rate": 2.24,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-06-12",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-021-1",
+              "kind": "loan",
+              "name": "核电测试公司1 · 1号融资",
+              "enterpriseId": "ENT-021",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-021",
+              "principal": 736,
+              "rate": 3.68,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-14",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-021-2",
+              "kind": "loan",
+              "name": "核电测试公司1 · 2号融资",
+              "enterpriseId": "ENT-021",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-021",
+              "principal": 552,
+              "rate": 3.18,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-04-10",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-021-3",
+              "kind": "loan",
+              "name": "核电测试公司1 · 3号融资",
+              "enterpriseId": "ENT-021",
+              "bankId": "BANK-08",
+              "projectId": "PRJ-021",
+              "principal": 368,
+              "rate": 3.48,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-10-27",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-021-4",
+              "kind": "loan",
+              "name": "核电测试公司1 · 4号融资",
+              "enterpriseId": "ENT-021",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-021",
+              "principal": 184,
+              "rate": 2.58,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-06-24",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            }
+          ],
+          "totals": {
+            "count": 7,
+            "balance": 9743,
+            "cost": 2.99834,
+            "due": 5680.7,
+            "gap": 2092.35,
+            "annualInterest": 292.1283,
+            "attention": 1
+          },
+          "evidence": {
+            "dataVersion": "DATA-V14-20251231-DEMO-1",
+            "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+            "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+            "asOf": "2025-12-31",
+            "horizon": 90,
+            "objectIds": [
+              "ENT-019",
+              "ENT-013",
+              "ENT-021",
+              "ENT-012",
+              "ENT-014",
+              "ENT-005",
+              "ENT-006"
+            ],
+            "resultKind": "DEMO_BASELINE",
+            "planId": null,
+            "rule": {
+              "id": "RULE-OPS-FINANCING-PREMIUM",
+              "ontologyId": "ONT-GROUP-FINANCING-OPTIMIZATION",
+              "draftId": "DRAFT-V14-OPERATIONS-S001",
+              "draftRevision": 2,
+              "baseVersionId": "semantic-MSVJM48O-VJC6",
+              "condition": "融资成本偏离 > 25 bp",
+              "premiumThreshold": 25,
+              "resultId": "550fb3a8-784a-4d0a-a895-0a79edf524f5"
+            },
+            "bankId": null
+          },
+          "plan": null
+        },
+        "sourceTask": "situation",
+        "id": "66c7c962-f4ce-42fe-96c0-666bcd552a2b",
+        "fingerprint": "[\"dashboard\",\"企业融资与风险分析报告 · 融资余额\",\"V14-REPORT-743ac90e-26ce-4691-8b47-9493b1c8a01c\",[{\"id\":\"ENT-005\",\"name\":\"风电测试公司05\",\"value\":7.04,\"unit\":\"亿元\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-005-1\",\"LOAN-005-2\",\"LOAN-005-3\",\"LOAN-005-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-006\",\"name\":\"风电测试公司06\",\"value\":9.05,\"unit\":\"亿元\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-006-1\",\"LOAN-006-2\",\"LOAN-006-3\",\"LOAN-006-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-012\",\"name\":\"风电测试公司12\",\"value\":15.91,\"unit\":\"亿元\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-012-1\",\"LOAN-012-2\",\"LOAN-012-3\",\"LOAN-012-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-013\",\"name\":\"风电测试公司13\",\"value\":12.72,\"unit\":\"亿元\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-013-1\",\"LOAN-013-2\",\"LOAN-013-3\",\"LOAN-013-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-014\",\"name\":\"风电测试公司14\",\"value\":14.73,\"unit\":\"亿元\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-014-1\",\"LOAN-014-2\",\"LOAN-014-3\",\"LOAN-014-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-019\",\"name\":\"环保测试公司3\",\"value\":19.58,\"unit\":\"亿元\",\"status\":\"黄灯\",\"evidenceRefs\":[\"LOAN-019-1\",\"LOAN-019-2\",\"LOAN-019-3\",\"LOAN-019-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-021\",\"name\":\"核电测试公司1\",\"value\":18.4,\"unit\":\"亿元\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-021-1\",\"LOAN-021-2\",\"LOAN-021-3\",\"LOAN-021-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]}],\"联合态势演示分析，非正式融资事实。90天窗口；独立复审最新结论：这是25bp规则范围的基准报告。\",{\"scenarioId\":\"S003\",\"activeObjectRef\":null,\"objectSetRef\":{\"id\":\"V14-JOINT-SCOPE\",\"title\":\"联合分析 · 7家企业\",\"objectIds\":[\"ENT-019\",\"ENT-013\",\"ENT-021\",\"ENT-012\",\"ENT-014\",\"ENT-005\",\"ENT-006\"]},\"analysisScope\":\"set\",\"sourceModuleId\":\"joint-workbench\",\"resultView\":\"demo\",\"resultMode\":{\"id\":\"demo\",\"label\":\"演示基准\"},\"objectSet\":{\"id\":\"V14-JOINT-SCOPE\",\"title\":\"联合分析 · 7家企业\",\"objectIds\":[\"ENT-019\",\"ENT-013\",\"ENT-021\",\"ENT-012\",\"ENT-014\",\"ENT-005\",\"ENT-006\"],\"label\":\"联合分析 · 7家企业\",\"count\":7},\"timeRange\":{\"start\":\"2025-12-31\",\"end\":\"2025-12-31\",\"label\":\"截至2025-12-31 · 90天窗口\"},\"dataVersionRef\":{\"id\":\"DATA-V14-20251231-DEMO-1\"},\"ontologyVersionRef\":{\"id\":\"ONT-ENTERPRISE-FINANCE-RISK-1.4\"},\"evidenceRefs\":[\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"],\"jointEvidence\":{\"dataVersion\":\"DATA-V14-20251231-DEMO-1\",\"dataDigest\":\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\",\"ontologyVersion\":\"ONT-ENTERPRISE-FINANCE-RISK-1.4\",\"asOf\":\"2025-12-31\",\"horizon\":90,\"objectIds\":[\"ENT-019\",\"ENT-013\",\"ENT-021\",\"ENT-012\",\"ENT-014\",\"ENT-005\",\"ENT-006\"],\"resultKind\":\"DEMO_BASELINE\",\"planId\":null,\"rule\":{\"id\":\"RULE-OPS-FINANCING-PREMIUM\",\"ontologyId\":\"ONT-GROUP-FINANCING-OPTIMIZATION\",\"draftId\":\"DRAFT-V14-OPERATIONS-S001\",\"draftRevision\":2,\"baseVersionId\":\"semantic-MSVJM48O-VJC6\",\"condition\":\"融资成本偏离 > 25 bp\",\"premiumThreshold\":25,\"resultId\":\"550fb3a8-784a-4d0a-a895-0a79edf524f5\"},\"bankId\":null}}]",
+        "createdAt": "2026-09-08T01:31:25.872Z"
+      },
+      {
+        "type": "result-summary",
+        "title": "企业融资与风险分析报告 · 加权融资成本",
+        "sourceModuleId": "dashboard",
+        "jointReportId": "743ac90e-26ce-4691-8b47-9493b1c8a01c",
+        "jointMetric": "cost",
+        "resultMode": "demo",
+        "resultId": "V14-REPORT-743ac90e-26ce-4691-8b47-9493b1c8a01c",
+        "modelVersionId": null,
+        "dataVersionId": "DATA-V14-20251231-DEMO-1",
+        "ontologyVersionId": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+        "text": "联合态势演示分析，非正式融资事实。90天窗口；独立复审最新结论：这是25bp规则范围的基准报告。",
+        "rows": [
+          {
+            "id": "ENT-005",
+            "name": "风电测试公司05",
+            "value": 2.72,
+            "unit": "%",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-005-1",
+              "LOAN-005-2",
+              "LOAN-005-3",
+              "LOAN-005-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-006",
+            "name": "风电测试公司06",
+            "value": 2.89,
+            "unit": "%",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-006-1",
+              "LOAN-006-2",
+              "LOAN-006-3",
+              "LOAN-006-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-012",
+            "name": "风电测试公司12",
+            "value": 2.72,
+            "unit": "%",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-012-1",
+              "LOAN-012-2",
+              "LOAN-012-3",
+              "LOAN-012-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-013",
+            "name": "风电测试公司13",
+            "value": 2.89,
+            "unit": "%",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-013-1",
+              "LOAN-013-2",
+              "LOAN-013-3",
+              "LOAN-013-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-014",
+            "name": "风电测试公司14",
+            "value": 3.06,
+            "unit": "%",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-014-1",
+              "LOAN-014-2",
+              "LOAN-014-3",
+              "LOAN-014-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-019",
+            "name": "环保测试公司3",
+            "value": 3.04,
+            "unit": "%",
+            "status": "黄灯",
+            "evidenceRefs": [
+              "LOAN-019-1",
+              "LOAN-019-2",
+              "LOAN-019-3",
+              "LOAN-019-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-021",
+            "name": "核电测试公司1",
+            "value": 3.38,
+            "unit": "%",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-021-1",
+              "LOAN-021-2",
+              "LOAN-021-3",
+              "LOAN-021-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          }
+        ],
+        "workspaceContext": {
+          "scenarioId": "S003",
+          "activeObjectRef": null,
+          "objectSetRef": {
+            "id": "V14-JOINT-SCOPE",
+            "title": "联合分析 · 7家企业",
+            "objectIds": [
+              "ENT-019",
+              "ENT-013",
+              "ENT-021",
+              "ENT-012",
+              "ENT-014",
+              "ENT-005",
+              "ENT-006"
+            ]
+          },
+          "analysisScope": "set",
+          "sourceModuleId": "joint-workbench",
+          "resultView": "demo",
+          "resultMode": {
+            "id": "demo",
+            "label": "演示基准"
+          },
+          "objectSet": {
+            "id": "V14-JOINT-SCOPE",
+            "title": "联合分析 · 7家企业",
+            "objectIds": [
+              "ENT-019",
+              "ENT-013",
+              "ENT-021",
+              "ENT-012",
+              "ENT-014",
+              "ENT-005",
+              "ENT-006"
+            ],
+            "label": "联合分析 · 7家企业",
+            "count": 7
+          },
+          "timeRange": {
+            "start": "2025-12-31",
+            "end": "2025-12-31",
+            "label": "截至2025-12-31 · 90天窗口"
+          },
+          "dataVersionRef": {
+            "id": "DATA-V14-20251231-DEMO-1"
+          },
+          "ontologyVersionRef": {
+            "id": "ONT-ENTERPRISE-FINANCE-RISK-1.4"
+          },
+          "evidenceRefs": [
+            "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+          ],
+          "jointEvidence": {
+            "dataVersion": "DATA-V14-20251231-DEMO-1",
+            "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+            "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+            "asOf": "2025-12-31",
+            "horizon": 90,
+            "objectIds": [
+              "ENT-019",
+              "ENT-013",
+              "ENT-021",
+              "ENT-012",
+              "ENT-014",
+              "ENT-005",
+              "ENT-006"
+            ],
+            "resultKind": "DEMO_BASELINE",
+            "planId": null,
+            "rule": {
+              "id": "RULE-OPS-FINANCING-PREMIUM",
+              "ontologyId": "ONT-GROUP-FINANCING-OPTIMIZATION",
+              "draftId": "DRAFT-V14-OPERATIONS-S001",
+              "draftRevision": 2,
+              "baseVersionId": "semantic-MSVJM48O-VJC6",
+              "condition": "融资成本偏离 > 25 bp",
+              "premiumThreshold": 25,
+              "resultId": "550fb3a8-784a-4d0a-a895-0a79edf524f5"
+            },
+            "bankId": null
+          }
+        },
+        "evidenceRefs": [
+          "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+          "V14-REPORT-743ac90e-26ce-4691-8b47-9493b1c8a01c"
+        ],
+        "jointSnapshot": {
+          "id": "743ac90e-26ce-4691-8b47-9493b1c8a01c",
+          "status": "DRAFT",
+          "version": 1,
+          "title": "企业融资与风险分析报告",
+          "notes": "7 家企业，融资余额 97.43 亿元，余额加权成本 3.00%；未来 90 天到期 56.81 亿元，测算缺口 20.92 亿元。",
+          "createdAt": "2026-09-08T01:31:25.807Z",
+          "rows": [
+            {
+              "id": "ENT-005",
+              "kind": "enterprise",
+              "name": "风电测试公司05",
+              "aliases": [
+                "S003-ENT-005",
+                "risk::S003-ENT-005"
+              ],
+              "aliasNames": [
+                "风电测试公司05"
+              ],
+              "industry": "风电",
+              "city": "张家口",
+              "province": "河北",
+              "coordinates": [
+                114.89,
+                40.77
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 57.3,
+              "riskTier": "绿灯",
+              "cash": 211.2,
+              "owner": "风电业务负责人01",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-005",
+                "title": "风电测试公司05",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-005"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 704,
+              "cost": 2.72,
+              "annualInterest": 19.1488,
+              "due": 492.8,
+              "dueRatio": 70,
+              "credit": 140.8,
+              "gap": 140.8,
+              "premium": 27,
+              "loanIds": [
+                "LOAN-005-1",
+                "LOAN-005-2",
+                "LOAN-005-3",
+                "LOAN-005-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-005-1",
+                "LOAN-005-2"
+              ],
+              "bankIds": [
+                "BANK-05",
+                "BANK-07",
+                "BANK-01"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-006",
+              "kind": "enterprise",
+              "name": "风电测试公司06",
+              "aliases": [
+                "S003-ENT-006",
+                "risk::S003-ENT-006"
+              ],
+              "aliasNames": [
+                "风电测试公司06"
+              ],
+              "industry": "风电",
+              "city": "白城",
+              "province": "吉林",
+              "coordinates": [
+                122.84,
+                45.62
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 60.64,
+              "riskTier": "绿灯",
+              "cash": 72.4,
+              "owner": "风电业务负责人02",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-006",
+                "title": "风电测试公司06",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-006"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 905,
+              "cost": 2.89,
+              "annualInterest": 26.1545,
+              "due": 633.5,
+              "dueRatio": 70,
+              "credit": 181,
+              "gap": 380.1,
+              "premium": 44,
+              "loanIds": [
+                "LOAN-006-1",
+                "LOAN-006-2",
+                "LOAN-006-3",
+                "LOAN-006-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-006-1",
+                "LOAN-006-2"
+              ],
+              "bankIds": [
+                "BANK-06",
+                "BANK-08",
+                "BANK-02"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-012",
+              "kind": "enterprise",
+              "name": "风电测试公司12",
+              "aliases": [
+                "S003-ENT-012",
+                "risk::S003-ENT-012"
+              ],
+              "aliasNames": [
+                "风电测试公司12"
+              ],
+              "industry": "风电",
+              "city": "大同",
+              "province": "山西",
+              "coordinates": [
+                113.3,
+                40.09
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 54,
+              "riskTier": "绿灯",
+              "cash": 214.785,
+              "owner": "风电业务负责人04",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-012",
+                "title": "风电测试公司12",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-012"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 1591,
+              "cost": 2.72,
+              "annualInterest": 43.2752,
+              "due": 1113.7,
+              "dueRatio": 70,
+              "credit": 318.2,
+              "gap": 580.715,
+              "premium": 27,
+              "loanIds": [
+                "LOAN-012-1",
+                "LOAN-012-2",
+                "LOAN-012-3",
+                "LOAN-012-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-012-1",
+                "LOAN-012-2"
+              ],
+              "bankIds": [
+                "BANK-03",
+                "BANK-05",
+                "BANK-08"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-013",
+              "kind": "enterprise",
+              "name": "风电测试公司13",
+              "aliases": [
+                "S003-ENT-013",
+                "risk::S003-ENT-013"
+              ],
+              "aliasNames": [
+                "风电测试公司13"
+              ],
+              "industry": "风电",
+              "city": "莆田",
+              "province": "福建",
+              "coordinates": [
+                119.01,
+                25.43
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 43.96,
+              "riskTier": "绿灯",
+              "cash": 241.68,
+              "owner": "风电业务负责人01",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-013",
+                "title": "风电测试公司13",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-013"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 1272,
+              "cost": 2.89,
+              "annualInterest": 36.7608,
+              "due": 890.4,
+              "dueRatio": 70,
+              "credit": 254.4,
+              "gap": 394.32,
+              "premium": 44,
+              "loanIds": [
+                "LOAN-013-1",
+                "LOAN-013-2",
+                "LOAN-013-3",
+                "LOAN-013-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-013-1",
+                "LOAN-013-2"
+              ],
+              "bankIds": [
+                "BANK-04",
+                "BANK-06",
+                "BANK-09"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-014",
+              "kind": "enterprise",
+              "name": "风电测试公司14",
+              "aliases": [
+                "S003-ENT-014",
+                "risk::S003-ENT-014"
+              ],
+              "aliasNames": [
+                "风电测试公司14"
+              ],
+              "industry": "风电",
+              "city": "阳江",
+              "province": "广东",
+              "coordinates": [
+                111.98,
+                21.86
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 54.57,
+              "riskTier": "绿灯",
+              "cash": 360.885,
+              "owner": "风电业务负责人02",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-014",
+                "title": "风电测试公司14",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-014"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 1473,
+              "cost": 3.06,
+              "annualInterest": 45.0738,
+              "due": 1031.1,
+              "dueRatio": 70,
+              "credit": 294.6,
+              "gap": 375.615,
+              "premium": 61,
+              "loanIds": [
+                "LOAN-014-1",
+                "LOAN-014-2",
+                "LOAN-014-3",
+                "LOAN-014-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-014-1",
+                "LOAN-014-2"
+              ],
+              "bankIds": [
+                "BANK-05",
+                "BANK-07",
+                "BANK-01"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-019",
+              "kind": "enterprise",
+              "name": "环保测试公司3",
+              "aliases": [
+                "S003-ENT-019",
+                "risk::S003-ENT-019"
+              ],
+              "aliasNames": [
+                "环保测试公司3"
+              ],
+              "industry": "环保",
+              "city": "郑州",
+              "province": "河南",
+              "coordinates": [
+                113.63,
+                34.75
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 37.31,
+              "riskTier": "黄灯",
+              "cash": 479.71,
+              "owner": "环保业务负责人03",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-019",
+                "title": "环保测试公司3",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-019"
+              ],
+              "benchmarkRate": 2.65,
+              "balance": 1958,
+              "cost": 3.04,
+              "annualInterest": 59.5232,
+              "due": 783.2,
+              "dueRatio": 40,
+              "credit": 391.6,
+              "gap": 0,
+              "premium": 39,
+              "loanIds": [
+                "LOAN-019-1",
+                "LOAN-019-2",
+                "LOAN-019-3",
+                "LOAN-019-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-019-1"
+              ],
+              "bankIds": [
+                "BANK-01",
+                "BANK-03",
+                "BANK-06"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-021",
+              "kind": "enterprise",
+              "name": "核电测试公司1",
+              "aliases": [
+                "S003-ENT-021",
+                "risk::S003-ENT-021"
+              ],
+              "aliasNames": [
+                "核电测试公司1"
+              ],
+              "industry": "核电",
+              "city": "防城港",
+              "province": "广西",
+              "coordinates": [
+                108.35,
+                21.69
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 45.1,
+              "riskTier": "绿灯",
+              "cash": 147.2,
+              "owner": "核电业务负责人01",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-021",
+                "title": "核电测试公司1",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-021"
+              ],
+              "benchmarkRate": 2.1,
+              "balance": 1840,
+              "cost": 3.38,
+              "annualInterest": 62.192,
+              "due": 736,
+              "dueRatio": 40,
+              "credit": 368,
+              "gap": 220.8,
+              "premium": 128,
+              "loanIds": [
+                "LOAN-021-1",
+                "LOAN-021-2",
+                "LOAN-021-3",
+                "LOAN-021-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-021-1"
+              ],
+              "bankIds": [
+                "BANK-03",
+                "BANK-05",
+                "BANK-08"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            }
+          ],
+          "loans": [
+            {
+              "id": "LOAN-005-1",
+              "kind": "loan",
+              "name": "风电测试公司05 · 1号融资",
+              "enterpriseId": "ENT-005",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-005",
+              "principal": 281.6,
+              "rate": 3.02,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-01-29",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-005-2",
+              "kind": "loan",
+              "name": "风电测试公司05 · 2号融资",
+              "enterpriseId": "ENT-005",
+              "bankId": "BANK-07",
+              "projectId": "PRJ-005",
+              "principal": 211.2,
+              "rate": 2.52,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-09",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-005-3",
+              "kind": "loan",
+              "name": "风电测试公司05 · 3号融资",
+              "enterpriseId": "ENT-005",
+              "bankId": "BANK-01",
+              "projectId": "PRJ-005",
+              "principal": 140.8,
+              "rate": 2.82,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-06-21",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-005-4",
+              "kind": "loan",
+              "name": "风电测试公司05 · 4号融资",
+              "enterpriseId": "ENT-005",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-005",
+              "principal": 70.4,
+              "rate": 1.92,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-03-20",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-006-1",
+              "kind": "loan",
+              "name": "风电测试公司06 · 1号融资",
+              "enterpriseId": "ENT-006",
+              "bankId": "BANK-06",
+              "projectId": "PRJ-006",
+              "principal": 362,
+              "rate": 3.19,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-01-30",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-006-2",
+              "kind": "loan",
+              "name": "风电测试公司06 · 2号融资",
+              "enterpriseId": "ENT-006",
+              "bankId": "BANK-08",
+              "projectId": "PRJ-006",
+              "principal": 271.5,
+              "rate": 2.69,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-11",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-006-3",
+              "kind": "loan",
+              "name": "风电测试公司06 · 3号融资",
+              "enterpriseId": "ENT-006",
+              "bankId": "BANK-02",
+              "projectId": "PRJ-006",
+              "principal": 181,
+              "rate": 2.99,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-06-29",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-006-4",
+              "kind": "loan",
+              "name": "风电测试公司06 · 4号融资",
+              "enterpriseId": "ENT-006",
+              "bankId": "BANK-06",
+              "projectId": "PRJ-006",
+              "principal": 90.5,
+              "rate": 2.09,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-03-26",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-012-1",
+              "kind": "loan",
+              "name": "风电测试公司12 · 1号融资",
+              "enterpriseId": "ENT-012",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-012",
+              "principal": 636.4,
+              "rate": 3.02,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-05",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-012-2",
+              "kind": "loan",
+              "name": "风电测试公司12 · 2号融资",
+              "enterpriseId": "ENT-012",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-012",
+              "principal": 477.3,
+              "rate": 2.52,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-23",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-012-3",
+              "kind": "loan",
+              "name": "风电测试公司12 · 3号融资",
+              "enterpriseId": "ENT-012",
+              "bankId": "BANK-08",
+              "projectId": "PRJ-012",
+              "principal": 318.2,
+              "rate": 2.82,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-08-16",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-012-4",
+              "kind": "loan",
+              "name": "风电测试公司12 · 4号融资",
+              "enterpriseId": "ENT-012",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-012",
+              "principal": 159.1,
+              "rate": 1.92,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-05-01",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-013-1",
+              "kind": "loan",
+              "name": "风电测试公司13 · 1号融资",
+              "enterpriseId": "ENT-013",
+              "bankId": "BANK-04",
+              "projectId": "PRJ-013",
+              "principal": 508.8,
+              "rate": 3.19,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-06",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-013-2",
+              "kind": "loan",
+              "name": "风电测试公司13 · 2号融资",
+              "enterpriseId": "ENT-013",
+              "bankId": "BANK-06",
+              "projectId": "PRJ-013",
+              "principal": 381.6,
+              "rate": 2.69,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-25",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-013-3",
+              "kind": "loan",
+              "name": "风电测试公司13 · 3号融资",
+              "enterpriseId": "ENT-013",
+              "bankId": "BANK-09",
+              "projectId": "PRJ-013",
+              "principal": 254.4,
+              "rate": 2.99,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-08-24",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-013-4",
+              "kind": "loan",
+              "name": "风电测试公司13 · 4号融资",
+              "enterpriseId": "ENT-013",
+              "bankId": "BANK-04",
+              "projectId": "PRJ-013",
+              "principal": 127.2,
+              "rate": 2.09,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-05-07",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-014-1",
+              "kind": "loan",
+              "name": "风电测试公司14 · 1号融资",
+              "enterpriseId": "ENT-014",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-014",
+              "principal": 589.2,
+              "rate": 3.36,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-07",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-014-2",
+              "kind": "loan",
+              "name": "风电测试公司14 · 2号融资",
+              "enterpriseId": "ENT-014",
+              "bankId": "BANK-07",
+              "projectId": "PRJ-014",
+              "principal": 441.9,
+              "rate": 2.86,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-27",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-014-3",
+              "kind": "loan",
+              "name": "风电测试公司14 · 3号融资",
+              "enterpriseId": "ENT-014",
+              "bankId": "BANK-01",
+              "projectId": "PRJ-014",
+              "principal": 294.6,
+              "rate": 3.16,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-09-01",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-014-4",
+              "kind": "loan",
+              "name": "风电测试公司14 · 4号融资",
+              "enterpriseId": "ENT-014",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-014",
+              "principal": 147.3,
+              "rate": 2.26,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-05-13",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-019-1",
+              "kind": "loan",
+              "name": "环保测试公司3 · 1号融资",
+              "enterpriseId": "ENT-019",
+              "bankId": "BANK-01",
+              "projectId": "PRJ-019",
+              "principal": 783.2,
+              "rate": 3.34,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-12",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-019-2",
+              "kind": "loan",
+              "name": "环保测试公司3 · 2号融资",
+              "enterpriseId": "ENT-019",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-019",
+              "principal": 587.4,
+              "rate": 2.84,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-04-06",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-019-3",
+              "kind": "loan",
+              "name": "环保测试公司3 · 3号融资",
+              "enterpriseId": "ENT-019",
+              "bankId": "BANK-06",
+              "projectId": "PRJ-019",
+              "principal": 391.6,
+              "rate": 3.14,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-10-11",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-019-4",
+              "kind": "loan",
+              "name": "环保测试公司3 · 4号融资",
+              "enterpriseId": "ENT-019",
+              "bankId": "BANK-01",
+              "projectId": "PRJ-019",
+              "principal": 195.8,
+              "rate": 2.24,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-06-12",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-021-1",
+              "kind": "loan",
+              "name": "核电测试公司1 · 1号融资",
+              "enterpriseId": "ENT-021",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-021",
+              "principal": 736,
+              "rate": 3.68,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-14",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-021-2",
+              "kind": "loan",
+              "name": "核电测试公司1 · 2号融资",
+              "enterpriseId": "ENT-021",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-021",
+              "principal": 552,
+              "rate": 3.18,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-04-10",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-021-3",
+              "kind": "loan",
+              "name": "核电测试公司1 · 3号融资",
+              "enterpriseId": "ENT-021",
+              "bankId": "BANK-08",
+              "projectId": "PRJ-021",
+              "principal": 368,
+              "rate": 3.48,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-10-27",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-021-4",
+              "kind": "loan",
+              "name": "核电测试公司1 · 4号融资",
+              "enterpriseId": "ENT-021",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-021",
+              "principal": 184,
+              "rate": 2.58,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-06-24",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            }
+          ],
+          "totals": {
+            "count": 7,
+            "balance": 9743,
+            "cost": 2.99834,
+            "due": 5680.7,
+            "gap": 2092.35,
+            "annualInterest": 292.1283,
+            "attention": 1
+          },
+          "evidence": {
+            "dataVersion": "DATA-V14-20251231-DEMO-1",
+            "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+            "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+            "asOf": "2025-12-31",
+            "horizon": 90,
+            "objectIds": [
+              "ENT-019",
+              "ENT-013",
+              "ENT-021",
+              "ENT-012",
+              "ENT-014",
+              "ENT-005",
+              "ENT-006"
+            ],
+            "resultKind": "DEMO_BASELINE",
+            "planId": null,
+            "rule": {
+              "id": "RULE-OPS-FINANCING-PREMIUM",
+              "ontologyId": "ONT-GROUP-FINANCING-OPTIMIZATION",
+              "draftId": "DRAFT-V14-OPERATIONS-S001",
+              "draftRevision": 2,
+              "baseVersionId": "semantic-MSVJM48O-VJC6",
+              "condition": "融资成本偏离 > 25 bp",
+              "premiumThreshold": 25,
+              "resultId": "550fb3a8-784a-4d0a-a895-0a79edf524f5"
+            },
+            "bankId": null
+          },
+          "plan": null
+        },
+        "sourceTask": "situation",
+        "id": "79137351-de44-4e66-b933-407115a0a692",
+        "fingerprint": "[\"dashboard\",\"企业融资与风险分析报告 · 加权融资成本\",\"V14-REPORT-743ac90e-26ce-4691-8b47-9493b1c8a01c\",[{\"id\":\"ENT-005\",\"name\":\"风电测试公司05\",\"value\":2.72,\"unit\":\"%\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-005-1\",\"LOAN-005-2\",\"LOAN-005-3\",\"LOAN-005-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-006\",\"name\":\"风电测试公司06\",\"value\":2.89,\"unit\":\"%\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-006-1\",\"LOAN-006-2\",\"LOAN-006-3\",\"LOAN-006-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-012\",\"name\":\"风电测试公司12\",\"value\":2.72,\"unit\":\"%\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-012-1\",\"LOAN-012-2\",\"LOAN-012-3\",\"LOAN-012-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-013\",\"name\":\"风电测试公司13\",\"value\":2.89,\"unit\":\"%\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-013-1\",\"LOAN-013-2\",\"LOAN-013-3\",\"LOAN-013-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-014\",\"name\":\"风电测试公司14\",\"value\":3.06,\"unit\":\"%\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-014-1\",\"LOAN-014-2\",\"LOAN-014-3\",\"LOAN-014-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-019\",\"name\":\"环保测试公司3\",\"value\":3.04,\"unit\":\"%\",\"status\":\"黄灯\",\"evidenceRefs\":[\"LOAN-019-1\",\"LOAN-019-2\",\"LOAN-019-3\",\"LOAN-019-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-021\",\"name\":\"核电测试公司1\",\"value\":3.38,\"unit\":\"%\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-021-1\",\"LOAN-021-2\",\"LOAN-021-3\",\"LOAN-021-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]}],\"联合态势演示分析，非正式融资事实。90天窗口；独立复审最新结论：这是25bp规则范围的基准报告。\",{\"scenarioId\":\"S003\",\"activeObjectRef\":null,\"objectSetRef\":{\"id\":\"V14-JOINT-SCOPE\",\"title\":\"联合分析 · 7家企业\",\"objectIds\":[\"ENT-019\",\"ENT-013\",\"ENT-021\",\"ENT-012\",\"ENT-014\",\"ENT-005\",\"ENT-006\"]},\"analysisScope\":\"set\",\"sourceModuleId\":\"joint-workbench\",\"resultView\":\"demo\",\"resultMode\":{\"id\":\"demo\",\"label\":\"演示基准\"},\"objectSet\":{\"id\":\"V14-JOINT-SCOPE\",\"title\":\"联合分析 · 7家企业\",\"objectIds\":[\"ENT-019\",\"ENT-013\",\"ENT-021\",\"ENT-012\",\"ENT-014\",\"ENT-005\",\"ENT-006\"],\"label\":\"联合分析 · 7家企业\",\"count\":7},\"timeRange\":{\"start\":\"2025-12-31\",\"end\":\"2025-12-31\",\"label\":\"截至2025-12-31 · 90天窗口\"},\"dataVersionRef\":{\"id\":\"DATA-V14-20251231-DEMO-1\"},\"ontologyVersionRef\":{\"id\":\"ONT-ENTERPRISE-FINANCE-RISK-1.4\"},\"evidenceRefs\":[\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"],\"jointEvidence\":{\"dataVersion\":\"DATA-V14-20251231-DEMO-1\",\"dataDigest\":\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\",\"ontologyVersion\":\"ONT-ENTERPRISE-FINANCE-RISK-1.4\",\"asOf\":\"2025-12-31\",\"horizon\":90,\"objectIds\":[\"ENT-019\",\"ENT-013\",\"ENT-021\",\"ENT-012\",\"ENT-014\",\"ENT-005\",\"ENT-006\"],\"resultKind\":\"DEMO_BASELINE\",\"planId\":null,\"rule\":{\"id\":\"RULE-OPS-FINANCING-PREMIUM\",\"ontologyId\":\"ONT-GROUP-FINANCING-OPTIMIZATION\",\"draftId\":\"DRAFT-V14-OPERATIONS-S001\",\"draftRevision\":2,\"baseVersionId\":\"semantic-MSVJM48O-VJC6\",\"condition\":\"融资成本偏离 > 25 bp\",\"premiumThreshold\":25,\"resultId\":\"550fb3a8-784a-4d0a-a895-0a79edf524f5\"},\"bankId\":null}}]",
+        "createdAt": "2026-09-08T01:31:25.873Z"
+      },
+      {
+        "type": "result-summary",
+        "title": "企业融资与风险分析报告 · 窗口到期本金",
+        "sourceModuleId": "dashboard",
+        "jointReportId": "743ac90e-26ce-4691-8b47-9493b1c8a01c",
+        "jointMetric": "due",
+        "resultMode": "demo",
+        "resultId": "V14-REPORT-743ac90e-26ce-4691-8b47-9493b1c8a01c",
+        "modelVersionId": null,
+        "dataVersionId": "DATA-V14-20251231-DEMO-1",
+        "ontologyVersionId": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+        "text": "联合态势演示分析，非正式融资事实。90天窗口；独立复审最新结论：这是25bp规则范围的基准报告。",
+        "rows": [
+          {
+            "id": "ENT-005",
+            "name": "风电测试公司05",
+            "value": 4.928,
+            "unit": "亿元",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-005-1",
+              "LOAN-005-2",
+              "LOAN-005-3",
+              "LOAN-005-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-006",
+            "name": "风电测试公司06",
+            "value": 6.335,
+            "unit": "亿元",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-006-1",
+              "LOAN-006-2",
+              "LOAN-006-3",
+              "LOAN-006-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-012",
+            "name": "风电测试公司12",
+            "value": 11.137,
+            "unit": "亿元",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-012-1",
+              "LOAN-012-2",
+              "LOAN-012-3",
+              "LOAN-012-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-013",
+            "name": "风电测试公司13",
+            "value": 8.904,
+            "unit": "亿元",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-013-1",
+              "LOAN-013-2",
+              "LOAN-013-3",
+              "LOAN-013-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-014",
+            "name": "风电测试公司14",
+            "value": 10.311,
+            "unit": "亿元",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-014-1",
+              "LOAN-014-2",
+              "LOAN-014-3",
+              "LOAN-014-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-019",
+            "name": "环保测试公司3",
+            "value": 7.832000000000001,
+            "unit": "亿元",
+            "status": "黄灯",
+            "evidenceRefs": [
+              "LOAN-019-1",
+              "LOAN-019-2",
+              "LOAN-019-3",
+              "LOAN-019-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-021",
+            "name": "核电测试公司1",
+            "value": 7.36,
+            "unit": "亿元",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-021-1",
+              "LOAN-021-2",
+              "LOAN-021-3",
+              "LOAN-021-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          }
+        ],
+        "workspaceContext": {
+          "scenarioId": "S003",
+          "activeObjectRef": null,
+          "objectSetRef": {
+            "id": "V14-JOINT-SCOPE",
+            "title": "联合分析 · 7家企业",
+            "objectIds": [
+              "ENT-019",
+              "ENT-013",
+              "ENT-021",
+              "ENT-012",
+              "ENT-014",
+              "ENT-005",
+              "ENT-006"
+            ]
+          },
+          "analysisScope": "set",
+          "sourceModuleId": "joint-workbench",
+          "resultView": "demo",
+          "resultMode": {
+            "id": "demo",
+            "label": "演示基准"
+          },
+          "objectSet": {
+            "id": "V14-JOINT-SCOPE",
+            "title": "联合分析 · 7家企业",
+            "objectIds": [
+              "ENT-019",
+              "ENT-013",
+              "ENT-021",
+              "ENT-012",
+              "ENT-014",
+              "ENT-005",
+              "ENT-006"
+            ],
+            "label": "联合分析 · 7家企业",
+            "count": 7
+          },
+          "timeRange": {
+            "start": "2025-12-31",
+            "end": "2025-12-31",
+            "label": "截至2025-12-31 · 90天窗口"
+          },
+          "dataVersionRef": {
+            "id": "DATA-V14-20251231-DEMO-1"
+          },
+          "ontologyVersionRef": {
+            "id": "ONT-ENTERPRISE-FINANCE-RISK-1.4"
+          },
+          "evidenceRefs": [
+            "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+          ],
+          "jointEvidence": {
+            "dataVersion": "DATA-V14-20251231-DEMO-1",
+            "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+            "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+            "asOf": "2025-12-31",
+            "horizon": 90,
+            "objectIds": [
+              "ENT-019",
+              "ENT-013",
+              "ENT-021",
+              "ENT-012",
+              "ENT-014",
+              "ENT-005",
+              "ENT-006"
+            ],
+            "resultKind": "DEMO_BASELINE",
+            "planId": null,
+            "rule": {
+              "id": "RULE-OPS-FINANCING-PREMIUM",
+              "ontologyId": "ONT-GROUP-FINANCING-OPTIMIZATION",
+              "draftId": "DRAFT-V14-OPERATIONS-S001",
+              "draftRevision": 2,
+              "baseVersionId": "semantic-MSVJM48O-VJC6",
+              "condition": "融资成本偏离 > 25 bp",
+              "premiumThreshold": 25,
+              "resultId": "550fb3a8-784a-4d0a-a895-0a79edf524f5"
+            },
+            "bankId": null
+          }
+        },
+        "evidenceRefs": [
+          "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+          "V14-REPORT-743ac90e-26ce-4691-8b47-9493b1c8a01c"
+        ],
+        "jointSnapshot": {
+          "id": "743ac90e-26ce-4691-8b47-9493b1c8a01c",
+          "status": "DRAFT",
+          "version": 1,
+          "title": "企业融资与风险分析报告",
+          "notes": "7 家企业，融资余额 97.43 亿元，余额加权成本 3.00%；未来 90 天到期 56.81 亿元，测算缺口 20.92 亿元。",
+          "createdAt": "2026-09-08T01:31:25.807Z",
+          "rows": [
+            {
+              "id": "ENT-005",
+              "kind": "enterprise",
+              "name": "风电测试公司05",
+              "aliases": [
+                "S003-ENT-005",
+                "risk::S003-ENT-005"
+              ],
+              "aliasNames": [
+                "风电测试公司05"
+              ],
+              "industry": "风电",
+              "city": "张家口",
+              "province": "河北",
+              "coordinates": [
+                114.89,
+                40.77
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 57.3,
+              "riskTier": "绿灯",
+              "cash": 211.2,
+              "owner": "风电业务负责人01",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-005",
+                "title": "风电测试公司05",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-005"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 704,
+              "cost": 2.72,
+              "annualInterest": 19.1488,
+              "due": 492.8,
+              "dueRatio": 70,
+              "credit": 140.8,
+              "gap": 140.8,
+              "premium": 27,
+              "loanIds": [
+                "LOAN-005-1",
+                "LOAN-005-2",
+                "LOAN-005-3",
+                "LOAN-005-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-005-1",
+                "LOAN-005-2"
+              ],
+              "bankIds": [
+                "BANK-05",
+                "BANK-07",
+                "BANK-01"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-006",
+              "kind": "enterprise",
+              "name": "风电测试公司06",
+              "aliases": [
+                "S003-ENT-006",
+                "risk::S003-ENT-006"
+              ],
+              "aliasNames": [
+                "风电测试公司06"
+              ],
+              "industry": "风电",
+              "city": "白城",
+              "province": "吉林",
+              "coordinates": [
+                122.84,
+                45.62
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 60.64,
+              "riskTier": "绿灯",
+              "cash": 72.4,
+              "owner": "风电业务负责人02",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-006",
+                "title": "风电测试公司06",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-006"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 905,
+              "cost": 2.89,
+              "annualInterest": 26.1545,
+              "due": 633.5,
+              "dueRatio": 70,
+              "credit": 181,
+              "gap": 380.1,
+              "premium": 44,
+              "loanIds": [
+                "LOAN-006-1",
+                "LOAN-006-2",
+                "LOAN-006-3",
+                "LOAN-006-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-006-1",
+                "LOAN-006-2"
+              ],
+              "bankIds": [
+                "BANK-06",
+                "BANK-08",
+                "BANK-02"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-012",
+              "kind": "enterprise",
+              "name": "风电测试公司12",
+              "aliases": [
+                "S003-ENT-012",
+                "risk::S003-ENT-012"
+              ],
+              "aliasNames": [
+                "风电测试公司12"
+              ],
+              "industry": "风电",
+              "city": "大同",
+              "province": "山西",
+              "coordinates": [
+                113.3,
+                40.09
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 54,
+              "riskTier": "绿灯",
+              "cash": 214.785,
+              "owner": "风电业务负责人04",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-012",
+                "title": "风电测试公司12",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-012"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 1591,
+              "cost": 2.72,
+              "annualInterest": 43.2752,
+              "due": 1113.7,
+              "dueRatio": 70,
+              "credit": 318.2,
+              "gap": 580.715,
+              "premium": 27,
+              "loanIds": [
+                "LOAN-012-1",
+                "LOAN-012-2",
+                "LOAN-012-3",
+                "LOAN-012-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-012-1",
+                "LOAN-012-2"
+              ],
+              "bankIds": [
+                "BANK-03",
+                "BANK-05",
+                "BANK-08"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-013",
+              "kind": "enterprise",
+              "name": "风电测试公司13",
+              "aliases": [
+                "S003-ENT-013",
+                "risk::S003-ENT-013"
+              ],
+              "aliasNames": [
+                "风电测试公司13"
+              ],
+              "industry": "风电",
+              "city": "莆田",
+              "province": "福建",
+              "coordinates": [
+                119.01,
+                25.43
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 43.96,
+              "riskTier": "绿灯",
+              "cash": 241.68,
+              "owner": "风电业务负责人01",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-013",
+                "title": "风电测试公司13",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-013"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 1272,
+              "cost": 2.89,
+              "annualInterest": 36.7608,
+              "due": 890.4,
+              "dueRatio": 70,
+              "credit": 254.4,
+              "gap": 394.32,
+              "premium": 44,
+              "loanIds": [
+                "LOAN-013-1",
+                "LOAN-013-2",
+                "LOAN-013-3",
+                "LOAN-013-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-013-1",
+                "LOAN-013-2"
+              ],
+              "bankIds": [
+                "BANK-04",
+                "BANK-06",
+                "BANK-09"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-014",
+              "kind": "enterprise",
+              "name": "风电测试公司14",
+              "aliases": [
+                "S003-ENT-014",
+                "risk::S003-ENT-014"
+              ],
+              "aliasNames": [
+                "风电测试公司14"
+              ],
+              "industry": "风电",
+              "city": "阳江",
+              "province": "广东",
+              "coordinates": [
+                111.98,
+                21.86
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 54.57,
+              "riskTier": "绿灯",
+              "cash": 360.885,
+              "owner": "风电业务负责人02",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-014",
+                "title": "风电测试公司14",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-014"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 1473,
+              "cost": 3.06,
+              "annualInterest": 45.0738,
+              "due": 1031.1,
+              "dueRatio": 70,
+              "credit": 294.6,
+              "gap": 375.615,
+              "premium": 61,
+              "loanIds": [
+                "LOAN-014-1",
+                "LOAN-014-2",
+                "LOAN-014-3",
+                "LOAN-014-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-014-1",
+                "LOAN-014-2"
+              ],
+              "bankIds": [
+                "BANK-05",
+                "BANK-07",
+                "BANK-01"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-019",
+              "kind": "enterprise",
+              "name": "环保测试公司3",
+              "aliases": [
+                "S003-ENT-019",
+                "risk::S003-ENT-019"
+              ],
+              "aliasNames": [
+                "环保测试公司3"
+              ],
+              "industry": "环保",
+              "city": "郑州",
+              "province": "河南",
+              "coordinates": [
+                113.63,
+                34.75
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 37.31,
+              "riskTier": "黄灯",
+              "cash": 479.71,
+              "owner": "环保业务负责人03",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-019",
+                "title": "环保测试公司3",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-019"
+              ],
+              "benchmarkRate": 2.65,
+              "balance": 1958,
+              "cost": 3.04,
+              "annualInterest": 59.5232,
+              "due": 783.2,
+              "dueRatio": 40,
+              "credit": 391.6,
+              "gap": 0,
+              "premium": 39,
+              "loanIds": [
+                "LOAN-019-1",
+                "LOAN-019-2",
+                "LOAN-019-3",
+                "LOAN-019-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-019-1"
+              ],
+              "bankIds": [
+                "BANK-01",
+                "BANK-03",
+                "BANK-06"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-021",
+              "kind": "enterprise",
+              "name": "核电测试公司1",
+              "aliases": [
+                "S003-ENT-021",
+                "risk::S003-ENT-021"
+              ],
+              "aliasNames": [
+                "核电测试公司1"
+              ],
+              "industry": "核电",
+              "city": "防城港",
+              "province": "广西",
+              "coordinates": [
+                108.35,
+                21.69
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 45.1,
+              "riskTier": "绿灯",
+              "cash": 147.2,
+              "owner": "核电业务负责人01",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-021",
+                "title": "核电测试公司1",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-021"
+              ],
+              "benchmarkRate": 2.1,
+              "balance": 1840,
+              "cost": 3.38,
+              "annualInterest": 62.192,
+              "due": 736,
+              "dueRatio": 40,
+              "credit": 368,
+              "gap": 220.8,
+              "premium": 128,
+              "loanIds": [
+                "LOAN-021-1",
+                "LOAN-021-2",
+                "LOAN-021-3",
+                "LOAN-021-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-021-1"
+              ],
+              "bankIds": [
+                "BANK-03",
+                "BANK-05",
+                "BANK-08"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            }
+          ],
+          "loans": [
+            {
+              "id": "LOAN-005-1",
+              "kind": "loan",
+              "name": "风电测试公司05 · 1号融资",
+              "enterpriseId": "ENT-005",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-005",
+              "principal": 281.6,
+              "rate": 3.02,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-01-29",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-005-2",
+              "kind": "loan",
+              "name": "风电测试公司05 · 2号融资",
+              "enterpriseId": "ENT-005",
+              "bankId": "BANK-07",
+              "projectId": "PRJ-005",
+              "principal": 211.2,
+              "rate": 2.52,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-09",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-005-3",
+              "kind": "loan",
+              "name": "风电测试公司05 · 3号融资",
+              "enterpriseId": "ENT-005",
+              "bankId": "BANK-01",
+              "projectId": "PRJ-005",
+              "principal": 140.8,
+              "rate": 2.82,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-06-21",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-005-4",
+              "kind": "loan",
+              "name": "风电测试公司05 · 4号融资",
+              "enterpriseId": "ENT-005",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-005",
+              "principal": 70.4,
+              "rate": 1.92,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-03-20",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-006-1",
+              "kind": "loan",
+              "name": "风电测试公司06 · 1号融资",
+              "enterpriseId": "ENT-006",
+              "bankId": "BANK-06",
+              "projectId": "PRJ-006",
+              "principal": 362,
+              "rate": 3.19,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-01-30",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-006-2",
+              "kind": "loan",
+              "name": "风电测试公司06 · 2号融资",
+              "enterpriseId": "ENT-006",
+              "bankId": "BANK-08",
+              "projectId": "PRJ-006",
+              "principal": 271.5,
+              "rate": 2.69,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-11",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-006-3",
+              "kind": "loan",
+              "name": "风电测试公司06 · 3号融资",
+              "enterpriseId": "ENT-006",
+              "bankId": "BANK-02",
+              "projectId": "PRJ-006",
+              "principal": 181,
+              "rate": 2.99,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-06-29",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-006-4",
+              "kind": "loan",
+              "name": "风电测试公司06 · 4号融资",
+              "enterpriseId": "ENT-006",
+              "bankId": "BANK-06",
+              "projectId": "PRJ-006",
+              "principal": 90.5,
+              "rate": 2.09,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-03-26",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-012-1",
+              "kind": "loan",
+              "name": "风电测试公司12 · 1号融资",
+              "enterpriseId": "ENT-012",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-012",
+              "principal": 636.4,
+              "rate": 3.02,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-05",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-012-2",
+              "kind": "loan",
+              "name": "风电测试公司12 · 2号融资",
+              "enterpriseId": "ENT-012",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-012",
+              "principal": 477.3,
+              "rate": 2.52,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-23",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-012-3",
+              "kind": "loan",
+              "name": "风电测试公司12 · 3号融资",
+              "enterpriseId": "ENT-012",
+              "bankId": "BANK-08",
+              "projectId": "PRJ-012",
+              "principal": 318.2,
+              "rate": 2.82,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-08-16",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-012-4",
+              "kind": "loan",
+              "name": "风电测试公司12 · 4号融资",
+              "enterpriseId": "ENT-012",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-012",
+              "principal": 159.1,
+              "rate": 1.92,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-05-01",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-013-1",
+              "kind": "loan",
+              "name": "风电测试公司13 · 1号融资",
+              "enterpriseId": "ENT-013",
+              "bankId": "BANK-04",
+              "projectId": "PRJ-013",
+              "principal": 508.8,
+              "rate": 3.19,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-06",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-013-2",
+              "kind": "loan",
+              "name": "风电测试公司13 · 2号融资",
+              "enterpriseId": "ENT-013",
+              "bankId": "BANK-06",
+              "projectId": "PRJ-013",
+              "principal": 381.6,
+              "rate": 2.69,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-25",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-013-3",
+              "kind": "loan",
+              "name": "风电测试公司13 · 3号融资",
+              "enterpriseId": "ENT-013",
+              "bankId": "BANK-09",
+              "projectId": "PRJ-013",
+              "principal": 254.4,
+              "rate": 2.99,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-08-24",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-013-4",
+              "kind": "loan",
+              "name": "风电测试公司13 · 4号融资",
+              "enterpriseId": "ENT-013",
+              "bankId": "BANK-04",
+              "projectId": "PRJ-013",
+              "principal": 127.2,
+              "rate": 2.09,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-05-07",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-014-1",
+              "kind": "loan",
+              "name": "风电测试公司14 · 1号融资",
+              "enterpriseId": "ENT-014",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-014",
+              "principal": 589.2,
+              "rate": 3.36,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-07",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-014-2",
+              "kind": "loan",
+              "name": "风电测试公司14 · 2号融资",
+              "enterpriseId": "ENT-014",
+              "bankId": "BANK-07",
+              "projectId": "PRJ-014",
+              "principal": 441.9,
+              "rate": 2.86,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-27",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-014-3",
+              "kind": "loan",
+              "name": "风电测试公司14 · 3号融资",
+              "enterpriseId": "ENT-014",
+              "bankId": "BANK-01",
+              "projectId": "PRJ-014",
+              "principal": 294.6,
+              "rate": 3.16,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-09-01",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-014-4",
+              "kind": "loan",
+              "name": "风电测试公司14 · 4号融资",
+              "enterpriseId": "ENT-014",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-014",
+              "principal": 147.3,
+              "rate": 2.26,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-05-13",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-019-1",
+              "kind": "loan",
+              "name": "环保测试公司3 · 1号融资",
+              "enterpriseId": "ENT-019",
+              "bankId": "BANK-01",
+              "projectId": "PRJ-019",
+              "principal": 783.2,
+              "rate": 3.34,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-12",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-019-2",
+              "kind": "loan",
+              "name": "环保测试公司3 · 2号融资",
+              "enterpriseId": "ENT-019",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-019",
+              "principal": 587.4,
+              "rate": 2.84,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-04-06",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-019-3",
+              "kind": "loan",
+              "name": "环保测试公司3 · 3号融资",
+              "enterpriseId": "ENT-019",
+              "bankId": "BANK-06",
+              "projectId": "PRJ-019",
+              "principal": 391.6,
+              "rate": 3.14,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-10-11",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-019-4",
+              "kind": "loan",
+              "name": "环保测试公司3 · 4号融资",
+              "enterpriseId": "ENT-019",
+              "bankId": "BANK-01",
+              "projectId": "PRJ-019",
+              "principal": 195.8,
+              "rate": 2.24,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-06-12",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-021-1",
+              "kind": "loan",
+              "name": "核电测试公司1 · 1号融资",
+              "enterpriseId": "ENT-021",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-021",
+              "principal": 736,
+              "rate": 3.68,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-14",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-021-2",
+              "kind": "loan",
+              "name": "核电测试公司1 · 2号融资",
+              "enterpriseId": "ENT-021",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-021",
+              "principal": 552,
+              "rate": 3.18,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-04-10",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-021-3",
+              "kind": "loan",
+              "name": "核电测试公司1 · 3号融资",
+              "enterpriseId": "ENT-021",
+              "bankId": "BANK-08",
+              "projectId": "PRJ-021",
+              "principal": 368,
+              "rate": 3.48,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-10-27",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-021-4",
+              "kind": "loan",
+              "name": "核电测试公司1 · 4号融资",
+              "enterpriseId": "ENT-021",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-021",
+              "principal": 184,
+              "rate": 2.58,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-06-24",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            }
+          ],
+          "totals": {
+            "count": 7,
+            "balance": 9743,
+            "cost": 2.99834,
+            "due": 5680.7,
+            "gap": 2092.35,
+            "annualInterest": 292.1283,
+            "attention": 1
+          },
+          "evidence": {
+            "dataVersion": "DATA-V14-20251231-DEMO-1",
+            "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+            "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+            "asOf": "2025-12-31",
+            "horizon": 90,
+            "objectIds": [
+              "ENT-019",
+              "ENT-013",
+              "ENT-021",
+              "ENT-012",
+              "ENT-014",
+              "ENT-005",
+              "ENT-006"
+            ],
+            "resultKind": "DEMO_BASELINE",
+            "planId": null,
+            "rule": {
+              "id": "RULE-OPS-FINANCING-PREMIUM",
+              "ontologyId": "ONT-GROUP-FINANCING-OPTIMIZATION",
+              "draftId": "DRAFT-V14-OPERATIONS-S001",
+              "draftRevision": 2,
+              "baseVersionId": "semantic-MSVJM48O-VJC6",
+              "condition": "融资成本偏离 > 25 bp",
+              "premiumThreshold": 25,
+              "resultId": "550fb3a8-784a-4d0a-a895-0a79edf524f5"
+            },
+            "bankId": null
+          },
+          "plan": null
+        },
+        "sourceTask": "situation",
+        "id": "3ddf9a46-d3b4-4de3-98b6-6b1348b74621",
+        "fingerprint": "[\"dashboard\",\"企业融资与风险分析报告 · 窗口到期本金\",\"V14-REPORT-743ac90e-26ce-4691-8b47-9493b1c8a01c\",[{\"id\":\"ENT-005\",\"name\":\"风电测试公司05\",\"value\":4.928,\"unit\":\"亿元\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-005-1\",\"LOAN-005-2\",\"LOAN-005-3\",\"LOAN-005-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-006\",\"name\":\"风电测试公司06\",\"value\":6.335,\"unit\":\"亿元\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-006-1\",\"LOAN-006-2\",\"LOAN-006-3\",\"LOAN-006-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-012\",\"name\":\"风电测试公司12\",\"value\":11.137,\"unit\":\"亿元\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-012-1\",\"LOAN-012-2\",\"LOAN-012-3\",\"LOAN-012-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-013\",\"name\":\"风电测试公司13\",\"value\":8.904,\"unit\":\"亿元\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-013-1\",\"LOAN-013-2\",\"LOAN-013-3\",\"LOAN-013-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-014\",\"name\":\"风电测试公司14\",\"value\":10.311,\"unit\":\"亿元\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-014-1\",\"LOAN-014-2\",\"LOAN-014-3\",\"LOAN-014-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-019\",\"name\":\"环保测试公司3\",\"value\":7.832000000000001,\"unit\":\"亿元\",\"status\":\"黄灯\",\"evidenceRefs\":[\"LOAN-019-1\",\"LOAN-019-2\",\"LOAN-019-3\",\"LOAN-019-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-021\",\"name\":\"核电测试公司1\",\"value\":7.36,\"unit\":\"亿元\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-021-1\",\"LOAN-021-2\",\"LOAN-021-3\",\"LOAN-021-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]}],\"联合态势演示分析，非正式融资事实。90天窗口；独立复审最新结论：这是25bp规则范围的基准报告。\",{\"scenarioId\":\"S003\",\"activeObjectRef\":null,\"objectSetRef\":{\"id\":\"V14-JOINT-SCOPE\",\"title\":\"联合分析 · 7家企业\",\"objectIds\":[\"ENT-019\",\"ENT-013\",\"ENT-021\",\"ENT-012\",\"ENT-014\",\"ENT-005\",\"ENT-006\"]},\"analysisScope\":\"set\",\"sourceModuleId\":\"joint-workbench\",\"resultView\":\"demo\",\"resultMode\":{\"id\":\"demo\",\"label\":\"演示基准\"},\"objectSet\":{\"id\":\"V14-JOINT-SCOPE\",\"title\":\"联合分析 · 7家企业\",\"objectIds\":[\"ENT-019\",\"ENT-013\",\"ENT-021\",\"ENT-012\",\"ENT-014\",\"ENT-005\",\"ENT-006\"],\"label\":\"联合分析 · 7家企业\",\"count\":7},\"timeRange\":{\"start\":\"2025-12-31\",\"end\":\"2025-12-31\",\"label\":\"截至2025-12-31 · 90天窗口\"},\"dataVersionRef\":{\"id\":\"DATA-V14-20251231-DEMO-1\"},\"ontologyVersionRef\":{\"id\":\"ONT-ENTERPRISE-FINANCE-RISK-1.4\"},\"evidenceRefs\":[\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"],\"jointEvidence\":{\"dataVersion\":\"DATA-V14-20251231-DEMO-1\",\"dataDigest\":\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\",\"ontologyVersion\":\"ONT-ENTERPRISE-FINANCE-RISK-1.4\",\"asOf\":\"2025-12-31\",\"horizon\":90,\"objectIds\":[\"ENT-019\",\"ENT-013\",\"ENT-021\",\"ENT-012\",\"ENT-014\",\"ENT-005\",\"ENT-006\"],\"resultKind\":\"DEMO_BASELINE\",\"planId\":null,\"rule\":{\"id\":\"RULE-OPS-FINANCING-PREMIUM\",\"ontologyId\":\"ONT-GROUP-FINANCING-OPTIMIZATION\",\"draftId\":\"DRAFT-V14-OPERATIONS-S001\",\"draftRevision\":2,\"baseVersionId\":\"semantic-MSVJM48O-VJC6\",\"condition\":\"融资成本偏离 > 25 bp\",\"premiumThreshold\":25,\"resultId\":\"550fb3a8-784a-4d0a-a895-0a79edf524f5\"},\"bankId\":null}}]",
+        "createdAt": "2026-09-08T01:31:25.874Z"
+      },
+      {
+        "type": "result-summary",
+        "title": "企业融资与风险分析报告 · 测算资金缺口",
+        "sourceModuleId": "dashboard",
+        "jointReportId": "743ac90e-26ce-4691-8b47-9493b1c8a01c",
+        "jointMetric": "gap",
+        "resultMode": "demo",
+        "resultId": "V14-REPORT-743ac90e-26ce-4691-8b47-9493b1c8a01c",
+        "modelVersionId": null,
+        "dataVersionId": "DATA-V14-20251231-DEMO-1",
+        "ontologyVersionId": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+        "text": "联合态势演示分析，非正式融资事实。90天窗口；独立复审最新结论：这是25bp规则范围的基准报告。",
+        "rows": [
+          {
+            "id": "ENT-005",
+            "name": "风电测试公司05",
+            "value": 1.4080000000000001,
+            "unit": "亿元",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-005-1",
+              "LOAN-005-2",
+              "LOAN-005-3",
+              "LOAN-005-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-006",
+            "name": "风电测试公司06",
+            "value": 3.801,
+            "unit": "亿元",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-006-1",
+              "LOAN-006-2",
+              "LOAN-006-3",
+              "LOAN-006-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-012",
+            "name": "风电测试公司12",
+            "value": 5.80715,
+            "unit": "亿元",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-012-1",
+              "LOAN-012-2",
+              "LOAN-012-3",
+              "LOAN-012-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-013",
+            "name": "风电测试公司13",
+            "value": 3.9432,
+            "unit": "亿元",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-013-1",
+              "LOAN-013-2",
+              "LOAN-013-3",
+              "LOAN-013-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-014",
+            "name": "风电测试公司14",
+            "value": 3.75615,
+            "unit": "亿元",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-014-1",
+              "LOAN-014-2",
+              "LOAN-014-3",
+              "LOAN-014-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-019",
+            "name": "环保测试公司3",
+            "value": 0,
+            "unit": "亿元",
+            "status": "黄灯",
+            "evidenceRefs": [
+              "LOAN-019-1",
+              "LOAN-019-2",
+              "LOAN-019-3",
+              "LOAN-019-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          },
+          {
+            "id": "ENT-021",
+            "name": "核电测试公司1",
+            "value": 2.208,
+            "unit": "亿元",
+            "status": "绿灯",
+            "evidenceRefs": [
+              "LOAN-021-1",
+              "LOAN-021-2",
+              "LOAN-021-3",
+              "LOAN-021-4",
+              "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+            ]
+          }
+        ],
+        "workspaceContext": {
+          "scenarioId": "S003",
+          "activeObjectRef": null,
+          "objectSetRef": {
+            "id": "V14-JOINT-SCOPE",
+            "title": "联合分析 · 7家企业",
+            "objectIds": [
+              "ENT-019",
+              "ENT-013",
+              "ENT-021",
+              "ENT-012",
+              "ENT-014",
+              "ENT-005",
+              "ENT-006"
+            ]
+          },
+          "analysisScope": "set",
+          "sourceModuleId": "joint-workbench",
+          "resultView": "demo",
+          "resultMode": {
+            "id": "demo",
+            "label": "演示基准"
+          },
+          "objectSet": {
+            "id": "V14-JOINT-SCOPE",
+            "title": "联合分析 · 7家企业",
+            "objectIds": [
+              "ENT-019",
+              "ENT-013",
+              "ENT-021",
+              "ENT-012",
+              "ENT-014",
+              "ENT-005",
+              "ENT-006"
+            ],
+            "label": "联合分析 · 7家企业",
+            "count": 7
+          },
+          "timeRange": {
+            "start": "2025-12-31",
+            "end": "2025-12-31",
+            "label": "截至2025-12-31 · 90天窗口"
+          },
+          "dataVersionRef": {
+            "id": "DATA-V14-20251231-DEMO-1"
+          },
+          "ontologyVersionRef": {
+            "id": "ONT-ENTERPRISE-FINANCE-RISK-1.4"
+          },
+          "evidenceRefs": [
+            "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+          ],
+          "jointEvidence": {
+            "dataVersion": "DATA-V14-20251231-DEMO-1",
+            "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+            "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+            "asOf": "2025-12-31",
+            "horizon": 90,
+            "objectIds": [
+              "ENT-019",
+              "ENT-013",
+              "ENT-021",
+              "ENT-012",
+              "ENT-014",
+              "ENT-005",
+              "ENT-006"
+            ],
+            "resultKind": "DEMO_BASELINE",
+            "planId": null,
+            "rule": {
+              "id": "RULE-OPS-FINANCING-PREMIUM",
+              "ontologyId": "ONT-GROUP-FINANCING-OPTIMIZATION",
+              "draftId": "DRAFT-V14-OPERATIONS-S001",
+              "draftRevision": 2,
+              "baseVersionId": "semantic-MSVJM48O-VJC6",
+              "condition": "融资成本偏离 > 25 bp",
+              "premiumThreshold": 25,
+              "resultId": "550fb3a8-784a-4d0a-a895-0a79edf524f5"
+            },
+            "bankId": null
+          }
+        },
+        "evidenceRefs": [
+          "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+          "V14-REPORT-743ac90e-26ce-4691-8b47-9493b1c8a01c"
+        ],
+        "jointSnapshot": {
+          "id": "743ac90e-26ce-4691-8b47-9493b1c8a01c",
+          "status": "DRAFT",
+          "version": 1,
+          "title": "企业融资与风险分析报告",
+          "notes": "7 家企业，融资余额 97.43 亿元，余额加权成本 3.00%；未来 90 天到期 56.81 亿元，测算缺口 20.92 亿元。",
+          "createdAt": "2026-09-08T01:31:25.807Z",
+          "rows": [
+            {
+              "id": "ENT-005",
+              "kind": "enterprise",
+              "name": "风电测试公司05",
+              "aliases": [
+                "S003-ENT-005",
+                "risk::S003-ENT-005"
+              ],
+              "aliasNames": [
+                "风电测试公司05"
+              ],
+              "industry": "风电",
+              "city": "张家口",
+              "province": "河北",
+              "coordinates": [
+                114.89,
+                40.77
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 57.3,
+              "riskTier": "绿灯",
+              "cash": 211.2,
+              "owner": "风电业务负责人01",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-005",
+                "title": "风电测试公司05",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-005"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 704,
+              "cost": 2.72,
+              "annualInterest": 19.1488,
+              "due": 492.8,
+              "dueRatio": 70,
+              "credit": 140.8,
+              "gap": 140.8,
+              "premium": 27,
+              "loanIds": [
+                "LOAN-005-1",
+                "LOAN-005-2",
+                "LOAN-005-3",
+                "LOAN-005-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-005-1",
+                "LOAN-005-2"
+              ],
+              "bankIds": [
+                "BANK-05",
+                "BANK-07",
+                "BANK-01"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-006",
+              "kind": "enterprise",
+              "name": "风电测试公司06",
+              "aliases": [
+                "S003-ENT-006",
+                "risk::S003-ENT-006"
+              ],
+              "aliasNames": [
+                "风电测试公司06"
+              ],
+              "industry": "风电",
+              "city": "白城",
+              "province": "吉林",
+              "coordinates": [
+                122.84,
+                45.62
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 60.64,
+              "riskTier": "绿灯",
+              "cash": 72.4,
+              "owner": "风电业务负责人02",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-006",
+                "title": "风电测试公司06",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-006"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 905,
+              "cost": 2.89,
+              "annualInterest": 26.1545,
+              "due": 633.5,
+              "dueRatio": 70,
+              "credit": 181,
+              "gap": 380.1,
+              "premium": 44,
+              "loanIds": [
+                "LOAN-006-1",
+                "LOAN-006-2",
+                "LOAN-006-3",
+                "LOAN-006-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-006-1",
+                "LOAN-006-2"
+              ],
+              "bankIds": [
+                "BANK-06",
+                "BANK-08",
+                "BANK-02"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-012",
+              "kind": "enterprise",
+              "name": "风电测试公司12",
+              "aliases": [
+                "S003-ENT-012",
+                "risk::S003-ENT-012"
+              ],
+              "aliasNames": [
+                "风电测试公司12"
+              ],
+              "industry": "风电",
+              "city": "大同",
+              "province": "山西",
+              "coordinates": [
+                113.3,
+                40.09
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 54,
+              "riskTier": "绿灯",
+              "cash": 214.785,
+              "owner": "风电业务负责人04",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-012",
+                "title": "风电测试公司12",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-012"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 1591,
+              "cost": 2.72,
+              "annualInterest": 43.2752,
+              "due": 1113.7,
+              "dueRatio": 70,
+              "credit": 318.2,
+              "gap": 580.715,
+              "premium": 27,
+              "loanIds": [
+                "LOAN-012-1",
+                "LOAN-012-2",
+                "LOAN-012-3",
+                "LOAN-012-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-012-1",
+                "LOAN-012-2"
+              ],
+              "bankIds": [
+                "BANK-03",
+                "BANK-05",
+                "BANK-08"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-013",
+              "kind": "enterprise",
+              "name": "风电测试公司13",
+              "aliases": [
+                "S003-ENT-013",
+                "risk::S003-ENT-013"
+              ],
+              "aliasNames": [
+                "风电测试公司13"
+              ],
+              "industry": "风电",
+              "city": "莆田",
+              "province": "福建",
+              "coordinates": [
+                119.01,
+                25.43
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 43.96,
+              "riskTier": "绿灯",
+              "cash": 241.68,
+              "owner": "风电业务负责人01",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-013",
+                "title": "风电测试公司13",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-013"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 1272,
+              "cost": 2.89,
+              "annualInterest": 36.7608,
+              "due": 890.4,
+              "dueRatio": 70,
+              "credit": 254.4,
+              "gap": 394.32,
+              "premium": 44,
+              "loanIds": [
+                "LOAN-013-1",
+                "LOAN-013-2",
+                "LOAN-013-3",
+                "LOAN-013-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-013-1",
+                "LOAN-013-2"
+              ],
+              "bankIds": [
+                "BANK-04",
+                "BANK-06",
+                "BANK-09"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-014",
+              "kind": "enterprise",
+              "name": "风电测试公司14",
+              "aliases": [
+                "S003-ENT-014",
+                "risk::S003-ENT-014"
+              ],
+              "aliasNames": [
+                "风电测试公司14"
+              ],
+              "industry": "风电",
+              "city": "阳江",
+              "province": "广东",
+              "coordinates": [
+                111.98,
+                21.86
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 54.57,
+              "riskTier": "绿灯",
+              "cash": 360.885,
+              "owner": "风电业务负责人02",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-014",
+                "title": "风电测试公司14",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-014"
+              ],
+              "benchmarkRate": 2.45,
+              "balance": 1473,
+              "cost": 3.06,
+              "annualInterest": 45.0738,
+              "due": 1031.1,
+              "dueRatio": 70,
+              "credit": 294.6,
+              "gap": 375.615,
+              "premium": 61,
+              "loanIds": [
+                "LOAN-014-1",
+                "LOAN-014-2",
+                "LOAN-014-3",
+                "LOAN-014-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-014-1",
+                "LOAN-014-2"
+              ],
+              "bankIds": [
+                "BANK-05",
+                "BANK-07",
+                "BANK-01"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-019",
+              "kind": "enterprise",
+              "name": "环保测试公司3",
+              "aliases": [
+                "S003-ENT-019",
+                "risk::S003-ENT-019"
+              ],
+              "aliasNames": [
+                "环保测试公司3"
+              ],
+              "industry": "环保",
+              "city": "郑州",
+              "province": "河南",
+              "coordinates": [
+                113.63,
+                34.75
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 37.31,
+              "riskTier": "黄灯",
+              "cash": 479.71,
+              "owner": "环保业务负责人03",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-019",
+                "title": "环保测试公司3",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-019"
+              ],
+              "benchmarkRate": 2.65,
+              "balance": 1958,
+              "cost": 3.04,
+              "annualInterest": 59.5232,
+              "due": 783.2,
+              "dueRatio": 40,
+              "credit": 391.6,
+              "gap": 0,
+              "premium": 39,
+              "loanIds": [
+                "LOAN-019-1",
+                "LOAN-019-2",
+                "LOAN-019-3",
+                "LOAN-019-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-019-1"
+              ],
+              "bankIds": [
+                "BANK-01",
+                "BANK-03",
+                "BANK-06"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            },
+            {
+              "id": "ENT-021",
+              "kind": "enterprise",
+              "name": "核电测试公司1",
+              "aliases": [
+                "S003-ENT-021",
+                "risk::S003-ENT-021"
+              ],
+              "aliasNames": [
+                "核电测试公司1"
+              ],
+              "industry": "核电",
+              "city": "防城港",
+              "province": "广西",
+              "coordinates": [
+                108.35,
+                21.69
+              ],
+              "locationClassification": "DEMO_CITY_PLACEMENT",
+              "riskScore": 45.1,
+              "riskTier": "绿灯",
+              "cash": 147.2,
+              "owner": "核电业务负责人01",
+              "sourceFinance": null,
+              "riskSource": {
+                "id": "S003-ENT-021",
+                "title": "核电测试公司1",
+                "objectTypeRef": "Enterprise",
+                "scenarioId": "S003",
+                "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+                "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+                "bindingId": "MB-S003-DEBT-RISK-v1"
+              },
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1",
+                "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-021"
+              ],
+              "benchmarkRate": 2.1,
+              "balance": 1840,
+              "cost": 3.38,
+              "annualInterest": 62.192,
+              "due": 736,
+              "dueRatio": 40,
+              "credit": 368,
+              "gap": 220.8,
+              "premium": 128,
+              "loanIds": [
+                "LOAN-021-1",
+                "LOAN-021-2",
+                "LOAN-021-3",
+                "LOAN-021-4"
+              ],
+              "dueLoanIds": [
+                "LOAN-021-1"
+              ],
+              "bankIds": [
+                "BANK-03",
+                "BANK-05",
+                "BANK-08"
+              ],
+              "resultKind": "DEMO_BASELINE"
+            }
+          ],
+          "loans": [
+            {
+              "id": "LOAN-005-1",
+              "kind": "loan",
+              "name": "风电测试公司05 · 1号融资",
+              "enterpriseId": "ENT-005",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-005",
+              "principal": 281.6,
+              "rate": 3.02,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-01-29",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-005-2",
+              "kind": "loan",
+              "name": "风电测试公司05 · 2号融资",
+              "enterpriseId": "ENT-005",
+              "bankId": "BANK-07",
+              "projectId": "PRJ-005",
+              "principal": 211.2,
+              "rate": 2.52,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-09",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-005-3",
+              "kind": "loan",
+              "name": "风电测试公司05 · 3号融资",
+              "enterpriseId": "ENT-005",
+              "bankId": "BANK-01",
+              "projectId": "PRJ-005",
+              "principal": 140.8,
+              "rate": 2.82,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-06-21",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-005-4",
+              "kind": "loan",
+              "name": "风电测试公司05 · 4号融资",
+              "enterpriseId": "ENT-005",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-005",
+              "principal": 70.4,
+              "rate": 1.92,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-03-20",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-006-1",
+              "kind": "loan",
+              "name": "风电测试公司06 · 1号融资",
+              "enterpriseId": "ENT-006",
+              "bankId": "BANK-06",
+              "projectId": "PRJ-006",
+              "principal": 362,
+              "rate": 3.19,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-01-30",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-006-2",
+              "kind": "loan",
+              "name": "风电测试公司06 · 2号融资",
+              "enterpriseId": "ENT-006",
+              "bankId": "BANK-08",
+              "projectId": "PRJ-006",
+              "principal": 271.5,
+              "rate": 2.69,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-11",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-006-3",
+              "kind": "loan",
+              "name": "风电测试公司06 · 3号融资",
+              "enterpriseId": "ENT-006",
+              "bankId": "BANK-02",
+              "projectId": "PRJ-006",
+              "principal": 181,
+              "rate": 2.99,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-06-29",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-006-4",
+              "kind": "loan",
+              "name": "风电测试公司06 · 4号融资",
+              "enterpriseId": "ENT-006",
+              "bankId": "BANK-06",
+              "projectId": "PRJ-006",
+              "principal": 90.5,
+              "rate": 2.09,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-03-26",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-012-1",
+              "kind": "loan",
+              "name": "风电测试公司12 · 1号融资",
+              "enterpriseId": "ENT-012",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-012",
+              "principal": 636.4,
+              "rate": 3.02,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-05",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-012-2",
+              "kind": "loan",
+              "name": "风电测试公司12 · 2号融资",
+              "enterpriseId": "ENT-012",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-012",
+              "principal": 477.3,
+              "rate": 2.52,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-23",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-012-3",
+              "kind": "loan",
+              "name": "风电测试公司12 · 3号融资",
+              "enterpriseId": "ENT-012",
+              "bankId": "BANK-08",
+              "projectId": "PRJ-012",
+              "principal": 318.2,
+              "rate": 2.82,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-08-16",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-012-4",
+              "kind": "loan",
+              "name": "风电测试公司12 · 4号融资",
+              "enterpriseId": "ENT-012",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-012",
+              "principal": 159.1,
+              "rate": 1.92,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-05-01",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-013-1",
+              "kind": "loan",
+              "name": "风电测试公司13 · 1号融资",
+              "enterpriseId": "ENT-013",
+              "bankId": "BANK-04",
+              "projectId": "PRJ-013",
+              "principal": 508.8,
+              "rate": 3.19,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-06",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-013-2",
+              "kind": "loan",
+              "name": "风电测试公司13 · 2号融资",
+              "enterpriseId": "ENT-013",
+              "bankId": "BANK-06",
+              "projectId": "PRJ-013",
+              "principal": 381.6,
+              "rate": 2.69,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-25",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-013-3",
+              "kind": "loan",
+              "name": "风电测试公司13 · 3号融资",
+              "enterpriseId": "ENT-013",
+              "bankId": "BANK-09",
+              "projectId": "PRJ-013",
+              "principal": 254.4,
+              "rate": 2.99,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-08-24",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-013-4",
+              "kind": "loan",
+              "name": "风电测试公司13 · 4号融资",
+              "enterpriseId": "ENT-013",
+              "bankId": "BANK-04",
+              "projectId": "PRJ-013",
+              "principal": 127.2,
+              "rate": 2.09,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-05-07",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-014-1",
+              "kind": "loan",
+              "name": "风电测试公司14 · 1号融资",
+              "enterpriseId": "ENT-014",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-014",
+              "principal": 589.2,
+              "rate": 3.36,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-07",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-014-2",
+              "kind": "loan",
+              "name": "风电测试公司14 · 2号融资",
+              "enterpriseId": "ENT-014",
+              "bankId": "BANK-07",
+              "projectId": "PRJ-014",
+              "principal": 441.9,
+              "rate": 2.86,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-03-27",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-014-3",
+              "kind": "loan",
+              "name": "风电测试公司14 · 3号融资",
+              "enterpriseId": "ENT-014",
+              "bankId": "BANK-01",
+              "projectId": "PRJ-014",
+              "principal": 294.6,
+              "rate": 3.16,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-09-01",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-014-4",
+              "kind": "loan",
+              "name": "风电测试公司14 · 4号融资",
+              "enterpriseId": "ENT-014",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-014",
+              "principal": 147.3,
+              "rate": 2.26,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-05-13",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-019-1",
+              "kind": "loan",
+              "name": "环保测试公司3 · 1号融资",
+              "enterpriseId": "ENT-019",
+              "bankId": "BANK-01",
+              "projectId": "PRJ-019",
+              "principal": 783.2,
+              "rate": 3.34,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-12",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-019-2",
+              "kind": "loan",
+              "name": "环保测试公司3 · 2号融资",
+              "enterpriseId": "ENT-019",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-019",
+              "principal": 587.4,
+              "rate": 2.84,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-04-06",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-019-3",
+              "kind": "loan",
+              "name": "环保测试公司3 · 3号融资",
+              "enterpriseId": "ENT-019",
+              "bankId": "BANK-06",
+              "projectId": "PRJ-019",
+              "principal": 391.6,
+              "rate": 3.14,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-10-11",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-019-4",
+              "kind": "loan",
+              "name": "环保测试公司3 · 4号融资",
+              "enterpriseId": "ENT-019",
+              "bankId": "BANK-01",
+              "projectId": "PRJ-019",
+              "principal": 195.8,
+              "rate": 2.24,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-06-12",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-021-1",
+              "kind": "loan",
+              "name": "核电测试公司1 · 1号融资",
+              "enterpriseId": "ENT-021",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-021",
+              "principal": 736,
+              "rate": 3.68,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-02-14",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-021-2",
+              "kind": "loan",
+              "name": "核电测试公司1 · 2号融资",
+              "enterpriseId": "ENT-021",
+              "bankId": "BANK-05",
+              "projectId": "PRJ-021",
+              "principal": 552,
+              "rate": 3.18,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-04-10",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-021-3",
+              "kind": "loan",
+              "name": "核电测试公司1 · 3号融资",
+              "enterpriseId": "ENT-021",
+              "bankId": "BANK-08",
+              "projectId": "PRJ-021",
+              "principal": 368,
+              "rate": 3.48,
+              "rateType": "FLOATING",
+              "startDate": "2025-01-01",
+              "maturityDate": "2026-10-27",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            },
+            {
+              "id": "LOAN-021-4",
+              "kind": "loan",
+              "name": "核电测试公司1 · 4号融资",
+              "enterpriseId": "ENT-021",
+              "bankId": "BANK-03",
+              "projectId": "PRJ-021",
+              "principal": 184,
+              "rate": 2.58,
+              "rateType": "FIXED",
+              "startDate": "2025-01-01",
+              "maturityDate": "2027-06-24",
+              "currency": "CNY",
+              "unit": "百万元",
+              "classification": "SYNTHETIC_FINANCING_DETAIL",
+              "evidenceRefs": [
+                "DATA-V14-20251231-DEMO-1"
+              ]
+            }
+          ],
+          "totals": {
+            "count": 7,
+            "balance": 9743,
+            "cost": 2.99834,
+            "due": 5680.7,
+            "gap": 2092.35,
+            "annualInterest": 292.1283,
+            "attention": 1
+          },
+          "evidence": {
+            "dataVersion": "DATA-V14-20251231-DEMO-1",
+            "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+            "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+            "asOf": "2025-12-31",
+            "horizon": 90,
+            "objectIds": [
+              "ENT-019",
+              "ENT-013",
+              "ENT-021",
+              "ENT-012",
+              "ENT-014",
+              "ENT-005",
+              "ENT-006"
+            ],
+            "resultKind": "DEMO_BASELINE",
+            "planId": null,
+            "rule": {
+              "id": "RULE-OPS-FINANCING-PREMIUM",
+              "ontologyId": "ONT-GROUP-FINANCING-OPTIMIZATION",
+              "draftId": "DRAFT-V14-OPERATIONS-S001",
+              "draftRevision": 2,
+              "baseVersionId": "semantic-MSVJM48O-VJC6",
+              "condition": "融资成本偏离 > 25 bp",
+              "premiumThreshold": 25,
+              "resultId": "550fb3a8-784a-4d0a-a895-0a79edf524f5"
+            },
+            "bankId": null
+          },
+          "plan": null
+        },
+        "sourceTask": "situation",
+        "id": "41c21c27-caa2-4524-9231-f194b5750528",
+        "fingerprint": "[\"dashboard\",\"企业融资与风险分析报告 · 测算资金缺口\",\"V14-REPORT-743ac90e-26ce-4691-8b47-9493b1c8a01c\",[{\"id\":\"ENT-005\",\"name\":\"风电测试公司05\",\"value\":1.4080000000000001,\"unit\":\"亿元\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-005-1\",\"LOAN-005-2\",\"LOAN-005-3\",\"LOAN-005-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-006\",\"name\":\"风电测试公司06\",\"value\":3.801,\"unit\":\"亿元\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-006-1\",\"LOAN-006-2\",\"LOAN-006-3\",\"LOAN-006-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-012\",\"name\":\"风电测试公司12\",\"value\":5.80715,\"unit\":\"亿元\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-012-1\",\"LOAN-012-2\",\"LOAN-012-3\",\"LOAN-012-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-013\",\"name\":\"风电测试公司13\",\"value\":3.9432,\"unit\":\"亿元\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-013-1\",\"LOAN-013-2\",\"LOAN-013-3\",\"LOAN-013-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-014\",\"name\":\"风电测试公司14\",\"value\":3.75615,\"unit\":\"亿元\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-014-1\",\"LOAN-014-2\",\"LOAN-014-3\",\"LOAN-014-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-019\",\"name\":\"环保测试公司3\",\"value\":0,\"unit\":\"亿元\",\"status\":\"黄灯\",\"evidenceRefs\":[\"LOAN-019-1\",\"LOAN-019-2\",\"LOAN-019-3\",\"LOAN-019-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]},{\"id\":\"ENT-021\",\"name\":\"核电测试公司1\",\"value\":2.208,\"unit\":\"亿元\",\"status\":\"绿灯\",\"evidenceRefs\":[\"LOAN-021-1\",\"LOAN-021-2\",\"LOAN-021-3\",\"LOAN-021-4\",\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"]}],\"联合态势演示分析，非正式融资事实。90天窗口；独立复审最新结论：这是25bp规则范围的基准报告。\",{\"scenarioId\":\"S003\",\"activeObjectRef\":null,\"objectSetRef\":{\"id\":\"V14-JOINT-SCOPE\",\"title\":\"联合分析 · 7家企业\",\"objectIds\":[\"ENT-019\",\"ENT-013\",\"ENT-021\",\"ENT-012\",\"ENT-014\",\"ENT-005\",\"ENT-006\"]},\"analysisScope\":\"set\",\"sourceModuleId\":\"joint-workbench\",\"resultView\":\"demo\",\"resultMode\":{\"id\":\"demo\",\"label\":\"演示基准\"},\"objectSet\":{\"id\":\"V14-JOINT-SCOPE\",\"title\":\"联合分析 · 7家企业\",\"objectIds\":[\"ENT-019\",\"ENT-013\",\"ENT-021\",\"ENT-012\",\"ENT-014\",\"ENT-005\",\"ENT-006\"],\"label\":\"联合分析 · 7家企业\",\"count\":7},\"timeRange\":{\"start\":\"2025-12-31\",\"end\":\"2025-12-31\",\"label\":\"截至2025-12-31 · 90天窗口\"},\"dataVersionRef\":{\"id\":\"DATA-V14-20251231-DEMO-1\"},\"ontologyVersionRef\":{\"id\":\"ONT-ENTERPRISE-FINANCE-RISK-1.4\"},\"evidenceRefs\":[\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\"],\"jointEvidence\":{\"dataVersion\":\"DATA-V14-20251231-DEMO-1\",\"dataDigest\":\"6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613\",\"ontologyVersion\":\"ONT-ENTERPRISE-FINANCE-RISK-1.4\",\"asOf\":\"2025-12-31\",\"horizon\":90,\"objectIds\":[\"ENT-019\",\"ENT-013\",\"ENT-021\",\"ENT-012\",\"ENT-014\",\"ENT-005\",\"ENT-006\"],\"resultKind\":\"DEMO_BASELINE\",\"planId\":null,\"rule\":{\"id\":\"RULE-OPS-FINANCING-PREMIUM\",\"ontologyId\":\"ONT-GROUP-FINANCING-OPTIMIZATION\",\"draftId\":\"DRAFT-V14-OPERATIONS-S001\",\"draftRevision\":2,\"baseVersionId\":\"semantic-MSVJM48O-VJC6\",\"condition\":\"融资成本偏离 > 25 bp\",\"premiumThreshold\":25,\"resultId\":\"550fb3a8-784a-4d0a-a895-0a79edf524f5\"},\"bankId\":null}}]",
+        "createdAt": "2026-09-08T01:31:25.875Z"
+      }
+    ],
+    "workspaceContext": {
+      "scenarioId": "S003",
+      "activeObjectRef": null,
+      "objectSetRef": {
+        "id": "V14-JOINT-SCOPE",
+        "title": "联合分析 · 7家企业",
+        "objectIds": [
+          "ENT-019",
+          "ENT-013",
+          "ENT-021",
+          "ENT-012",
+          "ENT-014",
+          "ENT-005",
+          "ENT-006"
+        ]
+      },
+      "analysisScope": "set",
+      "sourceModuleId": "joint-workbench",
+      "resultView": "demo",
+      "resultMode": {
+        "id": "demo",
+        "label": "演示基准"
+      },
+      "objectSet": {
+        "id": "V14-JOINT-SCOPE",
+        "title": "联合分析 · 7家企业",
+        "objectIds": [
+          "ENT-019",
+          "ENT-013",
+          "ENT-021",
+          "ENT-012",
+          "ENT-014",
+          "ENT-005",
+          "ENT-006"
+        ],
+        "label": "联合分析 · 7家企业",
+        "count": 7
+      },
+      "timeRange": {
+        "start": "2025-12-31",
+        "end": "2025-12-31",
+        "label": "截至2025-12-31 · 90天窗口"
+      },
+      "dataVersionRef": {
+        "id": "DATA-V14-20251231-DEMO-1"
+      },
+      "ontologyVersionRef": {
+        "id": "ONT-ENTERPRISE-FINANCE-RISK-1.4"
+      },
+      "evidenceRefs": [
+        "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613"
+      ],
+      "jointEvidence": {
+        "dataVersion": "DATA-V14-20251231-DEMO-1",
+        "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+        "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+        "asOf": "2025-12-31",
+        "horizon": 90,
+        "objectIds": [
+          "ENT-019",
+          "ENT-013",
+          "ENT-021",
+          "ENT-012",
+          "ENT-014",
+          "ENT-005",
+          "ENT-006"
+        ],
+        "resultKind": "DEMO_BASELINE",
+        "planId": null,
+        "rule": {
+          "id": "RULE-OPS-FINANCING-PREMIUM",
+          "ontologyId": "ONT-GROUP-FINANCING-OPTIMIZATION",
+          "draftId": "DRAFT-V14-OPERATIONS-S001",
+          "draftRevision": 2,
+          "baseVersionId": "semantic-MSVJM48O-VJC6",
+          "condition": "融资成本偏离 > 25 bp",
+          "premiumThreshold": 25,
+          "resultId": "550fb3a8-784a-4d0a-a895-0a79edf524f5"
+        },
+        "bankId": null
+      }
+    },
+    "resultMode": "demo",
+    "summary": "联合态势演示分析，非正式融资事实。90天窗口；7 家企业，融资余额 97.43 亿元，余额加权成本 3.00%；未来 90 天到期 56.81 亿元，测算缺口 20.92 亿元。",
+    "updatedAt": "2026-09-08T01:31:33.962Z",
+    "status": "DRAFT_READY_FOR_REVIEW",
+    "jointImports": [
+      "743ac90e-26ce-4691-8b47-9493b1c8a01c"
+    ]
+  }
+}

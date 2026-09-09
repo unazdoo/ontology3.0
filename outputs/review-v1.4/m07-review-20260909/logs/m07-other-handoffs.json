@@ -1,0 +1,252 @@
+{
+  "queryContext": {
+    "schemaVersion": "ofw.workspace-context.v1",
+    "scenarioId": "S005",
+    "objectiveRef": null,
+    "objectSetRef": {
+      "id": "object-set:m07:17asknv",
+      "title": "当前结果 4 个对象",
+      "count": 4,
+      "selectionMode": "FILTERED",
+      "filters": {
+        "query": "",
+        "objectTypeId": "m01.object-type.investment-holding",
+        "quality": "all"
+      },
+      "objectIds": [
+        "holding-01",
+        "holding-02",
+        "holding-03",
+        "holding-04"
+      ],
+      "objectRefs": [
+        {
+          "id": "holding-01",
+          "title": "持仓 A",
+          "objectTypeRef": "m01.object-type.investment-holding",
+          "scenarioId": "S005",
+          "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+          "ontologyVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+          "bindingId": "MB-S005-EVALUATION-v1"
+        },
+        {
+          "id": "holding-02",
+          "title": "持仓 B",
+          "objectTypeRef": "m01.object-type.investment-holding",
+          "scenarioId": "S005",
+          "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+          "ontologyVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+          "bindingId": "MB-S005-EVALUATION-v1"
+        },
+        {
+          "id": "holding-03",
+          "title": "持仓 C",
+          "objectTypeRef": "m01.object-type.investment-holding",
+          "scenarioId": "S005",
+          "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+          "ontologyVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+          "bindingId": "MB-S005-EVALUATION-v1"
+        },
+        {
+          "id": "holding-04",
+          "title": "持仓 D",
+          "objectTypeRef": "m01.object-type.investment-holding",
+          "scenarioId": "S005",
+          "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+          "ontologyVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+          "bindingId": "MB-S005-EVALUATION-v1"
+        }
+      ]
+    },
+    "activeObjectRef": {
+      "id": "holding-02",
+      "title": "持仓 B",
+      "objectTypeRef": "m01.object-type.investment-holding",
+      "scenarioId": "S005",
+      "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+      "ontologyVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+      "bindingId": "MB-S005-EVALUATION-v1"
+    },
+    "timeRange": {
+      "start": "2024-12-31",
+      "end": "2025-03-31",
+      "label": "2024-12-31 至 2025-03-31"
+    },
+    "comparisonRef": null,
+    "resultView": "formal",
+    "dataVersionRef": {
+      "id": "S005-DATA-AUDIT-79-SNAPSHOTS"
+    },
+    "ontologyVersionRef": {
+      "id": "S005-SEMANTIC-CANDIDATE-v1"
+    },
+    "evidenceRefs": [
+      "S005-DATA-AUDIT-79-SNAPSHOTS",
+      "S005-SEMANTIC-CANDIDATE-v1",
+      "investment::series:holding-02:marketValue",
+      "investment::series:holding-02:investmentAmount",
+      "investment::series:holding-02:unrealizedPnl",
+      "investment::series:holding-02:price"
+    ],
+    "sourceModuleId": "m07",
+    "updatedAt": "2026-09-09T04:58:02.316Z",
+    "lensRef": {
+      "moduleId": "m07",
+      "lensId": "temporal",
+      "route": "#explore"
+    },
+    "objectRef": {
+      "id": "holding-02",
+      "title": "持仓 B",
+      "objectTypeRef": "m01.object-type.investment-holding",
+      "scenarioId": "S005",
+      "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+      "ontologyVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+      "bindingId": "MB-S005-EVALUATION-v1"
+    },
+    "seriesRef": {
+      "id": "investment::series:holding-02:marketValue",
+      "label": "当前市值",
+      "unit": "CNY",
+      "ownerObjectId": "holding-02"
+    },
+    "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+    "ontologyVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+    "bindingId": "MB-S005-EVALUATION-v1",
+    "usageIntent": "EVALUATION",
+    "scenarioContext": {
+      "scenarioId": "PORTFOLIO",
+      "scenarioVersion": "M07-PORTFOLIO-v1",
+      "scenarioRunId": "M07-PORTFOLIO-20260904-0001",
+      "scenarioName": "业务对象与关系目录",
+      "formedAt": "2026-09-04T00:00:00.000+08:00",
+      "status": "active",
+      "dataAsOf": "2026-08-15"
+    }
+  },
+  "dashboardContext": {
+    "schemaVersion": "ofw.workspace-context.v1",
+    "scenarioId": "S005",
+    "objectiveRef": null,
+    "objectSetRef": {
+      "id": "object-set:m07:17asknv",
+      "title": "当前结果 4 个对象",
+      "count": 4,
+      "selectionMode": "FILTERED",
+      "filters": {
+        "query": "",
+        "objectTypeId": "m01.object-type.investment-holding",
+        "quality": "all"
+      },
+      "objectIds": [
+        "holding-01",
+        "holding-02",
+        "holding-03",
+        "holding-04"
+      ],
+      "objectRefs": [
+        {
+          "id": "holding-01",
+          "title": "持仓 A",
+          "objectTypeRef": "m01.object-type.investment-holding",
+          "scenarioId": "S005",
+          "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+          "ontologyVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+          "bindingId": "MB-S005-EVALUATION-v1"
+        },
+        {
+          "id": "holding-02",
+          "title": "持仓 B",
+          "objectTypeRef": "m01.object-type.investment-holding",
+          "scenarioId": "S005",
+          "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+          "ontologyVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+          "bindingId": "MB-S005-EVALUATION-v1"
+        },
+        {
+          "id": "holding-03",
+          "title": "持仓 C",
+          "objectTypeRef": "m01.object-type.investment-holding",
+          "scenarioId": "S005",
+          "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+          "ontologyVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+          "bindingId": "MB-S005-EVALUATION-v1"
+        },
+        {
+          "id": "holding-04",
+          "title": "持仓 D",
+          "objectTypeRef": "m01.object-type.investment-holding",
+          "scenarioId": "S005",
+          "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+          "ontologyVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+          "bindingId": "MB-S005-EVALUATION-v1"
+        }
+      ]
+    },
+    "activeObjectRef": {
+      "id": "holding-02",
+      "title": "持仓 B",
+      "objectTypeRef": "m01.object-type.investment-holding",
+      "scenarioId": "S005",
+      "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+      "ontologyVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+      "bindingId": "MB-S005-EVALUATION-v1"
+    },
+    "timeRange": {
+      "start": "2024-12-31",
+      "end": "2025-03-31",
+      "label": "2024-12-31 至 2025-03-31"
+    },
+    "comparisonRef": null,
+    "resultView": "formal",
+    "dataVersionRef": {
+      "id": "S005-DATA-AUDIT-79-SNAPSHOTS"
+    },
+    "ontologyVersionRef": {
+      "id": "S005-SEMANTIC-CANDIDATE-v1"
+    },
+    "evidenceRefs": [
+      "S005-DATA-AUDIT-79-SNAPSHOTS",
+      "S005-SEMANTIC-CANDIDATE-v1",
+      "investment::series:holding-02:marketValue",
+      "investment::series:holding-02:investmentAmount",
+      "investment::series:holding-02:unrealizedPnl",
+      "investment::series:holding-02:price"
+    ],
+    "sourceModuleId": "m07",
+    "updatedAt": "2026-09-09T04:58:49.684Z",
+    "lensRef": {
+      "moduleId": "m07",
+      "lensId": "temporal",
+      "route": "#explore"
+    },
+    "objectRef": {
+      "id": "holding-02",
+      "title": "持仓 B",
+      "objectTypeRef": "m01.object-type.investment-holding",
+      "scenarioId": "S005",
+      "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+      "ontologyVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+      "bindingId": "MB-S005-EVALUATION-v1"
+    },
+    "seriesRef": {
+      "id": "investment::series:holding-02:marketValue",
+      "label": "当前市值",
+      "unit": "CNY",
+      "ownerObjectId": "holding-02"
+    },
+    "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS",
+    "ontologyVersionId": "S005-SEMANTIC-CANDIDATE-v1",
+    "bindingId": "MB-S005-EVALUATION-v1",
+    "usageIntent": "EVALUATION",
+    "scenarioContext": {
+      "scenarioId": "PORTFOLIO",
+      "scenarioVersion": "M07-PORTFOLIO-v1",
+      "scenarioRunId": "M07-PORTFOLIO-20260904-0001",
+      "scenarioName": "业务对象与关系目录",
+      "formedAt": "2026-09-04T00:00:00.000+08:00",
+      "status": "active",
+      "dataAsOf": "2026-08-15"
+    }
+  }
+}

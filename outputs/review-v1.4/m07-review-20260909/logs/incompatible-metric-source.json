@@ -1,0 +1,116 @@
+[
+  {
+    "ruleName": {
+      "value": "融资成本偏高",
+      "quality": "passed",
+      "sourceRefs": [
+        "source:s001-data-js"
+      ],
+      "sourceScenarioId": "S001",
+      "dataVersionId": "FIN-ASSET-20251231-v02",
+      "ontologyVersionId": "semantic-MSVJM48O-VJC6"
+    },
+    "ruleMetricLabel": {
+      "value": "平均融资成本",
+      "quality": "passed",
+      "sourceRefs": [
+        "source:s001-data-js"
+      ],
+      "sourceScenarioId": "S001",
+      "dataVersionId": "FIN-ASSET-20251231-v02",
+      "ontologyVersionId": "semantic-MSVJM48O-VJC6"
+    },
+    "ruleMetricValue": {
+      "value": 2.880984,
+      "unit": "%",
+      "quality": "passed",
+      "sourceRefs": [
+        "source:s001-data-js"
+      ],
+      "sourceScenarioId": "S001",
+      "dataVersionId": "FIN-ASSET-20251231-v02",
+      "ontologyVersionId": "semantic-MSVJM48O-VJC6"
+    },
+    "riskScore": {
+      "value": 23.05,
+      "unit": "score_0_100",
+      "quality": "passed",
+      "sourceScenarioId": "S003",
+      "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+      "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+      "sourceRefs": [
+        "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-020",
+        "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "SEM-S003-DEBT-RISK-v1"
+      ]
+    },
+    "dataAsOf": {
+      "value": "2025-12-31",
+      "quality": "passed",
+      "sourceRefs": [
+        "source:s001-registry"
+      ],
+      "sourceScenarioId": "S001",
+      "dataVersionId": "FIN-ASSET-20251231-v02",
+      "ontologyVersionId": "semantic-MSVJM48O-VJC6"
+    },
+    "id": "ENT-020"
+  },
+  {
+    "ruleName": {
+      "value": "短期债务集中",
+      "quality": "passed",
+      "sourceRefs": [
+        "source:s001-data-js"
+      ],
+      "sourceScenarioId": "S001",
+      "dataVersionId": "FIN-ASSET-20251231-v02",
+      "ontologyVersionId": "semantic-MSVJM48O-VJC6"
+    },
+    "ruleMetricLabel": {
+      "value": "短期债务余额占比",
+      "quality": "passed",
+      "sourceRefs": [
+        "source:s001-data-js"
+      ],
+      "sourceScenarioId": "S001",
+      "dataVersionId": "FIN-ASSET-20251231-v02",
+      "ontologyVersionId": "semantic-MSVJM48O-VJC6"
+    },
+    "ruleMetricValue": {
+      "value": 93.545164,
+      "unit": "%",
+      "quality": "passed",
+      "sourceRefs": [
+        "source:s001-data-js"
+      ],
+      "sourceScenarioId": "S001",
+      "dataVersionId": "FIN-ASSET-20251231-v02",
+      "ontologyVersionId": "semantic-MSVJM48O-VJC6"
+    },
+    "riskScore": {
+      "value": 30.52,
+      "unit": "score_0_100",
+      "quality": "passed",
+      "sourceScenarioId": "S003",
+      "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+      "ontologyVersionId": "SEM-S003-DEBT-RISK-v1",
+      "sourceRefs": [
+        "S003-C035-RISK-RESULTS-20251231-v2#S003-ENT-017",
+        "S003-T007-FORMAL-CANDIDATE-20251231-v1",
+        "SEM-S003-DEBT-RISK-v1"
+      ]
+    },
+    "dataAsOf": {
+      "value": "2025-12-31",
+      "quality": "passed",
+      "sourceRefs": [
+        "source:s001-registry"
+      ],
+      "sourceScenarioId": "S001",
+      "dataVersionId": "FIN-ASSET-20251231-v02",
+      "ontologyVersionId": "semantic-MSVJM48O-VJC6"
+    },
+    "id": "ENT-017"
+  }
+]

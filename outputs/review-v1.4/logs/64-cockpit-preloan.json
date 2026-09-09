@@ -1,0 +1,515 @@
+{
+  "url": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html?m08ApiBase=http%3A%2F%2F127.0.0.1%3A4404%2Fmodel-api#dashboard",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "frames": [
+    {
+      "url": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html?m08ApiBase=http%3A%2F%2F127.0.0.1%3A4404%2Fmodel-api#dashboard",
+      "text": "智财问策\nOntology Financial World\n首页\n数据工程\n本体管理\n智能问数\n决策中心\nAgent 应用\n报告中心\n业务对象探索\n模型目标与优化\n经营驾驶舱\n模型服务已连接\nv1.4 · 本地原型\n首页\n经营驾驶舱\n贷前评估\n管\n平台管理员\n驾驶舱目录\n融资管理\n预算监督\n债务风险\n贷前评估\n投后评价\n融资与风险态势",
+      "controls": [
+        {
+          "tag": "BUTTON",
+          "text": "智财问策\nOntology Financial World",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "toggle-navigation"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "首页",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#home",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "数据工程",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/data",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "本体管理",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/ontology",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "智能问数",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/query",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "决策中心",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/decision",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Agent 应用",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/agent",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "报告中心",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/report",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "业务对象探索",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/m07",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "模型目标与优化",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/modeling",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "经营驾驶舱",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#dashboard",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "模型服务已连接",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "retry-service",
+            "id": "service-status"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "返回",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "return"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "首页",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#home"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "经营驾驶舱",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "module-root",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "搜索业务资源",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "open-catalog"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "最近工作",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "open-recent"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "重新读取当前模块",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "reload-frame"
+          }
+        },
+        {
+          "tag": "SELECT",
+          "text": "驾驶舱目录融资管理预算监督债务风险贷前评估投后评价融资与风险态势",
+          "value": "preloan",
+          "disabled": false,
+          "attrs": {
+            "data-module-task-select": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "驾驶舱目录",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "directory",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "融资管理",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "financing",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "预算监督",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "budget",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "债务风险",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "risk",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "贷前评估",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "preloan",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "投后评价",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "post-investment",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "融资与风险态势",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "situation",
+            "data-module-id": "dashboard"
+          }
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/dashboard/index.html?v=20260904-01&scenarioId=S003&scenarioVersion=S003-v1&scenarioRunId=S003-RUN-20260817163000000-c02200000001&formedAt=2026-08-17T16%3A30%3A00.000Z&status=completed&contextCreatedAt=2026-08-17T16%3A30%3A00.000Z&contextStatus=completed&scenarioFormedAt=2026-08-17T16%3A30%3A00.000Z&scenarioStatus=completed#/view/preloan/overview",
+      "text": "经营控制塔\nControl Tower\n控制塔首页\n重新读取\n业务驾驶舱\n贷款贷前风险评估驾驶舱\n\n围绕借款主体资料完整度、杠杆水平、关系风险和人工复核优先级查看正式结果与候选差异。\n\n业务对象探索\n当前模型结果\n数据范围\nDATA-ASSET-S004-20260815-V01\n业务定义\nSEM-S004-PREFLIGHT-V1\n数据截至\n2026-08-15\n业务状态\n正式结果只读\n贷前总览\n借款主体\n结果对比\n数据与证据\n纳入调查主体\n4\n家\n当前正式轮次\n证据完整主体\n2\n家\nA / C\n优先人工复核\n2\n家\nB / D\n无法完整评价\n1\n家\n审计口径缺失\n平均资料完整度\n88.25\n%\n4 家主体\n正式与候选有差异\n2\n家\n影子比较\n优先人工复核\n\n排序只服务人工复核，不自动形成授信结论\n\nLoanApplicant-002\n申请主体B\n部分评价\n资料完整度\n88%\n资产负债率\n67.2%\n关系风险\n中\n候选置信度\n82%\n\n部分关联交易证据仍待人工复核。\n\n查看主体与证据\nLoanApplicant-004\n申请主体D\n无法完整评价\n资料完整度\n76%\n资产负债率\n无法评价\n关系风险\n无法评价\n候选置信度\n61%\n\n最新审计口径尚未取得。；完整观察期不足。\n\n查看主体与证据\n资料与证据覆盖\n\n缺失信息保持无法评价，不以默认值补齐\n\n申请主体A\n96%\n完整\n申请主体B\n88%\n部分\n申请主体C\n93%\n完整\n申请主体D\n76%\n观察期不足\n借款主体概览\n\n正式结果、候选对照和证据状态分开展示\n\n借款主体\t资料完整度\t资产负债率\t关系风险\t复核优先级\t评价状态\t\n申请主体A\nLoanApplicant-001\n\t96%\t48.6%\t低\t常规\t已评价\t查看证据\n申请主体B\nLoanApplicant-002\n\t88%\t67.2%\t中\t优先复核\t部分评价\t查看证据\n申请主体C\nLoanApplicant-003\n\t93%\t55.1%\t低\t常规\t已评价\t查看证据\n申请主体D\nLoanApplicant-004\n\t76%\t无法评价\t无法评价\t优先复核\t无法完整评价\t查看证据",
+      "controls": [
+        {
+          "tag": "A",
+          "text": "控制塔首页",
+          "attrs": {
+            "href": "#/dashboards"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "重新读取",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "refresh"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "返回经营控制塔",
+          "attrs": {
+            "href": "#/dashboards"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "业务对象探索",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "preloan-open-m07",
+            "data-ofw-native-route": "#module/m07"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "当前模型结果",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-ofw-native-action": "dashboard-open"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "贷前总览",
+          "attrs": {
+            "href": "#/view/preloan/overview"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "借款主体",
+          "attrs": {
+            "href": "#/view/preloan/applicants"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "结果对比",
+          "attrs": {
+            "href": "#/view/preloan/models"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "数据与证据",
+          "attrs": {
+            "href": "#/view/preloan/evidence"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "纳入调查主体\n4\n家\n当前正式轮次",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "metric-detail",
+            "data-dashboard": "preloan",
+            "data-key": "applicants"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "证据完整主体\n2\n家\nA / C",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "metric-detail",
+            "data-dashboard": "preloan",
+            "data-key": "complete"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "优先人工复核\n2\n家\nB / D",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "metric-detail",
+            "data-dashboard": "preloan",
+            "data-key": "priority"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "无法完整评价\n1\n家\n审计口径缺失",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "metric-detail",
+            "data-dashboard": "preloan",
+            "data-key": "missing"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "平均资料完整度\n88.25\n%\n4 家主体",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "metric-detail",
+            "data-dashboard": "preloan",
+            "data-key": "completeness"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "正式与候选有差异\n2\n家\n影子比较",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "metric-detail",
+            "data-dashboard": "preloan",
+            "data-key": "candidateDiff"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看主体与证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "preloan-applicant-detail",
+            "data-applicant-id": "LoanApplicant-002"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看主体与证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "preloan-applicant-detail",
+            "data-applicant-id": "LoanApplicant-004"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "申请主体A",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "preloan-applicant-detail",
+            "data-applicant-id": "LoanApplicant-001"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "preloan-applicant-detail",
+            "data-applicant-id": "LoanApplicant-001"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "申请主体B",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "preloan-applicant-detail",
+            "data-applicant-id": "LoanApplicant-002"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "preloan-applicant-detail",
+            "data-applicant-id": "LoanApplicant-002"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "申请主体C",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "preloan-applicant-detail",
+            "data-applicant-id": "LoanApplicant-003"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "preloan-applicant-detail",
+            "data-applicant-id": "LoanApplicant-003"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "申请主体D",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "preloan-applicant-detail",
+            "data-applicant-id": "LoanApplicant-004"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "preloan-applicant-detail",
+            "data-applicant-id": "LoanApplicant-004"
+          }
+        }
+      ]
+    }
+  ],
+  "errors": [
+    "global.OFW_V14_JOINT.openOntology is not a function",
+    "global.OFW_V14_JOINT.openOntology is not a function",
+    "global.OFW_V14_JOINT.applyOwnedRule is not a function"
+  ]
+}

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="业务对象探索：发现业务对象，并在统一上下文中分析对象、关系、时序、位置与对比。">
+  <title>业务对象探索 · 智财问策</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main id="app" class="explorer-app" aria-busy="true">
+    <header class="app-bar">
+      <div class="brand-lockup">
+        <span class="brand-mark" aria-hidden="true"><i data-lucide="orbit"></i></span>
+        <div>
+          <span class="eyebrow">业务对象</span>
+          <strong>业务对象探索</strong>
+        </div>
+      </div>
+
+      <nav class="mode-switch" aria-label="探索阶段">
+        <button type="button" data-route="discover">
+          <i data-lucide="search"></i><span>对象发现</span>
+        </button>
+        <button type="button" data-route="explore">
+          <i data-lucide="panels-top-left"></i><span>探索工作台</span>
+        </button>
+      </nav>
+
+      <div class="app-actions">
+        <button id="enterprise-map" class="icon-button" type="button" title="企业地图" aria-label="企业地图"><i data-lucide="map"></i></button>
+        <button id="copy-link" class="icon-button" type="button" title="复制当前链接" aria-label="复制当前链接">
+          <i data-lucide="link-2"></i>
+        </button>
+        <button id="save-exploration" class="button subtle" type="button" title="保存探索" aria-label="保存探索">
+          <i data-lucide="bookmark-plus"></i><span>保存探索</span>
+        </button>
+        <button id="open-saved-explorations" class="icon-button" type="button" title="已保存探索" aria-label="已保存探索"><i data-lucide="bookmark"></i></button>
+        <button id="continue-analysis" class="button primary" type="button">
+          <i data-lucide="arrow-up-right"></i><span>继续分析</span>
+        </button>
+      </div>
+    </header>
+
+    <section id="discover-view" class="route-view discover-view" hidden>
+      <aside class="discovery-rail">
+        <section class="rail-section object-type-section">
+          <header class="rail-heading">
+            <div><span>对象类型</span><strong>浏览目录</strong></div>
+            <button id="clear-filters" class="text-button" type="button">清除</button>
+          </header>
+          <div id="type-facets" class="type-facets"></div>
+        </section>
+        <section class="rail-section saved-section">
+          <header class="rail-heading">
+            <div><span>工作记录</span><strong>已保存探索</strong></div>
+            <span id="saved-count" class="count-badge">0</span>
+          </header>
+          <div id="saved-list" class="saved-list"></div>
+        </section>
+      </aside>
+
+      <section class="discovery-main">
+        <header class="discovery-hero">
+          <div class="hero-copy">
+            <span class="hero-kicker">OBJECT EXPLORER</span>
+            <h1>从业务对象开始分析</h1>
+            <p>查找企业、预算单元、融资主体、申请主体、金融产品及其关联对象。</p>
+          </div>
+          <div class="hero-stats" aria-label="对象资源摘要">
+            <div><strong id="stat-objects">0</strong><span>业务对象</span></div>
+            <div><strong id="stat-links">0</strong><span>对象关系</span></div>
+            <div><strong id="stat-series">0</strong><span>时序系列</span></div>
+          </div>
+        </header>
+
+        <div class="search-deck">
+          <label class="global-search">
+            <i data-lucide="search"></i>
+            <input id="object-search" type="search" placeholder="搜索对象名称、类型、属性或标识" autocomplete="off">
+            <kbd>/</kbd>
+            <button id="clear-search" type="button" aria-label="清除搜索" title="清除搜索"><i data-lucide="x"></i></button>
+          </label>
+          <div id="quality-filter" class="segmented" aria-label="质量筛选">
+            <button type="button" data-quality="all">全部</button>
+            <button type="button" data-quality="passed">可直接使用</button>
+            <button type="button" data-quality="warning">需关注</button>
+            <button type="button" data-quality="blocked">信息不足</button>
+          </div>
+        </div>
+
+        <div class="result-toolbar">
+          <div>
+            <strong id="result-title">全部对象</strong>
+            <span id="result-count">0 个结果</span>
+          </div>
+          <div class="result-actions">
+            <span id="selection-summary" class="selection-summary">未选择对象</span>
+            <button id="clear-selection" class="button quiet" type="button" hidden>清除选择</button>
+            <button id="explore-selection" class="button primary" type="button">
+              <i data-lucide="panels-top-left"></i><span>进入探索工作台</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="discovery-results" class="discovery-results"></div>
+      </section>
+
+      <aside id="preview-pane" class="preview-pane" aria-label="对象预览"></aside>
+    </section>
+
+    <section id="explore-view" class="route-view explore-view" hidden>
+      <header id="workspace-context" class="workspace-context"></header>
+      <nav id="lens-nav" class="lens-nav" aria-label="探索 Lens"></nav>
+
+      <div class="workspace-grid">
+        <aside id="path-pane" class="path-pane workspace-pane" aria-label="对象集与分析路径"></aside>
+        <section class="canvas-pane workspace-pane">
+          <header id="canvas-header" class="canvas-header"></header>
+          <div id="canvas-stage" class="canvas-stage"></div>
+        </section>
+        <aside id="inspector-pane" class="inspector-pane workspace-pane" aria-label="对象详情与证据"></aside>
+      </div>
+    </section>
+  </main>
+
+  <div id="scrim" class="scrim" hidden></div>
+  <aside id="drawer" class="drawer" aria-hidden="true" aria-label="操作面板"></aside>
+
+  <dialog id="save-dialog" class="modal">
+    <form method="dialog" id="save-form">
+      <header>
+        <div><span class="eyebrow">保存当前上下文</span><h2>保存探索</h2></div>
+        <button class="icon-button" value="cancel" aria-label="关闭"><i data-lucide="x"></i></button>
+      </header>
+      <div class="modal-body">
+        <label class="field-label" for="exploration-name">名称</label>
+        <input id="exploration-name" class="text-input" name="name" maxlength="40" autocomplete="off" required>
+        <div id="save-context-preview" class="save-context-preview"></div>
+      </div>
+      <footer>
+        <button class="button quiet" value="cancel">取消</button>
+        <button class="button primary" value="default"><i data-lucide="bookmark"></i><span>保存</span></button>
+      </footer>
+    </form>
+  </dialog>
+
+  <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="/designs/prototype-work/v1.2.0/composite/modules/m07/module/vendor/lucide.min.js"></script>
+  <script src="/designs/prototype-work/v1.2.0/composite/modules/m07/module/vendor/d3.min.js"></script>
+  <script src="../../resources/enterprise-master.js?v=20260907-01"></script>
+  <script src="../../dashboard/data.js"></script>
+  <script src="../../shared/workflow.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

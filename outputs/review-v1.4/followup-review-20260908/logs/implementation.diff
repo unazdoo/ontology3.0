@@ -1,0 +1,383 @@
+--- prior/composite/integrations/joint-workbench.js
++++ current/composite/integrations/joint-workbench.js
+@@ -225,6 +225,16 @@
+       !report.evidence?.dataDigest
+     )
+       throw new Error("联合分析报告缺少固定依据");
++    const metricDefinitions = [
++      ["balance", "融资余额", "亿元", 100],
++      ["cost", "加权融资成本", "%", 1],
++      ["due", "窗口到期本金", "亿元", 100],
++      ["gap", "测算资金缺口", "亿元", 100],
++    ];
++    const sourceFields = (snapshot, key) => ({
++      title: `${snapshot.title} · ${metricDefinitions.find(([id]) => id === key)?.[1] || key}`,
++      text: `联合态势演示分析，非正式融资事实。${snapshot.evidence.horizon}天窗口；${snapshot.notes || ""}`,
++    });
+     const context = scopeContext({ objectIds: report.evidence.objectIds });
+     const resultMode = report.evidence.resultKind === "SIMULATION" ? "simulation" : "demo";
+     const workspaceContext = {
+@@ -244,31 +254,41 @@
+       existing = W.readReport("S003");
+     const imported = existing?.jointImports?.includes(report.id) || existing?.contentBlocks.some((block) => block.jointReportId === report.id);
+     if (imported) {
+-      // An imported revision is immutable. Preserve prose, order and deleted blocks.
++      // Draft metadata follows its source; target edits and frozen source revisions do not.
+       W.saveReport("S003", { ...existing, workspaceContext, resultMode,
+         jointImports: [...new Set([...(existing.jointImports || []), report.id])],
+         contentBlocks: existing.contentBlocks.map((block) => {
+           if (block.jointReportId !== report.id) return block;
+-          const fingerprint = (item) => JSON.stringify([item.sourceModuleId, item.title, item.resultId, item.rows, item.text, item.workspaceContext]);
+-          const untouched = block.fingerprint === fingerprint(block);
+-          const next = { ...block, resultMode, workspaceContext };
+-          if (untouched) {
+-            next.text = `联合态势演示分析，非正式融资事实。${report.evidence.horizon}天窗口；${report.notes || ""}`;
+-            next.fingerprint = fingerprint(next);
++          if (block.jointSnapshot?.status === "REVIEWED") return block;
++          let previousFields = block.jointSourceFields;
++          if (!previousFields) {
++            // Older syncs updated prose/fingerprint without updating jointSnapshot.
++            let fingerprint;
++            try { fingerprint = JSON.parse(block.fingerprint); } catch {}
++            previousFields = Array.isArray(fingerprint) && typeof fingerprint[1] === "string" && typeof fingerprint[4] === "string"
++              ? { title: fingerprint[1], text: fingerprint[4] }
++              : block.jointSnapshot ? sourceFields(block.jointSnapshot, block.jointMetric) : null;
+           }
++          const fields = sourceFields(report, block.jointMetric);
++          const next = { ...block, resultMode, workspaceContext, jointSnapshot: clone(report),
++            jointSourceFields: fields, jointEditedFields: { ...block.jointEditedFields } };
++          for (const field of ["title", "text"]) {
++            const edited = block.jointEditedFields?.[field] || !previousFields || block[field] !== previousFields[field];
++            next.jointEditedFields[field] = Boolean(edited);
++            if (!edited) next[field] = fields[field];
++          }
++          // Fingerprint tracks generated values, never reclassifies manual values as source fields.
++          next.fingerprint = JSON.stringify([next.sourceModuleId, fields.title, next.resultId, next.rows, fields.text, workspaceContext]);
+           return next;
+         }) });
+       return identity;
+     }
+-    for (const [key, label, unit, scale] of [
+-      ["balance", "融资余额", "亿元", 100],
+-      ["cost", "加权融资成本", "%", 1],
+-      ["due", "窗口到期本金", "亿元", 100],
+-      ["gap", "测算资金缺口", "亿元", 100],
+-    ]) {
++    for (const [key, , unit, scale] of metricDefinitions) {
+       W.appendBlock("S003", {
+         type: "result-summary",
+-        title: `${report.title} · ${label}`,
++        ...sourceFields(report, key),
++        jointSourceFields: sourceFields(report, key),
++        jointEditedFields: { title: false, text: false },
+         sourceModuleId: "dashboard",
+         jointReportId: report.id,
+         jointMetric: key,
+@@ -277,7 +297,6 @@
+         modelVersionId: null,
+         dataVersionId: report.evidence.dataVersion,
+         ontologyVersionId: report.evidence.ontologyVersion,
+-        text: `联合态势演示分析，非正式融资事实。${report.evidence.horizon}天窗口；${report.notes || ""}`,
+         rows: report.rows.map((row) => ({
+           id: row.id,
+           name: row.name,
+--- prior/composite/s001-e2e-integration/app.js
++++ current/composite/s001-e2e-integration/app.js
+@@ -694,25 +694,6 @@
+     });
+   }
+ 
+-  function frameAdapterCss(moduleId) {
+-    const documentScroll = ["report", "dashboard", "modeling"].includes(moduleId);
+-    const common = documentScroll
+-      ? "html,body{width:100%!important;min-height:100%!important;height:auto!important}html{overflow-y:auto!important;overflow-x:hidden!important}body{overflow:visible!important}"
+-      : "html,body{width:100%!important;height:100%!important}body{overflow:hidden!important}";
+-    const obsoleteControls = "[data-portfolio-filter],label.portfolio-filter{display:none!important}";
+-    const adapters = {
+-      data: ".app-shell{grid-template-columns:minmax(0,1fr)!important}.app-shell>.platform-rail,.app-shell>.product-nav{display:none!important}.app-shell>.app-workspace{grid-column:1!important;grid-row:1!important;grid-template-rows:minmax(0,1fr)!important}.app-workspace>.topbar{display:none!important}",
+-      ontology: ".app-shell{grid-template-columns:minmax(0,1fr)!important}.app-shell>.platform-rail,.app-shell>.product-nav{display:none!important}.app-shell>.app-workspace{grid-column:1!important;grid-row:1!important;grid-template-rows:minmax(0,1fr)!important}.app-workspace>.topbar{display:none!important}",
+-      query: ".app-shell{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr)!important}.app-shell>.platform-rail,.app-shell>.product-nav{display:none!important}.app-shell>.app-workspace{grid-column:1!important;grid-row:1!important;grid-template-rows:minmax(0,1fr)!important}.app-workspace>.topbar{display:none!important}",
+-      decision: ".decision-app{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr)!important}.decision-app>.app-rail,.decision-app>.product-nav{display:none!important}.decision-app>.app-workspace{grid-column:1!important;grid-row:1!important;grid-template-rows:minmax(0,1fr)!important}.decision-app>.app-workspace>.app-topbar{display:none!important}",
+-      agent: ".app-shell{grid-template-columns:minmax(0,1fr)!important}.app-shell>.platform-rail,.app-shell>.product-nav{display:none!important}.app-shell>.workspace{grid-column:1!important;grid-row:1!important;grid-template-rows:minmax(0,1fr)!important}.app-shell>.workspace>.topbar{display:none!important}",
+-      report: ".app-shell{grid-template-columns:minmax(0,1fr)!important}.app-shell>.platform-rail,.app-shell>.product-nav,.module-nav{display:none!important}.app-shell>.app-workspace{grid-column:1!important;grid-row:1!important;grid-template-columns:minmax(0,1fr)!important}.app-workspace>.topbar{display:none!important}",
+-      m07: ":root{--app-bar-height:50px!important}.app-bar{grid-template-columns:minmax(0,1fr)!important;padding-inline:12px!important}.app-bar>.brand-lockup,.app-bar>.mode-switch{display:none!important}.app-actions{grid-column:1!important;justify-self:end!important}.explorer-app{grid-template-rows:50px minmax(0,1fr)!important}",
+-      modeling: ".center-nav,.center-mobile-select{display:none!important}.center-layout{grid-template-columns:minmax(0,1fr)!important}.center-main{padding:18px 20px 48px!important}",
+-      dashboard: ".app-shell>.platform-rail,.dashboard-shell>.platform-rail,.dashboard-shell>.global-nav{display:none!important}.app-shell>.topbar,.dashboard-shell>.topbar{display:none!important}"
+-    };
+-    return `${common}${obsoleteControls}${adapters[moduleId] || ""}`;
+-  }
+ 
+   function syncSecondaryNavigation(frame, module) {
+     if (frame !== document.getElementById("module-frame") || renderedModuleId !== module.id) return;
+@@ -1093,14 +1074,20 @@
+   }
+ 
+   function adaptFrame(frame, module) {
++    if (frame !== document.getElementById("module-frame") || renderedModuleId !== module.id) return;
+     if(JOINT?.adapt(frame,module))return;
+     try {
+       const doc = frame.contentDocument;
+       if (!doc?.body) return;
+       doc.title = `${module.name} · ${DATA.brand.zh}`;
+-      let style = doc.getElementById("ofw-v131-shell-adapter");
+-      if (!style) { style = doc.createElement("style"); style.id = "ofw-v131-shell-adapter"; doc.head.appendChild(style); }
+-      style.textContent = frameAdapterCss(module.id);
++      doc.documentElement.dataset.ofwEmbeddedModule = module.id;
++      if (!doc.getElementById("ofw-v14-frame-presentation")) {
++        const presentation = doc.createElement("link");
++        presentation.id = "ofw-v14-frame-presentation";
++        presentation.rel = "stylesheet";
++        presentation.href = new URL("../shared/frame-presentation.css", global.location.href).href;
++        doc.head.appendChild(presentation);
++      }
+       global.OFW_READABILITY?.install(doc, module.id);
+       if (!doc.getElementById("ofw-v132-experience")) {
+         const finish = doc.createElement("link");
+--- prior/composite/shared/frame-presentation.css
++++ current/composite/shared/frame-presentation.css
+@@ -0,0 +1,75 @@
++/* Embedded presentation is shared by the initial HTML and the host fallback. */
++html[data-ofw-embedded-module],
++html[data-ofw-embedded-module] body {
++  width: 100% !important;
++  height: 100% !important;
++}
++html[data-ofw-embedded-module] body { overflow: hidden !important; }
++
++/* Reports, models and dashboards own document scrolling; other modules own panes. */
++html:is([data-ofw-embedded-module="report"], [data-ofw-embedded-module="modeling"], [data-ofw-embedded-module="dashboard"]),
++html:is([data-ofw-embedded-module="report"], [data-ofw-embedded-module="modeling"], [data-ofw-embedded-module="dashboard"]) body {
++  min-height: 100% !important;
++  height: auto !important;
++}
++html:is([data-ofw-embedded-module="report"], [data-ofw-embedded-module="modeling"], [data-ofw-embedded-module="dashboard"]) {
++  overflow-y: auto !important;
++  overflow-x: hidden !important;
++}
++html:is([data-ofw-embedded-module="report"], [data-ofw-embedded-module="modeling"], [data-ofw-embedded-module="dashboard"]) body {
++  overflow: visible !important;
++}
++
++/* Navigation already provided by the host stays out of the embedded layout. */
++html[data-ofw-embedded-module] :is([data-portfolio-filter], label.portfolio-filter),
++html[data-ofw-embedded-module] .app-shell > :is(.platform-rail, .product-nav),
++html[data-ofw-embedded-module] .app-workspace > .topbar,
++html[data-ofw-embedded-module="decision"] .decision-app > :is(.app-rail, .product-nav),
++html[data-ofw-embedded-module="decision"] .decision-app > .app-workspace > .app-topbar,
++html[data-ofw-embedded-module="agent"] .app-shell > .workspace > .topbar,
++html[data-ofw-embedded-module="report"] .module-nav,
++html[data-ofw-embedded-module="modeling"] :is(.center-nav, .center-mobile-select),
++html[data-ofw-embedded-module="dashboard"] .dashboard-shell > :is(.platform-rail, .global-nav, .topbar),
++html[data-ofw-embedded-module="dashboard"] .app-shell > .topbar,
++html[data-ofw-embedded-module="m07"] .app-bar > :is(.brand-lockup, .mode-switch) {
++  display: none !important;
++}
++
++html:is([data-ofw-embedded-module="data"], [data-ofw-embedded-module="ontology"], [data-ofw-embedded-module="query"], [data-ofw-embedded-module="agent"], [data-ofw-embedded-module="report"]) .app-shell,
++html[data-ofw-embedded-module="modeling"] .center-layout,
++html[data-ofw-embedded-module="decision"] .decision-app {
++  grid-template-columns: minmax(0, 1fr) !important;
++}
++html[data-ofw-embedded-module="query"] .app-shell,
++html[data-ofw-embedded-module="decision"] .decision-app {
++  grid-template-rows: minmax(0, 1fr) !important;
++}
++html:is([data-ofw-embedded-module="data"], [data-ofw-embedded-module="ontology"], [data-ofw-embedded-module="query"]) .app-shell > .app-workspace,
++html[data-ofw-embedded-module="decision"] .decision-app > .app-workspace,
++html[data-ofw-embedded-module="agent"] .app-shell > .workspace {
++  grid-column: 1 !important;
++  grid-row: 1 !important;
++  grid-template-rows: minmax(0, 1fr) !important;
++}
++html[data-ofw-embedded-module="report"] .app-shell > .app-workspace {
++  grid-column: 1 !important;
++  grid-row: 1 !important;
++  grid-template-columns: minmax(0, 1fr) !important;
++}
++html[data-ofw-embedded-module="modeling"] .center-main {
++  padding: 18px 20px 48px !important;
++}
++
++/* Object exploration retains its useful analysis toolbar. */
++html[data-ofw-embedded-module="m07"] { --app-bar-height: 50px !important; }
++html[data-ofw-embedded-module="m07"] .app-bar {
++  grid-template-columns: minmax(0, 1fr) !important;
++  padding-inline: 12px !important;
++}
++html[data-ofw-embedded-module="m07"] .app-actions {
++  grid-column: 1 !important;
++  justify-self: end !important;
++}
++html[data-ofw-embedded-module="m07"] .explorer-app {
++  grid-template-rows: 50px minmax(0, 1fr) !important;
++}
+--- prior/composite/shared/report-editor.js
++++ current/composite/shared/report-editor.js
+@@ -46,7 +46,10 @@
+       if (title) next.title = title.value.trim() || "未命名报告";
+       doc.querySelectorAll("[data-report-field]").forEach((input) => {
+         const block = next.contentBlocks.find((item) => item.id === input.dataset.blockId);
+-        if (block) block[input.dataset.reportField] = input.value;
++        if (block && block[input.dataset.reportField] !== input.value) {
++          if (block.jointReportId) block.jointEditedFields = { ...block.jointEditedFields, [input.dataset.reportField]: true };
++          block[input.dataset.reportField] = input.value;
++        }
+       });
+       if (JSON.stringify(next) !== JSON.stringify(draft)) persist(next);
+     }
+--- prior/runtime/frame-presentation.mjs
++++ current/runtime/frame-presentation.mjs
+@@ -0,0 +1,24 @@
++import { readFile } from 'node:fs/promises';
++
++const modules = new Map([
++  ['/designs/prototype-releases/v1.1.0/data-engineering-prototype-review/review-v3/方案B2.html', 'data'],
++  ['/designs/prototype-work/v1.4/composite/ontology/index.html', 'ontology'],
++  ['/designs/prototype-releases/v1.1.0/intelligent-query-prototype/review-next/conversation-workspace/index.html', 'query'],
++  ['/designs/prototype-releases/v1.1.0/decision-center-prototype/review-v2/action-portfolio.html', 'decision'],
++  ['/designs/prototype-releases/v1.1.0/agent-application/Agent应用.html', 'agent'],
++  ['/designs/prototype-releases/v1.1.0/report-center/review-lifecycle/index.html', 'report'],
++  ['/designs/prototype-work/v1.4/composite/modules/m07/index.html', 'm07'],
++  ['/designs/prototype-work/v1.4/composite/model-center/index.html', 'modeling'],
++  ['/designs/prototype-work/v1.4/composite/dashboard/index.html', 'dashboard'],
++]);
++
++export function embeddedModule(pathname) { return modules.get(pathname); }
++
++export async function presentFrame(html, moduleId) {
++  if (!moduleId || html.includes('id="ofw-v14-frame-presentation"')) return html;
++  const css = await readFile(new URL('../composite/shared/frame-presentation.css', import.meta.url), 'utf8');
++  // The mode and its inline stylesheet are parsed before any business UI can paint.
++  // Standalone pages do not acquire the embedding attribute and retain their navigation.
++  const presentation = `<script>if(window.parent!==window)document.documentElement.dataset.ofwEmbeddedModule=${JSON.stringify(moduleId)};</script><style id="ofw-v14-frame-presentation">${css}</style>`;
++  return html.replace(/<head\b[^>]*>/i, head => head + presentation);
++}
+--- prior/runtime/start.mjs
++++ current/runtime/start.mjs
+@@ -4,6 +4,7 @@
+ import { fileURLToPath } from 'node:url';
+ import path from 'node:path';
+ import { createV14ModelServer } from './model-runtime.mjs';
++import { embeddedModule, presentFrame } from './frame-presentation.mjs';
+ const root = fileURLToPath(new URL('../../../../', import.meta.url));
+ const types = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.woff2':'font/woff2'};
+ export async function startCandidate({staticPort=0,modelingPort=0}) {
+@@ -16,15 +17,18 @@
+       if (!(await stat(file)).isFile()) throw new Error('Not a file');
+       res.setHeader('cache-control','no-store');
+       res.setHeader('content-type',types[path.extname(file)] || 'application/octet-stream');
++      const moduleId = embeddedModule(pathname);
+       // Assemble the original approval screen with a version-local input migration.
+       if (pathname.endsWith('/decision-center-prototype/review-v2/action-portfolio.html')) {
+         const body = (await readFile(file,'utf8')).replace('await window.OFW_DECISION_PORTFOLIO.bootstrap();', 'await window.OFW_DECISION_PORTFOLIO.bootstrap();\n          await load("/designs/prototype-work/v1.4/composite/integrations/decision-identity.js");');
+-        res.end(body);
++        res.end(await presentFrame(body, moduleId));
+       } else if (pathname.endsWith('/v1.2.0/composite/modules/m07/module/workspace-v2.html')) {
+         const body = (await readFile(file,'utf8'))
+           .replace('sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H','sha384-Eg+NzzpxiHf8n8FR0ootH/p/s0a33ljAFe4AqhcVbsQfR/WmVsHNIR1Uh37E0omq')
+           .replace('<script src="workspace-v2.js?v=20260831-05"></script>','<script src="/designs/prototype-work/v1.3.0/composite/integrations/m07-type-overlays.js?v=20260902-01"></script>\n<script src="workspace-v2.js?v=20260831-05"></script>');
+         res.end(body);
++      } else if (moduleId) {
++        res.end(await presentFrame(await readFile(file, 'utf8'), moduleId));
+       } else createReadStream(file).on('error',()=>res.destroy()).pipe(res);
+     } catch { res.writeHead(404); res.end('Not found'); }
+   });
+--- prior/src/app.js
++++ current/src/app.js
+@@ -1861,6 +1861,7 @@
+       });
+       openReport(form.dataset.id);
+       if (pageView === "reports") renderPage();
++      send("OFW_V14_REPORT", { report: get().reports.find((report) => report.id === form.dataset.id) });
+       notify("本地复核记录已冻结，不代表对外正式发布");
+     }
+     if (form.id === "task-assignment") {
+--- prior/src/domain.js
++++ current/src/domain.js
+@@ -353,6 +353,38 @@
+   premiumThreshold: z.number().min(0).max(200).optional(),
+   parameters: scenarioSchema.optional(),
+ });
++
++const queryWords = [
++  "请帮我", "帮我", "请问", "请", "查询", "查看", "筛选", "找出", "解释", "为什么",
++  "这家公司", "该公司", "这家企业", "该企业", "这些企业", "那些企业", "企业", "集团",
++  "全部", "所有", "当前", "这些", "那些", "总体", "总额", "平均", "合计", "概览",
++  "融资余额", "融资成本", "融资", "加权", "余额", "成本", "本金", "到期",
++  "高成本", "成本偏离", "偏离", "高于", "超过", "资金缺口", "偿债", "资金", "缺口",
++  "到期压力较大", "优先关注", "需要关注", "需要复核", "红灯", "黄灯", "绿灯", "黑灯",
++  "风电", "环保", "核电", "产业", "板块", "未用授信", "授信", "借款",
++  "主要依赖", "依赖", "关联银行", "银行敞口", "银行", "敞口", "担保关系", "担保", "关联", "关系", "传染",
++  "详情", "依据", "风险", "方案", "模拟", "如果", "未来", "展望", "窗口",
++  "发起", "创建", "安排", "跟进", "协商", "处置", "多少", "哪些", "分别", "存在",
++  "的", "是", "有", "和", "与", "及", "且", "或", "各家", "各", "家", "本", "全", "吗", "呢",
++].sort((left, right) => right.length - left.length);
++
++function assertQuestionConsumed(question, matched, bank, parameters) {
++  const names = [...matched.flatMap(entity => [entity.name, entity.id, ...entity.aliasNames]), ...(bank ? [bank.name] : [])]
++    .sort((left, right) => right.length - left.length);
++  // Consume left to right, preserving unknown spans even beside a registered name.
++  let remaining = question;
++  while (remaining) {
++    const punctuation = /^[\s，,。？?！!、；;：:（）()“”"「」]+/.exec(remaining);
++    if (punctuation) { remaining = remaining.slice(punctuation[0].length); continue; }
++    const name = names.find(value => remaining.toLowerCase().startsWith(value.toLowerCase()) && !/^[A-Za-z0-9]/.test(remaining.slice(value.length)));
++    const parameter = parameters.find(value => value && remaining.startsWith(value));
++    const window = /^(?:30|90|180|365)\s*天/.exec(remaining)?.[0];
++    const word = name || parameter || window || queryWords.find(value => remaining.startsWith(value));
++    if (!word) throw new Error(`主体未登记或问题含未识别内容“${remaining.slice(0, 24)}”。请选用已登记主体或当前企业范围，并调整为单阶段问题；当前范围未改变。`);
++    remaining = remaining.slice(word.length);
++  }
++}
++
+ export function parseQuestion(text, data) {
+   const q = text.trim();
+   if (!q) throw new Error("请输入问题");
+@@ -374,18 +406,6 @@
+     throw new Error(
+       "当前问数一次支持一个银行、产业和风险档位，请分组查询或清除筛选查看全部企业。",
+     );
+-  // Resolve every named subject before interpreting industry words or other filters.
+-  let unresolved = q;
+-  for (const entity of matched) {
+-    for (const name of [entity.name, entity.id, ...entity.aliasNames].sort((a, b) => b.length - a.length))
+-      unresolved = unresolved.replace(new RegExp(name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(?![A-Za-z0-9])", "gi"), " ");
+-  }
+-  unresolved = unresolved.replace(/这家公司|该公司|^(?:请问|查询|查看)?(?:本|全)?集团(?=当前|总体|全部|融资|平均|余额|的|范围|多少|概览)/g, " ");
+-  unresolved = unresolved.replace(/(?:融资)?成本偏离(?:高于|超过)?\s*\d+(?:\.\d+)?\s*bp/gi, "高成本").replace(/这家企业|该企业/g, "这些企业");
+-  const enterprisePhrases = [...unresolved.matchAll(/[\p{L}\p{N}_-]*企业/gu)].map((item) => item[0]);
+-  const genericEnterprise = /^(?:(?:请|查询|查看|筛选|找出|这些|那些|这|该|各|所有|全部|当前|哪些|的|且|和|有|存在|高成本|资金缺口|缺口|到期压力较大|红灯|黄灯|绿灯|黑灯|风电|环保|核电|优先关注|需要复核|未匹配|无匹配|没有匹配))*企业$/;
+-  if (/公司|单位\d+|ENT-\d+|[\p{L}\p{N}]+集团/iu.test(unresolved) || enterprisePhrases.some((phrase) => !genericEnterprise.test(phrase)))
+-    throw new Error("主体未登记或无法完整识别，请选择对象列表中的企业名称、ENT-ID或已登记别名；当前范围未改变。");
+   if (
+     /(?:最低|最高|前\d+|同比|环比|预测|美元|季度|去年|明年|成本高于\s*\d.*%)/.test(
+       q,
+@@ -421,10 +441,12 @@
+                 : /概览|总体|总额|平均|多少|优先关注|到期|融资成本/.test(q)
+                   ? "overview"
+                   : null;
+-  if (!intent)
+-    throw new Error(
+-      "当前问题无法映射到已登记业务口径，请指定企业、融资成本、到期本金、银行敞口或担保关系。",
+-    );
++  for (const [label, pattern] of [["利率", /降息|加息/g], ["授信收缩", /收缩/g], ["展期", /展期/g]]) {
++    if ([...q.matchAll(pattern)].length > 1)
++      throw new Error(`暂不支持分阶段、重复或冲突的${label}参数；每类参数只能填写一次，请明确单阶段假设后重试。`);
++  }
++  if (/先.*(?:再|后|然后)|分阶段|分别(?:降息|加息|收缩|展期)/.test(q))
++    throw new Error("暂不支持分阶段方案，请将各类参数整理为一次生效的单阶段假设后重试。");
+   const rate = /(降息|加息)\s*(\d+(?:\.\d)?)\s*bp\b/i.exec(q),
+     credit = /收缩\s*(\d+(?:\.\d)?)\s*[%％]/.exec(q),
+     extension = /展期\s*(\d+)\s*天/.exec(q),
+@@ -437,6 +459,11 @@
+     throw new Error("当前展望窗口支持30、90、180或365天。");
+   if ([...horizonText.matchAll(/(\d+)\s*天/g)].length > 1)
+     throw new Error("请一次指定一个展望窗口。");
++  assertQuestionConsumed(q, matched, bank, [rate?.[0], credit?.[0], extension?.[0], threshold?.[0]]);
++  if (!intent)
++    throw new Error(
++      "当前问题无法映射到已登记业务口径，请指定企业、融资成本、到期本金、银行敞口或担保关系。",
++    );
+   return querySchema.parse({
+     intent,
+     ...(dayMatch ? { horizon: Number(dayMatch[1]) } : {}),

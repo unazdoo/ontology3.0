@@ -1,0 +1,36 @@
+2026-09-09T02:04:38.217Z pw:browser <launching> /Applications/Google Chrome.app/Contents/MacOS/Google Chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --use-angle=swiftshader --enable-unsafe-swiftshader --disable-background-timer-throttling --disable-renderer-backgrounding --user-data-dir=/var/folders/64/j8g5rs451cz6_0p3554tl8380000gn/T/playwright_chromiumdev_profile-6IHqfY --remote-debugging-pipe --no-startup-window
+2026-09-09T02:04:38.408Z pw:browser <launched> pid=96131
+2026-09-09T02:05:16.667Z pw:browser [pid=96131][err] [96144:11072997:0909/100516.605745:ERROR:net/socket/ssl_client_socket_impl.cc:962] handshake failed; returned -1, SSL error code 1, net_error -100
+2026-09-09T02:05:28.641Z pw:browser [pid=96131][err] Trying to load the allocator multiple times. This is *not* supported.
+2026-09-09T02:05:29.997Z pw:browser [pid=96131][err] [96141:11072864:0909/100529.950090:ERROR:ui/display/mac/cv_display_link_mac.mm:195] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+2026-09-09T02:05:30.136Z pw:browser [pid=96131][err] [96141:11072983:0909/100529.950467:ERROR:ui/display/mac/cv_display_link_mac.mm:195] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+2026-09-09T02:05:30.136Z pw:browser [pid=96131][err] [96141:11072864:0909/100529.950748:ERROR:ui/display/mac/cv_display_link_mac.mm:195] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+2026-09-09T02:05:30.136Z pw:browser [pid=96131][err] [96141:11072983:0909/100529.950804:ERROR:ui/display/mac/cv_display_link_mac.mm:195] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+2026-09-09T02:05:30.136Z pw:browser [pid=96131][err] [96141:11072864:0909/100529.950965:ERROR:ui/display/mac/cv_display_link_mac.mm:195] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+2026-09-09T02:05:30.136Z pw:browser [pid=96131][err] [96141:11072983:0909/100529.951001:ERROR:ui/display/mac/cv_display_link_mac.mm:195] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+2026-09-09T02:05:30.136Z pw:browser [pid=96131][err] [96141:11072864:0909/100529.951131:ERROR:ui/display/mac/cv_display_link_mac.mm:195] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+2026-09-09T02:05:30.137Z pw:browser [pid=96131][err] [96141:11072983:0909/100529.951176:ERROR:ui/display/mac/cv_display_link_mac.mm:195] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+2026-09-09T02:05:30.137Z pw:browser [pid=96131][err] [96141:11072864:0909/100529.951295:ERROR:ui/display/mac/cv_display_link_mac.mm:195] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+2026-09-09T02:05:30.137Z pw:browser [pid=96131][err] [96141:11072983:0909/100529.951333:ERROR:ui/display/mac/cv_display_link_mac.mm:195] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+2026-09-09T02:05:38.426Z pw:browser [pid=96131][err] [96144:11072997:0909/100537.940346:ERROR:net/socket/ssl_client_socket_impl.cc:962] handshake failed; returned -1, SSL error code 1, net_error -100
+2026-09-09T02:05:42.100Z pw:browser [pid=96131][err] [96144:11072997:0909/100541.939879:ERROR:net/socket/ssl_client_socket_impl.cc:962] handshake failed; returned -1, SSL error code 1, net_error -100
+2026-09-09T02:06:09.006Z pw:browser [pid=96131] <kill>
+2026-09-09T02:06:09.007Z pw:browser [pid=96131] <will force kill>
+2026-09-09T02:06:09.007Z pw:browser [pid=96131] starting temporary directories cleanup
+2026-09-09T02:06:11.438Z pw:browser [pid=96131] finished temporary directories cleanup
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.goto: Timeout 30000ms exceeded.
+Call log:
+[2m  - navigating to "http://127.0.0.1:4434/", waiting until "commit"[22m
+
+    at /Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-v1.4-review/outputs/review-v1.4/m07-review-20260909/scripts/browser-session.mjs:16:46 {
+  log: [
+    '  - navigating to "http://127.0.0.1:4434/", waiting until "commit"'
+  ],
+  name: 'TimeoutError'
+}
+
+Node.js v22.22.0

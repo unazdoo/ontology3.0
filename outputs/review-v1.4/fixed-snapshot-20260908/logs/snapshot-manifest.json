@@ -1,0 +1,610 @@
+{
+  "capturedAt": "2026-09-08T09:22:28.549078+08:00",
+  "sourceRoot": "/Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-composite-v1.3.0",
+  "snapshotRoot": "/Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-v1.4-review/outputs/review-v1.4/fixed-snapshot-20260908/snapshot",
+  "sourceHead": "0eed1d6322631d6fcdeca6fb1c23d01a5d5ee9ca",
+  "sourceBranch": "codex/prototype-v1.3.1-composite",
+  "sourceStatus": "?? designs/prototype-work/v1.3.2/\n?? designs/prototype-work/v1.4/\n?? outputs/01a076ca-84cf-7610-bd49-13945dd62fc8/\n?? outputs/fixes-v1.4/\n?? outputs/ux-audit-2026-09-05/\n",
+  "sourceMismatch": [],
+  "changedFromReview": [
+    "designs/prototype-work/v1.4/.runtime/server.log",
+    "designs/prototype-work/v1.4/DATA-AND-MAP-SOURCES.md",
+    "designs/prototype-work/v1.4/ONTOLOGY-RULE-REVIEW.md",
+    "designs/prototype-work/v1.4/README.md",
+    "designs/prototype-work/v1.4/V13-INHERITANCE-REVIEW.md",
+    "designs/prototype-work/v1.4/composite/integrations/decision-identity.js",
+    "designs/prototype-work/v1.4/composite/integrations/joint-workbench.js",
+    "designs/prototype-work/v1.4/composite/integrations/native-module-integrations.js",
+    "designs/prototype-work/v1.4/composite/integrations/ontology-owned-rules.js",
+    "designs/prototype-work/v1.4/composite/model-center/app.js",
+    "designs/prototype-work/v1.4/composite/modules/m07/app.js",
+    "designs/prototype-work/v1.4/composite/ontology/index.html",
+    "designs/prototype-work/v1.4/composite/ontology/rules-bootstrap.js",
+    "designs/prototype-work/v1.4/composite/ontology/rules.css",
+    "designs/prototype-work/v1.4/composite/s001-e2e-integration/app.js",
+    "designs/prototype-work/v1.4/composite/shared/report-editor.js",
+    "designs/prototype-work/v1.4/composite/shared/workflow.js",
+    "designs/prototype-work/v1.4/package.json",
+    "designs/prototype-work/v1.4/runtime/model-runtime.mjs",
+    "designs/prototype-work/v1.4/runtime/start.mjs",
+    "designs/prototype-work/v1.4/server.mjs",
+    "designs/prototype-work/v1.4/src/app.js",
+    "designs/prototype-work/v1.4/src/domain.js",
+    "designs/prototype-work/v1.4/src/map.js",
+    "designs/prototype-work/v1.4/src/store.js",
+    "designs/prototype-work/v1.4/src/styles.css",
+    "designs/prototype-work/v1.4/src/ui.js",
+    "designs/prototype-work/v1.4/tests/box-selection-browser.mjs",
+    "designs/prototype-work/v1.4/tests/browser.mjs",
+    "designs/prototype-work/v1.4/tests/cockpit-snapshot-browser.mjs",
+    "designs/prototype-work/v1.4/tests/inheritance.test.mjs",
+    "designs/prototype-work/v1.4/tests/inherited-browser.mjs",
+    "designs/prototype-work/v1.4/tests/owned-rules-browser.mjs",
+    "designs/prototype-work/v1.4/tests/owned-rules.test.mjs",
+    "designs/prototype-work/v1.4/tests/review-approval-browser.mjs",
+    "designs/prototype-work/v1.4/tests/review-layout-browser.mjs",
+    "designs/prototype-work/v1.4/tests/review-map-browser.mjs",
+    "designs/prototype-work/v1.4/tests/review-model-browser.mjs",
+    "designs/prototype-work/v1.4/tests/review-native-browser.mjs",
+    "designs/prototype-work/v1.4/tests/review-plan-report-browser.mjs",
+    "designs/prototype-work/v1.4/tests/review-probe.mjs",
+    "designs/prototype-work/v1.4/tests/review-regressions.test.mjs"
+  ],
+  "files": [
+    {
+      "path": "designs/prototype-work/v1.4/.gitignore",
+      "sha256": "65a35e814e30195618410351f3cd7dcf7978efd2b406b0d0fce4d6a66dbd0769",
+      "bytes": 30
+    },
+    {
+      "path": "designs/prototype-work/v1.4/.runtime/server.log",
+      "sha256": "7c26b87d0b52a13833768121ad72987d1935e00e902656a66cf37bc277bb7a24",
+      "bytes": 8222
+    },
+    {
+      "path": "designs/prototype-work/v1.4/COCKPIT-SNAPSHOT-REVIEW.md",
+      "sha256": "4f6e33bf0523f5e2058775dc7461a86f1c2f6216e9dd0943a2048a70b218e46d",
+      "bytes": 4544
+    },
+    {
+      "path": "designs/prototype-work/v1.4/DATA-AND-MAP-SOURCES.md",
+      "sha256": "f999424fabca544a777c8e09418b1b99b77010c9869e6162b80ee488f6702b73",
+      "bytes": 2943
+    },
+    {
+      "path": "designs/prototype-work/v1.4/IMPLEMENTATION-REVIEW.md",
+      "sha256": "0294ed19ea8b52e7c6b344fcc3de4e3f310108bf657df1e80826ed5e32c112c1",
+      "bytes": 7946
+    },
+    {
+      "path": "designs/prototype-work/v1.4/INHERITANCE-MANIFEST.json",
+      "sha256": "46c2e9ff5a19d8adf50a2f5c8853c53f8abbe598016598aaee8ff3295ca56044",
+      "bytes": 11078
+    },
+    {
+      "path": "designs/prototype-work/v1.4/ONTOLOGY-RULE-REVIEW.md",
+      "sha256": "87a2e592f9eacab1636e2fd25e6f6c3e47371534e8bdfd4f30890f154bc30b6d",
+      "bytes": 2843
+    },
+    {
+      "path": "designs/prototype-work/v1.4/README.md",
+      "sha256": "1d7160641423f176c02c7e106f9e5f885cdbf1b4201395295da7ce20e77f8cf3",
+      "bytes": 8092
+    },
+    {
+      "path": "designs/prototype-work/v1.4/V13-INHERITANCE-REVIEW.md",
+      "sha256": "fe38931fb6c8116fd7fbe2ebe5a5e2b0ff7e07bb97ff2ac85b30678a5d0d9f57",
+      "bytes": 6608
+    },
+    {
+      "path": "designs/prototype-work/v1.4/VERSION.json",
+      "sha256": "de8d7025da5e5a7624be052fe3fce2aca067bb1d2f64c3fc591c3840d61c7d7b",
+      "bytes": 853
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/dashboard/app.js",
+      "sha256": "06c266c811a807496b3bfde79eddc0b1b4ce6d82259ee3401203b3e4b750301f",
+      "bytes": 182789
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/dashboard/data.js",
+      "sha256": "facb0b31fe11503be827a4260fefc95057e933607fc0866332576f0c777a2530",
+      "bytes": 39772
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/dashboard/index.html",
+      "sha256": "8a1409631a89571df9635ca8afb150984d5af55939505d9c4fc74863df1311b2",
+      "bytes": 1538
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/dashboard/styles.css",
+      "sha256": "668e67eadaaa8d218213a6ed7ebce480ed952d5405e519c11cdc6a671eee2fd8",
+      "bytes": 94468
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/integrations/decision-identity.js",
+      "sha256": "10bed179be0b31aa5d01e6b5a21419b3e1a3549dfd6e5b5458b2145da7ec563d",
+      "bytes": 1566
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/integrations/joint-workbench.js",
+      "sha256": "d1ca386ce92cdd5d840016dd6c87257eb3e3502a5bcd8aee3ed9e5bafe576356",
+      "bytes": 16620
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/integrations/native-module-integrations.js",
+      "sha256": "d71110f6100c3161b9b63b8a309a47774e0cb9ffc1d76e94194dfd08666bf802",
+      "bytes": 186422
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/integrations/ontology-owned-rules.js",
+      "sha256": "2f69f98c1ed6152df5e1e044d459038c3e1265016fe67daa2cd59f47ff4e2a89",
+      "bytes": 10931
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/integrations/snapshot-assets.js",
+      "sha256": "f7faf72968c3070faf5e98d176ede7df08cfe236df629ec7a3bf45bb5bb61f31",
+      "bytes": 20684
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/model-center/app.js",
+      "sha256": "cd91d1c8b5157e4fefaa1979629cf446395b8f5953e8cb25604c27753b629ee4",
+      "bytes": 98625
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/model-center/index.html",
+      "sha256": "dcf85edf0e8d694bd6dca6b81135641462819b2377310fcbdb097c81fb5da64c",
+      "bytes": 840
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/model-center/styles.css",
+      "sha256": "ff7451affc71f7db99d7939616180aa94af1f236ef7eafe8d1d14b6621f0c3f9",
+      "bytes": 66156
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/modules/m07/app.js",
+      "sha256": "3b5b245f668ae74fd26be9291fe18301876cc8b648b86ee5a3814e48f6a6a14f",
+      "bytes": 133984
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/modules/m07/index.html",
+      "sha256": "8132e11abcecc9707aaf370fdbd6184082585ddbb5fc7854715aec2dcfe8e3df",
+      "bytes": 7572
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/modules/m07/resources/portfolio.json",
+      "sha256": "5f28ad4a1a141d4c86eb12f83cc981f42bb1e64e1c3b72fd199ee4f342d75c9d",
+      "bytes": 607584
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/modules/m07/styles.css",
+      "sha256": "32c2be459a9fed8a339257aa598ae18440bf87aeb75cf99400a11349cd4cfa3e",
+      "bytes": 79404
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/ontology/index.html",
+      "sha256": "60f7cd8eb3f2bb5de153567f87b3dd901afc6250a31fe084e7c82483ae1cc5ac",
+      "bytes": 1684
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/ontology/rules-bootstrap.js",
+      "sha256": "04c7ff33fe79e94d2dd533558250173c6d0ad823b6b433f483e2a81f6242074f",
+      "bytes": 8411
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/ontology/rules.css",
+      "sha256": "117c316bb515f1a97eea1c8ce6a043e888ba847cded819d2b44383cdf8b32c33",
+      "bytes": 1101
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/resources/MAP-SOURCES.md",
+      "sha256": "5d4cb4046e86275132dc24d9bafea76281fd4c86378068379245a0c0326f2ef9",
+      "bytes": 768
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/resources/build-enterprise-master.mjs",
+      "sha256": "05b2dd601d319844b5dd1f0d6c696d5173343fabfff87bb4b4be78ab51328b0a",
+      "bytes": 10753
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/resources/catalog.js",
+      "sha256": "16f010a5bab5cb9deec4886475589ca1f4553b251ffff612e6f2a2941a24da23",
+      "bytes": 7170
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/resources/china-provinces.geojson",
+      "sha256": "99adfeded5223848bbe37a0a12f8023e11ee12161c7800521c27db42fdeac275",
+      "bytes": 582522
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/resources/enterprise-master.js",
+      "sha256": "a946594ae7996629e50a97eb4ae830337073fdc4c8d37c2ff087e8e1de5c5dec",
+      "bytes": 21454
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/resources/enterprise-master.json",
+      "sha256": "dcbbd94a3f1817c8fac3ca7dccd3f53b1b2e29a7a71ec36ebc5199c1909bbd5b",
+      "bytes": 30234
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/resources/enterprise-seed.json",
+      "sha256": "070aa31d0bb53000dab7c74d9f4fddb88f4201d2269261c87fd98453b169e7b0",
+      "bytes": 2671
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/s001-e2e-integration/app.js",
+      "sha256": "f5bd9861315ed8c0b6ffbd7b774c02ae663b72b40dd15fd8ee8788bf0c553fd2",
+      "bytes": 124826
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/s001-e2e-integration/data.js",
+      "sha256": "a6400d1629309012c7153e24fa906b2ee83d8b61c7c1f353ecd54afc4304f5e5",
+      "bytes": 6613
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html",
+      "sha256": "b2b3648a40a0d583a12b9354d3eb66c3d0078a88154f8247eed1a37f0f307a28",
+      "bytes": 3242
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/s001-e2e-integration/state.js",
+      "sha256": "5621ee0ccac0d3694f40cf4fca381105e1e9072fc0fd0aa8ed9df2a73d684c1b",
+      "bytes": 34334
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/s001-e2e-integration/styles.css",
+      "sha256": "6a750aaa3b7dc33863e8dba911f161578e7807c3acbebbee3b09e369d0f5c25c",
+      "bytes": 15430
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/shared/experience.css",
+      "sha256": "9ba21b6f8e4d5383811990d0acafa4801bf35e549a74b863a215c7233fcc1fee",
+      "bytes": 17072
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/shared/readability.js",
+      "sha256": "673385dde51d8a840d349cde09f6ed8f2160db89f6a8e206ac3081f5113fa032",
+      "bytes": 2548
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/shared/report-editor.js",
+      "sha256": "38e18b56b75f5c50a296c7e1bd11e9c444145ed2c9973f8d7ddf6b6004008cf1",
+      "bytes": 9555
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/shared/workflow.js",
+      "sha256": "ae7fd90150260d8543d9ce2477db7f9ae1d3d5b78b2ffdd03a731b67deed490d",
+      "bytes": 12405
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/start-candidate.mjs",
+      "sha256": "b2c549a19342f538c700c17e8a5a7d58b54da4ebb22a5e0d4660b1edc60305a4",
+      "bytes": 1104
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/tests/chrome-regression.mjs",
+      "sha256": "70b16c98c302ea8f0e8281d2ca40394194fac7f4f4414b05ec481235eb208bce",
+      "bytes": 73038
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/tests/enterprise-browser-regression.mjs",
+      "sha256": "de9892a4e712228c154335245ef54aad7098ed8d35fddbe35706fa25cd24fa8d",
+      "bytes": 6549
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/tests/enterprise-identity.test.mjs",
+      "sha256": "091e599eb0e696088fe50ad572f66df84798ac2d8551c999b56c77168ec6a92f",
+      "bytes": 5990
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/tests/parent-integrity.test.mjs",
+      "sha256": "18e800f0a02a71662131a53060cda586069514dca0837bd09a2ac2bc4874d720",
+      "bytes": 1226
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/tests/readability-regression.mjs",
+      "sha256": "d17023e941b9c14aa66e43edb694a03405df6d712aa0dd48361010ff17c2ea52",
+      "bytes": 9764
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/tests/readability.test.mjs",
+      "sha256": "bbdc4e8de71c60099868f7a85afcc36b3b1fd27a897f8585ed93bae8dd68b920",
+      "bytes": 3087
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/tests/record-regression.mjs",
+      "sha256": "51681e106c7f6851c45d9947f66ef9434beb69b6666847b84a79d91997929122",
+      "bytes": 6021
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/tests/refresh-manifest.mjs",
+      "sha256": "c130667014ef45c2a7bd2c55b23a5630d79959c12464b420c4e9c09b78c62e36",
+      "bytes": 2077
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/tests/server.test.mjs",
+      "sha256": "ee7533f69e0a88cd7fb5e03b7326ad36e6f8ce588f25bdb5aeec10a1c8567533",
+      "bytes": 892
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/tests/shell-contract.test.mjs",
+      "sha256": "595b3bb29c2efda3337dd95c83a03630160748374d08660ef427b0279af8b973",
+      "bytes": 6251
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/tests/stability-contract.test.mjs",
+      "sha256": "e4cfa5bf17fa053d13819ab854aae6ddfb4ca991a472c4e3357ed910d21b222f",
+      "bytes": 2668
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/tests/ux-regression.mjs",
+      "sha256": "3421b96ae6337b4550085f863fb97bbd9f48a9b1b16aed67a168d2d20471311e",
+      "bytes": 12450
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/tests/v11-browser-regression.mjs",
+      "sha256": "a13f72c7d1c7deb0b4b1a93df2cd48d8fa4ef150ec5c88809db9eec56fb28b30",
+      "bytes": 11572
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/tests/v11-parity.test.mjs",
+      "sha256": "c3ef3a1e8fb9ee0c7e4d4ee75896a519eb1c5b23987163a9ed012ae165c8a9f4",
+      "bytes": 7535
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/tests/verify-candidate.mjs",
+      "sha256": "71493e856cf9e591d0cae231694a1673ba798de8667c380a7164e63a8792c76d",
+      "bytes": 6593
+    },
+    {
+      "path": "designs/prototype-work/v1.4/composite/tests/workflow.test.mjs",
+      "sha256": "3813717165d036b9113dd162556376902d10d8ded5bdb0574382f8fd5ade6755",
+      "bytes": 9219
+    },
+    {
+      "path": "designs/prototype-work/v1.4/index.html",
+      "sha256": "907591ea4f406ba083775532cdbc154b1c037370d34a0abfc9fe78598709e9db",
+      "bytes": 1029
+    },
+    {
+      "path": "designs/prototype-work/v1.4/package-lock.json",
+      "sha256": "9203e71b15355d2e9489f4b417f15bb1a0c84485e08ad1b6c28863d361c1fc1c",
+      "bytes": 65720
+    },
+    {
+      "path": "designs/prototype-work/v1.4/package.json",
+      "sha256": "c8e82e3a1e3f60363ad9de0bbbaadf4f0c4e357b34963bf05b35043517e6203e",
+      "bytes": 1071
+    },
+    {
+      "path": "designs/prototype-work/v1.4/public/data/business-definitions.js",
+      "sha256": "53e60d5375d4c0b0571c0014edb3fb19519024bfbd80fec4b2b35c22a391dafa",
+      "bytes": 2563
+    },
+    {
+      "path": "designs/prototype-work/v1.4/public/data/china-provinces.geojson",
+      "sha256": "99adfeded5223848bbe37a0a12f8023e11ee12161c7800521c27db42fdeac275",
+      "bytes": 582522
+    },
+    {
+      "path": "designs/prototype-work/v1.4/public/data/portfolio.json",
+      "sha256": "fea13fc42c0ccd6b58409b313ec5f6fc8fe9ea2ec0c31815b601b5aa0fe4d1c6",
+      "bytes": 110640
+    },
+    {
+      "path": "designs/prototype-work/v1.4/public/data/snapshots/catalog.js",
+      "sha256": "68633ae06f2931c755e81a1b339338ce7002c60f0114f13da7883c31e3ea7430",
+      "bytes": 75478
+    },
+    {
+      "path": "designs/prototype-work/v1.4/public/data/snapshots/catalog.json",
+      "sha256": "2c2dd9c7b1c84ad474e5f9751cc4f107b32d16e1f56480b4ec7e7836d8550d5a",
+      "bytes": 119108
+    },
+    {
+      "path": "designs/prototype-work/v1.4/public/data/snapshots/finance-risk-20251231-3a126add6af3.xlsx",
+      "sha256": "3a126add6af3787c90cac781f6d42186d41dbcd80e5bc29264845994940ac3b8",
+      "bytes": 40094
+    },
+    {
+      "path": "designs/prototype-work/v1.4/public/data/snapshots/finance-risk-20251231-5b0fff17feff.xlsx",
+      "sha256": "5b0fff17feff25d93cce952df58de942beed55070abe1fdd1eed4408d29fcbe3",
+      "bytes": 40007
+    },
+    {
+      "path": "designs/prototype-work/v1.4/public/data/snapshots/finance-risk-20251231-9c933d8c7a8c.xlsx",
+      "sha256": "9c933d8c7a8c838d6b50bd6749a7867273b4b44ff5c9c873983522bcab04e4a8",
+      "bytes": 40008
+    },
+    {
+      "path": "designs/prototype-work/v1.4/public/data/world-110m.topojson",
+      "sha256": "2516c915867c7baf18ddec727aec46c315541a07cfb3d79a6559b05d5e94eee8",
+      "bytes": 107761
+    },
+    {
+      "path": "designs/prototype-work/v1.4/public/data/world.geojson",
+      "sha256": "02caedf9a1e0255deedc985942ccb0b8df102f21c9c551c332e8eda0a18fbcd9",
+      "bytes": 436089
+    },
+    {
+      "path": "designs/prototype-work/v1.4/runtime/model-runtime.mjs",
+      "sha256": "0867f3f0369d9b8eedc655612c061517f5f3803814fede8d44a2d5bb1da5b8c9",
+      "bytes": 2166
+    },
+    {
+      "path": "designs/prototype-work/v1.4/runtime/start.mjs",
+      "sha256": "8c8870d0b532072747a5ef8daba83cde51b2c01742a814c30243e9392ab0ce8b",
+      "bytes": 3083
+    },
+    {
+      "path": "designs/prototype-work/v1.4/scripts/build-data.mjs",
+      "sha256": "6b42729ea331c9a275abd93f1894afa1f14e3d3b53262a4ee4671149e22f50b6",
+      "bytes": 10264
+    },
+    {
+      "path": "designs/prototype-work/v1.4/scripts/build-snapshot-package.mjs",
+      "sha256": "7144e7003db5c728c709193f753b6b17af2b3afdc0724d6edd57428ad654507a",
+      "bytes": 9215
+    },
+    {
+      "path": "designs/prototype-work/v1.4/scripts/inherit-v13.mjs",
+      "sha256": "e695bc1e1c1c5b148d7c1bff3158e0c09b37bd69bf659c065ea35d7bbd76d9c3",
+      "bytes": 1509
+    },
+    {
+      "path": "designs/prototype-work/v1.4/server.mjs",
+      "sha256": "67c564f86131a8cafd18865c70a5b9df764d9afaf57cbe24833d35701245e18d",
+      "bytes": 1939
+    },
+    {
+      "path": "designs/prototype-work/v1.4/src/app.js",
+      "sha256": "dfdd09cdd001a2e6517c90650bfbb02d80c3fddaffffd736b19786b30560a8f5",
+      "bytes": 91173
+    },
+    {
+      "path": "designs/prototype-work/v1.4/src/domain.js",
+      "sha256": "099d8c3db25c9c8951fea7fd3651d00aea4dcde821c6e6639d29a177c6d943e9",
+      "bytes": 25534
+    },
+    {
+      "path": "designs/prototype-work/v1.4/src/map.js",
+      "sha256": "21bf9051d1c88d9baca4ca0dc948f0ac53ac981bea61ff30797fa8aa680f5e58",
+      "bytes": 18059
+    },
+    {
+      "path": "designs/prototype-work/v1.4/src/platform.js",
+      "sha256": "3b4df9d14578882b8c230271de0b1bba199bedbe282c2e0c0f00258f026dcef4",
+      "bytes": 1117
+    },
+    {
+      "path": "designs/prototype-work/v1.4/src/snapshot-data.js",
+      "sha256": "35296998006575ad68a6f7b387a3b519cdd1292efff17ef00fd81c0021970b46",
+      "bytes": 9375
+    },
+    {
+      "path": "designs/prototype-work/v1.4/src/store.js",
+      "sha256": "ef9c1a4cd64753880d6a1bf65536934ab54969c8b46c0d3ec59ccf707efe7b8d",
+      "bytes": 8711
+    },
+    {
+      "path": "designs/prototype-work/v1.4/src/styles.css",
+      "sha256": "126329946ea04bc116c2b60c989a8d6d45a5271c2bc781c90fc536d494307f6d",
+      "bytes": 47054
+    },
+    {
+      "path": "designs/prototype-work/v1.4/src/ui.js",
+      "sha256": "0ef63b9200f6c4ab4aca78260d34ee5be1b1b1c5d33c3793ca97a7d72c6d95ae",
+      "bytes": 10040
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/box-selection-browser.mjs",
+      "sha256": "6e5f3af835a6f92b58b75a87640f8f7f11c9f6092227bd3e90f9a238a95ff0e2",
+      "bytes": 11132
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/box-selection.test.mjs",
+      "sha256": "041dc1ece2db3a78e47598cc7923a549932d460b623d701b26459ea5b0ba6564",
+      "bytes": 3035
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/browser.mjs",
+      "sha256": "2bf57083c0f65cbcb7018422343e6fd0582ea457f5a410c1513f05a524dd15a6",
+      "bytes": 29658
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/cockpit-layout.mjs",
+      "sha256": "d3ddb1e32d5db58caf1bb684bc662ada93331c9f64304f9c4fa1b101c2a53313",
+      "bytes": 7827
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/cockpit-snapshot-browser.mjs",
+      "sha256": "fbe1d86a1fc5640f12ff96235bc8cadfc1ab076acef85520447594e6d0ed1656",
+      "bytes": 13373
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/domain.test.mjs",
+      "sha256": "7384198d629001ca906e6e0281422a33790321cceba4c57432098c1e0b51d8ca",
+      "bytes": 16789
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/home-presentation.mjs",
+      "sha256": "6e443686b8005a6a810d7c8a037ea2d854dadd7eafeae8ab8c26c696e59ab58a",
+      "bytes": 5432
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/inheritance.test.mjs",
+      "sha256": "006171bb9775de09c17038956c30f36f7e47dc2a517182c708b5d6ce5f63f111",
+      "bytes": 7514
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/inherited-browser.mjs",
+      "sha256": "6965a0ebe507976a896a73ed7d50fccc752c61c0d0c9e345e06994203e6312ef",
+      "bytes": 17314
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/owned-rules-browser.mjs",
+      "sha256": "deb7461c215688af877968f6d8cd17d87a40c775496e854919d8da50c5c08514",
+      "bytes": 11592
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/owned-rules.test.mjs",
+      "sha256": "bedbaa87eea6fd7ccd334703a8db88c3b6e2c177bbf485d7b083f31162509aa5",
+      "bytes": 5648
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/review-approval-browser.mjs",
+      "sha256": "7eb8ffe34dda7086d4a775d4837fd4599dde35b780fab1d9d85609321f5df05f",
+      "bytes": 6772
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/review-layout-browser.mjs",
+      "sha256": "0109aa3ffa30f3c8b69f78d7ad4b235c5d55c5c38538bb41d24a7936466368b0",
+      "bytes": 1778
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/review-map-browser.mjs",
+      "sha256": "cb10491252558b55630b1d42fce5bd0c58e58c8d6224fa7c0111e4a7d68d3ae1",
+      "bytes": 8659
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/review-model-browser.mjs",
+      "sha256": "ef31126d6c13f0b9208da08de3728863be0c90f2fb928ce84181a7e6bc984bff",
+      "bytes": 5407
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/review-native-browser.mjs",
+      "sha256": "74bf91c4cbe1f8caffb4f65589f60caa5893f0b8e6a23451879c67fb34a66abc",
+      "bytes": 5887
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/review-plan-report-browser.mjs",
+      "sha256": "f2a5b13f18ba2f8ead116b769049318dc795cd858b351c9c9f8bde6b37331358",
+      "bytes": 6232
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/review-probe.mjs",
+      "sha256": "e8ed76395dc52076b7dce839484a25e3b4d12946fd4d4b65f4fd5942da233ad3",
+      "bytes": 1344
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/review-regressions.test.mjs",
+      "sha256": "699ac0f15eea92483ef716693a49cbdb06717ee1715c1ae432fb2efdf2299c12",
+      "bytes": 4006
+    },
+    {
+      "path": "designs/prototype-work/v1.4/tests/snapshot.test.mjs",
+      "sha256": "2c833090b50c8828d429933e8864eced4cd358d46435cc347c3932b411375a42",
+      "bytes": 3648
+    },
+    {
+      "path": "designs/prototype-work/v1.4/vite.config.js",
+      "sha256": "441b740db10d4163558910f663c839f4dda879ed6faf8d9d75df270324a2fffa",
+      "bytes": 476
+    },
+    {
+      "path": "designs/prototype-work/v1.4/workbench.html",
+      "sha256": "e1ee567dcfe697fbacd2a36d7bb5eef94b9a8e39e339fc69fd4fb9571d9fa8d7",
+      "bytes": 424
+    }
+  ]
+}

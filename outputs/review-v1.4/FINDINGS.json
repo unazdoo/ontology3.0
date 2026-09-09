@@ -1,0 +1,510 @@
+{
+  "reviewVersion": "1.0",
+  "reviewedAt": "2026-09-08T00:03:50.401521+08:00",
+  "scope": "designs/prototype-work/v1.4/",
+  "branch": "codex/review-v1.4-ux-20260907",
+  "commit": "ba4d6b67696bf2fb3e4ae163d08a8cb9e3b3a568",
+  "sourceModified": false,
+  "counts": {
+    "P0": 0,
+    "P1": 5,
+    "P2": 4,
+    "P3": 1
+  },
+  "findings": [
+    {
+      "id": "R14-001",
+      "severity": "P1",
+      "classification": "已验证缺陷",
+      "category": "业务严谨性 / 结果身份",
+      "title": "合成模型评分被展示为“正式事实”",
+      "module": "M08 / 投后驾驶舱结果视图",
+      "route": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#dashboard → #/view/post-investment/overview → 结果视图",
+      "objects": [
+        "S005",
+        "InvestmentProduct-001 至 004",
+        "FACT-S005-BASELINE-READONLY"
+      ],
+      "preconditions": "使用本轮独立服务；通过 M08 的投后目标进入驾驶舱。完整模型流程已另行实际运行至候选消费绑定。",
+      "reproductionSteps": [
+        "经营驾驶舱选择“投后评价”，点击“结果视图”。",
+        "选择“正式结果”，查看基金A、基金B、基金C及产品池组合的分数、状态和结果ID。",
+        "与主页面当前轮次的覆盖率、缺失说明和源码结果构造方式对照。"
+      ],
+      "expected": "模拟构造评分必须明确标为演示/合成基准；正式事实须可追溯到确有数据和口径支持的结果。",
+      "actual": "抽屉显示“4个业务对象 · 正式事实”，分数为62、68、74、80，前三项“已评价”。这些值由 resultSubjects 的 62 + index * 6 生成，置信度也按序号生成，再包装成 resultKind=FACT。主页面同期显示仅5.9%覆盖、很低置信度及大量无法评价。",
+      "impact": "可能把无实际计算依据的评分当成投资评价结论，并通过“加入报告”继续传播。未发生真实交易或正式模型指针修改。",
+      "evidence": [
+        "screenshots/111-post-result-view.png",
+        "screenshots/110-post-cockpit-after-binding.png",
+        "screenshots/112-post-candidate-results.png"
+      ],
+      "sourceReferences": [
+        {
+          "path": "designs/prototype-work/v1.3.0/composite/runtime/scenario-model-registrations.mjs",
+          "line": 113
+        },
+        {
+          "path": "designs/prototype-work/v1.3.0/composite/runtime/scenario-model-registrations.mjs",
+          "line": 190
+        },
+        {
+          "path": "designs/prototype-work/v1.4/composite/integrations/native-module-integrations.js",
+          "line": 1700
+        }
+      ],
+      "recommendation": "将合成基线明确区分为演示身份；正式视图只消费有实际依据的当前结果，缺失时保持无法评价。报告沿用同一身份。",
+      "acceptanceCriteria": [
+        "没有真实证据的基金评分不出现在“正式事实”中。",
+        "主页面、抽屉、问数和导出对同一对象的结果属性及缺失状态一致。",
+        "候选、模拟的示例分数始终带有醒目的合成标记和来源。"
+      ],
+      "origin": "继承的 v1.3.0 运行时问题，在 v1.4 实际消费路径中复现。"
+    },
+    {
+      "id": "R14-002",
+      "severity": "P1",
+      "classification": "已验证缺陷",
+      "category": "问数 / 范围识别",
+      "title": "未登记企业被当作全部企业或整个产业作答",
+      "module": "驾驶舱同屏问数",
+      "route": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#dashboard → 融资与风险态势",
+      "objects": [
+        "不存在的Review企业",
+        "华南环保集团",
+        "ENT-017/018/019/020"
+      ],
+      "preconditions": "基准快照、清除筛选，21家企业。",
+      "reproductionSteps": [
+        "输入“不存在的Review企业融资余额多少”并发送。",
+        "清除筛选，再输入“华南环保集团融资余额多少”。",
+        "检查答案的对象集及可用的报告/事项操作。"
+      ],
+      "expected": "无法识别的主体应拒绝作答或要求选择已登记主体，不得自动扩大范围。",
+      "actual": "第一问返回21家企业、融资余额1,411.24亿元；第二问把名称中的“环保”解释为产业，返回4家、450.30亿元。均标为“分析结果”，可加入报告和发起事项。未知企业保护只匹配“公司/单位数字/ENT-数字”。",
+      "impact": "错误对象范围生成看似可信的融资总额，可能导致错误报告和错误复核事项。",
+      "evidence": [
+        "screenshots/36-unknown-entity.png",
+        "logs/query-boundaries-verified.json",
+        "logs/36-unknown-entity.json"
+      ],
+      "sourceReferences": [
+        {
+          "path": "designs/prototype-work/v1.4/src/domain.js",
+          "line": 344
+        },
+        {
+          "path": "designs/prototype-work/v1.4/src/domain.js",
+          "line": 366
+        },
+        {
+          "path": "designs/prototype-work/v1.4/src/domain.js",
+          "line": 434
+        }
+      ],
+      "recommendation": "先完成主体和范围解析；拒绝未被完整解释的专名，不把主体名中的行业词直接当作筛选条件。",
+      "acceptanceCriteria": [
+        "上述两个输入均明确提示主体未登记，并保持原分析范围。",
+        "标准企业名称、ENT-ID、已登记别名仍可命中。",
+        "失败答案没有加入报告/发起事项入口。"
+      ],
+      "origin": "v1.4 同屏问数新增解析。"
+    },
+    {
+      "id": "R14-003",
+      "severity": "P1",
+      "classification": "已验证缺陷",
+      "category": "功能闭环 / 本体归属",
+      "title": "本体内规则入口与验证结果回到态势均报错",
+      "module": "M01 本体管理",
+      "route": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#module/ontology → 语义资产 / 本体建模",
+      "objects": [
+        "DRAFT-V14-OPERATIONS-S001",
+        "RULE-OPS-FINANCING-PREMIUM",
+        "DRAFT-V14-OPERATIONS-S003"
+      ],
+      "preconditions": "语义资产目录可见融资及债务风险本体的“规则与指标修订”。",
+      "reproductionSteps": [
+        "分别点击两类本体的“规则与指标修订”。",
+        "绕行“本体建模→经营态势规则修订→融资成本偏离预警”。",
+        "运行25bp验证，得到7/21命中，再点“在经营态势查看”。",
+        "编辑为50bp重新验证；另进入仍存在的“融资规则验证”独立页。"
+      ],
+      "expected": "规则应从所属本体修订，验证后携带本体/草稿/规则/版本和对象集进入态势；消费入口使用同一规则。",
+      "actual": "两个目录按钮均抛 openOntology is not a function；验证结果应用抛 applyOwnedRule is not a function，页面未给失败提示。独立页仍可使用另一套100bp规则生成独立UUID并筛选地图，未关联本体中的50bp修订。",
+      "impact": "规则治理主链无法完成；用户绕行后会维护两套不同规则，难以确认地图和报告究竟使用哪个本体版本。草稿编辑未覆盖已发布定义，这一隔离检查通过。",
+      "evidence": [
+        "screenshots/50-owned-rule-noop.png",
+        "screenshots/54-owned-validation-result.png",
+        "screenshots/55-owned-rule-apply-noop.png",
+        "screenshots/56-rule-edited-50bp.png",
+        "screenshots/58-sandbox-independent.png",
+        "logs/browser-errors.jsonl"
+      ],
+      "sourceReferences": [
+        {
+          "path": "designs/prototype-work/v1.4/composite/integrations/ontology-owned-rules.js",
+          "line": 36
+        },
+        {
+          "path": "designs/prototype-work/v1.4/composite/integrations/joint-workbench.js",
+          "line": 391
+        },
+        {
+          "path": "designs/prototype-work/v1.4/composite/integrations/joint-workbench.js",
+          "line": 15
+        }
+      ],
+      "recommendation": "补齐本体修订与应用交接函数，以本体规则版本作为唯一消费身份；整合或迁移独立规则页，并显示交接错误。",
+      "acceptanceCriteria": [
+        "融资和风险本体修订入口均可到达正确草稿。",
+        "25bp和50bp验证后能回到相同对象集，问数/报告保留同一规则依据。",
+        "已发布规则不被草稿覆盖；独立UUID规则不再与本体规则并行生效。"
+      ],
+      "origin": "本快照新增本体接入尚未完成。"
+    },
+    {
+      "id": "R14-004",
+      "severity": "P1",
+      "classification": "已验证缺陷",
+      "category": "原审批链 / 数据版本",
+      "title": "黄灯事项确认交办使用错误版本，反复重试不能生成待办",
+      "module": "M04 原决策工作台",
+      "route": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#module/decision → 决策工作台",
+      "objects": [
+        "S003-ENT-018",
+        "AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-018-S003_RISK_FOLLOW_UP-2025-12-31-1.1.0"
+      ],
+      "preconditions": "原有环保测试公司2黄灯事项处于待人工判断；未注入服务故障。",
+      "reproductionSteps": [
+        "打开环保测试公司2事项，点击“确认并交办”。",
+        "填写理由、知情确认、负责人、截止日，核对提交内容并确认。",
+        "等待质量读取结束，再点击“重试提交”。",
+        "打开“查看追溯”，对比接收前和确认前的精确数据版本。"
+      ],
+      "expected": "在相同固定数据版本上重新核验；通过后生成独立待办。若确需修复数据，应提供可到达的具体恢复入口。",
+      "actual": "接收门引用 S003-T007-FORMAL-CANDIDATE-20251231-v1，确认门却查询“1.0.0”，返回“C017无法定位请求引用的精确数据版本”，人工确认不保存。累计3次回执均阻断。seed同时保存 dataVersion=1.0.0 和 dataAssetId=完整T007。",
+      "impact": "原有债务风险审批行动链不能完成；本地分析复核事项的成功不能替代该链。阻断本身保护了错误执行，但恢复建议无法消除版本传递错误。",
+      "evidence": [
+        "screenshots/126-original-assignment-settled.png",
+        "screenshots/127-original-assignment-retry-failed.png",
+        "screenshots/128-original-audit.png",
+        "logs/128-original-audit.json"
+      ],
+      "sourceReferences": [
+        {
+          "path": "designs/prototype-releases/v1.1.0/scenarios/s003/resources/m04/decision-inbox.v3.json",
+          "line": 409
+        }
+      ],
+      "recommendation": "确认门使用申请固定的完整数据资产版本ID，区分版本号与数据身份；保留现有质量阻断及幂等机制。",
+      "acceptanceCriteria": [
+        "环保测试公司2接收门与确认门读取同一完整T007身份。",
+        "数据质量合格时产生且只产生一条待办，刷新可追溯。",
+        "真实质量故障仍阻断，恢复后重试不会重复交办。"
+      ],
+      "origin": "继承的冻结审批资源/消费链；本轮在 v1.4 Shell 复现。"
+    },
+    {
+      "id": "R14-005",
+      "severity": "P1",
+      "classification": "已验证缺陷",
+      "category": "跨模块交接 / 对象范围",
+      "title": "切换业务域后保留不兼容对象，空结果仍显示成功",
+      "module": "M03 → M07 / M08 / Agent",
+      "route": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#module/query → 带入探索 → 其他业务域问题/模型目标",
+      "objects": [
+        "dept-equipment",
+        "dept-technology",
+        "dept-safety",
+        "S004",
+        "S005",
+        "InvestmentProduct-001 至 004"
+      ],
+      "preconditions": "从投后驾驶舱切入智能问数；也在新的浏览器上下文、同一独立服务上进行了对照。",
+      "reproductionSteps": [
+        "问“2025年三个部门的费用预算执行率和剩余空间分别是多少”，答案包含3个部门。",
+        "点击“带入探索”，检查对象范围。",
+        "回问数点新会话，选“哪些借款主体需要优先人工复核”。",
+        "进入投后模型目标，再切债务风险模型目标，检查当前对象与时间。"
+      ],
+      "expected": "跨域应验证对象身份兼容性并明确重置或提示；带入探索要保留可映射的原对象，不可默默扩大为全目录。",
+      "actual": "预算结果跳到M07显示全部71对象。Shell仍保存S005 + dept-equipment等预算对象；M08投后/债务目标显示“设备管理部”，贷前问题显示“成功、0条正式结果”。新的浏览器上下文中也复现0条：其回答固定的scenarioId为S004，对象集却来自当前S005模型产品。说明该问题还会由服务当前业务域的默认范围触发，不能仅归因于预算操作。",
+      "impact": "用户可能把错误范围造成的空结果理解为无风险；模型目标、Agent与查询对象跨域错配，跨模块分析连续性中断。",
+      "evidence": [
+        "screenshots/71-budget-to-explorer.png",
+        "screenshots/75-preloan-empty-detail.png",
+        "screenshots/90-post-models.png",
+        "screenshots/114-risk-model-code-entry.png",
+        "screenshots/156-clean-preloan-control.png",
+        "logs/clean-preloan-context.json"
+      ],
+      "sourceReferences": [
+        {
+          "path": "designs/prototype-work/v1.4/composite/integrations/native-module-integrations.js",
+          "line": 1102
+        },
+        {
+          "path": "designs/prototype-work/v1.4/composite/integrations/native-module-integrations.js",
+          "line": 930
+        },
+        {
+          "path": "designs/prototype-work/v1.4/composite/integrations/native-module-integrations.js",
+          "line": 838
+        },
+        {
+          "path": "designs/prototype-work/v1.4/composite/shared/workflow.js",
+          "line": 29
+        }
+      ],
+      "recommendation": "交接时携带来源业务域及规范对象ID，按目标域校验范围；无兼容对象时显示范围不兼容及恢复入口。新业务问题不得默认套用另一域的对象集。",
+      "acceptanceCriteria": [
+        "预算答案带入M07后要么显示对应3部门，要么明确说明当前目录无映射，不能自动显示71对象当作交接成功。",
+        "贷前查询不使用预算部门或投资产品ID作为范围。",
+        "投后和债务风险目标不显示设备管理部；空结果区分无命中、未运行和范围错误。"
+      ],
+      "origin": "继承集成的交接和范围选择逻辑；v1.4客户路径实际暴露。"
+    },
+    {
+      "id": "R14-006",
+      "severity": "P2",
+      "classification": "已验证缺陷",
+      "category": "方案输入 / 语义解析",
+      "title": "小数降息和授信收缩参数被静默改为0",
+      "module": "同屏问数 → 融资方案",
+      "route": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#dashboard → 融资与风险态势 → 问数/比较方案",
+      "objects": [
+        "8c7c78b4-eb5f-4ab2-9516-4c2b76f1403f"
+      ],
+      "preconditions": "任意有效企业范围，本轮为4家环保企业。",
+      "reproductionSteps": [
+        "输入“未来90天如果降息12.5bp，授信收缩12.5%，展期30天”。",
+        "等答案完成后点“比较方案”。"
+      ],
+      "expected": "正确读取12.5bp和12.5%，或明确拒绝不支持的小数，不得显示成功后替换成零。",
+      "actual": "成功答案保存 parameters={rateBps:0,creditHaircut:0,extensionDays:30}；表单显示0bp、0%，预览不体现用户的利率和授信变化。解析正则只接受整数，未匹配时回填0。",
+      "impact": "方案假设与原问题不一致；用户可能保存和比较未按要求测算的方案。参数表可以人工发现，但没有任何忽略提示。",
+      "evidence": [
+        "screenshots/140-decimal-scenario.png",
+        "screenshots/141-decimal-parameters-zero.png",
+        "logs/query-boundaries-verified.json"
+      ],
+      "sourceReferences": [
+        {
+          "path": "designs/prototype-work/v1.4/src/domain.js",
+          "line": 410
+        },
+        {
+          "path": "designs/prototype-work/v1.4/src/domain.js",
+          "line": 428
+        }
+      ],
+      "recommendation": "支持业务允许的小数精度；未支持表达应阻断并标出无法识别的参数，禁止静默默认。",
+      "acceptanceCriteria": [
+        "12.5bp及12.5%被准确填入和计算，或两项都有明确拒绝理由。",
+        "整数50bp/30%仍正常；非法负数和超限值仍阻断。"
+      ],
+      "origin": "v1.4新增语义参数解析。"
+    },
+    {
+      "id": "R14-007",
+      "severity": "P2",
+      "classification": "已验证缺陷",
+      "category": "功能完整性 / 推荐问题",
+      "title": "集团余额推荐问题只回答板块成本，关键请求指标缺失",
+      "module": "M03 原问数工作台",
+      "route": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#module/query → 问数工作台",
+      "objects": [
+        "s001-group-cost",
+        "group-overview"
+      ],
+      "preconditions": "新会话，点击平台提供的第1个融资推荐问题。",
+      "reproductionSteps": [
+        "点击“集团当前融资余额和平均融资成本分别是多少？”",
+        "查看回答详情和导出的CSV。"
+      ],
+      "expected": "同时返回集团融资余额及平均融资成本，注明同一数据截至日、单位与依据。",
+      "actual": "实际回答“集团融资成本与产业板块对比”，只有成本和板块差异，没有集团余额。详情及导出仍缺余额；推荐项映射到通用group-overview模板。",
+      "impact": "用户需要另找驾驶舱获取余额；推荐问题本身不兑现承诺，现场演示容易出现答非所问。",
+      "evidence": [
+        "screenshots/68b-query-finance-answer.png",
+        "screenshots/69-original-query-detail.png",
+        "downloads/original-finance-query.csv"
+      ],
+      "sourceReferences": [
+        {
+          "path": "designs/prototype-releases/v1.1.0/intelligent-query-prototype/review-next/conversation-workspace/portfolio-integration.js",
+          "line": 139
+        },
+        {
+          "path": "designs/prototype-releases/v1.1.0/intelligent-query-prototype/review-next/conversation-workspace/data.jsx",
+          "line": 404
+        }
+      ],
+      "recommendation": "让该推荐意图返回已请求的两项指标，或将推荐文案收窄为现有能力；不必重写整个问数模块。",
+      "acceptanceCriteria": [
+        "答案、详情和CSV均含余额与成本，数值与同口径驾驶舱一致。",
+        "结构占比等其他推荐问题逐项对应实际输出指标。"
+      ],
+      "origin": "继承的推荐问题/模板映射。"
+    },
+    {
+      "id": "R14-008",
+      "severity": "P2",
+      "classification": "已验证缺陷",
+      "category": "报告 / 结果身份",
+      "title": "报告交接把基准标成压力模拟，目录又回退为候选结果",
+      "module": "M06 联合报告 → 原内容块编辑器",
+      "route": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#module/report → 联合分析报告 / 报告目录",
+      "objects": [
+        "f319a40a-3215-4395-a40d-6807a4b32ba8",
+        "DEMO_BASELINE",
+        "planId=null"
+      ],
+      "preconditions": "由基准答案生成报告；本轮用“有哪些担保关系”的21家基准答案。",
+      "reproductionSteps": [
+        "在基准答案点“加入报告”，核对固定依据没有模拟方案。",
+        "点“在报告中心整理”，查看目录卡片并打开内容块编辑器。",
+        "检查内容块和原始快照的结果属性。"
+      ],
+      "expected": "保持“演示基准”与“方案模拟”区别，目录正确显示对象数、方案身份和对应结果类型。",
+      "actual": "源快照为DEMO_BASELINE、planId=null，4个内容块一律resultMode=simulation，显示“压力模拟”。目录将同一联合报告写成“模型监测草稿/当前业务范围/未聚焦单个对象/候选结果”。原因包括硬编码simulation及目录只读objectSet/object/resultMode旧字段。",
+      "impact": "基准与模拟的口径被混淆，用户难以确认报告采用哪组假设。数值快照和手工文字本轮未被重同步覆盖。",
+      "evidence": [
+        "screenshots/171-baseline-report-identity.png",
+        "screenshots/172-baseline-in-pressure-editor.png",
+        "screenshots/149-native-report-resync-catalog.png",
+        "logs/baseline-report-mislabeled.json"
+      ],
+      "sourceReferences": [
+        {
+          "path": "designs/prototype-work/v1.4/composite/integrations/joint-workbench.js",
+          "line": 173
+        },
+        {
+          "path": "designs/prototype-work/v1.4/composite/integrations/joint-workbench.js",
+          "line": 225
+        },
+        {
+          "path": "designs/prototype-work/v1.4/composite/integrations/native-module-integrations.js",
+          "line": 1656
+        }
+      ],
+      "recommendation": "按快照实际结果类型映射报告身份，补齐目录对规范上下文字段的读取；继续保留人工修改保护。",
+      "acceptanceCriteria": [
+        "无方案的基准报告显示“演示基准”，有方案显示具体模拟方案。",
+        "目录显示固定21家或9家范围，结果属性与编辑器/导出一致。",
+        "重复同步仍保留人工文字、排序和删除决策。"
+      ],
+      "origin": "v1.4联合报告与继承编辑器的接口适配。"
+    },
+    {
+      "id": "R14-009",
+      "severity": "P2",
+      "classification": "已验证缺陷",
+      "category": "历史恢复 / 交互完整性",
+      "title": "问数超过8条后旧答案无入口可回看或继续处理",
+      "module": "驾驶舱同屏问数",
+      "route": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#dashboard → 融资与风险态势 → 问数",
+      "objects": [
+        "4053c894-f5b3-401f-808f-d4e4a8dea985",
+        "本轮共13条同屏查询"
+      ],
+      "preconditions": "连续完成至少9次查询，成功、失败和取消均计入显示数量。",
+      "reproductionSteps": [
+        "先问“找出高成本且有资金缺口的企业”。",
+        "继续提交至少8次其他问题或取消。",
+        "向上/下滚动问数列表，寻找最早答案及历史入口；刷新复查。"
+      ],
+      "expected": "保留可访问的历史列表或加载更多，让用户恢复旧答案范围、生成报告和复核来源。",
+      "actual": "存储保留13条查询，但UI只渲染最近8条，最早的9家企业答案已无法通过界面找到；没有历史/更多入口。源码保存上限30条，渲染却固定slice(0,8)。",
+      "impact": "一段较长演示或分析后无法回看最初依据，也无法对原答案继续发起事项或生成报告。数据尚在本机，但用户访问路径丢失。",
+      "evidence": [
+        "screenshots/164-query-history-limited.png",
+        "logs/164-query-history-limited.json",
+        "logs/browser-results.jsonl"
+      ],
+      "sourceReferences": [
+        {
+          "path": "designs/prototype-work/v1.4/src/app.js",
+          "line": 349
+        },
+        {
+          "path": "designs/prototype-work/v1.4/src/app.js",
+          "line": 1061
+        }
+      ],
+      "recommendation": "为同屏问数增加历史入口或分页/加载更多，显示保存范围及上限。",
+      "acceptanceCriteria": [
+        "第9至30条历史均可访问；成功/失败/取消状态可区分。",
+        "旧答案恢复其固定对象、窗口和方案，不套用当前方案。",
+        "刷新后可继续访问同样历史。"
+      ],
+      "origin": "v1.4同屏问数显示与存储上限不一致。"
+    },
+    {
+      "id": "R14-010",
+      "severity": "P3",
+      "classification": "已验证缺陷",
+      "category": "空状态 / 文案",
+      "title": "无匹配企业时融资成本显示“暂无%”",
+      "module": "驾驶舱指标栏",
+      "route": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#dashboard → 融资与风险态势",
+      "objects": [],
+      "preconditions": "基准快照，企业检索可用。",
+      "reproductionSteps": [
+        "在企业检索中输入不存在的名称。",
+        "观察上方加权融资成本，再点“显示全部企业”恢复。"
+      ],
+      "expected": "缺失值使用完整业务文案，如“暂无数据”；无数值时不拼接百分号。",
+      "actual": "0家范围下显示“暂无%”。显示全部后正常恢复2.46%。",
+      "impact": "空状态不够清晰，影响界面可信度；未发现把缺失成本保存为0的情况。",
+      "evidence": [
+        "screenshots/34-empty-search.png",
+        "logs/34-empty-search.json"
+      ],
+      "sourceReferences": [
+        {
+          "path": "designs/prototype-work/v1.4/src/app.js",
+          "line": 248
+        }
+      ],
+      "recommendation": "只对有效数字附加单位，缺失值显示统一空状态。",
+      "acceptanceCriteria": [
+        "无企业和零余额均显示清晰缺失文案，不出现“暂无%”或NaN。",
+        "恢复范围后正常显示有效百分比。"
+      ],
+      "origin": "v1.4指标格式化。"
+    }
+  ],
+  "designSuggestions": [
+    {
+      "id": "D01",
+      "classification": "设计建议",
+      "title": "把演示数据属性放在态势首屏的固定位置",
+      "basis": "首屏仅写“基准快照/联合态势”，合成借款说明主要在对象详情和来源面板；证据02-map-1440.png、04-loan-020-1.png。",
+      "suggestion": "保留简短“模拟融资数据”标记，并可展开数据截至日与版本，帮助客户区分历史风险评分和合成融资输入。"
+    },
+    {
+      "id": "D02",
+      "classification": "设计建议",
+      "title": "减少模型与窄屏页面中内部身份对主操作的挤占",
+      "basis": "118-model-code-390.png、163-asset-320.png中多层上下文与长字段增加滚动。数据表已验证可横向滚动，不据此判为裁切缺陷。",
+      "suggestion": "优先显示业务对象、状态和下一步；技术身份折叠保留，避免隐藏追溯能力。"
+    }
+  ],
+  "businessQuestions": [
+    {
+      "id": "B01",
+      "classification": "待业务确认",
+      "question": "投后客户演示允许的实际数据覆盖范围是什么？",
+      "basis": "本轮流程后仅2/34指标可部分评价，覆盖5.9%，且15只候选只列示5只。缺失原因有明确展示，未把覆盖不足本身定为缺陷。"
+    },
+    {
+      "id": "B02",
+      "classification": "待业务确认",
+      "question": "原内容块编辑器是每业务域一个汇总草稿，还是应按报告/修订独立管理？",
+      "basis": "v1与v2报告汇入同一S003草稿形成8块，行为可验证，但是否应分拆需要产品决定；本报告只把已确认的结果身份错标列为R14-008。"
+    }
+  ]
+}

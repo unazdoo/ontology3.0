@@ -1,0 +1,53 @@
+{
+  "moduleIds": [
+    "data",
+    "ontology",
+    "query",
+    "decision",
+    "agent",
+    "report",
+    "m07",
+    "modeling"
+  ],
+  "moduleChanges": [
+    {
+      "id": "ontology",
+      "before": {
+        "id": "ontology",
+        "ownerId": "M01",
+        "name": "本体管理",
+        "short": "本体",
+        "icon": "network",
+        "route": "#module/ontology",
+        "source": "../../../../prototype-releases/v1.1.0/ontology-management-review/canvas-first/index.html?v=20260823-02",
+        "rootHash": "#published",
+        "description": "统一管理业务对象、关系、指标、规则、行动类型和语义版本。"
+      },
+      "after": {
+        "id": "ontology",
+        "ownerId": "M01",
+        "name": "本体管理",
+        "short": "本体",
+        "icon": "network",
+        "route": "#module/ontology",
+        "source": "../ontology/index.html?v=20260907-01",
+        "rootHash": "#published",
+        "description": "统一管理业务对象、关系、指标、规则、行动类型和语义版本。"
+      }
+    }
+  ],
+  "scenariosEqual": true,
+  "scenarioIds": [
+    "S001",
+    "S002",
+    "S003",
+    "S004",
+    "S005"
+  ],
+  "portfolioBytesEqual": true,
+  "objects": 71,
+  "links": 67,
+  "series": 39,
+  "manifestEntries": 45,
+  "parentFingerprintsMatch": true
+}

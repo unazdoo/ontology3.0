@@ -1,0 +1,18 @@
+[
+  {
+    "tab": "properties",
+    "text": "企业\n环保测试公司4\n\n浙江 · 杭州 · 融资与债务风险 · 演示主体\n\n可直接使用\n5 条关系 · 3 条时序\n风险评分\n23.05 分\n风险分档\n红灯\n平均融资成本\n2.88 %\n融资余额\n393.13 亿元\nPROPERTIES\n业务属性\n22 项\n对象定义\n可用\nOBJ-FINANCING-ENTITY\n主体引用\n可用\ns001.entity.553\n来源编码\n可用\n已脱敏\nM07 不读取原始单位编码；使用脱敏 ObjectRef。\n融资余额\n可用\n393.13 亿元\n平均融资成本\n可用\n2.88 %\n融资笔数\n可用\n75 笔\n规则编号\n可用\nR01\n规则名称\n可用\n融资成本偏高\n规则指标\n可用\n平均融资成本\n规则指标值\n可用\n2.88 %\n负责人\n可用\ns001.owner.001\n数据截至\n可用\n2025-12-31\n空间位置\n可用\n120.16, 30.27\n用户授权的城市级演示布点，不代表注册地址或经营地址。\n所属产业\n可用\n环保\n风险评分\n可用\n23.05 分\n风险分档\n可用\n红灯\n标签用途\n关注\n禁止作为监督标签\n企业主身份\n可用\nENT-020\n融资来源名称\n可用\n单位553\n融资数据覆盖\n可用\n已关联融资明细\n演示位置\n可用\n浙江 · 杭州\n身份依据\n可用\n演示身份统一，非工商主体核验"
+  },
+  {
+    "tab": "relations",
+    "text": "企业\n环保测试公司4\n\n浙江 · 杭州 · 融资与债务风险 · 演示主体\n\n可直接使用\n5 条关系 · 3 条时序\n风险评分\n23.05 分\n风险分档\n红灯\n平均融资成本\n2.88 %\n融资余额\n393.13 亿元\nRELATIONSHIPS\n对象关系\n在关系网络中打开\n包含融资主体\n集团融资板块\n集团融资\n可用\n拥有融资明细\n单位553 · 融资明细集合\n融资明细\n可用\n由负责人承接\n负责人001\n业务负责人\n可用\n命中规则\nR01 · 融资成本偏高\n规则结果\n可用\n包含企业\n2025-12-31 债务风险评估上下文\n风险评估\n可用"
+  },
+  {
+    "tab": "events",
+    "text": "企业\n环保测试公司4\n\n浙江 · 杭州 · 融资与债务风险 · 演示主体\n\n可直接使用\n5 条关系 · 3 条时序\n风险评分\n23.05 分\n风险分档\n红灯\n平均融资成本\n2.88 %\n融资余额\n393.13 亿元\nEVENTS\n业务事件\n查看时间轴\n2025/12/31\n规则触发\n\nRULE-HIGH-FINANCING-COST\n\n2 项证据"
+  },
+  {
+    "tab": "evidence",
+    "text": "企业\n环保测试公司4\n\n浙江 · 杭州 · 融资与债务风险 · 演示主体\n\n可直接使用\n5 条关系 · 3 条时序\n风险评分\n23.05 分\n风险分档\n红灯\n平均融资成本\n2.88 %\n融资余额\n393.13 亿元\nEVIDENCE\n版本与证据\n12 项引用\n数据版本\nS003-T007-FORMAL-CANDIDATE-20251231-v1\n语义版本\nSEM-S003-DEBT-RISK-v1\n消费绑定\nMB-S003-DEBT-RISK-v1\n稳定对象\nEnterprise / ENT-020\n01\nS003-C035-RISK-RESULTS-20251231-v2#S003-ENT-020\n02\nS003-T007-FORMAL-CANDIDATE-20251231-v1\n03\nSEM-S003-DEBT-RISK-v1\n04\nsource:s001-data-js\n05\nsource:s001-m01-seed\n06\nsource:s001-registry\n07\nFIN-ASSET-20251231-v02\n08\nsemantic-MSVJM48O-VJC6\n09\nENTERPRISE-MASTER-20260907-v1\n10\nfinancing::series:s001.entity.553:balance\n11\nfinancing::series:s001.entity.553:cost\n12\nrisk::series:S003-ENT-020:riskScore"
+  }
+]

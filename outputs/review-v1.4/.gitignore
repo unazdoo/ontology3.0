@@ -1,0 +1,14 @@
+# Rebuildable review dependencies and private browser profiles.
+**/node_modules/
+**/browser-cache/
+**/cdp-profile/
+**/cdp153-profile/
+**/dist/
+**/.runtime/
+# Preserve each reviewed v1.4 source while excluding copied repository dependencies.
+**/snapshot/*
+!**/snapshot/designs/
+**/snapshot/designs/*
+!**/snapshot/designs/prototype-work/
+**/snapshot/designs/prototype-work/*
+!**/snapshot/designs/prototype-work/v1.4/

@@ -1,0 +1,983 @@
+{
+  "source": {
+    "root": "prototype-v1.2.0-composite-plus-v1.3.1-resources",
+    "sourceAssetVersion": "M07-PORTFOLIO-DIRECTORY-20260904",
+    "asOf": "2026-08-15",
+    "dateRange": {
+      "from": "2024-12-31",
+      "to": "2026-08-15"
+    },
+    "deidentification": "业务对象沿用各模块既有脱敏规则，来源版本在对象证据中独立保留。",
+    "snapshots": [
+      {
+        "id": "S001::s001.snapshot:2025-12-31",
+        "date": "2025-12-31",
+        "file": "集团融资明细_20251231.xlsx",
+        "version": "FIN-ASSET-20251231-v02",
+        "sourceRefs": [
+          "source:s001-data-js",
+          "source:s001-registry"
+        ],
+        "scenarioId": "S001",
+        "dataVersionId": "FIN-ASSET-20251231-v02"
+      },
+      {
+        "id": "S002::s002.snapshot:2025-12-31",
+        "date": "2025-12-31",
+        "version": "S002-DATA-v1",
+        "scenarioId": "S002",
+        "dataVersionId": "S002-DATA-v1"
+      },
+      {
+        "id": "S003::snapshot:2025-12-31",
+        "date": "2025-12-31",
+        "version": "S003-T007-DEBT-RISK-20251231-v1",
+        "sha256": "frozen-s003-source-reference",
+        "scenarioId": "S003",
+        "dataVersionId": "S003-T007-FORMAL-CANDIDATE-20251231-v1"
+      },
+      {
+        "id": "S004::s004.snapshot:2026-08-15",
+        "date": "2026-08-15",
+        "version": "DATA-ASSET-S004-20260815-V01",
+        "scenarioId": "S004",
+        "dataVersionId": "DATA-ASSET-S004-20260815-V01"
+      },
+      {
+        "id": "S005::snapshot:2025-02-21",
+        "date": "2025-02-21",
+        "file": "投资业务台账（20250221）.xlsx",
+        "sha256": "7fb801b4179101d729ce9fe193110ef1a0c7b94cbf2fafe9713696bfe439bdd2",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-02-28",
+        "date": "2025-02-28",
+        "file": "投资业务台账（20250228）.xlsx",
+        "sha256": "da4f69c056d88d0f6705cc5cd44e2fc42bca2f3b6f839add1d3ee335272c6d51",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-03-07",
+        "date": "2025-03-07",
+        "file": "投资业务台账（20250307）.xlsx",
+        "sha256": "e61e673d39952b0bd7c4e5f570173011d5c0b372f55efadda2541d4a20086cc8",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-03-14",
+        "date": "2025-03-14",
+        "file": "投资业务台账（20250314）.xlsx",
+        "sha256": "4c3dd443bf20e733601bc883b9e6754d6531820d5a09417b50d14f4c68d8e335",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-03-21",
+        "date": "2025-03-21",
+        "file": "投资业务台账（20250321）.xlsx",
+        "sha256": "e311b17d0323bfd55cdfd14517722ce8d20fef37e9a26f2c36635990578efdac",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-03-28",
+        "date": "2025-03-28",
+        "file": "投资业务台账（20250328）.xlsx",
+        "sha256": "16318fba8c167cc13ebe4c94bc2ac94b4744522fdece4066e8ad412e6acac25a",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-03-31",
+        "date": "2025-03-31",
+        "file": "投资业务台账（20250331）.xlsx",
+        "sha256": "295c5ad3e3a672f9c4b12fcec69455f38cb73ece8f8549e4364694a80ff6fa79",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-04-03",
+        "date": "2025-04-03",
+        "file": "投资业务台账（20250403）.xlsx",
+        "sha256": "ce65e84de0eb54524255ec5be753ed2e474cda2ff725e393aab9eb0136e92c92",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-04-11",
+        "date": "2025-04-11",
+        "file": "投资业务台账（20250411）.xlsx",
+        "sha256": "4b3128ae64df8858cc91d3c7faacfe34a3c3536c571a65260434c623fea069fe",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-04-18",
+        "date": "2025-04-18",
+        "file": "投资业务台账（20250418）.xlsx",
+        "sha256": "9496c4a0b9b8dd8ec4aec5a8c9597fc7abed300f1e208542ebbbed576bdf75a8",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-04-25",
+        "date": "2025-04-25",
+        "file": "投资业务台账（20250425）.xlsx",
+        "sha256": "eef4aa3ae23d5d34f2d7b4f841bd4354189183967f3bdab4e6f17dfcfdc27562",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-04-30",
+        "date": "2025-04-30",
+        "file": "投资业务台账（20250430）.xlsx",
+        "sha256": "a964e9ef8293eb0e29bdbbafa69c06cbbdff1a36860c1d17d0193f7149a38720",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-05-09",
+        "date": "2025-05-09",
+        "file": "投资业务台账（20250509）.xlsx",
+        "sha256": "9ac0412b73694becc52a1f76c863e6cfbe27f5adc82d84d3695e21292fa1d1dc",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-05-16",
+        "date": "2025-05-16",
+        "file": "投资业务台账（20250516）.xlsx",
+        "sha256": "1bab492f606400728eb2b07e828823ce49cff06ae5cf6b7894ddd586748d056c",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-05-23",
+        "date": "2025-05-23",
+        "file": "投资业务台账（20250523）.xlsx",
+        "sha256": "e3a2c5133de97068b45de868417e5c4a9543b10d11b55ff2af2eb3b9717b6d72",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-05-30",
+        "date": "2025-05-30",
+        "file": "投资业务台账（20250530）.xlsx",
+        "sha256": "ae9c77f8604aafb265ee32720585730159e736480998da36c14347acf739cc87",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-06-06",
+        "date": "2025-06-06",
+        "file": "投资业务台账（20250606）.xlsx",
+        "sha256": "a6725b3f8c9aaecaaff4b319d1bcb79db4022b183726411bcd63238d8bc166e6",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-06-13",
+        "date": "2025-06-13",
+        "file": "投资业务台账（20250613）.xlsx",
+        "sha256": "4b2a815ec703da3c32fac97152750282b69b692eccdc1acfbeb6301f2fb74aa5",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-06-20",
+        "date": "2025-06-20",
+        "file": "投资业务台账（20250620）.xlsx",
+        "sha256": "8c081d0fd2ac3c1b8d2835923eb96453d65f452948345af8b66fd6cb81cf7f68",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-06-27",
+        "date": "2025-06-27",
+        "file": "投资业务台账（20250627）.xlsx",
+        "sha256": "525d11a4e7d78eea2d838c83a94862cd306fdee4bcd0b9fd6bab3cdf41676243",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-06-30",
+        "date": "2025-06-30",
+        "file": "投资业务台账（20250630）.xlsx",
+        "sha256": "e3fc872d5b99f411c70cdf0799baed7e2db55da99e9abd815170d44190ff111a",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-07-04",
+        "date": "2025-07-04",
+        "file": "投资业务台账（20250704）.xlsx",
+        "sha256": "97a283e9c16fbc6d9b9cd855c08a9ae73c15b4f3e55b67a3c8a20c3f69891ea0",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-07-11",
+        "date": "2025-07-11",
+        "file": "投资业务台账（20250711）.xlsx",
+        "sha256": "d9b973e78ac9c7a2669b4387ccb7b62fb4ad5b54d856db43a6c94aca7b0b4d2a",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-07-18",
+        "date": "2025-07-18",
+        "file": "投资业务台账（20250718）.xlsx",
+        "sha256": "30fc605ab32af93ea1b43d49880d943566a2cd581e1974fd62491f3bc962dc18",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-07-25",
+        "date": "2025-07-25",
+        "file": "投资业务台账（20250725）.xlsx",
+        "sha256": "ef96479119a96e72723e1db4f53b1b326414a21f5a85ecb46d7569b1b82de044",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-07-31",
+        "date": "2025-07-31",
+        "file": "投资业务台账（20250731）.xlsx",
+        "sha256": "c832e13de5e36a07d5918764e2a04e120c488fc6d3b99d26c0d45351455b2012",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-08-01",
+        "date": "2025-08-01",
+        "file": "投资业务台账（20250801）.xlsx",
+        "sha256": "b967abed1ae645a17c23dcbb3939b9c99aad25b15934f4f0370cdc4d4ec13ee0",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-08-08",
+        "date": "2025-08-08",
+        "file": "投资业务台账（20250808）.xlsx",
+        "sha256": "223027463c997408f4ada69a76f5fc67631f121b1909f1953c37c7b17103a3a3",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-08-15",
+        "date": "2025-08-15",
+        "file": "投资业务台账（20250815）.xlsx",
+        "sha256": "01f2043e61dc9f432968cd1bd5c1a6decb6ac5e1214e30490d8dc480da6335f5",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-08-22",
+        "date": "2025-08-22",
+        "file": "投资业务台账（20250822）.xlsx",
+        "sha256": "89a487c19e380da307c56f60e2ffbc13a33f7c5411b3ca3dd19636804af0a5e3",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-08-29",
+        "date": "2025-08-29",
+        "file": "投资业务台账（20250829）.xlsx",
+        "sha256": "4d9d98c87dfbc23e4845a79852455e00358e871d0706b98dd8dac7ba52c3df71",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-09-05",
+        "date": "2025-09-05",
+        "file": "投资业务台账（20250905）.xlsx",
+        "sha256": "e323b57fb8302a7898b4df3c7185050efb572869897b459bcb8c5ca52d8aec87",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-09-12",
+        "date": "2025-09-12",
+        "file": "投资业务台账（20250912）.xlsx",
+        "sha256": "736e154bf2d1934f483668f51f6f2a8d3a6659e599ecfe6baa66108a3dd7e24c",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-09-19",
+        "date": "2025-09-19",
+        "file": "投资业务台账（20250919）.xlsx",
+        "sha256": "76206b651270ea6163b39783c2650c095f8d6b7329c4a43de4fe4d55cc315e75",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-09-26",
+        "date": "2025-09-26",
+        "file": "投资业务台账（20250926）.xlsx",
+        "sha256": "8098d2243b1540aba96ce3913ef0fcc274dcfb5c00231fa92da0fa711f0426a6",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-09-30",
+        "date": "2025-09-30",
+        "file": "投资业务台账（20250930）.xlsx",
+        "sha256": "8e96739c624d858299c5f21a6db9c1db7fa637a34b747c6dc06a652e35690c8d",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-10-10",
+        "date": "2025-10-10",
+        "file": "投资业务台账（20251010）.xlsx",
+        "sha256": "33ce5a62b0816036d0ab82d6deaa737b8911a1c98b8e6170b74482562fc9f46f",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-10-17",
+        "date": "2025-10-17",
+        "file": "投资业务台账（20251017）.xlsx",
+        "sha256": "a3953e3286ab5ff2970fcabfdc2af788de934e4a0f833abdd378916f2c348dc6",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-10-20",
+        "date": "2025-10-20",
+        "file": "投资业务台账（20251020）.xlsx",
+        "sha256": "0b6ee45bd105f25bd4729a920058d85db69d0e32d68b9ec091d0a1dd73a67e21",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-10-24",
+        "date": "2025-10-24",
+        "file": "投资业务台账（20251024）.xlsx",
+        "sha256": "53a067da70d17d677bca6f10985d1a1c2fb14b2a8b11e63d2111e14ea0fd32b6",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-10-31",
+        "date": "2025-10-31",
+        "file": "投资业务台账（20251031）.xlsx",
+        "sha256": "066a560a7052568ce8df6fadd6ca2eec677783f77de4c1882b5b1639aa979b7f",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-11-07",
+        "date": "2025-11-07",
+        "file": "投资业务台账（20251107）.xlsx",
+        "sha256": "98ba284fc615ed05813999887da781e98dfce93dc3e41baa72bf61ead479b00c",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-11-14",
+        "date": "2025-11-14",
+        "file": "投资业务台账（20251114）.xlsx",
+        "sha256": "0e064f083d30386d9075351f2675791c4889f80e29777ee3821daad119334a1b",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-11-21",
+        "date": "2025-11-21",
+        "file": "投资业务台账（20251121）.xlsx",
+        "sha256": "7c9852b679facc73838b1641c9285a86baad9eb2296c4aa0f3c2c6575d3c98d9",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-11-28",
+        "date": "2025-11-28",
+        "file": "投资业务台账（20251128）.xlsx",
+        "sha256": "f73dfd09d3b2429d4313d8acc77f6ba14f206befa8d2d8d410804cb55de1d5ae",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-12-05",
+        "date": "2025-12-05",
+        "file": "投资业务台账（20251205）.xlsx",
+        "sha256": "3d81c040c2f4604a7399b3631b6cf31f978bf11e010aa684ff9f14e1964a63ee",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-12-12",
+        "date": "2025-12-12",
+        "file": "投资业务台账（20251212）.xlsx",
+        "sha256": "2269502e623c360b744c4f2dcdd281289797a70b5c0ef34306d89322f1884f4c",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-12-19",
+        "date": "2025-12-19",
+        "file": "投资业务台账（20251219）.xlsx",
+        "sha256": "353f0398644f256d5f47e80c01f4d551a33b275dead887e1f91c00c3cae7630d",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-12-26",
+        "date": "2025-12-26",
+        "file": "投资业务台账（20251226）.xlsx",
+        "sha256": "f09a5a0e0b6914baddf79f1af8a8ec6bf9d29b986c4899b17e59db3626ac469f",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2025-12-31",
+        "date": "2025-12-31",
+        "file": "投资业务台账（20251231）.xlsx",
+        "sha256": "d738ecd0b129176b0f853b7df2af5d739e1a1aba458b8dffdebd2fc538c94a8a",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-01-09",
+        "date": "2026-01-09",
+        "file": "投资业务台账（20260109）.xlsx",
+        "sha256": "16b04b685cfb6613ded5043662f51d98fb1f9c2d7c875a26a2b27c1de95c0559",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-01-16",
+        "date": "2026-01-16",
+        "file": "投资业务台账（20260116）.xlsx",
+        "sha256": "fb3376b3440eb9cda0f2a6ce3a0ea079689da779394ee6302f18ec305d6dc557",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-01-23",
+        "date": "2026-01-23",
+        "file": "投资业务台账（20260123）.xlsx",
+        "sha256": "6e9153f5063728a6a5b6ccc293415c7837cc09a50d9e1a51cc1b1d6885799722",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-01-30",
+        "date": "2026-01-30",
+        "file": "投资业务台账（20260130）.xlsx",
+        "sha256": "3740811ee12a05a8641d5ccef0fa00b891b006b1b82e0bb5011d928e7841abf6",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-02-06",
+        "date": "2026-02-06",
+        "file": "投资业务台账（20260206）.xlsx",
+        "sha256": "6b7832248de8b3dae1b98e5d9db53d53e95fd9b8542d192ab18b6235b6723034",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-02-13",
+        "date": "2026-02-13",
+        "file": "投资业务台账（20260213）.xlsx",
+        "sha256": "38ba0a32aadeadcea1ebfb370a199441300ee7463607182edf43a429d39fe4b2",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-02-27",
+        "date": "2026-02-27",
+        "file": "投资业务台账（20260227）.xlsx",
+        "sha256": "ff197904de031ada69e22c766d1a8425837f1ba540cba6cf2ea0e65e0d915d76",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-03-06",
+        "date": "2026-03-06",
+        "file": "投资业务台账（20260306）.xlsx",
+        "sha256": "d93b7279adcdf9dada57baad00a9c5eee2405602334192854f73a7b608ce1f3a",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-03-13",
+        "date": "2026-03-13",
+        "file": "投资业务台账（20260313）.xlsx",
+        "sha256": "c776f61ae22fb13fd69e8a6d4818d3e934f6d84c1997c03c115fc0b6838f9159",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-03-20",
+        "date": "2026-03-20",
+        "file": "投资业务台账（20260320）.xlsx",
+        "sha256": "24cac9998691d150ef788b10cba944c9c95c928cc52d6896c45468b12d497d98",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-03-27",
+        "date": "2026-03-27",
+        "file": "投资业务台账（20260327）.xlsx",
+        "sha256": "1f5d8b6cb3144ca5dceda62292a87d807d9c4a79d2403249b2dde4597a5788fa",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-03-31",
+        "date": "2026-03-31",
+        "file": "投资业务台账（20260331）.xlsx",
+        "sha256": "5b67c6d526e91b631d1ddb5b1ce520665822c66d8c93789b22a3b8392842d197",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-04-03",
+        "date": "2026-04-03",
+        "file": "投资业务台账（20260403）.xlsx",
+        "sha256": "75beafc90df0777d7c9114ce8fbbd970d18e96b99f0b516f251805cdcd477d85",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-04-10",
+        "date": "2026-04-10",
+        "file": "投资业务台账（20260410）.xlsx",
+        "sha256": "ce2e580cbc5305e52248653f14f304c79c91f3de13c01417dfb3c004d062b8ed",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-04-17",
+        "date": "2026-04-17",
+        "file": "投资业务台账（20260417）.xlsx",
+        "sha256": "f8d91f5594ab883dc523954eb5ddebe12c7daee507443455a7451f23fa5f5ead",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-04-24",
+        "date": "2026-04-24",
+        "file": "投资业务台账（20260424）.xlsx",
+        "sha256": "d9025496d374ccd2e0445fe0b9653baff899c7cde606648e1c52689819fabfea",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-04-30",
+        "date": "2026-04-30",
+        "file": "投资业务台账（20260430）.xlsx",
+        "sha256": "38954a02e0ad574700d6486c7ae3c81e6978e97eb60bb5b4c6754b8a02761a9b",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-05-08",
+        "date": "2026-05-08",
+        "file": "投资业务台账（20260508）.xlsx",
+        "sha256": "524b379e52aa3e7efadc3258c4fda2c38cd2b39f0f4288d2a1803d2358e66d2c",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-05-15",
+        "date": "2026-05-15",
+        "file": "投资业务台账（20260515）.xlsx",
+        "sha256": "a9df42873df42442e84c06422cea7619e6f91c84a88a09ee4c9454bf382ed0d0",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-05-22",
+        "date": "2026-05-22",
+        "file": "投资业务台账（20260522）.xlsx",
+        "sha256": "f94ad88f9fc3c20f231f0903106d309ab721d26a59d0a67acaa645769734bd4e",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-05-29",
+        "date": "2026-05-29",
+        "file": "投资业务台账（20260529）.xlsx",
+        "sha256": "85c0283c473e8604e270b6401b207434a5a140b6a720f6d2f8a74b5f1e44f0ec",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-06-05",
+        "date": "2026-06-05",
+        "file": "投资业务台账（20260605）.xlsx",
+        "sha256": "44a6bdb3399165d3f8784b6cb858cce17bf5cb5fdb7427005ec8c7ff1d69e90e",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-06-12",
+        "date": "2026-06-12",
+        "file": "投资业务台账（20260612）.xlsx",
+        "sha256": "4ac5dadf18b6904e48c17c368fb6cb91ea0dfc118df690a7fe856a0d0dcb5cbc",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-06-18",
+        "date": "2026-06-18",
+        "file": "投资业务台账（20260618）.xlsx",
+        "sha256": "dd3f1d800fa932fe7f17d425f8f6641a6fc324988b0b9056f59afc3da9c940bb",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-06-26",
+        "date": "2026-06-26",
+        "file": "投资业务台账（20260626）.xlsx",
+        "sha256": "f013b78b17d56e75d0e004fb523139b38e763ffa6a723051a65d6ed3cf0ba7bb",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-06-30",
+        "date": "2026-06-30",
+        "file": "投资业务台账（20260630）.xlsx",
+        "sha256": "d1b0816e9585b0fec878d859f325caca946ea5692ef3c116b895b509b87da519",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-07-03",
+        "date": "2026-07-03",
+        "file": "投资业务台账（20260703）.xlsx",
+        "sha256": "0c3c5bb682d908827f9f62e03bfe5e46cc00f9fe42c8bc392fd9e10421bb0f77",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-07-10",
+        "date": "2026-07-10",
+        "file": "投资业务台账（20260710）.xlsx",
+        "sha256": "52f54adbf60c4500c451bb033e475eb2e2b4c0649a5bed78e67a0521b85d686a",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      },
+      {
+        "id": "S005::snapshot:2026-07-17",
+        "date": "2026-07-17",
+        "file": "投资业务台账（20260717）.xlsx",
+        "sha256": "ba69d8043eeae731eb66a087bca9cc605b899dd73c09d88ede8c14d80aed2a31",
+        "scenarioId": "S005",
+        "dataVersionId": "S005-DATA-AUDIT-79-SNAPSHOTS"
+      }
+    ]
+  },
+  "counts": {
+    "objects": 71,
+    "links": 67,
+    "series": 39,
+    "events": 6
+  },
+  "types": {
+    "m01.object-type.financing-group": 1,
+    "m01.object-type.financing-owner": 2,
+    "m01.object-type.financing-detail": 3,
+    "m01.object-type.financing-rule-result": 3,
+    "m07.object-type.report-evidence": 4,
+    "m01.object-type.financial-institution": 9,
+    "m07.object-type.report": 1,
+    "m01.object-type.budget-context": 1,
+    "m01.object-type.budget-unit": 4,
+    "m01.object-type.enterprise-assessment-context": 1,
+    "m01.object-type.loan-assessment-context": 1,
+    "m01.object-type.loan-applicant": 4,
+    "m01.object-type.investment-portfolio": 1,
+    "m01.object-type.financial-product": 5,
+    "m01.object-type.investment-holding": 4,
+    "m01.object-type.issuer-candidate": 1,
+    "m01.object-type.manager-candidate": 3,
+    "m01.object-type.validation-location": 2,
+    "m01.object-type.enterprise": 21
+  },
+  "exampleSeries": {
+    "ENT-020": [
+      {
+        "id": "financing::series:s001.entity.553:balance",
+        "label": "融资余额",
+        "unit": "亿元",
+        "points": 1,
+        "first": {
+          "t": "2025-12-31",
+          "v": 393.134,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "last": {
+          "t": "2025-12-31",
+          "v": 393.134,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        }
+      },
+      {
+        "id": "financing::series:s001.entity.553:cost",
+        "label": "余额加权平均融资成本",
+        "unit": "%",
+        "points": 1,
+        "first": {
+          "t": "2025-12-31",
+          "v": 2.880984,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "last": {
+          "t": "2025-12-31",
+          "v": 2.880984,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        }
+      },
+      {
+        "id": "risk::series:S003-ENT-020:riskScore",
+        "label": "正式风险评分",
+        "unit": "score_0_100",
+        "points": 1,
+        "first": {
+          "t": "2025-12-31",
+          "v": 23.05,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "snapshot:2025-12-31"
+        },
+        "last": {
+          "t": "2025-12-31",
+          "v": 23.05,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "snapshot:2025-12-31"
+        }
+      }
+    ],
+    "ENT-017": [
+      {
+        "id": "financing::series:s001.entity.561:balance",
+        "label": "融资余额",
+        "unit": "亿元",
+        "points": 1,
+        "first": {
+          "t": "2025-12-31",
+          "v": 20.016,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "last": {
+          "t": "2025-12-31",
+          "v": 20.016,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        }
+      },
+      {
+        "id": "financing::series:s001.entity.561:cost",
+        "label": "余额加权平均融资成本",
+        "unit": "%",
+        "points": 1,
+        "first": {
+          "t": "2025-12-31",
+          "v": 2.22838,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "last": {
+          "t": "2025-12-31",
+          "v": 2.22838,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        }
+      },
+      {
+        "id": "financing::series:s001.entity.561:short-term-debt",
+        "label": "短期债务余额占比",
+        "unit": "%",
+        "points": 1,
+        "first": {
+          "t": "2025-12-31",
+          "v": 93.545164,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        },
+        "last": {
+          "t": "2025-12-31",
+          "v": 93.545164,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "s001.snapshot:2025-12-31",
+          "sourceRefs": [
+            "source:s001-data-js"
+          ]
+        }
+      },
+      {
+        "id": "risk::series:S003-ENT-017:riskScore",
+        "label": "正式风险评分",
+        "unit": "score_0_100",
+        "points": 1,
+        "first": {
+          "t": "2025-12-31",
+          "v": 30.52,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "snapshot:2025-12-31"
+        },
+        "last": {
+          "t": "2025-12-31",
+          "v": 30.52,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "snapshot:2025-12-31"
+        }
+      }
+    ],
+    "investment::holding-02": [
+      {
+        "id": "investment::series:holding-02:marketValue",
+        "label": "当前市值",
+        "unit": "CNY",
+        "points": 79,
+        "first": {
+          "t": "2025-02-21",
+          "v": 200301684.8231,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "snapshot:2025-02-21"
+        },
+        "last": {
+          "t": "2026-07-17",
+          "v": 0,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "snapshot:2026-07-17"
+        }
+      },
+      {
+        "id": "investment::series:holding-02:investmentAmount",
+        "label": "投资金额",
+        "unit": "CNY",
+        "points": 79,
+        "first": {
+          "t": "2025-02-21",
+          "v": 199999000,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "snapshot:2025-02-21"
+        },
+        "last": {
+          "t": "2026-07-17",
+          "v": 0,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "snapshot:2026-07-17"
+        }
+      },
+      {
+        "id": "investment::series:holding-02:unrealizedPnl",
+        "label": "浮动盈亏",
+        "unit": "CNY",
+        "points": 79,
+        "first": {
+          "t": "2025-02-21",
+          "v": 302684.8278,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "snapshot:2025-02-21"
+        },
+        "last": {
+          "t": "2026-07-17",
+          "v": 0,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "snapshot:2026-07-17"
+        }
+      },
+      {
+        "id": "investment::series:holding-02:price",
+        "label": "现价",
+        "unit": "source-price-unit",
+        "points": 79,
+        "first": {
+          "t": "2025-02-21",
+          "v": 1.3235,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "snapshot:2025-02-21"
+        },
+        "last": {
+          "t": "2026-07-17",
+          "v": 1.3376,
+          "state": "observed",
+          "quality": "passed",
+          "snapshotRef": "snapshot:2026-07-17"
+        }
+      }
+    ],
+    "budget::BudgetUnit-002": [
+      {
+        "id": "budget::series:BudgetUnit-002:executionRate",
+        "label": "预算执行率",
+        "unit": "%",
+        "points": 4,
+        "first": {
+          "t": "2025-03-31",
+          "v": 25.3,
+          "quality": "passed"
+        },
+        "last": {
+          "t": "2025-12-31",
+          "v": 105.4,
+          "quality": "warning"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="智财问策企业融资与债务风险态势工作台">
+  <link rel="icon" href="data:,">
+  <title>智财问策 · 企业态势</title>
+</head>
+<body>
+  <a id="entry" href="/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#home">进入智财问策</a>
+  <script type="module">
+    const target=new URL(document.getElementById('entry').href,location.origin);
+    target.search=new URLSearchParams(location.search).toString();
+    target.searchParams.set('m08ApiBase',new URL('/model-api',location.origin).href);
+    target.hash=/^#(?:home|dashboard|module\/)/.test(location.hash)?location.hash:'#home';
+    if(location.hash.includes('view=workbench')){target.hash='#dashboard';target.searchParams.set('task','situation');}
+    location.replace(target.href);
+  </script>
+</body>
+</html>

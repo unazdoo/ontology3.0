@@ -1,0 +1,335 @@
+{
+  "reviewedAt": "2026-09-08T09:13:29.133247+08:00",
+  "repairReviewStatus": "修复快照未出现在当前工作区，无法验收修复版本",
+  "snapshot": {
+    "checkedAt": "2026-09-08T09:05:37.536202+08:00",
+    "cwd": "/Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-v1.4-review",
+    "branch": "codex/review-v1.4-ux-20260907",
+    "currentCommit": "ba4d6b67696bf2fb3e4ae163d08a8cb9e3b3a568",
+    "previousReviewedCommit": "ba4d6b67696bf2fb3e4ae163d08a8cb9e3b3a568",
+    "trackedSourceFilesCompared": 87,
+    "sourceDifferencesFromHEAD": [],
+    "gitStatus": "?? outputs/review-v1.4/\n",
+    "ports": [
+      4404,
+      4402,
+      4403
+    ]
+  },
+  "reproducedExistingCounts": {
+    "P0": 0,
+    "P1": 2,
+    "P2": 1,
+    "P3": 1
+  },
+  "findings": [
+    {
+      "id": "R14-002",
+      "severity": "P1",
+      "classification": "已验证缺陷",
+      "category": "问数 / 范围识别",
+      "title": "未登记企业被当作全部企业或整个产业作答",
+      "module": "驾驶舱同屏问数",
+      "route": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#dashboard → 融资与风险态势",
+      "objects": [
+        "不存在的Review企业",
+        "华南环保集团",
+        "ENT-017/018/019/020"
+      ],
+      "preconditions": "基准快照、清除筛选，21家企业。",
+      "reproductionSteps": [
+        "从 Shell 进入经营驾驶舱的融资与风险态势。",
+        "问“华南环保集团融资余额多少”，等待答案完成。"
+      ],
+      "expected": "无法识别的主体应拒绝作答或要求选择已登记主体，不得自动扩大范围。",
+      "actual": "未登记主体被解析为环保产业，返回4家企业、450.30亿元，显示成功并提供报告/事项操作。",
+      "impact": "错误对象范围生成看似可信的融资总额，可能导致错误报告和错误复核事项。",
+      "evidence": [
+        "screenshots/03-unknown-enterprise.png",
+        "logs/03-unknown-enterprise.json"
+      ],
+      "sourceReferences": [
+        {
+          "path": "designs/prototype-work/v1.4/src/domain.js",
+          "line": 344
+        },
+        {
+          "path": "designs/prototype-work/v1.4/src/domain.js",
+          "line": 366
+        },
+        {
+          "path": "designs/prototype-work/v1.4/src/domain.js",
+          "line": 434
+        }
+      ],
+      "recommendation": "先完成主体和范围解析；拒绝未被完整解释的专名，不把主体名中的行业词直接当作筛选条件。",
+      "acceptanceCriteria": [
+        "上述两个输入均明确提示主体未登记，并保持原分析范围。",
+        "标准企业名称、ENT-ID、已登记别名仍可命中。",
+        "失败答案没有加入报告/发起事项入口。"
+      ],
+      "origin": "v1.4 同屏问数新增解析。",
+      "status": "当前旧快照仍可复现；修复版本未取得",
+      "currentRetest": {
+        "id": "R14-002",
+        "status": "仍可复现",
+        "actual": {
+          "id": "fba75c7f-281a-41fa-8dd0-259b44e48e92",
+          "question": "华南环保集团融资余额多少",
+          "status": "success",
+          "summary": "4 家企业，融资余额 450.30 亿元，余额加权成本 2.86%；未来 90 天到期 180.12 亿元，测算缺口 1.48 亿元。",
+          "parameters": null,
+          "evidence": {
+            "dataVersion": "DATA-V14-20251231-DEMO-1",
+            "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+            "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+            "asOf": "2025-12-31",
+            "horizon": 90,
+            "objectIds": [
+              "ENT-020",
+              "ENT-017",
+              "ENT-018",
+              "ENT-019"
+            ],
+            "resultKind": "DEMO_BASELINE",
+            "planId": null,
+            "rule": null,
+            "bankId": null
+          }
+        }
+      }
+    },
+    {
+      "id": "R14-003",
+      "severity": "P1",
+      "classification": "已验证缺陷",
+      "category": "功能闭环 / 本体归属",
+      "title": "本体“规则与指标修订”入口仍报缺失函数",
+      "module": "M01 本体管理",
+      "route": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#module/ontology → 语义资产 / 本体建模",
+      "objects": [
+        "DRAFT-V14-OPERATIONS-S001",
+        "RULE-OPS-FINANCING-PREMIUM",
+        "DRAFT-V14-OPERATIONS-S003"
+      ],
+      "preconditions": "语义资产目录可见融资及债务风险本体的“规则与指标修订”。",
+      "reproductionSteps": [
+        "从 Shell 进入本体管理语义资产目录。",
+        "点击融资本体的“规则与指标修订”。"
+      ],
+      "expected": "规则应从所属本体修订，验证后携带本体/草稿/规则/版本和对象集进入态势；消费入口使用同一规则。",
+      "actual": "页面未进入修订草稿，报错 global.OFW_V14_JOINT.openOntology is not a function。本轮未继续验证 applyOwnedRule 路径。",
+      "impact": "所属本体修订入口不能进入；应用交接和独立规则并行问题本轮未重新验证。",
+      "evidence": [
+        "screenshots/09-ontology-click.png",
+        "logs/09-ontology-click.json"
+      ],
+      "sourceReferences": [
+        {
+          "path": "designs/prototype-work/v1.4/composite/integrations/ontology-owned-rules.js",
+          "line": 36
+        },
+        {
+          "path": "designs/prototype-work/v1.4/composite/integrations/joint-workbench.js",
+          "line": 391
+        },
+        {
+          "path": "designs/prototype-work/v1.4/composite/integrations/joint-workbench.js",
+          "line": 15
+        }
+      ],
+      "recommendation": "补齐本体修订与应用交接函数，以本体规则版本作为唯一消费身份；整合或迁移独立规则页，并显示交接错误。",
+      "acceptanceCriteria": [
+        "融资和风险本体修订入口均可到达正确草稿。",
+        "25bp和50bp验证后能回到相同对象集，问数/报告保留同一规则依据。",
+        "已发布规则不被草稿覆盖；独立UUID规则不再与本体规则并行生效。"
+      ],
+      "origin": "本快照新增本体接入尚未完成。",
+      "status": "当前旧快照仍可复现；修复版本未取得",
+      "currentRetest": {
+        "id": "R14-003",
+        "status": "仍可复现",
+        "actual": {
+          "errors": [
+            "global.OFW_V14_JOINT.openOntology is not a function"
+          ],
+          "url": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/ontology/index.html?v=20260907-01&scenarioId=S005&scenarioVersion=S005-v1&scenarioRunId=S005-RUN-20260908010616868-bea10e508437&formedAt=2026-09-08T01%3A06%3A16.868Z&status=active&contextCreatedAt=2026-09-08T01%3A06%3A16.868Z&contextStatus=active&scenarioFormedAt=2026-09-08T01%3A06%3A16.868Z&scenarioStatus=active#published",
+          "view": "语义资产\n语义资产目录\n\n查看已发布本体的精确版本、正式数据与消费证据。\n\n草稿\n2\n已发布\n4\n语义资产\n\n查看已发布本体和模型合同，并下钻到版本、映射、消费与证据。\n\n9 项资产\n语义已发布\n当前正式使用\n集团融资成本与债务结构优化本体\n\n以融资主体、融资明细、融资机构和融资负责人组织融资事实、判断与行动。\n\nONT-GROUP-FINANCING-OPTIMIZATION\n最新发布版本\nV1\n当前正式版本\nsemantic-MSVJM48O-VJC6 / V1\n发布时数据映射\n已冻结\n可追溯版本\n1\n查看详情\n规则与指标修订\n语义已发布\n当前正式使用\n预算监督管理本体\n\n统一组织最终批准预算、部门初始申报、实际执行、项目余额、采购占用、异常规则与受控行动类型。\n\nONT-BUDGET-SUPERVISION\n最新发布版本\n预算监督语义 v1\n当前正式版本\n预算监督语义 v1\n发布时数据映射\n已冻结\n可追溯版本\n1\n查看详情\n语义已发布\n当前正式使用\n企业债务风险本体\n\n维护企业财务风险事实、调节因子、15 项指标、风险分档 Rule 和受控行动类型。\n\nONT-DEBT-RISK-MONITORING\n最新发布版本\n债务风险语义 1.0.2\n当前正式版本\n债务风险语义 1.0.2\n发布时数据映射\n已冻结\n可追溯版本\n1\n查看详情\n规则与指标修订\n语义已发布\n当前正式使用\n贷前调查本体\n\n覆盖财务公司、集团成员借款人、贷款申请、财务/股权/经营事实、内部授信与贷前调查报告的语义结构。\n\nONT-PRELOAN-ASSESSMENT\n最新发布版本\n贷前调查语义 V1\n当前正式版本\n贷前调查语义 V1\n发布时数据映射\n已冻结\n可追溯版本\n1\n查看详情\nOT\n业务语义\n等待数据\n融资成本分析模型合同\n\n融资成本洞察与结构优化等对象通过关系、指标和结果身份连接下游应用。\n\n查看技术身份\n对象类型\n0 类\n关系\n0\n指标\n0 项\n下游使用\n5 项\n查看前置条件\nOT\n业务语义\n等待数据\n预算风险监测模型合同\n\n预算风险与异常监测等对象通过关系、指标和结果身份连接下游应用。\n\n查看技术身份\n对象类型\n0 类\n关系\n0\n指标\n0 项\n下游使用\n3 项\n查看前置条件\nOT\n业务语义\n等待数据\n债务风险监测模型合同\n\n债务风险智能监测等对象通过关系、指标和结果身份连接下游应用。\n\n查看技术身份\n对象类型\n0 类\n关系\n0\n指标\n0 项\n下游使用\n10 项\n查看前置条件\nOT\n业务语义\n等待数据\n贷前风险评估模型合同\n\n贷前风险评估等对象通过关系、指标和结果身份连接下游应用。\n\n查看技术身份\n对象类型\n0 类\n关系\n0\n指标\n0 项\n下游使用\n3 项\n查看前置条件\nOT\n业务语义\n等待数据\n投后评价模型合同\n\n投后评价与产品选择等对象通过关系、指标和结果身份连接下游应用。\n\n查看技术身份\n对象类型\n0 类\n关系\n0\n指标\n0 项\n下游使用\n3 项\n查看前置条件"
+        }
+      }
+    },
+    {
+      "id": "R14-006",
+      "severity": "P2",
+      "classification": "已验证缺陷",
+      "category": "方案输入 / 语义解析",
+      "title": "小数降息和授信收缩参数被静默改为0",
+      "module": "同屏问数 → 融资方案",
+      "route": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#dashboard → 融资与风险态势 → 问数/比较方案",
+      "objects": [
+        "8c7c78b4-eb5f-4ab2-9516-4c2b76f1403f"
+      ],
+      "preconditions": "任意有效企业范围，本轮为4家环保企业。",
+      "reproductionSteps": [
+        "问“未来90天如果降息12.5bp，授信收缩12.5%，展期30天”。",
+        "等待成功答案，点击比较方案。"
+      ],
+      "expected": "正确读取12.5bp和12.5%，或明确拒绝不支持的小数，不得显示成功后替换成零。",
+      "actual": "保存的解析参数和实际表单均为0bp、0%、30天；前两项小数被静默忽略。",
+      "impact": "方案假设与原问题不一致；用户可能保存和比较未按要求测算的方案。参数表可以人工发现，但没有任何忽略提示。",
+      "evidence": [
+        "screenshots/04-decimal-parameters.png",
+        "logs/04-decimal-parameters.json"
+      ],
+      "sourceReferences": [
+        {
+          "path": "designs/prototype-work/v1.4/src/domain.js",
+          "line": 410
+        },
+        {
+          "path": "designs/prototype-work/v1.4/src/domain.js",
+          "line": 428
+        }
+      ],
+      "recommendation": "支持业务允许的小数精度；未支持表达应阻断并标出无法识别的参数，禁止静默默认。",
+      "acceptanceCriteria": [
+        "12.5bp及12.5%被准确填入和计算，或两项都有明确拒绝理由。",
+        "整数50bp/30%仍正常；非法负数和超限值仍阻断。"
+      ],
+      "origin": "v1.4新增语义参数解析。",
+      "status": "当前旧快照仍可复现；修复版本未取得",
+      "currentRetest": {
+        "id": "R14-006",
+        "status": "仍可复现",
+        "actual": {
+          "id": "c4534a4d-b2d4-46ac-b00a-ed35ca220837",
+          "question": "未来90天如果降息12.5bp，授信收缩12.5%，展期30天",
+          "status": "success",
+          "summary": "已固定 4 家企业与 16 笔借款，下一步确认方案参数。",
+          "parameters": {
+            "rateBps": 0,
+            "creditHaircut": 0,
+            "extensionDays": 30,
+            "bankId": null
+          },
+          "evidence": {
+            "dataVersion": "DATA-V14-20251231-DEMO-1",
+            "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+            "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+            "asOf": "2025-12-31",
+            "horizon": 90,
+            "objectIds": [
+              "ENT-020",
+              "ENT-017",
+              "ENT-018",
+              "ENT-019"
+            ],
+            "resultKind": "DEMO_BASELINE",
+            "planId": null,
+            "rule": null,
+            "bankId": null
+          }
+        },
+        "inputs": {
+          "rate": "0",
+          "credit": "0",
+          "extension": "30"
+        }
+      }
+    },
+    {
+      "id": "R14-010",
+      "severity": "P3",
+      "classification": "已验证缺陷",
+      "category": "空状态 / 文案",
+      "title": "无匹配企业时融资成本显示“暂无%”",
+      "module": "驾驶舱指标栏",
+      "route": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#dashboard → 融资与风险态势",
+      "objects": [],
+      "preconditions": "基准快照，企业检索可用。",
+      "reproductionSteps": [
+        "在态势企业搜索框输入“不存在的Review企业”。",
+        "查看加权融资成本。"
+      ],
+      "expected": "缺失值使用完整业务文案，如“暂无数据”；无数值时不拼接百分号。",
+      "actual": "空企业范围下显示“暂无%”。",
+      "impact": "空状态不够清晰，影响界面可信度；未发现把缺失成本保存为0的情况。",
+      "evidence": [
+        "screenshots/05-empty-scope.png",
+        "logs/05-empty-scope.json"
+      ],
+      "sourceReferences": [
+        {
+          "path": "designs/prototype-work/v1.4/src/app.js",
+          "line": 248
+        }
+      ],
+      "recommendation": "只对有效数字附加单位，缺失值显示统一空状态。",
+      "acceptanceCriteria": [
+        "无企业和零余额均显示清晰缺失文案，不出现“暂无%”或NaN。",
+        "恢复范围后正常显示有效百分比。"
+      ],
+      "origin": "v1.4指标格式化。",
+      "status": "当前旧快照仍可复现；修复版本未取得",
+      "currentRetest": {
+        "id": "R14-010",
+        "status": "仍可复现",
+        "actual": "加权融资成本\n暂无%"
+      }
+    }
+  ],
+  "notRetested": [
+    "R14-001",
+    "R14-004",
+    "R14-005",
+    "R14-007",
+    "R14-008",
+    "R14-009"
+  ],
+  "normalPath": {
+    "id": "control",
+    "status": "实际可用",
+    "actual": {
+      "id": "92edcf13-cf14-4aa8-8613-673ac53eb8b8",
+      "question": "未来90天到期多少？",
+      "status": "success",
+      "summary": "21 家企业，融资余额 1,411.24 亿元，余额加权成本 2.46%；未来 90 天到期 847.26 亿元，测算缺口 338.65 亿元。",
+      "parameters": null,
+      "evidence": {
+        "dataVersion": "DATA-V14-20251231-DEMO-1",
+        "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+        "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+        "asOf": "2025-12-31",
+        "horizon": 90,
+        "objectIds": [
+          "ENT-020",
+          "ENT-017",
+          "ENT-018",
+          "ENT-019",
+          "ENT-007",
+          "ENT-013",
+          "ENT-021",
+          "ENT-009",
+          "ENT-015",
+          "ENT-010",
+          "ENT-011",
+          "ENT-012",
+          "ENT-014",
+          "ENT-008",
+          "ENT-005",
+          "ENT-016",
+          "ENT-001",
+          "ENT-006",
+          "ENT-003",
+          "ENT-004",
+          "ENT-002"
+        ],
+        "resultKind": "DEMO_BASELINE",
+        "planId": null,
+        "rule": null,
+        "bankId": null
+      }
+    }
+  },
+  "sourceModified": false
+}

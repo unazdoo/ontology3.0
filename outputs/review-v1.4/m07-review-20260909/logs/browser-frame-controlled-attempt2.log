@@ -1,0 +1,22 @@
+2026-09-09T03:44:13.737Z pw:browser <launching> /Users/domi/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --enable-begin-frame-control --run-all-compositor-stages-before-draw --use-angle=swiftshader --enable-unsafe-swiftshader --disable-background-timer-throttling --disable-renderer-backgrounding --user-data-dir=/var/folders/64/j8g5rs451cz6_0p3554tl8380000gn/T/playwright_chromiumdev_profile-92Sy3w --remote-debugging-pipe --no-startup-window
+2026-09-09T03:44:13.841Z pw:browser <launched> pid=98191
+2026-09-09T03:44:29.671Z pw:browser [pid=98191][err] [0909/114429.631074:ERROR:ui/display/mac/cv_display_link_mac.mm:195] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+2026-09-09T03:44:29.774Z pw:browser [pid=98191][err] [0909/114429.633587:ERROR:ui/display/mac/cv_display_link_mac.mm:195] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+2026-09-09T03:44:32.419Z pw:browser [pid=98191][err] [0909/114431.915043:ERROR:ui/display/mac/cv_display_link_mac.mm:195] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+2026-09-09T03:44:32.444Z pw:browser [pid=98191][err] [0909/114431.915103:ERROR:ui/display/mac/cv_display_link_mac.mm:195] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+2026-09-09T03:44:34.529Z pw:browser [pid=98191][err] [0909/114434.493138:ERROR:ui/display/mac/cv_display_link_mac.mm:195] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+2026-09-09T03:44:34.844Z pw:browser [pid=98191][err] [0909/114434.495699:ERROR:ui/display/mac/cv_display_link_mac.mm:195] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670
+2026-09-09T03:44:59.394Z pw:browser [pid=98191] <kill>
+2026-09-09T03:44:59.453Z pw:browser [pid=98191] <will force kill>
+2026-09-09T03:44:59.613Z pw:browser [pid=98191] starting temporary directories cleanup
+2026-09-09T03:44:59.725Z pw:browser [pid=98191] finished temporary directories cleanup
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+browserContext.route: Target page, context or browser has been closed
+    at /Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-v1.4-review/outputs/review-v1.4/m07-review-20260909/scripts/browser-session.mjs:29:15 {
+  log: []
+}
+
+Node.js v22.22.0

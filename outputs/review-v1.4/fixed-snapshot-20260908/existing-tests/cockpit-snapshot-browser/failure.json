@@ -1,0 +1,14 @@
+{
+  "error": "frame.waitForSelector: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#global-map[data-map-ready=true]') to be visible\u001b[22m\n\u001b[2m    - locator resolved to visible <div id=\"global-map\" aria-label=\"全球企业地图\" data-choosing=\"false\" data-map-ready=\"true\" class=\"maplibregl-map\">…</div>\u001b[22m\n\n    at /Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-v1.4-review/outputs/review-v1.4/fixed-snapshot-20260908/snapshot/designs/prototype-work/v1.4/tests/cockpit-snapshot-browser.mjs:304:15\n    at async check (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-v1.4-review/outputs/review-v1.4/fixed-snapshot-20260908/snapshot/designs/prototype-work/v1.4/tests/cockpit-snapshot-browser.mjs:70:3)\n    at async file:///Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-v1.4-review/outputs/review-v1.4/fixed-snapshot-20260908/snapshot/designs/prototype-work/v1.4/tests/cockpit-snapshot-browser.mjs:292:3",
+  "checks": [
+    "Old situation deep links migrate to the business cockpit",
+    "Cockpit directory opens the interactive map; original five business views remain",
+    "Original asset directory supports card/list views, search and complete source registration",
+    "Asset drilldown includes all records, field definitions, search and pagination",
+    "Downloaded Excel bytes exactly match the displayed snapshot identity",
+    "HTTP failure and checksum mismatch block download and allow retry",
+    "Source snapshot contains all nine members and traceable asset relationships",
+    "Snapshot detail survives reload and returns to the cockpit with matching data digest"
+  ],
+  "errors": []
+}

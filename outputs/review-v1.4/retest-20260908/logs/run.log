@@ -1,0 +1,125 @@
+[
+  {
+    "id": "control",
+    "status": "实际可用",
+    "actual": {
+      "id": "92edcf13-cf14-4aa8-8613-673ac53eb8b8",
+      "question": "未来90天到期多少？",
+      "status": "success",
+      "summary": "21 家企业，融资余额 1,411.24 亿元，余额加权成本 2.46%；未来 90 天到期 847.26 亿元，测算缺口 338.65 亿元。",
+      "parameters": null,
+      "evidence": {
+        "dataVersion": "DATA-V14-20251231-DEMO-1",
+        "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+        "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+        "asOf": "2025-12-31",
+        "horizon": 90,
+        "objectIds": [
+          "ENT-020",
+          "ENT-017",
+          "ENT-018",
+          "ENT-019",
+          "ENT-007",
+          "ENT-013",
+          "ENT-021",
+          "ENT-009",
+          "ENT-015",
+          "ENT-010",
+          "ENT-011",
+          "ENT-012",
+          "ENT-014",
+          "ENT-008",
+          "ENT-005",
+          "ENT-016",
+          "ENT-001",
+          "ENT-006",
+          "ENT-003",
+          "ENT-004",
+          "ENT-002"
+        ],
+        "resultKind": "DEMO_BASELINE",
+        "planId": null,
+        "rule": null,
+        "bankId": null
+      }
+    }
+  },
+  {
+    "id": "R14-002",
+    "status": "仍可复现",
+    "actual": {
+      "id": "fba75c7f-281a-41fa-8dd0-259b44e48e92",
+      "question": "华南环保集团融资余额多少",
+      "status": "success",
+      "summary": "4 家企业，融资余额 450.30 亿元，余额加权成本 2.86%；未来 90 天到期 180.12 亿元，测算缺口 1.48 亿元。",
+      "parameters": null,
+      "evidence": {
+        "dataVersion": "DATA-V14-20251231-DEMO-1",
+        "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+        "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+        "asOf": "2025-12-31",
+        "horizon": 90,
+        "objectIds": [
+          "ENT-020",
+          "ENT-017",
+          "ENT-018",
+          "ENT-019"
+        ],
+        "resultKind": "DEMO_BASELINE",
+        "planId": null,
+        "rule": null,
+        "bankId": null
+      }
+    }
+  },
+  {
+    "id": "R14-006",
+    "status": "仍可复现",
+    "actual": {
+      "id": "c4534a4d-b2d4-46ac-b00a-ed35ca220837",
+      "question": "未来90天如果降息12.5bp，授信收缩12.5%，展期30天",
+      "status": "success",
+      "summary": "已固定 4 家企业与 16 笔借款，下一步确认方案参数。",
+      "parameters": {
+        "rateBps": 0,
+        "creditHaircut": 0,
+        "extensionDays": 30,
+        "bankId": null
+      },
+      "evidence": {
+        "dataVersion": "DATA-V14-20251231-DEMO-1",
+        "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+        "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+        "asOf": "2025-12-31",
+        "horizon": 90,
+        "objectIds": [
+          "ENT-020",
+          "ENT-017",
+          "ENT-018",
+          "ENT-019"
+        ],
+        "resultKind": "DEMO_BASELINE",
+        "planId": null,
+        "rule": null,
+        "bankId": null
+      }
+    },
+    "inputs": {
+      "rate": "0",
+      "credit": "0",
+      "extension": "30"
+    }
+  },
+  {
+    "id": "R14-010",
+    "status": "仍可复现",
+    "actual": "加权融资成本\n暂无%"
+  },
+  {
+    "id": "R14-003",
+    "status": "仍可复现",
+    "actual": [
+      "global.OFW_V14_JOINT.openOntology is not a function"
+    ]
+  }
+]

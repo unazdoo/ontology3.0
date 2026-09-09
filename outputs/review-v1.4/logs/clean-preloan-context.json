@@ -1,0 +1,174 @@
+{
+  "shell": {
+    "schemaVersion": "ofw.workspace-context.v1",
+    "scenarioId": null,
+    "objectiveRef": null,
+    "objectSetRef": null,
+    "activeObjectRef": null,
+    "timeRange": null,
+    "comparisonRef": null,
+    "resultView": "formal",
+    "dataVersionRef": null,
+    "ontologyVersionRef": null,
+    "evidenceRefs": [],
+    "sourceModuleId": null,
+    "updatedAt": null
+  },
+  "history": [
+    {
+      "scenario": "S004",
+      "context": {
+        "schemaVersion": "ofw.workspace-context.v1",
+        "scenarioId": "S004",
+        "objectiveRef": null,
+        "objectSetRef": null,
+        "activeObjectRef": null,
+        "timeRange": {
+          "start": "",
+          "end": "2026-07-17",
+          "label": "截至 2026-07-17"
+        },
+        "comparisonRef": null,
+        "resultView": "formal",
+        "dataVersionRef": null,
+        "ontologyVersionRef": null,
+        "evidenceRefs": [],
+        "sourceModuleId": null,
+        "updatedAt": null,
+        "objectSet": {
+          "id": "result:S005",
+          "label": "当前结果对象集",
+          "count": 4,
+          "objectIds": [
+            "PRD-223C00000000A5FB",
+            "PRD-40A100000000B2C7",
+            "PRD-62D200000000C1A9",
+            "portfolio-01"
+          ]
+        },
+        "object": {
+          "id": "",
+          "label": "未聚焦单个对象",
+          "type": ""
+        },
+        "resultMode": {
+          "id": "formal",
+          "label": "正式结果"
+        },
+        "source": {
+          "moduleId": null
+        }
+      },
+      "answer": {
+        "question": "哪些借款主体需要优先人工复核？",
+        "spec": {
+          "type": "ranking",
+          "question": "哪些借款主体需要优先人工复核？",
+          "label": "贷前复核",
+          "resultMode": "formal"
+        },
+        "queryScenarioId": "S004",
+        "ready": true,
+        "title": "候选评价排序",
+        "summary": "本次回答读取当前分析范围内 0 条正式结果。当前结果为固定时点快照，未按观察区间重新计算。",
+        "rows": [],
+        "kpis": [
+          {
+            "label": "结果条数",
+            "value": "0 条"
+          },
+          {
+            "label": "当前阶段",
+            "value": "准备数据"
+          },
+          {
+            "label": "结果身份",
+            "value": "正式结果"
+          }
+        ],
+        "workspaceContext": {
+          "schemaVersion": "ofw.workspace-context.v1",
+          "scenarioId": "S004",
+          "objectiveRef": null,
+          "objectSetRef": null,
+          "activeObjectRef": null,
+          "timeRange": {
+            "start": "",
+            "end": "2026-07-17",
+            "label": "截至 2026-07-17"
+          },
+          "comparisonRef": null,
+          "resultView": "formal",
+          "dataVersionRef": null,
+          "ontologyVersionRef": null,
+          "evidenceRefs": [],
+          "sourceModuleId": null,
+          "updatedAt": null,
+          "objectSet": {
+            "id": "result:S005",
+            "label": "当前结果对象集",
+            "count": 4,
+            "objectIds": [
+              "PRD-223C00000000A5FB",
+              "PRD-40A100000000B2C7",
+              "PRD-62D200000000C1A9",
+              "portfolio-01"
+            ]
+          },
+          "object": {
+            "id": "",
+            "label": "未聚焦单个对象",
+            "type": ""
+          },
+          "resultMode": {
+            "id": "formal",
+            "label": "正式结果"
+          },
+          "source": {
+            "moduleId": null
+          }
+        },
+        "runtimeContext": {
+          "ui": {
+            "moduleName": "模型优化中心",
+            "domain": "信贷管理",
+            "businessName": "贷前风险评估",
+            "subjectLabel": "借款主体",
+            "consumerLabel": "贷前风险评估驾驶舱"
+          },
+          "state": {
+            "scenario": {
+              "scenarioId": "S004",
+              "scenarioVersion": "S004-v2.1.0",
+              "archivedScenarioRunId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+              "archivedScenarioMutable": false,
+              "businessName": "贷前风险评估",
+              "domain": "信贷管理",
+              "dataAsOf": "2026-08-15",
+              "subjectLabel": "借款主体"
+            },
+            "data": {
+              "dataVersionId": "DATA-SYN-S004-PRELOAN-v1"
+            },
+            "results": {
+              "formalEnvelope": {
+                "resultId": "FACT-S004-BASELINE-READONLY",
+                "runId": "S004-RUN-20260815233000000-7f3c8e42a1b6",
+                "modelVersionId": "MV-S004-PRELOAN-BASELINE-1.0.0",
+                "dataVersionId": "DATA-SYN-S004-PRELOAN-v1",
+                "ontologyVersionId": null,
+                "semanticContractVersionId": null,
+                "resultKind": "FACT",
+                "formedAt": null,
+                "asOf": null
+              },
+              "resultPackage": {
+                "resultPackageId": "CYCLE-S004-MODEL-20260902-001-RESULT-PACKAGE-00"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

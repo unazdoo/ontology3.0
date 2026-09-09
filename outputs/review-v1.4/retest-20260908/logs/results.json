@@ -1,0 +1,134 @@
+{
+  "checks": [
+    {
+      "id": "control",
+      "status": "实际可用",
+      "actual": {
+        "id": "92edcf13-cf14-4aa8-8613-673ac53eb8b8",
+        "question": "未来90天到期多少？",
+        "status": "success",
+        "summary": "21 家企业，融资余额 1,411.24 亿元，余额加权成本 2.46%；未来 90 天到期 847.26 亿元，测算缺口 338.65 亿元。",
+        "parameters": null,
+        "evidence": {
+          "dataVersion": "DATA-V14-20251231-DEMO-1",
+          "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+          "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+          "asOf": "2025-12-31",
+          "horizon": 90,
+          "objectIds": [
+            "ENT-020",
+            "ENT-017",
+            "ENT-018",
+            "ENT-019",
+            "ENT-007",
+            "ENT-013",
+            "ENT-021",
+            "ENT-009",
+            "ENT-015",
+            "ENT-010",
+            "ENT-011",
+            "ENT-012",
+            "ENT-014",
+            "ENT-008",
+            "ENT-005",
+            "ENT-016",
+            "ENT-001",
+            "ENT-006",
+            "ENT-003",
+            "ENT-004",
+            "ENT-002"
+          ],
+          "resultKind": "DEMO_BASELINE",
+          "planId": null,
+          "rule": null,
+          "bankId": null
+        }
+      }
+    },
+    {
+      "id": "R14-002",
+      "status": "仍可复现",
+      "actual": {
+        "id": "fba75c7f-281a-41fa-8dd0-259b44e48e92",
+        "question": "华南环保集团融资余额多少",
+        "status": "success",
+        "summary": "4 家企业，融资余额 450.30 亿元，余额加权成本 2.86%；未来 90 天到期 180.12 亿元，测算缺口 1.48 亿元。",
+        "parameters": null,
+        "evidence": {
+          "dataVersion": "DATA-V14-20251231-DEMO-1",
+          "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+          "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+          "asOf": "2025-12-31",
+          "horizon": 90,
+          "objectIds": [
+            "ENT-020",
+            "ENT-017",
+            "ENT-018",
+            "ENT-019"
+          ],
+          "resultKind": "DEMO_BASELINE",
+          "planId": null,
+          "rule": null,
+          "bankId": null
+        }
+      }
+    },
+    {
+      "id": "R14-006",
+      "status": "仍可复现",
+      "actual": {
+        "id": "c4534a4d-b2d4-46ac-b00a-ed35ca220837",
+        "question": "未来90天如果降息12.5bp，授信收缩12.5%，展期30天",
+        "status": "success",
+        "summary": "已固定 4 家企业与 16 笔借款，下一步确认方案参数。",
+        "parameters": {
+          "rateBps": 0,
+          "creditHaircut": 0,
+          "extensionDays": 30,
+          "bankId": null
+        },
+        "evidence": {
+          "dataVersion": "DATA-V14-20251231-DEMO-1",
+          "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+          "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+          "asOf": "2025-12-31",
+          "horizon": 90,
+          "objectIds": [
+            "ENT-020",
+            "ENT-017",
+            "ENT-018",
+            "ENT-019"
+          ],
+          "resultKind": "DEMO_BASELINE",
+          "planId": null,
+          "rule": null,
+          "bankId": null
+        }
+      },
+      "inputs": {
+        "rate": "0",
+        "credit": "0",
+        "extension": "30"
+      }
+    },
+    {
+      "id": "R14-010",
+      "status": "仍可复现",
+      "actual": "加权融资成本\n暂无%"
+    },
+    {
+      "id": "R14-003",
+      "status": "仍可复现",
+      "actual": {
+        "errors": [
+          "global.OFW_V14_JOINT.openOntology is not a function"
+        ],
+        "url": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/ontology/index.html?v=20260907-01&scenarioId=S005&scenarioVersion=S005-v1&scenarioRunId=S005-RUN-20260908010616868-bea10e508437&formedAt=2026-09-08T01%3A06%3A16.868Z&status=active&contextCreatedAt=2026-09-08T01%3A06%3A16.868Z&contextStatus=active&scenarioFormedAt=2026-09-08T01%3A06%3A16.868Z&scenarioStatus=active#published",
+        "view": "语义资产\n语义资产目录\n\n查看已发布本体的精确版本、正式数据与消费证据。\n\n草稿\n2\n已发布\n4\n语义资产\n\n查看已发布本体和模型合同，并下钻到版本、映射、消费与证据。\n\n9 项资产\n语义已发布\n当前正式使用\n集团融资成本与债务结构优化本体\n\n以融资主体、融资明细、融资机构和融资负责人组织融资事实、判断与行动。\n\nONT-GROUP-FINANCING-OPTIMIZATION\n最新发布版本\nV1\n当前正式版本\nsemantic-MSVJM48O-VJC6 / V1\n发布时数据映射\n已冻结\n可追溯版本\n1\n查看详情\n规则与指标修订\n语义已发布\n当前正式使用\n预算监督管理本体\n\n统一组织最终批准预算、部门初始申报、实际执行、项目余额、采购占用、异常规则与受控行动类型。\n\nONT-BUDGET-SUPERVISION\n最新发布版本\n预算监督语义 v1\n当前正式版本\n预算监督语义 v1\n发布时数据映射\n已冻结\n可追溯版本\n1\n查看详情\n语义已发布\n当前正式使用\n企业债务风险本体\n\n维护企业财务风险事实、调节因子、15 项指标、风险分档 Rule 和受控行动类型。\n\nONT-DEBT-RISK-MONITORING\n最新发布版本\n债务风险语义 1.0.2\n当前正式版本\n债务风险语义 1.0.2\n发布时数据映射\n已冻结\n可追溯版本\n1\n查看详情\n规则与指标修订\n语义已发布\n当前正式使用\n贷前调查本体\n\n覆盖财务公司、集团成员借款人、贷款申请、财务/股权/经营事实、内部授信与贷前调查报告的语义结构。\n\nONT-PRELOAN-ASSESSMENT\n最新发布版本\n贷前调查语义 V1\n当前正式版本\n贷前调查语义 V1\n发布时数据映射\n已冻结\n可追溯版本\n1\n查看详情\nOT\n业务语义\n等待数据\n融资成本分析模型合同\n\n融资成本洞察与结构优化等对象通过关系、指标和结果身份连接下游应用。\n\n查看技术身份\n对象类型\n0 类\n关系\n0\n指标\n0 项\n下游使用\n5 项\n查看前置条件\nOT\n业务语义\n等待数据\n预算风险监测模型合同\n\n预算风险与异常监测等对象通过关系、指标和结果身份连接下游应用。\n\n查看技术身份\n对象类型\n0 类\n关系\n0\n指标\n0 项\n下游使用\n3 项\n查看前置条件\nOT\n业务语义\n等待数据\n债务风险监测模型合同\n\n债务风险智能监测等对象通过关系、指标和结果身份连接下游应用。\n\n查看技术身份\n对象类型\n0 类\n关系\n0\n指标\n0 项\n下游使用\n10 项\n查看前置条件\nOT\n业务语义\n等待数据\n贷前风险评估模型合同\n\n贷前风险评估等对象通过关系、指标和结果身份连接下游应用。\n\n查看技术身份\n对象类型\n0 类\n关系\n0\n指标\n0 项\n下游使用\n3 项\n查看前置条件\nOT\n业务语义\n等待数据\n投后评价模型合同\n\n投后评价与产品选择等对象通过关系、指标和结果身份连接下游应用。\n\n查看技术身份\n对象类型\n0 类\n关系\n0\n指标\n0 项\n下游使用\n3 项\n查看前置条件"
+      }
+    }
+  ],
+  "errors": [
+    "global.OFW_V14_JOINT.openOntology is not a function"
+  ]
+}

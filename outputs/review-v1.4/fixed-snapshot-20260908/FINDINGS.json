@@ -1,0 +1,265 @@
+{
+  "reviewedAt": "2026-09-08T09:53:55.550881+08:00",
+  "sourceRoot": "/Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-composite-v1.3.0",
+  "sourceBranch": "codex/prototype-v1.3.1-composite",
+  "sourceHead": "0eed1d6322631d6fcdeca6fb1c23d01a5d5ee9ca",
+  "inputKind": "未提交v1.4文件的逐文件指纹快照，不是HEAD代码",
+  "snapshotManifest": "logs/snapshot-manifest.json",
+  "businessSourceModified": false,
+  "counts": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 2,
+    "P3": 0
+  },
+  "originalIssuesPassed": 9,
+  "originalIssuesPartiallyFixed": 1,
+  "newIssues": 2,
+  "findings": [
+    {
+      "id": "R14-002",
+      "severity": "P1",
+      "status": "部分修复，仍有可复现遗漏",
+      "category": "问数主体识别 / 业务严谨性",
+      "title": "未知主体简称仍被忽略，并返回全体21家企业数据",
+      "module": "经营驾驶舱 → 融资与风险态势 → 同屏问数",
+      "route": "http://127.0.0.1:4414/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#dashboard；内嵌 /workbench.html?embedded=1#view=workbench",
+      "objects": [
+        "腾讯",
+        "中国广核",
+        "ENT-001 至 ENT-021"
+      ],
+      "precondition": "独立浏览器新会话，基准快照，清除筛选显示21家企业；这两个名称均未登记在该工作台的企业名称、ID及别名集合内。",
+      "steps": [
+        "输入“腾讯的融资余额是多少”，发送并等待答案完成。",
+        "滚动问数面板，查看回答及定位结果/加入报告/发起事项入口。",
+        "再问“中国广核融资余额多少”，核对答案对象集。"
+      ],
+      "expected": "未登记主体或简称必须要求选择已登记对象，或明确拒绝；失败不改变范围，不生成可向下游传播的结果。",
+      "actual": "两问均返回成功：21家企业、融资余额1,411.24亿元、90天到期847.26亿元，并保留报告和事项按钮。腾讯答案结果ID首次为748c3624-2120-4624-b042-0e28a4118663，中国广核为8b4422e8-8b18-4af9-82c8-04ceeff9e9cc。原“华南环保集团”“不存在的Review企业”和已知/未知混合公司输入现在能正确拒绝，但新校验仍只识别公司、集团、企业或特定ID外形，没有校验剩余主体词。",
+      "impact": "用户可能把整个组合的余额误认为指定公司的数据，并继续形成报告或复核事项。此为原P1根本风险的残留，阻碍自由提问演示。",
+      "evidence": [
+        "screenshots/20-unknown-answer-visible.png",
+        "logs/20-unknown-answer-visible.json",
+        "logs/additional-boundaries.json",
+        "logs/subject-decimal.json"
+      ],
+      "source": [
+        {
+          "path": "designs/prototype-work/v1.4/src/domain.js",
+          "line": 385
+        },
+        {
+          "path": "designs/prototype-work/v1.4/src/domain.js",
+          "line": 415
+        }
+      ],
+      "recommendation": "完成主体槽位和整句消费检查后再查询；对于未消费的名称文本拒绝或让用户选择。避免继续仅增加公司后缀正则。",
+      "acceptance": [
+        "上述两个简称输入均拒绝或要求明确选主体，范围不变且无报告/事项入口。",
+        "规范名称、大小写ENT-ID、登记别名仍能正常解析；通用集团/全部企业问题不受影响。",
+        "已知主体与未知简称混合输入也不能只返回已知部分。"
+      ],
+      "relation": "原R14-002精确复现输入通过，但完整主体识别验收未通过。"
+    },
+    {
+      "id": "R14-011",
+      "severity": "P2",
+      "status": "本轮新增回归",
+      "category": "报告同步 / 来源一致性",
+      "title": "联合报告改名保存后，内容块标题和来源快照仍停留在初次生成状态",
+      "module": "联合报告 → 原报告内容块编辑器 → HTML导出",
+      "route": "http://127.0.0.1:4414/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#module/report；联合分析报告及报告目录",
+      "objects": [
+        "743ac90e-26ce-4691-8b47-9493b1c8a01c",
+        "RULE-OPS-FINANCING-PREMIUM",
+        "7家企业/90天/演示基准"
+      ],
+      "precondition": "从25bp本体规则应用进入态势，7家企业；问数结果加入报告。此时内容块已自动导入，用户尚未修改原编辑器。",
+      "steps": [
+        "把联合报告标题改为“复审-25bp规则基准报告-改名”，结论改为“独立复审最新结论：这是25bp规则范围的基准报告。”并保存。",
+        "点击“在报告中心整理”，再打开原内容块编辑器。",
+        "核对4个内容块标题、结论及jointSnapshot；导出HTML。",
+        "再次同步同一报告，确认问题仍存在。"
+      ],
+      "expected": "用户未在目标编辑器改过的标题应跟随源报告更新；追溯快照应明确对应同一最新草稿或其固定版本。目标端的人工编辑、顺序及删除决定仍受保护。",
+      "actual": "源报告的title/notes已保存；4个内容块仍显示“企业融资与风险分析报告 · 指标名”，而结论已更新。jointSnapshot.title和notes仍是初次生成的默认标题及97.43亿元等旧摘要。再次同步后仍旧，导出HTML也缺少源报告新名称。后续手工文字、下移及删除可以保留，问题只在源草稿更新与未编辑标题/来源快照同步。",
+      "impact": "多份分析进入汇总草稿后仍使用相同通用标题，用户无法用自己保存的名称定位内容；内容和来源快照呈现不同修订状态，增加复核成本。没有发现数值、方案或已冻结v1被覆盖。",
+      "evidence": [
+        "screenshots/09-report-renamed.png",
+        "screenshots/10-native-baseline-title.png",
+        "logs/renamed-report-handoff.json",
+        "screenshots/18-resync-edit-protection.png",
+        "downloads/renamed-baseline-native.html"
+      ],
+      "source": [
+        {
+          "path": "designs/prototype-work/v1.4/composite/integrations/joint-workbench.js",
+          "line": 246
+        },
+        {
+          "path": "designs/prototype-work/v1.4/composite/integrations/joint-workbench.js",
+          "line": 254
+        }
+      ],
+      "recommendation": "按字段记录是否被人工修改：未编辑标题及对应来源草稿快照随保存更新，人工标题/文字、顺序和删除继续保留。冻结版本维持独立不可变身份。",
+      "acceptance": [
+        "首次生成后仅在联合报告改名，原内容块和HTML立即显示新源标题。",
+        "源notes与来源快照版本一致，或明确标出正在引用的历史版本。",
+        "目标端手工改过的标题/文字、下移、删除及全删不因同步丢失，v1/v2仍独立。"
+      ],
+      "relation": "原R14-008的基准/模拟身份及目录范围已修复；本问题是新增原地同步分支带来的标题/快照遗漏。"
+    },
+    {
+      "id": "R14-012",
+      "severity": "P2",
+      "status": "本轮补充发现",
+      "category": "方案解析 / 不支持输入处理",
+      "title": "复合方案只采纳第一个同类参数，后续步骤被静默丢弃",
+      "module": "同屏问数 → 比较方案",
+      "route": "http://127.0.0.1:4414/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#dashboard；融资与风险态势",
+      "objects": [
+        "8ac24a9b-c25c-42a5-9108-cad1d7402504",
+        "78e06d07-0fca-4737-81f5-ce7e2a801829"
+      ],
+      "precondition": "21家企业基准范围。当前方案表单每种参数仅有一个值。",
+      "steps": [
+        "输入“如果先降息12.5bp再加息25bp，未来90天到期多少？”。",
+        "在成功答案点“比较方案”，查看浮息利率变化。",
+        "另问“如果授信收缩12.5%后再收缩20%，未来90天资金缺口多少？”，查看解析参数。"
+      ],
+      "expected": "当前不支持分阶段假设时应明确拒绝并要求单次变动；若支持则完整表达各阶段及时间。不允许悄悄采用第一个匹配值。",
+      "actual": "两问均标成功。第一问只记录rateBps=-12.5，后续加息25bp消失，表单也只显示-12.5bp；第二问只记录creditHaircut=12.5，后续20%消失。正则exec仅取首个值，后续检查只检查有没有匹配，不检查是否有未消费参数。",
+      "impact": "用户看见成功反馈，却得到与输入假设不同的方案；参数确认表有机会发现差异，因此定P2。未保存或执行这些复合方案。",
+      "evidence": [
+        "logs/additional-boundaries.json",
+        "screenshots/14-multi-rate-ignored.png",
+        "logs/14-multi-rate-ignored.json"
+      ],
+      "source": [
+        {
+          "path": "designs/prototype-work/v1.4/src/domain.js",
+          "line": 428
+        },
+        {
+          "path": "designs/prototype-work/v1.4/src/domain.js",
+          "line": 432
+        }
+      ],
+      "recommendation": "检查同类参数出现次数和剩余文本；多阶段或冲突参数明确拒绝。无需本轮新增多阶段建模功能。",
+      "acceptance": [
+        "两个复合输入均提示暂不支持并要求单阶段假设，不生成成功方案结果。",
+        "单阶段12.5bp/12.5%和整数50bp/30%保持正确解析和计算。",
+        "重复/冲突的利率、授信和展期参数都有一致处理。"
+      ],
+      "relation": "原R14-006小数归零已修复；本项覆盖原测试之外的同类参数重复输入。"
+    }
+  ],
+  "originalVerification": [
+    {
+      "id": "R14-001",
+      "status": "通过（原缺陷范围）",
+      "actual": "合成基准无分数/置信度，不标正式事实；候选/模拟带合成来源；完整模型周期前后基准相同。",
+      "evidence": [
+        "snapshot/outputs/fixes-v1.4/native/01-synthetic-baseline-no-fact-scores.png",
+        "snapshot/outputs/fixes-v1.4/model/state.json"
+      ]
+    },
+    {
+      "id": "R14-002",
+      "status": "部分修复",
+      "actual": "原全称及混合未知主体拒绝；无后缀简称仍忽略，见残留P1。",
+      "evidence": [
+        "logs/subject-decimal.json",
+        "logs/additional-boundaries.json"
+      ]
+    },
+    {
+      "id": "R14-003",
+      "status": "通过（原缺陷范围）",
+      "actual": "双本体入口、25/50bp、编辑验证、应用到地图/问数/报告、草稿发布隔离、旧独立页迁移均实际验证。",
+      "evidence": [
+        "existing-tests/owned-rules-browser/result.json",
+        "screenshots/07-rule25-validation.png",
+        "screenshots/08-rule25-map.png"
+      ]
+    },
+    {
+      "id": "R14-004",
+      "status": "通过（原缺陷范围）",
+      "actual": "完整T007一致；硬质量故障阻断；恢复后双击重试仅1待办；承接→处理→完成→刷新仍完成。",
+      "evidence": [
+        "snapshot/outputs/fixes-v1.4/approval/result.json",
+        "snapshot/outputs/fixes-v1.4/approval/05-completion-persisted.json"
+      ]
+    },
+    {
+      "id": "R14-005",
+      "status": "通过（原缺陷范围）",
+      "actual": "预算3部门明确未映射/0结果，刷新保留并可清除；贷前无旧域ID，不再0条正式成功；模型目标无设备管理部。",
+      "evidence": [
+        "snapshot/outputs/fixes-v1.4/native/result.json",
+        "snapshot/outputs/fixes-v1.4/native/06-preloan-explicit-no-data.txt"
+      ]
+    },
+    {
+      "id": "R14-006",
+      "status": "通过（原缺陷范围）",
+      "actual": "单阶段小数正确解析为-12.5bp/12.5%，步长0.1；保存后成本从2.88%变为2.77%。复合参数新问题单列R14-012。",
+      "evidence": [
+        "logs/subject-decimal.json",
+        "screenshots/03-decimal-form.png",
+        "screenshots/04-decimal-plan-saved.png"
+      ]
+    },
+    {
+      "id": "R14-007",
+      "status": "通过（原缺陷范围）",
+      "actual": "集团推荐答案、详情、实际CSV包含21,613.387亿元及2.372231%。",
+      "evidence": [
+        "snapshot/outputs/fixes-v1.4/native/02-group-answer-balance-and-cost.png",
+        "snapshot/outputs/fixes-v1.4/native/group-query.csv"
+      ]
+    },
+    {
+      "id": "R14-008",
+      "status": "通过原身份/保护问题；有新增回归",
+      "actual": "基准demo与具名simulation一致；文字、顺序和删除经再次同步保留；改名/来源快照遗漏单列R14-011。",
+      "evidence": [
+        "logs/renamed-report-handoff.json",
+        "logs/plan-revision-native.json",
+        "downloads/plan-v1-v2-native.html"
+      ]
+    },
+    {
+      "id": "R14-009",
+      "status": "通过（原缺陷范围）",
+      "actual": "实际累计30条，经加载按钮全部可达；刷新仍30条；旧基准和旧模拟答案恢复自身对象、窗口与方案。",
+      "evidence": [
+        "logs/history-check.json",
+        "screenshots/21-thirty-history.png",
+        "screenshots/22-thirty-history-refreshed.png",
+        "screenshots/23-old-simulation-restored.png"
+      ]
+    },
+    {
+      "id": "R14-010",
+      "status": "通过（原缺陷范围）",
+      "actual": "空范围暂无数据，无暂无%/NaN；恢复后有效百分比正常；四尺寸取样。",
+      "evidence": [
+        "screenshots/05-empty-cost.png",
+        "screenshots/06-empty-1280.png",
+        "screenshots/06-empty-390.png",
+        "screenshots/06-empty-320.png"
+      ]
+    }
+  ],
+  "unitTests": {
+    "total": 108,
+    "passed": 108
+  },
+  "build": "passed",
+  "snapshotSerialRetryPassed": true,
+  "designSuggestions": "沿用原D01/D02，不计入缺陷数量",
+  "businessQuestions": "原B01投后实际数据覆盖、B02每域汇总草稿策略仍需业务决定"
+}

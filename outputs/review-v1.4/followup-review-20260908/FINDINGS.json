@@ -1,0 +1,155 @@
+{
+  "reviewedAt": "2026-09-08T12:22:20.989775+08:00",
+  "sourceRoot": "/Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-composite-v1.3.0",
+  "sourceHead": "0eed1d6322631d6fcdeca6fb1c23d01a5d5ee9ca",
+  "inputKind": "未提交文件的独立指纹快照；HEAD不包含修复",
+  "snapshotManifest": "logs/snapshot-manifest.json",
+  "counts": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 0,
+    "P3": 1
+  },
+  "previousIssuesVerified": [
+    {
+      "id": "R14-002",
+      "status": "通过（本轮复现范围）",
+      "actual": "腾讯、中国广核及ENT-020与腾讯混合输入全部拒绝；三个拒绝均无结果操作，筛选/方案/窗口不变；单位553正确解析到ENT-020。",
+      "evidence": [
+        "logs/question-retest.json",
+        "logs/rejection-invariants.json",
+        "screenshots/03-questions.png"
+      ]
+    },
+    {
+      "id": "R14-012",
+      "status": "通过（本轮复现范围）",
+      "actual": "先降息再加息、两次授信收缩、两次展期均拒绝，状态不变；单阶段-12.5bp/12.5%/30天正确进入表单。",
+      "evidence": [
+        "logs/question-retest.json",
+        "screenshots/04-decimal-form.png"
+      ]
+    },
+    {
+      "id": "R14-011",
+      "status": "通过（本轮复现范围）",
+      "actual": "源标题/结论A同时更新4块和jointSnapshot；源B同步时人工标题/结论分别保留，顺序和删除保持；删除后撤销恢复3块；v1冻结、v2独立新增4块且v1字节相同。全删后再次同步和刷新仍0块。",
+      "evidence": [
+        "logs/source-native-sync.json",
+        "logs/per-field-update.json",
+        "logs/frozen-revision.json",
+        "downloads/renamed-source.html",
+        "downloads/frozen-v1-revised-v2.html",
+        "logs/delete-all-check.json"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "R14-013",
+      "severity": "P1",
+      "status": "本轮补充发现",
+      "category": "筛选语义 / 业务范围与决策严谨性",
+      "title": "“或”条件被按“且”执行，漏掉12家应纳入的企业",
+      "module": "经营驾驶舱 → 融资与风险态势 → 同屏问数",
+      "route": "http://127.0.0.1:4424/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#dashboard；内嵌/workbench.html?embedded=1#view=workbench",
+      "objects": [
+        "ENT-001至ENT-021",
+        "e96be55b-51d5-4d7b-8e1f-f779f4c9f4e7"
+      ],
+      "preconditions": "基准快照、90天窗口、清除全部筛选；高成本沿用当前默认定义：融资成本偏离>0bp。",
+      "steps": [
+        "从独立服务/进入Shell，打开经营驾驶舱的融资与风险态势。",
+        "清除筛选，确认21家企业、基准快照、90天。",
+        "输入“找出高成本或有资金缺口的企业”，等待回答，滚动查看结果。",
+        "比较答案对象集与逐企满足“成本偏离>0bp 或 缺口>0”的并集；对照“且”表达。"
+      ],
+      "expected": "按“或”计算并集；如不支持该组合，明确拒绝并保持原范围，不得形成成功结果。",
+      "actual": "整句校验接受“或”，但解析只设置highCost=true和gapOnly=true，过滤器固定用&&连接。浏览器显示成功、9家企业、余额119.55亿元、到期72.89亿元、缺口29.55亿元，结果与“且”相同。本快照实际并集为21家，漏掉12家；ENT-007虽然不是高成本企业，但缺口28105百万元（281.05亿元），应被“或”纳入却被排除。ENT-020成本偏离23.0984bp、缺口0，也被排除。",
+      "impact": "错误范围会低估需要关注的融资和资金缺口；成功答案可继续加入报告/发起事项。本轮已实际把该9家结果交入报告，证明错误范围可以传播。属于影响业务判断的P1。",
+      "evidence": [
+        "screenshots/05-or-filter-result.png",
+        "logs/05-or-filter-result.json",
+        "logs/or-filter-browser.json",
+        "logs/or-filter-omissions.json",
+        "logs/logical-filter-calculation.json"
+      ],
+      "source": [
+        {
+          "path": "designs/prototype-work/v1.4/src/domain.js",
+          "line": 368
+        },
+        {
+          "path": "designs/prototype-work/v1.4/src/domain.js",
+          "line": 470
+        },
+        {
+          "path": "designs/prototype-work/v1.4/src/domain.js",
+          "line": 310
+        }
+      ],
+      "recommendation": "在解析结果中保留条件的连接语义并执行一致；若当前仅支持条件交集，检测到此类“或”组合时明确拒绝。无需为此引入开放式问答或整体重构。",
+      "acceptance": [
+        "本快照同样前置下，“或”返回21家（包含ENT-007/020）；“且”返回9家。若不支持“或”，应拒绝且范围/方案/窗口不变。",
+        "“或”的报告与事项沿用正确并集；拒绝答案无报告/事项按钮。",
+        "已登记多主体选择、单条件筛选、未知主体拒绝和单阶段参数保持可用。"
+      ],
+      "relation": "上轮R14-002/R14-012的精确复现已通过；本项是相邻语义范围问题，不把它描述为这次修复必然新引入。"
+    },
+    {
+      "id": "R14-014",
+      "severity": "P3",
+      "status": "本轮补充发现",
+      "category": "报告可读性 / 数字格式",
+      "title": "报告金额直接显示二进制浮点长尾，HTML导出同样未格式化",
+      "module": "联合报告 → 原内容块编辑器 → HTML导出",
+      "route": "http://127.0.0.1:4424/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#module/report；原报告内容块编辑器",
+      "objects": [
+        "ENT-004",
+        "ENT-005",
+        "ENT-011",
+        "fbfbbdf8-f167-4b89-b4b3-5a9d0a172f7d"
+      ],
+      "preconditions": "选择本轮9家成本/缺口交集或其他包含上述企业的90天基准报告。",
+      "steps": [
+        "将当前结果加入报告，再进入原内容块编辑器。",
+        "滚动到“窗口到期本金”和“测算资金缺口”内容块。",
+        "查看风电测试公司04/05/11的金额，并导出HTML。"
+      ],
+      "expected": "按金额及指标的约定精度显示数值，UI与HTML保持一致；源数值可以保留原计算精度。",
+      "actual": "窗口到期本金显示“7.1610000000000005 亿元”；缺口还出现“1.4080000000000001”和“5.837999999999999”。导出HTML包含相同长尾。交接时直接以Number除以100，编辑器再将数值转成字符串，没有金额显示格式。",
+      "impact": "增加财务人员阅读和核对负担，报告观感不可信。观察到的是浮点显示误差，未据此认定实际金额计算错误或提升为数据损坏。",
+      "evidence": [
+        "screenshots/08-raw-currency-decimals.png",
+        "logs/08-raw-currency-decimals.json",
+        "downloads/renamed-source.html"
+      ],
+      "source": [
+        {
+          "path": "designs/prototype-work/v1.4/composite/integrations/joint-workbench.js",
+          "line": 303
+        },
+        {
+          "path": "designs/prototype-work/v1.4/composite/shared/report-editor.js",
+          "line": 9
+        }
+      ],
+      "recommendation": "在统一展示层按金额/利率等指标分别应用约定精度和缺失处理；HTML复用相同格式，不修改原始计算值。",
+      "acceptance": [
+        "同一金额在编辑、预览和HTML中无浮点长尾，仍正确标注亿元。",
+        "金额与百分比使用各自约定精度，零和缺失仍可区分。",
+        "源快照/数据精度不因显示格式发生变化。"
+      ],
+      "relation": "与这轮标题同步是不同问题；本轮在实际非零到期/缺口数据中观察到，未断言由本次修改引入。"
+    }
+  ],
+  "unitTests": {
+    "total": 116,
+    "pass": 116
+  },
+  "build": "passed",
+  "businessSourceModified": false,
+  "navigationScope": "九模块稳定显示；不据此声称已逐帧验证首帧闪现",
+  "designSuggestions": "原D01/D02继续保留，不计为本轮缺陷",
+  "businessQuestions": "原B01投后实际覆盖、B02每域汇总草稿策略未由本轮裁决"
+}

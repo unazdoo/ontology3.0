@@ -1,0 +1,913 @@
+{
+  "url": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html?m08ApiBase=http%3A%2F%2F127.0.0.1%3A4404%2Fmodel-api#dashboard",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "frames": [
+    {
+      "url": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html?m08ApiBase=http%3A%2F%2F127.0.0.1%3A4404%2Fmodel-api#dashboard",
+      "text": "智财问策\nOntology Financial World\n首页\n数据工程\n本体管理\n智能问数\n决策中心\nAgent 应用\n报告中心\n业务对象探索\n模型目标与优化\n经营驾驶舱\n模型服务已连接\nv1.4 · 本地原型\n首页\n经营驾驶舱\n投后评价\n管\n平台管理员\n驾驶舱目录\n融资管理\n预算监督\n债务风险\n贷前评估\n投后评价\n融资与风险态势",
+      "controls": [
+        {
+          "tag": "BUTTON",
+          "text": "智财问策\nOntology Financial World",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "toggle-navigation"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "首页",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#home",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "数据工程",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/data",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "本体管理",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/ontology",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "智能问数",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/query",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "决策中心",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/decision",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Agent 应用",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/agent",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "报告中心",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/report",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "业务对象探索",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/m07",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "模型目标与优化",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#module/modeling",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "经营驾驶舱",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#dashboard",
+            "data-primary-nav": "true"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "模型服务已连接",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "retry-service",
+            "id": "service-status"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "返回",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "return"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "首页",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-route": "#home"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "经营驾驶舱",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "module-root",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "搜索业务资源",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "open-catalog"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "最近工作",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "open-recent"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "重新读取当前模块",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "reload-frame"
+          }
+        },
+        {
+          "tag": "SELECT",
+          "text": "驾驶舱目录融资管理预算监督债务风险贷前评估投后评价融资与风险态势",
+          "value": "post-investment",
+          "disabled": false,
+          "attrs": {
+            "data-module-task-select": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "驾驶舱目录",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "directory",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "融资管理",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "financing",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "预算监督",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "budget",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "债务风险",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "risk",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "贷前评估",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "preloan",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "投后评价",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "post-investment",
+            "data-module-id": "dashboard"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "融资与风险态势",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-module-task": "situation",
+            "data-module-id": "dashboard"
+          }
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:4404/designs/prototype-work/v1.4/composite/dashboard/index.html?v=20260904-01&scenarioId=S005&scenarioVersion=S005-v1&scenarioRunId=S005-RUN-20260907150958773-9872a114d351&formedAt=2026-09-07T15%3A09%3A58.773Z&status=active&contextCreatedAt=2026-09-07T15%3A09%3A58.773Z&contextStatus=active&scenarioFormedAt=2026-09-07T15%3A09%3A58.773Z&scenarioStatus=active#/view/post-investment/overview",
+      "text": "经营控制塔\nControl Tower\n控制塔首页\n重新读取\n业务驾驶舱\n金融产品投后评价驾驶舱\n\n汇总当前评价轮次的六域状态、指标覆盖、结论与可回溯证据。\n\n读取当前轮次\n当前评价轮次\n部分评价\n2026-09-07 15:09\n查看运行身份\n评价日\n2026-07-17\n数据截至\n2026-07-17\nWind 批次\nWind 批次尚未交付。\n事件读取时间\n2026-09-07T15:35:42.205Z\n公式 / 参数版本\nS005-EVAL-FORMULA-v1 / S005-EVAL-PARAM-v1\nscored_coverage\n5.9%\n置信度\n5.3% · 很低\n评价状态\n部分评价\n部分评价\n\n仅汇总当前评价轮次的运行与结果；缺失指标不补零。\n\n部分评价\n六域总览\n产品自身表现\n财务公司实际投资结果\n固定收益风险\n管理与运行质量\n持续准入合规\n选择与执行\n产品自身表现\n\n观察期不足\n覆盖率 0.0%\n\n指标\n状态\n当前结果\n证据\nTWR\n无法评价\n无法评价\nSharpe\n观察期不足\n观察期不足\nSortino\n观察期不足\n观察期不足\nCalmar\n观察期不足\n观察期不足\n信息比率\n观察期不足\n观察期不足\n波动\n观察期不足\n观察期不足\n最大回撤\n无法评价\n无法评价\n回撤恢复\n无法评价\n无法评价\n结论\n\n观察期不足：不对缺失指标补零。\n\n缺失原因\n缺少完整估值区间和受治理 NAV 序列。\n当前周快照不能按日频口径计算 Sharpe。\n缺少足够频率和长度的下行收益序列。\n缺少足够观察期的收益与回撤序列。\n缺少同频产品和基准收益序列。\n缺少满足公式口径的收益序列。\n缺少连续 NAV 序列。\n缺少最大回撤后的连续 NAV 序列。\n证据下钻\n0\n财务公司实际投资结果\n\n无法评价\n覆盖率 0.0%\n\n指标\n状态\n当前结果\n证据\n实际投资 TWR\n无法评价\n无法评价\nMWR / XIRR\n无法评价\n无法评价\n已实现收益\n无法评价\n无法评价\n未实现收益\n无法评价\n无法评价\n现金流\n无法评价\n无法评价\n费用\n无法评价\n无法评价\n结论\n\n无法评价：当前证据不足。\n\n缺失原因\n缺少完整估值区间、实际持仓和受治理 NAV 序列。\n缺少完整且带日期的实际现金流。\n缺少完整赎回与结算流水。\n缺少评价日实际持仓与 NAV。\n缺少申购、赎回、分红和费用现金流。\n缺少实际费用明细。\n证据下钻\n0\n固定收益风险\n\n无法评价\n覆盖率 0.0%\n\n指标\n状态\n当前结果\n证据\n久期\n无法评价\n无法评价\n评级迁移\n无法评价\n无法评价\n集中度\n无法评价\n无法评价\n流动性\n无法评价\n无法评价\nCarry 归因\n无法评价\n无法评价\nRoll-down 归因\n无法评价\n无法评价\n曲线归因\n无法评价\n无法评价\n信用归因\n无法评价\n无法评价\n结论\n\n无法评价：当前证据不足。\n\n缺失原因\n缺少穿透持仓和久期证据。\n缺少连续评级与迁移事件。\n缺少完整穿透持仓。\n缺少证券级流动性和赎回约束证据。\n缺少债券级持仓与收益分解。\n缺少收益率曲线和持仓期限迁移。\n缺少同频曲线与敏感度。\n缺少信用利差和评级暴露。\n证据下钻\n0\n管理与运行质量\n\n无法评价\n覆盖率 0.0%\n\n指标\n状态\n当前结果\n证据\nNAV 发布及时性\n无法评价\n无法评价\n估值异常\n无法评价\n无法评价\n运行事件\n无法评价\n无法评价\n结论\n\n无法评价：当前证据不足。\n\n缺失原因\n缺少 NAV 发布事件时间。\n缺少估值异常事件。\n缺少运行事件台账。\n证据下钻\n0\n持续准入合规\n\n部分评价\n覆盖率 33.3%\n\n指标\n状态\n当前结果\n证据\n持续准入\n部分评价\n准入 3 · 需复核 1 · 未知 1 · 已列示 5/15\n合规例外\n无法评价\n无法评价\n分类置信度\n无法评价\n无法评价\n结论\n\n部分评价：已展示可计算指标，未覆盖项保留缺失原因。\n\n缺失原因\n仅 5 只代表性产品具备范围状态，10 只候选尚未逐项列示。\n缺少完整合规事件与处置证据。\nWind fund_type 与候选分类尚未完成复核。\n证据下钻\n5\n选择与执行\n\n部分评价\n覆盖率 16.7%\n\n指标\n状态\n当前结果\n证据\n选择归因\n部分评价\n0.42 %\n择时归因\n无法评价\n无法评价\n下一可得 NAV\n无法评价\n无法评价\n实际 NAV\n无法评价\n无法评价\n滑点\n无法评价\n无法评价\n结算状态\n无法评价\n无法评价\n结论\n\n部分评价：已展示可计算指标，未覆盖项保留缺失原因。\n\n缺失原因\n该值仅为 T+60 归一化选择差异，不等同于完整选择归因。\n缺少决策时间、实际成交和同频 NAV。\n缺少决策后下一可得 NAV。\n缺少实际确认 NAV。\n下一可得 NAV 与实际 NAV 尚不齐备。\n缺少结算流水。\n证据下钻\n4\n\n真实结果、预测结果和模拟结果严格隔离；当前页面不形成 Published 本体、Metric、Rule、T019、行动、审批、待办或交易。\n\n投后评价与产品选择模型结果\n\nS005 · 仪表盘\n\n×\n正式结果\n候选试算\n影子观察\n压力模拟\n正式与候选差异\n压力模拟\n4 个业务对象 · 压力模拟\n基金A\n69\n已评价\n91%\n基金B\n75\n已评价\n83%\n基金C\n81\n已评价\n75%\n产品池组合\n87\n部分评价\n67%\nRESULT-S005-v1-001-029\n关闭\n加入报告",
+      "controls": [
+        {
+          "tag": "A",
+          "text": "控制塔首页",
+          "attrs": {
+            "href": "#/dashboards"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "重新读取",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "refresh"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "返回经营控制塔",
+          "attrs": {
+            "href": "#/dashboards"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "读取当前轮次",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-request-evaluation"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "六域总览",
+          "attrs": {
+            "href": "#/view/post-investment/overview"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "产品自身表现",
+          "attrs": {
+            "href": "#/view/post-investment/product-performance"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "财务公司实际投资结果",
+          "attrs": {
+            "href": "#/view/post-investment/actual-investment-result"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "固定收益风险",
+          "attrs": {
+            "href": "#/view/post-investment/fixed-income-risk"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "管理与运行质量",
+          "attrs": {
+            "href": "#/view/post-investment/management-operation-quality"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "持续准入合规",
+          "attrs": {
+            "href": "#/view/post-investment/continuous-admission-compliance"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "选择与执行",
+          "attrs": {
+            "href": "#/view/post-investment/selection-execution"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "打开产品自身表现",
+          "attrs": {
+            "href": "#/view/post-investment/product-performance"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看TWR证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "product-performance",
+            "data-metric-key": "twr"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看Sharpe证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "product-performance",
+            "data-metric-key": "sharpe"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看Sortino证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "product-performance",
+            "data-metric-key": "sortino"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看Calmar证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "product-performance",
+            "data-metric-key": "calmar"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看信息比率证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "product-performance",
+            "data-metric-key": "information-ratio"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看波动证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "product-performance",
+            "data-metric-key": "volatility"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看最大回撤证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "product-performance",
+            "data-metric-key": "max-drawdown"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看回撤恢复证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "product-performance",
+            "data-metric-key": "drawdown-recovery"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "证据下钻\n0",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "product-performance"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "打开财务公司实际投资结果",
+          "attrs": {
+            "href": "#/view/post-investment/actual-investment-result"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看实际投资 TWR证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "actual-investment-result",
+            "data-metric-key": "actual-twr"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看MWR / XIRR证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "actual-investment-result",
+            "data-metric-key": "mwr-xirr"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看已实现收益证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "actual-investment-result",
+            "data-metric-key": "realized-return"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看未实现收益证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "actual-investment-result",
+            "data-metric-key": "unrealized-return"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看现金流证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "actual-investment-result",
+            "data-metric-key": "cash-flow"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看费用证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "actual-investment-result",
+            "data-metric-key": "fees"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "证据下钻\n0",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "actual-investment-result"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "打开固定收益风险",
+          "attrs": {
+            "href": "#/view/post-investment/fixed-income-risk"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看久期证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "fixed-income-risk",
+            "data-metric-key": "duration"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看评级迁移证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "fixed-income-risk",
+            "data-metric-key": "rating-migration"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看集中度证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "fixed-income-risk",
+            "data-metric-key": "concentration"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看流动性证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "fixed-income-risk",
+            "data-metric-key": "liquidity"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看Carry 归因证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "fixed-income-risk",
+            "data-metric-key": "carry-attribution"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看Roll-down 归因证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "fixed-income-risk",
+            "data-metric-key": "roll-down-attribution"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看曲线归因证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "fixed-income-risk",
+            "data-metric-key": "curve-attribution"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看信用归因证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "fixed-income-risk",
+            "data-metric-key": "credit-attribution"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "证据下钻\n0",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "fixed-income-risk"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "打开管理与运行质量",
+          "attrs": {
+            "href": "#/view/post-investment/management-operation-quality"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看NAV 发布及时性证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "management-operation-quality",
+            "data-metric-key": "nav-publication-timeliness"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看估值异常证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "management-operation-quality",
+            "data-metric-key": "valuation-exception-count"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看运行事件证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "management-operation-quality",
+            "data-metric-key": "operation-incident-count"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "证据下钻\n0",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "management-operation-quality"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "打开持续准入合规",
+          "attrs": {
+            "href": "#/view/post-investment/continuous-admission-compliance"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看持续准入证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "continuous-admission-compliance",
+            "data-metric-key": "continuing-eligibility"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看合规例外证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "continuous-admission-compliance",
+            "data-metric-key": "compliance-exceptions"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看分类置信度证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "continuous-admission-compliance",
+            "data-metric-key": "classification-confidence"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "证据下钻\n5",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "continuous-admission-compliance"
+          }
+        },
+        {
+          "tag": "A",
+          "text": "打开选择与执行",
+          "attrs": {
+            "href": "#/view/post-investment/selection-execution"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看选择归因证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "selection-execution",
+            "data-metric-key": "selection-attribution"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看择时归因证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "selection-execution",
+            "data-metric-key": "timing-attribution"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看下一可得 NAV证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "selection-execution",
+            "data-metric-key": "next-available-nav"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看实际 NAV证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "selection-execution",
+            "data-metric-key": "actual-nav"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看滑点证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "selection-execution",
+            "data-metric-key": "slippage"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "查看结算状态证据",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "selection-execution",
+            "data-metric-key": "settlement-status"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "证据下钻\n4",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-action": "s005-evidence-detail",
+            "data-domain-id": "selection-execution"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "×",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-ofw-native-action": "close-drawer"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "正式结果",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-ofw-native-action": "dashboard-view",
+            "data-view": "formal"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "候选试算",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-ofw-native-action": "dashboard-view",
+            "data-view": "candidate"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "影子观察",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-ofw-native-action": "dashboard-view",
+            "data-view": "shadow"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "压力模拟",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-ofw-native-action": "dashboard-view",
+            "data-view": "simulation"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "正式与候选差异",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-ofw-native-action": "dashboard-view",
+            "data-view": "difference"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "关闭",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-ofw-native-action": "close-drawer"
+          }
+        },
+        {
+          "tag": "BUTTON",
+          "text": "加入报告",
+          "value": "",
+          "disabled": false,
+          "attrs": {
+            "data-ofw-native-route": "#module/report"
+          }
+        }
+      ]
+    }
+  ],
+  "errors": [
+    "global.OFW_V14_JOINT.openOntology is not a function",
+    "global.OFW_V14_JOINT.openOntology is not a function",
+    "global.OFW_V14_JOINT.applyOwnedRule is not a function"
+  ]
+}

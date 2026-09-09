@@ -1,0 +1,327 @@
+{
+  "reviewedAt": "2026-09-09T13:04:51.085025+08:00",
+  "sourceRoot": "/Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-composite-v1.3.0",
+  "sourceHead": "0eed1d6322631d6fcdeca6fb1c23d01a5d5ee9ca",
+  "inputKind": "未提交v1.4文件的固定副本，不是HEAD代码",
+  "sourceManifest": "logs/snapshot-manifest.json",
+  "counts": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 2,
+    "P3": 0
+  },
+  "findings": [
+    {
+      "id": "R14-015",
+      "severity": "P1",
+      "category": "M07 指标可比性 / 业务口径",
+      "title": "融资成本与短期债务占比被混成同一“共同指标”",
+      "route": "http://127.0.0.1:4434/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#module/m07 → 探索工作台 → 对比分析",
+      "objects": [
+        "ENT-020",
+        "ENT-017",
+        "property:ruleMetricValue:%"
+      ],
+      "precondition": "对象发现选择企业，搜索环保，勾选环保测试公司4和环保测试公司1后进入探索。",
+      "steps": [
+        "切换到对比分析，选择“规则指标值（%）”。",
+        "查看条形/点图的数值，点图的中位数；再切到雷达图。",
+        "继续分析→加入报告，查看生成的数据并导出HTML。",
+        "与两家对象全貌的“规则指标”和原资源定义核对。"
+      ],
+      "expected": "只有业务含义、单位、时间和口径兼容的指标可以进入同一比较。不同规则的数值不能仅因同一属性键和单位相同就计算排序/中位数或混入雷达轴。",
+      "actual": "公司4的ruleMetricValue=2.880984%表示平均融资成本；公司1的93.545164%表示短期债务余额占比。两者被列为“规则指标值（%）·2/2共同指标”，点图计算中位数48.21%，雷达也自动使用该轴。报告实际导出仍有“公司4/规则指标值”和“公司1/规则指标值”两行，不能识别两个业务指标的区别。",
+      "impact": "可能把短债结构压力与融资利率作高低比较，形成错误的企业优劣或风险判断，并传播到报告。不是小数精度问题。",
+      "evidence": [
+        "logs/07-comparison-controls.json",
+        "logs/08-incompatible-rule-metric.json",
+        "logs/09-radar.json",
+        "logs/incompatible-metric-source.json",
+        "logs/m07-report-transfer.json",
+        "downloads/m07-comparison.html"
+      ],
+      "source": [
+        {
+          "path": "designs/prototype-work/v1.4/composite/modules/m07/app.js",
+          "line": 1106
+        },
+        {
+          "path": "designs/prototype-work/v1.4/composite/modules/m07/app.js",
+          "line": 1125
+        },
+        {
+          "path": "designs/prototype-work/v1.4/composite/modules/m07/app.js",
+          "line": 1173
+        },
+        {
+          "path": "designs/prototype-work/v1.4/composite/modules/m07/app.js",
+          "line": 1920
+        }
+      ],
+      "recommendation": "按稳定Metric身份/实际业务定义匹配可比指标，而非仅按属性键及单位。对ruleMetricValue等泛化容器，缺少相同定义时排除或明确分组；图表及报告使用相同检查。",
+      "acceptance": [
+        "两家企业不再形成共同的“规则指标值”排序、中位数或雷达轴。",
+        "平均融资成本2.880984%与2.22838%仍可正常比较；风险评分也保持可比。",
+        "报告中每个指标名称与来源定义一致，不再把不同口径聚合为同一名称。"
+      ]
+    },
+    {
+      "id": "R14-016",
+      "severity": "P2",
+      "category": "M07 时间范围 / 解释与反馈",
+      "title": "选择无观测区间后，比较页仍沿用旧静态值却标注新时间范围",
+      "route": "http://127.0.0.1:4434/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#module/m07 → 时序分析 / 对比分析",
+      "objects": [
+        "ENT-020",
+        "ENT-017",
+        "2025-12-31快照",
+        "2026-01-01至2026-08-15"
+      ],
+      "precondition": "两家环保企业的融资及正式风险系列均为2025-12-31单次观测。",
+      "steps": [
+        "在时序分析把开始日期改为2026-01-01，结束日期保留2026-08-15。",
+        "确认融资余额、融资成本、风险系列均显示“无观测”。",
+        "切到对比分析，选择风险评分；查看图表日期与数值。"
+      ],
+      "expected": "所选区间没有观测时，不得让旧快照值看起来属于该区间。允许保留静态属性，但必须同时显示真实截至日及“不受区间筛选影响”，与区间序列清楚区分。",
+      "actual": "时序页明确显示当前范围无观测；比较页仍使用23.05/30.52等2025-12-31静态属性，图表却标注2026-01-01至2026-08-15。属性比较不检查时间，系列比较检查时间，用户无法从同一时间栏判断哪些指标受筛选影响。完整时间范围下还存在属性/系列同名融资余额选项。",
+      "impact": "容易把旧快照当作当前所选期间结果，降低跨期比较及导出材料的可靠性。没有发现该操作重算或篡改源值。",
+      "evidence": [
+        "logs/13-temporal-no-observation.json",
+        "logs/14-comparison-outside-snapshot.json",
+        "logs/15-current-period-old-risk.json",
+        "logs/incompatible-metric-source.json"
+      ],
+      "source": [
+        {
+          "path": "designs/prototype-work/v1.4/composite/modules/m07/app.js",
+          "line": 1115
+        },
+        {
+          "path": "designs/prototype-work/v1.4/composite/modules/m07/app.js",
+          "line": 1125
+        },
+        {
+          "path": "designs/prototype-work/v1.4/composite/modules/m07/app.js",
+          "line": 1206
+        }
+      ],
+      "recommendation": "给属性和序列指标显示不同来源类型/截至日；静态属性与当前区间不一致时明确提示，或仅允许区间内的对应观测参加时间比较。",
+      "acceptance": [
+        "所选2026区间下，2025快照不能无提示地显示为区间结果。",
+        "静态快照/区间最新观测的同名选项可区分，报告带真实截至日。",
+        "信息科技费用筛到2025-03-31仍能显示实际观测25.3%，不会把年末105.4%套入一季度。"
+      ]
+    },
+    {
+      "id": "R14-017",
+      "severity": "P2",
+      "category": "M07 关系图可操作性 / 状态理解",
+      "title": "默认关系节点重叠导致点选串到相邻对象，中心说明也不一致",
+      "route": "http://127.0.0.1:4434/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html#module/m07 → 关系网络",
+      "objects": [
+        "ENT-020",
+        "financing::s001.loanbook.553",
+        "financing::s001.owner.001"
+      ],
+      "precondition": "1440×900，环保公司4为图的中心；初始6节点5关系，原对象集包含公司4/公司1。",
+      "steps": [
+        "切关系网络，观察左上相邻的融资明细集合和负责人节点。",
+        "点击融资明细圆心位置，核对上方当前对象和左侧对象集。",
+        "对照图中“中心对象”与标题“以…为中心展开业务关系”。"
+      ],
+      "expected": "节点圆心及标签有可区分的点击区域；选择哪个对象应清晰可预期。图中心与当前选择不同，应分别命名。",
+      "actual": "两个节点圆形和文字重叠。本轮两次对融资明细节点区域的鼠标点选均选到负责人001，对象集随之从2变3。截图中标题写“以负责人001为中心”，图上中心对象仍是环保公司4。通过明细节点的加号可展开到9节点8关系，但不能消除默认点选的歧义。",
+      "impact": "容易误选、意外扩大范围，并把负责人带入只接受企业的模型；本轮M08随后明确拒绝含负责人的混合集合。用户不易判断是数据范围还是模型发生问题。",
+      "evidence": [
+        "screenshots/07-current-m07.png",
+        "logs/18-selected-loanbook.json",
+        "logs/19-expanded-loanbook.json",
+        "logs/28-model-handoff.json",
+        "logs/browser-actions.jsonl",
+        "logs/browser-results.jsonl"
+      ],
+      "source": [
+        {
+          "path": "designs/prototype-work/v1.4/composite/modules/m07/app.js",
+          "line": 878
+        },
+        {
+          "path": "designs/prototype-work/v1.4/composite/modules/m07/app.js",
+          "line": 727
+        },
+        {
+          "path": "designs/prototype-work/v1.4/composite/modules/m07/app.js",
+          "line": 1254
+        }
+      ],
+      "recommendation": "为节点及文字加入最小间距/碰撞处理，确保圆心命中自身；图标题区分“关系中心”和“当前节点”，集合增加时给出明确反馈。",
+      "acceptance": [
+        "1440/1280及窄屏下，明细和负责人节点不重叠，分别点击各自圆心能选对对象。",
+        "选中相邻节点时标题与中心标识不矛盾。",
+        "选择集合外节点后集合数量变化可见，交接前能识别混入的对象类型。"
+      ]
+    }
+  ],
+  "previousVerification": [
+    {
+      "id": "R14-013",
+      "status": "通过（地图降级模式下的业务核验）",
+      "actual": "或/或者/OR三个输入均拒绝，范围、活动方案、窗口及报告/事项数量不变；答案无下游操作。并集仍未实现，不把拒绝称作并集功能完成。",
+      "evidence": [
+        "logs/or-fix-retest.json",
+        "logs/29-or-fix-fallback.json"
+      ]
+    },
+    {
+      "id": "R14-014",
+      "status": "通过（编辑/预览/实际HTML，地图降级模式）",
+      "actual": "编辑与预览数值相同；HTML含7.161、1.408、5.838亿元且无原长尾。源rows/jointSnapshot未改变。",
+      "evidence": [
+        "logs/format-fix-retest.json",
+        "logs/format-download-validation.json",
+        "downloads/formatted-report.html"
+      ]
+    }
+  ],
+  "webgl": "正常WebGL未验收；两项业务复测使用明确注入的既有降级模式",
+  "guide": "M07-USER-GUIDE.md",
+  "sourceModified": false,
+  "coverage": [
+    [
+      "C01",
+      "R14-013/014",
+      "独立Shell→态势降级→问数/报告",
+      "拒绝OR、格式一致且不改源值",
+      "两项均通过限定业务复测；并集未实现",
+      "已验证",
+      "logs/or-fix-retest.json；logs/format-download-validation.json"
+    ],
+    [
+      "C02",
+      "正常WebGL",
+      "不注入故障进入正常态势",
+      "地图有可确认渲染/就绪状态",
+      "未取得就绪；再触发既有WebGL不可用路径完成业务验证",
+      "未通过验收/未定产品根因",
+      "logs/normal-webgl-attempt.json"
+    ],
+    [
+      "M01",
+      "对象发现",
+      "企业→环保→预览→勾选两家→进入",
+      "区分结果/预览/选择",
+      "4个搜索结果中选择2家；对象集2，当前公司4；预览未改选中范围",
+      "已验证",
+      "logs/01-m07-discovery.json；logs/04-two-enterprise-catalog.json"
+    ],
+    [
+      "M02",
+      "对象全貌",
+      "属性/关系/事件/证据四分区",
+      "读取固定信息与来源",
+      "公司4的75笔来源、5关系、1事件、12证据引用可读",
+      "已验证",
+      "logs/object360-tabs.json"
+    ],
+    [
+      "M03",
+      "关系图",
+      "6节点→点选/展开→9节点",
+      "节点可选、关系可追溯",
+      "展开有效；节点重叠导致错选，中心文案不一致；折叠/复位未完整验证",
+      "部分实现",
+      "logs/19-expanded-loanbook.json；screenshots/07-current-m07.png"
+    ],
+    [
+      "M04",
+      "时序",
+      "企业单快照→区间无观测；预算季度；持仓B",
+      "真实观测、单位和日期一致",
+      "企业区间显示无观测；信息科技费用一季度25.3%；持仓B显示79快照中的区间序列；多选上限主要源码核对",
+      "部分覆盖",
+      "logs/13-temporal-no-observation.json；logs/additional-m07-checks.json"
+    ],
+    [
+      "M05",
+      "地图",
+      "对象集→SVG地图→缩放",
+      "只显示有坐标对象",
+      "地图可进入，缩放状态可保存；2企业有坐标、负责人无坐标；完整框选非本M07能力",
+      "部分覆盖",
+      "logs/20-spatial.json；logs/saved-link.json"
+    ],
+    [
+      "M06",
+      "比较",
+      "两企业→条形/点图/雷达/日期",
+      "共同定义与同一时间口径",
+      "图形切换有效，但混比规则值及日期不一致；默认前8截取顺序仅源码核对",
+      "部分实现",
+      "logs/08-incompatible-rule-metric.json；logs/09-radar.json；logs/15-current-period-old-risk.json"
+    ],
+    [
+      "M07",
+      "保存恢复",
+      "保存→刷新/重读→打开保存记录→复制链接",
+      "状态可恢复",
+      "保存记录EXP-MTTLN4HZ恢复对象集、视图和展开状态；已生成完整链接，未在另一台机器打开",
+      "已验证限定路径",
+      "logs/23-reload-restored.json；logs/saved-link.json"
+    ],
+    [
+      "M08",
+      "报告交接",
+      "比较→继续分析→报告→HTML→返回来源",
+      "保留对象、视图、证据",
+      "报告16行指标及返回URL/上下文保留，返回恢复compare与对象集；错误可比指标也会进入报告",
+      "已验证操作链/内容有缺陷",
+      "logs/m07-report-transfer.json；downloads/m07-comparison.html；logs/27-return-from-report.json"
+    ],
+    [
+      "M09",
+      "模型交接",
+      "M07→M08目标",
+      "正确身份/不兼容范围阻断",
+      "接收公司4及原视图；含负责人的混合集合被明确拒绝；未执行模型计算及候选返回",
+      "部分覆盖",
+      "logs/28-model-handoff.json"
+    ],
+    [
+      "M10",
+      "问数/驾驶舱交接",
+      "持仓B→两个入口",
+      "保持对象/时间/版本",
+      "4持仓对象集、holding-02、季度范围及S005版本传入；未继续穷举下游问答/评价",
+      "已验证入口和上下文",
+      "logs/m07-other-handoffs.json"
+    ],
+    [
+      "M11",
+      "空/跨类型",
+      "不存在搜索→清除；贷前/投资类型",
+      "空结果可恢复，类型可查",
+      "空结果禁用进入探索，清除可恢复；4申请主体、4持仓可查",
+      "已验证",
+      "logs/additional-m07-checks.json"
+    ],
+    [
+      "M12",
+      "响应式",
+      "1440/1280/390/320",
+      "页宽不溢出、操作可达",
+      "1280/390/320在预算时序取DOM和控件状态，外层/内层均无横向页面溢出；完整逐屏截图链未完成",
+      "部分验证",
+      "logs/additional-m07-checks.json；logs/33-m07-width-390.json"
+    ],
+    [
+      "C03",
+      "测试和源码",
+      "本轮npm test/build；输入指纹",
+      "不改业务代码",
+      "120/120、构建通过；本轮不是采用实施方旧结果；源完整性收尾核对",
+      "已执行",
+      "logs/npm-test.log；logs/build.log；logs/snapshot-manifest.json"
+    ]
+  ]
+}
