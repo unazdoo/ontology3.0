@@ -52,7 +52,7 @@
   const financing = {
     id: "financing",
     scenarioId: "S001",
-    name: "集团融资驾驶舱",
+    name: "集团融资全景",
     description: "从集团到板块、单位和融资机构，分析融资成本、债务结构与优化行动。",
     period: "2025-12-31",
     dataLabel: "融资数据 2025-12-31",
@@ -118,7 +118,7 @@
   const budget = {
     id: "budget",
     scenarioId: "S002",
-    name: "预算监督管理驾驶舱",
+    name: "环保测试公司4 · 预算全景",
     description: "围绕预算执行、项目余额、费用差旅、跨年计提、年末占用和供应商价格开展专题监督。",
     period: "2025 年度",
     dataLabel: "预算管理数据 2025 年度",
@@ -201,7 +201,7 @@
   const risk = {
     id: "risk",
     scenarioId: "S003",
-    name: "债务风险监测驾驶舱",
+    name: "债务风险全景",
     description: "按企业、产业和风险分档查看正式评估结果，并穿透企业报告与处置进展。",
     period: "2025-12-31",
     dataLabel: "债务风险评估数据 2025-12-31",
@@ -273,7 +273,7 @@
   const preloan = {
     id: "preloan",
     scenarioId: "S004",
-    name: "贷款贷前风险评估驾驶舱",
+    name: "贷前业务全景",
     description: "围绕借款主体资料完整度、杠杆水平、关系风险和人工复核优先级查看正式结果与候选差异。",
     period: "2026-08-15",
     dataLabel: "DATA-ASSET-S004-20260815-V01",
@@ -306,7 +306,7 @@
     id: "post-investment",
     scenarioId: "S005",
     scenarioVersion: "S005-v1",
-    name: "金融产品投后评价驾驶舱",
+    name: "投资业务全景",
     description: "汇总当前评价轮次的六域状态、指标覆盖、结论与可回溯证据。",
     period: "等待当前轮次",
     dataLabel: "当前评价轮次",

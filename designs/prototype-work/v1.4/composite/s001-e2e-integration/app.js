@@ -51,11 +51,11 @@
     action: Object.freeze({
       order: "03", en: "OPERATE & DELIVER", name: "运营与智能", icon: "circle-dot-dashed", modules: ["dashboard", "decision", "agent", "report"],
       title: "把态势、重点事项、智能任务和报告放在一个闭环中",
-      lead: "从经营驾驶舱进入判断、协作和交付，并能返回原对象与证据。",
+      lead: "从对象全景了解经营状况、风险事件和关联业务，再进入协作与交付。",
       scope: "经营态势 · 协作交付",
       core: "态势 · 决策 · 交付",
       entries: Object.freeze([
-        Object.freeze({ label: "经营驾驶舱", detail: "查看整体态势、重点对象和变化", moduleId: "dashboard", taskId: "directory", icon: "layout-dashboard" }),
+        Object.freeze({ label: "经营全景", detail: "从集团与业务范围总览下探到对象画像", moduleId: "dashboard", taskId: "directory", icon: "layout-dashboard" }),
         Object.freeze({ label: "融资与风险态势", detail: "全球地图、债务风险与融资问数", moduleId: "dashboard", taskId: "situation", icon: "globe-2" }),
         Object.freeze({ label: "决策工作台", detail: "处理需要判断、确认和分办的事项", moduleId: "decision", taskId: "workbench", icon: "circle-dot-dashed" }),
         Object.freeze({ label: "决策运营", detail: "跟踪接收、判断、执行和完成进展", moduleId: "decision", taskId: "todos", icon: "list-checks" }),
@@ -198,7 +198,7 @@
   function parseRoute() {
     const hash = global.location.hash || "#home";
     if (["#", "#/", "#home"].includes(hash)) return { type: "home", active: "home", key: "home" };
-    if (hash === "#dashboard") return { type: "dashboard", active: "dashboard", key: "dashboard" };
+    if (hash === "#dashboard") return { type: "dashboard", active: "m07", key: "dashboard" };
     const match = hash.match(/^#module\/([a-z0-9-]+)$/);
     if (match && ALLOWED_MODULES.has(match[1])) return { type: "module", moduleId: match[1], active: match[1], key: `module-${match[1]}` };
     return { type: "home", active: "home", key: "home" };
@@ -309,7 +309,7 @@
         ${module ? `<nav class="top-breadcrumb" aria-label="当前位置"><button type="button" data-route="#home">首页</button>${icon("chevron-right", "xs")}<button type="button" data-action="module-root" data-module-id="${module.id}">${esc(currentName)}</button>${icon("chevron-right", "xs")}<strong id="frame-breadcrumb-current">${esc(currentTask)}</strong></nav>` : `<div><span>工作台</span><strong>首页</strong></div>`}
       </div>
       <div class="top-actions">
-        ${["decision", "query", "report", "ontology", "data"].includes(module?.id) && sessionStorage.getItem("ofw.m07.business-return") ? `<button class="button" data-action="return-business-overview">返回业务全景</button>` : ""}
+        ${["decision", "query", "report", "ontology", "data", "modeling"].includes(module?.id) && sessionStorage.getItem("ofw.m07.business-return") ? `<button class="button" data-action="return-business-overview">返回对象全景</button>` : ""}
         <button class="top-action" type="button" data-action="open-catalog" title="搜索业务资源" aria-label="搜索业务资源">${icon("search", "sm")}</button>
         <button class="top-action" type="button" data-action="open-recent" title="最近工作" aria-label="最近工作">${icon("history", "sm")}</button>
         ${module ? `<button class="top-action" type="button" data-action="reload-frame" title="重新读取当前模块" aria-label="重新读取当前模块">${icon("refresh-cw", "sm")}</button>` : ""}
@@ -532,10 +532,16 @@
   }
 
   function moduleTasks(moduleId) {
+    if (['m07','dashboard'].includes(moduleId)) {
+      const labels={directory:'业务范围总览',financing:'集团融资全景',budget:'企业预算全景',risk:'债务风险全景',preloan:'贷前业务全景','post-investment':'投资业务全景',situation:'融资与风险地图'};
+      const scenarios={financing:'S001',budget:'S002',risk:'S003',preloan:'S004','post-investment':'S005',situation:'S003'};
+      return [...MODULE_TASKS.m07.map(task=>({...task,targetModuleId:'m07',label:task.id==='explore'?'单对象画像':task.label})),...([...MODULE_TASKS.dashboard,...(JOINT?.tasks.dashboard||[])]).map(task=>({...task,targetModuleId:['preloan','post-investment'].includes(task.id)?'m07':'dashboard',collectionId:task.id==='preloan'?'preloan-business':task.id==='post-investment'?'investment-analysis':null,label:labels[task.id]||task.label,scenarioId:scenarios[task.id]}))];
+    }
     return [...(MODULE_TASKS[moduleId] || []),...(JOINT?.tasks[moduleId]||[])];
   }
 
   function taskFromFrame(frame, module) {
+    if(module.id==='m07'){try{const collectionId=new URL(frame.contentWindow.location.href).searchParams.get('collection');const scoped=moduleTasks('m07').find(task=>task.collectionId===collectionId&&collectionId);if(scoped)return scoped;}catch(_){}}
     const jointTask=JOINT?.taskForFrame(frame,module.id);if(jointTask)return jointTask;
     const tasks = moduleTasks(module.id);
     if (!tasks.length) return null;
@@ -569,7 +575,7 @@
     const active = module.id === "dashboard"
       ? tasks.find((task) => guessedHash.includes(`/view/${task.id}/`)) || tasks[0]
       : tasks.find((task) => task.hash === guessedHash) || tasks.find((task) => guessedHash.startsWith(task.hash?.split("?")[0] || "__missing__")) || tasks[0];
-    return `<aside class="module-subnav" data-module-id="${esc(module.id)}" aria-label="${esc(module.name)}任务导航"><header><span>${esc(module.ownerId)}</span><strong>${esc(module.name)}</strong></header><select class="module-subnav-select" data-module-task-select="${esc(module.id)}" aria-label="选择${esc(module.name)}任务">${tasks.map((task) => `<option value="${esc(task.id)}" ${task.id === active?.id ? "selected" : ""}>${esc(task.label)}</option>`).join("")}</select><nav>${tasks.map((task) => `<button type="button" class="module-subnav-item ${task.id === active?.id ? "active" : ""}" data-module-task="${esc(task.id)}" data-module-id="${esc(module.id)}">${icon(task.icon, "sm")}<span>${esc(task.label)}</span></button>`).join("")}</nav></aside>`;
+    return `<aside class="module-subnav" data-module-id="${esc(module.id)}" aria-label="${esc(module.name)}任务导航"><header><span>${module.id==='dashboard'?'M07':esc(module.ownerId)}</span><strong>${esc(module.name)}</strong></header><select class="module-subnav-select" data-module-task-select="${esc(module.id)}" aria-label="选择${esc(module.name)}任务">${tasks.map((task) => `<option value="${esc(task.id)}" ${task.id === active?.id ? "selected" : ""}>${esc(task.label)}</option>`).join("")}</select><nav>${tasks.map((task) => `<button type="button" class="module-subnav-item ${task.id === active?.id ? "active" : ""}" data-module-task="${esc(task.id)}" data-module-id="${esc(module.id)}">${icon(task.icon, "sm")}<span>${esc(task.label)}</span></button>`).join("")}</nav></aside>`;
   }
 
   function resourcePathForM07() {
@@ -631,6 +637,10 @@
     }
     if (module.id === "modeling") {
       const url = applyContext(new URL(module.source, global.location.href), context);
+      try {
+        const focused=saved?.href&&new URL(saved.href,global.location.href);
+        if(focused?.origin===url.origin&&focused.pathname===url.pathname&&/^MODEL-[A-Z0-9-]+$/.test(focused.searchParams.get('focusModel')||''))url.searchParams.set('focusModel',focused.searchParams.get('focusModel'));
+      } catch (_) {}
       url.searchParams.set("apiBase", API_BASE);
       url.searchParams.set("programIds", DATA.scenarios.map((item) => item.id).join(","));
       url.searchParams.set("embedded", "1");
@@ -654,8 +664,8 @@
 
   function renderModule(module) {
     const source = frameSource(module);
-    const content = `<div class="module-view" data-screen-label="${esc(module.ownerId)} ${esc(module.name)}工作区"><section class="module-workspace-layout${module.id === 'dashboard' ? ' cockpit-layout' : ''}">${secondaryNavMarkup(module)}<section class="frame-stage"><iframe id="module-frame" class="module-frame" data-module-id="${module.id}" data-scenario-id="${esc(activeContext()?.scenarioId)}" title="${esc(module.name)}" src="${esc(source)}" sandbox="allow-scripts allow-same-origin allow-forms allow-modals allow-popups allow-downloads"></iframe></section></section></div>`;
-    renderShell(content, { type: module.id === "dashboard" ? "dashboard" : "module", moduleId: module.id, active: module.id, key: module.id === "dashboard" ? "dashboard" : `module-${module.id}` });
+    const content = `<div class="module-view" data-screen-label="${esc(module.ownerId)} ${esc(module.name)}工作区"><section class="module-workspace-layout">${secondaryNavMarkup(module)}<section class="frame-stage"><iframe id="module-frame" class="module-frame" data-module-id="${module.id}" data-scenario-id="${esc(activeContext()?.scenarioId)}" title="${esc(module.name)}" src="${esc(source)}" sandbox="allow-scripts allow-same-origin allow-forms allow-modals allow-popups allow-downloads"></iframe></section></section></div>`;
+    renderShell(content, { type: module.id === "dashboard" ? "dashboard" : "module", moduleId: module.id, active: module.id === "dashboard" ? "m07" : module.id, key: module.id === "dashboard" ? "dashboard" : `module-${module.id}` });
     renderedModuleId = module.id;
     const frame = document.getElementById("module-frame");
     frame?.addEventListener("load", () => {
@@ -709,11 +719,30 @@
     if (select) select.value = active.id;
   }
 
+  function openBusinessPanorama(collectionId,scenarioId) {
+    if(!['preloan-business','investment-analysis'].includes(collectionId))return;
+    captureFramePosition();
+    STORE.setActiveScenario(scenarioId|| (collectionId==='preloan-business'?'S004':'S005'),'business-panorama');
+    const target=new URL(DATA.moduleById.m07.source,location.href);
+    target.searchParams.set('collection',collectionId);target.searchParams.set('lens','collection');target.searchParams.set('businessScenario',STORE.get().activeScenarioId);target.hash='explore';
+    const linked=new URL(location.href);linked.searchParams.set('exploration',target.href);history.replaceState(history.state,'',linked);
+    navigate('#module/m07',{skipCapture:true});
+  }
+
   function activateModuleTask(moduleId, taskId) {
     const module = moduleId === "dashboard" ? DATA.dashboard : DATA.moduleById[moduleId];
     const task = moduleTasks(moduleId).find((item) => item.id === taskId);
     const frame = document.getElementById("module-frame");
     if (!module || !task || !frame || renderedModuleId !== module.id) return;
+    if(task.collectionId){openBusinessPanorama(task.collectionId,task.scenarioId);return;}
+    if (task.targetModuleId && task.targetModuleId !== module.id) {
+      captureFramePosition();
+      if(task.scenarioId && STORE.get().activeScenarioId!==task.scenarioId)STORE.setActiveScenario(task.scenarioId,'object-panorama');
+      const saved=STORE.activeScenario()?.navigation?.framePositions?.[task.targetModuleId]||{};
+      STORE.saveFramePosition(task.targetModuleId,{...saved,hash:task.hash,windowY:0,containerY:0});
+      if(task.targetModuleId==='m07'&&task.id==='discover')STORE.updateWorkspaceContext({activeObjectRef:null,objectSetRef:null,lensRef:{moduleId:'m07',lensId:'discover',route:'#discover'},sourceModuleId:'m07'},'object-directory');
+      navigate(task.targetModuleId==='dashboard'?'#dashboard':'#module/m07',{skipCapture:true});return;
+    }
     if(JOINT?.activate(frame,module,task))return;
     if (task.scenarioId && STORE.get().activeScenarioId !== task.scenarioId) {
       captureFramePosition();
@@ -1433,6 +1462,12 @@
       if (message.type === "OFW_M07_READY" && renderedModuleId === "m07") {
         if (!message.scenarioContext || message.scenarioContext.scenarioId !== "PORTFOLIO" || message.scenarioContext.status !== "active" || !["scenarioVersion", "scenarioRunId", "formedAt"].every((field) => String(message.scenarioContext[field] || "").trim())) throw new Error("M07 资源目录身份不一致。");
         if (restoringLinkedExploration) { restoringLinkedExploration = false; return; }
+        const loaded=new URL(frame.getAttribute('src'),location.href);
+        // A restored M07 URL owns its local view; a delayed host message must not overwrite it.
+        if(STORE.workspaceContext()?.sourceModuleId==='m07'&&['object','set','collection','lens','view'].some(key=>loaded.searchParams.has(key))){
+          frame.contentWindow.postMessage({type:'OFW_M07_PUBLISH_CONTEXT'},location.origin);
+          deliverM08Return(frame);return;
+        }
         deliverWorkspaceContext(frame, DATA.moduleById.m07);
         deliverM08Return(frame);
         return;
@@ -1533,14 +1568,23 @@
         STORE.saveFramePosition("data", { href: target.href, hash: target.hash, windowY: 0, containerY: 0 });
         navigate("#module/data"); return;
       }
+      if(renderedModuleId==='dashboard'&&message.type==='OFW_OBJECT_PANORAMA'){openBusinessPanorama(message.collectionId);return;}
       if (renderedModuleId === "m07" && message.operation === "open-business-ontology") {
         const returnUrl = safeM07ReturnUrl(message.returnUrl, activeContext());
-        if (!returnUrl || !/^semantic-[A-Za-z0-9-]+$/.test(message.semanticVersionId || "") || !/^OBJ-[A-Z0-9-]+$/.test(message.objectTypeId || "")) return;
+        const resourceId=message.resourceId||message.objectTypeId;
+        if (!returnUrl || !/^semantic-[A-Za-z0-9-]+$/.test(message.semanticVersionId || "") || !/^(OBJ|RULE)-[A-Z0-9-]+$/.test(resourceId || "")) return;
         sessionStorage.setItem("ofw.m07.business-return", returnUrl.href);
         const target = new URL(DATA.moduleById.ontology.source, global.location.href);
-        target.hash = message.view === "canvas" ? `published/version?id=${encodeURIComponent(message.semanticVersionId)}&tab=canvas&focus=${encodeURIComponent(message.objectTypeId)}` : `published/resource?version=${encodeURIComponent(message.semanticVersionId)}&id=${encodeURIComponent(message.objectTypeId)}&tab=overview`;
+        target.hash = message.view === "canvas" ? `published/version?id=${encodeURIComponent(message.semanticVersionId)}&tab=canvas&focus=${encodeURIComponent(message.objectTypeId)}` : `published/resource?version=${encodeURIComponent(message.semanticVersionId)}&id=${encodeURIComponent(resourceId)}&tab=overview`;
         STORE.saveFramePosition("ontology", { href: target.href, hash: target.hash, windowY: 0, containerY: 0 });
         navigate("#module/ontology"); return;
+      }
+      if(renderedModuleId==='m07'&&message.operation==='open-object-monitor'){
+        const returnUrl=safeM07ReturnUrl(message.returnUrl,activeContext());if(!returnUrl||!/^MODEL-[A-Z0-9-]+$/.test(message.modelId||''))return;
+        sessionStorage.setItem('ofw.m07.business-return',returnUrl.href);STORE.setActiveScenario('S003','object-monitor');
+        STORE.updateWorkspaceContext({scenarioId:'S003',activeObjectRef:{id:message.objectId,title:message.title,objectTypeRef:'Enterprise',scenarioId:'S003',dataVersionId:message.dataVersionId,ontologyVersionId:message.ontologyVersionId},objectSetRef:{id:'monitor-source:'+message.objectId,title:message.title,objectIds:[message.objectId],selectionMode:'EXPLICIT',count:1},dataVersionRef:{id:message.dataVersionId},ontologyVersionRef:{id:message.ontologyVersionId},timeRange:{start:message.asOf,end:message.asOf,label:message.asOf},sourceModuleId:'m07'},'monitor-source');
+        const target=new URL(DATA.moduleById.modeling.source,location.href);target.searchParams.set('focusModel',message.modelId);target.hash='repository';
+        STORE.saveFramePosition('modeling',{href:target.href,hash:target.hash,windowY:0,containerY:0});navigate('#module/modeling');return;
       }
       if (renderedModuleId === "m07" && message.operation === "open-business-decision") {
         const returnUrl = safeM07ReturnUrl(message.returnUrl, activeContext());

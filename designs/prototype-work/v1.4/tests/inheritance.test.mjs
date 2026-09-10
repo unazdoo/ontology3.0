@@ -44,12 +44,14 @@ const allowed = new Set([
   "tests/server.test.mjs",
   "tests/workflow.test.mjs",
   "tests/shell-contract.test.mjs",
+  "tests/stability-contract.test.mjs",
   "tests/chrome-regression.mjs",
   "tests/readability-regression.mjs",
   "dashboard/app.js",
+  "dashboard/data.js",
   "integrations/native-module-integrations.js",
 ]);
-test("every inherited v1.3.2 source file remains unchanged; all 45 inherited files exist", () => {
+test("frozen parent files and unrelated inherited files remain unchanged; all 45 inherited files exist", () => {
   assert.equal(manifest.files.length, 45);
   for (const file of manifest.files) {
     assert.equal(
@@ -88,14 +90,14 @@ test("all original modules, five domains and resource content are inherited with
                   .source,
               }
             : module.id === "m07"
-              ? { ...module, name: original.modules.find(item => item.id === "m07").name }
+              ? { ...module, name: original.modules.find(item => item.id === "m07").name, short: original.modules.find(item => item.id === "m07").short }
               : module,
         ),
       ),
     ),
     JSON.parse(JSON.stringify(original.modules)),
   );
-  assert.equal(current.modules.find(item => item.id === "m07").name, "业务全景");
+  assert.equal(current.modules.find(item => item.id === "m07").name, "对象全景");
   assert.equal(
     current.modules.find((item) => item.id === "ontology").source,
     "../ontology/index.html?v=20260907-01",
@@ -213,4 +215,9 @@ test("repeated joint-report sync preserves prose edited in the inherited editor"
   sandbox.OFW_WORKFLOW.saveReport("S003", { ...reordered, contentBlocks: [] });
   sandbox.OFW_V14_JOINT.publishReport(report);
   assert.equal(sandbox.OFW_WORKFLOW.readReport("S003").contentBlocks.length, 0);
+});
+
+test('panorama titles do not change inherited dashboard business data',()=>{
+  const body=read('composite/dashboard/data.js').replaceAll('债务风险全景','债务风险监测驾驶舱').replaceAll('投资业务全景','金融产品投后评价驾驶舱').replaceAll('集团融资全景','集团融资驾驶舱').replaceAll('环保测试公司4 · 预算全景','预算监督管理驾驶舱').replaceAll('贷前业务全景','贷款贷前风险评估驾驶舱');
+  assert.equal(body,readFileSync(new URL('dashboard/data.js',parent),'utf8'));
 });

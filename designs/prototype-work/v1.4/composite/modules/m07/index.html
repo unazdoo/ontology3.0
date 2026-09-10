@@ -39,7 +39,7 @@
         </button>
         <button id="open-saved-explorations" class="icon-button" type="button" title="已保存探索" aria-label="已保存探索"><i data-lucide="bookmark"></i></button>
         <button id="continue-analysis" class="button primary" type="button">
-          <i data-lucide="arrow-up-right"></i><span>继续分析</span>
+          <i data-lucide="arrow-up-right"></i><span>更多操作</span>
         </button>
       </div>
     </header>
@@ -67,7 +67,7 @@
           <div class="hero-copy">
             <span class="hero-kicker">BUSINESS OVERVIEW</span>
             <h1>查找对象，查看全景画像</h1>
-            <p>查看企业、金融产品及汇总持仓；选择多个对象后比较指标或并列查看。</p>
+            <p>查找企业、金融产品及汇总持仓，点击名称打开完整画像。</p>
           </div>
           <div class="hero-stats" aria-label="对象资源摘要">
             <div><strong id="stat-objects">0</strong><span>业务对象</span></div>
@@ -93,14 +93,13 @@
             <span id="result-count">0 个结果</span>
           </div>
           <div class="result-actions">
-            <span class="selection-hint">点名称打开画像；勾选后对比或并排查看</span>
+            <button class="button primary" type="button" data-open-comparison>对照查看</button>
           </div>
         </div>
 
         <div id="discovery-results" class="discovery-results"></div>
       </section>
 
-      <aside id="preview-pane" class="preview-pane" aria-label="对象预览"></aside>
       <div id="selection-bar" class="selection-bar" aria-label="已选对象操作" hidden></div>
     </section>
 
@@ -116,6 +115,7 @@
         </section>
         <aside id="inspector-pane" class="inspector-pane workspace-pane" aria-label="对象详情与证据"></aside>
       </div>
+      <aside id="object-chat" class="object-chat" aria-label="对象问答" hidden></aside>
     </section>
   </main>
 
@@ -153,6 +153,7 @@
   <script src="../../shared/business-catalog.js"></script>
   <script src="../../resources/business-release.js"></script>
   <script src="portrait-model.js"></script>
+  <script src="object-experience.js"></script>
   <script src="inline-map.js"></script>
   <script src="app.js"></script>
 </body>

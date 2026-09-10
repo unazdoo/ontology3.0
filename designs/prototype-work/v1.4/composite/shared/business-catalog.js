@@ -121,9 +121,14 @@
     }
     const collections=[{id:'group-finance',kind:'aggregate-view',title:'集团融资总览',memberIds:['ENT-020','ENT-007','ENT-017'],summary:clone(data.groupSummary),sourceRefs:[data.sources.finance.path],scopeNote:'集团汇总口径为5218笔融资；下方三家为当前可下探的重点企业。'},
       {id:'investment-analysis',kind:'object-set',title:'投资产品分析集',memberIds:objects.filter(o=>o.objectTypeId==='OBJ-INVESTMENT-PRODUCT').map(o=>o.id)}];
+    collections.push({id:'preloan-business',kind:'object-set',title:'贷前业务全景',memberIds:objects.filter(o=>o.objectTypeId==='OBJ-ENTERPRISE'&&o.scenarioId==='S004').map(o=>o.id)});
     for(const enterprise of objects.filter(o=>o.objectTypeId==='OBJ-ENTERPRISE')){
       const loans=objects.filter(o=>o.objectTypeId==='OBJ-FINANCING-DETAIL'&&o.parentEnterpriseId===enterprise.id);
       if(loans.length)collections.push({id:`financing:${enterprise.id}`,kind:'object-set',title:`${enterprise.title} · 融资借据`,memberIds:loans.map(o=>o.id),parentId:enterprise.id});
+    }
+    for(const institution of objects.filter(o=>o.objectTypeId==='OBJ-FINANCIAL-INSTITUTION')){
+      const memberIds=semanticLinks.filter(link=>link.to===institution.id&&objectById.get(link.from)?.objectTypeId==='OBJ-FINANCING-DETAIL').map(link=>link.from);
+      if(memberIds.length)collections.push({id:`financing:${institution.id}`,kind:'object-set',title:`${institution.title} · 关联融资借据`,memberIds:[...new Set(memberIds)],parentId:institution.id});
     }
     for(const annual of annuals)collections.push({id:`budget-details:${annual.id}`,kind:'object-set',title:`${annual.title} · 科目期间明细`,memberIds:objects.filter(o=>o.objectTypeId==='OBJ-ENTERPRISE-BUDGET-DETAIL'&&o.annualId===annual.id).map(o=>o.id),parentId:annual.id});
     collections.push({id:`budget-history:${data.budgetOwnership.enterpriseId}`,kind:'object-set',title:'企业部门年度预算',memberIds:annuals.map(o=>o.id),parentId:data.budgetOwnership.enterpriseId});

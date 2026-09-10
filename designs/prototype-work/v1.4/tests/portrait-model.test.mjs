@@ -45,14 +45,6 @@ test('empty time intervals do not silently use latest values outside the window'
   const dim=model.dimensions(products)[0];
   assert.equal(model.observation(products[0],dim,{start:'2026-08-01',end:'2026-08-15'}).points.length,0);
 });
-test('events distinguish data-as-of assessments from real task processing times',()=>{
-  const events=model.eventsFor(item('ENT-020'),[{request:{id:'request'},task:{id:'task',history:[{time:'2026-09-10 12:00:00',label:'开始处理',detail:'负责人开始复核'}]}}]);
-  assert.ok(events.some(e=>e.category==='规则判断'&&e.timeLabel==='数据截至日'&&e.date==='2025-12-31'));
-  assert.ok(events.some(e=>e.category==='评估记录'&&e.timeLabel==='评估截至日'));
-  assert.equal(events[0].requestId,'request');
-  assert.equal(events[0].timeLabel,'办理时间');
-  assert.equal(model.eventsFor(products[0]).length,0);
-});
 test('inherited projection adaptations are limited to the exact known idle loops',()=>{
   const root=new URL('../../../prototype-releases/v1.1.0/',import.meta.url);
   const ontology=readFileSync(new URL('ontology-management-review/canvas-first/portfolio-integration.js',root),'utf8');

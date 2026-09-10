@@ -124,6 +124,11 @@
 
   let inlineMapCleanup = null;
   let portrait = null;
+  let experience = null, monitoring = null, monitoringStatus = 'loading', monitoringPromise = null;
+  let comparisonDraft = null, chatOpen = false;
+  const chatRunningObjects = new Set();
+  const chatDrafts = new Map();
+  const CHAT_KEY = 'ofw.m07.object-conversations.v1';
   let previewTab = "properties";
   let drawerFocus = null;
   const capabilitiesCache = new Map();
@@ -317,7 +322,7 @@
   }
 
   function objectEvents(item = activeObject()) {
-    if (portrait && item) return portrait.eventsFor(item, businessRecords(item)).map(event=>({...event,t:String(event.date||" ").slice(0,10),objectId:item.id,eventType:event.category}));
+    if (experience && item) return experience.events(item, monitoring).map(event=>({...event,t:String(event.date||" ").slice(0,10),objectId:item.id,eventType:event.category}));
     return indexes.eventsByObject.get(item?.id) || [];
   }
 
@@ -380,12 +385,18 @@
     const requestedSet = parseCsv(params.get("set")).flatMap(id => resolveObject(id) ? [resolveObject(id).id] : resource.legacyViews?.[id] ? [] : [id]);
     const range = normalizeDateRange({ start: params.get("from"), end: params.get("to") });
     const requestedLens = params.get("lens");
+    let comparisonOrigin=null;
+    try { const origin=JSON.parse(params.get('compareReturn')||'null');if(origin&&['discover','explore'].includes(origin.route)&&['overview','collection','selection'].includes(origin.lens))comparisonOrigin={route:origin.route,lens:origin.lens,objectId:resolveObject(origin.objectId)?.id||null,collectionId:resource.collections.some(collection=>collection.id===origin.collectionId)?origin.collectionId:null,detailTab:['profile','relations','events','history','evidence','actions'].includes(origin.detailTab)?origin.detailTab:'profile',scrollTop:Math.max(0,Number(origin.scrollTop)||0),timeRange:normalizeDateRange(origin.timeRange||{})}; }catch(_){}
+
     return {
-      route: currentRoute(),
+      route: currentRoute(), comparisonOrigin,
       businessScenario: legacyView?.businessScenario || params.get("businessScenario") || "S003",
       lens: legacyView?.collectionId ? "collection" : LENSES.some((item) => item.id === requestedLens) ? requestedLens : "overview",
       collectionId: params.get("collection") || legacyView?.collectionId || null,
+      returnCollectionId: params.get("returnCollection") || null,
       collectionPage: 0,
+      eventSourceFilter:["all","rule","model","business"].includes(params.get("eventSource"))?params.get("eventSource"):"all",
+      relationType:params.get("relationType")||"all", relationPage:Math.max(0,Number(params.get("relationPage"))||0),
       detailTab: ["profile", "relations", "events", "history", "evidence", "actions"].includes(params.get("detail")) ? params.get("detail") : "profile",
       selectionView: ["list", "cards", "trends", "compare"].includes(params.get("view")) ? params.get("view") : "list",
       selectionDimension: params.get("dimension") || "basic",
@@ -426,10 +437,15 @@
     if (nextState.selectionReturn) params.set("selectionReturn", "1");
     const inlineMap = nextState.portraitMaps?.[nextState.activeId];
     if (nextState.route === "explore" && inlineMap) { params.set("locationScale",String(inlineMap.k)); params.set("locationX",String(inlineMap.x)); params.set("locationY",String(inlineMap.y)); }
+    if(nextState.eventSourceFilter&&nextState.eventSourceFilter!=="all")params.set("eventSource",nextState.eventSourceFilter);
+    if(nextState.relationType&&nextState.relationType!=="all")params.set("relationType",nextState.relationType);
+    if(nextState.relationPage)params.set("relationPage",String(nextState.relationPage));
     if (nextState.detailTab && nextState.detailTab !== "profile") params.set("detail", nextState.detailTab);
     if (nextState.selectionView) params.set("view", nextState.selectionView);
     if (nextState.selectionDimension) params.set("dimension", nextState.selectionDimension);
     if (nextState.collectionId) params.set("collection", nextState.collectionId);
+    if(nextState.comparisonOrigin)params.set('compareReturn',JSON.stringify(nextState.comparisonOrigin));
+    if (nextState.returnCollectionId) params.set("returnCollection",nextState.returnCollectionId);
     if (nextState.search) params.set("q", nextState.search);
     if (nextState.businessScenario) params.set("businessScenario", nextState.businessScenario);
     if (nextState.typeFilter !== "all") params.set("type", nextState.typeFilter);
@@ -474,7 +490,7 @@
       if (patch.route === "explore") updateUrl("replace");
     }
     if (patch.typeFilter !== undefined || patch.search !== undefined) state.directoryScrollTop = 0;
-    if (patch.route === 'discover') patch.selectionReturn = false;
+    if (patch.route === 'discover') { patch.selectionReturn = false; patch.returnCollectionId=null; patch.collectionId=null; }
     const contextChanged = stateTouchesContext(patch);
     state = { ...state, ...patch };
     if (patch.activeId && !patch.previewId) state.previewId = patch.activeId;
@@ -518,7 +534,7 @@
   }
 
   function workspaceContextPatch() {
-    const ref = state.route === "explore" ? canonicalObjectRef() : null;
+    const ref = state.route === "explore" && !['collection','selection'].includes(state.lens) ? canonicalObjectRef() : null;
     return {
       objectSetRef: objectSetRef(),
       activeObjectRef: ref,
@@ -566,7 +582,7 @@
     if (active) patch.activeId = active.id;
     if (!active && context.activeObjectRef?.id) toast(`未找到对象“${context.activeObjectRef.title || context.activeObjectRef.id}”`, "warning");
     if (context.timeRange) patch.timeRange = normalizeDateRange(context.timeRange);
-    if (LENSES.some((item) => item.id === lensId)) patch.lens = lensId;
+    if (LENSES.some((item) => item.id === lensId)) patch.lens = lensId === "object360" ? "overview" : lensId;
     const explicitlyExploring = context.route === "#explore" || context.lensRef?.route === "#explore" || LENSES.some((item) => item.id === lensId);
     if (active || explicitlyExploring) patch.route = "explore";
     const explicitlyDiscovering = context.route === "#discover" || context.lensRef?.route === "#discover" || lensId === "discover";
@@ -635,6 +651,7 @@
     app.dataset.route = state.route;
     app.dataset.objectType = state.typeFilter;
     app.dataset.lens = state.lens;
+    document.getElementById("continue-analysis").hidden=state.route!=="explore"||["collection","selection"].includes(state.lens);
     discoverView.hidden = state.route !== "discover";
     exploreView.hidden = state.route !== "explore";
     document.querySelectorAll("[data-route]").forEach((button) => {
@@ -644,6 +661,7 @@
     });
     if (state.route === "discover") { inlineMapCleanup?.(); inlineMapCleanup = null; renderDiscover(); document.querySelector(".discovery-main").scrollTop = state.directoryScrollTop || 0; }
     else renderExplore();
+    renderObjectChat();
     syncBreadcrumb();
     refreshIcons();
     app.setAttribute("aria-busy", "false");
@@ -661,12 +679,11 @@
     typeFacets.insertAdjacentHTML("beforeend", `<section class="facet-group"><h3>常用业务</h3><button class="facet-button" data-open-object="ENT-020">${escapeHtml(resolveObject(resource.budgetOwnership.enterpriseId)?.title)} · 企业预算</button><button class="facet-button" data-open-collection="group-finance">集团融资总览</button><button class="facet-button" data-open-collection="investment-analysis">投资产品分析集</button></section>`);
     renderSavedExplorations();
     renderDiscoveryResults(filtered);
-    renderPreview();
     const type = state.typeFilter === "all" ? null : typeMeta(state.typeFilter);
     document.getElementById("result-title").textContent = state.search ? `“${state.search}”的搜索结果` : type?.label || "全部对象";
     if (state.selectedIds.some((id) => !resolveObject(id))) document.getElementById("result-title").textContent = "这组查询结果暂不支持对象视图，请返回问数继续分析。";
     document.getElementById("result-count").textContent = `${filtered.length} 个结果`;
-    renderSelectionBar();
+    document.getElementById('selection-bar').hidden = true;
   }
 
   function renderTypeFacets() {
@@ -708,23 +725,12 @@
   }
 
   function renderDiscoveryResults(items) {
-    if (!items.length) {
-      discoveryResults.innerHTML = `<div class="empty-state"><span>${icon("search-x")}</span><h2>没有匹配的对象</h2><p>调整搜索词或清除筛选后继续查找。</p><button class="button primary" type="button" data-reset-discovery>清除筛选</button></div>`;
-      return;
-    }
-    const selected = new Set(state.selectedIds);
-    const allSelected = items.every((item) => selected.has(item.id));
-    const table = `<div class="result-table-wrap"><table class="result-table"><thead><tr><th class="check-cell"><label class="check-control"><input type="checkbox" data-select-all ${allSelected ? "checked" : ""}><span></span></label></th><th>业务对象</th><th>对象类型</th><th>关键值</th><th>业务状态</th><th>关系</th><th>数据截至</th><th></th></tr></thead><tbody>${items.map((item) => {
-      const metric = primaryMetric(item);
-      const links = objectLinks(item).length;
-      const asOf = businessAsOf(item);
-      return `<tr class="${state.previewId === item.id ? "previewing" : ""}" data-preview-object="${escapeHtml(item.id)}"><td class="check-cell"><label class="check-control"><input type="checkbox" data-select-object="${escapeHtml(item.id)}" ${selected.has(item.id) ? "checked" : ""}><span></span></label></td><td><div class="object-cell">${objectGlyph(item, "small")}<div><button class="object-name" data-open-object="${escapeHtml(item.id)}">${escapeHtml(item.title)}</button><small>${escapeHtml(item.subtitle || item.canonicalObjectRef?.id || item.id)}</small></div></div></td><td><span class="type-label">${escapeHtml(typeMeta(item).label)}</span></td><td><div class="metric-cell"><strong>${escapeHtml(metric.value)}</strong><small>${escapeHtml(metric.label)}</small></div></td><td>${businessChip(item)}</td><td>${links}</td><td>${escapeHtml(formatDate(asOf))}</td><td><button class="row-arrow" type="button" data-open-object="${escapeHtml(item.id)}" aria-label="打开${escapeHtml(item.title)}">${icon("arrow-right")}</button></td></tr>`;
-    }).join("")}</tbody></table></div>`;
-    const cards = `<div class="result-cards">${items.map((item) => {
-      const metric = primaryMetric(item);
-      return `<article class="result-card ${state.previewId === item.id ? "previewing" : ""}" data-preview-object="${escapeHtml(item.id)}"><header><label class="check-control"><input type="checkbox" data-select-object="${escapeHtml(item.id)}" ${selected.has(item.id) ? "checked" : ""}><span></span></label>${objectGlyph(item, "small")}<div><button class="object-name" data-open-object="${escapeHtml(item.id)}">${escapeHtml(item.title)}</button><small>${escapeHtml(typeMeta(item).label)}</small></div>${businessChip(item)}</header><div class="mobile-metric"><span>${escapeHtml(metric.label)}</span><strong>${escapeHtml(metric.value)}</strong></div><button class="mobile-open" type="button" data-open-object="${escapeHtml(item.id)}">查看对象 ${icon("arrow-right")}</button></article>`;
-    }).join("")}</div>`;
-    discoveryResults.innerHTML = table + cards;
+    const table = `<div class="result-table-wrap"><table class="result-table"><thead><tr><th>业务对象</th><th>对象类型</th><th>地区 / 类别</th><th>关键指标</th><th>业务状态</th><th>风险事件</th><th>关联业务</th><th>数据截至</th><th></th></tr></thead><tbody>${items.map(item => {
+      const metric = primaryMetric(item), events = experience.events(item, monitoring), summary = experience.relationSummary(item);
+      return `<tr data-preview-object="${escapeHtml(item.id)}"><td><div class="object-cell">${objectGlyph(item,'small')}<button class="object-name" data-open-object="${escapeHtml(item.id)}">${escapeHtml(item.title)}</button></div></td><td>${escapeHtml(typeMeta(item).label)}</td><td>${escapeHtml(item.location?.city || propertyValue(item,'category') || '—')}</td><td><div class="metric-cell"><strong>${escapeHtml(metric.value)}</strong><small>${escapeHtml(metric.label)}</small></div></td><td>${businessChip(item)}</td><td>${events.length ? `<button class="text-button" data-object-events="${escapeHtml(item.id)}">${events.length} 项风险事件</button>` : monitoringStatus === 'loading' ? '读取中' : '—'}</td><td class="directory-relations">${summary.slice(0,4).map(group=>`${group.count} 个${escapeHtml(group.label)}`).join(' · ') || '—'}</td><td>${escapeHtml(businessAsOf(item))}</td><td><button class="row-arrow" data-open-object="${escapeHtml(item.id)}" aria-label="打开${escapeHtml(item.title)}">${icon('arrow-right')}</button></td></tr>`;
+    }).join('')}</tbody></table></div>`;
+    const cards = `<div class="result-cards">${items.map(item=>{const metric=primaryMetric(item),events=experience.events(item,monitoring);return `<article class="result-card" data-preview-object="${escapeHtml(item.id)}"><header>${objectGlyph(item,'small')}<div><button class="object-name" data-open-object="${escapeHtml(item.id)}">${escapeHtml(item.title)}</button><small>${escapeHtml(typeMeta(item).label)} · ${escapeHtml(item.location?.city||propertyValue(item,'category')||'')}</small></div>${businessChip(item)}</header><div class="mobile-metric"><span>${escapeHtml(metric.label)}</span><strong>${escapeHtml(metric.value)}</strong></div><p>${experience.relationSummary(item).slice(0,4).map(g=>`${g.count} 个${escapeHtml(g.label)}`).join(' · ')}</p>${events.length?`<button class="text-button" data-object-events="${escapeHtml(item.id)}">${events.length} 项风险事件</button>`:''}<small>数据截至 ${escapeHtml(businessAsOf(item))}</small><button class="mobile-open" data-open-object="${escapeHtml(item.id)}">打开全景画像 ${icon('arrow-right')}</button></article>`;}).join('')}</div>`;
+    discoveryResults.innerHTML = items.length ? table + cards : `<div class="empty-state"><h3>未找到匹配对象</h3><p>可以更换名称或清除筛选后继续查找。</p><button class="button quiet" data-reset-discovery>清除筛选</button></div>`;
   }
 
   function keyProperties(item, limit = 5) {
@@ -814,7 +820,7 @@
       const budget = annuals.reduce((sum, o) => sum + propertyValue(o, "budgetAmount"), 0);
       const actual = annuals.reduce((sum, o) => sum + propertyValue(o, "actualAmount"), 0);
       const costPressure = annuals.filter(o => propertyValue(o, "actualAmount") > propertyValue(o, "actualRevenue")).map(o => resolveObject(o.departmentId)?.title).filter(Boolean);
-      html += `<section id="enterprise-budget" class="business-section"><header><h3>企业预算 · 2025年${departmentSelection.length ? " · 所选部门" : ""}</h3><span>${annuals.length} 个责任部门</span></header><div class="business-metrics"><article><span>费用预算</span><strong>${formatNumber(budget, 4)} 万元</strong></article><article><span>实际费用</span><strong>${formatNumber(actual, 4)} 万元</strong></article><article><span>预算执行率</span><strong>${formatNumber(actual / budget * 100)}%</strong></article></div>${budgetTable(annuals)}<p>${costPressure.length ? `${escapeHtml(costPressure.join("、"))}本期费用高于收入，可继续查看部门收支和科目明细。` : ""}${departmentSelection.length ? "部门选择仅限定预算范围，融资与风险仍按企业口径展示。" : ""}预算数据沿用原预算模块口径，企业归属为本轮演示设置。</p><div class="business-tools"><button class="button quiet" data-budget-history="${item.id}">查看部门年度预算</button><button class="button primary" data-budget-report>将企业预算加入报告</button><button class="button quiet" data-budget-query>在问数中分析预算</button></div></section>`;
+      html += `<section id="enterprise-budget" class="business-section"><header><h3>企业预算 · 2025年${departmentSelection.length ? " · 所选部门" : ""}</h3><span>${annuals.length} 个责任部门</span></header><div class="business-metrics"><article><span>费用预算</span><strong>${formatNumber(budget, 4)} 万元</strong></article><article><span>实际费用</span><strong>${formatNumber(actual, 4)} 万元</strong></article><article><span>预算执行率</span><strong>${formatNumber(actual / budget * 100)}%</strong></article></div>${budgetTable(annuals)}<p>${costPressure.length ? `${escapeHtml(costPressure.join("、"))}本期费用高于收入，可继续查看部门收支和科目明细。` : ""}${departmentSelection.length ? "部门选择仅限定预算范围，融资与风险仍按企业口径展示。" : ""}预算数据沿用原预算模块口径，企业归属为本轮演示设置。</p><div class="business-tools"><button class="button quiet" data-budget-history="${item.id}">查看部门年度预算</button><button class="button quiet" data-budget-query>询问预算情况</button></div></section>`;
     }
     if (item.objectTypeId === "OBJ-ENTERPRISE-DEPARTMENT") html += `<section class="business-section"><header><h3>部门年度预算</h3></header>${budgetTable(annualBudgets(item.parentEnterpriseId, item.id))}<button class="button quiet" data-open-object="${escapeHtml(item.parentEnterpriseId)}">返回企业全景</button></section>`;
     if (item.objectTypeId === "OBJ-ENTERPRISE-BUDGET-ANNUAL") {
@@ -834,6 +840,7 @@
   function renderCollectionLens() {
     const collection = resource.collections.find(c => c.id === state.collectionId);
     if (!collection) { canvasStage.innerHTML = emptyLens("table", "请选择业务记录范围", "从企业或产品下探相关记录。", "返回企业全景", "overview"); return; }
+    if(['investment-analysis','preloan-business'].includes(collection.id)){renderBusinessScope(collection);return;}
     const items = collection.memberIds.map(resolveObject).filter(Boolean);
     const pageSize = 12, pages = Math.max(1, Math.ceil(items.length / pageSize));
     state.collectionPage = Math.min(state.collectionPage || 0, pages - 1);
@@ -847,25 +854,45 @@
     return [["profile", "全景画像"], ["relations", "关系图谱"], ["events", "事件"], ...(objectSeries(item).length ? [["history", "时序"]] : []), ["evidence", "证据"], ["actions", "行动与进展"]];
   }
 
+  function renderBusinessScope(collection) {
+    const investment=collection.id==='investment-analysis',items=collection.memberIds.map(resolveObject).filter(Boolean);
+    const holdings=resource.objects.filter(item=>item.objectTypeId==='OBJ-INVESTMENT-HOLDING'&&items.some(product=>product.id===item.productId));
+    const holdingFor=item=>holdings.find(holding=>holding.productId===item.id);
+    const countObservations=holdings.reduce((total,holding)=>total+new Set(objectSeries(holding).flatMap(series=>series.points.map(point=>point.t))).size,0);
+    const title=investment?'投资业务全景':'贷前业务全景';
+    const summary=investment?`${items.length} 个金融产品 · ${holdings.length} 个产品汇总持仓，按现有投资台账范围展示。`:`当前纳入对象目录的 ${items.length} 家申请主体，查看经营信息、负债水平和关联业务。`;
+    const rowMetric=item=>investment?holdingFor(item)?primaryMetric(holdingFor(item)).value:'产品目录条目':formatValue(item.properties.debtRatio);
+    const rows=items.map(item=>`<tr><td><button class="text-button" data-open-object="${escapeHtml(item.id)}">${escapeHtml(item.title)}</button></td><td>${escapeHtml(investment?propertyValue(item,'category'):propertyValue(item,'industry')||'借款申请主体')}</td><td><strong>${escapeHtml(rowMetric(item))}</strong></td><td>${escapeHtml(investment&&holdingFor(item)?businessAsOf(holdingFor(item)):businessAsOf(item))}</td><td><button class="button quiet" data-open-object="${escapeHtml(item.id)}">打开画像</button></td></tr>`).join('');
+    canvasStage.innerHTML=`<div class="business-overview business-scope-panorama"><header class="scope-panorama-header"><div><span class="eyebrow">业务范围全景</span><h2>${title}</h2><p>${summary}</p></div><button class="button primary" data-open-comparison>对照查看</button></header><section class="business-metrics"><article><span>${investment?'金融产品':'申请主体'}</span><strong>${items.length} ${investment?'个':'家'}</strong></article>${investment?`<article><span>产品汇总持仓</span><strong>${holdings.length} 个</strong></article><article><span>实际历史观测</span><strong>${countObservations} 条</strong></article>`:`<article><span>数据截至</span><strong>${escapeHtml(businessAsOf(items[0]))}</strong></article>`}</section><section class="portrait-section"><header><h3>${investment?'产品与持仓':'申请主体经营信息'}</h3><span>点击名称查看单对象全景</span></header><div class="business-table-scroll scope-panorama-table"><table class="workspace-table"><thead><tr><th>对象</th><th>${investment?'产品类别':'业务角色'}</th><th>${investment?'最近持仓市值':'资产负债率'}</th><th>实际观测截至</th><th></th></tr></thead><tbody>${rows}</tbody></table></div><div class="scope-panorama-cards">${items.map(item=>`<article><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(investment?propertyValue(item,'category'):'借款申请主体')}</p><strong>${escapeHtml(rowMetric(item))}</strong><small>${investment?'最近持仓市值':'资产负债率'} · ${escapeHtml(investment&&holdingFor(item)?businessAsOf(holdingFor(item)):businessAsOf(item))}</small><button class="button quiet" data-open-object="${escapeHtml(item.id)}">打开画像</button></article>`).join('')}</div><p class="section-note">${investment?'产品与持仓按各自实际观测日期展示，市值变化同时受规模和价格影响。可通过对照查看同口径的持仓走势。':'从申请主体继续查看指标依据、关联对象和办理进展。'}</p></section>${investment?`<section class="portrait-section"><header><h3>持仓历史</h3><span>按实际持仓与日期分别展示</span></header><div class="portrait-history-grid">${holdings.map(holding=>{const series=objectSeries(holding).find(series=>series.label.includes('市值'))||objectSeries(holding)[0];const dates=series?.points.map(p=>p.t).sort();return seriesCard(holding,series,{start:dates[0],end:dates.at(-1)});}).join('')}</div></section>`:''}</div>`;
+  }
+
   function eventMarkup(item) {
-    const events = portrait.eventsFor(item, businessRecords(item));
-    return `<section class="portrait-section"><header><h3>事件</h3><span>${events.length} 条</span></header><p class="section-note">规则判断和评估保留数据截至日；办理记录显示实际办理时间。</p>${events.length ? `<ol class="portrait-events">${events.map(event => `<li><span class="event-bullet"></span><div><header><strong>${escapeHtml(event.title)}</strong><span>${escapeHtml(event.category)}</span></header><p>${escapeHtml(event.note || "")}</p><small>${escapeHtml(event.timeLabel)} · ${escapeHtml(event.date || "")}</small>${event.requestId ? `<button class="text-button" data-business-action="${escapeHtml(event.requestId)}">查看事项</button>` : ""}</div></li>`).join("")}</ol>` : `<p class="business-empty">暂无已登记业务事件。</p>`}</section>`;
+    const all=experience.events(item,monitoring), filter=state.eventSourceFilter||'all';
+    const events=all.filter(event=>filter==='all'||event.source===filter);
+    const sources=global.OFW_OBJECT_EXPERIENCE.eventSources;
+    return `<section class="portrait-section object-events"><header><h3>风险事件与预警</h3><span>${all.length} 项已记录事件</span></header><details class="event-source-guide" ${state.detailTab==='events'?'open':''}><summary>事件从哪里来？</summary><div>${sources.map(source=>`<article><strong>${source.label}</strong><p>${source.description}</p></article>`).join('')}</div><p>只有实际命中或已发生的事件进入列表。普通评分在关键指标中查看；办理日志在“行动与进展”查看。模型事件按评估批次产生。</p></details><nav class="event-source-filters" aria-label="事件来源"><button data-event-source="all" class="${filter==='all'?'active':''}">全部 ${all.length}</button>${sources.map(source=>`<button data-event-source="${source.id}" class="${filter===source.id?'active':''}">${source.label} ${all.filter(e=>e.source===source.id).length}</button>`).join('')}</nav>${monitoringStatus==='loading'?'<p role="status">正在读取已发布的模型监控结果…</p>':monitoringStatus==='error'?'<p role="alert">模型监控结果暂未读取成功。<button class="text-button" data-monitor-retry>重新读取</button></p>':''}${events.length?`<ol class="portrait-events">${events.map(event=>`<li><span class="event-bullet ${event.severity}"></span><div><header><strong>${escapeHtml(event.title)}</strong><span>${escapeHtml(event.category)}</span></header><p><b>触发依据：</b>${escapeHtml(event.condition||event.note)}</p><p>${escapeHtml(event.observed||'')}</p>${event.source==='model'&&event.note?`<p>主要贡献项：${escapeHtml(event.note)}</p>`:''}<small>${escapeHtml(event.timeLabel||'发生时间')} ${escapeHtml(event.date)} · ${escapeHtml(event.sourceName||'业务系统')}</small><details><summary>查看事件来源</summary><dl><dt>来源版本</dt><dd>${escapeHtml(event.sourceVersion||'原始业务事件')}</dd><dt>规则 / 模型</dt><dd>${escapeHtml(event.definitionId||event.originEventId||'')}</dd>${event.runId?`<dt>运行批次</dt><dd>${escapeHtml(event.runId)}</dd><dt>结果形成时间</dt><dd>${escapeHtml(event.formedAt)}</dd>`:''}</dl><p>${escapeHtml(event.sourceDetail||'')}</p><ul>${(event.evidenceRefs||[]).map(ref=>`<li>${escapeHtml(ref)}</li>`).join('')}</ul></details><div class="business-tools">${event.source!=='business'?`<button class="button quiet" data-event-definition="${escapeHtml(event.id)}">${event.source==='rule'?'查看本体规则':'查看监控模型'}</button>`:''}<button class="text-button" data-detail-tab="actions">查看该对象办理进展</button></div></div></li>`).join('')}</ol>`:'<p class="business-empty">当前来源没有已记录的风险事件。</p>'}</section>`;
   }
 
   function actionMarkup(item) {
     const records = businessRecords(item);
-    return `<section class="portrait-section"><header><h3>行动与进展</h3><span>${records.length} 项办理事项</span></header><div class="portrait-actions">${records.map(record => `<article><header><strong>${escapeHtml(record.request.actionType?.name || "业务事项")}</strong><span class="business-status">${escapeHtml(record.stage)}</span></header><p>责任人：${escapeHtml(record.task?.owner || record.request.recipientName || record.request.owner || "待审批后分办")}${record.task?.dueDate ? ` · 截止 ${escapeHtml(record.task.dueDate)}` : ""}</p><p>${escapeHtml(record.task?.instructions || record.request.recommendation || "")}</p>${record.task?.progress?.length ? `<p><b>最新进展：</b>${escapeHtml(record.task.progress.at(-1).content)}</p>` : ""}${record.task?.result ? `<p><b>办理反馈：</b>${escapeHtml(typeof record.task.result === "string" ? record.task.result : record.task.result.summary || record.task.result.note || "")}</p>` : ""}<button class="button primary" data-business-action="${escapeHtml(record.request.id)}">${record.task ? "查看 / 办理待办" : "查看 / 审批事项"}</button></article>`).join("") || `<p class="business-empty">暂无已登记办理事项。可继续分析或加入业务报告。</p>`}</div><div class="business-tools">${["OBJ-ENTERPRISE", "OBJ-INVESTMENT-PRODUCT"].includes(item.objectTypeId) ? `<button class="button quiet" data-navigate-module="query">围绕此对象提问</button>` : ""}<button class="button quiet" data-navigate-module="report">加入业务报告</button></div><p class="section-note">办理记录来自决策中心。业务效果以更新后的成本、预算或风险评估为准。</p></section>`;
+    return `<section class="portrait-section"><header><h3>行动与进展</h3><span>${records.length} 项办理事项</span></header><div class="portrait-actions">${records.map(record => `<article><header><strong>${escapeHtml(record.request.actionType?.name || "业务事项")}</strong><span class="business-status">${escapeHtml(record.stage)}</span></header><p>责任人：${escapeHtml(record.task?.owner || record.request.recipientName || record.request.owner || "待审批后分办")}${record.task?.dueDate ? ` · 截止 ${escapeHtml(record.task.dueDate)}` : ""}</p><p>${escapeHtml(record.task?.instructions || record.request.recommendation || "")}</p>${record.task?.progress?.length ? `<p><b>最新进展：</b>${escapeHtml(record.task.progress.at(-1).content)}</p>` : ""}${record.task?.result ? `<p><b>办理反馈：</b>${escapeHtml(typeof record.task.result === "string" ? record.task.result : record.task.result.summary || record.task.result.note || "")}</p>` : ""}<button class="button primary" data-business-action="${escapeHtml(record.request.id)}">${record.task ? "查看 / 办理待办" : "查看 / 审批事项"}</button></article>`).join("") || `<p class="business-empty">暂无已登记办理事项。可围绕此对象提问或查看风险事件。</p>`}</div><div class="business-tools">${["OBJ-ENTERPRISE", "OBJ-INVESTMENT-PRODUCT"].includes(item.objectTypeId) ? `<button class="button quiet" data-navigate-module="query">围绕此对象提问</button>` : ""}</div><p class="section-note">办理记录来自决策中心。业务效果以更新后的成本、预算或风险评估为准。</p></section>`;
+  }
+
+  function mapObjectSummary(item) {
+    const rows=experience.relationSummary(item), metric=primaryMetric(item);
+    return `<strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(typeMeta(item).label)}${item.location?.city?' · '+escapeHtml(item.location.city):''}</span><p>${escapeHtml(metric.label)}：${escapeHtml(metric.value)}</p><p>${rows.map(group=>`${group.count} 个${escapeHtml(group.label)}`).join(' · ')}</p>${item.id!==state.activeId?`<button class="button quiet" data-open-object="${escapeHtml(item.id)}">打开全景画像</button>`:''}`;
   }
 
   function mapMarkup(item) {
-    const geometry = objectGeometry(item);
-    if (!geometry || !provinceGeometry || !global.d3) return "";
-    const projection = global.d3.geoMercator().fitExtent([[12, 12], [580, 270]], {type:"MultiPoint",coordinates:[[73,18],[135,54]]});
-    const plane = global.d3.geoTransform({point(lon,lat){const [x,y]=projection([lon,lat]);this.stream.point(x,y);}});
-    const path = global.d3.geoPath(plane), point = projection(geometry.coordinates);
-    const paths = (provinceGeometry.features || []).map(feature => `<path d="${path(feature) || ""}"></path>`).join("");
-    const provinceLabels = provinceGeometry.features.filter(f=>Array.isArray(f.properties?.centroid || f.properties?.center)).map(f=>{const p=projection(f.properties.centroid || f.properties.center);return `<g data-map-province data-x="${p[0]}" data-y="${p[1]}"><text text-anchor="middle">${escapeHtml(f.properties.name)}</text></g>`;}).join("");
-    return `<section class="portrait-section portrait-map" data-inline-location="${escapeHtml(item.id)}" data-point-x="${point[0]}" data-point-y="${point[1]}"><header><div><h3>地理位置</h3><p>${escapeHtml(item.location?.province || "")} · ${escapeHtml(item.location?.city || "")}</p></div><div class="inline-map-controls"><button class="button quiet" type="button" data-inline-map="out" aria-label="缩小地图">−</button><span data-map-scale>4.0×</span><button class="button quiet" type="button" data-inline-map="in" aria-label="放大地图">+</button><button class="button quiet" type="button" data-inline-map="locate">定位对象</button><button class="button quiet" type="button" data-inline-map="reset">显示全国</button></div></header><svg viewBox="0 0 600 320" role="img" tabindex="0" aria-label="${escapeHtml(item.title)}位置地图，可用滚轮缩放、拖动或方向键平移"><g data-map-world><g class="province-boundaries">${paths}</g></g>${provinceLabels}<g data-map-marker><circle r="8" fill="#2878bd" stroke="white" stroke-width="3"></circle><text y="-15" text-anchor="middle">${escapeHtml(item.location?.city || item.title)}</text></g></svg><p class="section-note">滚轮缩放 · 拖动平移 · 城市级演示布点，非实际经营地址。省界底图不含街道细节。</p></section>`;
+    const related=experience.relations(item);
+    const geoItems=[item,...related.map(entry=>entry.item)].filter(o=>objectGeometry(o));
+    if(!geoItems.length||!provinceGeometry||!global.d3)return '';
+    const projection=global.d3.geoMercator().fitExtent([[12,12],[580,270]],{type:'MultiPoint',coordinates:[[73,18],[135,54]]});
+    const plane=global.d3.geoTransform({point(lon,lat){const [x,y]=projection([lon,lat]);this.stream.point(x,y);}});
+    const path=global.d3.geoPath(plane),points=geoItems.map(o=>({item:o,point:projection(objectGeometry(o).coordinates)})),point=points[0].point;
+    const paths=provinceGeometry.features.map(feature=>`<path d="${path(feature)||''}"></path>`).join('');
+    const labels=provinceGeometry.features.filter(f=>Array.isArray(f.properties?.centroid||f.properties?.center)).map(f=>{const p=projection(f.properties.centroid||f.properties.center);return `<g data-map-province data-x="${p[0]}" data-y="${p[1]}"><text text-anchor="middle">${escapeHtml(f.properties.name)}</text></g>`;}).join('');
+    return `<section class="portrait-section portrait-map" data-inline-location="${escapeHtml(item.id)}" data-point-x="${point[0]}" data-point-y="${point[1]}"><header><div><h3>${objectGeometry(item)?'位置与关联业务':'关联对象位置'}</h3><p>点击位置或关联对象查看业务信息</p></div><div class="inline-map-controls"><button class="button quiet" data-inline-map="out" aria-label="缩小地图">−</button><span data-map-scale>4.0×</span><button class="button quiet" data-inline-map="in" aria-label="放大地图">+</button><button class="button quiet" data-inline-map="locate">${objectGeometry(item)?'定位当前对象':'定位关联对象'}</button><button class="button quiet" data-inline-map="fit">显示关联范围</button><button class="button quiet" data-inline-map="reset">显示全国</button></div></header><svg viewBox="0 0 600 320" role="img" tabindex="0" aria-label="${escapeHtml(item.title)}及关联对象的位置地图"><g data-map-world><g class="province-boundaries">${paths}</g></g>${labels}${points.map(({item:o,point:p})=>`<g data-map-marker data-map-object="${escapeHtml(o.id)}" data-point-x="${p[0]}" data-point-y="${p[1]}" role="button" tabindex="0" aria-label="查看${escapeHtml(o.title)}的关联信息"><circle r="8" fill="${o.id===item.id?'#2878bd':'#23846c'}" stroke="white" stroke-width="3"></circle><text y="-15" text-anchor="middle">${escapeHtml(o.location?.city||o.title)}</text><title>${escapeHtml(o.title)}</title></g>`).join('')}</svg><div class="map-business-content"><div data-map-object-summary>${mapObjectSummary(item)}</div><section><strong>关联对象与业务</strong><div class="map-related-list">${related.slice(0,20).map(entry=>`<button class="map-related-item" data-map-related="${escapeHtml(entry.item.id)}"><strong>${escapeHtml(entry.item.title)}</strong><small>${escapeHtml(typeMeta(entry.item).label)} · ${entry.path.length===1?'直接关联':'经'+entry.via.length+'笔业务记录关联'}</small></button>`).join('')||'<p>当前地图展示该对象所在城市。</p>'}</div></section></div><p class="section-note">滚轮缩放 · 拖动平移 · 地图仅展示已登记的城市级演示位置；关联业务按本体关系列示。省界底图不含街道细节。</p></section>`;
   }
 
   function miniChart(series, range, yExtent = null) {
@@ -891,29 +918,31 @@
 
   function historyMarkup(item, full = false) {
     const series = objectSeries(item);
-    if (!series.length) return `<p class="business-empty">当前对象按截至日快照展示。</p>`;
+    if (!series.length) return full ? `<p class="business-empty">当前对象按截至日快照展示。</p>` : "";
     const dates = series.flatMap(s=>(s.points||[]).filter(p=>numeric(p.v)).map(p=>p.t)).sort();
     const range = full ? state.timeRange : {start:dates[0],end:dates.at(-1)};
     return `<section class="portrait-section"><header><h3>${series.some(s=>s.relatedTitle) ? "关联持仓时序" : "历史观测"}</h3>${full ? "" : `<button class="text-button" data-preview-open="history" data-preview-id="${escapeHtml(item.id)}">全部时序</button>`}</header><p class="section-note">${dates[0] === dates.at(-1) ? `单一观测时点 ${dates[0]}，不据此推断趋势。` : "按实际观测日期展示；图表下可展开数值。"}</p><div class="portrait-history-grid">${series.slice(0, full ? 8 : 2).map(s=>seriesCard(item,s,range)).join("")}</div></section>`;
   }
 
   function relationDiagram(item, compact=false) {
-    const neighbors=visibleBusinessLinks(item).slice(0,compact?3:6).map(link=>relatedObject(link,item.id));
-    if(!neighbors.length)return "";
-    const width=640,height=230;
-    return `<svg class="portrait-relations-diagram" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(item.title)}直接关联图谱"><g class="relation-lines">${neighbors.map((o,i)=>`<line x1="320" y1="60" x2="${(i+1)*width/(neighbors.length+1)}" y2="157"></line>`).join("")}</g><circle cx="320" cy="52" r="24" fill="${typeMeta(item).color}"></circle><text x="320" y="20" text-anchor="middle">${escapeHtml(item.title)}</text>${neighbors.map((o,i)=>`<g transform="translate(${(i+1)*width/(neighbors.length+1)},157)" role="button" tabindex="0" data-open-object="${escapeHtml(o.id)}" aria-label="打开${escapeHtml(o.title)}"><circle r="19" fill="${typeMeta(o).color}"></circle><text y="38" text-anchor="middle">${escapeHtml(o.title.length>9?o.title.slice(0,9)+'…':o.title)}</text><title>${escapeHtml(o.title)} · ${escapeHtml(typeMeta(o).label)}</title></g>`).join("")}</svg>`;
+    const relations=experience.relations(item).slice(0,compact?3:6);if(!relations.length)return '';
+    const width=640,height=250;
+    return `<svg class="portrait-relations-diagram" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(item.title)}业务关系"><g class="relation-lines">${relations.map((entry,i)=>`<line x1="320" y1="60" x2="${(i+1)*width/(relations.length+1)}" y2="164" ${entry.path.length>1?'stroke-dasharray="5 4"':''}></line>`).join('')}</g><circle cx="320" cy="52" r="24" fill="${typeMeta(item).color}"></circle><text x="320" y="20" text-anchor="middle">${escapeHtml(item.title)}</text>${relations.map((entry,i)=>`<g transform="translate(${(i+1)*width/(relations.length+1)},164)" role="button" tabindex="0" data-open-object="${escapeHtml(entry.item.id)}" aria-label="打开${escapeHtml(entry.item.title)}"><circle r="19" fill="${typeMeta(entry.item).color}"></circle><text y="37" text-anchor="middle">${escapeHtml(entry.item.title.length>9?entry.item.title.slice(0,9)+'…':entry.item.title)}</text><text y="55" text-anchor="middle">${entry.path.length===1?'直接关联':'经业务记录关联'}</text><title>${escapeHtml(entry.item.title)} · ${escapeHtml(entry.label)}</title></g>`).join('')}</svg>`;
   }
 
   function relationMarkup(item) {
-    const relations = visibleBusinessLinks(item);
-    return `<section class="portrait-section"><header><h3>关联对象</h3><button class="text-button" data-open-lens="graph">展开关系图谱</button></header>${relationDiagram(item)}<div class="business-relations">${relations.slice(0,16).map(link=>{const other=relatedObject(link,item.id);return `<button data-open-object="${escapeHtml(other.id)}"><small>${escapeHtml(linkLabel(link,item.id))}</small><strong>${escapeHtml(other.title)}</strong><span>${escapeHtml(typeMeta(other).label)} →</span></button>`;}).join("") || `<p class="business-empty">暂无已登记关联对象。</p>`}</div></section>`;
+    const all=experience.relations(item),filter=state.relationType||'all';
+    const types=[...new Set(all.map(entry=>entry.item.objectTypeId))];
+    const related=all.filter(entry=>filter==='all'||entry.item.objectTypeId===filter);
+    const pages=Math.max(1,Math.ceil(related.length/12)),page=Math.min(state.relationPage||0,pages-1),shown=related.slice(page*12,(page+1)*12);
+    return `<section class="portrait-section"><header><h3>关联对象</h3><button class="text-button" data-open-lens="graph">展开关系图谱</button></header>${relationDiagram(item)}<p class="section-note">实线为直接关系，虚线为经业务记录连接。下方可查看全部 ${all.length} 个相关对象。</p><label>按对象类型查看 <select id="relation-type"><option value="all">全部</option>${types.map(id=>`<option value="${id}" ${filter===id?'selected':''}>${escapeHtml(typeMeta(id).label)}</option>`).join('')}</select></label><div class="business-relations">${shown.map(entry=>`<button data-open-object="${escapeHtml(entry.item.id)}"><small>${escapeHtml(entry.label)}${entry.via.length?' · '+entry.via.length+'笔关联记录':''}</small><strong>${escapeHtml(entry.item.title)}</strong><span>${escapeHtml(typeMeta(entry.item).label)} · ${escapeHtml(primaryMetric(entry.item).value)}</span></button>`).join('')||'<p>当前没有这一类型的关联对象。</p>'}</div>${pages>1?`<footer class="selection-pagination"><button class="button quiet" data-relation-page="-1" ${page===0?'disabled':''}>上一页</button><span>${page+1} / ${pages}</span><button class="button quiet" data-relation-page="1" ${page===pages-1?'disabled':''}>下一页</button></footer>`:''}</section>`;
   }
 
   function renderBusinessOverview() {
     const item=activeObject();
     const tab=portraitTabs(item).some(([id])=>id===state.detailTab)?state.detailTab:"profile";
     const metrics=keyProperties(item,12).filter(([key])=>!["asOf","dataAsOf","validFrom","validTo","snapshotCount"].includes(key)).slice(0,6);
-    const header=`<header class="portrait-identity">${objectGlyph(item,"large")}<div><small>${escapeHtml(typeMeta(item).label)} · 数据截至 ${escapeHtml(businessAsOf(item))}</small><h2>${escapeHtml(item.title)}</h2><p>${escapeHtml(item.subtitle||"")}</p></div>${businessChip(item)}<div class="portrait-head-actions"><button class="button quiet" data-open-canvas>本体画布</button>${state.selectedIds.length>1?`<button class="button quiet" data-selection-open>返回 ${state.selectedIds.length} 个对象</button>`:""}</div></header><nav class="portrait-tabs" role="tablist" aria-label="对象详情栏目">${portraitTabs(item).map(([id,label])=>`<button role="tab" type="button" aria-selected="${id===tab}" data-detail-tab="${id}" class="${id===tab?'active':''}">${label}</button>`).join("")}</nav>`;
+    const header=`<header class="portrait-identity">${objectGlyph(item,"large")}<div><small>${escapeHtml(typeMeta(item).label)} · 数据截至 ${escapeHtml(businessAsOf(item))}</small><h2>${escapeHtml(item.title)}</h2><p>${escapeHtml(item.subtitle||"")}</p></div>${businessChip(item)}<div class="portrait-head-actions"><button class="button primary" data-open-object-chat>围绕此对象提问</button><button class="button quiet" data-open-comparison>对照查看</button><button class="button quiet" data-open-canvas>本体画布</button>${state.selectedIds.length>1?`<button class="button quiet" data-selection-open>返回 ${state.selectedIds.length} 个对象</button>`:""}</div></header><nav class="portrait-tabs" role="tablist" aria-label="对象详情栏目">${portraitTabs(item).map(([id,label])=>`<button role="tab" type="button" aria-selected="${id===tab}" data-detail-tab="${id}" class="${id===tab?'active':''}">${label}</button>`).join("")}</nav>`;
     let body="";
     if(tab==='profile')body=`<section class="portrait-section"><header><h3>基本信息与关键指标</h3><button class="text-button" data-detail-tab="evidence">数据与口径</button></header><div class="business-metrics">${metrics.map(([key,p])=>`<article><span>${escapeHtml(propertyLabel(key))}</span><strong>${escapeHtml(formatValue(p))}</strong><small>截至 ${escapeHtml(comparisonPolicy().propertyDate(item,p)||businessAsOf(item))}</small></article>`).join("")}</div>${businessRules(item)}</section><div class="portrait-visuals">${mapMarkup(item)}</div>${historyMarkup(item)}${renderBusinessDetails(item)}${relationMarkup(item)}<div class="portrait-activity-grid">${eventMarkup(item)}${actionMarkup(item)}</div>${renderReturnedResult()}`;
     if(tab==='relations')body=relationMarkup(item)+renderBusinessDetails(item);
@@ -925,6 +954,7 @@
   }
 
   function renderPreview() {
+    if (!previewPane) return;
     const item=resolveObject(state.previewId)||activeObject();
     if(!item){previewPane.innerHTML='<p class="business-empty">选择对象以预览。</p>';return;}
     const tabs=[["properties","基本信息"],["relations","关系"],["events","事件"],["history","时序"],["evidence","证据"]];
@@ -987,7 +1017,7 @@
     setState({ route:'explore', lens:'selection', activeId:ids.includes(state.activeId)?state.activeId:ids[0],
       selectionView:resuming ? state.selectionView : chosen,
       selectionDimension:resuming ? state.selectionDimension : chosen === 'compare' ? 'all' : 'basic',
-      selectionPage:resuming ? state.selectionPage : 0, selectionScrollTop:resuming ? state.selectionScrollTop : 0, selectionReturn:true
+      collectionId:null, selectionPage:resuming ? state.selectionPage : 0, selectionScrollTop:resuming ? state.selectionScrollTop : 0, selectionReturn:true
     }, {history:'push'});
   }
 
@@ -1020,12 +1050,118 @@
     if(view==='trends'&&chosen){const samples=items.flatMap(item=>portrait.observation(item,chosen,state.timeRange).points.filter(p=>numeric(p.v)).map(p=>p.v));const extent=samples.length?[Math.min(...samples),Math.max(...samples)]:null;content=`<p class="section-note">${chosen.linked?'金融产品关联的汇总持仓 · ':''}${escapeHtml(chosen.label)} · 同一时间范围与纵轴尺度。${product?'持仓规模及价格变化不等于产品收益表现。':''}</p><div class="selection-tiles">${shown.map(item=>{const {series}=portrait.observation(item,chosen,state.timeRange);return seriesCard(item,series,state.timeRange,extent);}).join('')}</div>`;}
     if(view==='compare')content=comparisonTable(shown,metrics,items);
     const modes=[...(metrics.length?[['compare','对照表']]:[['list','基本信息表']]),['cards','并排查看'],...(trends.length?[['trends',product?'持仓走势':'走势对照']]:[])];
-    canvasStage.innerHTML=`<div class="selection-workspace"><header class="selection-toolbar"><div><h2>${title}</h2><p>已选 ${items.length} 个对象 · 点击名称可打开画像</p></div><div class="business-tools"><button class="button quiet" data-manage-set>调整已选对象</button><button class="button quiet" data-return-directory>关闭对照</button></div></header><div class="comparison-subjects">${items.slice(0,4).map(item=>`<button class="selection-chip" data-set-remove="${escapeHtml(item.id)}" aria-label="移除${escapeHtml(item.title)}">${escapeHtml(item.title)} ${icon('x')}</button>`).join('')}${items.length>4?`<button class="text-button" data-manage-set>全部 ${items.length} 个</button>`:''}</div><nav class="selection-modes" aria-label="结果查看方式">${modes.map(([id,label])=>`<button data-selection-view="${id}" class="${view===id?'active':''}">${label}</button>`).join('')}</nav>${!metrics.length&&!trends.length?'<p class="section-note">当前组合适合并排查看基本信息，未提供数值排名。</p>':''}${['cards','trends','compare'].includes(view)?`<label class="selection-dimension">${view==='compare'?'调整对照指标':view==='trends'?'查看指标':'查看信息'} <select data-selection-dimension aria-label="展示维度">${view==='compare'?'<option value="all">关键指标一览</option>':view==='cards'?'<option value="basic">基本信息</option>':''}${dimensions.map(d=>`<option value="${escapeHtml(d.id)}" ${d.id===state.selectionDimension?'selected':''}>${escapeHtml(d.label)} (${escapeHtml(displayUnit(d.unit))})</option>`).join('')}</select></label>`:''}${content}${items.length>pageSize?`<footer class="selection-pagination"><button class="button quiet" data-selection-page="-1" ${!state.selectionPage?'disabled':''}>上一页</button><span>显示 ${state.selectionPage*pageSize+1}–${Math.min((state.selectionPage+1)*pageSize,items.length)} / ${items.length} 个对象</span><button class="button quiet" data-selection-page="1" ${state.selectionPage===pages-1?'disabled':''}>下一页</button></footer>`:''}</div>`;
+    canvasStage.innerHTML=`<div class="selection-workspace"><header class="selection-toolbar"><div><h2>${title}</h2><p>已选 ${items.length} 个对象 · 点击名称可打开画像</p></div><div class="business-tools"><button class="button quiet" data-manage-set>修改对照</button><button class="button quiet" data-return-directory>关闭对照</button></div></header><div class="comparison-subjects">${items.slice(0,4).map(item=>`<button class="selection-chip" data-set-remove="${escapeHtml(item.id)}" aria-label="移除${escapeHtml(item.title)}">${escapeHtml(item.title)} ${icon('x')}</button>`).join('')}${items.length>4?`<button class="text-button" data-manage-set>全部 ${items.length} 个</button>`:''}</div><nav class="selection-modes" aria-label="结果查看方式">${modes.map(([id,label])=>`<button data-selection-view="${id}" class="${view===id?'active':''}">${label}</button>`).join('')}</nav>${!metrics.length&&!trends.length?'<p class="section-note">当前组合适合并排查看基本信息，未提供数值排名。</p>':''}${['cards','trends','compare'].includes(view)?`<label class="selection-dimension">${view==='compare'?'调整对照指标':view==='trends'?'查看指标':'查看信息'} <select data-selection-dimension aria-label="展示维度">${view==='compare'?'<option value="all">关键指标一览</option>':view==='cards'?'<option value="basic">基本信息</option>':''}${dimensions.map(d=>`<option value="${escapeHtml(d.id)}" ${d.id===state.selectionDimension?'selected':''}>${escapeHtml(d.label)} (${escapeHtml(displayUnit(d.unit))})</option>`).join('')}</select></label>`:''}${content}${items.length>pageSize?`<footer class="selection-pagination"><button class="button quiet" data-selection-page="-1" ${!state.selectionPage?'disabled':''}>上一页</button><span>显示 ${state.selectionPage*pageSize+1}–${Math.min((state.selectionPage+1)*pageSize,items.length)} / ${items.length} 个对象</span><button class="button quiet" data-selection-page="1" ${state.selectionPage===pages-1?'disabled':''}>下一页</button></footer>`:''}</div>`;
   }
 
-  function openSetDialog() {
-    const items=selectedObjects();
-    openDrawer(`${drawerHeader('已选对象','调整选择')}<div class="drawer-body"><p>${items.length ? `已选 ${items.length} 个对象。取消勾选后应用，或回目录继续添加。` : '尚未勾选对象，先到目录选择需要对比的对象。'}</p><div class="set-dialog-options">${items.map(item=>`<label><input type="checkbox" data-set-member="${escapeHtml(item.id)}" checked><span><strong>${escapeHtml(item.title)}</strong><small>${escapeHtml(typeMeta(item).label)}</small></span></label>`).join('')}</div><div class="dialog-actions">${items.length ? '<button class="button quiet" data-set-apply>应用选择</button><button class="button primary" data-set-apply="explore">应用并查看</button>' : ''}<button class="button quiet" data-set-add>到目录添加对象</button></div></div>`,'object-set-dialog');
+  function comparisonPool() {
+    return resource.objects.filter(item=>comparisonDraft.scopeIds?comparisonDraft.scopeIds.includes(item.id):resource.typeMetadata[item.objectTypeId]?.primary);
+  }
+
+  function comparisonTypes(purpose=comparisonDraft.purpose) {
+    return [...new Set(comparisonPool().filter(item=>purpose!=='trends'||objectSeries(item).some(series=>new Set(series.points?.map(point=>point.t)).size>1)).map(item=>item.objectTypeId))];
+  }
+
+  function comparisonChoices() {
+    const draft = comparisonDraft;
+    return comparisonPool().filter(item => {
+      if (draft.scopeIds && !draft.scopeIds.includes(item.id)) return false;
+      if (draft.purpose !== 'basic' && item.objectTypeId !== draft.type) return false;
+      if (draft.purpose === 'trends' && !objectSeries(item).some(series => series.points?.length > 1)) return false;
+      return true;
+    });
+  }
+
+  function openComparisonBuilder() {
+    const ids = state.lens === 'selection' ? state.selectedIds : state.route === 'explore' && activeObject() ? [state.activeId] : [];
+    const scope=resource.collections.find(collection=>collection.id===(state.lens==='collection'?state.collectionId:state.lens==='selection'?state.comparisonOrigin?.collectionId:null));
+    comparisonDraft = { purpose: state.lens === 'selection' ? state.selectionView === 'trends' ? 'trends' : state.selectionView === 'compare' ? 'metrics' : 'basic' : scope?.id==='investment-analysis'?'trends':'basic', type: scope?.id==='investment-analysis'?'OBJ-INVESTMENT-PRODUCT':activeObject()?.objectTypeId || 'OBJ-ENTERPRISE', origin:state.lens==='selection'?state.comparisonOrigin:{route:state.route,lens:state.lens,objectId:state.activeId,collectionId:state.collectionId,detailTab:state.detailTab,scrollTop:canvasStage.scrollTop,timeRange:{...state.timeRange}},ids: state.lens==='selection'?[...ids]:scope?[]:[...ids], scopeIds:scope?.memberIds||(!resource.typeMetadata[activeObject()?.objectTypeId]?.primary&&state.route==='explore'?resource.objects.filter(item=>item.objectTypeId===activeObject().objectTypeId&&(!activeObject().parentEnterpriseId||item.parentEnterpriseId===activeObject().parentEnterpriseId)).map(item=>item.id):null), search: '' };
+    renderComparisonBuilder(true);
+  }
+
+  function renderComparisonBuilder(open = false) {
+    const draft = comparisonDraft, candidates = comparisonChoices();
+    const shown = candidates.filter(item => !draft.search || searchableText(item).includes(draft.search.toLocaleLowerCase('zh-CN')));
+    const picked = draft.ids.map(resolveObject).filter(Boolean);
+    const compatible = picked.length >= 2 && (draft.purpose === 'basic' || (draft.purpose === 'metrics' ? selectionMetrics(picked).length : portrait.dimensions(picked).length));
+    const purposeLabel = { basic: '并排查看基本信息', metrics: '查看指标对照', trends: '查看持仓走势' }[draft.purpose];
+    const types = comparisonTypes();
+    const html = `${drawerHeader('对照查看', '明确目的，再选择对象')}<div class="drawer-body comparison-builder"><label class="field-label">1. 想看什么<select id="comparison-purpose"><option value="basic" ${draft.purpose==='basic'?'selected':''}>基本信息并排查看（可跨类型）</option><option value="metrics" ${draft.purpose==='metrics'?'selected':''}>同类对象业务指标对照</option>${comparisonTypes('trends').length?`<option value="trends" ${draft.purpose==='trends'?'selected':''}>同类对象历史走势</option>`:''}</select></label>${draft.purpose!=='basic'?`<label class="field-label">对象类型<select id="comparison-type">${types.map(id=>`<option value="${id}" ${draft.type===id?'selected':''}>${escapeHtml(typeMeta(id).label)}</option>`).join('')}</select></label>`:''}<section><h3>2. 选择要放在一起看的对象</h3><input type="search" id="comparison-search" placeholder="搜索对象名称" value="${escapeHtml(draft.search)}"><div class="comparison-candidates">${shown.map(item=>`<label><input type="checkbox" data-comparison-pick="${escapeHtml(item.id)}" ${draft.ids.includes(item.id)?'checked':''}><span><strong>${escapeHtml(item.title)}</strong><small>${escapeHtml(typeMeta(item).label)} · ${escapeHtml(item.location?.city||propertyValue(item,'category')||businessAsOf(item))}</small></span></label>`).join('')||'<p>没有匹配的对象，可以调整类型或搜索名称。</p>'}</div></section><section class="comparison-picked"><h3>将展示 ${picked.length} 个对象</h3><div class="selection-chips">${picked.map(item=>`<button class="selection-chip" data-comparison-remove="${escapeHtml(item.id)}">${escapeHtml(item.title)} ×</button>`).join('')||'<p>请选择至少两个对象。</p>'}</div><p>${draft.purpose==='basic'?'按名称、类型、业务状态、地区或类别并排展示。':draft.purpose==='metrics'?'仅使用全部所选对象共同的业务指标，保留各自单位与截至日。':'并排展示实际观测，使用相同时间范围和纵轴尺度。'}${picked.length>=2&&!compatible?'这组对象没有共同业务口径，请调整对象或改为基本信息。':''}</p></section></div><footer class="comparison-builder-footer"><button class="button quiet" data-close-drawer>取消</button><button class="button primary" data-comparison-apply ${compatible?'':'disabled'}>${purposeLabel}</button></footer>`;
+    if (open || !drawer.open) openDrawer(html, 'comparison-dialog');
+    else {
+      const input = document.activeElement?.id === 'comparison-search';
+      const position = document.getElementById('comparison-search')?.selectionStart;
+      const scroll = drawer.querySelector('.comparison-candidates')?.scrollTop || 0;
+      drawer.innerHTML = html;
+      drawer.querySelector('.comparison-candidates').scrollTop = scroll;
+      if (input) { const field=document.getElementById('comparison-search');field.focus();try{field.setSelectionRange(position,position);}catch(_){} }
+      refreshIcons(drawer);
+    }
+  }
+
+  function applyComparisonDraft() {
+    const items = comparisonDraft.ids.map(resolveObject).filter(Boolean);
+    if (items.length < 2) return;
+    const view = { basic: items.length > 4 ? 'list' : 'cards', metrics: 'compare', trends: 'trends' }[comparisonDraft.purpose];
+    if (view==='compare'&&!selectionMetrics(items).length || view==='trends'&&!portrait.dimensions(items).length) return;
+    closeDrawer();
+    setState({selectedIds:items.map(item=>item.id),comparisonOrigin:comparisonDraft.origin}, {render:false,emit:false});
+    exploreSelection(view);
+  }
+
+  function openSetDialog() { openComparisonBuilder(); }
+
+  function readConversation(id) {
+    try { return (JSON.parse(localStorage.getItem(CHAT_KEY)||'{}')[id] || []).filter(entry=>entry.dataVersionId===resource.dataVersionId&&entry.ontologyVersionId===resource.ontologyVersionId); } catch (_) { return []; }
+  }
+
+  function saveConversation(id, entries) {
+    let all; try { all=JSON.parse(localStorage.getItem(CHAT_KEY)||'{}'); } catch (_) { all={}; }
+    all[id]=entries.slice(-20);localStorage.setItem(CHAT_KEY,JSON.stringify(all));
+  }
+
+  function renderObjectChat() {
+    const panel=document.getElementById('object-chat'), item=activeObject();
+    const visible=chatOpen && state.route==='explore' && !['selection','collection'].includes(state.lens) && item;
+    panel.hidden=!visible;exploreView.classList.toggle('with-object-chat',Boolean(visible));
+    if(!visible)return;
+    const conversation=readConversation(item.id);
+    panel.innerHTML=`<header><div><h2>对象问答</h2><strong>${escapeHtml(item.title)}</strong><small>围绕当前对象的业务记录作答</small></div><button class="icon-button" data-close-object-chat aria-label="关闭对象问答">${icon('x')}</button></header><div class="object-chat-messages" aria-live="polite">${conversation.length?conversation.map(entry=>`<article class="chat-question"><strong>我</strong><p>${escapeHtml(entry.question)}</p></article><article class="chat-answer"><strong>${escapeHtml(item.title)} · 回答</strong>${entry.paragraphs.map(p=>`<p>${escapeHtml(p)}</p>`).join('')}${entry.facts.length?`<dl>${entry.facts.map(f=>`<div><dt>${escapeHtml(f.label)}</dt><dd>${escapeHtml(f.value)}${f.asOf?`<small>${escapeHtml(f.asOf)}</small>`:''}</dd></div>`).join('')}</dl>`:''}${entry.relatedIds?.length?`<div class="chat-related">${entry.relatedIds.map(id=>`<button class="text-button" data-open-object="${escapeHtml(id)}">${escapeHtml(resolveObject(id)?.title||id)}</button>`).join('')}</div>`:''}<details><summary>查看回答依据 · 数据截至 ${escapeHtml(entry.asOf)}</summary><ul>${entry.evidenceRefs.map(ref=>`<li>${escapeHtml(ref)}</li>`).join('')}</ul></details></article>`).join(''):'<p class="chat-welcome">可以询问当前对象的指标、风险事件、关联业务和办理进展。答案会列出依据。</p>'}${chatRunningObjects.has(item.id)?'<p role="status">正在读取当前对象的业务依据…</p>':''}</div><div class="object-chat-suggestions">${experience.suggestedQuestions(item).map(question=>`<button data-chat-question="${escapeHtml(question)}">${escapeHtml(question)}</button>`).join('')}</div><form id="object-chat-form"><label class="sr-only" for="object-chat-input">向当前对象提问</label><textarea id="object-chat-input" rows="2" maxlength="400" placeholder="询问当前对象…" required>${escapeHtml(chatDrafts.get(item.id)||'')}</textarea><button class="button primary" ${chatRunningObjects.has(item.id)?'disabled':''}>发送</button></form>`;
+    const messages=panel.querySelector('.object-chat-messages');messages.scrollTop=messages.scrollHeight;refreshIcons(panel);
+  }
+
+  function openObjectChat() {
+    closeDrawer();chatOpen=true;renderObjectChat();document.getElementById('object-chat-input')?.focus();
+  }
+
+  async function submitObjectQuestion(question) {
+    const item=activeObject(), q=question.trim();if(!item||!q||chatRunningObjects.has(item.id))return;
+    chatRunningObjects.add(item.id);chatDrafts.set(item.id,'');renderObjectChat();
+    try {
+      if(/风险|预警|模型|事件|为什么|依据/.test(q))await loadMonitoring();
+      const entries=readConversation(item.id), answer=experience.answer(item,q,{monitor:monitoring,records:businessRecords(item),series:objectSeries(item),previousIntent:entries.at(-1)?.intent});
+      if(answer.intent==='events'&&monitoringStatus==='error')answer.paragraphs.push('本次模型监控结果未能读取，回答仅包含已读取的本体规则。可在事件栏目重试。');
+      saveConversation(item.id,[...entries,{...answer,dataVersionId:resource.dataVersionId,ontologyVersionId:resource.ontologyVersionId}]);
+    } finally {chatRunningObjects.delete(item.id);renderObjectChat();}
+  }
+
+  async function loadMonitoring(retry=false) {
+    if(monitoring&&!retry)return monitoring;
+    if(monitoringPromise)return monitoringPromise;
+    monitoringStatus='loading';
+    monitoringPromise=(async()=>{
+      const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),8000);
+      try {
+        const responses=await Promise.all([fetch('/model-api/v1/model-management/context?scenarioId=S003',{cache:'no-store',signal:controller.signal}),fetch('/designs/prototype-releases/v1.1.0/scenarios/s003/resources/m01/model-package.v2.json',{signal:controller.signal})]);
+        if(responses.some(response=>!response.ok))throw Error('Monitor source unavailable');
+        const [context,source]=await Promise.all([responses[0].json(),responses[1].text()]);
+        const bytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(source));
+        if([...new Uint8Array(bytes)].map(byte=>byte.toString(16).padStart(2,'0')).join('')!==context.state.formalBaseline.sourceModelSha256)throw Error('Monitor model version mismatch');
+        const modelPackage=JSON.parse(source);
+        monitoring={context,modelPackage};monitoringStatus='ready';
+      } catch (_) {monitoring=null;monitoringStatus='error';}
+      finally {clearTimeout(timeout);monitoringPromise=null;if(state&&experience){if(state.route==='discover')renderDiscover();else if(['events','profile'].includes(state.detailTab))renderCanvasStage();}}
+      return monitoring;
+    })();return monitoringPromise;
   }
 
   function openBusinessAnalysis(lens) {
@@ -1063,11 +1199,10 @@
   }
 
   function renderWorkspaceContext() {
-    const objects = objectSetObjects();
-    const active = activeObject();
-    const ref = canonicalObjectRef(active);
-    const domains = active?.sourceFacets ? `<label class="enterprise-domain">业务视角<select data-enterprise-domain aria-label="企业业务视角">${Object.keys({ ...active.sourceFacets, ...(active.budgetOwnership ? { S002: {} } : {}) }).map((scenario) => `<option value="${scenario}" ${ref.scenarioId === scenario ? "selected" : ""}>${scenario === "S001" ? "融资分析" : scenario === "S002" ? "企业预算" : "债务风险"}</option>`).join("")}</select></label>` : "";
-    workspaceContext.innerHTML = `<div class="context-leading"><button class="back-button" type="button" data-route="discover">${icon("arrow-left")}<span>返回对象发现</span></button><div class="context-divider"></div><button class="context-token" type="button" data-open-mobile="path"><span class="token-icon">${icon("boxes")}</span><span><small>${state.selectedIds.length ? "已选对象" : "浏览范围"}</small><strong>${objects.length} 个对象</strong></span>${icon("chevron-down")}</button><button class="context-token active-object-token" type="button" data-open-mobile="inspector"><span class="token-icon object-token">${icon(typeMeta(active).icon)}</span><span><small>当前对象</small><strong>${escapeHtml(active?.title || "未选择")}</strong></span>${icon("chevron-down")}</button></div>${domains}<div class="time-context" ${["temporal", "compare", "selection"].includes(state.lens) || state.detailTab === "history" ? "" : "hidden"}><span>${icon("calendar-range")}<b>历史分析区间</b></span><label><span>开始</span><input id="context-time-start" type="date" min="${escapeHtml(resource.source.dateRange.from)}" max="${escapeHtml(state.timeRange.end)}" value="${escapeHtml(state.timeRange.start)}"></label><i>至</i><label><span>结束</span><input id="context-time-end" type="date" min="${escapeHtml(state.timeRange.start)}" max="${escapeHtml(resource.source.dateRange.to)}" value="${escapeHtml(state.timeRange.end)}"></label></div><div class="context-trailing"><span class="version-pill">数据截至 ${escapeHtml(businessAsOf(active))}</span><button class="icon-button mobile-context-button" type="button" data-open-mobile="path" aria-label="打开对象集">${icon("panel-left-open")}</button><button class="icon-button mobile-context-button" type="button" data-open-mobile="inspector" aria-label="打开对象详情">${icon("panel-right-open")}</button></div>`;
+    const active = activeObject(), isComparison = state.lens === 'selection';
+    const scope=state.lens==='collection'?resource.collections.find(collection=>collection.id===state.collectionId):null;
+    const returnScope=state.returnCollectionId&&resource.collections.find(collection=>collection.id===state.returnCollectionId);
+    workspaceContext.innerHTML = `<div class="context-leading"><button class="back-button" data-route="discover">${icon('arrow-left')}<span>对象发现</span></button>${returnScope?`<span>›</span><button class="text-button" data-return-collection="${escapeHtml(returnScope.id)}">${escapeHtml(returnScope.id==='investment-analysis'?'投资业务全景':returnScope.title)}</button>`:''}<span>›</span><strong>${isComparison ? `${selectedObjects().length} 个对象对照` : escapeHtml(scope?.id==='investment-analysis'?'投资业务全景':scope?.title||active?.title||'业务全景')}</strong></div><div class="time-context" ${isComparison || state.detailTab==='history' ? '' : 'hidden'}><b>历史区间</b><label><span>开始</span><input id="context-time-start" type="date" value="${escapeHtml(state.timeRange.start)}" max="${escapeHtml(state.timeRange.end)}"></label><span>至</span><label><span>结束</span><input id="context-time-end" type="date" value="${escapeHtml(state.timeRange.end)}" min="${escapeHtml(state.timeRange.start)}"></label></div>`;
   }
 
   function shortVersion(value) {
@@ -1076,8 +1211,10 @@
   }
 
   function renderLensNav() {
-    const primary = LENSES.filter(lens => lens.id === "overview" || lens.id === "selection" && state.selectedIds.length > 1 || state.lens === lens.id).sort((a,b)=>(a.id==="overview"?-1:0)-(b.id==="overview"?-1:0));
-    lensNav.innerHTML = primary.map(lens => `<button class="lens-button ${state.lens === lens.id ? "active" : ""}" type="button" data-lens="${lens.id}" aria-current="${state.lens === lens.id ? "page" : "false"}">${icon(lens.icon)}<span><strong>${lens.label}</strong><small>${lens.short}</small></span></button>`).join("") + `<button class="button quiet" data-manage-set>调整已选对象</button>`;
+    lensNav.hidden=['overview','selection','collection'].includes(state.lens);
+    if(lensNav.hidden){lensNav.replaceChildren();return;}
+    const lenses = LENSES.filter(lens=>lens.id===state.lens || lens.id==='overview' && state.lens!=='selection');
+    lensNav.innerHTML = lenses.map(lens=>`<button class="lens-button ${state.lens===lens.id?'active':''}" data-lens="${lens.id}">${icon(lens.icon)}<span><strong>${lens.id==='selection'?'对照结果':lens.label}</strong></span></button>`).join('') + (state.lens==='selection'?'<button class="button quiet" data-open-comparison>修改对照</button>':'<button class="button quiet" data-open-comparison>与其他对象对照</button><button class="button primary" data-open-object-chat>围绕此对象提问</button>');
   }
 
   function renderPathPane() {
@@ -1104,6 +1241,8 @@
   }
 
   function renderCanvasHeader() {
+    canvasHeader.hidden=state.lens==='collection'&&['investment-analysis','preloan-business'].includes(state.collectionId);
+    if(canvasHeader.hidden){canvasHeader.replaceChildren();return;}
     const heading = lensHeading();
     let controls = "";
     if (state.lens === "object360") {
@@ -1641,15 +1780,14 @@
   function openObject(objectId) {
     const item = resolveObject(objectId);
     if (!item) return;
-    const currentSelection = state.selectedIds.length ? [...state.selectedIds] : [];
-    if (!currentSelection.includes(item.id)) currentSelection.unshift(item.id);
     rememberObject(item);
     setState({
       route: "explore",
       lens: "overview",
+      returnCollectionId:state.lens==='collection'?state.collectionId:state.returnCollectionId,collectionId:null,
       selectionReturn: state.route === "explore" && state.lens === "selection" || state.selectionReturn,
-      detailTab: "profile",
-      selectedIds: [...state.selectedIds],
+      detailTab: "profile", relationType:"all",relationPage:0,eventSourceFilter:"all",graphTransform:{x:0,y:0,k:1},
+      selectedIds: state.selectionReturn || state.route==='explore' && state.lens==='selection' ? [...state.selectedIds] : [item.id],
       activeId: item.id,
       previewId: item.id,
       graphExpanded: [item.id],
@@ -1673,7 +1811,7 @@
 
   function transitionRoute(route) {
     if (!ROUTES.has(route) || route === state.route) return;
-    if (route === "explore" && state.selectedIds.length > 1) { exploreSelection(); return; }
+    if (route === "explore") { openObject(state.previewId || state.activeId); return; }
     if (route === "explore" && !state.selectedIds.length) {
       const results = filteredObjects();
       if (!results.length) {
@@ -1708,6 +1846,7 @@
       savedAt: new Date().toISOString(),
       route: "explore",
       lens: state.lens,
+      comparisonOrigin:state.comparisonOrigin,returnCollectionId:state.returnCollectionId,eventSourceFilter:state.eventSourceFilter,relationType:state.relationType,relationPage:state.relationPage,
       detailTab: state.detailTab, selectionView: state.selectionView, selectionDimension: state.selectionDimension, directoryScrollTop:state.directoryScrollTop, selectionScrollTop:state.selectionScrollTop, selectionReturn:state.selectionReturn, portraitMaps:clone(state.portraitMaps || {}),
       collectionId: state.collectionId,
       selectedIds: [...state.selectedIds],
@@ -1754,6 +1893,7 @@
       route: "explore",
       lens: migratedView?.collectionId ? "collection" : LENSES.some((lens) => lens.id === saved.lens) ? saved.lens : "overview",
       portraitMaps:clone(saved.portraitMaps || {}), directoryScrollTop:saved.directoryScrollTop || 0, selectionScrollTop:saved.selectionScrollTop || 0, selectionReturn:Boolean(saved.selectionReturn),
+      comparisonOrigin:saved.comparisonOrigin||null,returnCollectionId:saved.returnCollectionId||null,eventSourceFilter:saved.eventSourceFilter||"all",relationType:saved.relationType||"all",relationPage:saved.relationPage||0,
       detailTab: saved.detailTab || "profile", selectionView: saved.selectionView || "list", selectionDimension: saved.selectionDimension || "basic", selectionPage: 0,
       collectionId: saved.collectionId || migratedView?.collectionId || null,
       collectionPage: 0,
@@ -1807,9 +1947,7 @@
   }
 
   function openContinueDrawer() {
-    const item = activeObject();
-    const types = [...new Set(objectSetObjects().map(object => typeMeta(object).label))];
-    openDrawer(`${drawerHeader("继续分析", "带当前上下文前往")}<div class="drawer-body"><section class="handoff-object">${objectGlyph(item, "large")}<div><span>${escapeHtml(objectSetRef().title)}</span><strong>${escapeHtml(item?.title || "未选择对象")}</strong><small>${escapeHtml(state.timeRange.start)} 至 ${escapeHtml(state.timeRange.end)}</small></div></section><p class="handoff-scope-types">对象集类型：${escapeHtml(types.join("、"))}${types.length > 1 ? "；包含多种对象类型，目标模块将校验适用范围。" : ""}</p><div class="target-list">${Object.entries(MODULE_TARGETS).filter(([id]) => id === "report" || !["collection", "selection"].includes(state.lens) && (id === "dashboard" ? item?.objectTypeId === "OBJ-ENTERPRISE" : ["OBJ-ENTERPRISE", "OBJ-INVESTMENT-PRODUCT"].includes(item?.objectTypeId))).map(([id, target]) => `<button type="button" data-navigate-module="${id}"><span>${icon(target.icon)}</span><div><strong>${escapeHtml(target.label)}</strong><small>${escapeHtml(target.detail)}</small></div>${icon("arrow-up-right")}</button>`).join("")}</div></div>`, "action-drawer");
+    openDrawer(`${drawerHeader('对象工具')}<div class="drawer-body"><div class="target-list"><button data-open-object-chat>${icon('messages-square')}<div><strong>围绕此对象提问</strong><small>在画像右侧查看答案与依据</small></div></button><button data-open-comparison>${icon('columns-2')}<div><strong>对照查看</strong><small>先选查看目的，再挑选对象</small></div></button><button data-open-canvas>${icon('waypoints')}<div><strong>查看本体画布</strong><small>查看当前对象的定义和关系</small></div></button><button data-navigate-module="modeling">${icon('chart-line')}<div><strong>进入模型分析</strong><small>保留当前业务对象和分析范围</small></div></button></div></div>`);
   }
 
   function openMobilePane(kind) {
@@ -2067,12 +2205,30 @@
   }
 
   function handleDocumentClick(event) {
+    const returnScope=event.target.closest('[data-return-collection]');if(returnScope){setState({route:'explore',lens:'collection',collectionId:returnScope.dataset.returnCollection,returnCollectionId:null,selectedIds:[],selectionReturn:false});return;}
+    const sourceFilter=event.target.closest('[data-event-source]');if(sourceFilter){setState({eventSourceFilter:sourceFilter.dataset.eventSource},{emit:false});return;}
+    const relationPage=event.target.closest('[data-relation-page]');if(relationPage){setState({relationPage:Math.max(0,(state.relationPage||0)+Number(relationPage.dataset.relationPage))},{emit:false});return;}
+    const mapObject=event.target.closest('[data-map-object], [data-map-related]');
+    if(mapObject){const item=resolveObject(mapObject.dataset.mapObject||mapObject.dataset.mapRelated),container=mapObject.closest('[data-inline-location]');if(item&&container){container.querySelector('[data-map-object-summary]').innerHTML=mapObjectSummary(item);container.dispatchEvent(new CustomEvent('ofw-map-focus',{detail:{id:item.id}}));}return;}
+    const eventDefinition=event.target.closest('[data-event-definition]');
+    if(eventDefinition){const entry=experience.events(activeObject(),monitoring).find(event=>event.id===eventDefinition.dataset.eventDefinition);if(entry?.source==='rule')global.parent.postMessage({operation:'open-business-ontology',semanticVersionId:entry.sourceVersion,resourceId:entry.definitionId,returnUrl:location.href},location.origin);else if(entry)global.parent.postMessage({operation:'open-object-monitor',modelId:entry.definitionId,scenarioId:'S003',objectId:state.activeId,title:activeObject().title,dataVersionId:entry.dataVersionId,ontologyVersionId:entry.ontologyVersionId,asOf:entry.date,returnUrl:location.href},location.origin);return;}
+    if (event.target.closest('[data-open-comparison]')) { openComparisonBuilder(); return; }
+    if (event.target.closest('[data-comparison-apply]')) { applyComparisonDraft(); return; }
+    const removeDraft=event.target.closest('[data-comparison-remove]');
+    if(removeDraft){comparisonDraft.ids=comparisonDraft.ids.filter(id=>id!==removeDraft.dataset.comparisonRemove);renderComparisonBuilder();return;}
+    if(event.target.closest('[data-open-object-chat]')){openObjectChat();return;}
+    if(event.target.closest('[data-close-object-chat]')){chatOpen=false;renderObjectChat();return;}
+    const questionButton=event.target.closest('[data-chat-question]');
+    if(questionButton){void submitObjectQuestion(questionButton.dataset.chatQuestion);return;}
+    const objectEvents=event.target.closest('[data-object-events]');
+    if(objectEvents){openObject(objectEvents.dataset.objectEvents);setState({detailTab:'events'});return;}
+    if(event.target.closest('[data-monitor-retry]')){void loadMonitoring(true);return;}
     const close = event.target.closest("[data-close-drawer], [data-close-mobile]");
     if (close) { closeDrawer(); return; }
 
     const selectionAction = event.target.closest('[data-selection-action]');
     if (selectionAction) { closeDrawer(); exploreSelection(selectionAction.dataset.selectionAction); return; }
-    if (event.target.closest('[data-return-directory]')) { closeDrawer(); setState({route:'discover',selectionReturn:false}); return; }
+    if (event.target.closest('[data-return-directory]')) { closeDrawer(); const origin=state.comparisonOrigin; if(origin?.route==='explore'){setState({route:'explore',lens:origin.lens==='collection'?'collection':'overview',collectionId:origin.collectionId,activeId:origin.objectId||state.activeId,detailTab:origin.detailTab,timeRange:origin.timeRange,selectedIds:origin.lens==='collection'?[]:[origin.objectId].filter(Boolean),selectionReturn:false,comparisonOrigin:null});canvasStage.scrollTop=origin.scrollTop;}else setState({route:'discover',selectedIds:[],selectionReturn:false,comparisonOrigin:null}); return; }
     if (event.target.closest('[data-clear-picked]')) { setState({selectedIds:[],selectionReturn:false}); return; }
     if (event.target.closest('[data-manage-set]')) { openSetDialog(); return; }
     if (event.target.closest('[data-set-add]')) { closeDrawer(); setState({ route:'discover' }); return; }
@@ -2084,6 +2240,7 @@
       if(setApply.dataset.setApply==='explore')exploreSelection();return;
     }
     const setRemove=event.target.closest('[data-set-remove]');
+    if(setRemove&&state.lens==='selection'){openComparisonBuilder();comparisonDraft.ids=comparisonDraft.ids.filter(id=>id!==setRemove.dataset.setRemove);renderComparisonBuilder();return;}
     if(setRemove){const ids=state.selectedIds.filter(id=>id!==setRemove.dataset.setRemove);if(!ids.length){closeDrawer();setState({selectedIds:[],route:'discover',lens:'overview'});}else setState({selectedIds:ids,selectionPage:0});return;}
     const viewButton=event.target.closest('[data-selection-view]');
     if(viewButton){setState({selectionView:viewButton.dataset.selectionView,selectionDimension:viewButton.dataset.selectionView==='compare'?'all':'basic',selectionPage:0});return;}
@@ -2134,10 +2291,10 @@
     if (budgetDetails) { openCollection(`budget-details:${budgetDetails.dataset.budgetDetails}`); return; }
     const collectionPage = event.target.closest("[data-collection-page]");
     if (collectionPage) { setState({ collectionPage: Math.max(0, (state.collectionPage || 0) + Number(collectionPage.dataset.collectionPage)) }, { emit: false }); return; }
-    if (event.target.closest("[data-budget-report]")) { navigateParentModule("report", { budget: true }); return; }
-    if (event.target.closest("[data-budget-query]")) { navigateParentModule("query", { budget: true }); return; }
+
+    if (event.target.closest("[data-budget-query]")) { openObjectChat(); void submitObjectQuestion("预算执行情况如何？"); return; }
     const moduleTarget = event.target.closest("[data-navigate-module]");
-    if (moduleTarget) { navigateParentModule(moduleTarget.dataset.navigateModule); return; }
+    if (moduleTarget) { if(moduleTarget.dataset.navigateModule==='query')openObjectChat();else if(moduleTarget.dataset.navigateModule!=='report')navigateParentModule(moduleTarget.dataset.navigateModule); return; }
 
     const mobileTarget = event.target.closest("[data-open-mobile]");
     if (mobileTarget) { openMobilePane(mobileTarget.dataset.openMobile); return; }
@@ -2238,12 +2395,21 @@
     const previewTarget = event.target.closest("[data-preview-object]");
     if (previewTarget && !event.target.closest("button, label, input")) {
       const item = resolveObject(previewTarget.dataset.previewObject);
-      if (item) { setState({ previewId: item.id }, { history: "replace", emit: false }); if (matchMedia("(max-width: 719px)").matches) openMobilePane("preview"); }
+      if (item) openObject(item.id);
     }
   }
 
   function handleDocumentChange(event) {
     const target = event.target;
+    if(target.id==='relation-type'){setState({relationType:target.value,relationPage:0},{emit:false});return;}
+    if(target.id==='comparison-purpose'||target.id==='comparison-type'){
+      comparisonDraft[target.id==='comparison-purpose'?'purpose':'type']=target.value;
+      const availableTypes=comparisonTypes();if(comparisonDraft.purpose!=='basic'&&!availableTypes.includes(comparisonDraft.type))comparisonDraft.type=availableTypes[0]||'OBJ-ENTERPRISE';
+      const ids=new Set(comparisonChoices().map(item=>item.id));comparisonDraft.ids=comparisonDraft.ids.filter(id=>ids.has(id));renderComparisonBuilder();return;
+    }
+    if(target.matches('[data-comparison-pick]')){
+      const ids=new Set(comparisonDraft.ids);if(target.checked)ids.add(target.dataset.comparisonPick);else ids.delete(target.dataset.comparisonPick);comparisonDraft.ids=[...ids];renderComparisonBuilder();return;
+    }
     if (target.id === "directory-type") { setState({typeFilter:target.value}); return; }
     if (target.matches("[data-selection-dimension]")) { setState({ selectionDimension:target.value },{emit:false}); return; }
     if (target.matches("[data-enterprise-domain]")) { setState({ businessScenario: target.value }); emitWorkspaceContextUpdate(); return; }
@@ -2281,6 +2447,8 @@
 
   function handleDocumentInput(event) {
     const target = event.target;
+    if(target.id==='comparison-search'){comparisonDraft.search=target.value;renderComparisonBuilder();return;}
+    if(target.id==='object-chat-input'){chatDrafts.set(state.activeId,target.value);return;}
     if (target.id === "object-search") {
       state.search = target.value;
       state.directoryScrollTop = 0;
@@ -2306,6 +2474,11 @@
   function handleKeyboard(event) {
     const relationNode=event.target.closest?.('.portrait-relations-diagram [data-open-object]');
     if(relationNode&&['Enter',' '].includes(event.key)){event.preventDefault();openObject(relationNode.dataset.openObject);return;}
+    const mapMarker=event.target.closest?.('[data-map-object]');
+    const relationObject=event.target.closest?.('[role="button"][data-open-object]');
+    if(['Enter',' '].includes(event.key)&&(mapMarker||relationObject)){
+      event.preventDefault();if(relationObject)openObject(relationObject.dataset.openObject);else mapMarker.dispatchEvent(new MouseEvent('click',{bubbles:true}));return;
+    }
     const tabButton=event.target.closest?.('.portrait-tabs [data-detail-tab]');
     if(tabButton && ['ArrowLeft','ArrowRight','Home','End'].includes(event.key)){
       event.preventDefault();const tabs=portraitTabs(activeObject());const index=tabs.findIndex(([id])=>id===tabButton.dataset.detailTab);
@@ -2313,6 +2486,7 @@
       setState({detailTab:tabs[next][0]},{history:'replace'});canvasStage.querySelector(`[data-detail-tab="${tabs[next][0]}"]`)?.focus();return;
     }
     if (event.key === "Escape") {
+      if(chatOpen && !drawer.open){chatOpen=false;renderObjectChat();return;}
       closeDrawer();
       if (saveDialog.open) saveDialog.close();
       return;
@@ -2338,6 +2512,7 @@
   function handleHostMessage(event) {
     if (event.origin !== global.location.origin || event.source !== global.parent) return;
     const message = event.data || {};
+    if(message.type==='OFW_M07_PUBLISH_CONTEXT'){emitWorkspaceContextUpdate();return;}
     if (message.type === "OFW_WORKSPACE_CONTEXT") {
       applyWorkspaceContext(message.context);
       return;
@@ -2352,6 +2527,7 @@
     document.addEventListener("change", handleDocumentChange);
     document.addEventListener("input", handleDocumentInput);
     document.addEventListener("keydown", handleKeyboard);
+    document.addEventListener('submit',event=>{if(event.target.id==='object-chat-form'){event.preventDefault();void submitObjectQuestion(document.getElementById('object-chat-input').value);}});
     scrim.addEventListener("click", closeDrawer);
     drawer.addEventListener("cancel", event=>{event.preventDefault();closeDrawer();});
     drawer.addEventListener("click", event=>{if(event.target===drawer){const r=drawer.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)closeDrawer();}});
@@ -2406,7 +2582,7 @@
   }
 
   function reportRowsForLens() {
-    if (state.lens === "overview" && state.detailTab === "events") return portrait.eventsFor(activeObject(),businessRecords()).map(event=>({name:event.title,value:event.category,status:`${event.timeLabel} ${event.date}；${event.note||""}`,evidenceRefs:[event.sourceId,event.requestId].filter(Boolean)}));
+    if (state.lens === "overview" && state.detailTab === "events") return experience.events(activeObject(),monitoring).map(event=>({name:event.title,value:event.category,status:`${event.timeLabel} ${event.date}；${event.note||""}`,evidenceRefs:[event.sourceId,event.requestId].filter(Boolean)}));
     if (state.lens === "overview" && state.detailTab === "actions") return businessRecords().map(record=>({name:record.request.actionType?.name||"业务事项",value:record.stage,status:`${record.task?.owner||record.request.owner||"待分办"}；${record.task?.result?.summary||record.task?.instructions||record.request.recommendation||""}`,evidenceRefs:[record.request.id,record.task?.id].filter(Boolean)}));
     if (state.lens === "selection") {
       const items=selectedObjects();
@@ -2462,8 +2638,10 @@
       decisionSeed = await decisions.json();
       indexes = buildIndexes(resource);
       portrait = global.OFW_M07_PORTRAIT.create(resource);
+      experience = global.OFW_OBJECT_EXPERIENCE.create(resource);
       state = readStateFromUrl();
       bindEvents();
+      void loadMonitoring();
       if (pendingWorkspaceContext) {
         const context = pendingWorkspaceContext;
         pendingWorkspaceContext = null;

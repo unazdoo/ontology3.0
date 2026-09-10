@@ -24,7 +24,10 @@ test("cross-tab state changes never force a full page reload", () => {
 test("M07 receives host context only after its resource reports ready", () => {
   const shell = read("s001-e2e-integration/app.js");
   assert.match(shell, /if \(module\.id !== "m07"\) deliverWorkspaceContext/);
-  assert.match(shell, /message\.type === "OFW_M07_READY"[\s\S]{0,520}deliverWorkspaceContext\(frame, DATA\.moduleById\.m07\)/);
+  const start=shell.indexOf('if (message.type === "OFW_M07_READY"');
+  const end=shell.indexOf('if (message.type === "OFW_S003_CYCLE_UPDATED"',start);
+  assert.ok(start>=0&&end>start);
+  assert.match(shell.slice(start,end), /deliverWorkspaceContext\(frame, DATA\.moduleById\.m07\)/);
 });
 
 test("Dashboard switches business views without rebuilding its iframe", () => {

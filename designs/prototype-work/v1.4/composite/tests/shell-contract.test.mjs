@@ -31,15 +31,15 @@ test("v1.4 inherits v1.3.2 with the original frozen ancestor anchors", () => {
   assert.doesNotMatch(html, /<iframe[^>]+v1\.3\.0\/composite\/s001-e2e-integration/);
 });
 
-test("one Shell registers M01-M08 and the business cockpit once", () => {
+test("one Shell registers M01-M08 with the cockpit under object panorama", () => {
   const data = loadData();
   assert.equal(data.modules.length, 8);
-  assert.equal(data.nav.length, 10);
-  assert.equal(new Set(data.nav.map((item) => item.route)).size, 10);
+  assert.equal(data.nav.length, 9);
+  assert.equal(new Set(data.nav.map((item) => item.route)).size, 9);
   assert.equal(data.moduleById.m07.source.startsWith("../modules/m07/index.html"), true);
   assert.equal(data.moduleById.modeling.source.startsWith("../model-center/index.html"), true);
   assert.equal(data.moduleById.modeling.name, "模型目标与优化");
-  assert.equal(data.dashboard.name, "经营驾驶舱");
+  assert.equal(data.dashboard.name, "对象全景");
 });
 
 test("homepage keeps the fixed three-domain architecture and real feature launcher", () => {
@@ -51,14 +51,15 @@ test("homepage keeps the fixed three-domain architecture and real feature launch
   assert.doesNotMatch(shell, /场景运行与待办|统一资源目录|模块工作区|全部可用|S001—S005 · 全链路协同/);
 });
 
-test("module tasks stay in the Shell with a shared horizontal cockpit layout", () => {
+test("object portraits and business panoramas share the Shell navigation", () => {
   const shell = read("s001-e2e-integration/app.js");
   const css = read("s001-e2e-integration/styles.css");
   assert.match(shell, /m07:[\s\S]*id: "discover"[\s\S]*id: "explore"/);
   for (const view of ["objectives", "models", "compare", "observe", "release"]) assert.match(shell, new RegExp(`id: "${view}"`));
   assert.match(css, /module-subnav[^}]*background:\s*#e4ebf2/);
   assert.match(css, /module-subnav-item span:last-child[^}]*font-size:\s*13px/);
-  assert.match(shell,/module\.id === 'dashboard' \? ' cockpit-layout'/);
+  assert.equal(loadData().nav.some(item=>item.id==='dashboard'),false);
+  assert.equal(loadData().moduleById.m07.name,'对象全景');
   assert.match(css,/\.cockpit-layout > \.module-subnav > nav[^}]*display:\s*flex/);
   assert.doesNotMatch(shell, /data-module-scenario-select|module-scenario-control/);
 });

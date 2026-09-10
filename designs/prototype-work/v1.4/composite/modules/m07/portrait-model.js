@@ -60,17 +60,7 @@
       const series = seriesFor(item).find(series => signature(series) === dimension.id);
       return { series, points: (series?.points || []).filter(point => point.t >= range.start && point.t <= range.end).map(point => ({ ...point, v: numeric(point.v) ? point.v : null })).sort((a,b) => a.t.localeCompare(b.t)) };
     }
-    function eventsFor(item, decisions = []) {
-      const events = [];
-      for (const rule of resource.businessRules || []) if (rule.ownerId === item.id) events.push({ id: rule.id, title: rule.title, date: rule.properties.evaluatedAt?.value || item.dataAsOf, category: '规则判断', note: rule.properties.condition?.value, timeLabel: '数据截至日', sourceId: rule.properties.ruleId?.value });
-      if (numeric(item.properties?.riskScore?.value)) events.push({ id: `risk:${item.id}:${item.dataAsOf}`, title: `风险评估 · ${item.properties.riskTier?.value || ''}`, date: item.properties.riskScore.asOf || item.dataAsOf, category: '评估记录', note: `风险评分 ${item.properties.riskScore.value} 分`, timeLabel: '评估截至日' });
-      for (const record of decisions) {
-        const history = record.task?.history || [];
-        history.forEach((event, index) => events.push({ id: `task:${record.task.id}:${index}`, title: event.label, date: event.time, category: '办理记录', note: event.detail, timeLabel: '办理时间', requestId: record.request.id }));
-      }
-      return events.sort((a,b) => String(b.date || '').localeCompare(String(a.date || '')));
-    }
-    return { seriesFor, dimensions, observation, eventsFor };
+    return { seriesFor, dimensions, observation };
   }
   global.OFW_M07_PORTRAIT = Object.freeze({ create, selectionActions });
 })(typeof window === 'undefined' ? globalThis : window);

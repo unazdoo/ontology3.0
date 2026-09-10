@@ -72,8 +72,8 @@
     {
       id: "m07",
       ownerId: "M07",
-      name: "业务全景",
-      short: "探索",
+      name: "对象全景",
+      short: "全景",
       icon: "scan-search",
       route: "#module/m07",
       source: "../modules/m07/index.html?v=20260904-01",
@@ -97,8 +97,8 @@
   const dashboard = {
     id: "dashboard",
     ownerId: "Dashboard",
-    name: "经营驾驶舱",
-    short: "驾驶舱",
+    name: "对象全景",
+    short: "全景",
     icon: "layout-dashboard",
     route: "#dashboard",
     source: "../dashboard/index.html?v=20260904-01",
@@ -182,7 +182,6 @@
     nav: Object.freeze([
       Object.freeze({ id: "home", name: "首页", icon: "house", route: "#home" }),
       ...modules.map((module) => Object.freeze({ id: module.id, name: module.name, icon: module.icon, route: module.route })),
-      Object.freeze({ id: "dashboard", name: dashboard.name, icon: dashboard.icon, route: dashboard.route })
     ])
   });
 

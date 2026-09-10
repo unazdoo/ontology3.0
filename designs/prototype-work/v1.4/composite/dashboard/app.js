@@ -286,7 +286,7 @@
       ["modeling", "模型目标", "#module/modeling"],
       ["report", "报告", "#module/report"]
     ];
-    return `<section class="workspace-context-bar" data-workspace-context><div class="workspace-context-facts"><div><span>对象集</span><strong>${esc(current.objectSet.label)}</strong></div><div><span>当前对象</span><strong>${esc(current.object.label || "未聚焦单个对象")}</strong></div><div><span>时间</span><strong>${esc(current.timeRange.label || "当前经营周期")}</strong></div><div><span>结果模式</span><strong>${esc(current.resultMode.label || "正式结果")}</strong></div></div><nav class="workspace-context-actions" aria-label="跨模块工作入口">${routes.map((item) => `<button type="button" data-ofw-native-route="${attr(item[2])}">${esc(item[1])}</button>`).join("")}<span aria-current="page">驾驶舱</span></nav></section>`;
+    return `<section class="workspace-context-bar" data-workspace-context><div class="workspace-context-facts"><div><span>对象集</span><strong>${esc(current.objectSet.label)}</strong></div><div><span>当前对象</span><strong>${esc(current.object.label || "未聚焦单个对象")}</strong></div><div><span>时间</span><strong>${esc(current.timeRange.label || "当前经营周期")}</strong></div><div><span>结果模式</span><strong>${esc(current.resultMode.label || "正式结果")}</strong></div></div><nav class="workspace-context-actions" aria-label="跨模块工作入口">${routes.map((item) => `<button type="button" data-ofw-native-route="${attr(item[2])}">${esc(item[1])}</button>`).join("")}<span aria-current="page">经营全景</span></nav></section>`;
   }
 
   function currentDashboardWorkspacePatch() {
@@ -547,7 +547,7 @@
     app.className = "dash-app";
     app.innerHTML = `
       <header class="module-bar">
-        <div class="module-title"><span class="mark">${icon("chart-no-axes-combined", "sm")}</span><div><strong>经营控制塔</strong><small>Control Tower</small></div></div>
+        <div class="module-title"><span class="mark">${icon("chart-no-axes-combined", "sm")}</span><div><strong>经营全景</strong><small>业务范围与对象</small></div></div>
         <div class="module-actions"><a class="btn" href="#/dashboards">${icon("layout-dashboard", "sm")}<span>控制塔首页</span></a><button class="btn" type="button" data-action="refresh">${icon("refresh-cw", "sm")}<span>重新读取</span></button></div>
       </header>
       ${content}
@@ -690,7 +690,7 @@
   }
 
   function dashboardHeader(dash, options = {}) {
-    return `<header class="page-head dashboard-page-head"><div class="dashboard-title"><a class="icon-btn" href="#/dashboards" aria-label="返回经营控制塔">${icon("arrow-left", "sm")}</a><div><span class="eyebrow">业务驾驶舱</span><h1>${esc(dash.name)}</h1><p>${esc(dash.description)}</p></div></div><div class="head-actions">${options.actions || ""}</div></header>`;
+    return `<header class="page-head dashboard-page-head"><div class="dashboard-title"><a class="icon-btn" href="#/dashboards" aria-label="返回经营控制塔">${icon("arrow-left", "sm")}</a><div><span class="eyebrow">经营全景</span><h1>${esc(dash.name)}</h1><p>${esc(dash.description)}</p></div></div><div class="head-actions">${dash.id==='budget'?'<button class="btn" data-action="budget-enterprise-profile">查看企业画像</button>':''}${options.actions || ""}</div></header>`;
   }
 
   function infoStrip(dash) {
@@ -698,7 +698,7 @@
   }
 
   function tabs(items, active, dashboard) {
-    return `<nav class="tabs" aria-label="驾驶舱视图">${items.map((item) => `<a class="tab ${item.id === active ? "active" : ""}" href="${dashboardHref(dashboard, item.id)}">${item.icon ? icon(item.icon, "sm") : ""}<span>${esc(item.label)}</span></a>`).join("")}</nav>`;
+    return `<nav class="tabs" aria-label="全景视图">${items.map((item) => `<a class="tab ${item.id === active ? "active" : ""}" href="${dashboardHref(dashboard, item.id)}">${item.icon ? icon(item.icon, "sm") : ""}<span>${esc(item.label)}</span></a>`).join("")}</nav>`;
   }
 
   function financeScopedMetrics(dash) {
@@ -754,7 +754,7 @@
     const valid = ["overview", "compare", "structure", "rules"].includes(tab) ? tab : "overview";
     const tabItems = [{ id: "overview", label: "经营概览", icon: "layout-dashboard" }, { id: "compare", label: "单位比较", icon: "git-compare-arrows" }, { id: "structure", label: "结构与机构", icon: "chart-pie" }, { id: "rules", label: "规则与行动", icon: "list-checks" }];
     const content = valid === "overview" ? financeOverview(dash) : valid === "compare" ? financeCompare(dash) : valid === "structure" ? financeStructure(dash) : financeRules(dash);
-    shell(`<main class="page dashboard-page financing-page" data-screen-label="集团融资驾驶舱">${dashboardHeader(dash, { actions: `<a class="btn" href="${BASELINE_ROOT}/report-center/review-lifecycle/index.html#/report/RPT-FIN-20260814-001">${icon("file-text", "sm")}查看融资报告</a><button class="btn primary" type="button" data-action="save-view">${icon("bookmark", "sm")}保存当前视图</button>` })}${infoStrip(dash)}${financeToolbar(dash)}${tabs(tabItems, valid, "financing")}<div class="dashboard-content">${content}</div></main>`);
+    shell(`<main class="page dashboard-page financing-page" data-screen-label="集团融资经营全景">${dashboardHeader(dash, { actions: `<a class="btn" href="${BASELINE_ROOT}/report-center/review-lifecycle/index.html#/report/RPT-FIN-20260814-001">${icon("file-text", "sm")}查看融资报告</a><button class="btn primary" type="button" data-action="save-view">${icon("bookmark", "sm")}保存当前视图</button>` })}${infoStrip(dash)}${financeToolbar(dash)}${tabs(tabItems, valid, "financing")}<div class="dashboard-content">${content}</div></main>`);
   }
 
   function budgetScopedMetrics(dash) {
@@ -822,7 +822,7 @@
     focusDashboardScenario("S002");
     const dash = byId("budget");
     const valid = dash.topics.some((item) => item.id === tab) ? tab : "cost";
-    shell(`<main class="page dashboard-page budget-page" data-screen-label="预算监督管理驾驶舱">${dashboardHeader(dash, { actions: `<a class="btn" href="${BASELINE_ROOT}/report-center/review-lifecycle/index.html#/report/RPT-S002-BUDGET-20260815-001">${icon("file-text", "sm")}查看预算报告</a><a class="btn primary" href="${BASELINE_ROOT}/report-center/review-lifecycle/index.html#/create?definition=RD-BUDGET-001">${icon("file-plus-2", "sm")}生成新内容版本</a>` })}${infoStrip(dash)}${budgetToolbar(dash)}${tabs(dash.topics, valid, "budget")}<div class="dashboard-content">${budgetTopicContent(dash, valid)}</div></main>`);
+    shell(`<main class="page dashboard-page budget-page" data-screen-label="预算监督管理经营全景">${dashboardHeader(dash, { actions: `<a class="btn" href="${BASELINE_ROOT}/report-center/review-lifecycle/index.html#/report/RPT-S002-BUDGET-20260815-001">${icon("file-text", "sm")}查看预算报告</a><a class="btn primary" href="${BASELINE_ROOT}/report-center/review-lifecycle/index.html#/create?definition=RD-BUDGET-001">${icon("file-plus-2", "sm")}生成新内容版本</a>` })}${infoStrip(dash)}${budgetToolbar(dash)}${tabs(dash.topics, valid, "budget")}<div class="dashboard-content">${budgetTopicContent(dash, valid)}</div></main>`);
   }
 
   function riskSectors(dash) {
@@ -878,7 +878,7 @@
 
   function riskOverview(dash) {
     const topRisk = [...dash.companies].sort((left, right) => left.finalScore - right.finalScore).slice(0, 5);
-    return `<section class="risk-hero"><div><span class="eyebrow">集团债务风险监测</span><h2>风险结果可解释、可穿透</h2><p>覆盖 ${dash.companies.length} 家企业，全部评分、分档、企业报告和处置状态来自同一正式评估轮次。</p><div class="hero-meta"><span>${icon("calendar-check", "sm")}评估时点 ${esc(displayAsOf(dash.period))}</span><span>${icon("shield-check", "sm")}数据质量通过</span><span>${icon("file-check-2", "sm")}21 份企业报告</span></div></div><div class="hero-score"><span>本轮评估</span><strong>已完成</strong><small>${esc(dash.updatedAt)}</small></div></section>${metricsGrid(dash.metrics, { dashboard: "risk" })}<section class="grid-main risk-overview-grid">${panel("四档风险分布", "当前正式评分结果", riskDonut(dash))}${panel("产业板块监测", "在建状态单独按经营阶段分析，不作为产业板块", sectorCards(dash), `<a class="text-btn" href="${dashboardHref("risk", "analysis")}">产业与薄弱项 ${icon("chevron-right", "sm")}</a>`)}</section><section class="grid-main">${panel("需要优先关注", "按综合评分从低到高排序", `<div class="risk-list">${topRisk.map((item) => `<article><span>${badge(item.riskTier, toneFor(item.riskTier))}</span><div><strong>${esc(item.enterpriseName)}</strong><small>${esc(riskIndustry(item))} · ${esc(item.focus)}</small></div><b>${fmt(item.finalScore, 2)}<small>综合分</small></b><a class="icon-btn" href="${attr(riskReportHref(item))}" aria-label="查看${attr(item.enterpriseName)}报告">${icon("chevron-right", "sm")}</a></article>`).join("")}</div>`, `<a class="text-btn" href="${dashboardHref("risk", "analysis")}">查看风险分布 ${icon("chevron-right", "sm")}</a>`, "flush-body")}${panel("风险触发与行动", "五条亮灯预警逐项核对后提交决策中心", `<div class="risk-action-list">${dash.actions.map((item) => `<article><div><strong>${esc(item.enterprise)}</strong><small>${esc(item.focus)} · ${esc(item.recipient)}</small></div><span><b>${fmt(item.score, 2)}</b>${badge(riskActionStageMeta(riskActionRecord(item)).label, riskActionStageMeta(riskActionRecord(item)).tone)}</span></article>`).join("")}</div>`, `<a class="text-btn" href="${dashboardHref("risk", "actions")}">进入风险处置 ${icon("chevron-right", "sm")}</a>`, "flush-body")}</section>${panel("企业评分明细", `全部 ${dash.companies.length} 家企业`, riskTable([...dash.companies].sort((left, right) => left.finalScore - right.finalScore), 8), `<a class="text-btn" href="${dashboardHref("risk", "analysis")}">查看产业分析 ${icon("chevron-right", "sm")}</a>`, "flush-body")}`;
+    return `<section class="risk-hero"><div><span class="eyebrow">集团债务风险监测</span><h2>风险结果可解释、可穿透</h2><p>覆盖 ${dash.companies.length} 家企业，全部评分、分档、企业报告和处置状态来自同一正式评估轮次。</p><div class="hero-meta"><span>${icon("calendar-check", "sm")}评估时点 ${esc(displayAsOf(dash.period))}</span><span>${icon("file-check-2", "sm")}21 份企业报告</span></div></div><div class="hero-score"><span>本轮评估</span><strong>已完成</strong><small>${esc(dash.updatedAt)}</small></div></section>${metricsGrid(dash.metrics, { dashboard: "risk" })}<section class="grid-main risk-overview-grid">${panel("四档风险分布", "当前正式评分结果", riskDonut(dash))}${panel("产业板块监测", "在建状态单独按经营阶段分析，不作为产业板块", sectorCards(dash), `<a class="text-btn" href="${dashboardHref("risk", "analysis")}">产业与薄弱项 ${icon("chevron-right", "sm")}</a>`)}</section><section class="grid-main">${panel("需要优先关注", "按综合评分从低到高排序", `<div class="risk-list">${topRisk.map((item) => `<article><span>${badge(item.riskTier, toneFor(item.riskTier))}</span><div><strong>${esc(item.enterpriseName)}</strong><small>${esc(riskIndustry(item))} · ${esc(item.focus)}</small></div><b>${fmt(item.finalScore, 2)}<small>综合分</small></b><a class="icon-btn" href="${attr(riskReportHref(item))}" aria-label="查看${attr(item.enterpriseName)}报告">${icon("chevron-right", "sm")}</a></article>`).join("")}</div>`, `<a class="text-btn" href="${dashboardHref("risk", "analysis")}">查看风险分布 ${icon("chevron-right", "sm")}</a>`, "flush-body")}${panel("风险触发与行动", "五条亮灯预警逐项核对后提交决策中心", `<div class="risk-action-list">${dash.actions.map((item) => `<article><div><strong>${esc(item.enterprise)}</strong><small>${esc(item.focus)} · ${esc(item.recipient)}</small></div><span><b>${fmt(item.score, 2)}</b>${badge(riskActionStageMeta(riskActionRecord(item)).label, riskActionStageMeta(riskActionRecord(item)).tone)}</span></article>`).join("")}</div>`, `<a class="text-btn" href="${dashboardHref("risk", "actions")}">进入风险处置 ${icon("chevron-right", "sm")}</a>`, "flush-body")}</section>${panel("企业评分明细", `全部 ${dash.companies.length} 家企业`, riskTable([...dash.companies].sort((left, right) => left.finalScore - right.finalScore), 8), `<a class="text-btn" href="${dashboardHref("risk", "analysis")}">查看产业分析 ${icon("chevron-right", "sm")}</a>`, "flush-body")}`;
   }
 
   function riskStageSummary(dash) {
@@ -956,7 +956,7 @@
       scenarioIdentity: clone(RISK_CONTEXT),
       scenario: "债务风险监测",
       sourceType: "report",
-      sourceRef: `债务风险驾驶舱 · ${snapshotId}`,
+      sourceRef: `债务风险经营全景 · ${snapshotId}`,
       requester: "集团债务风险管理人员",
       submittedBy: "集团债务风险管理人员",
       requestTime: displayTime,
@@ -973,7 +973,7 @@
         status: "已发布",
       },
       rule: null,
-      ruleApplicability: `不适用；本次为驾驶舱人工确认后提交的${item.tier}风险行动`,
+      ruleApplicability: `不适用；本次为经营全景人工确认后提交的${item.tier}风险行动`,
       metric: {
         id: "MET-S003-FINAL-RISK-SCORE",
         name: "企业最终风险评分",
@@ -1010,7 +1010,7 @@
         reportId: `S003-RPT-${RISK_CONTEXT.scenarioRunId}-${item.enterpriseId}`,
         reportRoute: `#/reports/view?enterpriseId=${encodeURIComponent(item.enterpriseId)}&runId=${encodeURIComponent(RISK_CONTEXT.scenarioRunId)}`,
       },
-      sourceEvents: [{ type: "驾驶舱人工提交", time: displayTime, reason: "集团债务风险管理人员逐户核对固定证据后提交标准 Action Request" }],
+      sourceEvents: [{ type: "经营全景人工提交", time: displayTime, reason: "集团债务风险管理人员逐户核对固定证据后提交标准 Action Request" }],
       automatic: false,
       clientWorkspaceVersion: "ofw.dashboard.workspace.v7",
       actionRequestImmutable: false,
@@ -1580,7 +1580,7 @@
       : valid === "actions"
         ? riskActions(dash)
         : riskModelingConsumer(dash);
-    shell(`<main class="page dashboard-page risk-page" data-screen-label="债务风险监测驾驶舱">${dashboardHeader(dash, { actions })}${infoStrip(dash)}${tabs(tabItems, valid, "risk")}<div class="dashboard-content">${content}</div></main>`);
+    shell(`<main class="page dashboard-page risk-page" data-screen-label="债务风险全景">${dashboardHeader(dash, { actions })}${infoStrip(dash)}${tabs(tabItems, valid, "risk")}<div class="dashboard-content">${content}</div></main>`);
   }
 
   function preloanApplicantRows(dash) {
@@ -1611,6 +1611,7 @@
   }
 
   function renderPreloan(tab) {
+    if(window.parent!==window){window.parent.postMessage({type:'OFW_OBJECT_PANORAMA',collectionId:'preloan-business'},location.origin);return;}
     focusDashboardScenario("S004");
     const dash = byId("preloan");
     const valid = ["overview", "applicants", "models", "evidence"].includes(tab) ? tab : "overview";
@@ -1622,7 +1623,7 @@
     ];
     const content = valid === "overview" ? preloanOverview(dash) : valid === "applicants" ? preloanApplicants(dash) : valid === "models" ? preloanModelComparison(dash) : preloanEvidence(dash);
     const actions = `<button class="btn" type="button" data-action="preloan-open-m07" data-ofw-native-route="#module/m07">${icon("scan-search", "sm")}业务对象探索</button><button class="btn primary" type="button" data-ofw-native-action="dashboard-open">${icon("activity", "sm")}当前模型结果</button>`;
-    shell(`<main class="page dashboard-page preloan-page" data-screen-label="贷款贷前风险评估驾驶舱">${dashboardHeader(dash, { actions })}${infoStrip(dash)}${tabs(tabItems, valid, "preloan")}<div class="dashboard-content">${content}</div></main>`);
+    shell(`<main class="page dashboard-page preloan-page" data-screen-label="贷款贷前风险评估经营全景">${dashboardHeader(dash, { actions })}${infoStrip(dash)}${tabs(tabItems, valid, "preloan")}<div class="dashboard-content">${content}</div></main>`);
   }
 
   function openPreloanApplicant(applicantId) {
@@ -1698,6 +1699,7 @@
   }
 
   function renderPostInvestment(tab) {
+    if(window.parent!==window){window.parent.postMessage({type:'OFW_OBJECT_PANORAMA',collectionId:'investment-analysis'},location.origin);return;}
     focusDashboardScenario("S005");
     const dash = byId("post-investment");
     const domains = normalizedS005Domains();
@@ -1711,7 +1713,7 @@
       ? `<section class="s005-domain-detail">${s005DomainCard(selectedDomain, true)}</section>`
       : `<section class="s005-domain-grid">${domains.map((domain) => s005DomainCard(domain)).join("")}</section>`;
     const actions = `<button class="btn" type="button" data-action="s005-request-evaluation">${icon("refresh-cw", "sm")}读取当前轮次</button>`;
-    shell(`<main class="page dashboard-page post-investment-page" data-screen-label="金融产品投后评价六域驾驶舱">${dashboardHeader(dash, { actions })}${s005IdentityStrip()}${s005StatusStrip()}${s005PendingNotice()}${tabs(tabItems, valid, "post-investment")}<div class="dashboard-content">${content}<div class="s005-boundary-note">${icon("shield-alert", "sm")}<p>真实结果、预测结果和模拟结果严格隔离；当前页面不形成 Published 本体、Metric、Rule、T019、行动、审批、待办或交易。</p></div></div></main>`);
+    shell(`<main class="page dashboard-page post-investment-page" data-screen-label="金融产品投后评价六域经营全景">${dashboardHeader(dash, { actions })}${s005IdentityStrip()}${s005StatusStrip()}${s005PendingNotice()}${tabs(tabItems, valid, "post-investment")}<div class="dashboard-content">${content}<div class="s005-boundary-note">${icon("shield-alert", "sm")}<p>真实结果、预测结果和模拟结果严格隔离；当前页面不形成 Published 本体、Metric、Rule、T019、行动、审批、待办或交易。</p></div></div></main>`);
   }
 
   function openS005Evidence(domainId, metricKey = "") {
@@ -1862,6 +1864,7 @@
     if (!target) return;
     const action = target.dataset.action;
     if(action==='joint-situation'){window.parent.postMessage({type:'OFW_V14_NAVIGATE',view:'workbench'},location.origin);return;}
+    if(action==='budget-enterprise-profile'){openObjectExplorer("ENT-020","环保测试公司4");return;}
     if (action === "risk-explore-object") {
       const item = byId("risk").companies.find((row) => row.enterpriseId === target.dataset.enterpriseId);
       if (item) openObjectExplorer(item.enterpriseId, item.enterpriseName);
@@ -1908,7 +1911,7 @@
     if (action === "structure-detail") {
       const dash = byId("financing");
       const item = dash.structures.find((structure) => structure.id === target.dataset.id);
-      state.drawer = { eyebrow: "结构分析", title: item.name, subtitle: "当前融资余额占比", rows: item.items.map((part) => [part[0], `${fmt(part[1], 2)}%`]), note: "结构项使用当前驾驶舱相同的数据范围和数据截至时间。" };
+      state.drawer = { eyebrow: "结构分析", title: item.name, subtitle: "当前融资余额占比", rows: item.items.map((part) => [part[0], `${fmt(part[1], 2)}%`]), note: "结构项使用当前经营全景相同的数据范围和数据截至时间。" };
       render(); return;
     }
     if (action === "finance-unit-detail") {

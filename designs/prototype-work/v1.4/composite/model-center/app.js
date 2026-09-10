@@ -96,7 +96,7 @@
   const requestedInitialView = global.location.hash.slice(1) || "objectives";
   const canonicalInitialView = VIEW_ALIASES[requestedInitialView] || requestedInitialView;
   let activeView = VIEWS.some(([id]) => id === canonicalInitialView) ? canonicalInitialView : "objectives";
-  let repositoryMode = requestedInitialView === "repository";
+  let repositoryMode = requestedInitialView === "repository" || params.has("focusModel");
   if (global.location.hash !== `#${activeView}`) history.replaceState(null, "", `#${activeView}`);
 
   let context = null;
@@ -1176,7 +1176,7 @@
       accept(payload, scenarioId);
       await loadRepositoryCatalog();
       if (repositoryMode && repositoryRegistered) {
-        const modelId = repository?.modelId || repositoryCatalog[0]?.modelId;
+        const modelId = repository?.modelId || repositoryCatalog.find(model=>model.modelId===params.get("focusModel"))?.modelId || repositoryCatalog[0]?.modelId;
         if (modelId) {
           const query = new URLSearchParams({ scenarioId });
           if (repository?.selectedBranch) query.set("branch", repository.selectedBranch);
