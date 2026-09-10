@@ -309,7 +309,7 @@
         ${module ? `<nav class="top-breadcrumb" aria-label="当前位置"><button type="button" data-route="#home">首页</button>${icon("chevron-right", "xs")}<button type="button" data-action="module-root" data-module-id="${module.id}">${esc(currentName)}</button>${icon("chevron-right", "xs")}<strong id="frame-breadcrumb-current">${esc(currentTask)}</strong></nav>` : `<div><span>工作台</span><strong>首页</strong></div>`}
       </div>
       <div class="top-actions">
-        ${["decision", "query", "report"].includes(module?.id) && sessionStorage.getItem("ofw.m07.business-return") ? `<button class="button" data-action="return-business-overview">返回业务全景</button>` : ""}
+        ${["decision", "query", "report", "ontology", "data"].includes(module?.id) && sessionStorage.getItem("ofw.m07.business-return") ? `<button class="button" data-action="return-business-overview">返回业务全景</button>` : ""}
         <button class="top-action" type="button" data-action="open-catalog" title="搜索业务资源" aria-label="搜索业务资源">${icon("search", "sm")}</button>
         <button class="top-action" type="button" data-action="open-recent" title="最近工作" aria-label="最近工作">${icon("history", "sm")}</button>
         ${module ? `<button class="top-action" type="button" data-action="reload-frame" title="重新读取当前模块" aria-label="重新读取当前模块">${icon("refresh-cw", "sm")}</button>` : ""}
@@ -1526,6 +1526,21 @@
       if (renderedModuleId === "m07" && (message.type === "OFW_M07_OPEN_M08" || message.operation === "open-m08")) {
         handleM07Open(message);
         return;
+      }
+      if (renderedModuleId === "ontology" && message.operation === "open-business-source" && message.assetId === "V14-ENTERPRISE-VIEW") {
+        const target = new URL(DATA.moduleById.data.source, global.location.href);
+        target.searchParams.set("businessSource", "1"); target.hash = "/resources";
+        STORE.saveFramePosition("data", { href: target.href, hash: target.hash, windowY: 0, containerY: 0 });
+        navigate("#module/data"); return;
+      }
+      if (renderedModuleId === "m07" && message.operation === "open-business-ontology") {
+        const returnUrl = safeM07ReturnUrl(message.returnUrl, activeContext());
+        if (!returnUrl || !/^semantic-[A-Za-z0-9-]+$/.test(message.semanticVersionId || "") || !/^OBJ-[A-Z0-9-]+$/.test(message.objectTypeId || "")) return;
+        sessionStorage.setItem("ofw.m07.business-return", returnUrl.href);
+        const target = new URL(DATA.moduleById.ontology.source, global.location.href);
+        target.hash = `published/resource?version=${encodeURIComponent(message.semanticVersionId)}&id=${encodeURIComponent(message.objectTypeId)}&tab=overview`;
+        STORE.saveFramePosition("ontology", { href: target.href, hash: target.hash, windowY: 0, containerY: 0 });
+        navigate("#module/ontology"); return;
       }
       if (renderedModuleId === "m07" && message.operation === "open-business-decision") {
         const returnUrl = safeM07ReturnUrl(message.returnUrl, activeContext());

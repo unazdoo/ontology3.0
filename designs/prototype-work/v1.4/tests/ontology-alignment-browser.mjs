@@ -1,0 +1,97 @@
+import {chromium} from 'playwright';
+import assert from 'node:assert/strict';
+import {mkdir,writeFile} from 'node:fs/promises';
+const base=process.env.BASE_URL||'http://127.0.0.1:4484';
+const out=new URL('../../../../outputs/m07-ontology-alignment/final-browser/',import.meta.url);
+await mkdir(out,{recursive:true});
+const browser=await chromium.connectOverCDP(process.env.CDP_URL||'http://127.0.0.1:4486');
+const context=await browser.newContext({viewport:{width:1440,height:900},acceptDownloads:true,reducedMotion:'reduce'});
+const page=await context.newPage();page.setDefaultTimeout(20000);
+const errors=[],checks=[];page.on('pageerror',error=>errors.push(error.message));
+async function click(locator){await locator.evaluate(e=>e.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'}));const box=await locator.boundingBox();assert.ok(box?.width&&box?.height,'visible click target');await page.mouse.click(box.x+box.width/2,box.y+box.height/2);}
+async function frame(id){await page.waitForFunction(id=>document.querySelector('#module-frame')?.dataset.moduleId===id&&document.querySelector('#module-frame')?.contentDocument?.readyState==='complete',id,{polling:100});const f=await(await page.locator('#module-frame').elementHandle()).contentFrame();if(id==='m07')await f.waitForFunction(()=>window.__OFW_M07_DEBUG__,null,{polling:100});return f;}
+async function capture(name,f){const s=await context.newCDPSession(page);const shot=await s.send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});await writeFile(new URL(name+'.png',out),Buffer.from(shot.data,'base64'));await s.detach();await writeFile(new URL(name+'.json',out),JSON.stringify({url:page.url(),frameUrl:f.url(),text:await f.locator('body').innerText(),state:await f.evaluate(()=>window.__OFW_M07_DEBUG__?.getState()||null),errors},null,2));checks.push(name);console.log('PASS '+name);}
+async function homeCompany(f){await click(f.locator('[data-open-object="ENT-020"]').filter({visible:true}).first());assert.ok((await f.locator('#enterprise-budget').innerText()).includes('1,097.7'));}
+try{
+ await page.goto(base+'/',{waitUntil:'domcontentloaded'});
+ await click(page.locator('[data-primary-nav][data-route="#module/m07"]'));
+ let f=await frame('m07');
+ assert.equal(await f.locator('.result-table tbody tr').count(),23);
+ assert.equal(await f.locator('.result-table [data-open-object="financing::s001.group"]').count(),0);
+ await capture('01-enterprise-directory',f);
+ await homeCompany(f);
+ const binding=await f.evaluate(()=>__OFW_M07_DEBUG__.getContext().activeObjectRef);
+ assert.equal(binding.objectTypeRef,'OBJ-ENTERPRISE');assert.equal(binding.ontologyVersionId,'semantic-MTUWMQFP-C5JF');
+ await click(f.locator('#enterprise-budget'));
+ await capture('02-enterprise-budget',f);
+ await click(f.locator('[data-open-object="BUDGET-2025-ENT-020-DEPT-AQ"]').first());
+ assert.equal(await f.evaluate(()=>__OFW_M07_DEBUG__.getContext().activeObjectRef.objectTypeRef),'OBJ-ENTERPRISE-BUDGET-ANNUAL');
+ await click(f.locator('[data-business-basis]').first());
+ await click(f.locator('[data-open-definition]'));
+ let m=await frame('ontology');await m.waitForFunction(()=>document.body.innerText.includes('Object Type · V2'),null,{polling:100});
+ assert.ok(m.url().includes('id=OBJ-ENTERPRISE-BUDGET-ANNUAL'));
+ await capture('03-exact-m01-definition',m);
+ await click(page.locator('[data-action="return-business-overview"]'));f=await frame('m07');
+ assert.equal(await f.evaluate(()=>__OFW_M07_DEBUG__.getState().activeId),'BUDGET-2025-ENT-020-DEPT-AQ');
+ await click(f.locator('[data-budget-details]'));
+ assert.equal(await f.evaluate(()=>__OFW_M07_DEBUG__.getContext().objectSetRef.count),16);
+ assert.equal(await f.locator('#canvas-stage tbody tr').count(),12);
+ await click(f.locator('[data-collection-page="1"]'));assert.equal(await f.locator('#canvas-stage tbody tr').count(),4);
+ await capture('04-budget-details-pagination',f);
+ await click(f.locator('[data-open-object="BUDGET-2025-ENT-020-DEPT-AQ"]'));await homeCompany(f);
+ await click(f.locator('[data-open-collection="financing:ENT-020"]'));
+ assert.equal(await f.evaluate(()=>__OFW_M07_DEBUG__.getContext().objectSetRef.count),75);
+ await click(f.locator('[data-open-object="DEMO-DEBT-004827"]'));
+ assert.equal(await f.evaluate(()=>__OFW_M07_DEBUG__.getContext().activeObjectRef.objectTypeRef),'OBJ-FINANCING-DETAIL');
+ assert.ok((await f.locator('#canvas-stage').innerText()).includes('989,600,000'));
+ await capture('05-single-financing-note',f);await homeCompany(f);
+ await click(f.locator('[data-budget-report]'));
+ let r=await frame('report');await r.getByRole('button',{name:'查看模型监测草稿',exact:true}).waitFor({state:'attached'});await click(r.getByRole('button',{name:'查看模型监测草稿',exact:true}));
+ const report=await page.evaluate(()=>OFW_WORKFLOW.readReport('S002'));
+ assert.equal(report.contentBlocks[0].resultMode,'demo');assert.equal(report.contentBlocks[0].rows.length,12);
+ assert.equal(report.contentBlocks[0].workspaceContext.objectSetRef.objectRefs[0].objectTypeRef,'OBJ-ENTERPRISE');
+ assert.equal(report.contentBlocks[0].ontologyBinding.ontologyVersionId,'semantic-MTUWMQFP-C5JF');
+ await writeFile(new URL('budget-report.json',out),JSON.stringify(report,null,2));
+ await r.locator('[data-report-field="text"]').fill('企业预算复核：按责任部门跟踪费用和收入，企业归属为本轮演示映射。');
+ await click(r.locator('[data-ofw-report-action="preview"]'));
+ const downloaded=page.waitForEvent('download');await click(r.locator('[data-ofw-report-action="export"]'));await(await downloaded).saveAs(new URL('budget-report.html',out).pathname);
+ await capture('06-budget-report-export',r);
+ await click(r.locator('[data-ofw-report-action="source"]').first());f=await frame('m07');
+ assert.equal(await f.evaluate(()=>__OFW_M07_DEBUG__.getState().activeId),'ENT-020');
+ await click(f.locator('[data-budget-query]'));let q=await frame('query');await q.locator('textarea').waitFor({state:'attached'});
+ await q.locator('textarea').fill('2025年三个部门的费用预算执行率和剩余空间分别是多少？');await click(q.getByRole('button',{name:'发送问题',exact:true}));
+ await q.waitForFunction(()=>document.body.innerText.includes('98.86%')&&document.body.innerText.includes('3.5799'),null,{polling:100});await capture('07-budget-query',q);
+ await click(q.getByRole('button',{name:'带入探索',exact:true}));f=await frame('m07');
+ assert.equal(await f.evaluate(()=>__OFW_M07_DEBUG__.getState().activeId),'ENT-020');
+ assert.deepEqual(await f.evaluate(()=>__OFW_M07_DEBUG__.getState().selectedIds),['ENT-020-DEPT-SB','ENT-020-DEPT-JS','ENT-020-DEPT-AQ']);
+ await capture('07b-query-departments-to-enterprise',f);
+ await click(f.locator('[data-business-action="AR-RUN-MSVJWKPO-002-UNIT-553"]'));
+ let d=await frame('decision');await d.getByRole('button',{name:'确认承接',exact:true}).waitFor({state:'attached'});
+ assert.ok(d.url().includes('task/TD-6872111633'));
+ await click(d.getByRole('button',{name:'确认承接',exact:true}));await click(d.getByRole('button',{name:'开始处理',exact:true}));await click(d.getByRole('button',{name:'完成待办',exact:true}));
+ await d.locator('.dc-modal textarea').fill('已完成本轮融资复核，继续跟踪后续数据；办理完成不改变原融资成本或风险分档。');await click(d.getByRole('button',{name:'确认完成',exact:true}));
+ await d.waitForFunction(()=>JSON.parse(localStorage.getItem('ontology3-decision-center-review-v2-portfolio-state-v8')).tasks.find(t=>t.id==='TD-6872111633').status==='completed',null,{polling:100});
+ await click(page.locator('[data-action="return-business-overview"]'));f=await frame('m07');
+ assert.ok((await f.locator('#business-progress').innerText()).includes('已完成本轮融资复核'));
+ assert.ok((await f.locator('#business-facts').innerText()).includes('2.88'));await capture('08-original-task-return',f);
+ for(const [w,h] of [[1440,900],[1280,720],[390,844],[320,844]]){
+  await page.setViewportSize({width:w,height:h});await click(f.locator('#enterprise-budget'));
+  assert.ok(await f.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await capture('09-budget-'+w,f);
+ }
+ await page.setViewportSize({width:1440,height:900});await click(f.locator('#workspace-context [data-route="discover"]'));
+ await click(f.locator('[data-open-collection="group-finance"]'));
+ assert.equal(await f.evaluate(()=>__OFW_M07_DEBUG__.getContext().objectSetRef.count),3);
+ assert.ok((await f.locator('#canvas-stage').innerText()).includes('5218'));await capture('10-financing-overview-view',f);
+ await click(f.locator('#workspace-context [data-route="discover"]'));await click(f.locator('[data-open-collection="investment-analysis"]'));
+ assert.equal(await f.locator('#canvas-stage tbody tr').count(),4);
+ await click(f.locator('[data-open-object="PRD-40A100000000B2C7"]'));
+ await click(f.locator('[data-business-related="HOLD-S005-PRD-40A100000000B2C7"]'));
+ assert.equal(await f.evaluate(()=>__OFW_M07_DEBUG__.getContext().activeObjectRef.objectTypeRef),'OBJ-INVESTMENT-HOLDING');
+ await click(f.locator('[data-business-lens="temporal"]').first());
+ assert.ok((await f.locator('.brush-axis').innerText()).includes('79 个观测时点'));await capture('11-product-holding-history',f);
+ await click(f.locator('#save-exploration'));await f.locator('#exploration-name').fill('产品汇总持仓跟踪');await click(f.locator('#save-form button[value="default"]'));
+ await page.reload({waitUntil:'domcontentloaded'});f=await frame('m07');assert.equal(await f.evaluate(()=>__OFW_M07_DEBUG__.getState().lens),'temporal');
+ await capture('12-saved-holding-reload',f);
+ assert.deepEqual(errors,[]);
+ await writeFile(new URL('result.json',out),JSON.stringify({status:'passed',checks,errors,base,sourceVersion:'V14-ENTERPRISE-VIEW-666586EEFA71',semanticVersion:'semantic-MTUWMQFP-C5JF'},null,2));
+}catch(error){await writeFile(new URL('failure.json',out),JSON.stringify({error:error.stack,checks,errors,frames:await Promise.all(page.frames().map(async f=>({url:f.url(),text:await f.locator('body').innerText().catch(()=>'' )})))},null,2));throw error;}finally{await context.close();await browser.close();}

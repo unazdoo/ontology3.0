@@ -407,7 +407,7 @@
   function explorationContextMarkup() {
     const handoff = hostContext?.explorationHandoff;
     if (!handoff) return "";
-    return `<section class="handoff-bar"><span class="handoff-icon">${icon("waypoints")}</span><div><span>来自业务对象探索</span><strong>${esc(handoff.objectRef?.title || handoff.objectRef?.id || "当前对象")}</strong></div><div><span>时间范围</span><strong>${esc(handoff.timeRange?.label || `${handoff.timeRange?.start || "—"} 至 ${handoff.timeRange?.end || "—"}`)}</strong></div><div><span>原视图</span><strong>${esc(handoff.lensRef?.lensId || "对象目录")}</strong></div><button class="btn compact" type="button" data-return-route="#module/m07">返回探索</button></section>`;
+    return `<section class="handoff-bar"><span class="handoff-icon">${icon("waypoints")}</span><div><span>来自业务全景</span><strong>${esc(handoff.objectRef?.title || handoff.objectRef?.id || "当前对象")}</strong></div><div><span>时间范围</span><strong>${esc(handoff.timeRange?.label || `${handoff.timeRange?.start || "—"} 至 ${handoff.timeRange?.end || "—"}`)}</strong></div><div><span>原视图</span><strong>${esc(({ overview: "业务全景", collection: "业务记录", catalog: "对象目录", object360: "对象全貌", graph: "关系网络", temporal: "时序分析", spatial: "地图", compare: "对比分析" })[handoff.lensRef?.lensId] || "对象视图")}</strong></div><button class="btn compact" type="button" data-return-route="#module/m07">返回探索</button></section>`;
   }
 
   function workspaceInputMarkup() {

@@ -1,0 +1,40 @@
+TAP version 13
+# Subtest: business directory consumes the exact M01-published snapshot and its verified data file
+ok 1 - business directory consumes the exact M01-published snapshot and its verified data file
+  ---
+  duration_ms: 17.543792
+  type: 'test'
+  ...
+# Subtest: all department budgets belong to one explicitly assigned demonstration enterprise
+ok 2 - all department budgets belong to one explicitly assigned demonstration enterprise
+  ---
+  duration_ms: 8.726792
+  type: 'test'
+  ...
+# Subtest: financing collections contain individual source-note identities and reconcile to enterprise balances
+ok 3 - financing collections contain individual source-note identities and reconcile to enterprise balances
+  ---
+  duration_ms: 10.275709
+  type: 'test'
+  ...
+# Subtest: holdings retain product-plus-ledger identity and distinct observed dates
+ok 4 - holdings retain product-plus-ledger identity and distinct observed dates
+  ---
+  duration_ms: 6.901791
+  type: 'test'
+  ...
+# Subtest: draft versions and incorrect relationship data fail before directory construction
+ok 5 - draft versions and incorrect relationship data fail before directory construction
+  ---
+  duration_ms: 8.616667
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 130.692792

@@ -1,0 +1,284 @@
+{
+  "reportId": "RPT-S002-mtuxuhkh",
+  "title": "业务分析报告",
+  "formedAt": "2026-09-10T02:58:52.913Z",
+  "contentBlocks": [
+    {
+      "type": "exploration",
+      "sourceModuleId": "m07",
+      "title": "环保测试公司4 · 企业预算",
+      "text": "环保测试公司4；业务静态快照，各指标按其截至日展示；历史分析区间不改变快照值。所选区间 2024-12-31 至 2026-08-15",
+      "resultMode": "demo",
+      "workspaceContext": {
+        "objectSetRef": {
+          "id": "object-set:m07:kxgc4l",
+          "title": "环保测试公司4",
+          "count": 1,
+          "selectionMode": "EXPLICIT",
+          "filters": null,
+          "objectIds": [
+            "ENT-020"
+          ],
+          "objectRefs": [
+            {
+              "id": "ENT-020",
+              "title": "环保测试公司4",
+              "objectTypeRef": "Enterprise",
+              "scenarioId": "S002",
+              "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+              "ontologyVersionId": "semantic-MTUWMQFP-C5JF",
+              "bindingId": "BIND-M07-OBJ-ENTERPRISE"
+            }
+          ]
+        },
+        "activeObjectRef": {
+          "id": "ENT-020",
+          "title": "环保测试公司4",
+          "objectTypeRef": "OBJ-ENTERPRISE",
+          "scenarioId": "S003",
+          "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+          "ontologyVersionId": "semantic-MTUWMQFP-C5JF",
+          "bindingId": "BIND-M07-OBJ-ENTERPRISE"
+        },
+        "timeRange": {
+          "start": "2024-12-31",
+          "end": "2026-08-15",
+          "label": "2024-12-31 至 2026-08-15"
+        },
+        "lensRef": {
+          "moduleId": "m07",
+          "lensId": "overview",
+          "route": "#explore"
+        },
+        "dataVersionRef": {
+          "id": "V14-ENTERPRISE-VIEW-666586EEFA71"
+        },
+        "ontologyVersionRef": {
+          "id": "semantic-MTUWMQFP-C5JF"
+        },
+        "evidenceRefs": [
+          "business-source.json#records/V14-ENTERPRISE/ENT-020",
+          "V14-ENTERPRISE-VIEW-666586EEFA71",
+          "semantic-MTUWMQFP-C5JF",
+          "financing::series:s001.entity.553:balance",
+          "source:s001-data-js",
+          "financing::series:s001.entity.553:cost",
+          "risk::series:S003-ENT-020:riskScore"
+        ],
+        "sourceModuleId": "m07"
+      },
+      "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+      "ontologyVersionId": "semantic-MTUWMQFP-C5JF",
+      "evidenceRefs": [
+        "business-source.json#records/V14-ENTERPRISE/ENT-020",
+        "V14-ENTERPRISE-VIEW-666586EEFA71",
+        "semantic-MTUWMQFP-C5JF",
+        "financing::series:s001.entity.553:balance",
+        "source:s001-data-js",
+        "financing::series:s001.entity.553:cost",
+        "risk::series:S003-ENT-020:riskScore"
+      ],
+      "returnUrl": "http://127.0.0.1:4484/designs/prototype-work/v1.4/composite/modules/m07/index.html?embedded=1&resource=%2Fdesigns%2Fprototype-work%2Fv1.4%2Fcomposite%2Fmodules%2Fm07%2Fresources%2Fportfolio.json&v=20260904-02&collection=financing%3AENT-020&businessScenario=S003&object=ENT-020&lens=overview&from=2024-12-31&to=2026-08-15&expanded=ENT-020&series=financing%3A%3Aseries%3As001.entity.553%3Abalance%2Cfinancing%3A%3Aseries%3As001.entity.553%3Acost%2Crisk%3A%3Aseries%3AS003-ENT-020%3AriskScore#explore",
+      "rows": [
+        {
+          "name": "设备管理部 · 2025年预算 / 预算金额",
+          "value": 404.5,
+          "unit": "万元",
+          "status": "截至2025-12-31；企业归属为演示映射",
+          "evidenceRefs": [
+            "business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-SB"
+          ],
+          "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+          "ontologyVersionId": "semantic-MTUWMQFP-C5JF"
+        },
+        {
+          "name": "设备管理部 · 2025年预算 / 实际执行",
+          "value": 255.6557,
+          "unit": "万元",
+          "status": "截至2025-12-31；企业归属为演示映射",
+          "evidenceRefs": [
+            "business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-SB"
+          ],
+          "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+          "ontologyVersionId": "semantic-MTUWMQFP-C5JF"
+        },
+        {
+          "name": "设备管理部 · 2025年预算 / 预算执行率",
+          "value": 63.20289246,
+          "unit": "%",
+          "status": "截至2025-12-31；企业归属为演示映射",
+          "evidenceRefs": [
+            "business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-SB"
+          ],
+          "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+          "ontologyVersionId": "semantic-MTUWMQFP-C5JF"
+        },
+        {
+          "name": "设备管理部 · 2025年预算 / 成本占收比",
+          "value": 52.28727438,
+          "unit": "%",
+          "status": "截至2025-12-31；企业归属为演示映射",
+          "evidenceRefs": [
+            "business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-SB"
+          ],
+          "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+          "ontologyVersionId": "semantic-MTUWMQFP-C5JF"
+        },
+        {
+          "name": "技术部 · 2025年预算 / 预算金额",
+          "value": 379.3,
+          "unit": "万元",
+          "status": "截至2025-12-31；企业归属为演示映射",
+          "evidenceRefs": [
+            "business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-JS"
+          ],
+          "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+          "ontologyVersionId": "semantic-MTUWMQFP-C5JF"
+        },
+        {
+          "name": "技术部 · 2025年预算 / 实际执行",
+          "value": 295.7507,
+          "unit": "万元",
+          "status": "截至2025-12-31；企业归属为演示映射",
+          "evidenceRefs": [
+            "business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-JS"
+          ],
+          "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+          "ontologyVersionId": "semantic-MTUWMQFP-C5JF"
+        },
+        {
+          "name": "技术部 · 2025年预算 / 预算执行率",
+          "value": 77.97276562,
+          "unit": "%",
+          "status": "截至2025-12-31；企业归属为演示映射",
+          "evidenceRefs": [
+            "business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-JS"
+          ],
+          "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+          "ontologyVersionId": "semantic-MTUWMQFP-C5JF"
+        },
+        {
+          "name": "技术部 · 2025年预算 / 成本占收比",
+          "value": 74.95899126,
+          "unit": "%",
+          "status": "截至2025-12-31；企业归属为演示映射",
+          "evidenceRefs": [
+            "business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-JS"
+          ],
+          "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+          "ontologyVersionId": "semantic-MTUWMQFP-C5JF"
+        },
+        {
+          "name": "安全运行部 · 2025年预算 / 预算金额",
+          "value": 313.9,
+          "unit": "万元",
+          "status": "截至2025-12-31；企业归属为演示映射",
+          "evidenceRefs": [
+            "business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-AQ"
+          ],
+          "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+          "ontologyVersionId": "semantic-MTUWMQFP-C5JF"
+        },
+        {
+          "name": "安全运行部 · 2025年预算 / 实际执行",
+          "value": 310.3201,
+          "unit": "万元",
+          "status": "截至2025-12-31；企业归属为演示映射",
+          "evidenceRefs": [
+            "business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-AQ"
+          ],
+          "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+          "ontologyVersionId": "semantic-MTUWMQFP-C5JF"
+        },
+        {
+          "name": "安全运行部 · 2025年预算 / 预算执行率",
+          "value": 98.85954126,
+          "unit": "%",
+          "status": "截至2025-12-31；企业归属为演示映射",
+          "evidenceRefs": [
+            "business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-AQ"
+          ],
+          "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+          "ontologyVersionId": "semantic-MTUWMQFP-C5JF"
+        },
+        {
+          "name": "安全运行部 · 2025年预算 / 成本占收比",
+          "value": 112.62750982,
+          "unit": "%",
+          "status": "截至2025-12-31；企业归属为演示映射",
+          "evidenceRefs": [
+            "business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-AQ"
+          ],
+          "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+          "ontologyVersionId": "semantic-MTUWMQFP-C5JF"
+        }
+      ],
+      "series": [],
+      "id": "9f97da68-8fb8-42d5-9721-854eb77f57cb",
+      "fingerprint": "[\"m07\",\"环保测试公司4 · 企业预算\",null,[{\"name\":\"设备管理部 · 2025年预算 / 预算金额\",\"value\":404.5,\"unit\":\"万元\",\"status\":\"截至2025-12-31；企业归属为演示映射\",\"evidenceRefs\":[\"business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-SB\"],\"dataVersionId\":\"V14-ENTERPRISE-VIEW-666586EEFA71\",\"ontologyVersionId\":\"semantic-MTUWMQFP-C5JF\"},{\"name\":\"设备管理部 · 2025年预算 / 实际执行\",\"value\":255.6557,\"unit\":\"万元\",\"status\":\"截至2025-12-31；企业归属为演示映射\",\"evidenceRefs\":[\"business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-SB\"],\"dataVersionId\":\"V14-ENTERPRISE-VIEW-666586EEFA71\",\"ontologyVersionId\":\"semantic-MTUWMQFP-C5JF\"},{\"name\":\"设备管理部 · 2025年预算 / 预算执行率\",\"value\":63.20289246,\"unit\":\"%\",\"status\":\"截至2025-12-31；企业归属为演示映射\",\"evidenceRefs\":[\"business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-SB\"],\"dataVersionId\":\"V14-ENTERPRISE-VIEW-666586EEFA71\",\"ontologyVersionId\":\"semantic-MTUWMQFP-C5JF\"},{\"name\":\"设备管理部 · 2025年预算 / 成本占收比\",\"value\":52.28727438,\"unit\":\"%\",\"status\":\"截至2025-12-31；企业归属为演示映射\",\"evidenceRefs\":[\"business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-SB\"],\"dataVersionId\":\"V14-ENTERPRISE-VIEW-666586EEFA71\",\"ontologyVersionId\":\"semantic-MTUWMQFP-C5JF\"},{\"name\":\"技术部 · 2025年预算 / 预算金额\",\"value\":379.3,\"unit\":\"万元\",\"status\":\"截至2025-12-31；企业归属为演示映射\",\"evidenceRefs\":[\"business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-JS\"],\"dataVersionId\":\"V14-ENTERPRISE-VIEW-666586EEFA71\",\"ontologyVersionId\":\"semantic-MTUWMQFP-C5JF\"},{\"name\":\"技术部 · 2025年预算 / 实际执行\",\"value\":295.7507,\"unit\":\"万元\",\"status\":\"截至2025-12-31；企业归属为演示映射\",\"evidenceRefs\":[\"business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-JS\"],\"dataVersionId\":\"V14-ENTERPRISE-VIEW-666586EEFA71\",\"ontologyVersionId\":\"semantic-MTUWMQFP-C5JF\"},{\"name\":\"技术部 · 2025年预算 / 预算执行率\",\"value\":77.97276562,\"unit\":\"%\",\"status\":\"截至2025-12-31；企业归属为演示映射\",\"evidenceRefs\":[\"business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-JS\"],\"dataVersionId\":\"V14-ENTERPRISE-VIEW-666586EEFA71\",\"ontologyVersionId\":\"semantic-MTUWMQFP-C5JF\"},{\"name\":\"技术部 · 2025年预算 / 成本占收比\",\"value\":74.95899126,\"unit\":\"%\",\"status\":\"截至2025-12-31；企业归属为演示映射\",\"evidenceRefs\":[\"business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-JS\"],\"dataVersionId\":\"V14-ENTERPRISE-VIEW-666586EEFA71\",\"ontologyVersionId\":\"semantic-MTUWMQFP-C5JF\"},{\"name\":\"安全运行部 · 2025年预算 / 预算金额\",\"value\":313.9,\"unit\":\"万元\",\"status\":\"截至2025-12-31；企业归属为演示映射\",\"evidenceRefs\":[\"business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-AQ\"],\"dataVersionId\":\"V14-ENTERPRISE-VIEW-666586EEFA71\",\"ontologyVersionId\":\"semantic-MTUWMQFP-C5JF\"},{\"name\":\"安全运行部 · 2025年预算 / 实际执行\",\"value\":310.3201,\"unit\":\"万元\",\"status\":\"截至2025-12-31；企业归属为演示映射\",\"evidenceRefs\":[\"business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-AQ\"],\"dataVersionId\":\"V14-ENTERPRISE-VIEW-666586EEFA71\",\"ontologyVersionId\":\"semantic-MTUWMQFP-C5JF\"},{\"name\":\"安全运行部 · 2025年预算 / 预算执行率\",\"value\":98.85954126,\"unit\":\"%\",\"status\":\"截至2025-12-31；企业归属为演示映射\",\"evidenceRefs\":[\"business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-AQ\"],\"dataVersionId\":\"V14-ENTERPRISE-VIEW-666586EEFA71\",\"ontologyVersionId\":\"semantic-MTUWMQFP-C5JF\"},{\"name\":\"安全运行部 · 2025年预算 / 成本占收比\",\"value\":112.62750982,\"unit\":\"%\",\"status\":\"截至2025-12-31；企业归属为演示映射\",\"evidenceRefs\":[\"business-source.json#records/V14-BUDGET-ANNUAL/BUDGET-2025-ENT-020-DEPT-AQ\"],\"dataVersionId\":\"V14-ENTERPRISE-VIEW-666586EEFA71\",\"ontologyVersionId\":\"semantic-MTUWMQFP-C5JF\"}],\"环保测试公司4；业务静态快照，各指标按其截至日展示；历史分析区间不改变快照值。所选区间 2024-12-31 至 2026-08-15\",{\"objectSetRef\":{\"id\":\"object-set:m07:kxgc4l\",\"title\":\"环保测试公司4\",\"count\":1,\"selectionMode\":\"EXPLICIT\",\"filters\":null,\"objectIds\":[\"ENT-020\"],\"objectRefs\":[{\"id\":\"ENT-020\",\"title\":\"环保测试公司4\",\"objectTypeRef\":\"Enterprise\",\"scenarioId\":\"S002\",\"dataVersionId\":\"V14-ENTERPRISE-VIEW-666586EEFA71\",\"ontologyVersionId\":\"semantic-MTUWMQFP-C5JF\",\"bindingId\":\"BIND-M07-OBJ-ENTERPRISE\"}]},\"activeObjectRef\":{\"id\":\"ENT-020\",\"title\":\"环保测试公司4\",\"objectTypeRef\":\"OBJ-ENTERPRISE\",\"scenarioId\":\"S003\",\"dataVersionId\":\"V14-ENTERPRISE-VIEW-666586EEFA71\",\"ontologyVersionId\":\"semantic-MTUWMQFP-C5JF\",\"bindingId\":\"BIND-M07-OBJ-ENTERPRISE\"},\"timeRange\":{\"start\":\"2024-12-31\",\"end\":\"2026-08-15\",\"label\":\"2024-12-31 至 2026-08-15\"},\"lensRef\":{\"moduleId\":\"m07\",\"lensId\":\"overview\",\"route\":\"#explore\"},\"dataVersionRef\":{\"id\":\"V14-ENTERPRISE-VIEW-666586EEFA71\"},\"ontologyVersionRef\":{\"id\":\"semantic-MTUWMQFP-C5JF\"},\"evidenceRefs\":[\"business-source.json#records/V14-ENTERPRISE/ENT-020\",\"V14-ENTERPRISE-VIEW-666586EEFA71\",\"semantic-MTUWMQFP-C5JF\",\"financing::series:s001.entity.553:balance\",\"source:s001-data-js\",\"financing::series:s001.entity.553:cost\",\"risk::series:S003-ENT-020:riskScore\"],\"sourceModuleId\":\"m07\"}]",
+      "createdAt": "2026-09-10T02:58:52.913Z"
+    }
+  ],
+  "workspaceContext": {
+    "objectSetRef": {
+      "id": "object-set:m07:kxgc4l",
+      "title": "环保测试公司4",
+      "count": 1,
+      "selectionMode": "EXPLICIT",
+      "filters": null,
+      "objectIds": [
+        "ENT-020"
+      ],
+      "objectRefs": [
+        {
+          "id": "ENT-020",
+          "title": "环保测试公司4",
+          "objectTypeRef": "Enterprise",
+          "scenarioId": "S002",
+          "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+          "ontologyVersionId": "semantic-MTUWMQFP-C5JF",
+          "bindingId": "BIND-M07-OBJ-ENTERPRISE"
+        }
+      ]
+    },
+    "activeObjectRef": {
+      "id": "ENT-020",
+      "title": "环保测试公司4",
+      "objectTypeRef": "OBJ-ENTERPRISE",
+      "scenarioId": "S003",
+      "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+      "ontologyVersionId": "semantic-MTUWMQFP-C5JF",
+      "bindingId": "BIND-M07-OBJ-ENTERPRISE"
+    },
+    "timeRange": {
+      "start": "2024-12-31",
+      "end": "2026-08-15",
+      "label": "2024-12-31 至 2026-08-15"
+    },
+    "lensRef": {
+      "moduleId": "m07",
+      "lensId": "overview",
+      "route": "#explore"
+    },
+    "dataVersionRef": {
+      "id": "V14-ENTERPRISE-VIEW-666586EEFA71"
+    },
+    "ontologyVersionRef": {
+      "id": "semantic-MTUWMQFP-C5JF"
+    },
+    "evidenceRefs": [
+      "business-source.json#records/V14-ENTERPRISE/ENT-020",
+      "V14-ENTERPRISE-VIEW-666586EEFA71",
+      "semantic-MTUWMQFP-C5JF",
+      "financing::series:s001.entity.553:balance",
+      "source:s001-data-js",
+      "financing::series:s001.entity.553:cost",
+      "risk::series:S003-ENT-020:riskScore"
+    ],
+    "sourceModuleId": "m07"
+  },
+  "resultMode": "demo",
+  "summary": "环保测试公司4；业务静态快照，各指标按其截至日展示；历史分析区间不改变快照值。所选区间 2024-12-31 至 2026-08-15",
+  "updatedAt": "2026-09-10T02:58:52.913Z",
+  "status": "DRAFT_READY_FOR_REVIEW"
+}

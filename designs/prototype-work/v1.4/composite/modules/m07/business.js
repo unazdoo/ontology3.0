@@ -4,7 +4,7 @@
   const fields = new Set(('industry riskScore riskTier balance averageFinancingCost loanCount dataAsOf assessmentAsOf financingBalance weightedAverageCost floatingRateRatio shortTermDebtRatio budgetAmount actualAmount executionRate reviewStatus debtRatio reviewPriority categoryLevel1 categoryLevel2 validFrom validTo snapshotCount recordCount currency rateType termType displayName candidateRole priorityRank metricLabel observedValue threshold condition evaluatedAt status').split(' '));
   const excluded = new Set(['preloan::LoanApplicant-002', 'preloan::LoanApplicant-004', 'investment::product-03', 'investment::holding-03']);
   const primaryTypes = new Set(['enterprise', 'financing-group', 'budget-unit', 'loan-applicant', 'financial-product', 'investment-holding', 'investment-portfolio'].map(type => `m01.object-type.${type}`));
-  const directory = resource => resource.objects.filter(item => primaryTypes.has(item.objectTypeId));
+  const directory = resource => resource.objects.filter(item => resource.typeMetadata ? resource.typeMetadata[item.objectTypeId]?.primary : primaryTypes.has(item.objectTypeId));
   function project(source) {
     // A presentation boundary: preserve source facts and identities, select prepared business cases.
     const objects = source.objects.filter(item => !excluded.has(item.id) && !/issuer-candidate|manager-candidate|validation-location|report-evidence/.test(item.objectTypeId));
@@ -14,7 +14,7 @@
       events: source.events.filter(event => ids.has(event.objectId || event.ownerObjectId)) };
   }
   function entries(item) {
-    return Object.entries(item?.properties || {}).filter(([key, property]) => fields.has(key) && property.value != null && typeof property.value !== 'object');
+    return Object.entries(item?.properties || {}).filter(([key, property]) => (fields.has(key) || ["sector", "year", "period", "asOf", "account", "category", "actualRevenue", "costToRevenue", "loanId", "balanceYuan", "rate", "guaranteeType", "value", "price", "cost", "pnl"].includes(key)) && property.value != null && typeof property.value !== 'object');
   }
   function status(item) {
     const p = item.properties || {};

@@ -102,8 +102,9 @@ test("all original modules, five domains and resource content are inherited with
   );
   assert.match(
     read("composite/ontology/index.html"),
-    /prototype-releases\/v1\.1\.0\/ontology-management-review\/canvas-first\/app\.js/,
+    /src="\.\/native-app\.js"/,
   );
+  assert.match(read("runtime/start.mjs"), /prototype-releases\/v1\.1\.0\/ontology-management-review\/canvas-first\/app\.js/);
   assert.deepEqual(
     JSON.parse(JSON.stringify(current.scenarios)),
     JSON.parse(JSON.stringify(original.scenarios)),

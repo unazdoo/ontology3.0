@@ -198,6 +198,7 @@
     let workspaceUpdater = typeof initialWorkspaceUpdater === "function" ? initialWorkspaceUpdater : null;
     const reportEditor = global.OFW_REPORT_EDITOR.create({ doc, scenarioId, openDrawer, navigate, updateWorkspaceContext: publishWorkspaceContext, onSave: (draft) => { reportDraft = draft; renderReport(); } });
     const snapshotAssets=module.id==='data'?global.OFW_V14_SNAPSHOT_ASSETS?.create({doc,win,openDrawer,signal:lifetime.signal}):null;
+    const businessSourceAsset=module.id==='data'?global.OFW_BUSINESS_SOURCE_ASSET?.create({doc,win,openDrawer,signal:lifetime.signal,onLoaded:()=>win.__OFW_NATIVE_MODULE_INTEGRATION__?.refresh()}):null;
     const ontologyRules=module.id==='ontology'?global.OFW_V14_ONTOLOGY_RULES?.create({doc,win,signal:lifetime.signal}):null;
 
     function currentEnvelope() { return W.envelopeFor(state(), workspaceResultMode().id); }
@@ -643,7 +644,7 @@
           row.innerHTML = `<td><div class="table-resource-name"><span class="source-icon">DV</span><div><strong>${esc(item.name)}</strong><small>${esc(item.data?.classification || "业务分析数据")}</small></div></div></td><td>${esc(short(item.data?.dataVersionId || "尚未冻结", 32))}</td><td>${item.models} 个模型</td><td>${esc(item.asOf)}</td><td><span class="badge ${item.quality === "质量通过" ? "success" : "neutral"}">${esc(item.quality)}</span></td><td>${item.members}</td><td>${item.relations}</td><td>${esc(String(item.data?.frozenAt || "").replace("T", " ").slice(0, 16) || "—")}</td><td><span class="badge ${item.data?.immutable ? "success" : "neutral"}">${item.data?.immutable ? "版本已冻结" : "准备中"}</span></td><td><div class="table-actions"><button class="text-link" type="button" data-ofw-native-action="data-open" data-scenario-id="${esc(item.targetScenarioId)}">${item.data?.immutable ? "查看详情" : "继续构建"}</button></div></td>`;
           table.appendChild(row);
         });
-        snapshotAssets?.render();renderDataLineage(table.querySelectorAll("tr").length);
+        snapshotAssets?.render();businessSourceAsset?.render();renderDataLineage(table.querySelectorAll("tr").length);
         return;
       }
       const grid = doc.querySelector(".asset-column .asset-grid");
@@ -664,7 +665,7 @@
         card.innerHTML = `<div><span class="eyebrow">分析数据资产</span><h3>${esc(item.name)}</h3><p>${item.members} 个数据成员 · ${item.relations} 条关系 · 观察时点和版本血缘可追溯。</p></div><div class="summary-strip"><div class="fact"><span>当前版本</span><strong>${esc(short(item.data?.dataVersionId || "尚未冻结", 28))}</strong></div><div class="fact"><span>数据截至</span><strong>${esc(item.asOf)}</strong></div><div class="fact"><span>质量</span><strong>${esc(item.quality)}</strong></div><div class="fact"><span>消费模型</span><strong>${item.models} 个</strong></div></div><div class="card-foot"><span class="badge ${item.data?.immutable ? "success" : "neutral"}">${item.data?.immutable ? "版本已冻结" : "准备中"}</span><button class="text-link" type="button" data-ofw-native-action="data-open" data-scenario-id="${esc(item.targetScenarioId)}">${item.data?.immutable ? "查看详情" : "继续构建"}</button></div>`;
         targetGrid.appendChild(card);
       });
-      snapshotAssets?.render();renderDataLineage(targetGrid.querySelectorAll(":scope > .asset-card").length);
+      snapshotAssets?.render();businessSourceAsset?.render();renderDataLineage(targetGrid.querySelectorAll(":scope > .asset-card").length);
     }
 
     function ontologyDrawer(targetScenarioId = selectedOntologyScenarioId) {

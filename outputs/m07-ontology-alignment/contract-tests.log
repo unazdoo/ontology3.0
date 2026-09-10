@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: exact published M01 object identities and relationship endpoints resolve
+ok 1 - exact published M01 object identities and relationship endpoints resolve
+  ---
+  duration_ms: 2.453083
+  type: 'test'
+  ...
+# Subtest: M07-style prefixes and rule IDs do not prove Object Type registration
+ok 2 - M07-style prefixes and rule IDs do not prove Object Type registration
+  ---
+  duration_ms: 1.284958
+  type: 'test'
+  ...
+# Subtest: candidate or wrong exact semantic versions cannot be consumed as published
+ok 3 - candidate or wrong exact semantic versions cannot be consumed as published
+  ---
+  duration_ms: 0.962666
+  type: 'test'
+  ...
+# Subtest: 75-loan collection cannot masquerade as a single loan object
+ok 4 - 75-loan collection cannot masquerade as a single loan object
+  ---
+  duration_ms: 0.7865
+  type: 'test'
+  ...
+# Subtest: new display IDs cannot duplicate a source business identity
+ok 5 - new display IDs cannot duplicate a source business identity
+  ---
+  duration_ms: 0.515334
+  type: 'test'
+  ...
+# Subtest: reversed relationship endpoints violate the published M01 definition
+ok 6 - reversed relationship endpoints violate the published M01 definition
+  ---
+  duration_ms: 0.500167
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 69.302708

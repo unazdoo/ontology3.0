@@ -989,3 +989,21 @@ code, kbd { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospac
 .business-status.risk-high { color: #a03939; background: #fff0f0; }
 .business-status.risk-attention { color: #87520e; background: #fff4df; }
 .business-status.risk-normal { color: #176452; background: #e9f5f1; }
+
+.business-table-scroll { overflow-x: auto; margin: 16px 0; }
+.business-table-scroll .workspace-table { min-width: 620px; }
+.business-table-scroll small { display: block; white-space: normal; max-width: 240px; }
+[data-lens="collection"] .workspace-grid { grid-template-columns: minmax(0, 1fr); }
+[data-lens="collection"] #path-pane, [data-lens="collection"] #inspector-pane { display: none; }
+#enterprise-budget { border-top: 3px solid #9a6e26; }
+@media (max-width: 600px) { .business-table-scroll { margin-inline: -4px; } }
+.business-budget-cards { display: none; }
+@media (max-width: 600px) {
+  .budget-table-desktop { display: none; }
+  .business-budget-cards { display: grid; gap: 12px; margin: 14px 0; }
+  .business-budget-cards article { padding: 12px; border: 1px solid var(--line); border-radius: 7px; }
+  .business-budget-cards h4 { margin: 0 0 10px; font-size: 13px; }
+  .business-budget-cards dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .business-budget-cards dt { font-size: 11px; color: var(--muted); }
+  .business-budget-cards dd { margin: 5px 0 0; font-weight: 700; overflow-wrap: anywhere; }
+}

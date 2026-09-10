@@ -11,6 +11,21 @@ export async function startCandidate({staticPort=0,modelingPort=0}) {
   const staticServer = createServer(async (req,res) => {
     try {
       const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
+      if (pathname === '/designs/prototype-work/v1.4/composite/ontology/native-app.js') {
+        const native = await readFile(path.join(root, 'designs/prototype-releases/v1.1.0/ontology-management-review/canvas-first/app.js'), 'utf8');
+        const boundary = 'if (contract?.scenarioContext?.scenarioId === "S001") {';
+        if (native.split(boundary).length !== 2) throw new Error('Native ontology boundary changed');
+        // The legacy four-member constraint describes FIN-ASSET, not the new composite asset.
+        res.setHeader('content-type', 'text/javascript; charset=utf-8');
+        res.setHeader('cache-control', 'no-store');
+        const target = 'return openDrafts.find(item => item.ontologyStableId === "ONT-GROUP-FINANCING-OPTIMIZATION")';
+        if (native.split(target).length !== 2) throw new Error('Native ontology intake changed');
+        res.end(native
+          .replace(boundary, 'if (contract?.scenarioContext?.scenarioId === "S001" && contract?.assetId !== "V14-ENTERPRISE-VIEW") {')
+          .replace(target, 'if (contract?.assetId === "V14-ENTERPRISE-VIEW") return openDrafts.find(item => item.sourceDataContract?.assetVersion === contract.assetVersion) || null;\n    ' + target)
+          .replace('if (version?.ontologyStableId === "ONT-GROUP-FINANCING-OPTIMIZATION") {', 'if (version?.ontologyStableId === "ONT-GROUP-FINANCING-OPTIMIZATION" && contract?.assetId !== "V14-ENTERPRISE-VIEW") {'));
+        return;
+      }
       let file = path.resolve(root, '.' + pathname);
       if (!file.startsWith(root)) throw new Error('Outside repository');
       if ((await stat(file)).isDirectory()) file = path.join(file,'index.html');

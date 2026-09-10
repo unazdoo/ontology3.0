@@ -1,0 +1,456 @@
+{
+  "id": "V14-ENTERPRISE-VIEW",
+  "name": "企业业务全景来源投影",
+  "version": "V14-ENTERPRISE-VIEW-666586EEFA71",
+  "asOf": "2026-08-15",
+  "sha256": "666586eefa71615c538789dcaa0194b4febf99c0d9fc72f4ac0c0c1364d2a220",
+  "sourceUrl": "/designs/prototype-work/v1.4/composite/resources/business-source.json",
+  "members": [
+    {
+      "id": "FIN-MEMBER-SUBJECT",
+      "name": "融资主体",
+      "columns": [
+        {
+          "key": "unitCode",
+          "name": "单位编码",
+          "unit": "—"
+        },
+        {
+          "key": "name",
+          "name": "单位名称",
+          "unit": "—"
+        },
+        {
+          "key": "sector",
+          "name": "所属板块",
+          "unit": "—"
+        },
+        {
+          "key": "ownerId",
+          "name": "负责人标识",
+          "unit": "—"
+        },
+        {
+          "key": "enterpriseId",
+          "name": "统一企业编号",
+          "unit": "—"
+        }
+      ]
+    },
+    {
+      "id": "FIN-MEMBER-DETAIL",
+      "name": "融资明细",
+      "columns": [
+        {
+          "key": "loanId",
+          "name": "借据编号",
+          "unit": "—"
+        },
+        {
+          "key": "unitCode",
+          "name": "单位编码",
+          "unit": "—"
+        },
+        {
+          "key": "institutionId",
+          "name": "机构编码",
+          "unit": "—"
+        },
+        {
+          "key": "currency",
+          "name": "币种",
+          "unit": "—"
+        },
+        {
+          "key": "balanceYuan",
+          "name": "折合人民币余额",
+          "unit": "人民币元"
+        },
+        {
+          "key": "rate",
+          "name": "当前利率",
+          "unit": "%"
+        },
+        {
+          "key": "rateType",
+          "name": "利率形式",
+          "unit": "—"
+        },
+        {
+          "key": "termType",
+          "name": "期限种类",
+          "unit": "—"
+        },
+        {
+          "key": "guaranteeType",
+          "name": "担保方式",
+          "unit": "—"
+        },
+        {
+          "key": "asOf",
+          "name": "数据截至时间",
+          "unit": "—"
+        },
+        {
+          "key": "enterpriseId",
+          "name": "统一企业编号",
+          "unit": "—"
+        }
+      ]
+    },
+    {
+      "id": "FIN-MEMBER-INSTITUTION",
+      "name": "融资机构",
+      "columns": [
+        {
+          "key": "institutionId",
+          "name": "机构编码",
+          "unit": "—"
+        },
+        {
+          "key": "name",
+          "name": "机构名称",
+          "unit": "—"
+        },
+        {
+          "key": "category",
+          "name": "机构类别",
+          "unit": "—"
+        }
+      ]
+    },
+    {
+      "id": "FIN-MEMBER-OWNER",
+      "name": "融资负责人",
+      "columns": [
+        {
+          "key": "ownerId",
+          "name": "负责人标识",
+          "unit": "—"
+        },
+        {
+          "key": "name",
+          "name": "负责人名称",
+          "unit": "—"
+        }
+      ]
+    },
+    {
+      "id": "V14-ENTERPRISE",
+      "name": "企业",
+      "columns": [
+        {
+          "key": "enterpriseId",
+          "name": "企业编号",
+          "unit": "—"
+        },
+        {
+          "key": "name",
+          "name": "业务名称",
+          "unit": "—"
+        },
+        {
+          "key": "industry",
+          "name": "所属产业",
+          "unit": "—"
+        },
+        {
+          "key": "sector",
+          "name": "所属板块",
+          "unit": "—"
+        },
+        {
+          "key": "roles",
+          "name": "业务角色",
+          "unit": "—"
+        },
+        {
+          "key": "riskScore",
+          "name": "风险评分",
+          "unit": "分"
+        },
+        {
+          "key": "riskTier",
+          "name": "风险分档",
+          "unit": "—"
+        },
+        {
+          "key": "balance",
+          "name": "融资余额",
+          "unit": "亿元"
+        },
+        {
+          "key": "averageFinancingCost",
+          "name": "平均融资成本",
+          "unit": "%"
+        },
+        {
+          "key": "loanCount",
+          "name": "融资笔数",
+          "unit": "笔"
+        },
+        {
+          "key": "debtRatio",
+          "name": "资产负债率",
+          "unit": "%"
+        },
+        {
+          "key": "asOf",
+          "name": "数据截至",
+          "unit": "—"
+        }
+      ]
+    },
+    {
+      "id": "V14-DEPARTMENT",
+      "name": "企业责任部门",
+      "columns": [
+        {
+          "key": "departmentId",
+          "name": "部门编号",
+          "unit": "—"
+        },
+        {
+          "key": "name",
+          "name": "业务名称",
+          "unit": "—"
+        },
+        {
+          "key": "enterpriseId",
+          "name": "企业编号",
+          "unit": "—"
+        }
+      ]
+    },
+    {
+      "id": "V14-BUDGET-ANNUAL",
+      "name": "部门年度预算执行",
+      "columns": [
+        {
+          "key": "annualId",
+          "name": "年度部门预算编号",
+          "unit": "—"
+        },
+        {
+          "key": "name",
+          "name": "业务名称",
+          "unit": "—"
+        },
+        {
+          "key": "departmentId",
+          "name": "部门编号",
+          "unit": "—"
+        },
+        {
+          "key": "enterpriseId",
+          "name": "企业编号",
+          "unit": "—"
+        },
+        {
+          "key": "year",
+          "name": "预算年度",
+          "unit": "年"
+        },
+        {
+          "key": "versionId",
+          "name": "预算版本",
+          "unit": "—"
+        },
+        {
+          "key": "budgetAmount",
+          "name": "费用预算",
+          "unit": "万元"
+        },
+        {
+          "key": "actualAmount",
+          "name": "实际费用",
+          "unit": "万元"
+        },
+        {
+          "key": "executionRate",
+          "name": "预算执行率",
+          "unit": "%"
+        },
+        {
+          "key": "actualRevenue",
+          "name": "实际收入",
+          "unit": "万元"
+        },
+        {
+          "key": "costToRevenue",
+          "name": "成本占收比",
+          "unit": "%"
+        },
+        {
+          "key": "asOf",
+          "name": "数据截至",
+          "unit": "—"
+        }
+      ]
+    },
+    {
+      "id": "V14-BUDGET-DETAIL",
+      "name": "预算科目期间明细",
+      "columns": [
+        {
+          "key": "detailId",
+          "name": "detailId",
+          "unit": "—"
+        },
+        {
+          "key": "name",
+          "name": "业务名称",
+          "unit": "—"
+        },
+        {
+          "key": "annualId",
+          "name": "年度部门预算编号",
+          "unit": "—"
+        },
+        {
+          "key": "departmentId",
+          "name": "部门编号",
+          "unit": "—"
+        },
+        {
+          "key": "enterpriseId",
+          "name": "企业编号",
+          "unit": "—"
+        },
+        {
+          "key": "account",
+          "name": "预算科目",
+          "unit": "—"
+        },
+        {
+          "key": "period",
+          "name": "期间",
+          "unit": "—"
+        },
+        {
+          "key": "budgetAmount",
+          "name": "费用预算",
+          "unit": "万元"
+        },
+        {
+          "key": "actualAmount",
+          "name": "实际费用",
+          "unit": "万元"
+        },
+        {
+          "key": "executionRate",
+          "name": "预算执行率",
+          "unit": "%"
+        },
+        {
+          "key": "asOf",
+          "name": "数据截至",
+          "unit": "—"
+        }
+      ]
+    },
+    {
+      "id": "V14-PRODUCT",
+      "name": "金融产品",
+      "columns": [
+        {
+          "key": "productId",
+          "name": "产品编号",
+          "unit": "—"
+        },
+        {
+          "key": "name",
+          "name": "业务名称",
+          "unit": "—"
+        },
+        {
+          "key": "category",
+          "name": "产品类型",
+          "unit": "—"
+        },
+        {
+          "key": "asOf",
+          "name": "数据截至",
+          "unit": "—"
+        }
+      ]
+    },
+    {
+      "id": "V14-HOLDING",
+      "name": "产品汇总持仓",
+      "columns": [
+        {
+          "key": "holdingId",
+          "name": "持仓编号",
+          "unit": "—"
+        },
+        {
+          "key": "name",
+          "name": "业务名称",
+          "unit": "—"
+        },
+        {
+          "key": "ledgerId",
+          "name": "台账范围",
+          "unit": "—"
+        },
+        {
+          "key": "productId",
+          "name": "产品编号",
+          "unit": "—"
+        },
+        {
+          "key": "asOf",
+          "name": "数据截至",
+          "unit": "—"
+        }
+      ]
+    },
+    {
+      "id": "V14-HOLDING-OBSERVATION",
+      "name": "持仓时点观测",
+      "columns": [
+        {
+          "key": "snapshotId",
+          "name": "持仓观测编号",
+          "unit": "—"
+        },
+        {
+          "key": "name",
+          "name": "业务名称",
+          "unit": "—"
+        },
+        {
+          "key": "holdingId",
+          "name": "持仓编号",
+          "unit": "—"
+        },
+        {
+          "key": "asOf",
+          "name": "数据截至",
+          "unit": "—"
+        },
+        {
+          "key": "value",
+          "name": "当前市值",
+          "unit": "元"
+        },
+        {
+          "key": "price",
+          "name": "现价",
+          "unit": "元"
+        },
+        {
+          "key": "cost",
+          "name": "投资金额",
+          "unit": "元"
+        },
+        {
+          "key": "pnl",
+          "name": "累计损益",
+          "unit": "元"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+TAP version 13
+# Subtest: business directory consumes the exact M01-published snapshot and its verified data file
+ok 1 - business directory consumes the exact M01-published snapshot and its verified data file
+  ---
+  duration_ms: 21.626875
+  type: 'test'
+  ...
+# Subtest: all department budgets belong to one explicitly assigned demonstration enterprise
+ok 2 - all department budgets belong to one explicitly assigned demonstration enterprise
+  ---
+  duration_ms: 9.852041
+  type: 'test'
+  ...
+# Subtest: financing collections contain individual source-note identities and reconcile to enterprise balances
+ok 3 - financing collections contain individual source-note identities and reconcile to enterprise balances
+  ---
+  duration_ms: 9.665209
+  type: 'test'
+  ...
+# Subtest: holdings retain product-plus-ledger identity and distinct observed dates
+ok 4 - holdings retain product-plus-ledger identity and distinct observed dates
+  ---
+  duration_ms: 7.938167
+  type: 'test'
+  ...
+# Subtest: draft versions and incorrect relationship data fail before directory construction
+ok 5 - draft versions and incorrect relationship data fail before directory construction
+  ---
+  duration_ms: 7.163125
+  type: 'test'
+  ...
+# Subtest: exact published M01 object identities and relationship endpoints resolve
+ok 6 - exact published M01 object identities and relationship endpoints resolve
+  ---
+  duration_ms: 4.30225
+  type: 'test'
+  ...
+# Subtest: M07-style prefixes and rule IDs do not prove Object Type registration
+ok 7 - M07-style prefixes and rule IDs do not prove Object Type registration
+  ---
+  duration_ms: 1.819375
+  type: 'test'
+  ...
+# Subtest: candidate or wrong exact semantic versions cannot be consumed as published
+ok 8 - candidate or wrong exact semantic versions cannot be consumed as published
+  ---
+  duration_ms: 1.1015
+  type: 'test'
+  ...
+# Subtest: 75-loan collection cannot masquerade as a single loan object
+ok 9 - 75-loan collection cannot masquerade as a single loan object
+  ---
+  duration_ms: 0.869625
+  type: 'test'
+  ...
+# Subtest: new display IDs cannot duplicate a source business identity
+ok 10 - new display IDs cannot duplicate a source business identity
+  ---
+  duration_ms: 0.486792
+  type: 'test'
+  ...
+# Subtest: reversed relationship endpoints violate the published M01 definition
+ok 11 - reversed relationship endpoints violate the published M01 definition
+  ---
+  duration_ms: 0.490292
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 145.907167
