@@ -93,11 +93,7 @@
             <span id="result-count">0 个结果</span>
           </div>
           <div class="result-actions">
-            <span id="selection-summary" class="selection-summary">未选择对象</span>
-            <button id="clear-selection" class="button quiet" type="button" hidden>清除选择</button>
-            <button id="explore-selection" class="button primary" type="button">
-              <i data-lucide="panels-top-left"></i><span>查看所选对象</span>
-            </button>
+            <span class="selection-hint">点名称打开画像；勾选后对比或并排查看</span>
           </div>
         </div>
 
@@ -105,6 +101,7 @@
       </section>
 
       <aside id="preview-pane" class="preview-pane" aria-label="对象预览"></aside>
+      <div id="selection-bar" class="selection-bar" aria-label="已选对象操作" hidden></div>
     </section>
 
     <section id="explore-view" class="route-view explore-view" hidden>
@@ -156,6 +153,7 @@
   <script src="../../shared/business-catalog.js"></script>
   <script src="../../resources/business-release.js"></script>
   <script src="portrait-model.js"></script>
+  <script src="inline-map.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

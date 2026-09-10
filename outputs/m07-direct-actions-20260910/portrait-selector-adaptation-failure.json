@@ -1,0 +1,25 @@
+{
+  "error": "locator.evaluate: Error: strict mode violation: locator('.result-table [data-open-object=\"ENT-020\"]') resolved to 2 elements:\n    1) <button class=\"object-name\" data-open-object=\"ENT-020\">环保测试公司4</button> aka getByRole('button', { name: '环保测试公司4', exact: true })\n    2) <button type=\"button\" class=\"row-arrow\" aria-label=\"打开环保测试公司4\" data-open-object=\"ENT-020\">…</button> aka getByRole('button', { name: '打开环保测试公司4' })\n\nCall log:\n\u001b[2m  - waiting for locator('.result-table [data-open-object=\"ENT-020\"]')\u001b[22m\n\n    at click (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-composite-v1.3.0/designs/prototype-work/v1.4/tests/portrait-browser.mjs:12:37)\n    at /Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-composite-v1.3.0/designs/prototype-work/v1.4/tests/portrait-browser.mjs:46:143",
+  "checks": [
+    "01-product-directory-preview",
+    "02-product-timeseries-parallel",
+    "03-product-latest-comparison",
+    "04-dimension-tiles",
+    "05-selection-reload-and-idle",
+    "06-set-report",
+    "07-mixed-object-basic-tiles",
+    "08-enterprise-map-portrait",
+    "09-focused-ontology-canvas"
+  ],
+  "errors": [],
+  "frames": [
+    {
+      "url": "http://127.0.0.1:4514/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html?m08ApiBase=http%3A%2F%2F127.0.0.1%3A4514%2Fmodel-api#module/m07",
+      "text": "智财问策\nOntology Financial World\n首页\n数据工程\n本体管理\n智能问数\n决策中心\nAgent 应用\n报告中心\n业务全景\n模型目标与优化\n经营驾驶舱\n模型服务已连接\nv1.4 · 本地原型\n首页\n业务全景\n对象发现\n管\n平台管理员\nM07\n业务全景\n对象发现\n对象全景\n已加入报告草稿\n2个对象 · 走势对照"
+    },
+    {
+      "url": "http://127.0.0.1:4514/designs/prototype-work/v1.4/composite/modules/m07/index.html?embedded=1&resource=%2Fdesigns%2Fprototype-work%2Fv1.4%2Fcomposite%2Fmodules%2Fm07%2Fresources%2Fportfolio.json&v=20260904-02&selectionY=342&selectionReturn=1&view=cards&dimension=basic&businessScenario=S003&type=OBJ-ENTERPRISE&set=PRD-40A100000000B2C7%2CPRD-843300000000D4E2%2CENT-001&from=2025-02-21&to=2026-07-17&expanded=ENT-001#discover",
+      "text": "继续分析\n对象类型\n浏览目录\n清除\n全部对象\n30\n企业\n企业\n23\n投资业务\n产品汇总持仓\n3\n金融产品\n4\n常用业务\n环保测试公司4 · 企业预算\n集团融资总览\n投资产品分析集\n工作记录\n已保存探索\n1\n基金B与D持仓时序\n已选 2 个对象 · 已选对象\nBUSINESS OVERVIEW\n查找对象，查看全景画像\n\n查看企业、金融产品及汇总持仓；选择多个对象后比较指标或并列查看。\n\n30\n业务对象\n3\n预算责任部门\n4\n金融产品\n全部对象类型\n企业（23）\n金融产品（4）\n产品汇总持仓（3）\n/\n企业\n23 个结果\n点名称打开画像；勾选后对比或并排查看\n\t业务对象\t关键值\t业务状态\t数据截至\t\n\n\t\n风电测试公司01\n新疆 · 哈密 · 债务风险 · 演示主体\n\t\n59.08 分\n风险评分\n\t绿灯\t2025/12/31\t\n\n\n\t\n风电测试公司02\n甘肃 · 酒泉 · 债务风险 · 演示主体\n\t\n88.41 分\n风险评分\n\t绿灯\t2025/12/31\t\n\n\n\t\n风电测试公司03\n内蒙古 · 包头 · 债务风险 · 演示主体\n\t\n71.57 分\n风险评分\n\t绿灯\t2025/12/31\t\n\n\n\t\n风电测试公司04\n内蒙古 · 锡林浩特 · 债务风险 · 演示主体\n\t\n80.37 分\n风险评分\n\t绿灯\t2025/12/31\t\n\n\n\t\n风电测试公司05\n河北 · 张家口 · 债务风险 · 演示主体\n\t\n57.3 分\n风险评分\n\t绿灯\t2025/12/31\t\n\n\n\t\n风电测试公司06\n吉林 · 白城 · 债务风险 · 演示主体\n\t\n60.64 分\n风险评分\n\t绿灯\t2025/12/31\t\n\n\n\t\n风电测试公司07\n辽宁 · 阜新 · 融资与债务风险 · 演示主体\n\t\n37.75 分\n风险评分\n\t黄灯\t2025/12/31\t\n\n\n\t\n风电测试公司08\n山东 · 潍坊 · 债务风险 · 演示主体\n\t\n56.62 分\n风险评分\n\t绿灯\t2025/12/31\t\n\n\n\t\n风电测试公司09\n江苏 · 盐城 · 债务风险 · 演示主体\n\t\n47.32 分\n风险评分\n\t绿灯\t2025/12/31\t\n\n\n\t\n风电测试公司10\n青海 · 德令哈 · 债务风险 · 演示主体\n\t\n54 分\n风险评分\n\t绿灯\t2025/12/31\t\n\n\n\t\n风电测试公司11\n宁夏 · 中卫 · 债务风险 · 演示主体\n\t\n54 分\n风险评分\n\t绿灯\t2025/12/31\t\n\n\n\t\n风电测试公司12\n山西 · 大同 · 债务风险 · 演示主体\n\t\n54 分\n风险评分\n\t绿灯\t2025/12/31\t\n\n\n\t\n风电测试公司13\n福建 · 莆田 · 债务风险 · 演示主体\n\t\n43.96 分\n风险评分\n\t绿灯\t2025/12/31\t\n\n\n\t\n风电测试公司14\n广东 · 阳江 · 债务风险 · 演示主体\n\t\n54.57 分\n风险评分\n\t绿灯\t2025/12/31\t\n\n\n\t\n风电测试公司15\n云南 · 曲靖 · 债务风险 · 演示主体\n\t\n49.92 分\n风险评分\n\t绿灯\t2025/12/31\t\n\n\n\t\n风电测试公司16\n贵州 · 毕节 · 债务风险 · 演示主体\n\t\n57.33 分\n风险评分\n\t绿灯\t2025/12/31\t\n\n\n\t\n核电测试公司1\n广西 · 防城港 · 债务风险 · 演示主体\n\t\n45.1 分\n风险评分\n\t绿灯\t2025/12/31\t\n\n\n\t\n环保测试公司1\n四川 · 成都 · 融资与债务风险 · 演示主体\n\t\n30.52 分\n风险评分\n\t黄灯\t2025/12/31\t\n\n\n\t\n环保测试公司2\n湖北 · 武汉 · 债务风险 · 演示主体\n\t\n33.92 分\n风险评分\n\t黄灯\t2025/12/31\t\n\n\n\t\n环保测试公司3\n河南 · 郑州 · 债务风险 · 演示主体\n\t\n37.31 分\n风险评分\n\t黄灯\t2025/12/31\t\n\n\n\t\n环保测试公司4\n浙江 · 杭州 · 融资与债务风险 · 演示主体\n\t\n23.05 分\n风险评分\n\t红灯\t2025/12/31\t\n\n\n\t\n申请主体A\n贷前评估 · 贷前调查对象\n\t\n48.6 %\n资产负债率\n\t\t2026/08/15\t\n\n\n\t\n申请主体C\n贷前评估 · 贷前调查对象\n\t\n55.1 %\n资产负债率\n\t\t2026/08/15\t\n企业\n风电测试公司01\n绿灯\n\n截至 2025-12-31\n\n基本信息\n关系\n事件\n时序\n证据\n风险评分\n59.08 分\n风险分档\n绿灯\n所属产业\n新能源产业-风电\n数据截至\n2025-12-31\n移出对象集\n打开全景画像\n已选对象（3）\n清空\n包含当前筛选外的 2 个对象\n基金 B\n基金 D\n风电测试公司01\n并排查看"
+    }
+  ]
+}

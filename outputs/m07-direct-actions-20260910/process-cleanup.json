@@ -1,0 +1,31 @@
+{
+  "at": "2026-09-10T09:52:06.067359+00:00",
+  "preservedMainPort": 4494,
+  "preservedMainPid": 188,
+  "stopped": [
+    {
+      "pid": 985,
+      "command": "node outputs/m07-direct-actions-20260910/browser-session.mjs",
+      "status": "SIGTERM sent"
+    },
+    {
+      "pid": 947,
+      "command": "/var/folders/64/j8g5rs451cz6_0p3554tl8380000gn/T/m07-implementation-ftgye4ie/m07-review-20260909/browser-cache/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell --remote-debugging-port=4516 --user-data-dir=/tmp/m07-direct-actions-20260910 --no-first-run --no-default-browser-check --disable-background-timer-throttling --disable-renderer-backgrounding about:blank",
+      "status": "SIGTERM sent"
+    },
+    {
+      "pid": 937,
+      "command": "node server.mjs",
+      "status": "SIGTERM sent"
+    }
+  ],
+  "finalListeningPorts": {
+    "4494": true,
+    "4512": false,
+    "4513": false,
+    "4514": false,
+    "4516": false,
+    "56940": false
+  },
+  "agentBrowserSession": "m07direct closed with agent-browser"
+}

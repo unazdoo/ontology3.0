@@ -9,6 +9,24 @@ const resource=scope.OFW_BUSINESS_CATALOG.create(JSON.parse(readFileSync(new URL
 const model=scope.OFW_M07_PORTRAIT.create(resource);
 const item=id=>resource.objects.find(o=>o.id===id);
 const products=['PRD-40A100000000B2C7','PRD-843300000000D4E2'].map(item);
+test('selection actions start with a concrete business task and do not invent an empty selection',()=>{
+  const actions=scope.OFW_M07_PORTRAIT.selectionActions;
+  assert.equal(actions([]).length,0);
+  assert.equal(actions([products[0]])[0].label,'打开画像');
+  assert.equal(actions(products,{comparable:true,trends:true})[0].label,'对比产品');
+  assert.ok(actions(products,{comparable:true,trends:true}).some(a=>a.label==='查看持仓走势'));
+  const mixed=actions([products[0],item('ENT-020')],{comparable:true,trends:true});
+  assert.equal(mixed.length,1);assert.equal(mixed[0].label,'并排查看');
+  assert.equal(mixed[0].view,'cards');
+});
+test('larger selections prefer a table while enterprise pairs compare enterprises',()=>{
+  const actions=scope.OFW_M07_PORTRAIT.selectionActions;
+  const enterprises=resource.objects.filter(o=>o.objectTypeId==='OBJ-ENTERPRISE').slice(0,6);
+  assert.equal(actions(enterprises,{comparable:true})[0].label,'查看对照表');
+  assert.equal(actions(enterprises,{comparable:true})[0].view,'compare');
+  assert.equal(actions(enterprises.slice(0,2),{comparable:true})[0].label,'对比企业');
+  assert.equal(actions(enterprises)[0].view,'list');
+});
 test('product histories reference their actual linked holdings and share exact metric dimensions',()=>{
   assert.equal(model.seriesFor(products[0]).length,4);
   assert.ok(model.seriesFor(products[0]).every(s=>s.ownerObjectId==='HOLD-S005-PRD-40A100000000B2C7'&&s.displayObjectId===products[0].id));

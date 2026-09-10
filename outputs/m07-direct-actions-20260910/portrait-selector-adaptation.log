@@ -1,0 +1,28 @@
+PASS 01-product-directory-preview
+PASS 02-product-timeseries-parallel
+PASS 03-product-latest-comparison
+PASS 04-dimension-tiles
+PASS 05-selection-reload-and-idle
+PASS 06-set-report
+PASS 07-mixed-object-basic-tiles
+PASS 08-enterprise-map-portrait
+PASS 09-focused-ontology-canvas
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+locator.evaluate: Error: strict mode violation: locator('.result-table [data-open-object="ENT-020"]') resolved to 2 elements:
+    1) <button class="object-name" data-open-object="ENT-020">环保测试公司4</button> aka getByRole('button', { name: '环保测试公司4', exact: true })
+    2) <button type="button" class="row-arrow" aria-label="打开环保测试公司4" data-open-object="ENT-020">…</button> aka getByRole('button', { name: '打开环保测试公司4' })
+
+Call log:
+[2m  - waiting for locator('.result-table [data-open-object="ENT-020"]')[22m
+
+    at click (/Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-composite-v1.3.0/designs/prototype-work/v1.4/tests/portrait-browser.mjs:12:37)
+    at /Users/domi/Public/Vibecoding/ontology3.0-worktrees/prototype-composite-v1.3.0/designs/prototype-work/v1.4/tests/portrait-browser.mjs:46:143 {
+  log: [
+    `  - waiting for locator('.result-table [data-open-object="ENT-020"]')`
+  ]
+}
+
+Node.js v22.22.0

@@ -1,6 +1,18 @@
 (function installPortraitModel(global) {
   'use strict';
   const numeric = value => typeof value === 'number' && Number.isFinite(value);
+  function selectionActions(items, { comparable = false, trends = false } = {}) {
+    if (!items.length) return [];
+    if (items.length === 1) return [{ view: 'object', label: '打开画像', primary: true }];
+    const sameType = new Set(items.map(item => item.objectTypeId)).size === 1;
+    const type = sameType ? items[0].objectTypeId : null;
+    const name = type === 'OBJ-ENTERPRISE' ? '企业' : type === 'OBJ-INVESTMENT-PRODUCT' ? '产品' : type === 'OBJ-INVESTMENT-HOLDING' ? '持仓' : '指标';
+    const actions = [];
+    if (sameType && comparable) actions.push({ view: 'compare', label: items.length > 4 ? '查看对照表' : `对比${name}`, primary: true });
+    if (sameType && trends) actions.push({ view: 'trends', label: ['OBJ-INVESTMENT-PRODUCT', 'OBJ-INVESTMENT-HOLDING'].includes(type) ? '查看持仓走势' : '查看走势', primary: !actions.length });
+    actions.push({ view: items.length > 4 && !actions.length ? 'list' : 'cards', label: items.length > 4 && !actions.length ? '查看对照表' : '并排查看', primary: !actions.length });
+    return actions;
+  }
   function create(resource) {
     const byId = new Map(resource.objects.map(item => [item.id, item]));
     const links = new Map(), histories = new Map();
@@ -60,5 +72,5 @@
     }
     return { seriesFor, dimensions, observation, eventsFor };
   }
-  global.OFW_M07_PORTRAIT = Object.freeze({ create });
+  global.OFW_M07_PORTRAIT = Object.freeze({ create, selectionActions });
 })(typeof window === 'undefined' ? globalThis : window);
