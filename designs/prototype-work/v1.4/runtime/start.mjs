@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { createV14ModelServer } from './model-runtime.mjs';
 import { embeddedModule, presentFrame } from './frame-presentation.mjs';
+import { idleProjection } from './idle-projection.mjs';
 const root = fileURLToPath(new URL('../../../../', import.meta.url));
 const types = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.woff2':'font/woff2'};
 export async function startCandidate({staticPort=0,modelingPort=0}) {
@@ -32,6 +33,10 @@ export async function startCandidate({staticPort=0,modelingPort=0}) {
       if (!(await stat(file)).isFile()) throw new Error('Not a file');
       res.setHeader('cache-control','no-store');
       res.setHeader('content-type',types[path.extname(file)] || 'application/octet-stream');
+      if (pathname.endsWith('/ontology-management-review/canvas-first/portfolio-integration.js') || pathname.endsWith('/data-engineering-prototype-review/review-v3/portfolio-integration.js')) {
+        res.end(idleProjection(await readFile(file, 'utf8'), pathname.includes('ontology-management-review') ? 'ontology' : 'data'));
+        return;
+      }
       const moduleId = embeddedModule(pathname);
       // Assemble the original approval screen with a version-local input migration.
       if (pathname.endsWith('/decision-center-prototype/review-v2/action-portfolio.html')) {

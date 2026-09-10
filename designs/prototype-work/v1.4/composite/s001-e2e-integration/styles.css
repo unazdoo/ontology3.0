@@ -179,3 +179,7 @@
   .platform-shell .classic-core svg { width: 76px; height: 52px; }
   .platform-shell .architecture-intro > div > span { display: block; text-wrap: balance; }
 }
+
+/* Decorative SVGs remain static while the workbench is idle. */
+.brand-brain,.brand-brain .brain-mesh-signal,.brand-brain .brain-mesh-node,
+.path-segment.active .path-flow,.core-scan,.core-pulse { animation: none !important; will-change: auto; }
