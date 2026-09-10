@@ -66,8 +66,8 @@
         <header class="discovery-hero">
           <div class="hero-copy">
             <span class="hero-kicker">BUSINESS OVERVIEW</span>
-            <h1>看清业务情况，找到下一步行动</h1>
-            <p>选择业务对象，查看当前情况、判断依据、关联业务与办理进展。</p>
+            <h1>查找对象，查看全景画像</h1>
+            <p>查看企业、金融产品及汇总持仓；选择多个对象后比较指标或并列查看。</p>
           </div>
           <div class="hero-stats" aria-label="对象资源摘要">
             <div><strong id="stat-objects">0</strong><span>业务对象</span></div>
@@ -77,6 +77,7 @@
         </header>
 
         <div class="search-deck">
+          <select id="directory-type" aria-label="对象类型"></select>
           <label class="global-search">
             <i data-lucide="search"></i>
             <input id="object-search" type="search" placeholder="搜索企业、预算、产品或负责人" autocomplete="off">
@@ -95,7 +96,7 @@
             <span id="selection-summary" class="selection-summary">未选择对象</span>
             <button id="clear-selection" class="button quiet" type="button" hidden>清除选择</button>
             <button id="explore-selection" class="button primary" type="button">
-              <i data-lucide="panels-top-left"></i><span>进入对象全景</span>
+              <i data-lucide="panels-top-left"></i><span>查看所选对象</span>
             </button>
           </div>
         </div>
@@ -122,7 +123,7 @@
   </main>
 
   <div id="scrim" class="scrim" hidden></div>
-  <aside id="drawer" class="drawer" aria-hidden="true" aria-label="操作面板"></aside>
+  <dialog id="drawer" class="drawer" aria-label="操作面板"></dialog>
 
   <dialog id="save-dialog" class="modal">
     <form method="dialog" id="save-form">
@@ -154,6 +155,7 @@
   <script src="../../shared/ontology-consumption.js"></script>
   <script src="../../shared/business-catalog.js"></script>
   <script src="../../resources/business-release.js"></script>
+  <script src="portrait-model.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

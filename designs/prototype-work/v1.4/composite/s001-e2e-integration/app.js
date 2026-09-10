@@ -1538,7 +1538,7 @@
         if (!returnUrl || !/^semantic-[A-Za-z0-9-]+$/.test(message.semanticVersionId || "") || !/^OBJ-[A-Z0-9-]+$/.test(message.objectTypeId || "")) return;
         sessionStorage.setItem("ofw.m07.business-return", returnUrl.href);
         const target = new URL(DATA.moduleById.ontology.source, global.location.href);
-        target.hash = `published/resource?version=${encodeURIComponent(message.semanticVersionId)}&id=${encodeURIComponent(message.objectTypeId)}&tab=overview`;
+        target.hash = message.view === "canvas" ? `published/version?id=${encodeURIComponent(message.semanticVersionId)}&tab=canvas&focus=${encodeURIComponent(message.objectTypeId)}` : `published/resource?version=${encodeURIComponent(message.semanticVersionId)}&id=${encodeURIComponent(message.objectTypeId)}&tab=overview`;
         STORE.saveFramePosition("ontology", { href: target.href, hash: target.hash, windowY: 0, containerY: 0 });
         navigate("#module/ontology"); return;
       }

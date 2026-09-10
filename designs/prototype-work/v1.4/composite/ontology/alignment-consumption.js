@@ -4,9 +4,15 @@
   if (!release?.version) return;
   const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
   let scheduled = false;
+  let focusedNode = null;
   function render() {
     scheduled = false;
     const params = new URLSearchParams(location.hash.split('?')[1] || '');
+    const focus = params.get('focus');
+    if (focus && params.get('id') === release.version.id && params.get('tab') === 'canvas') {
+      const node = [...document.querySelectorAll('.canvas-node[data-node]')].find(node => node.dataset.node === focus);
+      if (node && node !== focusedNode) { focusedNode = node; node.style.outline = '4px solid #2878bd'; node.scrollIntoView({block:'center',inline:'center',behavior:'instant'}); }
+    }
     if (params.get('version') !== release.version.id && params.get('id') !== release.version.id) return;
     const page = document.querySelector('.page-scroll.published-version, .page-scroll.resource-detail');
     if (!page || page.querySelector('[data-business-consumption]')) return;

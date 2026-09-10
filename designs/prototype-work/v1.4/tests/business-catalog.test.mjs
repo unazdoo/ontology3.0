@@ -30,8 +30,10 @@ test('business directory consumes the exact M01-published snapshot and its verif
     assert.ok(Object.values(o.properties).every(p => type.properties.some(def => def.id === p.propertyId)));
   }
   const directory = global.OFW_M07_BUSINESS.directory(c);
-  assert.equal(directory.length, 23);
-  assert.ok(directory.every(o => o.objectTypeId === 'OBJ-ENTERPRISE'));
+  assert.equal(directory.length, 30);
+  assert.equal(directory.filter(o => o.objectTypeId === 'OBJ-ENTERPRISE').length, 23);
+  assert.equal(directory.filter(o => o.objectTypeId === 'OBJ-INVESTMENT-PRODUCT').length, 4);
+  assert.equal(directory.filter(o => o.objectTypeId === 'OBJ-INVESTMENT-HOLDING').length, 3);
   assert.ok(!c.objects.some(o => /s001\.group|s001\.loanbook|portfolio-01|BudgetUnit-/.test(o.id)));
 });
 test('all department budgets belong to one explicitly assigned demonstration enterprise', () => {

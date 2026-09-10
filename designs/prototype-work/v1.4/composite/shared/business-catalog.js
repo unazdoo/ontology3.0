@@ -10,8 +10,8 @@
     'OBJ-ENTERPRISE-DEPARTMENT':['budget-department','企业预算','building','#71632b',false],
     'OBJ-ENTERPRISE-BUDGET-ANNUAL':['budget-annual','企业预算','receipt-text','#9a6e26',false],
     'OBJ-ENTERPRISE-BUDGET-DETAIL':['budget-detail','企业预算','rows-3','#9a6e26',false],
-    'OBJ-INVESTMENT-PRODUCT':['m01.object-type.financial-product','投资业务','badge-dollar-sign','#386eb3',false],
-    'OBJ-INVESTMENT-HOLDING':['m01.object-type.investment-holding','投资业务','chart-candlestick','#28786c',false],
+    'OBJ-INVESTMENT-PRODUCT':['m01.object-type.financial-product','投资业务','badge-dollar-sign','#386eb3',true],
+    'OBJ-INVESTMENT-HOLDING':['m01.object-type.investment-holding','投资业务','chart-candlestick','#28786c',true],
     'OBJ-HOLDING-OBSERVATION':['holding-observation','投资业务','calendar','#28786c',false],
   };
   const domains={ 'V14-ENTERPRISE':'S003','V14-DEPARTMENT':'S002','V14-BUDGET-ANNUAL':'S002','V14-BUDGET-DETAIL':'S002','V14-PRODUCT':'S005','V14-HOLDING':'S005','V14-HOLDING-OBSERVATION':'S005' };

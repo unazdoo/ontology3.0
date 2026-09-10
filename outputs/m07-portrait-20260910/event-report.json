@@ -1,0 +1,138 @@
+{
+  "type": "exploration",
+  "sourceModuleId": "m07",
+  "ontologyBinding": {
+    "id": "ENT-020",
+    "title": "环保测试公司4",
+    "objectTypeRef": "OBJ-ENTERPRISE",
+    "scenarioId": "S003",
+    "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+    "ontologyVersionId": "semantic-MTUWMQFP-C5JF",
+    "bindingId": "BIND-M07-OBJ-ENTERPRISE"
+  },
+  "title": "环保测试公司4 · 事件",
+  "text": "环保测试公司4；业务静态快照，各指标按其截至日展示；历史分析区间不改变快照值。所选区间 2024-12-31 至 2026-08-15",
+  "resultMode": "formal",
+  "workspaceContext": {
+    "objectSetRef": {
+      "id": "object-set:m07:kxgc4l",
+      "title": "环保测试公司4",
+      "count": 1,
+      "selectionMode": "EXPLICIT",
+      "filters": null,
+      "objectIds": [
+        "ENT-020"
+      ],
+      "objectRefs": [
+        {
+          "id": "ENT-020",
+          "title": "环保测试公司4",
+          "objectTypeRef": "OBJ-ENTERPRISE",
+          "scenarioId": "S003",
+          "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+          "ontologyVersionId": "semantic-MTUWMQFP-C5JF",
+          "bindingId": "BIND-M07-OBJ-ENTERPRISE"
+        }
+      ]
+    },
+    "activeObjectRef": {
+      "id": "ENT-020",
+      "title": "环保测试公司4",
+      "objectTypeRef": "OBJ-ENTERPRISE",
+      "scenarioId": "S003",
+      "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+      "ontologyVersionId": "semantic-MTUWMQFP-C5JF",
+      "bindingId": "BIND-M07-OBJ-ENTERPRISE"
+    },
+    "timeRange": {
+      "start": "2024-12-31",
+      "end": "2026-08-15",
+      "label": "2024-12-31 至 2026-08-15"
+    },
+    "lensRef": {
+      "moduleId": "m07",
+      "lensId": "overview",
+      "route": "#explore"
+    },
+    "dataVersionRef": {
+      "id": "V14-ENTERPRISE-VIEW-666586EEFA71"
+    },
+    "ontologyVersionRef": {
+      "id": "semantic-MTUWMQFP-C5JF"
+    },
+    "evidenceRefs": [
+      "business-source.json#records/V14-ENTERPRISE/ENT-020",
+      "V14-ENTERPRISE-VIEW-666586EEFA71",
+      "semantic-MTUWMQFP-C5JF",
+      "financing::series:s001.entity.553:balance",
+      "source:s001-data-js",
+      "financing::series:s001.entity.553:cost",
+      "risk::series:S003-ENT-020:riskScore"
+    ],
+    "sourceModuleId": "m07"
+  },
+  "dataVersionId": "V14-ENTERPRISE-VIEW-666586EEFA71",
+  "ontologyVersionId": "semantic-MTUWMQFP-C5JF",
+  "evidenceRefs": [
+    "business-source.json#records/V14-ENTERPRISE/ENT-020",
+    "V14-ENTERPRISE-VIEW-666586EEFA71",
+    "semantic-MTUWMQFP-C5JF",
+    "financing::series:s001.entity.553:balance",
+    "source:s001-data-js",
+    "financing::series:s001.entity.553:cost",
+    "risk::series:S003-ENT-020:riskScore"
+  ],
+  "returnUrl": "http://127.0.0.1:4504/designs/prototype-work/v1.4/composite/modules/m07/index.html?embedded=1&resource=%2Fdesigns%2Fprototype-work%2Fv1.4%2Fcomposite%2Fmodules%2Fm07%2Fresources%2Fportfolio.json&v=20260904-02&detail=events&view=trends&dimension=%5B%22PROP-V14-HOLDING-OBSERVATION-VALUE%22%2C%22%E5%85%83%22%2C%22semantic-MTUWMQFP-C5JF%22%2C%22V14-ENTERPRISE-VIEW-666586EEFA71%22%2C%22linked-holding%22%5D&businessScenario=S003&type=OBJ-ENTERPRISE&set=PRD-40A100000000B2C7%2CPRD-843300000000D4E2&object=ENT-020&lens=overview&from=2024-12-31&to=2026-08-15&expanded=ENT-020&series=financing%3A%3Aseries%3As001.entity.553%3Abalance%2Cfinancing%3A%3Aseries%3As001.entity.553%3Acost%2Crisk%3A%3Aseries%3AS003-ENT-020%3AriskScore#explore",
+  "rows": [
+    {
+      "name": "负责人待办创建",
+      "value": "办理记录",
+      "status": "办理时间 2026-08-17 16:37:30；沿用决策中心通用框架；未触发通知或审批",
+      "evidenceRefs": [
+        "AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.1.0"
+      ]
+    },
+    {
+      "name": "成员单位接口人确认并交办",
+      "value": "办理记录",
+      "status": "办理时间 2026-08-17 16:37:00；环保测试公司4债务风险接口人 → 环保测试公司4债务风险处置负责人",
+      "evidenceRefs": [
+        "AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.1.0"
+      ]
+    },
+    {
+      "name": "负责人待办创建",
+      "value": "办理记录",
+      "status": "办理时间 2026-08-16 09:21:51；等待 融资负责人001 确认承接 · 到期日 2026-08-21",
+      "evidenceRefs": [
+        "AR-RUN-MSVJWKPO-002-UNIT-553"
+      ]
+    },
+    {
+      "name": "人工确认",
+      "value": "办理记录",
+      "status": "办理时间 2026-08-16 09:21:50；融资负责人001 · 三条规则证据及优先协商银行已核对，先推进单位553高成本融资优化。",
+      "evidenceRefs": [
+        "AR-RUN-MSVJWKPO-002-UNIT-553"
+      ]
+    },
+    {
+      "name": "R01 · 融资成本偏高",
+      "value": "规则判断",
+      "status": "数据截至日 2025-12-31；主体融资成本高于集团基准 0.25 个百分点，或高成本融资余额占比大于 20%（高成本阈值 2.75%）",
+      "evidenceRefs": [
+        "RULE-HIGH-FINANCING-COST"
+      ]
+    },
+    {
+      "name": "风险评估 · 红灯",
+      "value": "评估记录",
+      "status": "评估截至日 2025-12-31；风险评分 23.05 分",
+      "evidenceRefs": []
+    }
+  ],
+  "series": [],
+  "id": "97c3c098-a46e-4228-8994-5f5679c4e209",
+  "fingerprint": "[\"m07\",\"环保测试公司4 · 事件\",null,[{\"name\":\"负责人待办创建\",\"value\":\"办理记录\",\"status\":\"办理时间 2026-08-17 16:37:30；沿用决策中心通用框架；未触发通知或审批\",\"evidenceRefs\":[\"AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.1.0\"]},{\"name\":\"成员单位接口人确认并交办\",\"value\":\"办理记录\",\"status\":\"办理时间 2026-08-17 16:37:00；环保测试公司4债务风险接口人 → 环保测试公司4债务风险处置负责人\",\"evidenceRefs\":[\"AR-S003-CAND-S003-RUN-20260817163000000-c02200000001-S003-ENT-020-S003_SPECIAL_DISPOSAL-2025-12-31-1.1.0\"]},{\"name\":\"负责人待办创建\",\"value\":\"办理记录\",\"status\":\"办理时间 2026-08-16 09:21:51；等待 融资负责人001 确认承接 · 到期日 2026-08-21\",\"evidenceRefs\":[\"AR-RUN-MSVJWKPO-002-UNIT-553\"]},{\"name\":\"人工确认\",\"value\":\"办理记录\",\"status\":\"办理时间 2026-08-16 09:21:50；融资负责人001 · 三条规则证据及优先协商银行已核对，先推进单位553高成本融资优化。\",\"evidenceRefs\":[\"AR-RUN-MSVJWKPO-002-UNIT-553\"]},{\"name\":\"R01 · 融资成本偏高\",\"value\":\"规则判断\",\"status\":\"数据截至日 2025-12-31；主体融资成本高于集团基准 0.25 个百分点，或高成本融资余额占比大于 20%（高成本阈值 2.75%）\",\"evidenceRefs\":[\"RULE-HIGH-FINANCING-COST\"]},{\"name\":\"风险评估 · 红灯\",\"value\":\"评估记录\",\"status\":\"评估截至日 2025-12-31；风险评分 23.05 分\",\"evidenceRefs\":[]}],\"环保测试公司4；业务静态快照，各指标按其截至日展示；历史分析区间不改变快照值。所选区间 2024-12-31 至 2026-08-15\",{\"objectSetRef\":{\"id\":\"object-set:m07:kxgc4l\",\"title\":\"环保测试公司4\",\"count\":1,\"selectionMode\":\"EXPLICIT\",\"filters\":null,\"objectIds\":[\"ENT-020\"],\"objectRefs\":[{\"id\":\"ENT-020\",\"title\":\"环保测试公司4\",\"objectTypeRef\":\"OBJ-ENTERPRISE\",\"scenarioId\":\"S003\",\"dataVersionId\":\"V14-ENTERPRISE-VIEW-666586EEFA71\",\"ontologyVersionId\":\"semantic-MTUWMQFP-C5JF\",\"bindingId\":\"BIND-M07-OBJ-ENTERPRISE\"}]},\"activeObjectRef\":{\"id\":\"ENT-020\",\"title\":\"环保测试公司4\",\"objectTypeRef\":\"OBJ-ENTERPRISE\",\"scenarioId\":\"S003\",\"dataVersionId\":\"V14-ENTERPRISE-VIEW-666586EEFA71\",\"ontologyVersionId\":\"semantic-MTUWMQFP-C5JF\",\"bindingId\":\"BIND-M07-OBJ-ENTERPRISE\"},\"timeRange\":{\"start\":\"2024-12-31\",\"end\":\"2026-08-15\",\"label\":\"2024-12-31 至 2026-08-15\"},\"lensRef\":{\"moduleId\":\"m07\",\"lensId\":\"overview\",\"route\":\"#explore\"},\"dataVersionRef\":{\"id\":\"V14-ENTERPRISE-VIEW-666586EEFA71\"},\"ontologyVersionRef\":{\"id\":\"semantic-MTUWMQFP-C5JF\"},\"evidenceRefs\":[\"business-source.json#records/V14-ENTERPRISE/ENT-020\",\"V14-ENTERPRISE-VIEW-666586EEFA71\",\"semantic-MTUWMQFP-C5JF\",\"financing::series:s001.entity.553:balance\",\"source:s001-data-js\",\"financing::series:s001.entity.553:cost\",\"risk::series:S003-ENT-020:riskScore\"],\"sourceModuleId\":\"m07\"}]",
+  "createdAt": "2026-09-10T08:28:38.944Z"
+}
