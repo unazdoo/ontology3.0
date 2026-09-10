@@ -53,7 +53,7 @@
           </header>
           <div id="type-facets" class="type-facets"></div>
         </section>
-        <section class="rail-section saved-section">
+        <section class="rail-section saved-section" hidden>
           <header class="rail-heading">
             <div><span>工作记录</span><strong>已保存探索</strong></div>
             <span id="saved-count" class="count-badge">0</span>
@@ -66,14 +66,10 @@
         <header class="discovery-hero">
           <div class="hero-copy">
             <span class="hero-kicker">BUSINESS OVERVIEW</span>
-            <h1>查找对象，查看全景画像</h1>
-            <p>查找企业、金融产品及汇总持仓，点击名称打开完整画像。</p>
+            <h1>探索你的业务世界</h1>
+            <p>选择对象类型，探索对象、关系与业务变化。</p>
           </div>
-          <div class="hero-stats" aria-label="对象资源摘要">
-            <div><strong id="stat-objects">0</strong><span>业务对象</span></div>
-            <div><strong id="stat-links">0</strong><span>预算责任部门</span></div>
-            <div><strong id="stat-series">0</strong><span>金融产品</span></div>
-          </div>
+
         </header>
 
         <div class="search-deck">
@@ -154,6 +150,7 @@
   <script src="../../resources/business-release.js"></script>
   <script src="portrait-model.js"></script>
   <script src="object-experience.js"></script>
+  <script type="module" src="../../shared/model-studio-bridge.js"></script>
   <script src="inline-map.js"></script>
   <script src="app.js"></script>
 </body>

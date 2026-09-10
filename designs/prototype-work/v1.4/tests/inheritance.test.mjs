@@ -40,6 +40,7 @@ const allowed = new Set([
   "modules/m07/index.html",
   "modules/m07/styles.css",
   "model-center/app.js",
+  "model-center/index.html",
   "start-candidate.mjs",
   "tests/server.test.mjs",
   "tests/workflow.test.mjs",
@@ -91,7 +92,7 @@ test("all original modules, five domains and resource content are inherited with
               }
             : module.id === "m07"
               ? { ...module, name: original.modules.find(item => item.id === "m07").name, short: original.modules.find(item => item.id === "m07").short }
-              : module,
+              : module.id === "modeling" ? {...module,name:original.modules.find(item=>item.id==="modeling").name} : module,
         ),
       ),
     ),

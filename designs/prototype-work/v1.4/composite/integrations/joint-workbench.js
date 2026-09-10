@@ -3,7 +3,7 @@
   const task = (id, label, icon, view) =>
     Object.freeze({ id, label, icon, view, hash: `#v14/${view}` });
   const tasks = Object.freeze({
-    dashboard: [task("situation", "融资与风险态势", "globe-2", "workbench")],
+    dashboard: [task("situation", "企业探索", "globe-2", "workbench")],
     query: [task("map-query", "地图联动问数", "map", "workbench")],
     decision: [
       task("financing-plans", "融资方案推演", "git-compare-arrows", "plans"),

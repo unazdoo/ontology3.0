@@ -1,5 +1,6 @@
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+import {viewSignal,signalColor,greatCircleGeometry,greatCirclePoint} from "./exploration-view.js";
 const fc = (features) => ({ type: "FeatureCollection", features });
 const point = (coordinates, properties) => ({
   type: "Feature",
@@ -24,6 +25,15 @@ export function createMap({
     suppressClickUntil = 0,
     boxStart = null,
     rectangle = null;
+  let flowTimer=null,flowRoutes=[],flowKey="",playedFlowKey="",visible=true;
+  const stopFlow=()=>{clearTimeout(flowTimer);flowTimer=null;if(ready&&map.getSource("relation-flow"))map.getSource("relation-flow").setData(fc([]));};
+  function playFlow(force=false){
+    if(!ready||!visible||document.hidden||!flowRoutes.length||(!force&&flowKey===playedFlowKey))return;
+    stopFlow();playedFlowKey=flowKey;const started=performance.now();
+    const tick=()=>{if(!visible||document.hidden){stopFlow();return;}const progress=(performance.now()-started)/2400;if(progress>=1){stopFlow();return;}map.getSource("relation-flow").setData(fc(flowRoutes.map(route=>point(greatCirclePoint(route[0],route[1],1-progress),{}))));flowTimer=setTimeout(tick,60);};tick();
+  }
+  const visibility=()=>{if(document.hidden)stopFlow();};
+  document.addEventListener("visibilitychange",visibility);
   const map = new maplibregl.Map({
     container,
     style: {
@@ -133,7 +143,7 @@ export function createMap({
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillStyle = color;
-      if (id.startsWith("enterprise-")) {
+      if (id.startsWith("enterprise-") || id.startsWith("bank-")) {
         ctx.strokeStyle = "#ffffff";
         ctx.lineWidth = 4;
         ctx.lineJoin = "round";
@@ -153,6 +163,7 @@ export function createMap({
         "#3e5c4f",
         12,
       );
+    for(const bank of data.banks)labelImage(`bank-${bank.id}`,bank.name,"#2d6096",11);
     map.addSource("entities", {
       type: "geojson",
       data: fc([]),
@@ -272,9 +283,8 @@ export function createMap({
       source: "relations",
       paint: {
         "line-color": ["get", "color"],
-        "line-width": 2,
-        "line-opacity": 0.65,
-        "line-dasharray": [3, 2],
+        "line-width": 2.5,
+        "line-opacity": 0.8,
       },
     });
     map.addSource("banks", { type: "geojson", data: fc([]) });
@@ -289,6 +299,9 @@ export function createMap({
         "circle-stroke-width": 2,
       },
     });
+    map.addLayer({id:"bank-labels",type:"symbol",source:"banks",layout:{"icon-image":["concat","bank-",["get","id"]],"icon-anchor":"bottom","icon-offset":[0,-12],"icon-allow-overlap":true,"icon-ignore-placement":true}});
+    map.addSource("relation-flow",{type:"geojson",data:fc([])});
+    map.addLayer({id:"relation-flow",type:"circle",source:"relation-flow",paint:{"circle-radius":4.5,"circle-color":"#2676b6","circle-stroke-color":"white","circle-stroke-width":2}});
     map.on("click", "entity-points", (event) => {
       if (performance.now() >= suppressClickUntil && event.features?.[0])
         onSelect("enterprise", event.features[0].properties.id);
@@ -356,20 +369,7 @@ export function createMap({
       黑灯: "#3c4147",
     };
     const points = rows.map((row) => {
-      const color =
-        mode === "cost"
-          ? row.premium > 25
-            ? "#ce6153"
-            : row.premium > 0
-              ? "#cf9c35"
-              : "#338575"
-          : mode === "maturity"
-            ? row.gap > 0
-              ? "#ce6153"
-              : "#338575"
-            : mode === "exposure"
-              ? "#477eae"
-              : colors[row.riskTier];
+      const color=signalColor((row.viewSignal||viewSignal(row,mode,data)).tone);
       return point(row.coordinates, {
         id: row.id,
         label: enterpriseLabel(row),
@@ -421,22 +421,20 @@ export function createMap({
       );
     const connections = [],
       bankPoints = [];
-    if (relationships && selected) {
+    if (selected) {
       for (const bankId of selected.bankIds) {
         const bank = data.banks.find((item) => item.id === bankId);
+        if(!bank)continue;
         connections.push({
           type: "Feature",
-          geometry: {
-            type: "LineString",
-            coordinates: [selected.coordinates, bank.coordinates],
-          },
+          geometry: greatCircleGeometry(selected.coordinates,bank.coordinates),
           properties: { color: "#5586aa", kind: "借款" },
         });
         bankPoints.push(
           point(bank.coordinates, { id: bank.id, name: bank.name }),
         );
       }
-      for (const guarantee of data.guarantees.filter((item) =>
+      if(relationships)for (const guarantee of data.guarantees.filter((item) =>
         [item.guarantorId, item.beneficiaryId].includes(selected.id),
       )) {
         const a = data.enterprises.find(
@@ -447,16 +445,16 @@ export function createMap({
           );
         connections.push({
           type: "Feature",
-          geometry: {
-            type: "LineString",
-            coordinates: [a.coordinates, b.coordinates],
-          },
+          geometry: greatCircleGeometry(a.coordinates,b.coordinates),
           properties: { color: "#b48a35", kind: "担保" },
         });
       }
     }
     map.getSource("relations").setData(fc(connections));
     map.getSource("banks").setData(fc(bankPoints));
+    flowRoutes=selected?selected.bankIds.map(id=>data.banks.find(bank=>bank.id===id)).filter(Boolean).map(bank=>[selected.coordinates,bank.coordinates]):[];
+    flowKey=selected?selected.id+':'+selected.bankIds.slice().sort().join(','):'';
+    if(!selected)stopFlow();else playFlow();
     activePopup?.remove();
     activePopup = null;
     if (selected) {
@@ -575,6 +573,7 @@ export function createMap({
     map,
     update,
     fit,
+    setVisible(value){visible=value;if(!value)stopFlow();else playFlow();},
     resize: () => map.resize(),
     zoom: (delta) =>
       map.easeTo({
@@ -598,12 +597,17 @@ export function createMap({
       }),
     focus: (id) => {
       const entity = data.enterprises.find((item) => item.id === id);
-      if (entity)
-        map.flyTo({ center: entity.coordinates, zoom: 5.5, duration: 900 });
+      if (entity) {
+        const bankIds=new Set(data.loans.filter(loan=>loan.enterpriseId===id&&loan.startDate<=data.asOf&&loan.maturityDate>data.asOf).map(loan=>loan.bankId));
+        const points=[entity.coordinates,...data.banks.filter(bank=>bankIds.has(bank.id)).map(bank=>bank.coordinates)];
+        const bounds=new maplibregl.LngLatBounds();points.forEach(point=>bounds.extend(point));
+        map.fitBounds(bounds,{padding:75,maxZoom:5,duration:850});playFlow(true);
+      }
     },
     setChoosing,
     destroy: () => {
       selectionEpoch++;
+      stopFlow();document.removeEventListener("visibilitychange",visibility);
       map.remove();
     },
   };

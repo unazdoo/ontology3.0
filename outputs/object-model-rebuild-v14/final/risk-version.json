@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "ofw.model-package.v1",
+  "goal": {
+    "id": "goal-7558b92a-4b70-4de8-8a2a-3cc624d7cb8f",
+    "name": "验收-risk-业务目标",
+    "question": "哪些企业需要因历史评分、偿债缺口或成本偏离进一步复核？",
+    "owner": "业务模型维护组",
+    "type": "risk"
+  },
+  "version": {
+    "id": "version-f86b0373-e24f-4ff7-9e77-ad3ef8a64dba",
+    "goalId": "goal-7558b92a-4b70-4de8-8a2a-3cc624d7cb8f",
+    "goalDefinition": {
+      "name": "验收-risk-业务目标",
+      "question": "哪些企业需要因历史评分、偿债缺口或成本偏离进一步复核？",
+      "owner": "业务模型维护组",
+      "type": "risk"
+    },
+    "type": "risk",
+    "name": "1.0.0",
+    "note": "核验通过，供企业对象使用；保留业务假设与数据版本",
+    "publisher": "当前原型用户",
+    "publishedAt": "2026-09-10T18:00:29.119Z",
+    "origin": "USER_PUBLISHED",
+    "code": "// 历史风险基线与资金压力联合监控\n// input 已固定为本次运行的数据；金额统一为元。\nreturn (function riskAlgorithm(input, p) {\n  const end = new Date(Date.parse(input.asOf + 'T00:00:00Z') + p.horizonDays * 86400000).toISOString().slice(0, 10);\n  const rows = input.companies.map(company => {\n    const loans = input.loans.filter(loan => loan.enterpriseId === company.id);\n    const balance = loans.reduce((sum, loan) => sum + loan.principalYuan, 0);\n    const due = loans.filter(loan => loan.maturityDate <= end).reduce((sum, loan) => sum + loan.principalYuan, 0);\n    const credit = input.facilities.filter(facility => facility.enterpriseId === company.id && facility.validUntil >= end).reduce((sum, facility) => sum + facility.undrawnYuan, 0);\n    const gap = Math.max(0, due - company.cashYuan - credit), gapRatio = balance ? gap / balance * 100 : 0;\n    const cost = balance ? loans.reduce((sum, loan) => sum + loan.principalYuan * loan.rate, 0) / balance : 0;\n    const premium = (cost - company.benchmarkRate) * 100;\n    let severity = 0; const reasons = [];\n    if (company.riskScore < p.redScore) { severity = 2; reasons.push({ label: '历史评分关注', value: company.riskScore, unit: '分', condition: `低于 ${p.redScore} 分` }); }\n    else if (company.riskScore < p.amberScore) { severity = 1; reasons.push({ label: '历史评分关注', value: company.riskScore, unit: '分', condition: `低于 ${p.amberScore} 分` }); }\n    if (gapRatio >= p.redGapPct && gap > 0) { severity = 2; reasons.push({ label: '测算资金缺口', value: gapRatio, unit: '%', condition: `缺口占本金至少 ${p.redGapPct}%` }); }\n    else if (gap > 0) { severity = Math.max(severity, 1); reasons.push({ label: '测算资金缺口', value: gap, unit: '元', condition: '窗口内资金覆盖不足' }); }\n    if (premium > p.costPremiumBps) { severity = Math.max(severity, 1); reasons.push({ label: '融资成本偏离', value: premium, unit: 'bp', condition: `高于产业演示基准 ${p.costPremiumBps}bp` }); }\n    return { enterpriseId: company.id, name: company.name, historicalScore: company.riskScore, historicalTier: company.riskTier, level: ['GREEN', 'AMBER', 'RED'][severity], severity, gapYuan: gap, dueYuan: due, reasons, conclusion: reasons.length ? '模型监控提示，供业务复核；不改写历史评分，也不代表已发生违约。' : '本次输入未触发所选监控条件。' };\n  });\n  return { kind: 'MONITOR_ALERT', asOf: input.asOf, horizonEnd: end, rows };\n})(input, parameters);",
+    "parameters": {
+      "horizonDays": 90,
+      "amberScore": 40,
+      "redScore": 25,
+      "redGapPct": 10,
+      "costPremiumBps": 25
+    },
+    "dataKey": "2b9b8f056a5dd126236698ad3a1ea9af243773b90ea634b607d7fcdfb659d354",
+    "objectIds": [
+      "ENT-001",
+      "ENT-020"
+    ],
+    "signature": "794c2899050344cd7e0f2cd837ed674bf567cd7e5d4c23f8b36e3dd5cb7b6e82",
+    "validationRunId": "run-3899d500-511f-4286-be03-258f9f7c5cf5"
+  },
+  "datasetIdentity": {
+    "dataVersion": "DATA-V14-20251231-DEMO-1",
+    "asOf": "2025-12-31",
+    "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4"
+  }
+}

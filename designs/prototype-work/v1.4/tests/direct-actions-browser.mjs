@@ -1,2 +1,2 @@
-// Compatibility entry point for the current object panorama journey.
-import './object-panorama-browser.mjs';
+// The current object and model journey supersedes the earlier navigation layout.
+import './world-model-browser.mjs';

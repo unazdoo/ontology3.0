@@ -547,7 +547,7 @@
     app.className = "dash-app";
     app.innerHTML = `
       <header class="module-bar">
-        <div class="module-title"><span class="mark">${icon("chart-no-axes-combined", "sm")}</span><div><strong>经营全景</strong><small>业务范围与对象</small></div></div>
+        <div class="module-title"><span class="mark">${icon("chart-no-axes-combined", "sm")}</span><div><strong>对象全景</strong><small>业务范围与对象</small></div></div>
         <div class="module-actions"><a class="btn" href="#/dashboards">${icon("layout-dashboard", "sm")}<span>控制塔首页</span></a><button class="btn" type="button" data-action="refresh">${icon("refresh-cw", "sm")}<span>重新读取</span></button></div>
       </header>
       ${content}
@@ -606,7 +606,7 @@
     shell(`
       <main class="page directory-page control-tower-page" data-screen-label="经营控制塔">
         <section class="control-tower-hero">
-          <div><span class="eyebrow">CONTROL TOWER</span><h1>经营控制塔</h1><p>从关键经营态势进入对象、关系、指标、行动和证据。</p><div class="control-tower-quick"><button type="button" data-action="joint-situation">${icon("globe-2", "sm")}融资与风险态势</button><a href="${dashboardHref("risk")}">${icon("shield-alert", "sm")}查看风险态势</a><a href="${dashboardHref("financing")}">${icon("landmark", "sm")}查看融资结构</a><button type="button" data-ofw-native-route="#module/query">${icon("message-square-text", "sm")}直接问数</button></div></div>
+          <div><span class="eyebrow">CONTROL TOWER</span><h1>对象全景</h1><p>从关键经营态势进入对象、关系、指标、行动和证据。</p><div class="control-tower-quick"><button type="button" data-action="joint-situation">${icon("globe-2", "sm")}融资与风险态势</button><a href="${dashboardHref("risk")}">${icon("shield-alert", "sm")}查看风险态势</a><a href="${dashboardHref("financing")}">${icon("landmark", "sm")}查看融资结构</a><button type="button" data-ofw-native-route="#module/query">${icon("message-square-text", "sm")}直接问数</button></div></div>
           <div class="control-tower-facts"><article><span>经营工作区</span><strong>${DATA.dashboards.length}</strong><small>覆盖融资、预算、风险、贷前与投后</small></article><article class="${attentionTotal ? "attention" : ""}"><span>当前关注</span><strong>${attentionTotal}</strong><small>来自风险分层、预算异常与人工复核</small></article><article><span>当前对象集</span><strong>${esc(currentWorkspace.objectSet.label)}</strong><small>${esc(currentWorkspace.timeRange.label)}</small></article><article><span>结果模式</span><strong>${esc(currentWorkspace.resultMode.label)}</strong><small>切换工作区后保持上下文</small></article></div>
         </section>
         <section class="control-tower-lanes"><header><div><h2>业务工作区</h2><p>每个入口都可继续下钻到对象、明细和证据。</p></div><span>数据与状态已连接</span></header><div class="directory-grid">

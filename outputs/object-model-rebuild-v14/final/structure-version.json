@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "ofw.model-package.v1",
+  "goal": {
+    "id": "goal-f1dc8484-6a0d-4878-9486-44f790798240",
+    "name": "验收-structure-业务目标",
+    "question": "在调整额度和成本约束内，如何降低窗口内集中到期比例？",
+    "owner": "业务模型维护组",
+    "type": "structure"
+  },
+  "version": {
+    "id": "version-a99f3bef-915e-4aa5-be3e-9ff3ffdf96c0",
+    "goalId": "goal-f1dc8484-6a0d-4878-9486-44f790798240",
+    "goalDefinition": {
+      "name": "验收-structure-业务目标",
+      "question": "在调整额度和成本约束内，如何降低窗口内集中到期比例？",
+      "owner": "业务模型维护组",
+      "type": "structure"
+    },
+    "type": "structure",
+    "name": "1.0.0",
+    "note": "核验通过，供企业对象使用；保留业务假设与数据版本",
+    "publisher": "当前原型用户",
+    "publishedAt": "2026-09-10T18:00:27.034Z",
+    "origin": "USER_PUBLISHED",
+    "code": "// 按到期顺序与成本优先的约束调整算法\n// input 已固定为本次运行的数据；金额统一为元。\nreturn (function structureAlgorithm(input, p) {\n  const start = new Date(input.asOf + 'T00:00:00Z');\n  const end = new Date(start.valueOf() + p.horizonDays * 86400000);\n  const rows = input.companies.map(company => {\n    const loans = input.loans.filter(loan => loan.enterpriseId === company.id);\n    const balance = loans.reduce((sum, loan) => sum + loan.principalYuan, 0);\n    const baselineRate = balance ? loans.reduce((sum, loan) => sum + loan.principalYuan * loan.rate, 0) / balance : 0;\n    const shortLoans = loans.filter(loan => loan.maturityDate <= end.toISOString().slice(0, 10)).sort((a, b) => a.maturityDate.localeCompare(b.maturityDate) || b.rate - a.rate);\n    const due = shortLoans.reduce((sum, loan) => sum + loan.principalYuan, 0);\n    const needed = Math.max(0, due - balance * p.targetShortPct / 100);\n    let remaining = Math.min(needed, balance * p.maxRefinancePct / 100), annualCostDelta = 0;\n    const decisions = [];\n    for (const loan of shortLoans) {\n      if (remaining <= 0.000001) break;\n      const newRate = Math.max(0, loan.rate + p.termPremiumBps / 100);\n      const extraRate = newRate - loan.rate;\n      const costRoom = balance * p.maxExtraCostBps / 10000 - annualCostDelta;\n      const amount = Math.max(0, Math.min(loan.principalYuan, remaining, extraRate > 0 ? costRoom * 100 / extraRate : remaining));\n      if (amount <= 0) continue;\n      const date = new Date(loan.maturityDate + 'T00:00:00Z');\n      const newDate = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + p.tenorMonths + 1, 0)).toISOString().slice(0, 10);\n      annualCostDelta += amount * extraRate / 100; remaining -= amount;\n      decisions.push({ loanId: loan.id, amountYuan: amount, fromDate: loan.maturityDate, toDate: newDate, currentRate: loan.rate, proposedRate: newRate });\n    }\n    const refinanceAmount = decisions.reduce((sum, decision) => sum + decision.amountYuan, 0);\n    const optimizedShortRatio = balance ? (due - refinanceAmount) / balance * 100 : 0;\n    const achieved = optimizedShortRatio <= p.targetShortPct + 0.000001;\n    return { enterpriseId: company.id, name: company.name, balanceYuan: balance, baselineRate, projectedRate: balance ? baselineRate + annualCostDelta / balance * 100 : 0, baselineShortRatio: balance ? due / balance * 100 : 0, optimizedShortRatio, refinanceAmount, annualCostDelta, achieved, decisions, conclusion: !needed ? '当前已达到期限结构目标，无需调整。' : achieved ? '在调整额度和成本约束内达到目标；建议仍需业务复核。' : '形成约束内的部分调整建议，当前限额不足以达到全部目标。' };\n  });\n  return { kind: 'DEBT_OPTIMIZATION', asOf: input.asOf, horizonEnd: end.toISOString().slice(0, 10), rows };\n})(input, parameters);",
+    "parameters": {
+      "horizonDays": 365,
+      "targetShortPct": 30,
+      "maxRefinancePct": 50,
+      "tenorMonths": 36,
+      "termPremiumBps": 20,
+      "maxExtraCostBps": 25
+    },
+    "dataKey": "2b9b8f056a5dd126236698ad3a1ea9af243773b90ea634b607d7fcdfb659d354",
+    "objectIds": [
+      "ENT-001",
+      "ENT-020"
+    ],
+    "signature": "7b47436ece5549a33cf74e39a37b3842b31eedd6a45ab2c34986ffbb2c82c3f1",
+    "validationRunId": "run-a61d3afa-25b8-4e6e-ada7-28d620703e29"
+  },
+  "datasetIdentity": {
+    "dataVersion": "DATA-V14-20251231-DEMO-1",
+    "asOf": "2025-12-31",
+    "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4"
+  }
+}

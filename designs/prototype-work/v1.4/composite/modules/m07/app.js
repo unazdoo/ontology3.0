@@ -670,39 +670,39 @@
 
   function renderDiscover() {
     const filtered = filteredObjects();
-    document.getElementById("stat-objects").textContent = formatNumber(global.OFW_M07_BUSINESS.directory(resource).length, 0);
-    document.getElementById("stat-links").textContent = resource.objects.filter(o => o.objectTypeId === "OBJ-ENTERPRISE-DEPARTMENT").length;
-    document.getElementById("stat-series").textContent = resource.objects.filter(o => o.objectTypeId === "OBJ-INVESTMENT-PRODUCT").length;
     objectSearch.value = state.search;
+    objectSearch.placeholder=["all","OBJ-ENTERPRISE"].includes(state.typeFilter)?"搜索对象类型":"搜索当前类型的对象";
     qualityFilter.querySelectorAll("[data-quality]").forEach((button) => button.classList.toggle("active", button.dataset.quality === state.quality));
     renderTypeFacets();
-    typeFacets.insertAdjacentHTML("beforeend", `<section class="facet-group"><h3>常用业务</h3><button class="facet-button" data-open-object="ENT-020">${escapeHtml(resolveObject(resource.budgetOwnership.enterpriseId)?.title)} · 企业预算</button><button class="facet-button" data-open-collection="group-finance">集团融资总览</button><button class="facet-button" data-open-collection="investment-analysis">投资产品分析集</button></section>`);
+
     renderSavedExplorations();
-    renderDiscoveryResults(filtered);
+    if(["all","OBJ-ENTERPRISE"].includes(state.typeFilter))renderObjectTypes();else renderDiscoveryResults(filtered);
     const type = state.typeFilter === "all" ? null : typeMeta(state.typeFilter);
     document.getElementById("result-title").textContent = state.search ? `“${state.search}”的搜索结果` : type?.label || "全部对象";
     if (state.selectedIds.some((id) => !resolveObject(id))) document.getElementById("result-title").textContent = "这组查询结果暂不支持对象视图，请返回问数继续分析。";
-    document.getElementById("result-count").textContent = `${filtered.length} 个结果`;
+    document.getElementById("result-count").textContent = ["all","OBJ-ENTERPRISE"].includes(state.typeFilter)?"选择类型进入探索":`${filtered.length} 个对象`;
     document.getElementById('selection-bar').hidden = true;
   }
 
+  function renderObjectTypes() {
+    const types=Object.values(resource.typeMetadata).filter(type=>type.primary&&(state.typeFilter!=='OBJ-ENTERPRISE'||type.id==='OBJ-ENTERPRISE')&&(!state.search||type.label.includes(state.search)||type.id.includes(state.search)));
+    discoveryResults.innerHTML=`<div class="object-type-cards">${types.map(type=>{const count=global.OFW_M07_BUSINESS.directory(resource).filter(item=>item.objectTypeId===type.id).length;return `<button class="object-type-card" data-browse-type="${type.id}"><span class="type-card-icon">${icon(type.icon)}</span><strong>${escapeHtml(type.label)}</strong><span class="type-card-count">${count}</span>${icon('arrow-up-right')}</button>`;}).join('')||'<p class="business-empty">没有匹配的类型，可清除搜索。</p>'}</div>`;
+  }
+
   function renderTypeFacets() {
-    const counts = new Map();
-    global.OFW_M07_BUSINESS.directory(resource).forEach((item) => counts.set(item.objectTypeId, (counts.get(item.objectTypeId) || 0) + 1));
-    const typeSelect=document.getElementById("directory-type");
-    typeSelect.innerHTML=`<option value="all">全部对象类型</option>${[...counts.keys()].map(id=>`<option value="${escapeHtml(id)}" ${state.typeFilter===id?"selected":""}>${escapeHtml(typeMeta(id).label)}（${counts.get(id)}）</option>`).join("")}`;
-    const groups = new Map();
-    [...counts.keys()].forEach((typeId) => {
-      const meta = typeMeta(typeId);
-      if (!groups.has(meta.group)) groups.set(meta.group, []);
-      groups.get(meta.group).push({ typeId, ...meta, count: counts.get(typeId) });
-    });
-    const groupOrder = ["企业", "投资业务", "融资管理", "预算监督", "债务风险", "贷前评估", "投后评价", "分析交付", "其他对象"];
-    typeFacets.innerHTML = `<button class="facet-button all ${state.typeFilter === "all" ? "active" : ""}" type="button" data-type="all"><span>${icon("boxes")}<strong>全部对象</strong></span><b>${global.OFW_M07_BUSINESS.directory(resource).length}</b></button>${[...groups.entries()]
-      .sort((left, right) => groupOrder.indexOf(left[0]) - groupOrder.indexOf(right[0]))
-      .map(([group, items]) => `<section class="facet-group"><h3>${escapeHtml(group)}</h3>${items
-        .sort((left, right) => left.label.localeCompare(right.label, "zh-CN"))
-        .map((item) => `<button class="facet-button ${state.typeFilter === item.typeId ? "active" : ""}" type="button" data-type="${escapeHtml(item.typeId)}"><span>${icon(item.icon)}<strong>${escapeHtml(item.label)}</strong></span><b>${item.count}</b></button>`).join("")}</section>`).join("")}`;
+    const types=Object.values(resource.typeMetadata).filter(type=>type.primary);
+    const count=id=>global.OFW_M07_BUSINESS.directory(resource).filter(item=>item.objectTypeId===id).length;
+    typeFacets.innerHTML=`<button class="facet-button ${state.typeFilter==='all'?'active':''}" data-browse-type="all"><strong>全部对象类型</strong><b>${types.length}</b></button>${types.map(type=>`<button class="facet-button ${state.typeFilter===type.id?'active':''}" data-browse-type="${type.id}"><span>${icon(type.icon)}<strong>${escapeHtml(type.label)}</strong></span><b>${count(type.id)}</b></button>`).join('')}`;
+    document.getElementById('directory-type').innerHTML=`<option value="all">全部对象类型</option>${types.map(type=>`<option value="${type.id}" ${state.typeFilter===type.id?'selected':''}>${escapeHtml(type.label)}（${count(type.id)}）</option>`).join('')}`;
+  }
+
+  function browseObjectType(type) {
+    if(type==='OBJ-ENTERPRISE'){
+      if(parent!==window)parent.postMessage({operation:'open-enterprise-exploration'},location.origin);
+      else location.href='/designs/prototype-work/v1.4/composite/s001-e2e-integration/index.html?task=situation#dashboard';
+      return;
+    }
+    setState({typeFilter:type,search:'',route:'discover'});
   }
 
   function renderSavedExplorations() {
@@ -1159,7 +1159,7 @@
         const modelPackage=JSON.parse(source);
         monitoring={context,modelPackage};monitoringStatus='ready';
       } catch (_) {monitoring=null;monitoringStatus='error';}
-      finally {clearTimeout(timeout);monitoringPromise=null;if(state&&experience){if(state.route==='discover')renderDiscover();else if(['events','profile'].includes(state.detailTab))renderCanvasStage();}}
+      finally {clearTimeout(timeout);monitoringPromise=null;if(state&&experience){if(state.route==='discover')renderDiscover();else if(['events','profile'].includes(state.detailTab))renderCanvasStage();refreshIcons();}}
       return monitoring;
     })();return monitoringPromise;
   }
@@ -2205,13 +2205,14 @@
   }
 
   function handleDocumentClick(event) {
+    const browseType=event.target.closest('[data-browse-type]');if(browseType){browseObjectType(browseType.dataset.browseType);return;}
     const returnScope=event.target.closest('[data-return-collection]');if(returnScope){setState({route:'explore',lens:'collection',collectionId:returnScope.dataset.returnCollection,returnCollectionId:null,selectedIds:[],selectionReturn:false});return;}
     const sourceFilter=event.target.closest('[data-event-source]');if(sourceFilter){setState({eventSourceFilter:sourceFilter.dataset.eventSource},{emit:false});return;}
     const relationPage=event.target.closest('[data-relation-page]');if(relationPage){setState({relationPage:Math.max(0,(state.relationPage||0)+Number(relationPage.dataset.relationPage))},{emit:false});return;}
     const mapObject=event.target.closest('[data-map-object], [data-map-related]');
     if(mapObject){const item=resolveObject(mapObject.dataset.mapObject||mapObject.dataset.mapRelated),container=mapObject.closest('[data-inline-location]');if(item&&container){container.querySelector('[data-map-object-summary]').innerHTML=mapObjectSummary(item);container.dispatchEvent(new CustomEvent('ofw-map-focus',{detail:{id:item.id}}));}return;}
     const eventDefinition=event.target.closest('[data-event-definition]');
-    if(eventDefinition){const entry=experience.events(activeObject(),monitoring).find(event=>event.id===eventDefinition.dataset.eventDefinition);if(entry?.source==='rule')global.parent.postMessage({operation:'open-business-ontology',semanticVersionId:entry.sourceVersion,resourceId:entry.definitionId,returnUrl:location.href},location.origin);else if(entry)global.parent.postMessage({operation:'open-object-monitor',modelId:entry.definitionId,scenarioId:'S003',objectId:state.activeId,title:activeObject().title,dataVersionId:entry.dataVersionId,ontologyVersionId:entry.ontologyVersionId,asOf:entry.date,returnUrl:location.href},location.origin);return;}
+    if(eventDefinition){const entry=experience.events(activeObject(),monitoring).find(event=>event.id===eventDefinition.dataset.eventDefinition);if(entry?.origin==='studio')global.parent.postMessage({operation:'open-studio-version',goalId:entry.goalId,versionId:entry.versionId,runId:entry.runId,returnUrl:location.href},location.origin);else if(entry?.source==='rule')global.parent.postMessage({operation:'open-business-ontology',semanticVersionId:entry.sourceVersion,resourceId:entry.definitionId,returnUrl:location.href},location.origin);else if(entry)global.parent.postMessage({operation:'open-object-monitor',modelId:entry.definitionId,scenarioId:'S003',objectId:state.activeId,title:activeObject().title,dataVersionId:entry.dataVersionId,ontologyVersionId:entry.ontologyVersionId,asOf:entry.date,returnUrl:location.href},location.origin);return;}
     if (event.target.closest('[data-open-comparison]')) { openComparisonBuilder(); return; }
     if (event.target.closest('[data-comparison-apply]')) { applyComparisonDraft(); return; }
     const removeDraft=event.target.closest('[data-comparison-remove]');
@@ -2410,7 +2411,7 @@
     if(target.matches('[data-comparison-pick]')){
       const ids=new Set(comparisonDraft.ids);if(target.checked)ids.add(target.dataset.comparisonPick);else ids.delete(target.dataset.comparisonPick);comparisonDraft.ids=[...ids];renderComparisonBuilder();return;
     }
-    if (target.id === "directory-type") { setState({typeFilter:target.value}); return; }
+    if (target.id === "directory-type") { browseObjectType(target.value); return; }
     if (target.matches("[data-selection-dimension]")) { setState({ selectionDimension:target.value },{emit:false}); return; }
     if (target.matches("[data-enterprise-domain]")) { setState({ businessScenario: target.value }); emitWorkspaceContextUpdate(); return; }
     if (target.matches("[data-compare-limit]")) { setState({ compareLimit: Number(target.value) }, { emit: false }); return; }
@@ -2672,6 +2673,7 @@
   }
 
   global.addEventListener("message", handleHostMessage);
+  global.addEventListener("ofw-model-signals-ready",()=>{if(resource&&state&&experience)render();});
   global.addEventListener("storage", event => { if (event.key === global.OFW_M07_BUSINESS.storageKey && state?.lens === "overview") render(); });
   start();
 }(window));

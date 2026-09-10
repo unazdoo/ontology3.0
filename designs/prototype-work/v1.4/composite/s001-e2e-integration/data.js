@@ -84,7 +84,7 @@
       id: "modeling",
       ownerId: "M08",
       resourceOwnerId: "M08",
-      name: "模型目标与优化",
+      name: "模型与算法",
       short: "模型",
       icon: "activity",
       route: "#module/modeling",
@@ -181,7 +181,7 @@
     scenarioById: Object.freeze(Object.fromEntries(scenarioDefinitions.map((scenario) => [scenario.id, scenario]))),
     nav: Object.freeze([
       Object.freeze({ id: "home", name: "首页", icon: "house", route: "#home" }),
-      ...modules.map((module) => Object.freeze({ id: module.id, name: module.name, icon: module.icon, route: module.route })),
+      ...["data","ontology","m07","query","decision","agent","report","modeling"].map(id=>modules.find(module=>module.id===id)).map((module) => Object.freeze({ id: module.id, name: module.name, icon: module.icon, route: module.route })),
     ])
   });
 

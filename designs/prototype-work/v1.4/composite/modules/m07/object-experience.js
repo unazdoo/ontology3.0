@@ -90,7 +90,7 @@
     }
     function events(item, monitor) {
       const facts = (resource.businessEvents || []).filter(event => event.objectId === item.id && event.source === 'business' && event.originEventId && event.evidenceRefs?.length);
-      return [...ruleEvents(item), ...modelEvents(item, monitor), ...facts].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+      return [...ruleEvents(item), ...modelEvents(item, monitor), ...(global.OFW_STUDIO_SIGNALS?.forObject(item.id)||[]), ...facts].sort((a, b) => String(b.date).localeCompare(String(a.date)));
     }
     function suggestedQuestions(item) {
       return [

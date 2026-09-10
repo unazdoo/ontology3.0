@@ -1305,3 +1305,19 @@ code, kbd { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospac
  .scope-panorama-cards > article { border: 1px solid var(--line); padding: 14px; border-radius: 7px; }
  .scope-panorama-cards small { display: block; color: var(--muted); margin-block: 10px; }
 }
+
+:root[data-ofw-module="m07"] .discover-view,.discover-view { grid-template-columns: 185px minmax(0,1fr); }
+.discover-view .discovery-rail { display: block; }
+.discover-view .discovery-main { grid-column: 2; }
+.discovery-rail .saved-section { display: none; }
+.object-type-cards { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; padding-top: 8px; }
+.object-type-card { min-height: 76px; display: flex; align-items: center; gap: 13px; padding: 18px; border: 1px solid #d3dee8; border-radius: 6px; background: white; text-align: left; color: #25384b; box-shadow: 0 2px 5px #183a5410; }
+.object-type-card:hover { border-color: #7baacb; background: #f8fbfe; }
+.type-card-icon { width: 34px; height: 34px; display: grid; place-items: center; background: #e6f1fb; border-radius: 5px; color: #2b77b1; }
+.type-card-icon svg { width: 20px; height: 20px; }.object-type-card > svg { width: 15px; margin-left: auto; color: #74899a; }
+.type-card-count { padding: 3px 6px; border-radius: 4px; background: #eef3f7; font-size: 12px; color: #627688; }
+.discovery-hero { padding-bottom: 18px; }.search-deck { display: flex; }.search-deck #directory-type { display: none; }.search-deck .global-search { flex: 1; }
+@media(max-width:1100px) { .object-type-cards { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media(max-width:719px) { :root[data-ofw-module="m07"] .discover-view,.discover-view { grid-template-columns: minmax(0,1fr); }.discover-view .discovery-rail { display: none; }.discover-view .discovery-main { grid-column: 1; }.search-deck { display: grid; }.search-deck #directory-type { display: block; }.object-type-cards { grid-template-columns: minmax(0,1fr); } }
+.type-card-icon .icon { display: inline-flex; width: 20px; height: 20px; }
+.type-card-icon .icon svg { display: block; width: 20px; height: 20px; }

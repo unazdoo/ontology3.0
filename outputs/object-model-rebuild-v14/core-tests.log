@@ -1,0 +1,94 @@
+TAP version 13
+# Subtest: three reference goals are backed by actual calculations and prepared source data
+ok 1 - three reference goals are backed by actual calculations and prepared source data
+  ---
+  duration_ms: 14.447708
+  type: 'test'
+  ...
+# Subtest: cost: create, scope, validate, publish, use and reload
+ok 2 - cost: create, scope, validate, publish, use and reload
+  ---
+  duration_ms: 9.044208
+  type: 'test'
+  ...
+# Subtest: structure: create, scope, validate, publish, use and reload
+ok 3 - structure: create, scope, validate, publish, use and reload
+  ---
+  duration_ms: 8.223208
+  type: 'test'
+  ...
+# Subtest: risk: create, scope, validate, publish, use and reload
+ok 4 - risk: create, scope, validate, publish, use and reload
+  ---
+  duration_ms: 8.258708
+  type: 'test'
+  ...
+# Subtest: draft edits invalidate release readiness without changing published version or results
+ok 5 - draft edits invalidate release readiness without changing published version or results
+  ---
+  duration_ms: 10.71525
+  type: 'test'
+  ...
+# Subtest: run scenarios are recorded separately; fixed risk policy cannot be overridden at use time
+ok 6 - run scenarios are recorded separately; fixed risk policy cannot be overridden at use time
+  ---
+  duration_ms: 5.459833
+  type: 'test'
+  ...
+# Subtest: failed code and invalid financial output do not produce releasable drafts
+ok 7 - failed code and invalid financial output do not produce releasable drafts
+  ---
+  duration_ms: 12.305417
+  type: 'test'
+  ...
+# Subtest: duplicate releases, foreign scopes and out-of-range parameters are rejected
+ok 8 - duplicate releases, foreign scopes and out-of-range parameters are rejected
+  ---
+  duration_ms: 1.927333
+  type: 'test'
+  ...
+# Subtest: version switch, disable and goal archive preserve history while blocking new use
+ok 9 - version switch, disable and goal archive preserve history while blocking new use
+  ---
+  duration_ms: 10.450458
+  type: 'test'
+  ...
+# Subtest: goal edits preserve frozen goal definition and stale draft saves cannot overwrite newer work
+ok 10 - goal edits preserve frozen goal definition and stale draft saves cannot overwrite newer work
+  ---
+  duration_ms: 6.513417
+  type: 'test'
+  ...
+# Subtest: risk use produces traceable model signals without changing historical scores
+ok 11 - risk use produces traceable model signals without changing historical scores
+  ---
+  duration_ms: 3.431042
+  type: 'test'
+  ...
+# Subtest: interrupted runs have a bounded lifetime and do not remain running after reload
+ok 12 - interrupted runs have a bounded lifetime and do not remain running after reload
+  ---
+  duration_ms: 0.119709
+  type: 'test'
+  ...
+# Subtest: analysis perspectives reorder cards and keep shared map signals distinct from historical risk
+ok 13 - analysis perspectives reorder cards and keep shared map signals distinct from historical risk
+  ---
+  duration_ms: 2.311542
+  type: 'test'
+  ...
+# Subtest: bank links follow great circles, remain finite and split at the date line
+ok 14 - bank links follow great circles, remain finite and split at the date line
+  ---
+  duration_ms: 0.323458
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 166.427875

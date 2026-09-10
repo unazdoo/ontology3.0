@@ -44,8 +44,8 @@
         Object.freeze({ label: "发现业务对象", detail: "搜索对象类型、对象集和已保存探索", moduleId: "m07", taskId: "discover", icon: "search" }),
         Object.freeze({ label: "对象全景", detail: "了解业务情况、判断依据和办理进展", moduleId: "m07", taskId: "explore", icon: "scan-search" }),
         Object.freeze({ label: "智能问数", detail: "获得结论、证据和可继续处理的对象", moduleId: "query", taskId: "ask", icon: "message-square-text" }),
-        Object.freeze({ label: "模型目标", detail: "查看业务问题、模型组合与当前状态", moduleId: "modeling", taskId: "objectives", icon: "target" }),
-        Object.freeze({ label: "评测与差异", detail: "固定两个版本进行同口径比较", moduleId: "modeling", taskId: "compare", icon: "chart-no-axes-combined" })
+        Object.freeze({ label: "模型与算法", detail: "创建目标、维护算法并发布使用", moduleId: "modeling", taskId: "objectives", icon: "target" }),
+        Object.freeze({ label: "评测与差异", detail: "固定两个版本进行同口径比较", moduleId: "modeling", taskId: "objectives", icon: "chart-no-axes-combined" })
       ])
     }),
     action: Object.freeze({
@@ -277,7 +277,7 @@
           const shortLabel = item.id === "dashboard" ? DATA.dashboard.short : DATA.moduleById[item.id]?.short || item.name;
           return `<button class="nav-item ${route.active === item.id ? "active" : ""}" type="button" data-route="${item.route}" data-primary-nav="true" title="${esc(item.name)}" aria-label="${esc(item.name)}">
             ${icon(item.icon)}<span class="nav-label">${esc(item.name)}</span><span class="nav-label-short" aria-hidden="true">${esc(shortLabel)}</span>${item.id === "home" ? "" : `<i class="nav-state ${count ? "ready" : ""}" aria-label="${count} 项资源"></i>`}
-          </button>`;
+          </button>${item.id==='m07'&&route.active==='m07'?`<div class="object-primary-children"><button data-module-task="discover" data-module-id="${route.type==='dashboard'?'dashboard':'m07'}" title="对象发现">${icon('search')}<span>对象发现</span></button><button data-module-task="directory" data-module-id="${route.type==='dashboard'?'dashboard':'m07'}" title="对象全景">${icon('layout-grid')}<span>对象全景</span></button></div>`:''}`;
         }).join("")}
       </nav>
       <footer class="nav-foot"><button type="button" data-action="retry-service" id="service-status" title="重新检查模型服务">${serviceMarkup()}</button><span class="version-label">v1.4 · 本地原型</span></footer>
@@ -306,7 +306,7 @@
       <div class="top-title">
         ${route.type === "home" ? "" : `<button class="icon-button mobile-back" type="button" data-action="return" title="返回" aria-label="返回">${icon("arrow-left", "sm")}</button>`}
         ${icon(module?.icon || "house")}
-        ${module ? `<nav class="top-breadcrumb" aria-label="当前位置"><button type="button" data-route="#home">首页</button>${icon("chevron-right", "xs")}<button type="button" data-action="module-root" data-module-id="${module.id}">${esc(currentName)}</button>${icon("chevron-right", "xs")}<strong id="frame-breadcrumb-current">${esc(currentTask)}</strong></nav>` : `<div><span>工作台</span><strong>首页</strong></div>`}
+        ${module ? `<nav class="top-breadcrumb" aria-label="当前位置"><button type="button" data-route="#home">首页</button>${icon("chevron-right", "xs")}<button type="button" data-action="module-root" data-module-id="${module.id}">${esc(currentName)}</button>${icon("chevron-right", "xs")}${["m07","dashboard"].includes(module.id)?`<details class="object-view-menu"><summary><strong id="frame-breadcrumb-current">${esc(currentTask)}</strong></summary><div><button data-module-task="discover" data-module-id="${module.id}">对象发现</button><button data-module-task="directory" data-module-id="${module.id}">对象全景</button></div></details>`:`<strong id="frame-breadcrumb-current">${esc(currentTask)}</strong>`}</nav>` : `<div><span>工作台</span><strong>首页</strong></div>`}
       </div>
       <div class="top-actions">
         ${["decision", "query", "report", "ontology", "data", "modeling"].includes(module?.id) && sessionStorage.getItem("ofw.m07.business-return") ? `<button class="button" data-action="return-business-overview">返回对象全景</button>` : ""}
@@ -533,7 +533,7 @@
 
   function moduleTasks(moduleId) {
     if (['m07','dashboard'].includes(moduleId)) {
-      const labels={directory:'业务范围总览',financing:'集团融资全景',budget:'企业预算全景',risk:'债务风险全景',preloan:'贷前业务全景','post-investment':'投资业务全景',situation:'融资与风险地图'};
+      const labels={directory:'对象全景',financing:'集团融资全景',budget:'企业预算全景',risk:'债务风险全景',preloan:'贷前业务全景','post-investment':'投资业务全景',situation:'融资与风险地图'};
       const scenarios={financing:'S001',budget:'S002',risk:'S003',preloan:'S004','post-investment':'S005',situation:'S003'};
       return [...MODULE_TASKS.m07.map(task=>({...task,targetModuleId:'m07',label:task.id==='explore'?'单对象画像':task.label})),...([...MODULE_TASKS.dashboard,...(JOINT?.tasks.dashboard||[])]).map(task=>({...task,targetModuleId:['preloan','post-investment'].includes(task.id)?'m07':'dashboard',collectionId:task.id==='preloan'?'preloan-business':task.id==='post-investment'?'investment-analysis':null,label:labels[task.id]||task.label,scenarioId:scenarios[task.id]}))];
     }
@@ -639,7 +639,7 @@
       const url = applyContext(new URL(module.source, global.location.href), context);
       try {
         const focused=saved?.href&&new URL(saved.href,global.location.href);
-        if(focused?.origin===url.origin&&focused.pathname===url.pathname&&/^MODEL-[A-Z0-9-]+$/.test(focused.searchParams.get('focusModel')||''))url.searchParams.set('focusModel',focused.searchParams.get('focusModel'));
+        if(focused?.origin===url.origin&&focused.pathname===url.pathname){for(const key of ['focusModel','goal','version','run']){const value=focused.searchParams.get(key);if(value&&/^[a-zA-Z0-9-]+$/.test(value))url.searchParams.set(key,value);}}
       } catch (_) {}
       url.searchParams.set("apiBase", API_BASE);
       url.searchParams.set("programIds", DATA.scenarios.map((item) => item.id).join(","));
@@ -664,7 +664,7 @@
 
   function renderModule(module) {
     const source = frameSource(module);
-    const content = `<div class="module-view" data-screen-label="${esc(module.ownerId)} ${esc(module.name)}工作区"><section class="module-workspace-layout">${secondaryNavMarkup(module)}<section class="frame-stage"><iframe id="module-frame" class="module-frame" data-module-id="${module.id}" data-scenario-id="${esc(activeContext()?.scenarioId)}" title="${esc(module.name)}" src="${esc(source)}" sandbox="allow-scripts allow-same-origin allow-forms allow-modals allow-popups allow-downloads"></iframe></section></section></div>`;
+    const content = `<div class="module-view" data-screen-label="${esc(module.ownerId)} ${esc(module.name)}工作区"><section class="module-workspace-layout ${['m07','dashboard','modeling'].includes(module.id)?'full-module-layout':''}">${secondaryNavMarkup(module)}<section class="frame-stage"><iframe id="module-frame" class="module-frame" data-module-id="${module.id}" data-scenario-id="${esc(activeContext()?.scenarioId)}" title="${esc(module.name)}" src="${esc(source)}" sandbox="allow-scripts allow-same-origin allow-forms allow-modals allow-popups allow-downloads"></iframe></section></section></div>`;
     renderShell(content, { type: module.id === "dashboard" ? "dashboard" : "module", moduleId: module.id, active: module.id === "dashboard" ? "m07" : module.id, key: module.id === "dashboard" ? "dashboard" : `module-${module.id}` });
     renderedModuleId = module.id;
     const frame = document.getElementById("module-frame");
@@ -710,6 +710,10 @@
     if (frame !== document.getElementById("module-frame") || renderedModuleId !== module.id) return;
     const active = taskFromFrame(frame, module);
     if (!active) return;
+    if(['m07','dashboard'].includes(module.id)){
+      const choice=['directory','financing','budget','risk','preloan','post-investment'].includes(active.id)?'directory':'discover';
+      app.querySelectorAll('.object-primary-children [data-module-task]').forEach(button=>button.classList.toggle('active',button.dataset.moduleTask===choice));
+    }
     app.querySelectorAll(`.module-subnav-item[data-module-id="${module.id}"]`).forEach((button) => button.classList.toggle("active", button.dataset.moduleTask === active.id));
     if(module.id==='dashboard'){
       const selected=app.querySelector('.cockpit-layout .module-subnav-item.active'),nav=selected?.parentElement;
@@ -1569,6 +1573,24 @@
         navigate("#module/data"); return;
       }
       if(renderedModuleId==='dashboard'&&message.type==='OFW_OBJECT_PANORAMA'){openBusinessPanorama(message.collectionId);return;}
+      if(renderedModuleId==='m07'&&message.operation==='open-enterprise-exploration'){
+        JOINT.open('dashboard','situation',{activeObjectRef:null,objectSetRef:null,sourceModuleId:'m07',viewRef:{kind:'object-type',objectTypeId:'OBJ-ENTERPRISE'},resetEnterpriseExploration:true,enterpriseEntryId:crypto.randomUUID()});return;
+      }
+      if(message.type==='OFW_ENTERPRISE_PORTRAIT'&&renderedModuleId==='dashboard'){
+        if(!/^ENT-(?:\d{3}|APPLICANT-\d{3})$/.test(message.objectId||''))return;
+        const target=new URL(DATA.moduleById.m07.source,location.href);target.searchParams.set('object',message.objectId);target.searchParams.set('set',message.objectId);target.searchParams.set('lens','overview');if(message.detailTab==='events')target.searchParams.set('detail','events');target.hash='explore';const linked=new URL(location.href);linked.searchParams.set('exploration',target.href);history.replaceState(history.state,'',linked);navigate('#module/m07');return;
+      }
+      if(message.type==='OFW_MODEL_STUDIO_ROUTE'&&renderedModuleId==='modeling'){syncFrameBreadcrumb(frame,DATA.moduleById.modeling);return;}
+      if(message.type==='OFW_STUDIO_OPEN'||message.operation==='open-studio-version'){
+        if(!['m07','dashboard','modeling'].includes(renderedModuleId)||!/^[-a-zA-Z0-9]+$/.test(message.goalId||''))return;
+        if(renderedModuleId==='m07'&&message.returnUrl){const back=safeM07ReturnUrl(message.returnUrl,activeContext());if(back)sessionStorage.setItem('ofw.m07.business-return',back.href);}
+        const target=new URL(DATA.moduleById.modeling.source,location.href);target.searchParams.set('goal',message.goalId);if(message.runId)target.searchParams.set('run',message.runId);if(message.versionId)target.searchParams.set('version',message.versionId);target.hash=`goal/${message.goalId}/${message.runId?'use':'versions'}`;
+        STORE.saveFramePosition('modeling',{href:target.href,hash:target.hash,windowY:0,containerY:0});navigate('#module/modeling');return;
+      }
+      if(renderedModuleId==='modeling'&&message.type==='OFW_STUDIO_EXPLORE'){
+        const ids=(message.objectIds||[]).filter(id=>/^ENT-\d{3}$/.test(id));if(!ids.length)return;
+        JOINT.open('dashboard','situation',{activeObjectRef:{id:message.selectedId||ids[0],objectTypeRef:'Enterprise'},objectSetRef:{id:'model-run:'+message.runId,objectIds:ids,selectionMode:'EXPLICIT',count:ids.length},sourceModuleId:'modeling',modelRunRef:{id:message.runId,goalId:message.goalId}});return;
+      }
       if (renderedModuleId === "m07" && message.operation === "open-business-ontology") {
         const returnUrl = safeM07ReturnUrl(message.returnUrl, activeContext());
         const resourceId=message.resourceId||message.objectTypeId;

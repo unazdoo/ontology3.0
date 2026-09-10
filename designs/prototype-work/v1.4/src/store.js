@@ -9,7 +9,7 @@ export const defaultFilters = () => ({
   gapOnly: false,
   objectIds: null,
   boxIds: null,
-  sort: "risk",
+  sort: "view",
   premiumThreshold: 0,
   ruleId: null,
   ruleRef: null,
@@ -22,6 +22,7 @@ export function initialState() {
     mode: "risk",
     selectedId: null,
     rightTab: "query",
+    panelOpen:false,
     view: "map",
     plans: [],
     activePlanId: null,
@@ -181,9 +182,9 @@ export function validateRestoredState(state, data) {
   if (![30, 90, 180, 365].includes(copy.horizon)) copy.horizon = 90;
   if (!["risk", "cost", "maturity", "exposure"].includes(copy.mode))
     copy.mode = "risk";
-  if (!["query", "object", "scenario"].includes(copy.rightTab))
+  if (!["query", "object", "scenario", "models"].includes(copy.rightTab))
     copy.rightTab = "query";
-  if (!["map", "network", "matrix"].includes(copy.view)) copy.view = "map";
+  if (!["map", "network", "matrix", "list"].includes(copy.view)) copy.view = "map";
   const validPlans = copy.plans.filter((plan) => {
     try {
       comparePlan(data, plan);

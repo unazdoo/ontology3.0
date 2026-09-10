@@ -38,8 +38,9 @@ test("one Shell registers M01-M08 with the cockpit under object panorama", () =>
   assert.equal(new Set(data.nav.map((item) => item.route)).size, 9);
   assert.equal(data.moduleById.m07.source.startsWith("../modules/m07/index.html"), true);
   assert.equal(data.moduleById.modeling.source.startsWith("../model-center/index.html"), true);
-  assert.equal(data.moduleById.modeling.name, "模型目标与优化");
+  assert.equal(data.moduleById.modeling.name, "模型与算法");
   assert.equal(data.dashboard.name, "对象全景");
+  assert.equal(data.nav.findIndex(item=>item.id==='m07'),data.nav.findIndex(item=>item.id==='ontology')+1);
 });
 
 test("homepage keeps the fixed three-domain architecture and real feature launcher", () => {
@@ -84,13 +85,11 @@ test("M07 provides discovery plus six shared-context lenses", () => {
   assert.match(app, /OFW_M07_OPEN_M08|OFW_M08_RETURN_TO_M07|OFW_WORKSPACE_CONTEXT_UPDATE/);
 });
 
-test("M08 is objective-centric, generic and retains the real Python/Git drilldown", () => {
-  const app = read("model-center/app.js");
-  const css = read("model-center/styles.css");
-  for (const view of ["objectives", "models", "compare", "observe", "release"]) assert.ok(app.includes(`["${view}"`), view);
-  for (const token of ["target-card", "comparison-board", "Shadow", "消费者地图", "Python 模型代码仓", "data-repository-action"]) assert.match(app, new RegExp(token));
-  assert.doesNotMatch(app, /S003|Enterprise|liquidityGap|\/v1\/s003/);
-  assert.match(css, /repository-layout/);
+test("model entry loads the goal-based lifecycle with actual algorithm execution",()=>{
+  const html=read('model-center/index.html');
+  assert.match(html,/type="module" src=".\/studio-app.js"/);
+  assert.match(html,/studio.css/);
+  assert.ok(fs.existsSync(path.join(compositeRoot,'shared/model-studio.js')));
 });
 
 test("inherited real workspaces retain query animation, action, decision and report flows", () => {

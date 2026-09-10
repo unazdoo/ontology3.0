@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "ofw.model-package.v1",
+  "goal": {
+    "id": "goal-c2795dea-d956-47d9-9ae9-37eaf98575f7",
+    "name": "验收-cost-业务目标",
+    "question": "给定利率与续作假设，企业未来融资成本和利息支出如何变化？",
+    "owner": "业务模型维护组",
+    "type": "cost"
+  },
+  "version": {
+    "id": "version-0b49889e-2a93-444b-a157-a4c46877baf7",
+    "goalId": "goal-c2795dea-d956-47d9-9ae9-37eaf98575f7",
+    "goalDefinition": {
+      "name": "验收-cost-业务目标",
+      "question": "给定利率与续作假设，企业未来融资成本和利息支出如何变化？",
+      "owner": "业务模型维护组",
+      "type": "cost"
+    },
+    "type": "cost",
+    "name": "1.0.0",
+    "note": "核验通过，供企业对象使用；保留业务假设与数据版本",
+    "publisher": "当前原型用户",
+    "publishedAt": "2026-09-10T18:00:23.451Z",
+    "origin": "USER_PUBLISHED",
+    "code": "// 按借款现金流进行利率情景预测\n// input 已固定为本次运行的数据；金额统一为元。\nreturn (function revisedCostAlgorithm(input, p) {\n  const start = new Date(input.asOf + 'T00:00:00Z');\n  const end = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth() + p.months + 1, 0));\n  const days = (end - start) / 86400000;\n  const rows = input.companies.map(company => {\n    const loans = input.loans.filter(loan => loan.enterpriseId === company.id);\n    const balance = loans.reduce((sum, loan) => sum + loan.principalYuan, 0);\n    const baselineRate = balance ? loans.reduce((sum, loan) => sum + loan.principalYuan * loan.rate, 0) / balance : 0;\n    let predictedInterest = 0, exposureYears = 0;\n    const details = loans.map(loan => {\n      const remaining = Math.min(days, Math.max(0, (new Date(loan.maturityDate + 'T00:00:00Z') - start) / 86400000));\n      const rate = Math.max(0, loan.rate + (loan.rateType === 'FLOATING' ? p.rateShockBps / 100 : 0));\n      const refinanceRate = Math.max(0, rate + p.refinanceSpreadBps / 100);\n      const renewal = loan.principalYuan * p.rolloverPct / 100;\n      const interest = loan.principalYuan * rate / 100 * remaining / 365 + renewal * refinanceRate / 100 * (days - remaining) / 365;\n      predictedInterest += interest;\n      exposureYears += (loan.principalYuan * remaining + renewal * (days - remaining)) / 365;\n      return { loanId: loan.id, principalYuan: loan.principalYuan, currentRate: loan.rate, forecastRate: rate, refinanceRate, interestYuan: interest };\n    });\n    const baselineInterest = balance * baselineRate / 100 * days / 365;\n    return { enterpriseId: company.id, name: company.name, balanceYuan: balance, baselineRate, predictedRate: exposureYears ? predictedInterest / exposureYears * 100 : 0, baselineInterest, predictedInterest, deltaInterest: predictedInterest - baselineInterest, averageBalance: exposureYears * 365 / days, details, conclusion: `按利率情景与${p.rolloverPct}%续作比例计算，未假设新增借款。` };\n  });\n  return { kind: 'COST_FORECAST', asOf: input.asOf, horizonEnd: end.toISOString().slice(0, 10), rows };\n})(input, parameters);",
+    "parameters": {
+      "months": 12,
+      "rateShockBps": 75,
+      "refinanceSpreadBps": 0,
+      "rolloverPct": 100
+    },
+    "dataKey": "2b9b8f056a5dd126236698ad3a1ea9af243773b90ea634b607d7fcdfb659d354",
+    "objectIds": [
+      "ENT-001",
+      "ENT-020"
+    ],
+    "signature": "10de3c7467e59ad0d08538885fcf20eea36347f43023b77f312dac86724c68fe",
+    "validationRunId": "run-1fd8defa-4d43-4a2c-842b-52a0cdaf06e8"
+  },
+  "datasetIdentity": {
+    "dataVersion": "DATA-V14-20251231-DEMO-1",
+    "asOf": "2025-12-31",
+    "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4"
+  }
+}

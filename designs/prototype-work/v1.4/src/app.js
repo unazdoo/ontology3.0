@@ -1,6 +1,9 @@
 import "./styles.css";
 import { embedded, send, native, canonicalScope } from "./platform.js";
 import { createMap } from "./map.js";
+import {EXPLORATION_MODES,orderForView} from "./exploration-view.js";
+import {createModelUse} from "./model-use.js";
+import {loadPublishedBusinessCatalogue} from "../composite/shared/business-catalog-loader.js";
 import {
   validateDataset,
   filterEnterprises,
@@ -58,6 +61,10 @@ let data,
   mapView,
   results,
   rows = [],
+  catalogueExtras = [],
+  businessCatalogue = null,
+  catalogueLoading = false,
+  catalogueError = "",
   pageView = "workbench",
   detailStack = [],
   queryEpoch = 0,
@@ -79,15 +86,12 @@ const navItems = [
 let hostView =
   new URLSearchParams(location.hash.slice(1)).get("view") || "workbench";
 if (embedded) document.documentElement.classList.add("embedded-workbench");
-const modeItems = [
-  ["risk", "债务风险"],
-  ["cost", "融资成本"],
-  ["maturity", "到期压力"],
-  ["exposure", "银行敞口"],
-];
+const modeItems = EXPLORATION_MODES;
 const get = () => store.get();
 const activePlan = () =>
   get().plans.find((plan) => plan.id === get().activePlanId) || null;
+const modelUse=createModelUse({getData:()=>data,getScope:()=>({selectedId:get().selectedId,objectIds:rows.map(row=>row.id)}),onUpdate:()=>{if(data&&pageView==='workbench'&&get().rightTab==='models'){renderInvestigation();refreshIcons();}},onOpenStudio:payload=>send('OFW_STUDIO_OPEN',payload)});
+window.addEventListener('pagehide',()=>modelUse.destroy(),{once:true});
 function notify(message, error = false) {
   const node = document.createElement("div");
   node.className = `toast ${error ? "error" : ""}`;
@@ -116,6 +120,8 @@ function save(patch, options) {
 }
 function recompute() {
   rows = filterEnterprises(data, get().filters, get().horizon, activePlan());
+  const ordered=orderForView(rows,get().mode,data);
+  rows=get().filters.sort==='view'?ordered:rows.map(row=>ordered.find(item=>item.id===row.id));
   results = metrics(
     data,
     rows.map((row) => row.id),
@@ -179,38 +185,7 @@ function renderWorkbench() {
   mapView = null;
   const surface = document.getElementById("page-surface");
   surface.className = "workbench-surface";
-  surface.innerHTML = `<div class="workspace-toolbar"><div class="mode-tabs" role="tablist" aria-label="态势指标">${modeItems.map(([id, label]) => `<button data-action="mode" data-mode="${id}" class="${get().mode === id ? "active" : ""}" role="tab" aria-selected="${get().mode === id}">${label}</button>`).join("")}</div><div class="workspace-toolbar-right"><label><span>展望</span><select id="horizon" aria-label="展望窗口">${[30, 90, 180, 365].map((days) => `<option value="${days}" ${get().horizon === days ? "selected" : ""}>${days}天</option>`).join("")}</select></label><select id="active-plan" aria-label="结果视图"><option value="">基准快照</option>${get()
-    .plans.filter((plan) => plan.dataDigest === data.digest)
-    .map(
-      (plan) =>
-        `<option value="${plan.id}" ${plan.id === get().activePlanId ? "selected" : ""}>方案 · ${esc(plan.name)}</option>`,
-    )
-    .join(
-      "",
-    )}</select>${tool("undo", "undo-2", "撤销筛选", get().filters ? "" : "disabled")}${button("save-exploration", "保存探索", "bookmark")}${workspaceActions()}</div></div><section class="metric-strip" id="metric-strip"></section><div class="workspace-grid"><aside class="object-list-pane" id="object-list-pane"><div class="objects-head"><div><h2>企业对象</h2><span id="entity-count"></span></div>${tool("reset-filters", "list-restart", "清除筛选")}${tool("close-objects", "x", "关闭企业列表")}</div><label class="search-input">${icon("search")}<input id="entity-search" aria-label="搜索企业" placeholder="企业、城市或来源名称" value="${esc(get().filters.search)}"></label><div class="list-filters"><select id="industry" aria-label="产业筛选"><option value="">全部产业</option>${["风电", "环保", "核电"].map((item) => `<option ${get().filters.industry === item ? "selected" : ""}>${item}</option>`).join("")}</select><select id="risk-tier" aria-label="风险筛选"><option value="">全部风险</option>${["红灯", "黄灯", "绿灯", "黑灯"].map((item) => `<option ${get().filters.riskTier === item ? "selected" : ""}>${item}</option>`).join("")}</select></div><div id="filter-summary" class="filter-summary"></div><div id="entity-list" class="entity-list"></div><footer class="list-footer"><span>金额单位 · 亿元</span><select id="sort" aria-label="企业排序">${[
-    ["risk", "风险优先"],
-    ["cost", "成本最高"],
-    ["gap", "缺口最大"],
-    ["due", "到期最多"],
-  ]
-    .map(
-      ([id, label]) =>
-        `<option value="${id}" ${get().filters.sort === id ? "selected" : ""}>${label}</option>`,
-    )
-    .join(
-      "",
-    )}</select></footer></aside><main class="map-workspace"><div class="map-stage"><div id="global-map" aria-label="全球企业地图"></div><div id="analysis-canvas" class="analysis-canvas" hidden></div><div class="map-top-tools"><div class="canvas-tabs">${[
-    ["map", "地图", "map"],
-    ["network", "关联网络", "share-2"],
-    ["matrix", "成本与风险", "scatter-chart"],
-  ]
-    .map(
-      ([id, label, glyph]) =>
-        `<button data-action="canvas" data-canvas="${id}" title="${label}" aria-label="${label}" class="${get().view === id ? "active" : ""}">${icon(glyph)}</button>`,
-    )
-    .join(
-      "",
-    )}</div><div id="map-scope-label" class="map-scope-label"></div></div><div id="map-filter-actions" class="map-filter-actions"></div><div id="map-empty-state" class="map-empty-state" hidden><strong>没有匹配企业</strong>${button("reset-filters", "显示全部企业", "list-restart")}</div><div class="map-controls">${tool("zoom-in", "plus", "放大地图")}${tool("zoom-out", "minus", "缩小地图")}${tool("world", "globe-2", "全球视野")}${tool("fit", "scan", "适配当前企业")}${tool("box-select", "scan-line", "框选企业")}${tool("relationships", "route", "切换银行与担保关系", `aria-pressed="${get().relationships}"`)}</div><div class="map-footer"><div id="map-legend" class="map-legend"></div><div class="map-date-label">联合态势 · 数据截至 <time datetime="${esc(data.asOf)}">${esc(data.asOf)}</time></div><div class="mobile-pane-switch">${button("mobile-objects", "企业", "building-2")}${button("mobile-analysis", "分析", "messages-square")}</div></div></div><section class="data-dock ${get().tableOpen ? "expanded" : ""}" id="data-dock"></section></main><aside class="investigation" id="investigation"></aside></div>`;
+  surface.innerHTML = `<section class="metric-strip" id="metric-strip" hidden></section><div class="workspace-grid enterprise-exploration-grid"><aside class="object-list-pane" id="object-list-pane"><div class="objects-head"><div><h2>企业探索</h2><span id="entity-count"></span></div>${tool('reset-filters','list-restart','清除筛选')}${tool('close-objects','x','关闭企业列表')}</div><label class="enterprise-perspective">分析视角<select id="analysis-mode" aria-label="分析视角">${modeItems.map(([id,label])=>`<option value="${id}" ${get().mode===id?'selected':''}>${label}</option>`).join('')}</select></label><label class="search-input">${icon('search')}<input id="entity-search" aria-label="搜索企业" placeholder="企业、城市或来源名称" value="${esc(get().filters.search)}"></label><div class="list-filters"><select id="industry" aria-label="产业筛选"><option value="">全部产业</option>${['风电','环保','核电'].map(industry=>`<option ${get().filters.industry===industry?'selected':''}>${industry}</option>`).join('')}</select><select id="horizon" aria-label="展望窗口">${[30,90,180,365].map(days=>`<option value="${days}" ${get().horizon===days?'selected':''}>未来${days}天</option>`).join('')}</select></div><details class="enterprise-extra-filters"><summary>更多筛选与结果范围</summary><label>历史风险筛选<select id="risk-tier"><option value="">全部历史分档</option>${['黑灯','红灯','黄灯','绿灯'].map(tier=>`<option ${get().filters.riskTier===tier?'selected':''}>${tier}</option>`).join('')}</select></label><label>数据视图<select id="active-plan"><option value="">基准快照</option>${get().plans.filter(plan=>plan.dataDigest===data.digest).map(plan=>`<option value="${plan.id}" ${get().activePlanId===plan.id?'selected':''}>方案 · ${esc(plan.name)}</option>`).join('')}</select></label>${tool('undo','undo-2','撤销筛选')}${button('save-exploration','保存探索','bookmark')}${button('scope-summary','范围概况','info')}${button('source','来源与假设','fingerprint')}</details><div id="filter-summary" class="filter-summary"></div><div id="entity-list" class="entity-list"></div><footer class="list-footer"><span>按当前视角显示指标</span><select id="sort" aria-label="企业排序">${[['view','当前视角优先'],['risk','历史风险优先'],['cost','融资成本最高'],['gap','资金缺口最大'],['due','到期本金最多']].map(([id,label])=>`<option value="${id}" ${get().filters.sort===id?'selected':''}>${label}</option>`).join('')}</select></footer></aside><main class="map-workspace"><div class="map-stage"><div id="global-map" aria-label="企业与关联银行地图"></div><div id="analysis-canvas" class="analysis-canvas" hidden></div><div class="map-top-tools"><div class="canvas-tabs">${[['map','地图','map'],['network','关系网络','share-2'],['matrix','成本 × 历史风险','scatter-chart'],['list','对象明细','table-properties']].map(([id,label,glyph])=>`<button data-action="canvas" data-canvas="${id}" aria-label="${label}" class="${get().view===id?'active':''}">${icon(glyph)}<span>${label}</span></button>`).join('')}</div><div class="enterprise-view-actions">${button('open-model-use','使用模型','workflow')}${tool('open-query','messages-square','围绕企业提问')}</div></div><div id="map-scope-label" class="map-scope-label"></div><div id="map-filter-actions" class="map-filter-actions"></div><div id="map-empty-state" class="map-empty-state" hidden><strong>没有匹配企业</strong>${button('reset-filters','显示全部企业','list-restart')}</div><div class="map-controls">${tool('zoom-in','plus','放大地图')}${tool('zoom-out','minus','缩小地图')}${tool('world','globe-2','全球视野')}${tool('fit','scan','适配当前企业')}${tool('box-select','scan-line','框选企业')}${tool('relationships','route','显示担保关系',`aria-pressed="${get().relationships}"`)}</div><div class="map-footer"><div id="map-legend" class="map-legend"></div><div class="map-date-label">金融演示快照 · ${data.enterprises.length}家 · 观察日 ${esc(data.asOf)}</div><div class="mobile-pane-switch">${button('mobile-objects','企业','building-2')}${button('mobile-analysis','分析','messages-square')}</div></div></div><section class="data-dock" id="data-dock" hidden></section></main><aside class="investigation" id="investigation" hidden></aside></div>`;
   try {
     mapView = createMap({
       container: document.getElementById("global-map"),
@@ -266,7 +241,7 @@ function refreshWorkbench() {
     )
     .join("");
   document.getElementById("entity-count").textContent =
-    `${rows.length} / ${data.enterprises.length}`;
+    `${rows.length} 家金融视角 · 目录共 ${data.enterprises.length+catalogueExtras.length} 家`;
   const f = get().filters;
   const hasFilters =
     f.objectIds !== null ||
@@ -281,14 +256,7 @@ function refreshWorkbench() {
     );
   document.getElementById("filter-summary").innerHTML =
     `${f.objectIds !== null ? badge(`限定 ${f.objectIds.length} 家`) : ""}${f.boxIds != null ? badge(`框选 ${f.boxIds.length} 家`) : ""}${f.highCost ? badge(`成本偏离 > ${f.premiumThreshold || 0}bp`, "amber") : ""}${f.gapOnly ? badge("存在资金缺口", "red") : ""}${f.bankId ? badge(data.banks.find((bank) => bank.id === f.bankId)?.name || "银行范围") : ""}`;
-  document.getElementById("entity-list").innerHTML =
-    rows
-      .map(
-        (row) =>
-          `<button class="entity-row ${get().selectedId === row.id ? "active" : ""}" data-object-type="enterprise" data-object-id="${row.id}"><div class="entity-row-title"><span class="risk-dot ${tierTone(row.riskTier)}"></span><strong>${esc(row.name)}</strong>${get().tasks.some((task) => task.objectIds.includes(row.id) && !["CANCELLED", "COMPLETED"].includes(task.status)) ? icon("list-checks") : ""}</div><div class="entity-row-meta"><span>${esc(row.city)} · ${row.industry}</span><span>${row.riskTier}</span></div><div class="entity-row-values"><span>成本 <b>${percent(row.cost)}</b></span><span>${get().mode === "maturity" ? "到期" : "余额"} <b>${fmt((get().mode === "maturity" ? row.due : row.balance) / 100)}</b></span></div></button>`,
-      )
-      .join("") ||
-    `${empty("没有匹配企业")}<div class="empty-recovery">${button("reset-filters", "显示全部企业", "list-restart")}</div>`;
+  document.getElementById("entity-list").innerHTML = rows.map(row=>{const signal=row.viewSignal;return `<button class="entity-row ${get().selectedId===row.id?'active':''}" data-object-type="enterprise" data-object-id="${row.id}" data-view-tone="${signal.tone}"><div class="entity-row-title"><span class="risk-dot ${signal.tone}"></span><strong>${esc(row.name)}</strong></div><div class="entity-row-meta"><span>${esc(row.city)} · ${esc(row.industry)}</span><span>${esc(signal.label)}</span></div><div class="entity-row-values"><span>${esc(signal.metric)} <b>${fmt(signal.value)}${esc(signal.unit)}</b></span><span>${esc(signal.secondaryLabel)} <b>${fmt(signal.secondary)}${esc(signal.secondaryUnit)}</b></span></div></button>`;}).join('')||`${empty('没有匹配企业')}<div class="empty-recovery">${button('reset-filters','显示全部企业','list-restart')}</div>`;
   document.getElementById("map-filter-actions").innerHTML =
     `${f.boxIds != null ? button("clear-box", "取消框选", "x") : ""}${hasFilters || !rows.length ? button("reset-filters", "显示全部企业", "list-restart") : ""}`;
   document.getElementById("map-empty-state").hidden =
@@ -301,8 +269,8 @@ function refreshWorkbench() {
       : get().mode === "cost"
         ? `<span><i class="risk-dot green"></i>不高于基准</span><span><i class="risk-dot amber"></i>偏高</span><span><i class="risk-dot red"></i>高于25bp</span>`
         : get().mode === "maturity"
-          ? `<span><i class="risk-dot red"></i>测算存在缺口</span><span><i class="risk-dot green"></i>无测算缺口</span>`
-          : `<span><i class="risk-dot blue"></i>银行借款敞口</span>`;
+          ? `<span><i class="risk-dot red"></i>存在缺口</span><span><i class="risk-dot amber"></i>到期可覆盖</span><span><i class="risk-dot green"></i>窗口内无到期</span>`
+          : `<span><i class="risk-dot blue"></i>银行敞口金额</span><small>未将敞口强度视作风险分档</small>`;
   mapView?.update(rows, {
     mode: get().mode,
     selectedId: get().selectedId,
@@ -327,12 +295,16 @@ function renderDock() {
 function renderInvestigation() {
   const panel = document.getElementById("investigation");
   if (!panel) return;
+  panel.hidden=!get().panelOpen;
+  document.querySelector('.enterprise-exploration-grid')?.classList.toggle('analysis-open',Boolean(get().panelOpen));
+  if(!get().panelOpen)return;
   const composer = document.getElementById("question");
   if (composer) composerDraft = composer.value;
-  panel.innerHTML = `<header class="investigation-head"><div>${icon("scan-search")}<strong>调查与分析</strong></div>${tool("close-mobile", "x", "关闭分析面板")}</header><div class="investigation-tabs" role="tablist">${[
+  panel.innerHTML = `<header class="investigation-head"><div>${icon("scan-search")}<strong>对象信息与分析</strong></div>${tool("close-mobile", "x", "关闭分析面板")}</header><div class="investigation-tabs" role="tablist">${[
     ["query", "问数"],
     ["object", "对象"],
     ["scenario", "方案"],
+    ["models", "模型"],
   ]
     .map(
       ([id, label]) =>
@@ -340,7 +312,7 @@ function renderInvestigation() {
     )
     .join(
       "",
-    )}</div><div class="investigation-content" id="investigation-content">${get().rightTab === "query" ? queryPanel() : get().rightTab === "scenario" ? scenarioPanel() : objectPanel()}</div>${get().rightTab === "query" ? `<form class="query-composer" id="query-form"><textarea id="question" placeholder="询问当前企业、成本或风险…" aria-label="业务问题" rows="2" ${queryBusy ? "disabled" : ""}>${esc(composerDraft)}</textarea><div><span>语义问数 · 固定业务口径</span>${queryBusy ? tool("cancel-query", "square", "取消查询") : `<button class="send-button" type="submit" title="发送问题" aria-label="发送问题">${icon("arrow-up")}</button>`}</div></form>` : ""}`;
+    )}</div><div class="investigation-content" id="investigation-content">${get().rightTab === "query" ? queryPanel() : get().rightTab === "scenario" ? scenarioPanel() : get().rightTab === "models" ? modelUse.markup() : objectPanel()}</div>${get().rightTab === "query" ? `<form class="query-composer" id="query-form"><textarea id="question" placeholder="询问当前企业、成本或风险…" aria-label="业务问题" rows="2" ${queryBusy ? "disabled" : ""}>${esc(composerDraft)}</textarea><div><span>语义问数 · 固定业务口径</span>${queryBusy ? tool("cancel-query", "square", "取消查询") : `<button class="send-button" type="submit" title="发送问题" aria-label="发送问题">${icon("arrow-up")}</button>`}</div></form>` : ""}`;
 }
 function queryPanel() {
   const suggestions = [
@@ -755,13 +727,13 @@ function openObject(type, id, reset = false) {
     shell();
   }
   if (type === "enterprise") {
-    save({ selectedId: id, rightTab: "object" });
+    save({ selectedId: id, rightTab: "object",panelOpen:true });
     if (detailStack.at(-1)?.id !== id) detailStack.push({ type, id });
   } else {
     if (!detailStack.length && get().selectedId)
       detailStack = [{ type: "enterprise", id: get().selectedId }];
     detailStack.push({ type, id });
-    save({ rightTab: "object" });
+    save({ rightTab: "object",panelOpen:true });
   }
   syncRoute();
   refreshWorkbench();
@@ -827,7 +799,7 @@ function startScenario(ids = null) {
       (get().selectedId ? [get().selectedId] : rows.map((row) => row.id)),
     parameters: defaultParams(),
   };
-  save({ rightTab: "scenario" });
+  save({ rightTab: "scenario",panelOpen:true });
   if (pageView !== "workbench") {
     pageView = "workbench";
     shell();
@@ -995,7 +967,7 @@ async function ask(question) {
       selectedId: get().selectedId,
     };
   queryBusy = true;
-  save({ rightTab: "query" });
+  save({ rightTab: "query",panelOpen:true });
   renderInvestigation();
   refreshIcons();
   await new Promise((resolve) => setTimeout(resolve, 320));
@@ -1059,6 +1031,7 @@ function renderCanvas() {
   const canvas = document.getElementById("analysis-canvas"),
     map = document.getElementById("global-map");
   if (!canvas) return;
+  document.getElementById("map-scope-label").hidden=get().view!=="map";
   canvas.hidden = get().view === "map";
   map.hidden = get().view !== "map";
   document.querySelector(".map-controls").hidden = get().view !== "map";
@@ -1073,13 +1046,27 @@ function renderCanvas() {
     .forEach((button) =>
       button.classList.toggle("active", button.dataset.canvas === get().view),
     );
+  mapView?.setVisible(get().view==='map');
   if (get().view === "map") {
     mapView?.resize();
     return;
   }
+  if(get().view==='list'){renderEnterpriseDetails(canvas);return;}
   if (get().view === "network") drawNetwork(canvas);
   else drawMatrix(canvas);
 }
+function renderEnterpriseDetails(canvas) {
+  if(!businessCatalogue){
+    canvas.innerHTML=`<section class="enterprise-details-view"><h2>企业对象明细</h2><p>${catalogueError?esc(catalogueError):'正在读取已发布对象目录…'}</p>${catalogueError?button('retry-catalogue','重新读取'):''}</section>`;
+    if(!catalogueLoading&&!catalogueError){catalogueLoading=true;void loadPublishedBusinessCatalogue().then(result=>{businessCatalogue=result;}).catch(error=>{catalogueError=error.message;}).finally(()=>{catalogueLoading=false;if(get().view==='list'&&pageView==='workbench')renderCanvas();});}
+    return;
+  }
+  const {resource,experience,monitor}=businessCatalogue;
+  const extras=get().filters.objectIds||get().filters.boxIds||get().filters.highCost||get().filters.gapOnly||get().filters.bankId||get().filters.riskTier||get().filters.industry?[]:catalogueExtras.filter(item=>!get().filters.search||item.name.includes(get().filters.search));
+  const all=[...rows.map(row=>({item:resource.objects.find(item=>item.id===row.id),row})),...extras.map(extra=>({item:resource.objects.find(item=>item.id===extra.enterpriseId),row:null}))].filter(entry=>entry.item);
+  canvas.innerHTML=`<section class="enterprise-details-view"><header><div><h2>企业对象明细</h2><p>完整目录 ${data.enterprises.length+catalogueExtras.length} 家企业；当前金融视角 ${rows.length} 家，按各自业务口径与时点列示。</p></div>${button('export-csv','导出当前金融明细','download')}</header><div class="enterprise-details-scroll"><table><thead><tr><th>企业</th><th>地区 / 业务</th><th>当前视角状态</th><th>关键指标</th><th>事件与监控</th><th>关联业务</th><th>数据截至</th><th></th></tr></thead><tbody>${all.map(({item,row})=>{const events=experience.events(item,monitor),related=experience.relationSummary(item);return `<tr><td><button class="text-button" data-action="open-enterprise-portrait" data-id="${item.id}">${esc(item.title)}</button></td><td>${esc(item.location?.city||'贷前业务')}</td><td>${row?badge(row.viewSignal.label,row.viewSignal.tone):'借款申请主体'}</td><td>${row?`${esc(row.viewSignal.metric)} ${fmt(row.viewSignal.value)}${esc(row.viewSignal.unit)}`:`资产负债率 ${fmt(item.properties.debtRatio?.value)}%`}</td><td>${events.length?button('open-enterprise-events',events.length+' 项','',false,`data-id="${item.id}"`):'—'}</td><td>${related.slice(0,4).map(group=>`${group.count} 个${esc(group.label)}`).join(' · ')||'—'}</td><td>${esc(item.dataAsOf)}</td><td>${button('open-enterprise-portrait','完整画像','',false,`data-id="${item.id}"`)}</td></tr>`;}).join('')}</tbody></table></div><p>对象关联信息来自已发布业务目录；当前视角指标来自金融演示快照，借款明细口径可在“来源与假设”查看。</p></section>`;
+}
+
 function drawNetwork(canvas) {
   const entity =
     data.enterprises.find((item) => item.id === get().selectedId) || rows[0];
@@ -1209,6 +1196,12 @@ async function handleAction(target) {
   }
   const action = target.dataset.action,
     id = target.dataset.id;
+  if(action==='open-model-use'){save({rightTab:'models',panelOpen:true});renderInvestigation();mapView?.resize();refreshIcons();return;}
+  if(action==='open-query'){save({rightTab:'query',panelOpen:true});renderInvestigation();mapView?.resize();refreshIcons();return;}
+  if(action==='scope-summary'){showModal('当前企业范围概况',facts([['企业',rows.length+' 家'],['融资余额',amount(results.totals.balance)],['加权融资成本',percent(results.totals.cost)],[get().horizon+'天到期',amount(results.totals.due)],['测算资金缺口',amount(results.totals.gap)]]));return;}
+  if(action==='open-enterprise-portrait'||action==='open-enterprise-events'){send('OFW_ENTERPRISE_PORTRAIT',{objectId:id,detailTab:action==='open-enterprise-events'?'events':'profile'});return;}
+  if(action==='retry-catalogue'){catalogueError='';renderCanvas();return;}
+
   if (action.startsWith("native-")) {
     if (action === "native-report") {
       const report = get().reports.find((item) => item.id === id);
@@ -1230,7 +1223,7 @@ async function handleAction(target) {
     return;
   }
   if (action === "mode") {
-    save({ mode: target.dataset.mode });
+    save({ mode: target.dataset.mode,filters:{...get().filters,sort:"view"} });
     refreshWorkbench();
     syncInputs();
     return;
@@ -1242,7 +1235,7 @@ async function handleAction(target) {
     return;
   }
   if (action === "right-tab") {
-    save({ rightTab: target.dataset.tab });
+    save({ rightTab: target.dataset.tab,panelOpen:true });
     renderInvestigation();
     refreshIcons();
     return;
@@ -1324,7 +1317,7 @@ async function handleAction(target) {
     return;
   }
   if (action === "ask-selected") {
-    save({ rightTab: "query" });
+    save({ rightTab: "query",panelOpen:true });
     await ask(
       `为什么${data.enterprises.find((item) => item.id === get().selectedId)?.name}需要关注？`,
     );
@@ -1612,10 +1605,12 @@ async function handleAction(target) {
     return;
   }
   if (action === "mobile-analysis") {
+    save({panelOpen:true});renderInvestigation();
     document.getElementById("investigation").classList.toggle("mobile-visible");
     return;
   }
   if (action === "close-mobile") {
+    save({panelOpen:false});renderInvestigation();mapView?.resize();
     document.getElementById("investigation").classList.remove("mobile-visible");
     return;
   }
@@ -1625,6 +1620,7 @@ async function handleAction(target) {
   }
 }
 root.addEventListener("input", (event) => {
+  if(event.target.dataset.modelUseParameter){modelUse.change(event.target);return;}
   if (event.target.id === "question") composerDraft = event.target.value;
   if (event.target.id === "entity-search") {
     applyFilters(
@@ -1649,6 +1645,8 @@ root.addEventListener("input", (event) => {
   if (event.target.id === "scenario-name") planDraft.name = event.target.value;
 });
 root.addEventListener("change", (event) => {
+  if(modelUse.change(event.target))return;
+  if(event.target.id==="analysis-mode"){save({mode:event.target.value,filters:{...get().filters,sort:"view"}});refreshWorkbench();return;}
   const id = event.target.id,
     value = event.target.value;
   if (["industry", "risk-tier", "sort"].includes(id)) {
@@ -2007,13 +2005,19 @@ window.addEventListener("message", (event) => {
           { ...defaultFilters(), objectIds: report.evidence.objectIds },
           report.evidence.horizon,
         );
-        save({ rightTab: "query" });
+        save({ rightTab: "query",panelOpen:true });
         refreshWorkbench();
         notify("已恢复报告的企业范围、方案和窗口");
       } catch (error) {
         notify(error.message, true);
       }
       return;
+    }
+    if(message?.type==='OFW_V14_CONTEXT'&&data&&message.context?.resetEnterpriseExploration&&message.context.enterpriseEntryId!==get().lastEnterpriseEntryId){
+      save({filters:{...defaultFilters(),sort:'view'},mode:'risk',view:'map',selectedId:null,panelOpen:false,activePlanId:null,lastEnterpriseEntryId:message.context.enterpriseEntryId,parentContextSignature:JSON.stringify(message.context)});detailStack=[];refreshWorkbench();syncInputs();return;
+    }
+    if(message?.type==='OFW_V14_CONTEXT'&&data&&message.context?.modelRunRef){
+      const scope=canonicalScope(message.context,data);save({filters:{...defaultFilters(),objectIds:scope.objectIds,sort:'view'},selectedId:scope.selectedId,rightTab:'models',panelOpen:true,view:'map'});modelUse.showRun(message.context.modelRunRef.id);refreshWorkbench();return;
     }
     if (message?.type === "OFW_V14_CONTEXT" && data) {
       const signature = JSON.stringify(message.context),
@@ -2028,6 +2032,7 @@ window.addEventListener("message", (event) => {
           filters: { ...defaultFilters(), objectIds: scope.objectIds },
           selectedId: scope.selectedId,
           rightTab: scope.selectedId ? "object" : get().rightTab,
+          panelOpen:Boolean(scope.selectedId),
           parentContextSignature: signature,
           activePlanId: null,
         });
@@ -2064,7 +2069,8 @@ async function boot() {
     const response = await fetch("/data/portfolio.json");
     if (!response.ok) throw new Error(`数据 HTTP ${response.status}`);
     data = validateDataset(await response.json());
-    save(validateRestoredState(get(), data));
+    try{const response=await fetch('/designs/prototype-work/v1.4/composite/resources/business-source.json');const catalogue=await response.json();catalogueExtras=catalogue.records['V14-ENTERPRISE'].filter(item=>!data.enterprises.some(company=>company.id===item.enterpriseId));}catch(_){}
+    const restored=validateRestoredState(get(), data);if(!restored.explorationViewRevision){restored.filters.sort="view";restored.explorationViewRevision=1;}save(restored);
     const params = new URLSearchParams(location.hash.slice(1));
     if (params.get("view") === "ontology") {
       openOwnedOntology();
@@ -2074,7 +2080,7 @@ async function boot() {
       params.get("entity") &&
       data.enterprises.some((item) => item.id === params.get("entity"))
     )
-      save({ selectedId: params.get("entity"), rightTab: "object" });
+      save({ selectedId: params.get("entity"), rightTab: "object",panelOpen:true });
     if (navItems.some(([id]) => id === params.get("view")))
       pageView = params.get("view");
     if (embedded && get().pendingDraft) {
@@ -2095,3 +2101,5 @@ async function boot() {
   }
 }
 boot();
+
+root.addEventListener('click',event=>{const action=event.target.closest('[data-model-use]');if(action)void modelUse.action(action.dataset.modelUse).catch(error=>notify(error.message,true));});
