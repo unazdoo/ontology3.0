@@ -1,0 +1,218 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import vm from "node:vm";
+import { canonicalScope } from "../src/platform.js";
+const root = new URL("../", import.meta.url),
+  parent = new URL("../../v1.3.2/composite/", import.meta.url);
+const read = (path) => readFileSync(new URL(path, root), "utf8");
+const digest = (value) => createHash("sha256").update(value).digest("hex");
+const manifest = JSON.parse(read("INHERITANCE-MANIFEST.json"));
+test("cross-module transfer preserves explicit empty scopes and never replaces non-enterprise objects with all enterprises", () => {
+  const data = { enterprises: [{ id: "ENT-020", aliasNames: ["单位553"] }] };
+  assert.deepEqual(
+    canonicalScope({ objectSetRef: { objectIds: [] } }, data).objectIds,
+    [],
+  );
+  assert.deepEqual(
+    canonicalScope({ objectSetRef: { objectIds: ["BudgetUnit-002"] } }, data)
+      .objectIds,
+    [],
+  );
+  assert.deepEqual(
+    canonicalScope(
+      { objectSetRef: { objectIds: ["S003-ENT-020", "单位553"] } },
+      data,
+    ).objectIds,
+    ["ENT-020"],
+  );
+  assert.equal(canonicalScope({}, data).objectIds, null);
+});
+const allowed = new Set([
+  "s001-e2e-integration/app.js",
+  "s001-e2e-integration/index.html",
+  "s001-e2e-integration/styles.css",
+  "s001-e2e-integration/data.js",
+  "shared/report-editor.js",
+  "shared/workflow.js",
+  "modules/m07/app.js",
+  "modules/m07/index.html",
+  "modules/m07/styles.css",
+  "model-center/app.js",
+  "model-center/index.html",
+  "start-candidate.mjs",
+  "tests/server.test.mjs",
+  "tests/workflow.test.mjs",
+  "tests/shell-contract.test.mjs",
+  "tests/stability-contract.test.mjs",
+  "tests/chrome-regression.mjs",
+  "tests/readability-regression.mjs",
+  "dashboard/app.js",
+  "dashboard/data.js",
+  "integrations/native-module-integrations.js",
+]);
+test("v1.4 baseline remains fixed and v1.5 preserves inherited data identities", () => {
+  assert.equal(manifest.parent, 'v1.4');
+  assert.equal(manifest.parentCommit, 'b990d4489c64692f456dca0da18e5e980bae7a6d');
+  assert.ok(manifest.files.length > 100);
+  const baseline = new URL('../../v1.4/', import.meta.url);
+  for (const file of manifest.files) {
+    assert.equal(digest(readFileSync(new URL(file.path,baseline))),file.parentSha256,`v1.4 baseline changed: ${file.path}`);
+    if(file.protectedData)assert.equal(digest(readFileSync(new URL(file.path,root))),file.parentSha256,`inherited signed data changed: ${file.path}`);
+  }
+});
+
+test("all original modules, five domains and resource content are inherited without replacements", () => {
+  const load = (body) => {
+    const sandbox = {};
+    sandbox.window = sandbox;
+    vm.runInNewContext(body, sandbox);
+    return sandbox.OFW_V131_DATA;
+  };
+  const original = load(
+      readFileSync(new URL("s001-e2e-integration/data.js", parent), "utf8"),
+    ),
+    current = load(read("composite/s001-e2e-integration/data.js"));
+  assert.deepEqual(
+    JSON.parse(
+      JSON.stringify(
+        current.modules.map((module) =>
+          module.id === "ontology"
+            ? {
+                ...module,
+                source: original.modules.find((item) => item.id === "ontology")
+                  .source,
+              }
+            : module.id === "m07"
+              ? { ...module, name: original.modules.find(item => item.id === "m07").name, short: original.modules.find(item => item.id === "m07").short }
+              : module.id === "modeling" ? {...module,name:original.modules.find(item=>item.id==="modeling").name} : module,
+        ),
+      ),
+    ),
+    JSON.parse(JSON.stringify(original.modules)),
+  );
+  assert.equal(current.modules.find(item => item.id === "m07").name, "对象全景");
+  assert.equal(
+    current.modules.find((item) => item.id === "ontology").source,
+    "../ontology/index.html?v=20260907-01",
+  );
+  assert.match(
+    read("composite/ontology/index.html"),
+    /src="\.\/native-app\.js"/,
+  );
+  assert.match(read("runtime/start.mjs"), /prototype-releases\/v1\.1\.0\/ontology-management-review\/canvas-first\/app\.js/);
+  assert.deepEqual(
+    JSON.parse(JSON.stringify(current.scenarios)),
+    JSON.parse(JSON.stringify(original.scenarios)),
+  );
+  const baseline = JSON.parse(
+      readFileSync(new URL("modules/m07/resources/portfolio.json", parent)),
+    ),
+    portfolio = JSON.parse(
+      read("composite/modules/m07/resources/portfolio.json"),
+    );
+  assert.deepEqual(portfolio, baseline);
+  assert.equal(portfolio.objects.length, 71);
+  assert.equal(
+    portfolio.objects.filter((item) => item.id.startsWith("ENT-")).length,
+    21,
+  );
+});
+test("the default entry is the inherited platform, not the standalone map application", () => {
+  assert.match(
+    read("index.html"),
+    /v1\.5\/composite\/s001-e2e-integration\/index\.html/,
+  );
+  assert.doesNotMatch(read("index.html"), /src\/app\.js/);
+  const html = read("composite/s001-e2e-integration/index.html");
+  assert.match(html, /joint-workbench\.js/);
+  assert.match(html, /report-editor\.js/);
+  assert.doesNotMatch(read("src/app.js"), /href="[^"\n]*v1\.3\.2/);
+});
+test("joint views extend existing module task lists instead of removing originals", () => {
+  const script = read("composite/integrations/joint-workbench.js");
+  for (const id of [
+    "situation",
+    "map-query",
+    "financing-plans",
+    "analysis-tasks",
+    "joint-reports",
+  ])
+    assert.ok(script.includes(id));
+  assert.match(script, /base\.resources/);
+  assert.doesNotMatch(script, /task\("joint-data"/);
+  assert.doesNotMatch(script, /task\("rule-sandbox"/);
+  assert.match(script, /dashboard:.*task\("situation"/);
+  assert.match(script, /W\.appendBlock/);
+  assert.match(
+    read("composite/shared/report-editor.js"),
+    /returnReport\(block\)/,
+  );
+});
+test("repeated joint-report sync preserves prose edited in the inherited editor", () => {
+  const saved = new Map(),
+    sandbox = {
+      console,
+      crypto: globalThis.crypto,
+      location: { origin: "http://localhost" },
+      URL,
+      URLSearchParams,
+      localStorage: {
+        getItem: (key) => saved.get(key) || null,
+        setItem: (key, value) => saved.set(key, value),
+      },
+      OFW_V131_CATALOG: { resources: [] },
+      OFW_ENTERPRISE_MASTER: { resolve: (id) => ({ id, name: "企业" }) },
+    };
+  sandbox.window = sandbox;
+  const context = vm.createContext(sandbox);
+  vm.runInContext(read("composite/shared/workflow.js"), context);
+  vm.runInContext(read("composite/integrations/joint-workbench.js"), context);
+  const report = {
+    id: "report-1",
+    title: "融资分析",
+    notes: "原分析",
+    rows: [
+      {
+        id: "ENT-020",
+        name: "企业",
+        loanIds: ["L1"],
+        balance: 100,
+        cost: 2.8,
+        due: 20,
+        gap: 5,
+      },
+    ],
+    evidence: { dataDigest: "digest", objectIds: ["ENT-020"], horizon: 90 },
+  };
+  sandbox.OFW_V14_JOINT.publishReport(report);
+  const draft = sandbox.OFW_WORKFLOW.readReport("S003");
+  assert.equal(draft.contentBlocks.length, 4);
+  draft.contentBlocks[0].text = "用户在原报告编辑器补充的复核意见";
+  sandbox.OFW_WORKFLOW.saveReport("S003", draft);
+  report.notes = "更新分析";
+  sandbox.OFW_V14_JOINT.publishReport(report);
+  const updated = sandbox.OFW_WORKFLOW.readReport("S003");
+  assert.equal(updated.contentBlocks.length, 4);
+  assert.ok(
+    updated.contentBlocks.some(
+      (block) => block.text === "用户在原报告编辑器补充的复核意见",
+    ),
+  );
+  assert.ok(
+    updated.contentBlocks.some((block) => block.text.includes("更新分析")),
+  );
+  const reordered = { ...updated, contentBlocks: updated.contentBlocks.slice(1).reverse() };
+  sandbox.OFW_WORKFLOW.saveReport("S003", reordered);
+  sandbox.OFW_V14_JOINT.publishReport(report);
+  assert.deepEqual(sandbox.OFW_WORKFLOW.readReport("S003").contentBlocks.map((block) => block.id), reordered.contentBlocks.map((block) => block.id));
+  sandbox.OFW_WORKFLOW.saveReport("S003", { ...reordered, contentBlocks: [] });
+  sandbox.OFW_V14_JOINT.publishReport(report);
+  assert.equal(sandbox.OFW_WORKFLOW.readReport("S003").contentBlocks.length, 0);
+});
+
+test('panorama titles do not change inherited dashboard business data',()=>{
+  const body=read('composite/dashboard/data.js').replaceAll('债务风险全景','债务风险监测驾驶舱').replaceAll('投资业务全景','金融产品投后评价驾驶舱').replaceAll('集团融资全景','集团融资驾驶舱').replaceAll('环保测试公司4 · 预算全景','预算监督管理驾驶舱').replaceAll('贷前业务全景','贷款贷前风险评估驾驶舱');
+  assert.equal(body,readFileSync(new URL('dashboard/data.js',parent),'utf8'));
+});

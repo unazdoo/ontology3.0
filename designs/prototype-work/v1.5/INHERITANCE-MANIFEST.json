@@ -1,0 +1,1154 @@
+{
+  "parent": "v1.4",
+  "version": "v1.5",
+  "parentCommit": "b990d4489c64692f456dca0da18e5e980bae7a6d",
+  "parentSource": "designs/prototype-work/v1.4",
+  "createdAt": "2026-09-11T02:15:32.571163+00:00",
+  "normalization": [
+    "prototype-work/v1.4/ -> prototype-work/v1.5/",
+    "prototype-work\\/v1\\.4\\/ -> prototype-work\\/v1\\.5\\/",
+    "v1\\.4\\/composite -> v1\\.5\\/composite",
+    "ofw.prototype.v1.4. -> ofw.prototype.v1.5.",
+    "ofw.m07.v1.4. -> ofw.m07.v1.5.",
+    "ofw.v1.4.workbench. -> ofw.v1.5.workbench.",
+    "ofw.v14. -> ofw.v15."
+  ],
+  "dataPolicy": "Keep inherited business IDs, as-of dates, ontology publications, source contracts and fingerprints unchanged. Historical provenance paths may still identify v1.4.",
+  "excluded": [
+    "COCKPIT-SNAPSHOT-REVIEW.md",
+    "IMPLEMENTATION-REVIEW.md",
+    "INHERITANCE-MANIFEST.json",
+    "ONTOLOGY-RULE-REVIEW.md",
+    "V13-INHERITANCE-REVIEW.md",
+    "artifacts/box-selection/1440-empty-recovery.png",
+    "artifacts/box-selection/1440-selected.png",
+    "artifacts/box-selection/320-empty-recovery.png",
+    "artifacts/box-selection/320-selected.png",
+    "artifacts/box-selection/390-empty-recovery.png",
+    "artifacts/box-selection/390-selected.png",
+    "artifacts/box-selection/result.json",
+    "artifacts/cockpit-layout/1280-directory.png",
+    "artifacts/cockpit-layout/1280-financing.png",
+    "artifacts/cockpit-layout/1280-situation.png",
+    "artifacts/cockpit-layout/1280-tools.png",
+    "artifacts/cockpit-layout/1440-directory.png",
+    "artifacts/cockpit-layout/1440-financing.png",
+    "artifacts/cockpit-layout/1440-situation.png",
+    "artifacts/cockpit-layout/1440-tools.png",
+    "artifacts/cockpit-layout/320-directory.png",
+    "artifacts/cockpit-layout/320-financing.png",
+    "artifacts/cockpit-layout/320-situation.png",
+    "artifacts/cockpit-layout/320-tools.png",
+    "artifacts/cockpit-layout/390-directory.png",
+    "artifacts/cockpit-layout/390-financing.png",
+    "artifacts/cockpit-layout/390-situation.png",
+    "artifacts/cockpit-layout/390-tools.png",
+    "artifacts/cockpit-layout/result.json",
+    "artifacts/cockpit-snapshots/01-cockpit-map.png",
+    "artifacts/cockpit-snapshots/02-existing-asset-directory.png",
+    "artifacts/cockpit-snapshots/03-snapshot-records.png",
+    "artifacts/cockpit-snapshots/04-snapshot-identity.png",
+    "artifacts/cockpit-snapshots/05-mobile-snapshot.png",
+    "artifacts/cockpit-snapshots/downloaded-snapshot.xlsx",
+    "artifacts/cockpit-snapshots/result.json",
+    "artifacts/home-presentation/home-1024.png",
+    "artifacts/home-presentation/home-1280.png",
+    "artifacts/home-presentation/home-1440.png",
+    "artifacts/home-presentation/home-1920.png",
+    "artifacts/home-presentation/home-320.png",
+    "artifacts/home-presentation/home-390.png",
+    "artifacts/home-presentation/home-620.png",
+    "artifacts/home-presentation/home-768.png",
+    "artifacts/home-presentation/result.json",
+    "artifacts/inherited-platform/01-inherited-home.png",
+    "artifacts/inherited-platform/02-home-additive-entry.png",
+    "artifacts/inherited-platform/03-data-inheritance.png",
+    "artifacts/inherited-platform/04-original-explorer.png",
+    "artifacts/inherited-platform/05-map-in-platform.png",
+    "artifacts/inherited-platform/06-global-map.png",
+    "artifacts/inherited-platform/07-original-report-editor.png",
+    "artifacts/inherited-platform/08-decision-additive-tasks.png",
+    "artifacts/inherited-platform/08-owned-ontology-rules.png",
+    "artifacts/inherited-platform/09-inherited-models.png",
+    "artifacts/inherited-platform/10-platform-1280.png",
+    "artifacts/inherited-platform/10-platform-390.png",
+    "artifacts/inherited-platform/result.json",
+    "artifacts/owned-rules/01-financing-rule.png",
+    "artifacts/owned-rules/02-rule-validation.png",
+    "artifacts/owned-rules/03-enterprise-city-labels.png",
+    "artifacts/owned-rules/04-mobile-label.png",
+    "artifacts/owned-rules/05-debt-rule.png",
+    "artifacts/owned-rules/result.json",
+    "artifacts/snapshot-workbook/validation.json",
+    "artifacts/snapshot-workbook/主体地理位置.png",
+    "artifacts/snapshot-workbook/企业主数据.png",
+    "artifacts/snapshot-workbook/债务风险评估结果.png",
+    "artifacts/snapshot-workbook/字段字典.png",
+    "artifacts/snapshot-workbook/快照说明.png",
+    "artifacts/snapshot-workbook/担保台账.png",
+    "artifacts/snapshot-workbook/授信台账.png",
+    "artifacts/snapshot-workbook/融资合同台账.png",
+    "artifacts/snapshot-workbook/金融机构.png",
+    "artifacts/snapshot-workbook/项目台账.png",
+    "artifacts/snapshot-workbook/风险与融资事件.png",
+    "artifacts/verification/01-desktop-workbench.png",
+    "artifacts/verification/02-global-globe.png",
+    "artifacts/verification/03-enterprise-drilldown.png",
+    "artifacts/verification/04-query-cohort.png",
+    "artifacts/verification/05-scenario-map.png",
+    "artifacts/verification/06-task-audit.png",
+    "artifacts/verification/07-comparison.png",
+    "artifacts/verification/08-ontology.png",
+    "artifacts/verification/08-rule-query.png",
+    "artifacts/verification/09-model-verification.png",
+    "artifacts/verification/10-compact-desktop.png",
+    "artifacts/verification/11-mobile-map.png",
+    "artifacts/verification/12-mobile-drilldown.png",
+    "artifacts/verification/13-relationship-network.png",
+    "artifacts/verification/14-cost-risk-matrix.png",
+    "artifacts/verification/matrix-final-1440.png",
+    "artifacts/verification/matrix-final-390.png",
+    "artifacts/verification/matrix-final-check.json",
+    "artifacts/verification/result.json",
+    "artifacts/verification/sample-report.html",
+    "composite/evidence/browser-regression.json",
+    "composite/evidence/readability/1280-agent-agents-bottom.png",
+    "composite/evidence/readability/1280-agent-resources-bottom.png",
+    "composite/evidence/readability/1280-data-resources-bottom.png",
+    "composite/evidence/readability/1280-home-bottom.png",
+    "composite/evidence/readability/1280-m07-discover-bottom.png",
+    "composite/evidence/readability/1280-modeling-release-bottom.png",
+    "composite/evidence/readability/1280-ontology-published-bottom.png",
+    "composite/evidence/readability/1280-query-ask-bottom.png",
+    "composite/evidence/readability/1280-report-catalog-bottom.png",
+    "composite/evidence/readability/1440-agent-agents-bottom.png",
+    "composite/evidence/readability/1440-agent-resources-bottom.png",
+    "composite/evidence/readability/1440-data-resources-bottom.png",
+    "composite/evidence/readability/1440-home-bottom.png",
+    "composite/evidence/readability/1440-m07-discover-bottom.png",
+    "composite/evidence/readability/1440-modeling-release-bottom.png",
+    "composite/evidence/readability/1440-ontology-published-bottom.png",
+    "composite/evidence/readability/1440-query-ask-bottom.png",
+    "composite/evidence/readability/1440-report-catalog-bottom.png",
+    "composite/evidence/readability/390-agent-agents-bottom.png",
+    "composite/evidence/readability/390-agent-resources-bottom.png",
+    "composite/evidence/readability/390-data-resources-bottom.png",
+    "composite/evidence/readability/390-home-bottom.png",
+    "composite/evidence/readability/390-m07-discover-bottom.png",
+    "composite/evidence/readability/390-modeling-release-bottom.png",
+    "composite/evidence/readability/390-ontology-published-bottom.png",
+    "composite/evidence/readability/390-query-ask-bottom.png",
+    "composite/evidence/readability/390-report-catalog-bottom.png",
+    "composite/evidence/readability/regression.json",
+    "composite/evidence/screenshots/final-dashboard-20260906-1280x720.png",
+    "composite/evidence/screenshots/final-dashboard-20260906-1440x900.png",
+    "composite/evidence/screenshots/final-dashboard-20260906-390x844.png",
+    "composite/evidence/screenshots/final-dashboard-detail-20260906-1440x900.png",
+    "composite/evidence/screenshots/final-dashboard-s004-20260906-1440x900.png",
+    "composite/evidence/screenshots/final-home-20260906-1440x900.png",
+    "composite/evidence/screenshots/final-m01-20260906-1440x900.png",
+    "composite/evidence/screenshots/final-m02-20260906-1440x900.png",
+    "composite/evidence/screenshots/final-m03-20260906-1280x720.png",
+    "composite/evidence/screenshots/final-m03-20260906-1440x900.png",
+    "composite/evidence/screenshots/final-m03-20260906-390x844.png",
+    "composite/evidence/screenshots/final-m03-answer-20260906-1440x900.png",
+    "composite/evidence/screenshots/final-m03-thinking-20260906-1440x900.png",
+    "composite/evidence/screenshots/final-m04-20260906-1440x900.png",
+    "composite/evidence/screenshots/final-m05-20260906-1440x900.png",
+    "composite/evidence/screenshots/final-m06-20260906-1440x900.png",
+    "composite/evidence/screenshots/final-m07-20260906-1440x900.png",
+    "composite/evidence/screenshots/final-m08-20260906-1280x720.png",
+    "composite/evidence/screenshots/final-m08-20260906-1440x900.png",
+    "composite/evidence/screenshots/final-m08-20260906-390x844.png",
+    "composite/evidence/screenshots/final-m08-compare-20260906-1440x900.png",
+    "composite/evidence/screenshots/final-m08-models-20260906-1440x900.png",
+    "composite/evidence/screenshots/final-m08-observe-20260906-1440x900.png",
+    "composite/evidence/screenshots/final-m08-repository-20260906-1440x900.png",
+    "composite/evidence/screenshots/final-s002-m07-20260906-1440x900.png",
+    "composite/evidence/screenshots/final-s004-m07-20260906-1440x900.png",
+    "composite/evidence/ux/compare-1280.png",
+    "composite/evidence/ux/compare-1440.png",
+    "composite/evidence/ux/compare-390.png",
+    "composite/evidence/ux/graph-1280.png",
+    "composite/evidence/ux/graph-1440.png",
+    "composite/evidence/ux/graph-390.png",
+    "composite/evidence/ux/model-1280.png",
+    "composite/evidence/ux/model-1440.png",
+    "composite/evidence/ux/model-390.png",
+    "composite/evidence/ux/regression.json",
+    "composite/evidence/ux/report-1280.html",
+    "composite/evidence/ux/report-1280.png",
+    "composite/evidence/ux/report-1440.html",
+    "composite/evidence/ux/report-1440.png",
+    "composite/evidence/ux/report-390.html",
+    "composite/evidence/ux/report-390.png",
+    "composite/evidence/v11-parity/agent-authoring-1280.png",
+    "composite/evidence/v11-parity/agent-authoring-1440.png",
+    "composite/evidence/v11-parity/agent-authoring-390.png",
+    "composite/evidence/v11-parity/decision-trace-1280.png",
+    "composite/evidence/v11-parity/decision-trace-1440.png",
+    "composite/evidence/v11-parity/decision-trace-390.png",
+    "composite/evidence/v11-parity/query-1280.csv",
+    "composite/evidence/v11-parity/query-1440.csv",
+    "composite/evidence/v11-parity/query-390.csv",
+    "composite/evidence/v11-parity/query-history-1280.png",
+    "composite/evidence/v11-parity/query-history-1440.png",
+    "composite/evidence/v11-parity/query-history-390.png",
+    "composite/evidence/v11-parity/regression.json",
+    "composite/evidence/v11-parity/report-verification-1280.png",
+    "composite/evidence/v11-parity/report-verification-1440.png",
+    "composite/evidence/v11-parity/report-verification-390.png",
+    "scripts/inherit-v13.mjs"
+  ],
+  "files": [
+    {
+      "path": ".gitignore",
+      "parentSha256": "65a35e814e30195618410351f3cd7dcf7978efd2b406b0d0fce4d6a66dbd0769",
+      "initialSha256": "65a35e814e30195618410351f3cd7dcf7978efd2b406b0d0fce4d6a66dbd0769",
+      "protectedData": false
+    },
+    {
+      "path": "DATA-AND-MAP-SOURCES.md",
+      "parentSha256": "f999424fabca544a777c8e09418b1b99b77010c9869e6162b80ee488f6702b73",
+      "initialSha256": "f999424fabca544a777c8e09418b1b99b77010c9869e6162b80ee488f6702b73",
+      "protectedData": false
+    },
+    {
+      "path": "M07-BUSINESS-GUIDE.md",
+      "parentSha256": "8de9139f027e3e75d40e810eb2bf446cbe0307644be42e9710aa661f9c2cb151",
+      "initialSha256": "8de9139f027e3e75d40e810eb2bf446cbe0307644be42e9710aa661f9c2cb151",
+      "protectedData": false
+    },
+    {
+      "path": "MODEL-ALGORITHMS-GUIDE.md",
+      "parentSha256": "8e910500af54cc5dfcdc8b1bd8888d984785e7d6c638963a95a1fea5e44441aa",
+      "initialSha256": "8e910500af54cc5dfcdc8b1bd8888d984785e7d6c638963a95a1fea5e44441aa",
+      "protectedData": false
+    },
+    {
+      "path": "README.md",
+      "parentSha256": "8793b78f4486e7fae8ab5b4206547ba910e10d0b93ce5c399b4c581d737dfac9",
+      "initialSha256": "68a5b83a526bd6d0a3fd9907e54ec2d86731aa1983dfc7e63998ff5e9c09e0f6",
+      "protectedData": false
+    },
+    {
+      "path": "VERSION.json",
+      "parentSha256": "de8d7025da5e5a7624be052fe3fce2aca067bb1d2f64c3fc591c3840d61c7d7b",
+      "initialSha256": "0f1f205767d6947c1bbffa59407842029fc7e08c6b2ff41f386b494ef40a3408",
+      "protectedData": false
+    },
+    {
+      "path": "composite/dashboard/app.js",
+      "parentSha256": "6f2365c40240d3aad8c443e97be5cf7068f719e6fc22a0519e3f7cefa3021dba",
+      "initialSha256": "6f2365c40240d3aad8c443e97be5cf7068f719e6fc22a0519e3f7cefa3021dba",
+      "protectedData": false
+    },
+    {
+      "path": "composite/dashboard/data.js",
+      "parentSha256": "d1312bbbe61f8506cdf0f7a51c2dc62f6a6ba8d2eb2b4e1fc84c9db0ea596b60",
+      "initialSha256": "d1312bbbe61f8506cdf0f7a51c2dc62f6a6ba8d2eb2b4e1fc84c9db0ea596b60",
+      "protectedData": true
+    },
+    {
+      "path": "composite/dashboard/index.html",
+      "parentSha256": "8a1409631a89571df9635ca8afb150984d5af55939505d9c4fc74863df1311b2",
+      "initialSha256": "8a1409631a89571df9635ca8afb150984d5af55939505d9c4fc74863df1311b2",
+      "protectedData": false
+    },
+    {
+      "path": "composite/dashboard/styles.css",
+      "parentSha256": "668e67eadaaa8d218213a6ed7ebce480ed952d5405e519c11cdc6a671eee2fd8",
+      "initialSha256": "668e67eadaaa8d218213a6ed7ebce480ed952d5405e519c11cdc6a671eee2fd8",
+      "protectedData": false
+    },
+    {
+      "path": "composite/integrations/business-source-asset.js",
+      "parentSha256": "61b86c41d4c8059994b664ee6e175982884fed2bbfaec13144eedab43296a51c",
+      "initialSha256": "113d79580fdd1100c2061d5b657d0a08bbe6dfafed76dfa635639f5ce8a33d8a",
+      "protectedData": false
+    },
+    {
+      "path": "composite/integrations/decision-identity.js",
+      "parentSha256": "10bed179be0b31aa5d01e6b5a21419b3e1a3549dfd6e5b5458b2145da7ec563d",
+      "initialSha256": "10bed179be0b31aa5d01e6b5a21419b3e1a3549dfd6e5b5458b2145da7ec563d",
+      "protectedData": false
+    },
+    {
+      "path": "composite/integrations/joint-workbench.js",
+      "parentSha256": "ae9de4c63c57009e8ebbc3b6ccfc08ce7b5ecbd9fac8dac6b54c65a573706374",
+      "initialSha256": "13231789c3c45746b137544f4487e82c44614d98f9e5a8858eec159776af3a0c",
+      "protectedData": false
+    },
+    {
+      "path": "composite/integrations/native-module-integrations.js",
+      "parentSha256": "ac5c979767f48f7458910118690236af03d8755a913d5e1a701b9edb42088073",
+      "initialSha256": "ac5c979767f48f7458910118690236af03d8755a913d5e1a701b9edb42088073",
+      "protectedData": false
+    },
+    {
+      "path": "composite/integrations/ontology-owned-rules.js",
+      "parentSha256": "2f69f98c1ed6152df5e1e044d459038c3e1265016fe67daa2cd59f47ff4e2a89",
+      "initialSha256": "56eca880ee848eac3374038d5d2d6fd86edd53508d9ab5cf7609c6ce6bcc6ed4",
+      "protectedData": false
+    },
+    {
+      "path": "composite/integrations/snapshot-assets.js",
+      "parentSha256": "f7faf72968c3070faf5e98d176ede7df08cfe236df629ec7a3bf45bb5bb61f31",
+      "initialSha256": "f7faf72968c3070faf5e98d176ede7df08cfe236df629ec7a3bf45bb5bb61f31",
+      "protectedData": false
+    },
+    {
+      "path": "composite/model-center/app.js",
+      "parentSha256": "b0b00a37cdc046fc9b92813a57b985361dfcea992653b2f54fad80197eedf2bb",
+      "initialSha256": "b0b00a37cdc046fc9b92813a57b985361dfcea992653b2f54fad80197eedf2bb",
+      "protectedData": false
+    },
+    {
+      "path": "composite/model-center/index.html",
+      "parentSha256": "0c3aeac25cf03f1816e39fb080f3dfc774675e0bd17d27296a21506618ed9598",
+      "initialSha256": "0c3aeac25cf03f1816e39fb080f3dfc774675e0bd17d27296a21506618ed9598",
+      "protectedData": false
+    },
+    {
+      "path": "composite/model-center/studio-app.js",
+      "parentSha256": "d7f5752a4ff1e06746cc937467e6529852077f187f4f8108b98404132895ab73",
+      "initialSha256": "3870d3e2db4c98db9ac2a0bb49fc2a171abd9d9c0ba455a998a6599bb9774aec",
+      "protectedData": false
+    },
+    {
+      "path": "composite/model-center/studio.css",
+      "parentSha256": "0fe7cca9f3d2257379cf5eb5095d5b6b281eb630e8fcc26c2ce79107f2a97844",
+      "initialSha256": "0fe7cca9f3d2257379cf5eb5095d5b6b281eb630e8fcc26c2ce79107f2a97844",
+      "protectedData": false
+    },
+    {
+      "path": "composite/model-center/styles.css",
+      "parentSha256": "ff7451affc71f7db99d7939616180aa94af1f236ef7eafe8d1d14b6621f0c3f9",
+      "initialSha256": "ff7451affc71f7db99d7939616180aa94af1f236ef7eafe8d1d14b6621f0c3f9",
+      "protectedData": false
+    },
+    {
+      "path": "composite/modules/m07/app.js",
+      "parentSha256": "de46f1b7a8f229648e6f12f851a29ce6bd67631984d64a55e2e8388ef88aa3ac",
+      "initialSha256": "092cde9b49544a36e47c9e33527296e0f83c3aebe90793be2ec2c1e3c2226fe5",
+      "protectedData": false
+    },
+    {
+      "path": "composite/modules/m07/business.js",
+      "parentSha256": "e53eebe2a987a3164041eaeaa71db616cc758c256422b66d990865dfba605954",
+      "initialSha256": "e53eebe2a987a3164041eaeaa71db616cc758c256422b66d990865dfba605954",
+      "protectedData": false
+    },
+    {
+      "path": "composite/modules/m07/comparison.js",
+      "parentSha256": "acada47818096f4b50e429d0e20c5efc18460074c72540142c003699d21955a7",
+      "initialSha256": "acada47818096f4b50e429d0e20c5efc18460074c72540142c003699d21955a7",
+      "protectedData": false
+    },
+    {
+      "path": "composite/modules/m07/index.html",
+      "parentSha256": "94bef5f357d2bcca4f7ff342cf1daa90ceae01ece06992a2ed70da4a8865909f",
+      "initialSha256": "94bef5f357d2bcca4f7ff342cf1daa90ceae01ece06992a2ed70da4a8865909f",
+      "protectedData": false
+    },
+    {
+      "path": "composite/modules/m07/inline-map.js",
+      "parentSha256": "40136a546dd6ca92d5ab3d18e95c601bfb44f0e02ab1591699d6a2d1be48f8fa",
+      "initialSha256": "40136a546dd6ca92d5ab3d18e95c601bfb44f0e02ab1591699d6a2d1be48f8fa",
+      "protectedData": false
+    },
+    {
+      "path": "composite/modules/m07/object-experience.js",
+      "parentSha256": "ffc43b0265e3b47d2ba6c7e371132b7086e23117b226285308bb6cf4b2722fe8",
+      "initialSha256": "ffc43b0265e3b47d2ba6c7e371132b7086e23117b226285308bb6cf4b2722fe8",
+      "protectedData": false
+    },
+    {
+      "path": "composite/modules/m07/portrait-model.js",
+      "parentSha256": "b532d92de423794f6dbe401a5450de04391f4adca5bca69d790a06072fd5c477",
+      "initialSha256": "b532d92de423794f6dbe401a5450de04391f4adca5bca69d790a06072fd5c477",
+      "protectedData": false
+    },
+    {
+      "path": "composite/modules/m07/resources/decision-seed.json",
+      "parentSha256": "040690825daf6d342cc7dd6eb87e89c72e97f0b15cdd2f6d58db8f175830d189",
+      "initialSha256": "040690825daf6d342cc7dd6eb87e89c72e97f0b15cdd2f6d58db8f175830d189",
+      "protectedData": true
+    },
+    {
+      "path": "composite/modules/m07/resources/portfolio.json",
+      "parentSha256": "5f28ad4a1a141d4c86eb12f83cc981f42bb1e64e1c3b72fd199ee4f342d75c9d",
+      "initialSha256": "5f28ad4a1a141d4c86eb12f83cc981f42bb1e64e1c3b72fd199ee4f342d75c9d",
+      "protectedData": true
+    },
+    {
+      "path": "composite/modules/m07/styles.css",
+      "parentSha256": "f0161f9ac6635ff576782d4317b0b9a96846ff87d385eb35195ea6e1740a951a",
+      "initialSha256": "f0161f9ac6635ff576782d4317b0b9a96846ff87d385eb35195ea6e1740a951a",
+      "protectedData": false
+    },
+    {
+      "path": "composite/ontology/alignment-bootstrap.js",
+      "parentSha256": "1a8ac88fea057e35ce6a4c0b1203736c870f498773aed787cce29d9b819e99df",
+      "initialSha256": "1a8ac88fea057e35ce6a4c0b1203736c870f498773aed787cce29d9b819e99df",
+      "protectedData": false
+    },
+    {
+      "path": "composite/ontology/alignment-consumption.js",
+      "parentSha256": "80523570a35244aec94c0e247009173fabeaf58188f02f422ed2bb1dbab512ff",
+      "initialSha256": "80523570a35244aec94c0e247009173fabeaf58188f02f422ed2bb1dbab512ff",
+      "protectedData": false
+    },
+    {
+      "path": "composite/ontology/alignment-prepare.js",
+      "parentSha256": "02b58d16ff2a9e27746a724c81c1c0c7f4df4515c4bac8d26abbffbe59fd28a8",
+      "initialSha256": "02b58d16ff2a9e27746a724c81c1c0c7f4df4515c4bac8d26abbffbe59fd28a8",
+      "protectedData": false
+    },
+    {
+      "path": "composite/ontology/index.html",
+      "parentSha256": "67a128c901f083d2e121a6beadc9a178c6aab4ca96f00a5b2e55ac11d34a479e",
+      "initialSha256": "67a128c901f083d2e121a6beadc9a178c6aab4ca96f00a5b2e55ac11d34a479e",
+      "protectedData": false
+    },
+    {
+      "path": "composite/ontology/rules-bootstrap.js",
+      "parentSha256": "04c7ff33fe79e94d2dd533558250173c6d0ad823b6b433f483e2a81f6242074f",
+      "initialSha256": "335a18fc84ad948000cb19a2b2f5416a25eebf89864667d4872cb58ce4b71de8",
+      "protectedData": false
+    },
+    {
+      "path": "composite/ontology/rules.css",
+      "parentSha256": "117c316bb515f1a97eea1c8ce6a043e888ba847cded819d2b44383cdf8b32c33",
+      "initialSha256": "117c316bb515f1a97eea1c8ce6a043e888ba847cded819d2b44383cdf8b32c33",
+      "protectedData": false
+    },
+    {
+      "path": "composite/resources/MAP-SOURCES.md",
+      "parentSha256": "5d4cb4046e86275132dc24d9bafea76281fd4c86378068379245a0c0326f2ef9",
+      "initialSha256": "5d4cb4046e86275132dc24d9bafea76281fd4c86378068379245a0c0326f2ef9",
+      "protectedData": true
+    },
+    {
+      "path": "composite/resources/build-enterprise-master.mjs",
+      "parentSha256": "05b2dd601d319844b5dd1f0d6c696d5173343fabfff87bb4b4be78ab51328b0a",
+      "initialSha256": "05b2dd601d319844b5dd1f0d6c696d5173343fabfff87bb4b4be78ab51328b0a",
+      "protectedData": true
+    },
+    {
+      "path": "composite/resources/business-finance-source.json",
+      "parentSha256": "b6d2827659f40b5dc763762e23b705aa7db186594415d3efbd6c995c11a030ea",
+      "initialSha256": "b6d2827659f40b5dc763762e23b705aa7db186594415d3efbd6c995c11a030ea",
+      "protectedData": true
+    },
+    {
+      "path": "composite/resources/business-preparation.json",
+      "parentSha256": "85d73c657447d0c95bd2af72e7ba61ae20201b5faf6b3642966a4b905e824b45",
+      "initialSha256": "85d73c657447d0c95bd2af72e7ba61ae20201b5faf6b3642966a4b905e824b45",
+      "protectedData": true
+    },
+    {
+      "path": "composite/resources/business-release.js",
+      "parentSha256": "e08fed8a478bd77970beae2b02cde4b684bcba39f500d4aaa7270aeffb71ad6d",
+      "initialSha256": "e08fed8a478bd77970beae2b02cde4b684bcba39f500d4aaa7270aeffb71ad6d",
+      "protectedData": true
+    },
+    {
+      "path": "composite/resources/business-source-manifest.json",
+      "parentSha256": "146802aaee592cedb1a74b717ea6170add5840beb6086d520f0aa0c32c5d6d31",
+      "initialSha256": "146802aaee592cedb1a74b717ea6170add5840beb6086d520f0aa0c32c5d6d31",
+      "protectedData": true
+    },
+    {
+      "path": "composite/resources/business-source.json",
+      "parentSha256": "666586eefa71615c538789dcaa0194b4febf99c0d9fc72f4ac0c0c1364d2a220",
+      "initialSha256": "666586eefa71615c538789dcaa0194b4febf99c0d9fc72f4ac0c0c1364d2a220",
+      "protectedData": true
+    },
+    {
+      "path": "composite/resources/catalog.js",
+      "parentSha256": "16f010a5bab5cb9deec4886475589ca1f4553b251ffff612e6f2a2941a24da23",
+      "initialSha256": "16f010a5bab5cb9deec4886475589ca1f4553b251ffff612e6f2a2941a24da23",
+      "protectedData": true
+    },
+    {
+      "path": "composite/resources/china-provinces.geojson",
+      "parentSha256": "99adfeded5223848bbe37a0a12f8023e11ee12161c7800521c27db42fdeac275",
+      "initialSha256": "99adfeded5223848bbe37a0a12f8023e11ee12161c7800521c27db42fdeac275",
+      "protectedData": true
+    },
+    {
+      "path": "composite/resources/enterprise-master.js",
+      "parentSha256": "a946594ae7996629e50a97eb4ae830337073fdc4c8d37c2ff087e8e1de5c5dec",
+      "initialSha256": "a946594ae7996629e50a97eb4ae830337073fdc4c8d37c2ff087e8e1de5c5dec",
+      "protectedData": true
+    },
+    {
+      "path": "composite/resources/enterprise-master.json",
+      "parentSha256": "dcbbd94a3f1817c8fac3ca7dccd3f53b1b2e29a7a71ec36ebc5199c1909bbd5b",
+      "initialSha256": "dcbbd94a3f1817c8fac3ca7dccd3f53b1b2e29a7a71ec36ebc5199c1909bbd5b",
+      "protectedData": true
+    },
+    {
+      "path": "composite/resources/enterprise-seed.json",
+      "parentSha256": "070aa31d0bb53000dab7c74d9f4fddb88f4201d2269261c87fd98453b169e7b0",
+      "initialSha256": "070aa31d0bb53000dab7c74d9f4fddb88f4201d2269261c87fd98453b169e7b0",
+      "protectedData": true
+    },
+    {
+      "path": "composite/s001-e2e-integration/app.js",
+      "parentSha256": "69f51b1714e796f928cae0caa35865656de86fc59e36f92d2dd56a0b53d55a5b",
+      "initialSha256": "fa37fc2b2d7121e2327385be660d0514cccebc3279c378cf2d606d0616d36a50",
+      "protectedData": false
+    },
+    {
+      "path": "composite/s001-e2e-integration/data.js",
+      "parentSha256": "05a52980467a9af38d17e89badf8a5cc178e7835bee47f61152a6f7f4412e102",
+      "initialSha256": "8e36a77f7038f51ebe8c83d8892a16ce0d295801cec7cccc500a5f109c30aa05",
+      "protectedData": false
+    },
+    {
+      "path": "composite/s001-e2e-integration/index.html",
+      "parentSha256": "177733d7268770b7650662fc5ef581a10bda4117e830f4fece93b5b66d04ec3d",
+      "initialSha256": "e914224cd384ec65f997f0aa6a3b7f1e03af3e4977f014817061c4f439c28ea4",
+      "protectedData": false
+    },
+    {
+      "path": "composite/s001-e2e-integration/state.js",
+      "parentSha256": "5621ee0ccac0d3694f40cf4fca381105e1e9072fc0fd0aa8ed9df2a73d684c1b",
+      "initialSha256": "a953fcf7ad8a12460d7b4df268ba77be07c03bb7511af187af057402748df8b5",
+      "protectedData": false
+    },
+    {
+      "path": "composite/s001-e2e-integration/styles.css",
+      "parentSha256": "03a25d72f6a79254e22879d1f909b984a8ae35e52bdfc6eaaf57a5fc26d75597",
+      "initialSha256": "03a25d72f6a79254e22879d1f909b984a8ae35e52bdfc6eaaf57a5fc26d75597",
+      "protectedData": false
+    },
+    {
+      "path": "composite/shared/business-catalog-loader.js",
+      "parentSha256": "02e449553838e83e2c522521128cfe446af156130252656651c63ba472d2237a",
+      "initialSha256": "ebcd80e5b6e934f7143a61de534b05165e4b5c2f8e6132fbe21cc8be8dbbb2d9",
+      "protectedData": false
+    },
+    {
+      "path": "composite/shared/business-catalog.js",
+      "parentSha256": "fbb84a9e995957356696d225a960dc57c1f38d125e655bc0cb2303d3316f7308",
+      "initialSha256": "fbb84a9e995957356696d225a960dc57c1f38d125e655bc0cb2303d3316f7308",
+      "protectedData": false
+    },
+    {
+      "path": "composite/shared/experience.css",
+      "parentSha256": "9ba21b6f8e4d5383811990d0acafa4801bf35e549a74b863a215c7233fcc1fee",
+      "initialSha256": "9ba21b6f8e4d5383811990d0acafa4801bf35e549a74b863a215c7233fcc1fee",
+      "protectedData": false
+    },
+    {
+      "path": "composite/shared/frame-presentation.css",
+      "parentSha256": "1037b47b784bf9959427265d229e2db866f88e862bdb07817c8ac1d463b3a6b8",
+      "initialSha256": "1037b47b784bf9959427265d229e2db866f88e862bdb07817c8ac1d463b3a6b8",
+      "protectedData": false
+    },
+    {
+      "path": "composite/shared/model-result-view.css",
+      "parentSha256": "73c7f931604ec954964d24525d4edd51dcbc33d88f49e11610038f35417cce3b",
+      "initialSha256": "73c7f931604ec954964d24525d4edd51dcbc33d88f49e11610038f35417cce3b",
+      "protectedData": false
+    },
+    {
+      "path": "composite/shared/model-result-view.js",
+      "parentSha256": "b303bcae58eee990b49c7f17617cbf612fe214faef26f587cdb73eaa3ff7c372",
+      "initialSha256": "b303bcae58eee990b49c7f17617cbf612fe214faef26f587cdb73eaa3ff7c372",
+      "protectedData": false
+    },
+    {
+      "path": "composite/shared/model-studio-bridge.js",
+      "parentSha256": "17483e631058a971583636841e19460e87618dbf93b952c9f9a61cb01c87a372",
+      "initialSha256": "17483e631058a971583636841e19460e87618dbf93b952c9f9a61cb01c87a372",
+      "protectedData": false
+    },
+    {
+      "path": "composite/shared/model-studio.js",
+      "parentSha256": "6af16cf279af0b0ec375bcac60616d3b98033fc900c4ef655678bd245f0d6817",
+      "initialSha256": "3012278c467fd6f877f2cf97ee9d5bc573a50307add3d1dcd42b11a2688104cb",
+      "protectedData": false
+    },
+    {
+      "path": "composite/shared/ontology-consumption.js",
+      "parentSha256": "73962c00ce43ca6f11cfe8559ecee6e122816ceea01ae5bc59b1c7f71b7f7461",
+      "initialSha256": "73962c00ce43ca6f11cfe8559ecee6e122816ceea01ae5bc59b1c7f71b7f7461",
+      "protectedData": false
+    },
+    {
+      "path": "composite/shared/readability.js",
+      "parentSha256": "673385dde51d8a840d349cde09f6ed8f2160db89f6a8e206ac3081f5113fa032",
+      "initialSha256": "673385dde51d8a840d349cde09f6ed8f2160db89f6a8e206ac3081f5113fa032",
+      "protectedData": false
+    },
+    {
+      "path": "composite/shared/report-editor.js",
+      "parentSha256": "66a109310afc8bf21935f604bdd5726efe0425607856053cc9982e51ad49c0d2",
+      "initialSha256": "66a109310afc8bf21935f604bdd5726efe0425607856053cc9982e51ad49c0d2",
+      "protectedData": false
+    },
+    {
+      "path": "composite/shared/workflow.js",
+      "parentSha256": "ae7fd90150260d8543d9ce2477db7f9ae1d3d5b78b2ffdd03a731b67deed490d",
+      "initialSha256": "fb4296c69603577f4ac3720d97bfff97feb6bda734f7927709c8448c1016fb90",
+      "protectedData": false
+    },
+    {
+      "path": "composite/start-candidate.mjs",
+      "parentSha256": "b2c549a19342f538c700c17e8a5a7d58b54da4ebb22a5e0d4660b1edc60305a4",
+      "initialSha256": "a9a84fea161cebf16a368fff8ce8723121a97e09805173e2fe81aa2731e9d5f2",
+      "protectedData": false
+    },
+    {
+      "path": "composite/tests/chrome-regression.mjs",
+      "parentSha256": "70b16c98c302ea8f0e8281d2ca40394194fac7f4f4414b05ec481235eb208bce",
+      "initialSha256": "70b16c98c302ea8f0e8281d2ca40394194fac7f4f4414b05ec481235eb208bce",
+      "protectedData": false
+    },
+    {
+      "path": "composite/tests/enterprise-browser-regression.mjs",
+      "parentSha256": "de9892a4e712228c154335245ef54aad7098ed8d35fddbe35706fa25cd24fa8d",
+      "initialSha256": "de9892a4e712228c154335245ef54aad7098ed8d35fddbe35706fa25cd24fa8d",
+      "protectedData": false
+    },
+    {
+      "path": "composite/tests/enterprise-identity.test.mjs",
+      "parentSha256": "091e599eb0e696088fe50ad572f66df84798ac2d8551c999b56c77168ec6a92f",
+      "initialSha256": "091e599eb0e696088fe50ad572f66df84798ac2d8551c999b56c77168ec6a92f",
+      "protectedData": false
+    },
+    {
+      "path": "composite/tests/parent-integrity.test.mjs",
+      "parentSha256": "18e800f0a02a71662131a53060cda586069514dca0837bd09a2ac2bc4874d720",
+      "initialSha256": "18e800f0a02a71662131a53060cda586069514dca0837bd09a2ac2bc4874d720",
+      "protectedData": false
+    },
+    {
+      "path": "composite/tests/readability-regression.mjs",
+      "parentSha256": "d17023e941b9c14aa66e43edb694a03405df6d712aa0dd48361010ff17c2ea52",
+      "initialSha256": "d17023e941b9c14aa66e43edb694a03405df6d712aa0dd48361010ff17c2ea52",
+      "protectedData": false
+    },
+    {
+      "path": "composite/tests/readability.test.mjs",
+      "parentSha256": "bbdc4e8de71c60099868f7a85afcc36b3b1fd27a897f8585ed93bae8dd68b920",
+      "initialSha256": "bbdc4e8de71c60099868f7a85afcc36b3b1fd27a897f8585ed93bae8dd68b920",
+      "protectedData": false
+    },
+    {
+      "path": "composite/tests/record-regression.mjs",
+      "parentSha256": "51681e106c7f6851c45d9947f66ef9434beb69b6666847b84a79d91997929122",
+      "initialSha256": "51681e106c7f6851c45d9947f66ef9434beb69b6666847b84a79d91997929122",
+      "protectedData": false
+    },
+    {
+      "path": "composite/tests/refresh-manifest.mjs",
+      "parentSha256": "c130667014ef45c2a7bd2c55b23a5630d79959c12464b420c4e9c09b78c62e36",
+      "initialSha256": "c130667014ef45c2a7bd2c55b23a5630d79959c12464b420c4e9c09b78c62e36",
+      "protectedData": false
+    },
+    {
+      "path": "composite/tests/server.test.mjs",
+      "parentSha256": "ee7533f69e0a88cd7fb5e03b7326ad36e6f8ce588f25bdb5aeec10a1c8567533",
+      "initialSha256": "e83ea972e6913b37e50e71ea0d99a76da17d8de6d1e96bf1573af7207a990701",
+      "protectedData": false
+    },
+    {
+      "path": "composite/tests/shell-contract.test.mjs",
+      "parentSha256": "416f90a7327ef90610fe4361bd055678a8556437c63fce460fac1471e43fef5c",
+      "initialSha256": "8f0e3d7f8890c6e959c7eea17e1d971af6d3dcf55ee1193466c8e84d2d5243ed",
+      "protectedData": false
+    },
+    {
+      "path": "composite/tests/stability-contract.test.mjs",
+      "parentSha256": "c7a875a1cb4fb8b74143e125fda3f555166af491ca019678f5ee079da424be3c",
+      "initialSha256": "c7a875a1cb4fb8b74143e125fda3f555166af491ca019678f5ee079da424be3c",
+      "protectedData": false
+    },
+    {
+      "path": "composite/tests/ux-regression.mjs",
+      "parentSha256": "3421b96ae6337b4550085f863fb97bbd9f48a9b1b16aed67a168d2d20471311e",
+      "initialSha256": "3421b96ae6337b4550085f863fb97bbd9f48a9b1b16aed67a168d2d20471311e",
+      "protectedData": false
+    },
+    {
+      "path": "composite/tests/v11-browser-regression.mjs",
+      "parentSha256": "a13f72c7d1c7deb0b4b1a93df2cd48d8fa4ef150ec5c88809db9eec56fb28b30",
+      "initialSha256": "a13f72c7d1c7deb0b4b1a93df2cd48d8fa4ef150ec5c88809db9eec56fb28b30",
+      "protectedData": false
+    },
+    {
+      "path": "composite/tests/v11-parity.test.mjs",
+      "parentSha256": "c3ef3a1e8fb9ee0c7e4d4ee75896a519eb1c5b23987163a9ed012ae165c8a9f4",
+      "initialSha256": "c3ef3a1e8fb9ee0c7e4d4ee75896a519eb1c5b23987163a9ed012ae165c8a9f4",
+      "protectedData": false
+    },
+    {
+      "path": "composite/tests/verify-candidate.mjs",
+      "parentSha256": "71493e856cf9e591d0cae231694a1673ba798de8667c380a7164e63a8792c76d",
+      "initialSha256": "71493e856cf9e591d0cae231694a1673ba798de8667c380a7164e63a8792c76d",
+      "protectedData": false
+    },
+    {
+      "path": "composite/tests/workflow.test.mjs",
+      "parentSha256": "3813717165d036b9113dd162556376902d10d8ded5bdb0574382f8fd5ade6755",
+      "initialSha256": "044f49a9d4a74d3ac1a76392eaefc50cb3930cd770978eb1874e30aa959478ca",
+      "protectedData": false
+    },
+    {
+      "path": "index.html",
+      "parentSha256": "907591ea4f406ba083775532cdbc154b1c037370d34a0abfc9fe78598709e9db",
+      "initialSha256": "c608bd4b1b2cf712f13db32a87a693809dc84a3d5ff610484877282cfc7c18d9",
+      "protectedData": false
+    },
+    {
+      "path": "package-lock.json",
+      "parentSha256": "9203e71b15355d2e9489f4b417f15bb1a0c84485e08ad1b6c28863d361c1fc1c",
+      "initialSha256": "8279d9c4cdce4d984cdc3911e75c034b1a21514b46020dcb0b850954e65d5143",
+      "protectedData": false
+    },
+    {
+      "path": "package.json",
+      "parentSha256": "c8e82e3a1e3f60363ad9de0bbbaadf4f0c4e357b34963bf05b35043517e6203e",
+      "initialSha256": "c20ad577cc5b4ba7fb503c593d74382b301b30023524b850f3db4d2bf6206bc0",
+      "protectedData": false
+    },
+    {
+      "path": "public/data/business-definitions.js",
+      "parentSha256": "53e60d5375d4c0b0571c0014edb3fb19519024bfbd80fec4b2b35c22a391dafa",
+      "initialSha256": "53e60d5375d4c0b0571c0014edb3fb19519024bfbd80fec4b2b35c22a391dafa",
+      "protectedData": true
+    },
+    {
+      "path": "public/data/china-provinces.geojson",
+      "parentSha256": "99adfeded5223848bbe37a0a12f8023e11ee12161c7800521c27db42fdeac275",
+      "initialSha256": "99adfeded5223848bbe37a0a12f8023e11ee12161c7800521c27db42fdeac275",
+      "protectedData": true
+    },
+    {
+      "path": "public/data/portfolio.json",
+      "parentSha256": "fea13fc42c0ccd6b58409b313ec5f6fc8fe9ea2ec0c31815b601b5aa0fe4d1c6",
+      "initialSha256": "fea13fc42c0ccd6b58409b313ec5f6fc8fe9ea2ec0c31815b601b5aa0fe4d1c6",
+      "protectedData": true
+    },
+    {
+      "path": "public/data/snapshots/catalog.js",
+      "parentSha256": "68633ae06f2931c755e81a1b339338ce7002c60f0114f13da7883c31e3ea7430",
+      "initialSha256": "68633ae06f2931c755e81a1b339338ce7002c60f0114f13da7883c31e3ea7430",
+      "protectedData": true
+    },
+    {
+      "path": "public/data/snapshots/catalog.json",
+      "parentSha256": "2c2dd9c7b1c84ad474e5f9751cc4f107b32d16e1f56480b4ec7e7836d8550d5a",
+      "initialSha256": "2c2dd9c7b1c84ad474e5f9751cc4f107b32d16e1f56480b4ec7e7836d8550d5a",
+      "protectedData": true
+    },
+    {
+      "path": "public/data/snapshots/finance-risk-20251231-3a126add6af3.xlsx",
+      "parentSha256": "3a126add6af3787c90cac781f6d42186d41dbcd80e5bc29264845994940ac3b8",
+      "initialSha256": "3a126add6af3787c90cac781f6d42186d41dbcd80e5bc29264845994940ac3b8",
+      "protectedData": true
+    },
+    {
+      "path": "public/data/snapshots/finance-risk-20251231-5b0fff17feff.xlsx",
+      "parentSha256": "5b0fff17feff25d93cce952df58de942beed55070abe1fdd1eed4408d29fcbe3",
+      "initialSha256": "5b0fff17feff25d93cce952df58de942beed55070abe1fdd1eed4408d29fcbe3",
+      "protectedData": true
+    },
+    {
+      "path": "public/data/snapshots/finance-risk-20251231-9c933d8c7a8c.xlsx",
+      "parentSha256": "9c933d8c7a8c838d6b50bd6749a7867273b4b44ff5c9c873983522bcab04e4a8",
+      "initialSha256": "9c933d8c7a8c838d6b50bd6749a7867273b4b44ff5c9c873983522bcab04e4a8",
+      "protectedData": true
+    },
+    {
+      "path": "public/data/world-110m.topojson",
+      "parentSha256": "2516c915867c7baf18ddec727aec46c315541a07cfb3d79a6559b05d5e94eee8",
+      "initialSha256": "2516c915867c7baf18ddec727aec46c315541a07cfb3d79a6559b05d5e94eee8",
+      "protectedData": true
+    },
+    {
+      "path": "public/data/world.geojson",
+      "parentSha256": "02caedf9a1e0255deedc985942ccb0b8df102f21c9c551c332e8eda0a18fbcd9",
+      "initialSha256": "02caedf9a1e0255deedc985942ccb0b8df102f21c9c551c332e8eda0a18fbcd9",
+      "protectedData": true
+    },
+    {
+      "path": "runtime/frame-presentation.mjs",
+      "parentSha256": "d9ef13469aed68d142b7cd44d741bbe1b94e6a5798f01d879a2f1e83aad0b21b",
+      "initialSha256": "211d607e2a63d61ffcfb1168d03d7804e2bcfdd8afac99c07e9cb8e63fa61e13",
+      "protectedData": false
+    },
+    {
+      "path": "runtime/idle-projection.mjs",
+      "parentSha256": "6ad47fa22c39d1854bce87d12c062c39152512398af061b8cec11007d6d29e31",
+      "initialSha256": "6ad47fa22c39d1854bce87d12c062c39152512398af061b8cec11007d6d29e31",
+      "protectedData": false
+    },
+    {
+      "path": "runtime/model-runtime.mjs",
+      "parentSha256": "0867f3f0369d9b8eedc655612c061517f5f3803814fede8d44a2d5bb1da5b8c9",
+      "initialSha256": "0867f3f0369d9b8eedc655612c061517f5f3803814fede8d44a2d5bb1da5b8c9",
+      "protectedData": false
+    },
+    {
+      "path": "runtime/start.mjs",
+      "parentSha256": "8ce29747fdec4e61be7fa84646b64d9e0e2f32312ef213c53de0246c7aef2ecb",
+      "initialSha256": "51636196cd84aa4272a575baf19f6a5b4ba414c6afd3f165f6e91334182212e6",
+      "protectedData": false
+    },
+    {
+      "path": "scripts/build-business-catalog.mjs",
+      "parentSha256": "a5dcc9093de4f14355e2088677d7e2eeeb0574f66eed3dcd0bb82d7b4accdcec",
+      "initialSha256": "e82e7c180f3576024ae8e42f17774e99eeacf6477efc9123991535ffa3d67b29",
+      "protectedData": false
+    },
+    {
+      "path": "scripts/build-data.mjs",
+      "parentSha256": "6b42729ea331c9a275abd93f1894afa1f14e3d3b53262a4ee4671149e22f50b6",
+      "initialSha256": "6b42729ea331c9a275abd93f1894afa1f14e3d3b53262a4ee4671149e22f50b6",
+      "protectedData": false
+    },
+    {
+      "path": "scripts/build-snapshot-package.mjs",
+      "parentSha256": "7144e7003db5c728c709193f753b6b17af2b3afdc0724d6edd57428ad654507a",
+      "initialSha256": "7144e7003db5c728c709193f753b6b17af2b3afdc0724d6edd57428ad654507a",
+      "protectedData": false
+    },
+    {
+      "path": "scripts/read-business-finance.py",
+      "parentSha256": "c94c80f6165afa4689cdaf3a78be6a47a13b777bc3a4189d8fbabb54431c0a16",
+      "initialSha256": "debcae67b0498041d209e2b345881672deae370393ecc608f89c23591ab5e64c",
+      "protectedData": false
+    },
+    {
+      "path": "server.mjs",
+      "parentSha256": "67c564f86131a8cafd18865c70a5b9df764d9afaf57cbe24833d35701245e18d",
+      "initialSha256": "c755b9a9a1af7a1a13d0bff738ca587e89465bd2c572955b8babd41a4657317b",
+      "protectedData": false
+    },
+    {
+      "path": "src/app.js",
+      "parentSha256": "ea68d7f82c3217208f0efbbf66cbeb659fe74853db3ee47975161e0e5c3acbf5",
+      "initialSha256": "fa64f826070a443d64048a34cd32718226c0767179c766eca99d046e7a42eb09",
+      "protectedData": false
+    },
+    {
+      "path": "src/domain.js",
+      "parentSha256": "f87b77fbf9d930159a2eacf52f62c5786a00435ca1f6fb167043f84d66689bc8",
+      "initialSha256": "f87b77fbf9d930159a2eacf52f62c5786a00435ca1f6fb167043f84d66689bc8",
+      "protectedData": false
+    },
+    {
+      "path": "src/exploration-view.js",
+      "parentSha256": "858a86c943c7e93850dcd7df126456b9ac7f84c90ab588e842b50ce011ff1a77",
+      "initialSha256": "858a86c943c7e93850dcd7df126456b9ac7f84c90ab588e842b50ce011ff1a77",
+      "protectedData": false
+    },
+    {
+      "path": "src/map.js",
+      "parentSha256": "51a935a36a4081a7e27fee5ea0e76e47c436b016777c9c4a0c2d0e8697841e84",
+      "initialSha256": "51a935a36a4081a7e27fee5ea0e76e47c436b016777c9c4a0c2d0e8697841e84",
+      "protectedData": false
+    },
+    {
+      "path": "src/model-use.js",
+      "parentSha256": "419846d78dce32fc679064d1b36b2e444d1b3c9d982c7510ffe28b1bae76e8b7",
+      "initialSha256": "419846d78dce32fc679064d1b36b2e444d1b3c9d982c7510ffe28b1bae76e8b7",
+      "protectedData": false
+    },
+    {
+      "path": "src/platform.js",
+      "parentSha256": "3b4df9d14578882b8c230271de0b1bba199bedbe282c2e0c0f00258f026dcef4",
+      "initialSha256": "3b4df9d14578882b8c230271de0b1bba199bedbe282c2e0c0f00258f026dcef4",
+      "protectedData": false
+    },
+    {
+      "path": "src/snapshot-data.js",
+      "parentSha256": "35296998006575ad68a6f7b387a3b519cdd1292efff17ef00fd81c0021970b46",
+      "initialSha256": "35296998006575ad68a6f7b387a3b519cdd1292efff17ef00fd81c0021970b46",
+      "protectedData": false
+    },
+    {
+      "path": "src/store.js",
+      "parentSha256": "6e65f43d795dd9cea81207fa0f594c0e03144e371afcdf24fdf8a3dad3310cc2",
+      "initialSha256": "e385529e9c6108186b436e2f89736626ece0edd084ed111c1e40f493ddc6e3a5",
+      "protectedData": false
+    },
+    {
+      "path": "src/styles.css",
+      "parentSha256": "94c7acd947c32be8f9d3ba65760b0a3f7888c1fbd5d75e4b39115d3f3632c31b",
+      "initialSha256": "94c7acd947c32be8f9d3ba65760b0a3f7888c1fbd5d75e4b39115d3f3632c31b",
+      "protectedData": false
+    },
+    {
+      "path": "src/ui.js",
+      "parentSha256": "0ef63b9200f6c4ab4aca78260d34ee5be1b1b1c5d33c3793ca97a7d72c6d95ae",
+      "initialSha256": "0ef63b9200f6c4ab4aca78260d34ee5be1b1b1c5d33c3793ca97a7d72c6d95ae",
+      "protectedData": false
+    },
+    {
+      "path": "tests/box-selection-browser.mjs",
+      "parentSha256": "6e5f3af835a6f92b58b75a87640f8f7f11c9f6092227bd3e90f9a238a95ff0e2",
+      "initialSha256": "c7453c79e14ffd579436ee2faa2baecd38ec2866d38f78da24fdf65cef4256a1",
+      "protectedData": false
+    },
+    {
+      "path": "tests/box-selection.test.mjs",
+      "parentSha256": "041dc1ece2db3a78e47598cc7923a549932d460b623d701b26459ea5b0ba6564",
+      "initialSha256": "041dc1ece2db3a78e47598cc7923a549932d460b623d701b26459ea5b0ba6564",
+      "protectedData": false
+    },
+    {
+      "path": "tests/browser.mjs",
+      "parentSha256": "2bf57083c0f65cbcb7018422343e6fd0582ea457f5a410c1513f05a524dd15a6",
+      "initialSha256": "2bf57083c0f65cbcb7018422343e6fd0582ea457f5a410c1513f05a524dd15a6",
+      "protectedData": false
+    },
+    {
+      "path": "tests/business-catalog.test.mjs",
+      "parentSha256": "4bbf7dabebe66402615f9c37137b4548e74fec5618da9385ee881c0114c101b3",
+      "initialSha256": "4bbf7dabebe66402615f9c37137b4548e74fec5618da9385ee881c0114c101b3",
+      "protectedData": false
+    },
+    {
+      "path": "tests/cockpit-layout.mjs",
+      "parentSha256": "d3ddb1e32d5db58caf1bb684bc662ada93331c9f64304f9c4fa1b101c2a53313",
+      "initialSha256": "edac185dcd3eb83c723b670e38d1d94560634e2a69257ec78fecfdb1cfe98c16",
+      "protectedData": false
+    },
+    {
+      "path": "tests/cockpit-snapshot-browser.mjs",
+      "parentSha256": "fbe1d86a1fc5640f12ff96235bc8cadfc1ab076acef85520447594e6d0ed1656",
+      "initialSha256": "faf56504eda8c6f5524a7240e527c4f65c79284b129d54e9169d4c30c4575b67",
+      "protectedData": false
+    },
+    {
+      "path": "tests/direct-actions-browser.mjs",
+      "parentSha256": "a393430b721a4d7555940de9439975a109593094693f4d1dccc6e468e05266c4",
+      "initialSha256": "a393430b721a4d7555940de9439975a109593094693f4d1dccc6e468e05266c4",
+      "protectedData": false
+    },
+    {
+      "path": "tests/domain.test.mjs",
+      "parentSha256": "7384198d629001ca906e6e0281422a33790321cceba4c57432098c1e0b51d8ca",
+      "initialSha256": "7384198d629001ca906e6e0281422a33790321cceba4c57432098c1e0b51d8ca",
+      "protectedData": false
+    },
+    {
+      "path": "tests/frame-presentation.test.mjs",
+      "parentSha256": "46d2e14b2ba866fcc0601b545a1af1904369a4be62533c5d2ec2beb303011593",
+      "initialSha256": "e97e2a990a9f5e3f1ee8b614a77e75c5a8b4eea9a67247246dfb102eac733477",
+      "protectedData": false
+    },
+    {
+      "path": "tests/home-presentation.mjs",
+      "parentSha256": "6e443686b8005a6a810d7c8a037ea2d854dadd7eafeae8ab8c26c696e59ab58a",
+      "initialSha256": "6e443686b8005a6a810d7c8a037ea2d854dadd7eafeae8ab8c26c696e59ab58a",
+      "protectedData": false
+    },
+    {
+      "path": "tests/inheritance.test.mjs",
+      "parentSha256": "509392e96f41f440027f21271454c77d7080c2038a0f864ad478c8d2ea1f5ec4",
+      "initialSha256": "5da865abc94ead9d5256f81e95bbb1fb2bb7034ed544075c4e9c4cc169058527",
+      "protectedData": false
+    },
+    {
+      "path": "tests/inherited-browser.mjs",
+      "parentSha256": "64163d25b72c02d895aac15b82668084007f233511f7a2d009daf99d1aaefa80",
+      "initialSha256": "cf2c5ca3f10db1fbe2dcc3962e7d8cc40a38811e60491722ec0f8d6677168527",
+      "protectedData": false
+    },
+    {
+      "path": "tests/m07-business.test.mjs",
+      "parentSha256": "d1ae391e58e544b3c8ca27e5ba220609a2429dda2ac0c04bfd6fdaaf9e3f4fbb",
+      "initialSha256": "4477003c4b07f00f64f83e167ba20480c01b7e97c0e0caa3ea3e2c0690fec9bc",
+      "protectedData": false
+    },
+    {
+      "path": "tests/m07-final-layout-browser.mjs",
+      "parentSha256": "6ed0ee3c5af75376d07f34871bbcf4b3cfb7b3efe01c8929162e027688257f80",
+      "initialSha256": "562de65637400194658f9ea2e5ac16d5a481bc4fe70571e35cafae83afa0f0a2",
+      "protectedData": false
+    },
+    {
+      "path": "tests/m07-review-browser.mjs",
+      "parentSha256": "040a90325fe47cf6c28b74d0ab5930ff1ebcd188673c82cbf618132b57dff65b",
+      "initialSha256": "2dff26cec5e0dc93c2de4212dde45b724e9c35489927c346ba6648737bfc7ad0",
+      "protectedData": false
+    },
+    {
+      "path": "tests/m07-review.test.mjs",
+      "parentSha256": "99af2b173c310ec63a5763d7e72fa916de6d9821eed972877b9a705c66aff63d",
+      "initialSha256": "99af2b173c310ec63a5763d7e72fa916de6d9821eed972877b9a705c66aff63d",
+      "protectedData": false
+    },
+    {
+      "path": "tests/model-studio.test.mjs",
+      "parentSha256": "709cf15a7e5b1acee3ba72911f8dd633ce6b56a6067b169aaaa1b828e908e7f1",
+      "initialSha256": "709cf15a7e5b1acee3ba72911f8dd633ce6b56a6067b169aaaa1b828e908e7f1",
+      "protectedData": false
+    },
+    {
+      "path": "tests/navigation-paint-browser.mjs",
+      "parentSha256": "2894484d78b6366e3bc749f025c981b1c045193fe055139a9ae92a0c4e3be492",
+      "initialSha256": "f250f617f918963d53f8eca648869db9a71c1b29991f3455c98c187135074344",
+      "protectedData": false
+    },
+    {
+      "path": "tests/object-experience.test.mjs",
+      "parentSha256": "e7e11464624846d475f160611403e807791bcd0e94d59b412f7ad02a953d4235",
+      "initialSha256": "e7e11464624846d475f160611403e807791bcd0e94d59b412f7ad02a953d4235",
+      "protectedData": false
+    },
+    {
+      "path": "tests/object-panorama-browser.mjs",
+      "parentSha256": "a393430b721a4d7555940de9439975a109593094693f4d1dccc6e468e05266c4",
+      "initialSha256": "a393430b721a4d7555940de9439975a109593094693f4d1dccc6e468e05266c4",
+      "protectedData": false
+    },
+    {
+      "path": "tests/ontology-alignment-browser.mjs",
+      "parentSha256": "bd220bf305b0c74eaa5c72aaaffdc5c89f4141eba480dc93a52052dc3a33980d",
+      "initialSha256": "bd220bf305b0c74eaa5c72aaaffdc5c89f4141eba480dc93a52052dc3a33980d",
+      "protectedData": false
+    },
+    {
+      "path": "tests/ontology-consumption.test.mjs",
+      "parentSha256": "6e8d01636d0eed3d6e36db29f9ae6bd942ffda4c19469808654859ae700540ce",
+      "initialSha256": "6e8d01636d0eed3d6e36db29f9ae6bd942ffda4c19469808654859ae700540ce",
+      "protectedData": false
+    },
+    {
+      "path": "tests/owned-rules-browser.mjs",
+      "parentSha256": "deb7461c215688af877968f6d8cd17d87a40c775496e854919d8da50c5c08514",
+      "initialSha256": "b5e079474723a5c235614f550465701a999f6550b34f6b8109ad4846751c6cf5",
+      "protectedData": false
+    },
+    {
+      "path": "tests/owned-rules.test.mjs",
+      "parentSha256": "bedbaa87eea6fd7ccd334703a8db88c3b6e2c177bbf485d7b083f31162509aa5",
+      "initialSha256": "bedbaa87eea6fd7ccd334703a8db88c3b6e2c177bbf485d7b083f31162509aa5",
+      "protectedData": false
+    },
+    {
+      "path": "tests/portrait-browser.mjs",
+      "parentSha256": "a393430b721a4d7555940de9439975a109593094693f4d1dccc6e468e05266c4",
+      "initialSha256": "a393430b721a4d7555940de9439975a109593094693f4d1dccc6e468e05266c4",
+      "protectedData": false
+    },
+    {
+      "path": "tests/portrait-idle-browser.mjs",
+      "parentSha256": "f072df7be055dd3df3e4efc0008ee6dd376e397260a19c3ec0e7459bfc48ace6",
+      "initialSha256": "f072df7be055dd3df3e4efc0008ee6dd376e397260a19c3ec0e7459bfc48ace6",
+      "protectedData": false
+    },
+    {
+      "path": "tests/portrait-model.test.mjs",
+      "parentSha256": "79f6f928da7ce490947aa9e4fdadf8951a4f75a87772498be1b2323dae15330a",
+      "initialSha256": "79f6f928da7ce490947aa9e4fdadf8951a4f75a87772498be1b2323dae15330a",
+      "protectedData": false
+    },
+    {
+      "path": "tests/review-approval-browser.mjs",
+      "parentSha256": "7eb8ffe34dda7086d4a775d4837fd4599dde35b780fab1d9d85609321f5df05f",
+      "initialSha256": "60bed576adb6df5855157695e28558c07ba562684bc40f158425d883d3135b6c",
+      "protectedData": false
+    },
+    {
+      "path": "tests/review-followup-browser.mjs",
+      "parentSha256": "1c0cc5cdd2eede8b8aec533f196f960162b30772b7b167570a95d235f175c45c",
+      "initialSha256": "02f91227c1e1539ab5442c8be7a47e0c098fe75a25223f9820e921c500ebe92a",
+      "protectedData": false
+    },
+    {
+      "path": "tests/review-followup.test.mjs",
+      "parentSha256": "4f5fcd286794362dc89a19ac1e4444455987fc1accb443374c8c99a30d8d78bd",
+      "initialSha256": "4f5fcd286794362dc89a19ac1e4444455987fc1accb443374c8c99a30d8d78bd",
+      "protectedData": false
+    },
+    {
+      "path": "tests/review-layout-browser.mjs",
+      "parentSha256": "0109aa3ffa30f3c8b69f78d7ad4b235c5d55c5c38538bb41d24a7936466368b0",
+      "initialSha256": "6261ce04ec2177608269fd64adb80fede16a128c50e7ab1908c6a4cbf9716345",
+      "protectedData": false
+    },
+    {
+      "path": "tests/review-logic-format-browser.mjs",
+      "parentSha256": "948c19ede7172f7ab6944e23a7dd9c0202866bed3b42f54f3681de9cc258c66f",
+      "initialSha256": "50b97f992e65d037d5ac3c08cdb54e51e5218ec84bf734356e16d9d4ae751d50",
+      "protectedData": false
+    },
+    {
+      "path": "tests/review-logic-format.test.mjs",
+      "parentSha256": "c934a06af1511e10538d2e10d0dae6bdf01dce34365da3b91d74ea1872d18b35",
+      "initialSha256": "c934a06af1511e10538d2e10d0dae6bdf01dce34365da3b91d74ea1872d18b35",
+      "protectedData": false
+    },
+    {
+      "path": "tests/review-map-browser.mjs",
+      "parentSha256": "cb10491252558b55630b1d42fce5bd0c58e58c8d6224fa7c0111e4a7d68d3ae1",
+      "initialSha256": "10b48e4db57dfe67432b5c3f2055ace7cea0586521ad9c08db18a2d1e48049a3",
+      "protectedData": false
+    },
+    {
+      "path": "tests/review-model-browser.mjs",
+      "parentSha256": "ef31126d6c13f0b9208da08de3728863be0c90f2fb928ce84181a7e6bc984bff",
+      "initialSha256": "d47532db7d7533f6bb2971c34a55bc34c6bf541939b7c8b4b44c96bb8d768cd2",
+      "protectedData": false
+    },
+    {
+      "path": "tests/review-native-browser.mjs",
+      "parentSha256": "74bf91c4cbe1f8caffb4f65589f60caa5893f0b8e6a23451879c67fb34a66abc",
+      "initialSha256": "3eb334437b0b187e29f6ad8d258a07ffa95d6daf9fad8ac7dfae00d9fd7b1d4c",
+      "protectedData": false
+    },
+    {
+      "path": "tests/review-plan-report-browser.mjs",
+      "parentSha256": "f2a5b13f18ba2f8ead116b769049318dc795cd858b351c9c9f8bde6b37331358",
+      "initialSha256": "245830a64b2af4cc855bee9beaa3238151beaeb801b541363018ddd37b690e9e",
+      "protectedData": false
+    },
+    {
+      "path": "tests/review-probe.mjs",
+      "parentSha256": "e8ed76395dc52076b7dce839484a25e3b4d12946fd4d4b65f4fd5942da233ad3",
+      "initialSha256": "ef6011754acb82018efd472dda588636edf8a3cf0afb4e523e18918c949a74f5",
+      "protectedData": false
+    },
+    {
+      "path": "tests/review-regressions.test.mjs",
+      "parentSha256": "699ac0f15eea92483ef716693a49cbdb06717ee1715c1ae432fb2efdf2299c12",
+      "initialSha256": "699ac0f15eea92483ef716693a49cbdb06717ee1715c1ae432fb2efdf2299c12",
+      "protectedData": false
+    },
+    {
+      "path": "tests/snapshot.test.mjs",
+      "parentSha256": "2c833090b50c8828d429933e8864eced4cd358d46435cc347c3932b411375a42",
+      "initialSha256": "2c833090b50c8828d429933e8864eced4cd358d46435cc347c3932b411375a42",
+      "protectedData": false
+    },
+    {
+      "path": "tests/world-model-browser.mjs",
+      "parentSha256": "ca33cb5bb57e6af92e93b386cb9f2131dbde718890170e0033f109309d8ea93a",
+      "initialSha256": "cd4c5408e6bd7b9d3f5ba59a10233f45345779253cb8581b703fa169a9ebd584",
+      "protectedData": false
+    },
+    {
+      "path": "vite.config.js",
+      "parentSha256": "441b740db10d4163558910f663c839f4dda879ed6faf8d9d75df270324a2fffa",
+      "initialSha256": "441b740db10d4163558910f663c839f4dda879ed6faf8d9d75df270324a2fffa",
+      "protectedData": false
+    },
+    {
+      "path": "workbench.html",
+      "parentSha256": "e1ee567dcfe697fbacd2a36d7bb5eef94b9a8e39e339fc69fd4fb9571d9fa8d7",
+      "initialSha256": "505c36c2cd3d8c1d2cf14621bdc0667ccd8df898f16d8f7e51a46fcba4703185",
+      "protectedData": false
+    }
+  ],
+  "hashPolicy": "parentSha256 identifies the unchanged v1.4 baseline; initialSha256 identifies the completed v1.5 bootstrap, not future edits."
+}

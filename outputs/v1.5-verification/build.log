@@ -1,0 +1,26 @@
+
+> ontology-financial-workbench-v15@1.5.0 build
+> vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 2154 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/workbench.html                                 0.65 kB │ gzip:   0.45 kB
+dist/index.html                                     0.69 kB │ gzip:   0.47 kB
+dist/assets/workbench-Z20Aj9Lq.css                113.05 kB │ gzip:  19.58 kB
+dist/assets/model-studio-bridge-BKA9pRcP.js         0.41 kB │ gzip:   0.31 kB
+dist/assets/index-Ck9cb-_F.js                       0.46 kB │ gzip:   0.29 kB
+dist/assets/modulepreload-polyfill-B5Qt9EMX.js      0.71 kB │ gzip:   0.40 kB
+dist/assets/ontology-consumption-CAPKY0ub.js        2.77 kB │ gzip:   1.38 kB
+dist/assets/object-experience-Bjgfxtsr.js          10.42 kB │ gzip:   4.90 kB
+dist/assets/business-catalog-DpIT5bSc.js           11.23 kB │ gzip:   4.10 kB
+dist/assets/workbench-C0_BDxeE.js               1,251.11 kB │ gzip: 358.41 kB
+dist/assets/business-release-CM-vIdUl.js        1,418.46 kB │ gzip: 105.14 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.16s

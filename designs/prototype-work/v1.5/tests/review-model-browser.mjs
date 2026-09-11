@@ -1,0 +1,26 @@
+import {chromium} from 'playwright';
+import assert from 'node:assert/strict';
+import {mkdir,writeFile,readFile} from 'node:fs/promises';
+import {start} from '../server.mjs';
+const out=new URL('../../../../outputs/v1.5-verification/legacy-regressions/model/',import.meta.url);await mkdir(out,{recursive:true});
+const runtime=await start({port:0,staticPort:0,modelingPort:0});
+const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});
+const page=await browser.newPage({viewport:{width:1440,height:900},acceptDownloads:true});page.setDefaultTimeout(20000);let f;const checks=[],errors=[];page.on('pageerror',e=>errors.push(e.message));
+async function frame(){f=await(await page.locator('#module-frame').elementHandle()).contentFrame();return f;}
+async function go(route){await page.locator(`[data-primary-nav][data-route="${route}"]`).click();await frame();}
+const state=async()=> (await(await fetch(runtime.url+'/model-api/v1/model-management/context?scenarioId=S005')).json()).state;
+async function operation(action,view){if(view){await page.locator(`[data-module-id=modeling][data-module-task=${view}]`).click();await frame();}const before=(await state()).operationLog.length;await f.locator(`[data-action="${action}"]`).filter({visible:true}).first().click();if(['review-approve','apply-binding'].includes(action)){await f.locator('[data-modal-reviewer]').fill('本轮独立复核');if(action==='review-approve')await f.locator('[data-modal-comment]').fill('合成评测仅供候选比较，禁止作为正式事实消费。');await f.locator('[data-modal-confirm]').click();}for(let i=0;i<100;i++){if((await state()).operationLog.length>before)break;await page.waitForTimeout(100);}assert.ok((await state()).operationLog.length>before,action);checks.push(action);console.log('PASS '+action);}
+try{
+await page.goto(runtime.url+'/');const baseline=(await state()).results.formalEnvelope;
+await go('#module/data');await page.locator('[data-module-id=data][data-module-task=resources]').click();await frame();await f.locator('[data-ofw-native-action=data-open][data-scenario-id=S005]').first().click();
+for(const op of ['build-data','validate-data','freeze-data']){await f.locator(`[data-ofw-native-action=runtime][data-operation=${op}][data-scenario-id=S005]`).click();await f.locator(`[data-operation=${op}]`).waitFor({state:'detached'});}
+await go('#module/ontology');await page.locator('[data-module-id=ontology][data-module-task=published]').click();await frame();await f.locator('[data-ofw-native-action=ontology-open][data-scenario-id=S005]').click();await f.locator('[data-ofw-native-action=runtime][data-operation=create-contract][data-scenario-id=S005]').click();
+await go('#module/modeling');await f.locator('[data-enter-target=S005]').click();
+await operation('benchmark-baseline','compare');await operation('run-models','compare');await operation('generate-insights','compare');await operation('review-approve','compare');await operation('create-candidate','observe');await operation('start-shadow','observe');
+while((await state()).shadowTrial.status==='ACTIVE')await operation('advance-shadow','observe');await operation('rebenchmark','observe');await operation('form-release','release');await operation('validate-binding','release');await operation('apply-binding','release');await operation('run-stress','release');
+const s=await state();assert.deepEqual(s.results.formalEnvelope,baseline);assert.equal(s.consumerBinding.status,'APPLIED');for(const mode of ['candidate','shadow','simulation'])assert.equal(s.results[mode+'Envelope'].dataOrigin,'SYNTHETIC');await page.screenshot({path:new URL('01-candidate-binding-not-formal-release.png',out).pathname});
+await go('#dashboard');await page.locator('[data-module-task=post-investment]').click();await frame();await f.locator('[data-ofw-native-action=dashboard-open]').click();await f.locator('[data-ofw-native-action=dashboard-view][data-view=candidate]').click();assert.match(await f.locator('.ofw-native-dashboard-summary').innerText(),/候选预测.*合成/);assert.equal(await f.locator('.ofw-native-query-row').count(),4);await page.screenshot({path:new URL('02-synthetic-candidate-results.png',out).pathname});
+await f.locator('[data-ofw-native-action=dashboard-view][data-view=simulation]').click();assert.match(await f.locator('.ofw-native-dashboard-summary').innerText(),/压力模拟.*合成/);await page.screenshot({path:new URL('03-synthetic-simulation-results.png',out).pathname});
+await go('#module/query');await page.locator('[data-module-task=ask][data-module-id=query]').click();await frame();await f.locator('.modern-question-grid [data-ofw-model-question]').filter({hasText:'哪些金融产品的候选评价分数最高'}).click();await f.locator('#ofw-native-query-answer').waitFor();await writeFile(new URL('query.txt',out),await f.locator('#ofw-native-query-answer').innerText());
+await writeFile(new URL('state.json',out),JSON.stringify(s,null,2));assert.deepEqual(errors,[]);await writeFile(new URL('result.json',out),JSON.stringify({status:'passed',checks,errors,url:runtime.url},null,2));
+}catch(e){await page.screenshot({path:new URL('failure.png',out).pathname});await writeFile(new URL('failure.json',out),JSON.stringify({error:e.stack,checks,errors,body:await f?.locator('body').innerText()},null,2));throw e;}finally{await browser.close();await runtime.close();}

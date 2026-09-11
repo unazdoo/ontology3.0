@@ -1,0 +1,78 @@
+import {chromium} from 'playwright';
+import assert from 'node:assert/strict';
+import {mkdir,writeFile} from 'node:fs/promises';
+import {start} from '../server.mjs';
+const out=new URL('../../../../outputs/v1.5-verification/legacy-regressions/approval/',import.meta.url);
+await mkdir(out,{recursive:true});
+const runtime=await start({port:0,staticPort:0,modelingPort:0});
+const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});
+const page=await browser.newPage({viewport:{width:1440,height:900}});page.setDefaultTimeout(20000);
+const checks=[],errors=[];page.on('pageerror',e=>errors.push(e.message));
+let f;
+const key='ontology3-decision-center-review-v2-portfolio-state-v8';
+const state=()=>f.evaluate(key=>JSON.parse(localStorage.getItem(key)),key);
+const target=s=>s.requests.find(r=>r.subjectId==='S003-ENT-018');
+async function record(name){await page.screenshot({path:new URL(name+'.png',out).pathname});await writeFile(new URL(name+'.json',out),JSON.stringify(await state(),null,2));checks.push(name);console.log('PASS '+name);}
+try{
+await page.goto(runtime.url+'/');
+await page.locator('[data-primary-nav][data-route="#module/decision"]').click();
+f=await (await page.locator('#module-frame').elementHandle()).contentFrame();
+await f.waitForFunction(()=>document.body.innerText.includes('环保测试公司2'));
+await f.locator('tr').filter({hasText:'环保测试公司2'}).getByRole('button',{name:'查看详情',exact:true}).click();
+await f.getByRole('button',{name:'确认并交办',exact:true}).click();
+assert.equal(target(await state()).evidence.dataVersion,'S003-T007-FORMAL-CANDIDATE-20251231-v1');
+await f.getByPlaceholder('说明为什么需要推进这项行动').fill('已核对固定黄灯报告，已知银行归因缺失；由成员单位接口人确认后开展现金流复核。');
+await f.locator('.dc-modal input[type=checkbox]').check();
+await f.locator('.dc-modal input[type=text]').fill('环保公司2现金流负责人');
+await f.getByPlaceholder('说明本次为何改由其他负责人承接').fill('由负责现金流复核的实际责任人承接。');
+await f.locator('.dc-modal input[type=date]').fill('2026-10-09');
+await f.locator('.dc-modal textarea').last().fill('逐项核实现金流及薄弱指标，记录复核结论和跟踪频率。');
+await record('01-exact-t007-form');
+await f.getByRole('button',{name:'核对提交内容',exact:true}).click();
+const original=await f.evaluate(key=>{const s=JSON.parse(localStorage.getItem(key)),r=s.requests.find(r=>r.subjectId==='S003-ENT-018');return {context:r.scenarioContext,value:S003DecisionAdapter.readContractRecord(r.scenarioContext,'c017',localStorage)};},key);
+assert.ok(original.value);
+await f.evaluate(({context,value})=>{const failed=structuredClone(value);for(const p of failed.projections){for(const gate of Object.values(p.gates||{})){gate.hardQualityFailure=true;gate.qualityStatus='事后硬质量失败';gate.reason='本轮回归注入：质量校验失败';}}S003DecisionAdapter.writeContractRecord(context,'c017',failed,localStorage);},original);
+await f.locator('.dc-modal').getByRole('button',{name:'确认并交办',exact:true}).click();
+await f.locator('.submission-error').waitFor();
+let s=await state(),r=target(s);
+assert.equal(r.decision,null);assert.equal(s.tasks.filter(t=>t.requestId===r.id).length,0);
+assert.equal(r.c017SafetyReads.at(-1).outcome,'rejected');
+await record('02-hard-quality-block');
+await f.evaluate(({context,value})=>S003DecisionAdapter.writeContractRecord(context,'c017',value,localStorage),original);
+await f.getByRole('button',{name:'重试提交',exact:true}).click({clickCount:2});
+await f.waitForFunction(key=>{const s=JSON.parse(localStorage.getItem(key));const r=s.requests.find(r=>r.subjectId==='S003-ENT-018');return s.tasks.some(t=>t.requestId===r.id);},key);
+s=await state();r=target(s);assert.equal(s.tasks.filter(t=>t.requestId===r.id).length,1);
+assert.ok(r.c017SafetyReads.every(read=>read.t007===r.evidence.dataVersion));
+await record('03-retry-created-one-original-task');
+await page.reload();
+f=await (await page.locator('#module-frame').elementHandle()).contentFrame();
+await f.waitForFunction(key=>Boolean(JSON.parse(localStorage.getItem(key))?.tasks?.length),key);
+s=await state();r=target(s);assert.equal(s.tasks.filter(t=>t.requestId===r.id).length,1);
+// Open the original task using the native task navigation, not a local analysis task.
+await page.locator('[data-module-id=decision][data-module-task=todos]').click();
+f=await (await page.locator('#module-frame').elementHandle()).contentFrame();
+await f.waitForFunction(()=>document.body.innerText.includes('环保测试公司2'));
+await writeFile(new URL('task-controls.txt',out),await f.locator('body').innerText());
+await f.locator(`[data-ofw-native-action=decision-ops-open][data-record-id="${r.id}"]`).first().click();
+await f.getByRole('button',{name:'处理负责人待办',exact:true}).click();
+await f.getByRole('button',{name:'确认承接',exact:true}).click();
+await f.getByRole('button',{name:'开始处理',exact:true}).click();
+await f.getByRole('button',{name:'完成待办',exact:true}).click();
+await f.locator('.dc-modal textarea').fill('已逐项核对现金流与原黄灯报告，责任人确认每周跟踪；本地闭环记录不代表外部业务已执行。');
+await f.getByRole('button',{name:'确认完成',exact:true}).click();
+await f.waitForFunction(key=>JSON.parse(localStorage.getItem(key)).tasks.some(t=>t.subjectId==='S003-ENT-018'&&t.status==='completed'),key);
+await record('04-original-task-completed');
+await page.reload();f=await (await page.locator('#module-frame').elementHandle()).contentFrame();
+await f.waitForFunction(key=>JSON.parse(localStorage.getItem(key)).tasks.some(t=>t.subjectId==='S003-ENT-018'&&t.status==='completed'),key);
+await record('05-completion-persisted');assert.deepEqual(errors,[]);
+for (const [width,height] of [[1440,900],[1280,720],[390,844],[320,844]]) {
+  await page.setViewportSize({width,height});
+  await page.waitForTimeout(250);
+  const heading=await f.locator('.page-header h1').boundingBox();
+  assert.ok(heading.width>150);
+  assert.ok(await f.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  await f.locator('.screen-stage').evaluate(e=>e.scrollTop=e.scrollHeight);
+  await record(`06-task-layout-${width}`);
+}
+await writeFile(new URL('result.json',out),JSON.stringify({status:'passed',checks,errors,url:runtime.url},null,2));
+}catch(e){await page.screenshot({path:new URL('failure.png',out).pathname});await writeFile(new URL('failure.json',out),JSON.stringify({error:e.stack,checks,errors,body:await f?.locator('body').innerText()},null,2));throw e;}finally{await browser.close();await runtime.close();}

@@ -1,0 +1,3904 @@
+{
+  "schemaVersion": "ofw.asset-snapshots.v1",
+  "snapshotId": "SNAP-FINANCE-RISK-20251231-V14-1",
+  "dataVersion": "DATA-V14-20251231-DEMO-1",
+  "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+  "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+  "asOf": "2025-12-31",
+  "classification": "SIMULATED_SNAPSHOT",
+  "source": {
+    "id": "source-v14-finance-risk",
+    "name": "融资与债务风险模拟工作簿"
+  },
+  "assets": [
+    {
+      "id": "asset-v14-enterprises",
+      "key": "enterprises",
+      "name": "企业主数据",
+      "sheetName": "企业主数据",
+      "fields": [
+        {
+          "key": "id",
+          "label": "企业ID",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "name",
+          "label": "企业名称",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "aliases",
+          "label": "来源别名",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "industry",
+          "label": "产业",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "province",
+          "label": "省份",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "city",
+          "label": "城市",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "cash",
+          "label": "可用现金",
+          "type": "number",
+          "unit": "百万元",
+          "reference": ""
+        },
+        {
+          "key": "benchmarkRate",
+          "label": "产业基准利率",
+          "type": "percent",
+          "unit": "%",
+          "reference": ""
+        },
+        {
+          "key": "owner",
+          "label": "负责人",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "financeBasis",
+          "label": "融资构造依据",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        }
+      ],
+      "rows": [
+        {
+          "id": "ENT-001",
+          "name": "风电测试公司01",
+          "aliases": "风电测试公司01",
+          "industry": "风电",
+          "province": "新疆",
+          "city": "哈密",
+          "cash": 33.6,
+          "benchmarkRate": 2.45,
+          "owner": "风电业务负责人01",
+          "financeBasis": "完整模拟构造"
+        },
+        {
+          "id": "ENT-002",
+          "name": "风电测试公司02",
+          "aliases": "风电测试公司02",
+          "industry": "风电",
+          "province": "甘肃",
+          "city": "酒泉",
+          "cash": 83.835,
+          "benchmarkRate": 2.45,
+          "owner": "风电业务负责人02",
+          "financeBasis": "完整模拟构造"
+        },
+        {
+          "id": "ENT-003",
+          "name": "风电测试公司03",
+          "aliases": "风电测试公司03",
+          "industry": "风电",
+          "province": "内蒙古",
+          "city": "包头",
+          "cash": 156.18,
+          "benchmarkRate": 2.45,
+          "owner": "风电业务负责人03",
+          "financeBasis": "完整模拟构造"
+        },
+        {
+          "id": "ENT-004",
+          "name": "风电测试公司04",
+          "aliases": "风电测试公司04",
+          "industry": "风电",
+          "province": "内蒙古",
+          "city": "锡林浩特",
+          "cash": 250.635,
+          "benchmarkRate": 2.45,
+          "owner": "风电业务负责人04",
+          "financeBasis": "完整模拟构造"
+        },
+        {
+          "id": "ENT-005",
+          "name": "风电测试公司05",
+          "aliases": "风电测试公司05",
+          "industry": "风电",
+          "province": "河北",
+          "city": "张家口",
+          "cash": 211.2,
+          "benchmarkRate": 2.45,
+          "owner": "风电业务负责人01",
+          "financeBasis": "完整模拟构造"
+        },
+        {
+          "id": "ENT-006",
+          "name": "风电测试公司06",
+          "aliases": "风电测试公司06",
+          "industry": "风电",
+          "province": "吉林",
+          "city": "白城",
+          "cash": 72.4,
+          "benchmarkRate": 2.45,
+          "owner": "风电业务负责人02",
+          "financeBasis": "完整模拟构造"
+        },
+        {
+          "id": "ENT-007",
+          "name": "风电测试公司07",
+          "aliases": "风电测试公司07 / 单位465",
+          "industry": "风电",
+          "province": "辽宁",
+          "city": "阜新",
+          "cash": 10395,
+          "benchmarkRate": 2.45,
+          "owner": "风电业务负责人03",
+          "financeBasis": "原型样本总量校准；借款明细模拟构造"
+        },
+        {
+          "id": "ENT-008",
+          "name": "风电测试公司08",
+          "aliases": "风电测试公司08",
+          "industry": "风电",
+          "province": "山东",
+          "city": "潍坊",
+          "cash": 248.33,
+          "benchmarkRate": 2.45,
+          "owner": "风电业务负责人04",
+          "financeBasis": "完整模拟构造"
+        },
+        {
+          "id": "ENT-009",
+          "name": "风电测试公司09",
+          "aliases": "风电测试公司09",
+          "industry": "风电",
+          "province": "江苏",
+          "city": "盐城",
+          "cash": 242.06,
+          "benchmarkRate": 2.45,
+          "owner": "风电业务负责人01",
+          "financeBasis": "完整模拟构造"
+        },
+        {
+          "id": "ENT-010",
+          "name": "风电测试公司10",
+          "aliases": "风电测试公司10",
+          "industry": "风电",
+          "province": "青海",
+          "city": "德令哈",
+          "cash": 356.7,
+          "benchmarkRate": 2.45,
+          "owner": "风电业务负责人02",
+          "financeBasis": "完整模拟构造"
+        },
+        {
+          "id": "ENT-011",
+          "name": "风电测试公司11",
+          "aliases": "风电测试公司11",
+          "industry": "风电",
+          "province": "宁夏",
+          "city": "中卫",
+          "cash": 111.2,
+          "benchmarkRate": 2.45,
+          "owner": "风电业务负责人03",
+          "financeBasis": "完整模拟构造"
+        },
+        {
+          "id": "ENT-012",
+          "name": "风电测试公司12",
+          "aliases": "风电测试公司12",
+          "industry": "风电",
+          "province": "山西",
+          "city": "大同",
+          "cash": 214.785,
+          "benchmarkRate": 2.45,
+          "owner": "风电业务负责人04",
+          "financeBasis": "完整模拟构造"
+        },
+        {
+          "id": "ENT-013",
+          "name": "风电测试公司13",
+          "aliases": "风电测试公司13",
+          "industry": "风电",
+          "province": "福建",
+          "city": "莆田",
+          "cash": 241.68,
+          "benchmarkRate": 2.45,
+          "owner": "风电业务负责人01",
+          "financeBasis": "完整模拟构造"
+        },
+        {
+          "id": "ENT-014",
+          "name": "风电测试公司14",
+          "aliases": "风电测试公司14",
+          "industry": "风电",
+          "province": "广东",
+          "city": "阳江",
+          "cash": 360.885,
+          "benchmarkRate": 2.45,
+          "owner": "风电业务负责人02",
+          "financeBasis": "完整模拟构造"
+        },
+        {
+          "id": "ENT-015",
+          "name": "风电测试公司15",
+          "aliases": "风电测试公司15",
+          "industry": "风电",
+          "province": "云南",
+          "city": "曲靖",
+          "cash": 502.2,
+          "benchmarkRate": 2.45,
+          "owner": "风电业务负责人03",
+          "financeBasis": "完整模拟构造"
+        },
+        {
+          "id": "ENT-016",
+          "name": "风电测试公司16",
+          "aliases": "风电测试公司16",
+          "industry": "风电",
+          "province": "贵州",
+          "city": "毕节",
+          "cash": 150,
+          "benchmarkRate": 2.45,
+          "owner": "风电业务负责人04",
+          "financeBasis": "完整模拟构造"
+        },
+        {
+          "id": "ENT-017",
+          "name": "环保测试公司1",
+          "aliases": "环保测试公司1 / 单位561",
+          "industry": "环保",
+          "province": "四川",
+          "city": "成都",
+          "cash": 270.216,
+          "benchmarkRate": 2.65,
+          "owner": "环保业务负责人01",
+          "financeBasis": "原型样本总量校准；借款明细模拟构造"
+        },
+        {
+          "id": "ENT-018",
+          "name": "环保测试公司2",
+          "aliases": "环保测试公司2",
+          "industry": "环保",
+          "province": "湖北",
+          "city": "武汉",
+          "cash": 333.83,
+          "benchmarkRate": 2.65,
+          "owner": "环保业务负责人02",
+          "financeBasis": "完整模拟构造"
+        },
+        {
+          "id": "ENT-019",
+          "name": "环保测试公司3",
+          "aliases": "环保测试公司3",
+          "industry": "环保",
+          "province": "河南",
+          "city": "郑州",
+          "cash": 479.71,
+          "benchmarkRate": 2.65,
+          "owner": "环保业务负责人03",
+          "financeBasis": "完整模拟构造"
+        },
+        {
+          "id": "ENT-020",
+          "name": "环保测试公司4",
+          "aliases": "环保测试公司4 / 单位553",
+          "industry": "环保",
+          "province": "浙江",
+          "city": "杭州",
+          "cash": 11794.02,
+          "benchmarkRate": 2.65,
+          "owner": "环保业务负责人04",
+          "financeBasis": "原型样本总量校准；借款明细模拟构造"
+        },
+        {
+          "id": "ENT-021",
+          "name": "核电测试公司1",
+          "aliases": "核电测试公司1",
+          "industry": "核电",
+          "province": "广西",
+          "city": "防城港",
+          "cash": 147.2,
+          "benchmarkRate": 2.1,
+          "owner": "核电业务负责人01",
+          "financeBasis": "完整模拟构造"
+        }
+      ],
+      "rowCount": 21,
+      "description": "统一企业身份、现金与产业基准；样本身份沿用原型，非工商核验数据。",
+      "snapshotId": "SNAP-ENTERPRISES-20251231-V14-1",
+      "version": "1.0.0",
+      "asOf": "2025-12-31",
+      "dataVersion": "DATA-V14-20251231-DEMO-1",
+      "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+      "classification": "SIMULATED_SNAPSHOT",
+      "contentDigest": "749e991f3fe25dddf4b79c7b0d2085a37d8af00818b3deecd082e17307055916"
+    },
+    {
+      "id": "asset-v14-banks",
+      "key": "banks",
+      "name": "金融机构",
+      "sheetName": "金融机构",
+      "fields": [
+        {
+          "key": "id",
+          "label": "银行ID",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "name",
+          "label": "银行名称",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "city",
+          "label": "城市",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "sourceId",
+          "label": "原型来源ID",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        }
+      ],
+      "rows": [
+        {
+          "id": "BANK-01",
+          "name": "欧陆银行",
+          "city": "上海",
+          "sourceId": "s001.institution.553.01"
+        },
+        {
+          "id": "BANK-02",
+          "name": "寰宇银行",
+          "city": "北京",
+          "sourceId": "s001.institution.553.02"
+        },
+        {
+          "id": "BANK-03",
+          "name": "海联银行",
+          "city": "深圳",
+          "sourceId": "s001.institution.553.03"
+        },
+        {
+          "id": "BANK-04",
+          "name": "融通银行",
+          "city": "沈阳",
+          "sourceId": "s001.institution.465.01"
+        },
+        {
+          "id": "BANK-05",
+          "name": "启明银行",
+          "city": "大连",
+          "sourceId": "s001.institution.465.02"
+        },
+        {
+          "id": "BANK-06",
+          "name": "嘉禾银行",
+          "city": "天津",
+          "sourceId": "s001.institution.465.03"
+        },
+        {
+          "id": "BANK-07",
+          "name": "同州银行",
+          "city": "重庆",
+          "sourceId": "s001.institution.561.01"
+        },
+        {
+          "id": "BANK-08",
+          "name": "星河银行",
+          "city": "西安",
+          "sourceId": "s001.institution.561.02"
+        },
+        {
+          "id": "BANK-09",
+          "name": "恒信银行",
+          "city": "昆明",
+          "sourceId": "s001.institution.561.03"
+        }
+      ],
+      "rowCount": 9,
+      "description": "模拟融资关联银行目录。",
+      "snapshotId": "SNAP-BANKS-20251231-V14-1",
+      "version": "1.0.0",
+      "asOf": "2025-12-31",
+      "dataVersion": "DATA-V14-20251231-DEMO-1",
+      "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+      "classification": "SIMULATED_SNAPSHOT",
+      "contentDigest": "389eea81dd9bae1874d1234f6ecfee6c3802ce7061afa8a53f6ff7cddb31ad32"
+    },
+    {
+      "id": "asset-v14-loans",
+      "key": "loans",
+      "name": "融资合同台账",
+      "sheetName": "融资合同台账",
+      "fields": [
+        {
+          "key": "id",
+          "label": "借款ID",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "enterpriseId",
+          "label": "企业ID",
+          "type": "string",
+          "unit": "",
+          "reference": "enterprises.id"
+        },
+        {
+          "key": "enterpriseName",
+          "label": "企业名称",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "bankId",
+          "label": "银行ID",
+          "type": "string",
+          "unit": "",
+          "reference": "banks.id"
+        },
+        {
+          "key": "bankName",
+          "label": "银行名称",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "projectId",
+          "label": "项目ID",
+          "type": "string",
+          "unit": "",
+          "reference": "projects.id"
+        },
+        {
+          "key": "principal",
+          "label": "存续本金",
+          "type": "number",
+          "unit": "百万元",
+          "reference": ""
+        },
+        {
+          "key": "rate",
+          "label": "执行年利率",
+          "type": "percent",
+          "unit": "%",
+          "reference": ""
+        },
+        {
+          "key": "rateType",
+          "label": "利率类型",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "startDate",
+          "label": "起息日",
+          "type": "date",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "maturityDate",
+          "label": "到期日",
+          "type": "date",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "currency",
+          "label": "币种",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        }
+      ],
+      "rows": [
+        {
+          "id": "LOAN-001-1",
+          "enterpriseId": "ENT-001",
+          "enterpriseName": "风电测试公司01",
+          "bankId": "BANK-01",
+          "bankName": "欧陆银行",
+          "projectId": "PRJ-001",
+          "principal": 168,
+          "rate": 2.34,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-01-25",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-001-2",
+          "enterpriseId": "ENT-001",
+          "enterpriseName": "风电测试公司01",
+          "bankId": "BANK-03",
+          "bankName": "海联银行",
+          "projectId": "PRJ-001",
+          "principal": 126,
+          "rate": 1.84,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-03-01",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-001-3",
+          "enterpriseId": "ENT-001",
+          "enterpriseName": "风电测试公司01",
+          "bankId": "BANK-06",
+          "bankName": "嘉禾银行",
+          "projectId": "PRJ-001",
+          "principal": 84,
+          "rate": 2.14,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-05-20",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-001-4",
+          "enterpriseId": "ENT-001",
+          "enterpriseName": "风电测试公司01",
+          "bankId": "BANK-01",
+          "bankName": "欧陆银行",
+          "projectId": "PRJ-001",
+          "principal": 42,
+          "rate": 1.24,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-02-24",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-002-1",
+          "enterpriseId": "ENT-002",
+          "enterpriseName": "风电测试公司02",
+          "bankId": "BANK-02",
+          "bankName": "寰宇银行",
+          "projectId": "PRJ-002",
+          "principal": 248.4,
+          "rate": 2.51,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-01-26",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-002-2",
+          "enterpriseId": "ENT-002",
+          "enterpriseName": "风电测试公司02",
+          "bankId": "BANK-04",
+          "bankName": "融通银行",
+          "projectId": "PRJ-002",
+          "principal": 186.3,
+          "rate": 2.01,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-03-03",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-002-3",
+          "enterpriseId": "ENT-002",
+          "enterpriseName": "风电测试公司02",
+          "bankId": "BANK-07",
+          "bankName": "同州银行",
+          "projectId": "PRJ-002",
+          "principal": 124.2,
+          "rate": 2.31,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-05-28",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-002-4",
+          "enterpriseId": "ENT-002",
+          "enterpriseName": "风电测试公司02",
+          "bankId": "BANK-02",
+          "bankName": "寰宇银行",
+          "projectId": "PRJ-002",
+          "principal": 62.1,
+          "rate": 1.41,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-03-02",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-003-1",
+          "enterpriseId": "ENT-003",
+          "enterpriseName": "风电测试公司03",
+          "bankId": "BANK-03",
+          "bankName": "海联银行",
+          "projectId": "PRJ-003",
+          "principal": 328.8,
+          "rate": 2.68,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-01-27",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-003-2",
+          "enterpriseId": "ENT-003",
+          "enterpriseName": "风电测试公司03",
+          "bankId": "BANK-05",
+          "bankName": "启明银行",
+          "projectId": "PRJ-003",
+          "principal": 246.6,
+          "rate": 2.18,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-03-05",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-003-3",
+          "enterpriseId": "ENT-003",
+          "enterpriseName": "风电测试公司03",
+          "bankId": "BANK-08",
+          "bankName": "星河银行",
+          "projectId": "PRJ-003",
+          "principal": 164.4,
+          "rate": 2.48,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-06-05",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-003-4",
+          "enterpriseId": "ENT-003",
+          "enterpriseName": "风电测试公司03",
+          "bankId": "BANK-03",
+          "bankName": "海联银行",
+          "projectId": "PRJ-003",
+          "principal": 82.2,
+          "rate": 1.58,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-03-08",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-004-1",
+          "enterpriseId": "ENT-004",
+          "enterpriseName": "风电测试公司04",
+          "bankId": "BANK-04",
+          "bankName": "融通银行",
+          "projectId": "PRJ-004",
+          "principal": 409.2,
+          "rate": 2.85,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-01-28",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-004-2",
+          "enterpriseId": "ENT-004",
+          "enterpriseName": "风电测试公司04",
+          "bankId": "BANK-06",
+          "bankName": "嘉禾银行",
+          "projectId": "PRJ-004",
+          "principal": 306.9,
+          "rate": 2.35,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-03-07",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-004-3",
+          "enterpriseId": "ENT-004",
+          "enterpriseName": "风电测试公司04",
+          "bankId": "BANK-09",
+          "bankName": "恒信银行",
+          "projectId": "PRJ-004",
+          "principal": 204.6,
+          "rate": 2.65,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-06-13",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-004-4",
+          "enterpriseId": "ENT-004",
+          "enterpriseName": "风电测试公司04",
+          "bankId": "BANK-04",
+          "bankName": "融通银行",
+          "projectId": "PRJ-004",
+          "principal": 102.3,
+          "rate": 1.75,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-03-14",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-005-1",
+          "enterpriseId": "ENT-005",
+          "enterpriseName": "风电测试公司05",
+          "bankId": "BANK-05",
+          "bankName": "启明银行",
+          "projectId": "PRJ-005",
+          "principal": 281.6,
+          "rate": 3.02,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-01-29",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-005-2",
+          "enterpriseId": "ENT-005",
+          "enterpriseName": "风电测试公司05",
+          "bankId": "BANK-07",
+          "bankName": "同州银行",
+          "projectId": "PRJ-005",
+          "principal": 211.2,
+          "rate": 2.52,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-03-09",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-005-3",
+          "enterpriseId": "ENT-005",
+          "enterpriseName": "风电测试公司05",
+          "bankId": "BANK-01",
+          "bankName": "欧陆银行",
+          "projectId": "PRJ-005",
+          "principal": 140.8,
+          "rate": 2.82,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-06-21",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-005-4",
+          "enterpriseId": "ENT-005",
+          "enterpriseName": "风电测试公司05",
+          "bankId": "BANK-05",
+          "bankName": "启明银行",
+          "projectId": "PRJ-005",
+          "principal": 70.4,
+          "rate": 1.92,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-03-20",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-006-1",
+          "enterpriseId": "ENT-006",
+          "enterpriseName": "风电测试公司06",
+          "bankId": "BANK-06",
+          "bankName": "嘉禾银行",
+          "projectId": "PRJ-006",
+          "principal": 362,
+          "rate": 3.19,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-01-30",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-006-2",
+          "enterpriseId": "ENT-006",
+          "enterpriseName": "风电测试公司06",
+          "bankId": "BANK-08",
+          "bankName": "星河银行",
+          "projectId": "PRJ-006",
+          "principal": 271.5,
+          "rate": 2.69,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-03-11",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-006-3",
+          "enterpriseId": "ENT-006",
+          "enterpriseName": "风电测试公司06",
+          "bankId": "BANK-02",
+          "bankName": "寰宇银行",
+          "projectId": "PRJ-006",
+          "principal": 181,
+          "rate": 2.99,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-06-29",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-006-4",
+          "enterpriseId": "ENT-006",
+          "enterpriseName": "风电测试公司06",
+          "bankId": "BANK-06",
+          "bankName": "嘉禾银行",
+          "projectId": "PRJ-006",
+          "principal": 90.5,
+          "rate": 2.09,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-03-26",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-007-1",
+          "enterpriseId": "ENT-007",
+          "enterpriseName": "风电测试公司07",
+          "bankId": "BANK-07",
+          "bankName": "同州银行",
+          "projectId": "PRJ-007",
+          "principal": 30800,
+          "rate": 2.496617,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-01-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-007-2",
+          "enterpriseId": "ENT-007",
+          "enterpriseName": "风电测试公司07",
+          "bankId": "BANK-09",
+          "bankName": "恒信银行",
+          "projectId": "PRJ-007",
+          "principal": 23100,
+          "rate": 1.996617,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-03-13",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-007-3",
+          "enterpriseId": "ENT-007",
+          "enterpriseName": "风电测试公司07",
+          "bankId": "BANK-03",
+          "bankName": "海联银行",
+          "projectId": "PRJ-007",
+          "principal": 15400,
+          "rate": 2.296617,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-07-07",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-007-4",
+          "enterpriseId": "ENT-007",
+          "enterpriseName": "风电测试公司07",
+          "bankId": "BANK-07",
+          "bankName": "同州银行",
+          "projectId": "PRJ-007",
+          "principal": 7700,
+          "rate": 1.396617,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-04-01",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-008-1",
+          "enterpriseId": "ENT-008",
+          "enterpriseName": "风电测试公司08",
+          "bankId": "BANK-08",
+          "bankName": "星河银行",
+          "projectId": "PRJ-008",
+          "principal": 522.8,
+          "rate": 2.34,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-02-01",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-008-2",
+          "enterpriseId": "ENT-008",
+          "enterpriseName": "风电测试公司08",
+          "bankId": "BANK-01",
+          "bankName": "欧陆银行",
+          "projectId": "PRJ-008",
+          "principal": 392.1,
+          "rate": 1.84,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-03-15",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-008-3",
+          "enterpriseId": "ENT-008",
+          "enterpriseName": "风电测试公司08",
+          "bankId": "BANK-04",
+          "bankName": "融通银行",
+          "projectId": "PRJ-008",
+          "principal": 261.4,
+          "rate": 2.14,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-07-15",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-008-4",
+          "enterpriseId": "ENT-008",
+          "enterpriseName": "风电测试公司08",
+          "bankId": "BANK-08",
+          "bankName": "星河银行",
+          "projectId": "PRJ-008",
+          "principal": 130.7,
+          "rate": 1.24,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-04-07",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-009-1",
+          "enterpriseId": "ENT-009",
+          "enterpriseName": "风电测试公司09",
+          "bankId": "BANK-09",
+          "bankName": "恒信银行",
+          "projectId": "PRJ-009",
+          "principal": 395.2,
+          "rate": 2.51,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-02-02",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-009-2",
+          "enterpriseId": "ENT-009",
+          "enterpriseName": "风电测试公司09",
+          "bankId": "BANK-02",
+          "bankName": "寰宇银行",
+          "projectId": "PRJ-009",
+          "principal": 296.4,
+          "rate": 2.01,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-03-17",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-009-3",
+          "enterpriseId": "ENT-009",
+          "enterpriseName": "风电测试公司09",
+          "bankId": "BANK-05",
+          "bankName": "启明银行",
+          "projectId": "PRJ-009",
+          "principal": 197.6,
+          "rate": 2.31,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-07-23",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-009-4",
+          "enterpriseId": "ENT-009",
+          "enterpriseName": "风电测试公司09",
+          "bankId": "BANK-09",
+          "bankName": "恒信银行",
+          "projectId": "PRJ-009",
+          "principal": 98.8,
+          "rate": 1.41,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-04-13",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-010-1",
+          "enterpriseId": "ENT-010",
+          "enterpriseName": "风电测试公司10",
+          "bankId": "BANK-01",
+          "bankName": "欧陆银行",
+          "projectId": "PRJ-010",
+          "principal": 475.6,
+          "rate": 2.68,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-02-03",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-010-2",
+          "enterpriseId": "ENT-010",
+          "enterpriseName": "风电测试公司10",
+          "bankId": "BANK-03",
+          "bankName": "海联银行",
+          "projectId": "PRJ-010",
+          "principal": 356.7,
+          "rate": 2.18,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-03-19",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-010-3",
+          "enterpriseId": "ENT-010",
+          "enterpriseName": "风电测试公司10",
+          "bankId": "BANK-06",
+          "bankName": "嘉禾银行",
+          "projectId": "PRJ-010",
+          "principal": 237.8,
+          "rate": 2.48,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-07-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-010-4",
+          "enterpriseId": "ENT-010",
+          "enterpriseName": "风电测试公司10",
+          "bankId": "BANK-01",
+          "bankName": "欧陆银行",
+          "projectId": "PRJ-010",
+          "principal": 118.9,
+          "rate": 1.58,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-04-19",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-011-1",
+          "enterpriseId": "ENT-011",
+          "enterpriseName": "风电测试公司11",
+          "bankId": "BANK-02",
+          "bankName": "寰宇银行",
+          "projectId": "PRJ-011",
+          "principal": 556,
+          "rate": 2.85,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-02-04",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-011-2",
+          "enterpriseId": "ENT-011",
+          "enterpriseName": "风电测试公司11",
+          "bankId": "BANK-04",
+          "bankName": "融通银行",
+          "projectId": "PRJ-011",
+          "principal": 417,
+          "rate": 2.35,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-03-21",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-011-3",
+          "enterpriseId": "ENT-011",
+          "enterpriseName": "风电测试公司11",
+          "bankId": "BANK-07",
+          "bankName": "同州银行",
+          "projectId": "PRJ-011",
+          "principal": 278,
+          "rate": 2.65,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-08-08",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-011-4",
+          "enterpriseId": "ENT-011",
+          "enterpriseName": "风电测试公司11",
+          "bankId": "BANK-02",
+          "bankName": "寰宇银行",
+          "projectId": "PRJ-011",
+          "principal": 139,
+          "rate": 1.75,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-04-25",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-012-1",
+          "enterpriseId": "ENT-012",
+          "enterpriseName": "风电测试公司12",
+          "bankId": "BANK-03",
+          "bankName": "海联银行",
+          "projectId": "PRJ-012",
+          "principal": 636.4,
+          "rate": 3.02,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-02-05",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-012-2",
+          "enterpriseId": "ENT-012",
+          "enterpriseName": "风电测试公司12",
+          "bankId": "BANK-05",
+          "bankName": "启明银行",
+          "projectId": "PRJ-012",
+          "principal": 477.3,
+          "rate": 2.52,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-03-23",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-012-3",
+          "enterpriseId": "ENT-012",
+          "enterpriseName": "风电测试公司12",
+          "bankId": "BANK-08",
+          "bankName": "星河银行",
+          "projectId": "PRJ-012",
+          "principal": 318.2,
+          "rate": 2.82,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-08-16",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-012-4",
+          "enterpriseId": "ENT-012",
+          "enterpriseName": "风电测试公司12",
+          "bankId": "BANK-03",
+          "bankName": "海联银行",
+          "projectId": "PRJ-012",
+          "principal": 159.1,
+          "rate": 1.92,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-05-01",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-013-1",
+          "enterpriseId": "ENT-013",
+          "enterpriseName": "风电测试公司13",
+          "bankId": "BANK-04",
+          "bankName": "融通银行",
+          "projectId": "PRJ-013",
+          "principal": 508.8,
+          "rate": 3.19,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-02-06",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-013-2",
+          "enterpriseId": "ENT-013",
+          "enterpriseName": "风电测试公司13",
+          "bankId": "BANK-06",
+          "bankName": "嘉禾银行",
+          "projectId": "PRJ-013",
+          "principal": 381.6,
+          "rate": 2.69,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-03-25",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-013-3",
+          "enterpriseId": "ENT-013",
+          "enterpriseName": "风电测试公司13",
+          "bankId": "BANK-09",
+          "bankName": "恒信银行",
+          "projectId": "PRJ-013",
+          "principal": 254.4,
+          "rate": 2.99,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-08-24",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-013-4",
+          "enterpriseId": "ENT-013",
+          "enterpriseName": "风电测试公司13",
+          "bankId": "BANK-04",
+          "bankName": "融通银行",
+          "projectId": "PRJ-013",
+          "principal": 127.2,
+          "rate": 2.09,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-05-07",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-014-1",
+          "enterpriseId": "ENT-014",
+          "enterpriseName": "风电测试公司14",
+          "bankId": "BANK-05",
+          "bankName": "启明银行",
+          "projectId": "PRJ-014",
+          "principal": 589.2,
+          "rate": 3.36,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-02-07",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-014-2",
+          "enterpriseId": "ENT-014",
+          "enterpriseName": "风电测试公司14",
+          "bankId": "BANK-07",
+          "bankName": "同州银行",
+          "projectId": "PRJ-014",
+          "principal": 441.9,
+          "rate": 2.86,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-03-27",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-014-3",
+          "enterpriseId": "ENT-014",
+          "enterpriseName": "风电测试公司14",
+          "bankId": "BANK-01",
+          "bankName": "欧陆银行",
+          "projectId": "PRJ-014",
+          "principal": 294.6,
+          "rate": 3.16,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-09-01",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-014-4",
+          "enterpriseId": "ENT-014",
+          "enterpriseName": "风电测试公司14",
+          "bankId": "BANK-05",
+          "bankName": "启明银行",
+          "projectId": "PRJ-014",
+          "principal": 147.3,
+          "rate": 2.26,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-05-13",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-015-1",
+          "enterpriseId": "ENT-015",
+          "enterpriseName": "风电测试公司15",
+          "bankId": "BANK-06",
+          "bankName": "嘉禾银行",
+          "projectId": "PRJ-015",
+          "principal": 669.6,
+          "rate": 2.34,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-02-08",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-015-2",
+          "enterpriseId": "ENT-015",
+          "enterpriseName": "风电测试公司15",
+          "bankId": "BANK-08",
+          "bankName": "星河银行",
+          "projectId": "PRJ-015",
+          "principal": 502.2,
+          "rate": 1.84,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-03-29",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-015-3",
+          "enterpriseId": "ENT-015",
+          "enterpriseName": "风电测试公司15",
+          "bankId": "BANK-02",
+          "bankName": "寰宇银行",
+          "projectId": "PRJ-015",
+          "principal": 334.8,
+          "rate": 2.14,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-09-09",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-015-4",
+          "enterpriseId": "ENT-015",
+          "enterpriseName": "风电测试公司15",
+          "bankId": "BANK-06",
+          "bankName": "嘉禾银行",
+          "projectId": "PRJ-015",
+          "principal": 167.4,
+          "rate": 1.24,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-05-19",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-016-1",
+          "enterpriseId": "ENT-016",
+          "enterpriseName": "风电测试公司16",
+          "bankId": "BANK-07",
+          "bankName": "同州银行",
+          "projectId": "PRJ-016",
+          "principal": 750,
+          "rate": 2.51,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-02-09",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-016-2",
+          "enterpriseId": "ENT-016",
+          "enterpriseName": "风电测试公司16",
+          "bankId": "BANK-09",
+          "bankName": "恒信银行",
+          "projectId": "PRJ-016",
+          "principal": 562.5,
+          "rate": 2.01,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-03-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-016-3",
+          "enterpriseId": "ENT-016",
+          "enterpriseName": "风电测试公司16",
+          "bankId": "BANK-03",
+          "bankName": "海联银行",
+          "projectId": "PRJ-016",
+          "principal": 375,
+          "rate": 2.31,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-09-17",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-016-4",
+          "enterpriseId": "ENT-016",
+          "enterpriseName": "风电测试公司16",
+          "bankId": "BANK-07",
+          "bankName": "同州银行",
+          "projectId": "PRJ-016",
+          "principal": 187.5,
+          "rate": 1.41,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-05-25",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-017-1",
+          "enterpriseId": "ENT-017",
+          "enterpriseName": "环保测试公司1",
+          "bankId": "BANK-08",
+          "bankName": "星河银行",
+          "projectId": "PRJ-017",
+          "principal": 800.64,
+          "rate": 2.52838,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-02-10",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-017-2",
+          "enterpriseId": "ENT-017",
+          "enterpriseName": "环保测试公司1",
+          "bankId": "BANK-01",
+          "bankName": "欧陆银行",
+          "projectId": "PRJ-017",
+          "principal": 600.48,
+          "rate": 2.02838,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-04-02",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-017-3",
+          "enterpriseId": "ENT-017",
+          "enterpriseName": "环保测试公司1",
+          "bankId": "BANK-04",
+          "bankName": "融通银行",
+          "projectId": "PRJ-017",
+          "principal": 400.32,
+          "rate": 2.32838,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-09-25",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-017-4",
+          "enterpriseId": "ENT-017",
+          "enterpriseName": "环保测试公司1",
+          "bankId": "BANK-08",
+          "bankName": "星河银行",
+          "projectId": "PRJ-017",
+          "principal": 200.16,
+          "rate": 1.42838,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-05-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-018-1",
+          "enterpriseId": "ENT-018",
+          "enterpriseName": "环保测试公司2",
+          "bankId": "BANK-09",
+          "bankName": "恒信银行",
+          "projectId": "PRJ-018",
+          "principal": 702.8,
+          "rate": 3.17,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-02-11",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-018-2",
+          "enterpriseId": "ENT-018",
+          "enterpriseName": "环保测试公司2",
+          "bankId": "BANK-02",
+          "bankName": "寰宇银行",
+          "projectId": "PRJ-018",
+          "principal": 527.1,
+          "rate": 2.67,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-04-04",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-018-3",
+          "enterpriseId": "ENT-018",
+          "enterpriseName": "环保测试公司2",
+          "bankId": "BANK-05",
+          "bankName": "启明银行",
+          "projectId": "PRJ-018",
+          "principal": 351.4,
+          "rate": 2.97,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-10-03",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-018-4",
+          "enterpriseId": "ENT-018",
+          "enterpriseName": "环保测试公司2",
+          "bankId": "BANK-09",
+          "bankName": "恒信银行",
+          "projectId": "PRJ-018",
+          "principal": 175.7,
+          "rate": 2.07,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-06-06",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-019-1",
+          "enterpriseId": "ENT-019",
+          "enterpriseName": "环保测试公司3",
+          "bankId": "BANK-01",
+          "bankName": "欧陆银行",
+          "projectId": "PRJ-019",
+          "principal": 783.2,
+          "rate": 3.34,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-02-12",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-019-2",
+          "enterpriseId": "ENT-019",
+          "enterpriseName": "环保测试公司3",
+          "bankId": "BANK-03",
+          "bankName": "海联银行",
+          "projectId": "PRJ-019",
+          "principal": 587.4,
+          "rate": 2.84,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-04-06",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-019-3",
+          "enterpriseId": "ENT-019",
+          "enterpriseName": "环保测试公司3",
+          "bankId": "BANK-06",
+          "bankName": "嘉禾银行",
+          "projectId": "PRJ-019",
+          "principal": 391.6,
+          "rate": 3.14,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-10-11",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-019-4",
+          "enterpriseId": "ENT-019",
+          "enterpriseName": "环保测试公司3",
+          "bankId": "BANK-01",
+          "bankName": "欧陆银行",
+          "projectId": "PRJ-019",
+          "principal": 195.8,
+          "rate": 2.24,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-06-12",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-020-1",
+          "enterpriseId": "ENT-020",
+          "enterpriseName": "环保测试公司4",
+          "bankId": "BANK-02",
+          "bankName": "寰宇银行",
+          "projectId": "PRJ-020",
+          "principal": 15725.36,
+          "rate": 3.180984,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-02-13",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-020-2",
+          "enterpriseId": "ENT-020",
+          "enterpriseName": "环保测试公司4",
+          "bankId": "BANK-04",
+          "bankName": "融通银行",
+          "projectId": "PRJ-020",
+          "principal": 11794.02,
+          "rate": 2.680984,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-04-08",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-020-3",
+          "enterpriseId": "ENT-020",
+          "enterpriseName": "环保测试公司4",
+          "bankId": "BANK-07",
+          "bankName": "同州银行",
+          "projectId": "PRJ-020",
+          "principal": 7862.68,
+          "rate": 2.980984,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-10-19",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-020-4",
+          "enterpriseId": "ENT-020",
+          "enterpriseName": "环保测试公司4",
+          "bankId": "BANK-02",
+          "bankName": "寰宇银行",
+          "projectId": "PRJ-020",
+          "principal": 3931.34,
+          "rate": 2.080984,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-06-18",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-021-1",
+          "enterpriseId": "ENT-021",
+          "enterpriseName": "核电测试公司1",
+          "bankId": "BANK-03",
+          "bankName": "海联银行",
+          "projectId": "PRJ-021",
+          "principal": 736,
+          "rate": 3.68,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-02-14",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-021-2",
+          "enterpriseId": "ENT-021",
+          "enterpriseName": "核电测试公司1",
+          "bankId": "BANK-05",
+          "bankName": "启明银行",
+          "projectId": "PRJ-021",
+          "principal": 552,
+          "rate": 3.18,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-04-10",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-021-3",
+          "enterpriseId": "ENT-021",
+          "enterpriseName": "核电测试公司1",
+          "bankId": "BANK-08",
+          "bankName": "星河银行",
+          "projectId": "PRJ-021",
+          "principal": 368,
+          "rate": 3.48,
+          "rateType": "FLOATING",
+          "startDate": "2025-01-01",
+          "maturityDate": "2026-10-27",
+          "currency": "CNY"
+        },
+        {
+          "id": "LOAN-021-4",
+          "enterpriseId": "ENT-021",
+          "enterpriseName": "核电测试公司1",
+          "bankId": "BANK-03",
+          "bankName": "海联银行",
+          "projectId": "PRJ-021",
+          "principal": 184,
+          "rate": 2.58,
+          "rateType": "FIXED",
+          "startDate": "2025-01-01",
+          "maturityDate": "2027-06-24",
+          "currency": "CNY"
+        }
+      ],
+      "rowCount": 84,
+      "description": "84笔完整模拟借款；不是原始借据，不包含任何已执行融资交易。",
+      "snapshotId": "SNAP-LOANS-20251231-V14-1",
+      "version": "1.0.0",
+      "asOf": "2025-12-31",
+      "dataVersion": "DATA-V14-20251231-DEMO-1",
+      "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+      "classification": "SIMULATED_SNAPSHOT",
+      "contentDigest": "9c110e491f9d04d3add66f1bcb47b86e97aa0742e5a501f8bdf084ff2051212e"
+    },
+    {
+      "id": "asset-v14-facilities",
+      "key": "facilities",
+      "name": "授信台账",
+      "sheetName": "授信台账",
+      "fields": [
+        {
+          "key": "id",
+          "label": "授信ID",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "enterpriseId",
+          "label": "企业ID",
+          "type": "string",
+          "unit": "",
+          "reference": "enterprises.id"
+        },
+        {
+          "key": "enterpriseName",
+          "label": "企业名称",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "bankId",
+          "label": "银行ID",
+          "type": "string",
+          "unit": "",
+          "reference": "banks.id"
+        },
+        {
+          "key": "bankName",
+          "label": "银行名称",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "undrawn",
+          "label": "未用额度",
+          "type": "number",
+          "unit": "百万元",
+          "reference": ""
+        },
+        {
+          "key": "validUntil",
+          "label": "有效期至",
+          "type": "date",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "currency",
+          "label": "币种",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        }
+      ],
+      "rows": [
+        {
+          "id": "FAC-001-1",
+          "enterpriseId": "ENT-001",
+          "enterpriseName": "风电测试公司01",
+          "bankId": "BANK-01",
+          "bankName": "欧陆银行",
+          "undrawn": 42,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-001-2",
+          "enterpriseId": "ENT-001",
+          "enterpriseName": "风电测试公司01",
+          "bankId": "BANK-03",
+          "bankName": "海联银行",
+          "undrawn": 25.2,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-001-3",
+          "enterpriseId": "ENT-001",
+          "enterpriseName": "风电测试公司01",
+          "bankId": "BANK-06",
+          "bankName": "嘉禾银行",
+          "undrawn": 16.8,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-002-1",
+          "enterpriseId": "ENT-002",
+          "enterpriseName": "风电测试公司02",
+          "bankId": "BANK-02",
+          "bankName": "寰宇银行",
+          "undrawn": 62.1,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-002-2",
+          "enterpriseId": "ENT-002",
+          "enterpriseName": "风电测试公司02",
+          "bankId": "BANK-04",
+          "bankName": "融通银行",
+          "undrawn": 37.26,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-002-3",
+          "enterpriseId": "ENT-002",
+          "enterpriseName": "风电测试公司02",
+          "bankId": "BANK-07",
+          "bankName": "同州银行",
+          "undrawn": 24.84,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-003-1",
+          "enterpriseId": "ENT-003",
+          "enterpriseName": "风电测试公司03",
+          "bankId": "BANK-03",
+          "bankName": "海联银行",
+          "undrawn": 82.2,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-003-2",
+          "enterpriseId": "ENT-003",
+          "enterpriseName": "风电测试公司03",
+          "bankId": "BANK-05",
+          "bankName": "启明银行",
+          "undrawn": 49.32,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-003-3",
+          "enterpriseId": "ENT-003",
+          "enterpriseName": "风电测试公司03",
+          "bankId": "BANK-08",
+          "bankName": "星河银行",
+          "undrawn": 32.88,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-004-1",
+          "enterpriseId": "ENT-004",
+          "enterpriseName": "风电测试公司04",
+          "bankId": "BANK-04",
+          "bankName": "融通银行",
+          "undrawn": 102.3,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-004-2",
+          "enterpriseId": "ENT-004",
+          "enterpriseName": "风电测试公司04",
+          "bankId": "BANK-06",
+          "bankName": "嘉禾银行",
+          "undrawn": 61.38,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-004-3",
+          "enterpriseId": "ENT-004",
+          "enterpriseName": "风电测试公司04",
+          "bankId": "BANK-09",
+          "bankName": "恒信银行",
+          "undrawn": 40.92,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-005-1",
+          "enterpriseId": "ENT-005",
+          "enterpriseName": "风电测试公司05",
+          "bankId": "BANK-05",
+          "bankName": "启明银行",
+          "undrawn": 70.4,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-005-2",
+          "enterpriseId": "ENT-005",
+          "enterpriseName": "风电测试公司05",
+          "bankId": "BANK-07",
+          "bankName": "同州银行",
+          "undrawn": 42.24,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-005-3",
+          "enterpriseId": "ENT-005",
+          "enterpriseName": "风电测试公司05",
+          "bankId": "BANK-01",
+          "bankName": "欧陆银行",
+          "undrawn": 28.16,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-006-1",
+          "enterpriseId": "ENT-006",
+          "enterpriseName": "风电测试公司06",
+          "bankId": "BANK-06",
+          "bankName": "嘉禾银行",
+          "undrawn": 90.5,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-006-2",
+          "enterpriseId": "ENT-006",
+          "enterpriseName": "风电测试公司06",
+          "bankId": "BANK-08",
+          "bankName": "星河银行",
+          "undrawn": 54.3,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-006-3",
+          "enterpriseId": "ENT-006",
+          "enterpriseName": "风电测试公司06",
+          "bankId": "BANK-02",
+          "bankName": "寰宇银行",
+          "undrawn": 36.2,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-007-1",
+          "enterpriseId": "ENT-007",
+          "enterpriseName": "风电测试公司07",
+          "bankId": "BANK-07",
+          "bankName": "同州银行",
+          "undrawn": 7700,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-007-2",
+          "enterpriseId": "ENT-007",
+          "enterpriseName": "风电测试公司07",
+          "bankId": "BANK-09",
+          "bankName": "恒信银行",
+          "undrawn": 4620,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-007-3",
+          "enterpriseId": "ENT-007",
+          "enterpriseName": "风电测试公司07",
+          "bankId": "BANK-03",
+          "bankName": "海联银行",
+          "undrawn": 3080,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-008-1",
+          "enterpriseId": "ENT-008",
+          "enterpriseName": "风电测试公司08",
+          "bankId": "BANK-08",
+          "bankName": "星河银行",
+          "undrawn": 130.7,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-008-2",
+          "enterpriseId": "ENT-008",
+          "enterpriseName": "风电测试公司08",
+          "bankId": "BANK-01",
+          "bankName": "欧陆银行",
+          "undrawn": 78.42,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-008-3",
+          "enterpriseId": "ENT-008",
+          "enterpriseName": "风电测试公司08",
+          "bankId": "BANK-04",
+          "bankName": "融通银行",
+          "undrawn": 52.28,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-009-1",
+          "enterpriseId": "ENT-009",
+          "enterpriseName": "风电测试公司09",
+          "bankId": "BANK-09",
+          "bankName": "恒信银行",
+          "undrawn": 98.8,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-009-2",
+          "enterpriseId": "ENT-009",
+          "enterpriseName": "风电测试公司09",
+          "bankId": "BANK-02",
+          "bankName": "寰宇银行",
+          "undrawn": 59.28,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-009-3",
+          "enterpriseId": "ENT-009",
+          "enterpriseName": "风电测试公司09",
+          "bankId": "BANK-05",
+          "bankName": "启明银行",
+          "undrawn": 39.52,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-010-1",
+          "enterpriseId": "ENT-010",
+          "enterpriseName": "风电测试公司10",
+          "bankId": "BANK-01",
+          "bankName": "欧陆银行",
+          "undrawn": 118.9,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-010-2",
+          "enterpriseId": "ENT-010",
+          "enterpriseName": "风电测试公司10",
+          "bankId": "BANK-03",
+          "bankName": "海联银行",
+          "undrawn": 71.34,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-010-3",
+          "enterpriseId": "ENT-010",
+          "enterpriseName": "风电测试公司10",
+          "bankId": "BANK-06",
+          "bankName": "嘉禾银行",
+          "undrawn": 47.56,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-011-1",
+          "enterpriseId": "ENT-011",
+          "enterpriseName": "风电测试公司11",
+          "bankId": "BANK-02",
+          "bankName": "寰宇银行",
+          "undrawn": 139,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-011-2",
+          "enterpriseId": "ENT-011",
+          "enterpriseName": "风电测试公司11",
+          "bankId": "BANK-04",
+          "bankName": "融通银行",
+          "undrawn": 83.4,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-011-3",
+          "enterpriseId": "ENT-011",
+          "enterpriseName": "风电测试公司11",
+          "bankId": "BANK-07",
+          "bankName": "同州银行",
+          "undrawn": 55.6,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-012-1",
+          "enterpriseId": "ENT-012",
+          "enterpriseName": "风电测试公司12",
+          "bankId": "BANK-03",
+          "bankName": "海联银行",
+          "undrawn": 159.1,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-012-2",
+          "enterpriseId": "ENT-012",
+          "enterpriseName": "风电测试公司12",
+          "bankId": "BANK-05",
+          "bankName": "启明银行",
+          "undrawn": 95.46,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-012-3",
+          "enterpriseId": "ENT-012",
+          "enterpriseName": "风电测试公司12",
+          "bankId": "BANK-08",
+          "bankName": "星河银行",
+          "undrawn": 63.64,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-013-1",
+          "enterpriseId": "ENT-013",
+          "enterpriseName": "风电测试公司13",
+          "bankId": "BANK-04",
+          "bankName": "融通银行",
+          "undrawn": 127.2,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-013-2",
+          "enterpriseId": "ENT-013",
+          "enterpriseName": "风电测试公司13",
+          "bankId": "BANK-06",
+          "bankName": "嘉禾银行",
+          "undrawn": 76.32,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-013-3",
+          "enterpriseId": "ENT-013",
+          "enterpriseName": "风电测试公司13",
+          "bankId": "BANK-09",
+          "bankName": "恒信银行",
+          "undrawn": 50.88,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-014-1",
+          "enterpriseId": "ENT-014",
+          "enterpriseName": "风电测试公司14",
+          "bankId": "BANK-05",
+          "bankName": "启明银行",
+          "undrawn": 147.3,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-014-2",
+          "enterpriseId": "ENT-014",
+          "enterpriseName": "风电测试公司14",
+          "bankId": "BANK-07",
+          "bankName": "同州银行",
+          "undrawn": 88.38,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-014-3",
+          "enterpriseId": "ENT-014",
+          "enterpriseName": "风电测试公司14",
+          "bankId": "BANK-01",
+          "bankName": "欧陆银行",
+          "undrawn": 58.92,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-015-1",
+          "enterpriseId": "ENT-015",
+          "enterpriseName": "风电测试公司15",
+          "bankId": "BANK-06",
+          "bankName": "嘉禾银行",
+          "undrawn": 167.4,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-015-2",
+          "enterpriseId": "ENT-015",
+          "enterpriseName": "风电测试公司15",
+          "bankId": "BANK-08",
+          "bankName": "星河银行",
+          "undrawn": 100.44,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-015-3",
+          "enterpriseId": "ENT-015",
+          "enterpriseName": "风电测试公司15",
+          "bankId": "BANK-02",
+          "bankName": "寰宇银行",
+          "undrawn": 66.96,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-016-1",
+          "enterpriseId": "ENT-016",
+          "enterpriseName": "风电测试公司16",
+          "bankId": "BANK-07",
+          "bankName": "同州银行",
+          "undrawn": 187.5,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-016-2",
+          "enterpriseId": "ENT-016",
+          "enterpriseName": "风电测试公司16",
+          "bankId": "BANK-09",
+          "bankName": "恒信银行",
+          "undrawn": 112.5,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-016-3",
+          "enterpriseId": "ENT-016",
+          "enterpriseName": "风电测试公司16",
+          "bankId": "BANK-03",
+          "bankName": "海联银行",
+          "undrawn": 75,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-017-1",
+          "enterpriseId": "ENT-017",
+          "enterpriseName": "环保测试公司1",
+          "bankId": "BANK-08",
+          "bankName": "星河银行",
+          "undrawn": 200.16,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-017-2",
+          "enterpriseId": "ENT-017",
+          "enterpriseName": "环保测试公司1",
+          "bankId": "BANK-01",
+          "bankName": "欧陆银行",
+          "undrawn": 120.096,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-017-3",
+          "enterpriseId": "ENT-017",
+          "enterpriseName": "环保测试公司1",
+          "bankId": "BANK-04",
+          "bankName": "融通银行",
+          "undrawn": 80.064,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-018-1",
+          "enterpriseId": "ENT-018",
+          "enterpriseName": "环保测试公司2",
+          "bankId": "BANK-09",
+          "bankName": "恒信银行",
+          "undrawn": 175.7,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-018-2",
+          "enterpriseId": "ENT-018",
+          "enterpriseName": "环保测试公司2",
+          "bankId": "BANK-02",
+          "bankName": "寰宇银行",
+          "undrawn": 105.42,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-018-3",
+          "enterpriseId": "ENT-018",
+          "enterpriseName": "环保测试公司2",
+          "bankId": "BANK-05",
+          "bankName": "启明银行",
+          "undrawn": 70.28,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-019-1",
+          "enterpriseId": "ENT-019",
+          "enterpriseName": "环保测试公司3",
+          "bankId": "BANK-01",
+          "bankName": "欧陆银行",
+          "undrawn": 195.8,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-019-2",
+          "enterpriseId": "ENT-019",
+          "enterpriseName": "环保测试公司3",
+          "bankId": "BANK-03",
+          "bankName": "海联银行",
+          "undrawn": 117.48,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-019-3",
+          "enterpriseId": "ENT-019",
+          "enterpriseName": "环保测试公司3",
+          "bankId": "BANK-06",
+          "bankName": "嘉禾银行",
+          "undrawn": 78.32,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-020-1",
+          "enterpriseId": "ENT-020",
+          "enterpriseName": "环保测试公司4",
+          "bankId": "BANK-02",
+          "bankName": "寰宇银行",
+          "undrawn": 3931.34,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-020-2",
+          "enterpriseId": "ENT-020",
+          "enterpriseName": "环保测试公司4",
+          "bankId": "BANK-04",
+          "bankName": "融通银行",
+          "undrawn": 2358.804,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-020-3",
+          "enterpriseId": "ENT-020",
+          "enterpriseName": "环保测试公司4",
+          "bankId": "BANK-07",
+          "bankName": "同州银行",
+          "undrawn": 1572.536,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-021-1",
+          "enterpriseId": "ENT-021",
+          "enterpriseName": "核电测试公司1",
+          "bankId": "BANK-03",
+          "bankName": "海联银行",
+          "undrawn": 184,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-021-2",
+          "enterpriseId": "ENT-021",
+          "enterpriseName": "核电测试公司1",
+          "bankId": "BANK-05",
+          "bankName": "启明银行",
+          "undrawn": 110.4,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        },
+        {
+          "id": "FAC-021-3",
+          "enterpriseId": "ENT-021",
+          "enterpriseName": "核电测试公司1",
+          "bankId": "BANK-08",
+          "bankName": "星河银行",
+          "undrawn": 73.6,
+          "validUntil": "2027-12-31",
+          "currency": "CNY"
+        }
+      ],
+      "rowCount": 63,
+      "description": "完整模拟未用授信，额度不代表已到账现金。",
+      "snapshotId": "SNAP-FACILITIES-20251231-V14-1",
+      "version": "1.0.0",
+      "asOf": "2025-12-31",
+      "dataVersion": "DATA-V14-20251231-DEMO-1",
+      "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+      "classification": "SIMULATED_SNAPSHOT",
+      "contentDigest": "cdff4844757f77a32a1f6074e8f1a2c5e6d3d4da88f744e6363bdcf99a36c0bf"
+    },
+    {
+      "id": "asset-v14-guarantees",
+      "key": "guarantees",
+      "name": "担保台账",
+      "sheetName": "担保台账",
+      "fields": [
+        {
+          "key": "id",
+          "label": "担保ID",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "guarantorId",
+          "label": "担保方ID",
+          "type": "string",
+          "unit": "",
+          "reference": "enterprises.id"
+        },
+        {
+          "key": "guarantorName",
+          "label": "担保方",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "beneficiaryId",
+          "label": "被担保方ID",
+          "type": "string",
+          "unit": "",
+          "reference": "enterprises.id"
+        },
+        {
+          "key": "beneficiaryName",
+          "label": "被担保方",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "amount",
+          "label": "担保金额",
+          "type": "number",
+          "unit": "百万元",
+          "reference": ""
+        },
+        {
+          "key": "validUntil",
+          "label": "有效期至",
+          "type": "date",
+          "unit": "",
+          "reference": ""
+        }
+      ],
+      "rows": [
+        {
+          "id": "GUA-01",
+          "guarantorId": "ENT-017",
+          "guarantorName": "环保测试公司1",
+          "beneficiaryId": "ENT-003",
+          "beneficiaryName": "风电测试公司03",
+          "amount": 131.52,
+          "validUntil": "2027-12-31"
+        },
+        {
+          "id": "GUA-02",
+          "guarantorId": "ENT-019",
+          "guarantorName": "环保测试公司3",
+          "beneficiaryId": "ENT-005",
+          "beneficiaryName": "风电测试公司05",
+          "amount": 112.64,
+          "validUntil": "2027-12-31"
+        },
+        {
+          "id": "GUA-03",
+          "guarantorId": "ENT-021",
+          "guarantorName": "核电测试公司1",
+          "beneficiaryId": "ENT-007",
+          "beneficiaryName": "风电测试公司07",
+          "amount": 12320,
+          "validUntil": "2027-12-31"
+        },
+        {
+          "id": "GUA-04",
+          "guarantorId": "ENT-002",
+          "guarantorName": "风电测试公司02",
+          "beneficiaryId": "ENT-009",
+          "beneficiaryName": "风电测试公司09",
+          "amount": 158.08,
+          "validUntil": "2027-12-31"
+        },
+        {
+          "id": "GUA-05",
+          "guarantorId": "ENT-004",
+          "guarantorName": "风电测试公司04",
+          "beneficiaryId": "ENT-011",
+          "beneficiaryName": "风电测试公司11",
+          "amount": 222.4,
+          "validUntil": "2027-12-31"
+        },
+        {
+          "id": "GUA-06",
+          "guarantorId": "ENT-006",
+          "guarantorName": "风电测试公司06",
+          "beneficiaryId": "ENT-013",
+          "beneficiaryName": "风电测试公司13",
+          "amount": 203.52,
+          "validUntil": "2027-12-31"
+        },
+        {
+          "id": "GUA-07",
+          "guarantorId": "ENT-008",
+          "guarantorName": "风电测试公司08",
+          "beneficiaryId": "ENT-015",
+          "beneficiaryName": "风电测试公司15",
+          "amount": 267.84,
+          "validUntil": "2027-12-31"
+        },
+        {
+          "id": "GUA-08",
+          "guarantorId": "ENT-010",
+          "guarantorName": "风电测试公司10",
+          "beneficiaryId": "ENT-017",
+          "beneficiaryName": "环保测试公司1",
+          "amount": 320.256,
+          "validUntil": "2027-12-31"
+        },
+        {
+          "id": "GUA-09",
+          "guarantorId": "ENT-012",
+          "guarantorName": "风电测试公司12",
+          "beneficiaryId": "ENT-019",
+          "beneficiaryName": "环保测试公司3",
+          "amount": 313.28,
+          "validUntil": "2027-12-31"
+        }
+      ],
+      "rowCount": 9,
+      "description": "显式模拟担保关系；担保金额不重复计入借款余额。",
+      "snapshotId": "SNAP-GUARANTEES-20251231-V14-1",
+      "version": "1.0.0",
+      "asOf": "2025-12-31",
+      "dataVersion": "DATA-V14-20251231-DEMO-1",
+      "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+      "classification": "SIMULATED_SNAPSHOT",
+      "contentDigest": "9213dcb5ec3e5186fed024d059a8058277414a0b0e7f0472634ccb99eef29478"
+    },
+    {
+      "id": "asset-v14-risk",
+      "key": "risk",
+      "name": "债务风险评估结果",
+      "sheetName": "债务风险评估结果",
+      "fields": [
+        {
+          "key": "id",
+          "label": "结果ID",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "enterpriseId",
+          "label": "企业ID",
+          "type": "string",
+          "unit": "",
+          "reference": "enterprises.id"
+        },
+        {
+          "key": "enterpriseName",
+          "label": "企业名称",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "asOf",
+          "label": "观察日",
+          "type": "date",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "score",
+          "label": "风险评分",
+          "type": "number",
+          "unit": "分",
+          "reference": ""
+        },
+        {
+          "key": "tier",
+          "label": "风险分档",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "modelVersion",
+          "label": "原型模型版本",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "basis",
+          "label": "构造依据",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        }
+      ],
+      "rows": [
+        {
+          "id": "RISK-ENT-001",
+          "enterpriseId": "ENT-001",
+          "enterpriseName": "风电测试公司01",
+          "asOf": "2025-12-31",
+          "score": 59.08,
+          "tier": "绿灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-002",
+          "enterpriseId": "ENT-002",
+          "enterpriseName": "风电测试公司02",
+          "asOf": "2025-12-31",
+          "score": 88.41,
+          "tier": "绿灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-003",
+          "enterpriseId": "ENT-003",
+          "enterpriseName": "风电测试公司03",
+          "asOf": "2025-12-31",
+          "score": 71.57,
+          "tier": "绿灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-004",
+          "enterpriseId": "ENT-004",
+          "enterpriseName": "风电测试公司04",
+          "asOf": "2025-12-31",
+          "score": 80.37,
+          "tier": "绿灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-005",
+          "enterpriseId": "ENT-005",
+          "enterpriseName": "风电测试公司05",
+          "asOf": "2025-12-31",
+          "score": 57.3,
+          "tier": "绿灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-006",
+          "enterpriseId": "ENT-006",
+          "enterpriseName": "风电测试公司06",
+          "asOf": "2025-12-31",
+          "score": 60.64,
+          "tier": "绿灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-007",
+          "enterpriseId": "ENT-007",
+          "enterpriseName": "风电测试公司07",
+          "asOf": "2025-12-31",
+          "score": 37.75,
+          "tier": "黄灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-008",
+          "enterpriseId": "ENT-008",
+          "enterpriseName": "风电测试公司08",
+          "asOf": "2025-12-31",
+          "score": 56.62,
+          "tier": "绿灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-009",
+          "enterpriseId": "ENT-009",
+          "enterpriseName": "风电测试公司09",
+          "asOf": "2025-12-31",
+          "score": 47.32,
+          "tier": "绿灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-010",
+          "enterpriseId": "ENT-010",
+          "enterpriseName": "风电测试公司10",
+          "asOf": "2025-12-31",
+          "score": 54,
+          "tier": "绿灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-011",
+          "enterpriseId": "ENT-011",
+          "enterpriseName": "风电测试公司11",
+          "asOf": "2025-12-31",
+          "score": 54,
+          "tier": "绿灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-012",
+          "enterpriseId": "ENT-012",
+          "enterpriseName": "风电测试公司12",
+          "asOf": "2025-12-31",
+          "score": 54,
+          "tier": "绿灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-013",
+          "enterpriseId": "ENT-013",
+          "enterpriseName": "风电测试公司13",
+          "asOf": "2025-12-31",
+          "score": 43.96,
+          "tier": "绿灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-014",
+          "enterpriseId": "ENT-014",
+          "enterpriseName": "风电测试公司14",
+          "asOf": "2025-12-31",
+          "score": 54.57,
+          "tier": "绿灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-015",
+          "enterpriseId": "ENT-015",
+          "enterpriseName": "风电测试公司15",
+          "asOf": "2025-12-31",
+          "score": 49.92,
+          "tier": "绿灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-016",
+          "enterpriseId": "ENT-016",
+          "enterpriseName": "风电测试公司16",
+          "asOf": "2025-12-31",
+          "score": 57.33,
+          "tier": "绿灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-017",
+          "enterpriseId": "ENT-017",
+          "enterpriseName": "环保测试公司1",
+          "asOf": "2025-12-31",
+          "score": 30.52,
+          "tier": "黄灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-018",
+          "enterpriseId": "ENT-018",
+          "enterpriseName": "环保测试公司2",
+          "asOf": "2025-12-31",
+          "score": 33.92,
+          "tier": "黄灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-019",
+          "enterpriseId": "ENT-019",
+          "enterpriseName": "环保测试公司3",
+          "asOf": "2025-12-31",
+          "score": 37.31,
+          "tier": "黄灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-020",
+          "enterpriseId": "ENT-020",
+          "enterpriseName": "环保测试公司4",
+          "asOf": "2025-12-31",
+          "score": 23.05,
+          "tier": "红灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        },
+        {
+          "id": "RISK-ENT-021",
+          "enterpriseId": "ENT-021",
+          "enterpriseName": "核电测试公司1",
+          "asOf": "2025-12-31",
+          "score": 45.1,
+          "tier": "绿灯",
+          "modelVersion": "1.0.2",
+          "basis": "模拟快照；数值沿用原型样本，不代表真实企业评级"
+        }
+      ],
+      "rowCount": 21,
+      "description": "完整覆盖21家企业；样本评分保持原型值，利率与授信方案不改写该评分。",
+      "snapshotId": "SNAP-RISK-20251231-V14-1",
+      "version": "1.0.0",
+      "asOf": "2025-12-31",
+      "dataVersion": "DATA-V14-20251231-DEMO-1",
+      "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+      "classification": "SIMULATED_SNAPSHOT",
+      "contentDigest": "651ba19a89bf1e7042bf9976a41f0336018e8bcb79cf9139b58a21f98f8d78f7"
+    },
+    {
+      "id": "asset-v14-projects",
+      "key": "projects",
+      "name": "项目台账",
+      "sheetName": "项目台账",
+      "fields": [
+        {
+          "key": "id",
+          "label": "项目ID",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "name",
+          "label": "项目名称",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "enterpriseId",
+          "label": "企业ID",
+          "type": "string",
+          "unit": "",
+          "reference": "enterprises.id"
+        },
+        {
+          "key": "enterpriseName",
+          "label": "企业名称",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "stage",
+          "label": "项目阶段",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        }
+      ],
+      "rows": [
+        {
+          "id": "PRJ-001",
+          "name": "哈密风电项目",
+          "enterpriseId": "ENT-001",
+          "enterpriseName": "风电测试公司01",
+          "stage": "运营中"
+        },
+        {
+          "id": "PRJ-002",
+          "name": "酒泉风电项目",
+          "enterpriseId": "ENT-002",
+          "enterpriseName": "风电测试公司02",
+          "stage": "运营中"
+        },
+        {
+          "id": "PRJ-003",
+          "name": "包头风电项目",
+          "enterpriseId": "ENT-003",
+          "enterpriseName": "风电测试公司03",
+          "stage": "运营中"
+        },
+        {
+          "id": "PRJ-004",
+          "name": "锡林浩特风电项目",
+          "enterpriseId": "ENT-004",
+          "enterpriseName": "风电测试公司04",
+          "stage": "运营中"
+        },
+        {
+          "id": "PRJ-005",
+          "name": "张家口风电项目",
+          "enterpriseId": "ENT-005",
+          "enterpriseName": "风电测试公司05",
+          "stage": "运营中"
+        },
+        {
+          "id": "PRJ-006",
+          "name": "白城风电项目",
+          "enterpriseId": "ENT-006",
+          "enterpriseName": "风电测试公司06",
+          "stage": "运营中"
+        },
+        {
+          "id": "PRJ-007",
+          "name": "阜新风电项目",
+          "enterpriseId": "ENT-007",
+          "enterpriseName": "风电测试公司07",
+          "stage": "运营中"
+        },
+        {
+          "id": "PRJ-008",
+          "name": "潍坊风电项目",
+          "enterpriseId": "ENT-008",
+          "enterpriseName": "风电测试公司08",
+          "stage": "运营中"
+        },
+        {
+          "id": "PRJ-009",
+          "name": "盐城风电项目",
+          "enterpriseId": "ENT-009",
+          "enterpriseName": "风电测试公司09",
+          "stage": "运营中"
+        },
+        {
+          "id": "PRJ-010",
+          "name": "德令哈风电项目",
+          "enterpriseId": "ENT-010",
+          "enterpriseName": "风电测试公司10",
+          "stage": "建设中"
+        },
+        {
+          "id": "PRJ-011",
+          "name": "中卫风电项目",
+          "enterpriseId": "ENT-011",
+          "enterpriseName": "风电测试公司11",
+          "stage": "建设中"
+        },
+        {
+          "id": "PRJ-012",
+          "name": "大同风电项目",
+          "enterpriseId": "ENT-012",
+          "enterpriseName": "风电测试公司12",
+          "stage": "建设中"
+        },
+        {
+          "id": "PRJ-013",
+          "name": "莆田风电项目",
+          "enterpriseId": "ENT-013",
+          "enterpriseName": "风电测试公司13",
+          "stage": "运营中"
+        },
+        {
+          "id": "PRJ-014",
+          "name": "阳江风电项目",
+          "enterpriseId": "ENT-014",
+          "enterpriseName": "风电测试公司14",
+          "stage": "运营中"
+        },
+        {
+          "id": "PRJ-015",
+          "name": "曲靖风电项目",
+          "enterpriseId": "ENT-015",
+          "enterpriseName": "风电测试公司15",
+          "stage": "运营中"
+        },
+        {
+          "id": "PRJ-016",
+          "name": "毕节风电项目",
+          "enterpriseId": "ENT-016",
+          "enterpriseName": "风电测试公司16",
+          "stage": "运营中"
+        },
+        {
+          "id": "PRJ-017",
+          "name": "成都环保项目",
+          "enterpriseId": "ENT-017",
+          "enterpriseName": "环保测试公司1",
+          "stage": "运营中"
+        },
+        {
+          "id": "PRJ-018",
+          "name": "武汉环保项目",
+          "enterpriseId": "ENT-018",
+          "enterpriseName": "环保测试公司2",
+          "stage": "运营中"
+        },
+        {
+          "id": "PRJ-019",
+          "name": "郑州环保项目",
+          "enterpriseId": "ENT-019",
+          "enterpriseName": "环保测试公司3",
+          "stage": "运营中"
+        },
+        {
+          "id": "PRJ-020",
+          "name": "杭州环保项目",
+          "enterpriseId": "ENT-020",
+          "enterpriseName": "环保测试公司4",
+          "stage": "运营中"
+        },
+        {
+          "id": "PRJ-021",
+          "name": "防城港核电项目",
+          "enterpriseId": "ENT-021",
+          "enterpriseName": "核电测试公司1",
+          "stage": "运营中"
+        }
+      ],
+      "rowCount": 21,
+      "description": "完整模拟项目与企业归属，供融资项目下探使用。",
+      "snapshotId": "SNAP-PROJECTS-20251231-V14-1",
+      "version": "1.0.0",
+      "asOf": "2025-12-31",
+      "dataVersion": "DATA-V14-20251231-DEMO-1",
+      "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+      "classification": "SIMULATED_SNAPSHOT",
+      "contentDigest": "85a07b2cdc560d5365d524d87692050f0f9eee240ed89d91866680052aacdfba"
+    },
+    {
+      "id": "asset-v14-events",
+      "key": "events",
+      "name": "风险与融资事件",
+      "sheetName": "风险与融资事件",
+      "fields": [
+        {
+          "key": "id",
+          "label": "事件ID",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "enterpriseId",
+          "label": "企业ID",
+          "type": "string",
+          "unit": "",
+          "reference": "enterprises.id"
+        },
+        {
+          "key": "enterpriseName",
+          "label": "企业名称",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "name",
+          "label": "事件名称",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "date",
+          "label": "发生日期",
+          "type": "date",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "status",
+          "label": "快照状态",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        }
+      ],
+      "rows": [
+        {
+          "id": "EVT-001",
+          "enterpriseId": "ENT-001",
+          "enterpriseName": "风电测试公司01",
+          "name": "到期融资复核",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-002",
+          "enterpriseId": "ENT-002",
+          "enterpriseName": "风电测试公司02",
+          "name": "到期融资复核",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-003",
+          "enterpriseId": "ENT-003",
+          "enterpriseName": "风电测试公司03",
+          "name": "到期融资复核",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-004",
+          "enterpriseId": "ENT-004",
+          "enterpriseName": "风电测试公司04",
+          "name": "到期融资复核",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-005",
+          "enterpriseId": "ENT-005",
+          "enterpriseName": "风电测试公司05",
+          "name": "到期融资复核",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-006",
+          "enterpriseId": "ENT-006",
+          "enterpriseName": "风电测试公司06",
+          "name": "到期融资复核",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-007",
+          "enterpriseId": "ENT-007",
+          "enterpriseName": "风电测试公司07",
+          "name": "债务风险关注",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-008",
+          "enterpriseId": "ENT-008",
+          "enterpriseName": "风电测试公司08",
+          "name": "到期融资复核",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-009",
+          "enterpriseId": "ENT-009",
+          "enterpriseName": "风电测试公司09",
+          "name": "到期融资复核",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-010",
+          "enterpriseId": "ENT-010",
+          "enterpriseName": "风电测试公司10",
+          "name": "到期融资复核",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-011",
+          "enterpriseId": "ENT-011",
+          "enterpriseName": "风电测试公司11",
+          "name": "到期融资复核",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-012",
+          "enterpriseId": "ENT-012",
+          "enterpriseName": "风电测试公司12",
+          "name": "到期融资复核",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-013",
+          "enterpriseId": "ENT-013",
+          "enterpriseName": "风电测试公司13",
+          "name": "到期融资复核",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-014",
+          "enterpriseId": "ENT-014",
+          "enterpriseName": "风电测试公司14",
+          "name": "到期融资复核",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-015",
+          "enterpriseId": "ENT-015",
+          "enterpriseName": "风电测试公司15",
+          "name": "到期融资复核",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-016",
+          "enterpriseId": "ENT-016",
+          "enterpriseName": "风电测试公司16",
+          "name": "到期融资复核",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-017",
+          "enterpriseId": "ENT-017",
+          "enterpriseName": "环保测试公司1",
+          "name": "债务风险关注",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-018",
+          "enterpriseId": "ENT-018",
+          "enterpriseName": "环保测试公司2",
+          "name": "债务风险关注",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-019",
+          "enterpriseId": "ENT-019",
+          "enterpriseName": "环保测试公司3",
+          "name": "债务风险关注",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-020",
+          "enterpriseId": "ENT-020",
+          "enterpriseName": "环保测试公司4",
+          "name": "债务风险关注",
+          "date": "2025-12-31",
+          "status": "待复核"
+        },
+        {
+          "id": "EVT-021",
+          "enterpriseId": "ENT-021",
+          "enterpriseName": "核电测试公司1",
+          "name": "到期融资复核",
+          "date": "2025-12-31",
+          "status": "待复核"
+        }
+      ],
+      "rowCount": 21,
+      "description": "完整模拟风险关注与到期复核事件；快照状态不随本地事项处理改写。",
+      "snapshotId": "SNAP-EVENTS-20251231-V14-1",
+      "version": "1.0.0",
+      "asOf": "2025-12-31",
+      "dataVersion": "DATA-V14-20251231-DEMO-1",
+      "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+      "classification": "SIMULATED_SNAPSHOT",
+      "contentDigest": "f9ddcfd099b0cde557369565b5fc78158a86e402f71d249d9271291f54c98ba6"
+    },
+    {
+      "id": "asset-v14-locations",
+      "key": "locations",
+      "name": "主体地理位置",
+      "sheetName": "主体地理位置",
+      "fields": [
+        {
+          "key": "id",
+          "label": "位置ID",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "objectId",
+          "label": "主体ID",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "objectType",
+          "label": "主体类型",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "name",
+          "label": "主体名称",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "longitude",
+          "label": "经度",
+          "type": "number",
+          "unit": "度",
+          "reference": ""
+        },
+        {
+          "key": "latitude",
+          "label": "纬度",
+          "type": "number",
+          "unit": "度",
+          "reference": ""
+        },
+        {
+          "key": "crs",
+          "label": "坐标系",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        },
+        {
+          "key": "accuracy",
+          "label": "精度标识",
+          "type": "string",
+          "unit": "",
+          "reference": ""
+        }
+      ],
+      "rows": [
+        {
+          "id": "GEO-ENT-001",
+          "objectId": "ENT-001",
+          "objectType": "enterprise",
+          "name": "风电测试公司01",
+          "longitude": 93.52,
+          "latitude": 42.82,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-002",
+          "objectId": "ENT-002",
+          "objectType": "enterprise",
+          "name": "风电测试公司02",
+          "longitude": 98.49,
+          "latitude": 39.74,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-003",
+          "objectId": "ENT-003",
+          "objectType": "enterprise",
+          "name": "风电测试公司03",
+          "longitude": 109.84,
+          "latitude": 40.66,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-004",
+          "objectId": "ENT-004",
+          "objectType": "enterprise",
+          "name": "风电测试公司04",
+          "longitude": 116.08,
+          "latitude": 43.93,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-005",
+          "objectId": "ENT-005",
+          "objectType": "enterprise",
+          "name": "风电测试公司05",
+          "longitude": 114.89,
+          "latitude": 40.77,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-006",
+          "objectId": "ENT-006",
+          "objectType": "enterprise",
+          "name": "风电测试公司06",
+          "longitude": 122.84,
+          "latitude": 45.62,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-007",
+          "objectId": "ENT-007",
+          "objectType": "enterprise",
+          "name": "风电测试公司07",
+          "longitude": 121.67,
+          "latitude": 42.02,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-008",
+          "objectId": "ENT-008",
+          "objectType": "enterprise",
+          "name": "风电测试公司08",
+          "longitude": 119.16,
+          "latitude": 36.7,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-009",
+          "objectId": "ENT-009",
+          "objectType": "enterprise",
+          "name": "风电测试公司09",
+          "longitude": 120.16,
+          "latitude": 33.35,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-010",
+          "objectId": "ENT-010",
+          "objectType": "enterprise",
+          "name": "风电测试公司10",
+          "longitude": 97.37,
+          "latitude": 37.37,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-011",
+          "objectId": "ENT-011",
+          "objectType": "enterprise",
+          "name": "风电测试公司11",
+          "longitude": 105.19,
+          "latitude": 37.51,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-012",
+          "objectId": "ENT-012",
+          "objectType": "enterprise",
+          "name": "风电测试公司12",
+          "longitude": 113.3,
+          "latitude": 40.09,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-013",
+          "objectId": "ENT-013",
+          "objectType": "enterprise",
+          "name": "风电测试公司13",
+          "longitude": 119.01,
+          "latitude": 25.43,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-014",
+          "objectId": "ENT-014",
+          "objectType": "enterprise",
+          "name": "风电测试公司14",
+          "longitude": 111.98,
+          "latitude": 21.86,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-015",
+          "objectId": "ENT-015",
+          "objectType": "enterprise",
+          "name": "风电测试公司15",
+          "longitude": 103.8,
+          "latitude": 25.49,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-016",
+          "objectId": "ENT-016",
+          "objectType": "enterprise",
+          "name": "风电测试公司16",
+          "longitude": 105.28,
+          "latitude": 27.3,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-017",
+          "objectId": "ENT-017",
+          "objectType": "enterprise",
+          "name": "环保测试公司1",
+          "longitude": 104.07,
+          "latitude": 30.67,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-018",
+          "objectId": "ENT-018",
+          "objectType": "enterprise",
+          "name": "环保测试公司2",
+          "longitude": 114.31,
+          "latitude": 30.59,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-019",
+          "objectId": "ENT-019",
+          "objectType": "enterprise",
+          "name": "环保测试公司3",
+          "longitude": 113.63,
+          "latitude": 34.75,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-020",
+          "objectId": "ENT-020",
+          "objectType": "enterprise",
+          "name": "环保测试公司4",
+          "longitude": 120.16,
+          "latitude": 30.27,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-ENT-021",
+          "objectId": "ENT-021",
+          "objectType": "enterprise",
+          "name": "核电测试公司1",
+          "longitude": 108.35,
+          "latitude": 21.69,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-BANK-01",
+          "objectId": "BANK-01",
+          "objectType": "bank",
+          "name": "欧陆银行",
+          "longitude": 121.47,
+          "latitude": 31.23,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-BANK-02",
+          "objectId": "BANK-02",
+          "objectType": "bank",
+          "name": "寰宇银行",
+          "longitude": 116.4,
+          "latitude": 39.9,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-BANK-03",
+          "objectId": "BANK-03",
+          "objectType": "bank",
+          "name": "海联银行",
+          "longitude": 114.06,
+          "latitude": 22.55,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-BANK-04",
+          "objectId": "BANK-04",
+          "objectType": "bank",
+          "name": "融通银行",
+          "longitude": 123.43,
+          "latitude": 41.8,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-BANK-05",
+          "objectId": "BANK-05",
+          "objectType": "bank",
+          "name": "启明银行",
+          "longitude": 121.61,
+          "latitude": 38.91,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-BANK-06",
+          "objectId": "BANK-06",
+          "objectType": "bank",
+          "name": "嘉禾银行",
+          "longitude": 117.2,
+          "latitude": 39.13,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-BANK-07",
+          "objectId": "BANK-07",
+          "objectType": "bank",
+          "name": "同州银行",
+          "longitude": 106.55,
+          "latitude": 29.56,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-BANK-08",
+          "objectId": "BANK-08",
+          "objectType": "bank",
+          "name": "星河银行",
+          "longitude": 108.94,
+          "latitude": 34.34,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-BANK-09",
+          "objectId": "BANK-09",
+          "objectType": "bank",
+          "name": "恒信银行",
+          "longitude": 102.83,
+          "latitude": 24.88,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-001",
+          "objectId": "PRJ-001",
+          "objectType": "project",
+          "name": "哈密风电项目",
+          "longitude": 93.52,
+          "latitude": 42.82,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-002",
+          "objectId": "PRJ-002",
+          "objectType": "project",
+          "name": "酒泉风电项目",
+          "longitude": 98.49,
+          "latitude": 39.74,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-003",
+          "objectId": "PRJ-003",
+          "objectType": "project",
+          "name": "包头风电项目",
+          "longitude": 109.84,
+          "latitude": 40.66,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-004",
+          "objectId": "PRJ-004",
+          "objectType": "project",
+          "name": "锡林浩特风电项目",
+          "longitude": 116.08,
+          "latitude": 43.93,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-005",
+          "objectId": "PRJ-005",
+          "objectType": "project",
+          "name": "张家口风电项目",
+          "longitude": 114.89,
+          "latitude": 40.77,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-006",
+          "objectId": "PRJ-006",
+          "objectType": "project",
+          "name": "白城风电项目",
+          "longitude": 122.84,
+          "latitude": 45.62,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-007",
+          "objectId": "PRJ-007",
+          "objectType": "project",
+          "name": "阜新风电项目",
+          "longitude": 121.67,
+          "latitude": 42.02,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-008",
+          "objectId": "PRJ-008",
+          "objectType": "project",
+          "name": "潍坊风电项目",
+          "longitude": 119.16,
+          "latitude": 36.7,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-009",
+          "objectId": "PRJ-009",
+          "objectType": "project",
+          "name": "盐城风电项目",
+          "longitude": 120.16,
+          "latitude": 33.35,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-010",
+          "objectId": "PRJ-010",
+          "objectType": "project",
+          "name": "德令哈风电项目",
+          "longitude": 97.37,
+          "latitude": 37.37,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-011",
+          "objectId": "PRJ-011",
+          "objectType": "project",
+          "name": "中卫风电项目",
+          "longitude": 105.19,
+          "latitude": 37.51,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-012",
+          "objectId": "PRJ-012",
+          "objectType": "project",
+          "name": "大同风电项目",
+          "longitude": 113.3,
+          "latitude": 40.09,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-013",
+          "objectId": "PRJ-013",
+          "objectType": "project",
+          "name": "莆田风电项目",
+          "longitude": 119.01,
+          "latitude": 25.43,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-014",
+          "objectId": "PRJ-014",
+          "objectType": "project",
+          "name": "阳江风电项目",
+          "longitude": 111.98,
+          "latitude": 21.86,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-015",
+          "objectId": "PRJ-015",
+          "objectType": "project",
+          "name": "曲靖风电项目",
+          "longitude": 103.8,
+          "latitude": 25.49,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-016",
+          "objectId": "PRJ-016",
+          "objectType": "project",
+          "name": "毕节风电项目",
+          "longitude": 105.28,
+          "latitude": 27.3,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-017",
+          "objectId": "PRJ-017",
+          "objectType": "project",
+          "name": "成都环保项目",
+          "longitude": 104.07,
+          "latitude": 30.67,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-018",
+          "objectId": "PRJ-018",
+          "objectType": "project",
+          "name": "武汉环保项目",
+          "longitude": 114.31,
+          "latitude": 30.59,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-019",
+          "objectId": "PRJ-019",
+          "objectType": "project",
+          "name": "郑州环保项目",
+          "longitude": 113.63,
+          "latitude": 34.75,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-020",
+          "objectId": "PRJ-020",
+          "objectType": "project",
+          "name": "杭州环保项目",
+          "longitude": 120.16,
+          "latitude": 30.27,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        },
+        {
+          "id": "GEO-PRJ-021",
+          "objectId": "PRJ-021",
+          "objectType": "project",
+          "name": "防城港核电项目",
+          "longitude": 108.35,
+          "latitude": 21.69,
+          "crs": "WGS84 / EPSG:4326",
+          "accuracy": "城市级模拟布点，非真实地址"
+        }
+      ],
+      "rowCount": 51,
+      "description": "完整模拟企业、银行和项目坐标；地理邻近不构成风险传染证据。",
+      "snapshotId": "SNAP-LOCATIONS-20251231-V14-1",
+      "version": "1.0.0",
+      "asOf": "2025-12-31",
+      "dataVersion": "DATA-V14-20251231-DEMO-1",
+      "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+      "classification": "SIMULATED_SNAPSHOT",
+      "contentDigest": "7ca4fd8e17a924742fa1c89f6591f2a6ebef08d869dd31730aabbf72b016ce50"
+    }
+  ],
+  "file": {
+    "name": "融资与债务风险模拟数据快照-20251231.xlsx",
+    "url": "/data/snapshots/finance-risk-20251231-3a126add6af3.xlsx",
+    "sha256": "3a126add6af3787c90cac781f6d42186d41dbcd80e5bc29264845994940ac3b8",
+    "sizeBytes": 40094,
+    "sheetCount": 11
+  },
+  "validation": {
+    "status": "PASSED",
+    "rowCount": 300,
+    "assetCount": 9,
+    "problems": []
+  },
+  "builtAt": "2026-09-07T09:26:15.592Z"
+}
