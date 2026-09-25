@@ -223,7 +223,7 @@ test("scenario rejects data, ontology, parameters, scope and horizon mismatches"
     assert.throws(() => comparePlan(data, p));
   }
   assert.throws(() => plan([], {}));
-  assert.throws(() => plan(["ENT-001"], {}, 130));
+  assert.throws(() => plan(["ENT-001"], {}, 130.5));
 });
 test("query preserves explicit empty and existing scopes; named aliases resolve canonical identities", () => {
   assert.equal(

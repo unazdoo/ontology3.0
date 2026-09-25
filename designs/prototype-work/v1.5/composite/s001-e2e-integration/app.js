@@ -82,8 +82,8 @@
       Object.freeze({ id: "settings", label: "问数设置", icon: "settings-2", hash: "#/agent" })
     ]),
     decision: Object.freeze([
-      Object.freeze({ id: "workbench", label: "决策工作台", icon: "circle-dot-dashed", hash: "#workbench" }),
-      Object.freeze({ id: "todos", label: "追踪待办", icon: "list-checks", hash: "#overview" })
+      Object.freeze({ id: "workbench", label: "事项工作台", icon: "circle-dot-dashed", hash: "#workbench" }),
+      Object.freeze({ id: "todos", label: "运营总览", icon: "list-checks", hash: "#overview" })
     ]),
     agent: Object.freeze([
       Object.freeze({ id: "agents", label: "Agent 目录", icon: "bot", hash: "#/agents" }),
@@ -240,7 +240,7 @@
 
   function setTitle(route) {
     const module = moduleForRoute(route);
-    document.title = module ? `${module.name} · ${DATA.brand.zh} v1.5` : `${DATA.brand.zh} v1.5（${DATA.brand.en}）`;
+    document.title = module ? `${module.name} · ${DATA.brand.zh}` : DATA.brand.zh;
   }
 
   function navigate(route, options = {}) {
@@ -264,23 +264,35 @@
     else navigate("#home", { replace: true });
   }
 
+  function primaryChildren(item,route) {
+    if(item.id==='home')return [];
+    if(item.id==='m07')return [
+      {id:'discover',label:'对象发现',icon:'search',moduleId:route.type==='dashboard'?'dashboard':'m07'},
+      {id:'directory',label:'业务全景',icon:'layout-grid',moduleId:route.type==='dashboard'?'dashboard':'m07'},
+      {id:'situation',label:'地图视图',icon:'map',moduleId:route.type==='dashboard'?'dashboard':'m07'},
+      {id:'temporal',label:'时序分析',icon:'chart-no-axes-combined',moduleId:route.type==='dashboard'?'dashboard':'m07'}];
+    if(item.id==='modeling') {
+      let goals=[];try{goals=JSON.parse(localStorage.getItem('ofw.v15.model-studio.v1')||'null')?.goals?.filter(g=>!g.archived)||[];}catch(_){}
+      return [{id:'objectives',label:'模型目标工作台',icon:'target',moduleId:'modeling'},...goals.map(goal=>({id:goal.id,label:goal.name,icon:'workflow',goalId:goal.id}))];
+    }
+    return moduleTasks(item.id).filter(t=>!t.contextual).map(t=>({...t,moduleId:item.id}));
+  }
   function navMarkup(route) {
     const state = STORE.get();
     return `<aside class="global-nav" aria-label="平台导航">
       <button class="brand-lockup" type="button" data-action="toggle-navigation" aria-label="${state.navCollapsed ? "展开主导航" : "收起主导航"}" title="${state.navCollapsed ? "展开主导航" : "收起主导航"}">
         <span class="brand-mark brand-mark-ai" aria-hidden="true">${brandBrainIcon()}</span>
-        <span class="brand-copy"><strong>${esc(DATA.brand.zh)}</strong><small>${esc(DATA.brand.en)}</small></span>
+        <span class="brand-copy"><strong>${esc(DATA.brand.zh)}</strong></span>
       </button>
       <nav class="primary-nav" aria-label="一级模块">
         ${DATA.nav.map((item) => {
           const count = item.id === "home" ? 0 : catalog().resourcesFor?.(item.id)?.length || 0;
           const shortLabel = item.id === "dashboard" ? DATA.dashboard.short : DATA.moduleById[item.id]?.short || item.name;
-          return `<button class="nav-item ${route.active === item.id ? "active" : ""}" type="button" data-route="${item.route}" data-primary-nav="true" title="${esc(item.name)}" aria-label="${esc(item.name)}">
-            ${icon(item.icon)}<span class="nav-label">${esc(item.name)}</span><span class="nav-label-short" aria-hidden="true">${esc(shortLabel)}</span>${item.id === "home" ? "" : `<i class="nav-state ${count ? "ready" : ""}" aria-label="${count} 项资源"></i>`}
-          </button>${item.id==='m07'&&route.active==='m07'?`<div class="object-primary-children"><button data-module-task="discover" data-module-id="${route.type==='dashboard'?'dashboard':'m07'}" title="对象发现">${icon('search')}<span>对象发现</span></button><button data-module-task="directory" data-module-id="${route.type==='dashboard'?'dashboard':'m07'}" title="对象全景">${icon('layout-grid')}<span>对象全景</span></button></div>`:''}`;
+          const children=primaryChildren(item,route),expanded=route.active===item.id;
+          return `<section class="nav-group ${expanded?'expanded':''}" data-nav-group="${item.id}"><div class="nav-group-heading"><button class="nav-item ${expanded?'active':''}" type="button" data-route="${item.route}" data-primary-nav="true" title="${esc(item.name)}" aria-label="${esc(item.name)}">${icon(item.icon)}<span class="nav-label">${esc(item.name)}</span><span class="nav-label-short" aria-hidden="true">${esc(shortLabel)}</span></button>${children.length?`<button class="nav-group-toggle" data-action="toggle-module-menu" data-group="${item.id}" aria-label="展开或收起${esc(item.name)}菜单" aria-expanded="${expanded}">${icon('chevron-down','sm')}</button>`:''}</div>${children.length?`<nav class="primary-children ${item.id==='m07'?'object-primary-children':''}" aria-label="${esc(item.name)}子菜单">${children.map(child=>`<button class="module-subnav-item" ${child.goalId?`data-studio-nav="${esc(child.goalId)}"`:`data-module-task="${child.id}" data-module-id="${child.moduleId}"`} title="${esc(child.label)}">${icon(child.icon,'sm')}<span>${esc(child.label)}</span></button>`).join('')}</nav>`:''}</section>`;
         }).join("")}
       </nav>
-      <footer class="nav-foot"><button type="button" data-action="retry-service" id="service-status" title="重新检查模型服务">${serviceMarkup()}</button><span class="version-label">v1.5 · 设计重构环境</span></footer>
+      <button class="nav-fold-control" data-action="toggle-navigation" aria-label="折叠或展开导航">${icon(state.navCollapsed?'panel-left-open':'panel-left-close')}<span>${state.navCollapsed?'展开导航':'折叠导航'}</span></button>${["decision","query","report","ontology","data","modeling"].includes(route.moduleId)&&sessionStorage.getItem("ofw.m07.business-return")?`<button class="nav-context-return" data-action="return-business-overview">返回对象全景</button>`:""}
     </aside>`;
   }
 
@@ -298,25 +310,7 @@
     </button>`;
   }
 
-  function topbarMarkup(route) {
-    const module = moduleForRoute(route);
-    const currentName = module?.name || "首页";
-    const currentTask = module ? moduleTasks(module.id)[0]?.label || currentName : "首页";
-    return `<header class="global-topbar">
-      <div class="top-title">
-        ${route.type === "home" ? "" : `<button class="icon-button mobile-back" type="button" data-action="return" title="返回" aria-label="返回">${icon("arrow-left", "sm")}</button>`}
-        ${icon(module?.icon || "house")}
-        ${module ? `<nav class="top-breadcrumb" aria-label="当前位置"><button type="button" data-route="#home">首页</button>${icon("chevron-right", "xs")}<button type="button" data-action="module-root" data-module-id="${module.id}">${esc(currentName)}</button>${icon("chevron-right", "xs")}${["m07","dashboard"].includes(module.id)?`<details class="object-view-menu"><summary><strong id="frame-breadcrumb-current">${esc(currentTask)}</strong></summary><div><button data-module-task="discover" data-module-id="${module.id}">对象发现</button><button data-module-task="directory" data-module-id="${module.id}">对象全景</button></div></details>`:`<strong id="frame-breadcrumb-current">${esc(currentTask)}</strong>`}</nav>` : `<div><span>工作台</span><strong>首页</strong></div>`}
-      </div>
-      <div class="top-actions">
-        ${["decision", "query", "report", "ontology", "data", "modeling"].includes(module?.id) && sessionStorage.getItem("ofw.m07.business-return") ? `<button class="button" data-action="return-business-overview">返回对象全景</button>` : ""}
-        <button class="top-action" type="button" data-action="open-catalog" title="搜索业务资源" aria-label="搜索业务资源">${icon("search", "sm")}</button>
-        <button class="top-action" type="button" data-action="open-recent" title="最近工作" aria-label="最近工作">${icon("history", "sm")}</button>
-        ${module ? `<button class="top-action" type="button" data-action="reload-frame" title="重新读取当前模块" aria-label="重新读取当前模块">${icon("refresh-cw", "sm")}</button>` : ""}
-        <div class="user-account" title="当前账号"><span>管</span><strong>平台管理员</strong></div>
-      </div>
-    </header>`;
-  }
+  function topbarMarkup() { return ""; }
 
   function syncWorkspaceContextChrome() {
     const slot = document.getElementById("workspace-context-slot");
@@ -509,7 +503,7 @@
     const content = `<div class="home-view scheme-a-home" data-screen-label="智财问策统一业务工作台"><div class="home-container">
       <section class="classic-home-frame" data-home-domain="${homeDomain}">
         <div class="classic-architecture">
-          <div class="architecture-intro"><div><span>${esc(DATA.brand.en)} · 平台能力架构</span><h1>从可信数据到可追溯决策</h1></div></div>
+          <div class="architecture-intro"><div><span>平台能力架构</span><h1>从可信数据到可追溯决策</h1></div></div>
           <div class="architecture-cycle" aria-label="平台三大能力域">
             ${homeArchitecturePathMarkup()}
             ${Object.entries(HOME_DOMAINS).map(([key, item]) => `<button class="architecture-node ${key}${homeDomain === key ? " active" : ""}" type="button" data-action="home-domain" data-domain="${key}" aria-pressed="${homeDomain === key}"><span class="node-en">${item.en.split(" & ").map(esc).join(" &<br>")}</span>${icon(item.icon, "architecture-node-icon")}<span class="node-zh">${esc(item.name)}</span><small class="node-scope">${item.scope.split(" · ").map(esc).join("<br>")}</small></button>`).join("")}
@@ -563,20 +557,7 @@
     }
   }
 
-  function secondaryNavMarkup(module) {
-    const tasks = moduleTasks(module.id);
-    if (!tasks.length) return "";
-    const saved = STORE.activeScenario()?.navigation?.framePositions?.[module.id];
-    const rawGuessedHash = saved?.hash || module.rootHash || tasks[0]?.hash || "";
-    const aliases = module.id === "modeling"
-      ? { "#overview": "#objectives", "#portfolio": "#models", "#repository": "#models", "#benchmark": "#compare", "#shadow": "#observe", "#monitor": "#release" }
-      : module.id === "m07" ? { "": "#discover", "#catalog": "#discover" } : {};
-    const guessedHash = aliases[rawGuessedHash] || rawGuessedHash;
-    const active = module.id === "dashboard"
-      ? tasks.find((task) => guessedHash.includes(`/view/${task.id}/`)) || tasks[0]
-      : tasks.find((task) => task.hash === guessedHash) || tasks.find((task) => guessedHash.startsWith(task.hash?.split("?")[0] || "__missing__")) || tasks[0];
-    return `<aside class="module-subnav" data-module-id="${esc(module.id)}" aria-label="${esc(module.name)}任务导航"><header><span>${module.id==='dashboard'?'M07':esc(module.ownerId)}</span><strong>${esc(module.name)}</strong></header><select class="module-subnav-select" data-module-task-select="${esc(module.id)}" aria-label="选择${esc(module.name)}任务">${tasks.map((task) => `<option value="${esc(task.id)}" ${task.id === active?.id ? "selected" : ""}>${esc(task.label)}</option>`).join("")}</select><nav>${tasks.map((task) => `<button type="button" class="module-subnav-item ${task.id === active?.id ? "active" : ""}" data-module-task="${esc(task.id)}" data-module-id="${esc(module.id)}">${icon(task.icon, "sm")}<span>${esc(task.label)}</span></button>`).join("")}</nav></aside>`;
-  }
+  function secondaryNavMarkup() { return ''; }
 
   function resourcePathForM07() {
     return "/designs/prototype-work/v1.5/composite/modules/m07/resources/portfolio.json";
@@ -639,7 +620,7 @@
       const url = applyContext(new URL(module.source, global.location.href), context);
       try {
         const focused=saved?.href&&new URL(saved.href,global.location.href);
-        if(focused?.origin===url.origin&&focused.pathname===url.pathname){for(const key of ['focusModel','goal','version','run']){const value=focused.searchParams.get(key);if(value&&/^[a-zA-Z0-9-]+$/.test(value))url.searchParams.set(key,value);}}
+        if(focused?.origin===url.origin&&focused.pathname===url.pathname){for(const key of ['focusModel','goal','version','run','editVersion']){const value=focused.searchParams.get(key);if(value&&/^[a-zA-Z0-9-]+$/.test(value))url.searchParams.set(key,value);}}
       } catch (_) {}
       url.searchParams.set("apiBase", API_BASE);
       url.searchParams.set("programIds", DATA.scenarios.map((item) => item.id).join(","));
@@ -662,27 +643,57 @@
     return `${url.pathname}${url.search}${url.hash}`;
   }
 
-  function renderModule(module) {
-    const source = frameSource(module);
-    const content = `<div class="module-view" data-screen-label="${esc(module.ownerId)} ${esc(module.name)}工作区"><section class="module-workspace-layout ${['m07','dashboard','modeling'].includes(module.id)?'full-module-layout':''}">${secondaryNavMarkup(module)}<section class="frame-stage"><iframe id="module-frame" class="module-frame" data-module-id="${module.id}" data-scenario-id="${esc(activeContext()?.scenarioId)}" title="${esc(module.name)}" src="${esc(source)}" sandbox="allow-scripts allow-same-origin allow-forms allow-modals allow-popups allow-downloads"></iframe></section></section></div>`;
-    renderShell(content, { type: module.id === "dashboard" ? "dashboard" : "module", moduleId: module.id, active: module.id === "dashboard" ? "m07" : module.id, key: module.id === "dashboard" ? "dashboard" : `module-${module.id}` });
-    renderedModuleId = module.id;
-    const frame = document.getElementById("module-frame");
-    frame?.addEventListener("load", () => {
-      global.__OFW_FRAME_LOAD_COUNT__ += 1;
-      document.documentElement.dataset.frameLoadCount = String(global.__OFW_FRAME_LOAD_COUNT__);
-      adaptFrame(frame, module);
-    });
+  let navigationEpoch=0,frameReadyTimer=null;
+  function syncShellChrome(route) {
+    setTitle(route);const shell=app.querySelector('.platform-shell');if(!shell)return;
+    shell.classList.toggle('nav-collapsed',STORE.get().navCollapsed);
+    const holder=document.createElement('div');holder.innerHTML=navMarkup(route);
+    const incoming=holder.querySelector('.global-nav'),current=shell.querySelector('.global-nav'),scroll=current?.querySelector('.primary-nav')?.scrollTop||0;
+    if(current){for(const next of incoming.querySelectorAll('[data-nav-group]')){
+      const group=current.querySelector('[data-nav-group="'+next.dataset.navGroup+'"]');if(!group)continue;
+      group.classList.toggle('expanded',next.classList.contains('expanded'));group.querySelector('[data-primary-nav]')?.classList.toggle('active',next.querySelector('[data-primary-nav]')?.classList.contains('active'));
+      group.querySelector('.nav-group-toggle')?.setAttribute('aria-expanded',String(group.classList.contains('expanded')));
+      const a=group.querySelector('.primary-children'),b=next.querySelector('.primary-children');
+      const signature=el=>JSON.stringify([...el?.querySelectorAll('button')||[]].map(x=>[x.dataset.moduleTask,x.dataset.studioNav,x.textContent.trim()]));
+      if(a&&b){if(signature(a)!==signature(b)){a.innerHTML=b.innerHTML;refreshIcons(a);}else [...a.querySelectorAll('button')].forEach((button,index)=>{const other=b.querySelectorAll('button')[index];if(other.dataset.moduleId)button.dataset.moduleId=other.dataset.moduleId;});}else if(b)group.append(b);
+    }const list=current.querySelector('.primary-nav');if(list)list.scrollTop=scroll;}
+    current?.querySelector('.nav-context-return')?.remove();const contextReturn=incoming.querySelector('.nav-context-return');if(contextReturn)current?.append(contextReturn);
   }
-
-  function renderShell(content, route) {
-    const previousFrame = document.getElementById("module-frame");
-    try { previousFrame?.contentWindow?.__OFW_NATIVE_MODULE_INTEGRATION__?.destroy?.(); } catch (_) {}
-    setTitle(route);
-    const state = STORE.get();
-    app.innerHTML = `<div class="platform-shell ${state.navCollapsed ? "nav-collapsed" : ""}" data-scenario-id="${esc(state.activeScenarioId)}">${navMarkup(route)}<section class="shell-main">${topbarMarkup(route)}<main class="route-stage">${content}</main></section></div>`;
-    refreshIcons(app);
-    global.OFW_READABILITY?.refresh(document);
+  function reuseWorkspace(frame,module,source) {
+    if(!frame||frame.dataset.pending==='true'||frame.dataset.moduleId!==module.id)return false;
+    const current=new URL(frame.contentWindow.location.href),target=new URL(source,location.href);if(current.pathname!==target.pathname)return false;
+    if(module.id==='modeling') {frame.contentWindow.postMessage({type:'OFW_MODEL_STUDIO_NAVIGATE',url:target.href},location.origin);return true;}
+    if(module.id==='m07') {if(current.href!==target.href){frame.contentWindow.history.pushState(null,'',target.href);frame.contentWindow.dispatchEvent(new PopStateEvent('popstate'));frame.contentWindow.postMessage({type:'OFW_M07_PUBLISH_CONTEXT'},location.origin);}syncSecondaryNavigation(frame,module);syncFrameBreadcrumb(frame,module);return true;}
+    if(target.pathname.endsWith('/workbench.html')||target.pathname.endsWith('/temporal.html')) {const view=new URLSearchParams(target.hash.slice(1)).get('view');if(view&&new URLSearchParams(current.hash.slice(1)).get('view')!==view)frame.contentWindow.postMessage({type:'OFW_V14_VIEW',view},location.origin);frame.contentWindow.postMessage({type:'OFW_V14_CONTEXT',context:STORE.workspaceContext()},location.origin);syncSecondaryNavigation(frame,module);return true;}
+    if(current.search===target.search){if(current.hash!==target.hash)frame.contentWindow.location.hash=target.hash;syncSecondaryNavigation(frame,module);return true;}return false;
+  }
+  function renderModule(module) {
+    const source=frameSource(module),route={type:module.id==='dashboard'?'dashboard':'module',moduleId:module.id,active:module.id==='dashboard'?'m07':module.id,key:module.id==='dashboard'?'dashboard':'module-'+module.id};
+    if(app.querySelector('.platform-shell'))syncShellChrome(route);
+    const existing=document.getElementById('module-frame');
+    if(existing?.dataset.pending==='true'&&existing.dataset.moduleId===module.id&&existing.dataset.requestedSource===source)return;
+    if(reuseWorkspace(existing,module,source)){renderedModuleId=module.id;return;}
+    let epoch=++navigationEpoch;clearTimeout(frameReadyTimer);
+    let stage=app.querySelector('.frame-stage');
+    if(!stage){const content=`<div class="module-view"><section class="module-workspace-layout full-module-layout"><section class="frame-stage"></section></section></div>`;renderShell(content,route);stage=app.querySelector('.frame-stage');epoch=++navigationEpoch;}
+    const waiting=stage.querySelector('#module-frame[data-pending="true"]');waiting?.remove();
+    const old=stage.querySelector('#module-frame')||stage.querySelector('.previous-workspace');if(old){old.removeAttribute('id');old.classList.add('previous-workspace');old.setAttribute('aria-hidden','true');old.style.pointerEvents='none';}
+    stage.querySelector('.workspace-loading')?.remove();
+    const loading=document.createElement('div');loading.className='workspace-loading';loading.setAttribute('role','status');loading.innerHTML='<span>正在打开 '+esc(module.name)+'…</span>';stage.append(loading);
+    const frame=document.createElement('iframe');frame.id='module-frame';frame.className='module-frame';frame.dataset.moduleId=module.id;frame.dataset.scenarioId=activeContext()?.scenarioId||'';frame.dataset.pending='true';frame.dataset.requestedSource=source;frame.title=module.name;frame.setAttribute('sandbox','allow-scripts allow-same-origin allow-forms allow-modals allow-popups allow-downloads');frame.style.opacity='0';frame.src=source;stage.append(frame);renderedModuleId=module.id;
+    const started=Date.now();let loaded=false;
+    frame.addEventListener('load',()=>{if(epoch!==navigationEpoch)return;loaded=true;global.__OFW_FRAME_LOAD_COUNT__++;document.documentElement.dataset.frameLoadCount=String(global.__OFW_FRAME_LOAD_COUNT__);adaptFrame(frame,module);});
+    const commit=()=>{if(epoch!==navigationEpoch||!frame.isConnected)return;let ready=false;try{const w=frame.contentWindow,doc=frame.contentDocument,path=new URL(w.location.href).pathname;ready=loaded&&(module.id==='modeling'?Boolean(w.__MODEL_STUDIO_DEBUG__):module.id==='m07'?Boolean(w.__OFW_M07_DEBUG__):path.endsWith('/temporal.html')?Boolean(w.__OFW_TEMPORAL__):path.endsWith('/workbench.html')?Boolean(w.__OFW_V14__):Boolean(doc?.body?.innerText.trim()));}catch(_){}
+      try{if(loaded&&frame.contentDocument?.querySelector('[role=alert]')?.textContent.trim())ready=true;}catch(_){}
+      if(ready){frame.dataset.pending='false';frame.style.opacity='1';stage.querySelectorAll('.previous-workspace').forEach(previous=>{try{previous.contentWindow?.__OFW_NATIVE_MODULE_INTEGRATION__?.destroy?.();}catch(_){}previous.remove();});loading.remove();syncFrameBreadcrumb(frame,module);syncSecondaryNavigation(frame,module);global.OFW_BLUE_GOLD?.enter(frame.contentDocument);return;}
+      if(Date.now()-started>15000){loading.innerHTML='<div><strong>页面暂未就绪</strong><p>可以重新打开，或从左侧返回其他目录。</p><button data-action="retry-workspace">重新打开</button></div>';return;}
+      frameReadyTimer=setTimeout(commit,30);
+    };frameReadyTimer=setTimeout(commit,0);
+  }
+  function renderShell(content,route) {
+    const previousFrame=document.getElementById('module-frame');try{previousFrame?.contentWindow?.__OFW_NATIVE_MODULE_INTEGRATION__?.destroy?.();}catch(_){}
+    if(app.querySelector('.platform-shell')){navigationEpoch++;clearTimeout(frameReadyTimer);syncShellChrome(route);app.querySelector('.route-stage').innerHTML=content;refreshIcons(app.querySelector('.route-stage'));return;}
+    setTitle(route);const state=STORE.get();app.innerHTML=`<div class="platform-shell ${state.navCollapsed?'nav-collapsed':''}" data-scenario-id="${esc(state.activeScenarioId)}">${navMarkup(route)}<section class="shell-main">${topbarMarkup(route)}<main class="route-stage">${content}</main></section></div>`;refreshIcons(app);global.OFW_READABILITY?.refresh(document);
   }
 
   function render() {
@@ -706,12 +717,19 @@
   }
 
 
+  function syncStudioNavigation(goalId) {
+    app.querySelectorAll('[data-nav-group="modeling"] .primary-children button').forEach(button=>{
+      const active=goalId?button.dataset.studioNav===goalId:button.dataset.moduleTask==='objectives';
+      button.classList.toggle('active',active);if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
+    });
+  }
   function syncSecondaryNavigation(frame, module) {
     if (frame !== document.getElementById("module-frame") || renderedModuleId !== module.id) return;
+    if(module.id==='modeling'){try{const url=new URL(frame.contentWindow.location.href),goal=url.hash.startsWith('#goal/')?decodeURIComponent(url.hash.split('/')[1]):url.hash==='#objectives'?null:url.searchParams.get('goal');syncStudioNavigation(goal);}catch(_){}return;}
     const active = taskFromFrame(frame, module);
     if (!active) return;
     if(['m07','dashboard'].includes(module.id)){
-      const choice=['directory','financing','budget','risk','preloan','post-investment'].includes(active.id)?'directory':'discover';
+      const choice=['temporal','financing-plans'].includes(active.id)?'temporal':active.id==='situation'?'situation':['directory','financing','budget','risk','preloan','post-investment'].includes(active.id)?'directory':'discover';
       app.querySelectorAll('.object-primary-children [data-module-task]').forEach(button=>button.classList.toggle('active',button.dataset.moduleTask===choice));
     }
     app.querySelectorAll(`.module-subnav-item[data-module-id="${module.id}"]`).forEach((button) => button.classList.toggle("active", button.dataset.moduleTask === active.id));
@@ -737,7 +755,8 @@
     const module = moduleId === "dashboard" ? DATA.dashboard : DATA.moduleById[moduleId];
     const task = moduleTasks(moduleId).find((item) => item.id === taskId);
     const frame = document.getElementById("module-frame");
-    if (!module || !task || !frame || renderedModuleId !== module.id) return;
+    if (!module || !task || !frame) return;
+    if(renderedModuleId!==module.id){captureFramePosition();STORE.saveFramePosition(module.id,{hash:task.hash,windowY:0,containerY:0});navigate(module.id==='dashboard'?'#dashboard':'#module/'+module.id,{skipCapture:true});return;}
     if(task.collectionId){openBusinessPanorama(task.collectionId,task.scenarioId);return;}
     if (task.targetModuleId && task.targetModuleId !== module.id) {
       captureFramePosition();
@@ -1109,6 +1128,7 @@
 
   function adaptFrame(frame, module) {
     if (frame !== document.getElementById("module-frame") || renderedModuleId !== module.id) return;
+    try{const doc=frame.contentDocument;global.OFW_BLUE_GOLD?.apply(doc);frame.contentWindow.postMessage({type:'OFW_GLASS_PREFERENCES',preferences:global.OFW_BLUE_GOLD?.preferences()},location.origin);}catch(_){}
     if(JOINT?.adapt(frame,module))return;
     try {
       const doc = frame.contentDocument;
@@ -1174,7 +1194,7 @@
   function captureFramePosition() {
     if (!renderedModuleId) return;
     const frame = document.getElementById("module-frame");
-    if (!frame) return;
+    if (!frame||frame.dataset.pending==='true') return;
     try {
       const doc = frame.contentDocument;
       const scroller = doc?.querySelector(".main,.screen-stage,.page-shell,.workspace-main,.primary-pane,[data-scroll-container]");
@@ -1573,23 +1593,51 @@
         navigate("#module/data"); return;
       }
       if(renderedModuleId==='dashboard'&&message.type==='OFW_OBJECT_PANORAMA'){openBusinessPanorama(message.collectionId);return;}
+      if(message.type==='OFW_OPEN_MAP'&&renderedModuleId==='m07'){JOINT.open('dashboard','situation',{sourceModuleId:'m07',activeObjectRef:null,objectSetRef:{objectIds:message.objectIds||[]}});return;}
+      if(message.type==='OFW_TEMPORAL_PORTRAIT'&&renderedModuleId==='dashboard'){if(!/^(ENT-\d{3}|HOLD-S005-[A-Z0-9-]+)$/.test(message.objectId||''))return;sessionStorage.setItem('ofw.v15.exploration-return',frame.contentWindow.location.href);const target=new URL(DATA.moduleById.m07.source,location.href);target.searchParams.set('object',message.objectId);target.searchParams.set('set',message.objectId);target.searchParams.set('lens','overview');target.hash='explore';const linked=new URL(location.href);linked.searchParams.set('exploration',target.href);history.replaceState(history.state,'',linked);navigate('#module/m07');return;}
+      if(message.type==='OFW_OPEN_TEMPORAL'&&['m07','modeling','dashboard','decision'].includes(renderedModuleId)){JOINT.open('dashboard','temporal',{sourceModuleId:renderedModuleId,temporalRef:{objectIds:message.objectIds||[],runId:message.runId||null,versionId:message.versionId||null,tab:message.tab||'finance',openScenario:Boolean(message.openScenario),sourceWindowDays:message.horizon||null}});return;}
+      if(message.type==='OFW_FINANCE_ASSET_OPEN'&&['dashboard','modeling','decision'].includes(renderedModuleId)&&['asset-finance-contracts-v15-1','asset-finance-peer-rates-v15-1'].includes(message.assetId)){const url=new URL(DATA.moduleById.data.source,location.href);url.hash='/resources?snapshotAsset='+encodeURIComponent(message.assetId)+'&snapshotTab=data';STORE.saveFramePosition('data',{href:url.href,hash:url.hash,windowY:0,containerY:0});navigate('#module/data');return;}
       if(renderedModuleId==='m07'&&message.operation==='open-enterprise-exploration'){
         JOINT.open('dashboard','situation',{activeObjectRef:null,objectSetRef:null,sourceModuleId:'m07',viewRef:{kind:'object-type',objectTypeId:'OBJ-ENTERPRISE'},resetEnterpriseExploration:true,enterpriseEntryId:crypto.randomUUID()});return;
       }
-      if(message.type==='OFW_ENTERPRISE_PORTRAIT'&&renderedModuleId==='dashboard'){
+      if((message.type==='OFW_ENTERPRISE_PORTRAIT'&&renderedModuleId==='dashboard')||(message.type==='OFW_CASE_PORTRAIT'&&renderedModuleId==='decision')){
         if(!/^ENT-(?:\d{3}|APPLICANT-\d{3})$/.test(message.objectId||''))return;
+        if(renderedModuleId==='dashboard')sessionStorage.setItem('ofw.v15.exploration-return',frame.contentWindow.location.href);
         const target=new URL(DATA.moduleById.m07.source,location.href);target.searchParams.set('object',message.objectId);target.searchParams.set('set',message.objectId);target.searchParams.set('lens','overview');if(message.detailTab==='events')target.searchParams.set('detail','events');target.hash='explore';const linked=new URL(location.href);linked.searchParams.set('exploration',target.href);history.replaceState(history.state,'',linked);navigate('#module/m07');return;
       }
-      if(message.type==='OFW_MODEL_STUDIO_ROUTE'&&renderedModuleId==='modeling'){syncFrameBreadcrumb(frame,DATA.moduleById.modeling);return;}
+      if(message.type==='OFW_CASE_OPEN'&&['dashboard','m07','modeling','decision'].includes(renderedModuleId)) {
+        const tasks=JSON.parse(localStorage.getItem('ofw.v1.5.workbench.v1')||'null')?.tasks||[];
+        if(message.taskId&&!tasks.some(t=>t.id===message.taskId))throw Error('待处理事项未保存成功');
+        const target=new URL(DATA.moduleById.decision.source,location.href);target.hash=message.taskId?'workbench?case='+encodeURIComponent('local:'+message.taskId):'workbench';
+        STORE.saveFramePosition('decision',{href:target.href,hash:target.hash,windowY:0,containerY:0});navigate('#module/decision');return;
+      }
+      if(message.type==='OFW_CASE_SOURCE'&&renderedModuleId==='decision') {
+        const task=JSON.parse(localStorage.getItem('ofw.v1.5.workbench.v1')||'null')?.tasks?.find(t=>t.id===message.taskId);if(!task)throw Error('事项来源不可用');
+        if(task.recommendation&&task.modelRun){JOINT.open('dashboard','temporal',{sourceModuleId:'decision',temporalRef:{runId:task.modelRun.id,proposalId:task.recommendation.id,objectIds:task.modelRun.objectIds}});return;}
+        if(task.modelRun){const url=new URL(DATA.moduleById.modeling.source,location.href);url.searchParams.set('goal',task.modelRun.goalId);url.searchParams.set('version',task.modelRun.versionId);url.searchParams.set('run',task.modelRun.id);url.hash='goal/'+task.modelRun.goalId+'/use';STORE.saveFramePosition('modeling',{href:url.href,hash:url.hash,windowY:0,containerY:0});navigate('#module/modeling');return;}
+        JOINT.open('dashboard','situation',{activeObjectRef:{id:task.objectIds[0],objectTypeRef:'Enterprise'},objectSetRef:{id:'case:'+task.id,objectIds:task.objectIds},timeRange:{start:task.evidence.asOf,end:task.evidence.asOf},sourceModuleId:'decision',caseTaskRef:{id:task.id}});return;
+      }
+      if(message.type==='OFW_CASE_REPORT'&&renderedModuleId==='decision') {
+        const task=JSON.parse(localStorage.getItem('ofw.v1.5.workbench.v1')||'null')?.tasks?.find(t=>t.id===message.taskId);if(!task)throw Error('事项记录不可用');
+        const resultId='case-review:'+task.id+':'+task.updatedAt,W=global.OFW_WORKFLOW,report=W.readReport('S003');
+        if(!report?.contentBlocks?.some(block=>block.resultId===resultId))W.appendBlock('S003',{type:'result-summary',sourceModuleId:'decision',title:task.title+' · 办理与效果复核',text:'固定依据日 '+task.evidence.asOf+'；结果身份 '+task.evidence.resultKind+'。\n'+task.history.map(e=>e.at+' · '+e.note).join('\n')+'\n效果复核：'+(task.decisionFlow?.effect?JSON.stringify(task.decisionFlow.effect):'尚未核实，不能由执行完成推断达成'),resultId,resultMode:['SIMULATION','SCENARIO_SIMULATION','AI_RECOMMENDATION_SCENARIO'].includes(task.evidence.resultKind)?'simulation':task.modelRun?'candidate':'demo',dataVersionId:task.evidence.dataVersion,ontologyVersionId:task.evidence.ontologyVersion,rows:[],evidenceRefs:[task.evidence.dataDigest,task.evidence.modelRunId].filter(Boolean),workspaceContext:{activeObjectRef:{id:task.objectIds[0],objectTypeRef:'Enterprise'},objectSetRef:{objectIds:task.objectIds},timeRange:{start:task.evidence.asOf,end:task.evidence.asOf},evidenceRefs:[task.evidence.dataDigest],caseRef:{id:task.id,updatedAt:task.updatedAt}},caseSnapshot:clonePlain(task)});
+        JOINT.open('report','catalog');return;
+      }
+      if(message.type==='OFW_RETURN_EXPLORATION'&&renderedModuleId==='m07'){JOINT.open('dashboard',sessionStorage.getItem('ofw.v15.exploration-return')?.includes('/temporal.html')?'temporal':'situation',{sourceModuleId:'joint-workbench',restoreExplorationId:null,caseTaskRef:null,modelRunRef:null,resetEnterpriseExploration:false});return;}
+      if(message.type==='OFW_RESTORE_EXPLORATION'&&renderedModuleId==='m07') {
+        const entry=JSON.parse(localStorage.getItem('ofw.v1.5.workbench.v1')||'null')?.explorations?.find(e=>e.id===message.id);if(entry?.kind==='TEMPORAL')JOINT.open('dashboard','temporal',{sourceModuleId:'m07',temporalRef:{savedId:entry.id}});else JOINT.open('dashboard','situation',{sourceModuleId:'m07',restoreExplorationId:message.id});return;
+      }
+      if(message.type==='OFW_MODEL_STUDIO_ROUTE'&&renderedModuleId==='modeling'){syncShellChrome(parseRoute());syncStudioNavigation(message.goalId);syncFrameBreadcrumb(frame,DATA.moduleById.modeling);return;}
       if(message.type==='OFW_STUDIO_OPEN'||message.operation==='open-studio-version'){
-        if(!['m07','dashboard','modeling'].includes(renderedModuleId)||!/^[-a-zA-Z0-9]+$/.test(message.goalId||''))return;
+        if(!['m07','dashboard','modeling','decision'].includes(renderedModuleId)||!/^[-a-zA-Z0-9]+$/.test(message.goalId||''))return;
         if(renderedModuleId==='m07'&&message.returnUrl){const back=safeM07ReturnUrl(message.returnUrl,activeContext());if(back)sessionStorage.setItem('ofw.m07.business-return',back.href);}
-        const target=new URL(DATA.moduleById.modeling.source,location.href);target.searchParams.set('goal',message.goalId);if(message.runId)target.searchParams.set('run',message.runId);if(message.versionId)target.searchParams.set('version',message.versionId);target.hash=`goal/${message.goalId}/${message.runId?'use':'versions'}`;
+        if(message.context){const c=message.context;STORE.updateWorkspaceContext({activeObjectRef:c.selectedId?{id:c.selectedId,objectTypeRef:'Enterprise'}:null,objectSetRef:{objectIds:c.objectIds},timeRange:{start:c.asOf,end:c.asOf},dataVersionRef:{id:c.dataVersion},ontologyVersionRef:{id:c.ontologyVersion},evidenceRefs:[c.dataDigest],analysisWindowDays:c.horizon,sourceObservationDate:c.asOf,sourceModuleId:renderedModuleId},'model-scope');}
+        const target=new URL(DATA.moduleById.modeling.source,location.href);target.searchParams.set('goal',message.goalId);if(message.runId)target.searchParams.set('run',message.runId);if(message.versionId)target.searchParams.set('version',message.versionId);if(message.editVersionId)target.searchParams.set('editVersion',message.editVersionId);target.hash=`goal/${message.goalId}/${message.runId?'use':'versions'}`;
         STORE.saveFramePosition('modeling',{href:target.href,hash:target.hash,windowY:0,containerY:0});navigate('#module/modeling');return;
       }
       if(renderedModuleId==='modeling'&&message.type==='OFW_STUDIO_EXPLORE'){
         const ids=(message.objectIds||[]).filter(id=>/^ENT-\d{3}$/.test(id));if(!ids.length)return;
-        JOINT.open('dashboard','situation',{activeObjectRef:{id:message.selectedId||ids[0],objectTypeRef:'Enterprise'},objectSetRef:{id:'model-run:'+message.runId,objectIds:ids,selectionMode:'EXPLICIT',count:ids.length},sourceModuleId:'modeling',modelRunRef:{id:message.runId,goalId:message.goalId}});return;
+        JOINT.open('dashboard','situation',{activeObjectRef:{id:message.selectedId||ids[0],objectTypeRef:'Enterprise'},objectSetRef:{id:'model-run:'+message.runId,objectIds:ids,selectionMode:'EXPLICIT',count:ids.length},sourceModuleId:'modeling',modelRunRef:message.runId?{id:message.runId,goalId:message.goalId}:null,modelUseVersionId:message.versionId||null});return;
       }
       if (renderedModuleId === "m07" && message.operation === "open-business-ontology") {
         const returnUrl = safeM07ReturnUrl(message.returnUrl, activeContext());
@@ -1782,13 +1830,15 @@
 
   document.addEventListener("click", (event) => {
     const routeButton = event.target.closest("[data-route]");
-    if (routeButton) { navigate(routeButton.dataset.route); return; }
+    if (routeButton) { if(STORE.get().navCollapsed)STORE.toggleNavigation();navigate(routeButton.dataset.route);return; }
     const resourceButton = event.target.closest("[data-resource-id]");
     if (resourceButton && !resourceButton.closest("[data-action='use-resource']")) { openResource(resourceButton.dataset.resourceId); return; }
     const actionButton = event.target.closest("[data-action]");
     if (!actionButton) return;
     const action = actionButton.dataset.action;
-    if (action === "toggle-navigation") { STORE.toggleNavigation(); app.querySelector(".platform-shell")?.classList.toggle("nav-collapsed", STORE.get().navCollapsed); }
+    if(action==='retry-workspace'){const frame=document.getElementById('module-frame');if(frame?.dataset.pending==='true')frame.dataset.requestedSource='';renderModule(moduleForRoute());return;}
+    if(action==='toggle-module-menu'){const group=app.querySelector('[data-nav-group="'+actionButton.dataset.group+'"]');if(innerWidth>1100){app.querySelectorAll('.nav-group.expanded').forEach(other=>{if(other!==group)other.classList.remove('expanded');});}group?.classList.toggle('expanded');actionButton.setAttribute('aria-expanded',String(group?.classList.contains('expanded')));return;}
+    if (action === "toggle-navigation") { STORE.toggleNavigation(); app.querySelector(".platform-shell")?.classList.toggle("nav-collapsed", STORE.get().navCollapsed);const nav=app.querySelector('.global-nav'),holder=document.createElement('div');holder.innerHTML=navMarkup(parseRoute());nav?.replaceWith(holder.firstElementChild);refreshIcons(app.querySelector('.global-nav')); }
     if (action === "retry-service") { serviceState = "checking"; syncServiceStatus(); void refreshModelContext(); }
     if (action === "open-catalog" || action === "open-recent") {
       drawerFocus = actionButton;
@@ -1879,8 +1929,9 @@
   });
 
   document.addEventListener("click", (event) => {
+    const goal=event.target.closest('[data-studio-nav]');if(goal){captureFramePosition();const target=new URL(DATA.moduleById.modeling.source,location.href);target.searchParams.set('goal',goal.dataset.studioNav);target.hash='goal/'+goal.dataset.studioNav+'/overview';STORE.saveFramePosition('modeling',{href:target.href,hash:target.hash,windowY:0,containerY:0});navigate('#module/modeling',{skipCapture:true});return;}
     const task = event.target.closest("[data-module-task]");
-    if (task) activateModuleTask(task.dataset.moduleId, task.dataset.moduleTask);
+    if (task) { activateModuleTask(task.dataset.moduleId, task.dataset.moduleTask);if(global.innerWidth<=720&&!STORE.get().navCollapsed){STORE.toggleNavigation();app.querySelector(".platform-shell")?.classList.add("nav-collapsed");} }
   });
 
   global.addEventListener("message", handleFrameMessage);
@@ -1906,7 +1957,9 @@
 
   if (!global.location.hash) history.replaceState({ ofwShell: true, scenarioId: STORE.get().activeScenarioId, ofwDepth: 0 }, "", "#home");
   else if (!history.state?.ofwShell) history.replaceState({ ...(history.state || {}), ofwShell: true, scenarioId: STORE.get().activeScenarioId, ofwDepth: 0 }, "", global.location.href);
-  JOINT?.attach({store:STORE,tasks:moduleTasks,navigate,frameSource,capture:captureFramePosition,updateWorkspaceContext,syncNavigation:syncSecondaryNavigation,toast:showToast,moduleForRoute});
+  const compactNav=global.matchMedia('(max-width:720px)');
+  compactNav.addEventListener('change',event=>{if(event.matches&&!STORE.get().navCollapsed){STORE.toggleNavigation();app.querySelector('.platform-shell')?.classList.add('nav-collapsed');}});
+  JOINT?.attach({switchFrame:(module)=>renderModule(module),store:STORE,tasks:moduleTasks,navigate,frameSource,capture:captureFramePosition,updateWorkspaceContext,syncNavigation:syncSecondaryNavigation,toast:showToast,moduleForRoute});
   let requestedTask=new URLSearchParams(global.location.search).get('task');
   if(requestedTask==='situation'&&location.hash==='#module/m07')history.replaceState(history.state,'',location.pathname+location.search+'#dashboard');
   if(requestedTask==='joint-data'){requestedTask='resources';history.replaceState(history.state,'',location.pathname+location.search+'#module/data');}

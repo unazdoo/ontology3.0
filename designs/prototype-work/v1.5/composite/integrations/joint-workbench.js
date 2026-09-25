@@ -3,20 +3,18 @@
   const task = (id, label, icon, view) =>
     Object.freeze({ id, label, icon, view, hash: `#v14/${view}` });
   const tasks = Object.freeze({
-    dashboard: [task("situation", "企业探索", "globe-2", "workbench")],
+    dashboard: [task("situation", "地图视图", "globe-2", "workbench"),task("temporal","时序分析","chart-no-axes-combined","temporal"),{...task("financing-plans", "已保存分析方案", "git-compare-arrows", "plans"),contextual:true}],
     query: [task("map-query", "地图联动问数", "map", "workbench")],
-    decision: [
-      task("financing-plans", "融资方案推演", "git-compare-arrows", "plans"),
-      task("analysis-tasks", "分析复核事项", "list-checks", "tasks"),
-    ],
+    decision: [],
     report: [
       task("joint-reports", "联合分析报告", "file-chart-column", "reports"),
     ],
   });
   const owners = {
     workbench: ["dashboard", "situation"],
-    plans: ["decision", "financing-plans"],
-    tasks: ["decision", "analysis-tasks"],
+    temporal:["dashboard","temporal"],
+    plans: ["dashboard", "financing-plans"],
+    tasks: ["decision", "workbench"],
     reports: ["report", "joint-reports"],
     ontology: ["ontology", "published"],
     data: ["data", "resources"],
@@ -28,9 +26,7 @@
     pendingRule = null;
   function isJoint(frame) {
     try {
-      return new URL(frame.contentWindow.location.href).pathname.endsWith(
-        "/workbench.html",
-      );
+      return ["/workbench.html","/temporal.html"].some(path=>new URL(frame.contentWindow.location.href).pathname.endsWith(path));
     } catch {
       return false;
     }
@@ -44,7 +40,7 @@
     return tasks[moduleId]?.find((item) => item.view === view) || null;
   }
   function source(item) {
-    const url = new URL("/workbench.html", location.origin);
+    const url = new URL(item.view==='temporal'?"/temporal.html":"/workbench.html", location.origin);
     url.searchParams.set("embedded", "1");
     url.hash = `view=${item.view}`;
     return url.pathname + url.search + url.hash;
@@ -54,6 +50,7 @@
     for (const scenario of global.OFW_V131_DATA.scenarios) {
       const positions =
         shell.store.scenario(scenario.id)?.navigation?.framePositions || {};
+      if (/^#v14\/(tasks|plans)$/.test(positions.decision?.hash||"")) shell.store.saveFramePosition("decision",{hash:"#workbench",windowY:0,containerY:0},scenario.id);
       if (positions.m07?.hash === "#v14/workbench")
         shell.store.saveFramePosition(
           "m07",
@@ -76,7 +73,7 @@
   }
   function open(moduleId, taskId, context = null) {
     if (!shell) return;
-    if (context) shell.updateWorkspaceContext(context, "joint-workbench");
+    if (context) shell.updateWorkspaceContext({restoreExplorationId:null,caseTaskRef:null,modelRunRef:null,modelUseVersionId:null,resetEnterpriseExploration:false,...context}, "joint-workbench");
     const target = shell.tasks(moduleId).find((item) => item.id === taskId);
     if (!target) throw new Error("工作区任务不存在");
     shell.capture();
@@ -149,6 +146,7 @@
       windowY: 0,
       containerY: 0,
     });
+    if(item.view&&isJoint(frame)&&new URL(frame.contentWindow.location.href).pathname.endsWith("/temporal.html")!==(item.view==="temporal")){shell.switchFrame(module);return true;}
     if (item.view && isJoint(frame)) {
       frame.contentWindow.postMessage(
         { type: "OFW_V14_VIEW", view: item.view },
@@ -156,9 +154,10 @@
       );
       return true;
     }
-    frame.src = item.view ? source(item) : shell.frameSource(module);
+    shell.switchFrame(module);
     return true;
   }
+  const adaptedDocuments=new WeakSet();
   function adapt(frame, module) {
     document
       .querySelector(".module-workspace-layout")
@@ -171,8 +170,7 @@
         heading.textContent =
           taskForFrame(frame, module.id)?.label || module.name;
     };
-    frame.contentWindow.addEventListener("hashchange", sync);
-    frame.contentDocument.addEventListener("click", () => setTimeout(sync, 50));
+    if(!adaptedDocuments.has(frame.contentDocument)){adaptedDocuments.add(frame.contentDocument);frame.contentWindow.addEventListener("hashchange",sync);frame.contentDocument.addEventListener("click",()=>setTimeout(sync,50));}
     sync();
     frame.contentWindow.postMessage(
       { type: "OFW_V14_CONTEXT", context: shell.store.workspaceContext() },
@@ -346,7 +344,8 @@
       if (message.type === "OFW_V14_VIEW_CHANGED") {
         const module = shell.moduleForRoute();
         shell.syncNavigation(frame, module);
-        document.getElementById("frame-breadcrumb-current").textContent =
+        const breadcrumb = document.getElementById("frame-breadcrumb-current");
+        if (breadcrumb) breadcrumb.textContent =
           taskForFrame(frame, module.id)?.label || module.name;
         return true;
       }

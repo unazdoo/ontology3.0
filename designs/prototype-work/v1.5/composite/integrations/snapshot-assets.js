@@ -15,6 +15,11 @@
   const clone = (value) => JSON.parse(JSON.stringify(value));
   const catalog = () => global.OFW_V14_SNAPSHOT_CATALOG;
   function create({ doc, win, openDrawer, signal }) {
+    let financingAssets=[];
+    Promise.all([win.fetch('/data/finance-contract-assets.json',{signal}).then(r=>{if(!r.ok)throw Error('融资台账资产读取失败');return r.json();}),import('/designs/prototype-work/v1.5/composite/shared/model-contracts.js')]).then(([pack,{INPUT_PORTS}])=>{
+      if(signal?.aborted)return;
+      financingAssets=pack.assets.map(a=>({...a,financing:true,rowCount:a.rows.length,snapshotId:a.id+'@'+a.version,fields:Object.values(INPUT_PORTS).find(p=>p.member===a.kind).fields}));lastRoute=null;render();
+    }).catch(e=>{if(!signal?.aborted)console.error(e);});
     let activeId = null,
       activeTab = "overview",
       page = 1,
@@ -44,7 +49,14 @@
       show();
     }
     function current() {
-      return catalog()?.assets.find((asset) => asset.id === activeId) || null;
+      return [...(catalog()?.assets||[]),...financingAssets].find((asset) => asset.id === activeId) || null;
+    }
+    function showFinancing(asset){
+      const filtered=asset.rows.filter(row=>!query||Object.values(row).some(v=>String(v??'').includes(query))),pages=Math.max(1,Math.ceil(filtered.length/20));page=Math.min(page,pages);
+      const tabs=[['overview','概览与来源'],['data','字段与明细']];
+      const header=`<p class="snapshot-notice">原融资台账提取 · ${asset.rowCount} 条 · 截至 ${esc(asset.asOf)}</p><div class="snapshot-tabs">${tabs.map(([id,name])=>`<button data-snapshot-action="tab" data-tab="${id}" class="${activeTab===id?'active':''}">${name}</button>`).join('')}</div>`;
+      const body=activeTab==='data'?`<details class="snapshot-fields"><summary>字段字典 · ${asset.fields.length} 个字段</summary><div class="snapshot-table"><table><thead><tr><th>字段</th><th>类型／单位</th><th>缺失处理</th></tr></thead><tbody>${asset.fields.map(f=>`<tr><td>${esc(f.label)}<small>${esc(f.key)}</small></td><td>${esc(f.type)} ${esc(f.unit)}</td><td>${f.nullable?'保留未提供，不以零或评分替代':'必须取得'}</td></tr>`).join('')}</tbody></table></div></details><form class="snapshot-search" data-snapshot-search><input name="query" value="${esc(query)}" placeholder="搜索借据、企业或银行"><button type="submit">查询</button></form><div class="snapshot-table"><table><thead><tr>${asset.fields.map(f=>`<th>${esc(f.label)}</th>`).join('')}</tr></thead><tbody>${filtered.slice((page-1)*20,page*20).map(row=>`<tr>${asset.fields.map(f=>`<td>${row[f.key]==null?'未提供':esc(row[f.key])}</td>`).join('')}</tr>`).join('')}</tbody></table></div><div class="snapshot-pagination"><span>${filtered.length} 条 · ${page}/${pages} 页</span>${command('prev','上一页',page===1?'disabled':'')}${command('next','下一页',page===pages?'disabled':'')}</div>`:facts([['资产版本',asset.version],['原工作簿',asset.source],['原工作表',asset.sourceSheet],['源文件指纹',asset.sourceSha256],['提取资产指纹',asset.digest],['重定价口径','首次生效日与周期取原台账；下一重定价日按台账周期计算'],['评级覆盖',`${asset.ratingCoverage} 条正式评级；当前源文件未提供评级字段`],['利率匹配','同评级、同币种、相近期限按银行匹配；不足时按原台账板块计算加权均值'],['金融口径',asset.currencyBasis]])+`<p>每条明细保留原借据编号和源行号；固定利率借据的重定价字段不适用。历史演示快照与本资产独立保留。</p><a href="/${esc(asset.source)}" target="_blank" rel="noopener">查看原始融资工作簿</a>`;
+      openDrawer(asset.name,'数据工程 · 原台账资产',header+body,`<a class="ofw-native-action" href="/data/finance-contract-assets.json" download>导出提取资产 JSON</a>`);refresh();
     }
     function show() {
       const c = catalog(),
@@ -52,6 +64,7 @@
       if (!c) return;
       const source = activeId === c.source.id;
       if (!source && !asset) return;
+      if(asset?.financing){showFinancing(asset);return;}
       const tabs = [
         ["overview", "概览"],
         ["data", "字段与数据"],
@@ -224,6 +237,7 @@
             : `<div><span class="eyebrow">模拟数据资产</span><h3>${esc(asset.name)}</h3><p>${asset.rowCount} 条记录 · ${asset.fields.length} 个字段</p></div><div class="summary-strip"><div class="fact"><span>冻结快照</span><strong>${asset.snapshotId}</strong></div><div class="fact"><span>数据截至</span><strong>${asset.asOf}</strong></div><div class="fact"><span>质量检查</span><strong>完整性通过</strong></div><div class="fact"><span>下游使用</span><strong>融资与风险态势</strong></div></div><div class="card-foot"><span class="badge warning">完整模拟构造</span>${open}</div>`;
           (table || grid)?.append(node);
         }
+        for(const asset of financingAssets){const node=doc.createElement(table?'tr':'article');node.dataset.snapshotRecord=asset.id;node.className=table?'':'asset-card';const open=`<button class="text-link" data-snapshot-action="open" data-id="${asset.id}">查看详情</button>`;node.innerHTML=table?`<td><strong>${esc(asset.name)}</strong><small>${asset.rowCount} 条原台账明细</small></td><td>${esc(asset.version)}</td><td>融资模型输入</td><td>${asset.asOf}</td><td>重定价条款按源读取</td><td>1</td><td>源行可追溯</td><td>${asset.asOf}</td><td>信用评级待源提供</td><td>${open}</td>`:`<h3>${esc(asset.name)}</h3><p>${asset.rowCount} 条 · 原借据与源行可追溯</p><p>重定价条款按源读取，信用评级待源提供。</p>${open}`;(table||grid)?.append(node);}
         const count = column.querySelector(".resource-column-head h2 em");
         if (count)
           count.textContent = String((table || grid)?.children.length || 0);

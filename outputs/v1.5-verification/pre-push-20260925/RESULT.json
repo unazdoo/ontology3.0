@@ -1,0 +1,72 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-09-25T00:06:17.489954+00:00",
+  "unitTests": 204,
+  "build": "passed (existing large bundle warning)",
+  "browserSuites": {
+    "current": {
+      "status": "passed",
+      "checkpoints": 37,
+      "evidence": "current/result.json"
+    },
+    "native": {
+      "status": "passed",
+      "checkpoints": 16,
+      "evidence": "native/result.json"
+    },
+    "glass": {
+      "status": "passed",
+      "checkpoints": 48,
+      "evidence": "glass/refinement-result.json"
+    },
+    "responsive": {
+      "status": "passed",
+      "checkpoints": 93,
+      "evidence": "responsive/result.json"
+    }
+  },
+  "colorAudit": {
+    "states": 48,
+    "issues": 0
+  },
+  "branchesBeforeCommit": [
+    {
+      "branch": "codex/prototype-v1.2.0-composite",
+      "upstream": "origin/codex/prototype-v1.2.0-composite",
+      "aheadBeforeCommit": 1,
+      "behind": 0
+    },
+    {
+      "branch": "codex/prototype-v1.3.1-composite",
+      "upstream": "origin/codex/prototype-v1.3.1-composite",
+      "aheadBeforeCommit": 0,
+      "behind": 0
+    },
+    {
+      "branch": "codex/prototype-v1.5.0",
+      "upstream": "origin/codex/prototype-v1.5.0",
+      "aheadBeforeCommit": 0,
+      "behind": 0
+    },
+    {
+      "branch": "codex/review-v1.4-ux-20260907",
+      "upstream": "origin/codex/review-v1.4-ux-20260907",
+      "aheadBeforeCommit": 0,
+      "behind": 0
+    },
+    {
+      "branch": "main",
+      "upstream": "origin/main",
+      "aheadBeforeCommit": 0,
+      "behind": 0
+    }
+  ],
+  "v12Static": "passed",
+  "excludedFromCommit": [
+    "Historical and duplicate test screenshots/logs",
+    "artifacts/",
+    "undefined/",
+    "v1.4 review output directory"
+  ],
+  "protectedPathsChanged": []
+}

@@ -1,0 +1,6 @@
+/* Blue-gold presentation-mode controls only. The platform shell chrome itself is
+   authored in composite/s001-e2e-integration/shell-base.css (dark, no overrides). */
+.glass-presentation-control{display:inline-flex;align-items:center;gap:7px;min-height:33px;padding:6px 11px;color:#ebd3ab;background:#dab77e12;border:1px solid #dcc49738;border-radius:6px;font-size:13px;white-space:nowrap}.glass-presentation-control[aria-pressed="true"]{background:#dfc39a;color:#152e46}.glass-presentation-control .icon{width:16px;height:16px}
+@media(min-width:1101px){html[data-ofw-presentation="true"] .platform-shell{padding:7px!important;gap:2px!important}.glass-presentation-control{min-height:30px;font-size:12px}}
+@media(max-width:1100px){.glass-presentation-control{font-size:0;width:33px;padding:7px}.glass-presentation-control .icon{width:17px;height:17px}}
+@media(max-width:720px){.glass-presentation-control[data-glass-action="motion"]{display:none}.glass-presentation-control{min-height:30px;width:30px}}

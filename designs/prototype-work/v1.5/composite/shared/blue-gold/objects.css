@@ -1,0 +1,7 @@
+/* Objects / map / temporal: sources (m07, src, dashboard) are dark-native now.
+   Only business-semantic guards and layout media overrides remain here. */
+/* Map legend risk dots keep their business signal colors. */
+html[data-ofw-theme="blue-gold"] .map-legend .risk-dot{color:initial!important}
+/* Density layout overrides (not presentational). */
+@media(min-width:1800px){html[data-ofw-theme="blue-gold"] :is(.object-list-pane,.ts-objects){min-width:245px}html[data-ofw-theme="blue-gold"] .entity-row{padding:18px 20px!important}html[data-ofw-theme="blue-gold"] .entity-row strong{font-size:16px!important}html[data-ofw-theme="blue-gold"] :is(.ts-header h1,.directory-header h1){font-size:31px!important}html[data-ofw-theme="blue-gold"] .ts-chart{padding:18px!important}html[data-ofw-theme="blue-gold"] .ts-chart h3{font-size:18px!important}}
+@media(max-width:720px){html[data-ofw-theme="blue-gold"] :is(.map-top-tools button,.ts-toolbar,.ts-company,.ts-field){font-size:12px!important}.map-top-tools .canvas-tabs{max-width:100%;flex-wrap:wrap}html[data-ofw-theme="blue-gold"] .ts-header{padding-inline:14px!important}html[data-ofw-theme="blue-gold"] .ts-chart{padding:11px!important}}

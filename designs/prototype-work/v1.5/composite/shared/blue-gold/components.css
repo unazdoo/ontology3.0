@@ -1,0 +1,149 @@
+/* v1.5 Phase 1 shared components. Additive utility layer; no module references are switched yet.
+   Modules adopt these classes incrementally in Phase 2/3, which then lets the per-module
+   override rules in modules.css / objects.css be retired page by page. */
+html[data-ofw-theme="blue-gold"] .ofw-card,
+html[data-ofw-theme="blue-gold"] .ofw-panel{
+  background:linear-gradient(145deg,rgba(215,234,255,.03),transparent 45%),var(--glass-panel);
+  color:var(--glass-ink);
+  border:1px solid var(--glass-line);
+  border-radius:var(--glass-radius);
+  box-shadow:inset 0 1px rgba(232,244,255,.07),0 10px 32px rgba(0,16,32,.09);
+  backdrop-filter:blur(22px) saturate(125%);
+  -webkit-backdrop-filter:blur(22px) saturate(125%);
+}
+html[data-ofw-theme="blue-gold"] .ofw-panel{padding:var(--space-4)}
+html[data-ofw-theme="blue-gold"] .ofw-card{padding:var(--space-4)}
+html[data-ofw-theme="blue-gold"] .ofw-card:hover{border-color:rgba(190,214,243,.28)}
+
+/* Buttons: one control, three intents. min-height 36px, radius sm. */
+html[data-ofw-theme="blue-gold"] .ofw-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);
+  min-height:36px;padding:0 var(--space-3);
+  font-size:var(--glass-caption);font-weight:500;color:var(--glass-ink);
+  background:rgba(178,209,239,.07);border:1px solid var(--glass-line);
+  border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap;
+  transition:background-color 160ms,border-color 160ms,color 160ms;
+}
+html[data-ofw-theme="blue-gold"] .ofw-btn:hover{background:var(--glass-hover);border-color:rgba(191,216,239,.33)}
+html[data-ofw-theme="blue-gold"] .ofw-btn:disabled{opacity:.5;cursor:not-allowed}
+html[data-ofw-theme="blue-gold"] .ofw-btn--primary{
+  color:var(--action-primary-ink);background:var(--action-primary-bg);
+  border-color:var(--action-primary-border);box-shadow:inset 0 1px rgba(255,255,255,.55),0 4px 15px rgba(130,188,228,.09);
+}
+html[data-ofw-theme="blue-gold"] .ofw-btn--danger{background:rgba(210,136,118,.13);border-color:rgba(237,180,166,.31);color:#ffd0c4}
+html[data-ofw-theme="blue-gold"] .ofw-btn--text{background:none;border-color:transparent;color:#acd6fa;min-height:0;padding:0}
+
+/* Badges: pill, three status intents. */
+html[data-ofw-theme="blue-gold"] .ofw-badge{
+  display:inline-flex;align-items:center;width:fit-content;
+  padding:2px var(--space-2);border-radius:var(--radius-pill);
+  font-size:11px;line-height:1.6;white-space:nowrap;
+  background:rgba(167,203,234,.07);color:#c5dff2;border:1px solid rgba(173,204,234,.15);
+}
+html[data-ofw-theme="blue-gold"] .ofw-badge--green{color:#b8e6cc;background:rgba(128,199,157,.07);border-color:rgba(170,216,189,.22)}
+html[data-ofw-theme="blue-gold"] .ofw-badge--amber{color:#efd0a1;background:rgba(208,167,110,.09);border-color:rgba(209,176,135,.23)}
+html[data-ofw-theme="blue-gold"] .ofw-badge--red{color:#fac0b1;background:rgba(209,142,121,.11);border-color:rgba(228,160,145,.23)}
+
+/* Tables. */
+html[data-ofw-theme="blue-gold"] .ofw-table{width:100%;border-collapse:collapse;font-size:var(--glass-caption);color:var(--glass-ink)}
+html[data-ofw-theme="blue-gold"] .ofw-table th{background:#112b47;color:#bdcfe1;font-weight:500;text-align:left;border-bottom:1px solid var(--glass-line)}
+html[data-ofw-theme="blue-gold"] .ofw-table th,
+html[data-ofw-theme="blue-gold"] .ofw-table td{padding:var(--space-3) var(--space-3);border-bottom:1px solid var(--glass-line);vertical-align:top}
+html[data-ofw-theme="blue-gold"] .ofw-table tbody tr:hover{background:rgba(177,206,240,.04)}
+html[data-ofw-theme="blue-gold"] .ofw-table tbody tr.is-selected{background:rgba(176,202,226,.1)}
+
+/* Form fields. */
+html[data-ofw-theme="blue-gold"] .ofw-field{display:grid;gap:var(--space-2);color:var(--glass-muted);font-size:var(--glass-caption)}
+html[data-ofw-theme="blue-gold"] .ofw-field :is(input,select,textarea){
+  width:100%;min-width:0;background:var(--glass-input);color:var(--glass-ink);
+  border:1px solid var(--glass-line-strong);border-radius:var(--radius-sm);
+  padding:var(--space-2) var(--space-3);font:inherit;caret-color:var(--glass-gold);
+}
+html[data-ofw-theme="blue-gold"] .ofw-field :is(input,textarea)::placeholder{color:#8da6bd}
+
+/* Modal / drawer surface. */
+html[data-ofw-theme="blue-gold"] .ofw-modal{
+  background:linear-gradient(145deg,rgba(210,231,255,.04),transparent 45%),rgba(16,40,66,.96);
+  color:var(--glass-ink);border:1px solid rgba(179,210,235,.28);
+  border-radius:var(--glass-radius);box-shadow:var(--shadow-pop);backdrop-filter:blur(28px);
+}
+html[data-ofw-theme="blue-gold"] .ofw-modal-scrim{background:var(--glass-scrim);backdrop-filter:blur(5px)}
+
+/* Empty / notice state. */
+html[data-ofw-theme="blue-gold"] .ofw-empty{
+  background:var(--glass-panel);color:var(--glass-ink);
+  border:1px solid var(--glass-line);border-radius:var(--glass-radius);
+  padding:var(--space-6);text-align:center;box-shadow:inset 0 1px rgba(219,234,255,.05);
+}
+html[data-ofw-theme="blue-gold"] .ofw-empty p{color:var(--glass-muted)}
+
+/* ===== Inherited-module class aliases (Phase 3).
+   Frozen modules (query/m07/dashboard/...) render their own class names and cannot be
+   re-classed. Map those semantic classes onto the same component definitions so the
+   component layer is the single source of truth, then retire the duplicated rules in
+   modules.css. Aliases need !important to beat the frozen light base. */
+
+/* Cards: glass surface for query conversation blocks. */
+html[data-ofw-theme="blue-gold"] :is(
+  .modern-composer, .composer, .composer-card, .follow-composer,
+  .modern-question-grid>button, .modern-question-grid>article,
+  .modern-answer-card, .answer-card, .modern-question-card, .recommendation-card,
+  .modern-session-card, .modern-session-item, .modern-history-item,
+  .modern-followups, .modern-context-panel, .modern-binding-card, .modern-binding-chain,
+  .context-stage-card, .context-summary, .agent-match-card
+){
+  background: linear-gradient(135deg, rgba(211,232,252,.04), transparent), var(--glass-panel) !important;
+  color: var(--glass-ink) !important;
+  border: 1px solid var(--glass-line) !important;
+  border-radius: var(--glass-radius) !important;
+  box-shadow: inset 0 1px rgba(214,237,255,.09) !important;
+  backdrop-filter: blur(20px);
+}
+html[data-ofw-theme="blue-gold"] :is(.modern-composer,.composer,.composer-card){
+  border-color: rgba(197,221,242,.33) !important;
+  box-shadow: inset 0 1px rgba(236,247,255,.15), 0 9px 25px rgba(0,19,40,.13) !important;
+}
+html[data-ofw-theme="blue-gold"] :is(.modern-question-grid>button:hover,.modern-session-item.active,.modern-history-item.active){
+  background: rgba(188,205,217,.1) !important; border-color: rgba(218,195,146,.33) !important;
+}
+
+/* Buttons: ui-button family maps to .ofw-btn semantics. */
+html[data-ofw-theme="blue-gold"] :is(.ui-button,.view-toggle button,.view-switch button,.modern-head-actions button){
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: 32px; padding: 0 var(--space-3);
+  color: var(--glass-ink) !important; background: rgba(154,194,237,.05) !important;
+  border: 1px solid var(--glass-line) !important; border-radius: var(--radius-sm) !important;
+  font-size: var(--glass-caption); cursor: pointer;
+  transition: background-color 160ms, border-color 160ms, color 160ms;
+}
+html[data-ofw-theme="blue-gold"] :is(.ui-button:hover,.view-toggle button:hover,.view-switch button:hover){ background: var(--glass-hover) !important; border-color: var(--glass-line-strong) !important; }
+html[data-ofw-theme="blue-gold"] :is(.ui-button--primary,.view-toggle button.active,.view-switch button.active){
+  color: #eff7ff !important; background: rgba(151,191,230,.2) !important; border-color: rgba(180,212,244,.3) !important;
+}
+html[data-ofw-theme="blue-gold"] .ui-button:disabled{ opacity:.5; cursor:not-allowed; }
+
+/* Badges / pills: ui-badge + context pill + scenario tabs. */
+html[data-ofw-theme="blue-gold"] :is(.ui-badge,.modern-context-pill,.context-pill){
+  display: inline-flex; align-items: center; width: fit-content;
+  padding: 2px var(--space-2); border-radius: var(--radius-pill) !important;
+  background: rgba(154,194,237,.05) !important; color: #c5dff2 !important;
+  border: 1px solid rgba(173,204,234,.15) !important; box-shadow: none !important;
+  font-size: 13px; white-space: nowrap;
+}
+html[data-ofw-theme="blue-gold"] :is(.ui-badge--success){ color: #b8e6cc !important; background: rgba(128,199,157,.07) !important; border-color: rgba(170,216,189,.22) !important; }
+html[data-ofw-theme="blue-gold"] :is(.ui-badge--warning){ color: #efd0a1 !important; background: rgba(208,167,110,.09) !important; border-color: rgba(209,176,135,.23) !important; }
+
+/* Scenario tabs (segmented control with gold active). */
+html[data-ofw-theme="blue-gold"] .ofw-query-scenario-tabs{ background: rgba(27,54,82,.65) !important; border: 1px solid var(--glass-line) !important; border-radius: 7px !important; }
+html[data-ofw-theme="blue-gold"] .ofw-query-scenario-tabs :is(button,span,small){ color: var(--glass-muted) !important; background: transparent !important; border-color: transparent !important; }
+html[data-ofw-theme="blue-gold"] .ofw-query-scenario-tabs button.is-active{ background: rgba(215,183,128,.11) !important; border-color: rgba(219,189,132,.33) !important; }
+html[data-ofw-theme="blue-gold"] .ofw-query-scenario-tabs button.is-active :is(span,small){ color: var(--glass-gold) !important; }
+
+/* Search / filter inputs in frozen modules (query search-box etc.). */
+html[data-ofw-theme="blue-gold"] :is(.search-input,.search-box,.search-field,.directory-search,.filter-control,.list-filters select){
+  background: var(--glass-input) !important; color: var(--glass-ink) !important; border-color: var(--glass-line) !important;
+}
+
+/* KPI value must stay light (verify:glass asserts it is never rgb(29,29,27)). */
+html[data-ofw-theme="blue-gold"] :is(.modern-kpi-grid>button>strong,.modern-answer-card strong,.ui-mini-chart__metric-value,.ui-stat__value){ color: #ecf4ff !important; }
+html[data-ofw-theme="blue-gold"] :is(.modern-kpi-grid>button>span,.modern-answer-meta,.modern-answer-warning){ color: #b5c9dd !important; }

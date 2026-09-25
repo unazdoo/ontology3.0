@@ -1,0 +1,20 @@
+/* Inserted inside the original ontology module by runtime/ontology-experience.mjs. */
+  function renderPublishedVersion() {
+    const version=selectedVersion();if(!version)return renderMissingPublishedVersion();
+    const tab=routeParams().get('tab')||'canvas';
+    const versions=state.publishedVersions.filter(item=>item.ontologyStableId===version.ontologyStableId);
+    const tabs=[['canvas','本体画布'],['resources','资源目录'],['overview','版本信息'],['data','正式数据与消费'],['updates','更新与回退'],['records','记录与证据']];
+    const formal=formalUseStateOf(version),mapping=publishedMappingContractAssessment(version);
+    const back=handoffContext()&&safeReturnTarget(handoffContext().returnTo)?btn('返回数据工程','return-data-engineering'):btn('返回语义资产目录','nav-published');
+    return `<div class="page-scroll published-version ${tab==='canvas'?'is-canvas':''}"><header class="ontology-workspace-head"><div><span class="eyebrow">已发布本体 · 只读</span><h1>${esc(version.name)}</h1></div><div class="ontology-workspace-actions">${back}${btn('创建修订草稿',`clone-version:${version.id}`,{primary:true})}</div></header>
+      <div class="ontology-workspace-context"><label><span>查看版本</span><select id="ontology-workspace-version" aria-label="查看本体精确版本">${versions.map(item=>`<option value="${esc(item.id)}" ${item.id===version.id?'selected':''}>${esc(item.semanticVersion)} · ${esc(formalUseStateOf(item).label)}</option>`).join('')}</select></label>${status(formal.label,formal.tone)}${status(mapping.label,mapping.tone)}<span class="ontology-asof">数据截至 ${esc(versionDataContract(version)?.asOf||'未冻结')}</span><details><summary>版本标识</summary><p>${esc(version.id)}</p><p>本体 ${esc(version.ontologyStableId)}</p></details></div>
+      <nav class="tabs ontology-workspace-tabs" aria-label="本体工作区">${tabs.map(([key,label])=>`<button class="${tab===key?'active':''}" data-action="version-tab:${key}" aria-current="${tab===key?'page':'false'}">${label}</button>`).join('')}</nav>${renderVersionTab(version,tab)}</div>`;
+  }
+  function renderPublishedInspector(version) {
+    const resource=publishedResources(version).find(item=>item.id===ui.publishedSelection);
+    if(!resource)return `<aside class="published-node-inspector"><span class="eyebrow">资源详情</span><h2>从画布理解业务定义</h2><p>选择对象、关系、指标、规则或行动，查看其定义与依赖。</p><div class="ontology-inspector-stats"><span><b>${version.objects.length}</b>对象</span><span><b>${version.links.length}</b>关系</span><span><b>${version.metrics.length}</b>指标</span><span><b>${version.rules.length}</b>规则</span></div><p class="ontology-inspector-boundary">当前画布为 ${esc(version.semanticVersion)} 的已发布快照。需要修改时，先创建修订草稿。</p></aside>`;
+    const all=publishedResources(version),refs=[resource.subjectObjectId,resource.sourceObjectId,resource.objectId,resource.targetObjectId,resource.source,resource.target,...(resource.dependencyIds||[]),...(resource.metricIds||[]),...(resource.ruleIds||[])].filter(id=>typeof id==='string');
+    const related=[...new Set(refs)].map(id=>all.find(item=>item.id===id)).filter(Boolean);
+    const text=resource.definition||resource.description||resource.formula||resource.condition||resource.requirement||resource.subtitle||'完整定义可在资源详情中查看。';
+    return `<aside class="published-node-inspector" data-selected-resource="${esc(resource.id)}"><header><span class="eyebrow">${esc(resource.type)}</span>${btn('取消选择','published-clear-selection',{small:true})}</header><h2>${esc(resource.name)}</h2><p>${esc(text)}</p><dl><dt>精确版本</dt><dd>${esc(version.semanticVersion)}</dd><dt>资源标识</dt><dd class="mono">${esc(resource.id)}</dd>${resource.unit?`<dt>单位</dt><dd>${esc(resource.unit)}</dd>`:''}</dl>${resource.properties?.length?`<h3>属性 · ${resource.properties.length}</h3><ul>${resource.properties.map(property=>`<li><b>${esc(property.name)}</b><small>${esc(property.dataType||property.type||'')}</small></li>`).join('')}</ul>`:''}${related.length?`<h3>关联与依赖</h3><div class="ontology-dependency-list">${related.map(item=>btn(item.name,`open-published-resource:${version.id}:${item.id}`,{small:true})).join('')}</div>`:''}<footer>${btn('查看完整定义与证据','published-resource-details',{primary:true})}</footer></aside>`;
+  }

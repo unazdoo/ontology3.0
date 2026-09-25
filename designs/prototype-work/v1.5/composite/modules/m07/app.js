@@ -668,25 +668,35 @@
     global.__OFW_REFRESH_LAYOUT__?.();
   }
 
+  global.addEventListener('ofw-work-context-ready',()=>{if(!state||!resource)return;if(state.route==='discover')renderSavedExplorations();else if(state.lens==='overview')renderCanvasStage();refreshIcons();});
+  document.addEventListener('click',event=>{
+    const analysis=event.target.closest('[data-discovery-analysis]');if(analysis){const items=filteredObjects(),holdings=state.typeFilter==='OBJ-INVESTMENT-HOLDING',ids=items.filter(i=>holdings||/^ENT-\d{3}$/.test(i.id)).map(i=>i.id);parent.postMessage({type:analysis.dataset.discoveryAnalysis==='temporal'?'OFW_OPEN_TEMPORAL':'OFW_OPEN_MAP',objectIds:ids,tab:holdings?'holdings':'finance'},location.origin);return;}
+    const saved=event.target.closest('[data-restore-map]');if(saved){parent.postMessage({type:'OFW_RESTORE_EXPLORATION',id:saved.dataset.restoreMap},location.origin);return;}
+    const task=event.target.closest('[data-open-unified-case]');if(task){parent.postMessage({type:'OFW_CASE_OPEN',taskId:task.dataset.openUnifiedCase},location.origin);return;}
+    if(event.target.closest('[data-return-enterprise-analysis]')){parent.postMessage({type:'OFW_RETURN_EXPLORATION'},location.origin);return;}
+    if(event.target.closest('[data-portrait-use-model]')){const item=activeObject();parent.postMessage({operation:'open-studio-version',goalId:'builtin-risk',returnUrl:location.href,context:{objectIds:[item.id],selectedId:item.id,asOf:businessAsOf(item),dataVersion:resource.dataVersion||'对象画像来源',ontologyVersion:resource.ontologyVersion||'对象画像本体',dataDigest:currentEvidenceRefs(item).join(' / ')}},location.origin);return;}
+    const model=event.target.closest('[data-portrait-model]');if(model){const run=global.OFW_WORK_CONTEXT.runs(activeObject().id).find(r=>r.id===model.dataset.portraitModel);parent.postMessage({operation:'open-studio-version',goalId:run.goalId,versionId:run.versionId,runId:run.id,returnUrl:location.href},location.origin);}
+  });
   function renderDiscover() {
     const filtered = filteredObjects();
     objectSearch.value = state.search;
-    objectSearch.placeholder=["all","OBJ-ENTERPRISE"].includes(state.typeFilter)?"搜索对象类型":"搜索当前类型的对象";
+    objectSearch.placeholder="搜索对象名称、别名、属性或类型";
     qualityFilter.querySelectorAll("[data-quality]").forEach((button) => button.classList.toggle("active", button.dataset.quality === state.quality));
     renderTypeFacets();
 
     renderSavedExplorations();
-    if(["all","OBJ-ENTERPRISE"].includes(state.typeFilter))renderObjectTypes();else renderDiscoveryResults(filtered);
+    document.querySelector('.result-actions').innerHTML=`${state.typeFilter==='OBJ-ENTERPRISE'?'<button class="button quiet" data-discovery-analysis="map">地图视图</button>':''}${['OBJ-ENTERPRISE','OBJ-INVESTMENT-HOLDING'].includes(state.typeFilter)?'<button class="button quiet" data-discovery-analysis="temporal">时序分析</button>':''}<button class="button primary" data-open-comparison>对照查看</button>`;
+    if(state.typeFilter==="all"&&!state.search.trim())renderObjectTypes();else renderDiscoveryResults(filtered);
     const type = state.typeFilter === "all" ? null : typeMeta(state.typeFilter);
     document.getElementById("result-title").textContent = state.search ? `“${state.search}”的搜索结果` : type?.label || "全部对象";
     if (state.selectedIds.some((id) => !resolveObject(id))) document.getElementById("result-title").textContent = "这组查询结果暂不支持对象视图，请返回问数继续分析。";
-    document.getElementById("result-count").textContent = ["all","OBJ-ENTERPRISE"].includes(state.typeFilter)?"选择类型进入探索":`${filtered.length} 个对象`;
+    document.getElementById("result-count").textContent = state.typeFilter==="all"&&!state.search.trim()?"选择类型进入探索":`${filtered.length} 个对象`;
     document.getElementById('selection-bar').hidden = true;
   }
 
   function renderObjectTypes() {
-    const types=Object.values(resource.typeMetadata).filter(type=>type.primary&&(state.typeFilter!=='OBJ-ENTERPRISE'||type.id==='OBJ-ENTERPRISE')&&(!state.search||type.label.includes(state.search)||type.id.includes(state.search)));
-    discoveryResults.innerHTML=`<div class="object-type-cards">${types.map(type=>{const count=global.OFW_M07_BUSINESS.directory(resource).filter(item=>item.objectTypeId===type.id).length;return `<button class="object-type-card" data-browse-type="${type.id}"><span class="type-card-icon">${icon(type.icon)}</span><strong>${escapeHtml(type.label)}</strong><span class="type-card-count">${count}</span>${icon('arrow-up-right')}</button>`;}).join('')||'<p class="business-empty">没有匹配的类型，可清除搜索。</p>'}</div>`;
+    const types=Object.values(resource.typeMetadata).filter(type=>type.primary&&(!state.search||type.label.includes(state.search)||type.id.includes(state.search)));
+    discoveryResults.innerHTML=`<div class="object-type-cards">${types.map(type=>{const count=global.OFW_M07_BUSINESS.directory(resource).filter(item=>item.objectTypeId===type.id).length;return `<button class="object-type-card" data-browse-type="${type.id}"><span class="type-card-icon">${icon(type.icon)}</span><strong>${escapeHtml(type.label)}</strong><span class="type-card-count">${count}<small>个对象</small></span><p>${escapeHtml({'OBJ-ENTERPRISE':'融资、预算、风险与关联业务','OBJ-INVESTMENT-PRODUCT':'产品属性、投资台账与关联持仓','OBJ-INVESTMENT-HOLDING':'持仓规模、成本与实际观测时序'}[type.id]||'查看对象属性、关系与业务依据')}</p><footer><span>进入对象明细</span>${icon('arrow-up-right')}</footer></button>`;}).join('')||'<p class="business-empty">没有匹配的类型，可清除搜索。</p>'}</div>`;
   }
 
   function renderTypeFacets() {
@@ -697,22 +707,13 @@
   }
 
   function browseObjectType(type) {
-    if(type==='OBJ-ENTERPRISE'){
-      if(parent!==window)parent.postMessage({operation:'open-enterprise-exploration'},location.origin);
-      else location.href='/designs/prototype-work/v1.5/composite/s001-e2e-integration/index.html?task=situation#dashboard';
-      return;
-    }
     setState({typeFilter:type,search:'',route:'discover'});
   }
 
   function renderSavedExplorations() {
-    const saved = loadSaved();
-    document.getElementById("saved-count").textContent = saved.length;
-    if (!saved.length) {
-      savedList.innerHTML = `<div class="empty-compact">${icon("bookmark")}<span>尚无保存记录</span></div>`;
-      return;
-    }
-    savedList.innerHTML = saved.slice(0, 6).map((item) => `<div class="saved-row"><button type="button" data-open-saved="${escapeHtml(item.id)}"><span>${icon("bookmark-check")}</span><div><strong>${escapeHtml(item.name)}</strong><small>${escapeHtml(item.objectSetRef?.title || "对象集")} · ${escapeHtml(LENSES.find((lens) => lens.id === item.lens)?.label || "探索")}</small></div></button><button class="saved-delete" type="button" data-delete-saved="${escapeHtml(item.id)}" title="删除" aria-label="删除${escapeHtml(item.name)}">${icon("x")}</button></div>`).join("");
+    const saved=loadSaved(),maps=global.OFW_WORK_CONTEXT?.explorations()||[];
+    document.getElementById('saved-count').textContent=saved.length+maps.length;
+    savedList.innerHTML=maps.map(item=>`<div class="saved-row"><button data-restore-map="${escapeHtml(item.id)}"><span>${icon(item.kind==='TEMPORAL'?'chart-no-axes-combined':'map')}</span><div><strong>${escapeHtml(item.name)}</strong><small>${item.state.horizon} 天 · ${escapeHtml(item.evidence?.asOf||'原观察日')} · ${item.plan?'模拟方案':'基准快照'}</small></div></button></div>`).join('')+saved.map(item=>`<div class="saved-row"><button type="button" data-open-saved="${escapeHtml(item.id)}"><span>${icon('bookmark-check')}</span><div><strong>${escapeHtml(item.name)}</strong><small>${escapeHtml(item.objectSetRef?.title||'对象集')} · ${escapeHtml(LENSES.find(l=>l.id===item.lens)?.label||'探索')}</small></div></button><button class="saved-delete" data-delete-saved="${escapeHtml(item.id)}" aria-label="删除${escapeHtml(item.name)}">${icon('x')}</button></div>`).join('')||`<div class="empty-compact">${icon('bookmark')}<span>保存对象探索或企业地图后，可在这里继续工作。</span></div>`;
   }
 
   function primaryMetric(item) {
@@ -874,8 +875,9 @@
   }
 
   function actionMarkup(item) {
-    const records = businessRecords(item);
-    return `<section class="portrait-section"><header><h3>行动与进展</h3><span>${records.length} 项办理事项</span></header><div class="portrait-actions">${records.map(record => `<article><header><strong>${escapeHtml(record.request.actionType?.name || "业务事项")}</strong><span class="business-status">${escapeHtml(record.stage)}</span></header><p>责任人：${escapeHtml(record.task?.owner || record.request.recipientName || record.request.owner || "待审批后分办")}${record.task?.dueDate ? ` · 截止 ${escapeHtml(record.task.dueDate)}` : ""}</p><p>${escapeHtml(record.task?.instructions || record.request.recommendation || "")}</p>${record.task?.progress?.length ? `<p><b>最新进展：</b>${escapeHtml(record.task.progress.at(-1).content)}</p>` : ""}${record.task?.result ? `<p><b>办理反馈：</b>${escapeHtml(typeof record.task.result === "string" ? record.task.result : record.task.result.summary || record.task.result.note || "")}</p>` : ""}<button class="button primary" data-business-action="${escapeHtml(record.request.id)}">${record.task ? "查看 / 办理待办" : "查看 / 审批事项"}</button></article>`).join("") || `<p class="business-empty">暂无已登记办理事项。可围绕此对象提问或查看风险事件。</p>`}</div><div class="business-tools">${["OBJ-ENTERPRISE", "OBJ-INVESTMENT-PRODUCT"].includes(item.objectTypeId) ? `<button class="button quiet" data-navigate-module="query">围绕此对象提问</button>` : ""}</div><p class="section-note">办理记录来自决策中心。业务效果以更新后的成本、预算或风险评估为准。</p></section>`;
+    const records = businessRecords(item),local=global.OFW_WORK_CONTEXT?.tasks(item.id)||[];
+    const linked=local.map(({task,stage})=>`<article><header><strong>${escapeHtml(task.title)}</strong><span class="business-status">${escapeHtml(stage)}</span></header><p>${escapeHtml(global.OFW_WORK_CONTEXT.label(task.evidence.resultKind))} · 依据日 ${escapeHtml(task.evidence.asOf)} · ${task.evidence.horizon}天窗口</p><p>负责人 ${escapeHtml(task.owner)} · 期限 ${escapeHtml(task.dueDate)}</p><button class="button primary" data-open-unified-case="${escapeHtml(task.id)}">打开事项继续处理</button></article>`).join('');
+    return `<section class="portrait-section"><header><h3>行动与进展</h3><span>${records.length+local.length} 项办理事项</span></header><div class="portrait-actions">${linked}${records.map(record => `<article><header><strong>${escapeHtml(record.request.actionType?.name || "业务事项")}</strong><span class="business-status">${escapeHtml(record.stage)}</span></header><p>责任人：${escapeHtml(record.task?.owner || record.request.recipientName || record.request.owner || "待审批后分办")}${record.task?.dueDate ? ` · 截止 ${escapeHtml(record.task.dueDate)}` : ""}</p><p>${escapeHtml(record.task?.instructions || record.request.recommendation || "")}</p>${record.task?.progress?.length ? `<p><b>最新进展：</b>${escapeHtml(record.task.progress.at(-1).content)}</p>` : ""}${record.task?.result ? `<p><b>办理反馈：</b>${escapeHtml(typeof record.task.result === "string" ? record.task.result : record.task.result.summary || record.task.result.note || "")}</p>` : ""}<button class="button primary" data-business-action="${escapeHtml(record.request.id)}">${record.task ? "查看 / 办理待办" : "查看 / 审批事项"}</button></article>`).join("") || (local.length?"":`<p class="business-empty">暂无已登记办理事项。可围绕此对象提问或查看风险事件。</p>`)}</div><div class="business-tools">${["OBJ-ENTERPRISE", "OBJ-INVESTMENT-PRODUCT"].includes(item.objectTypeId) ? `<button class="button quiet" data-navigate-module="query">围绕此对象提问</button>` : ""}</div><p class="section-note">办理记录来自决策中心。业务效果以更新后的成本、预算或风险评估为准。</p></section>`;
   }
 
   function mapObjectSummary(item) {
@@ -942,9 +944,11 @@
     const item=activeObject();
     const tab=portraitTabs(item).some(([id])=>id===state.detailTab)?state.detailTab:"profile";
     const metrics=keyProperties(item,12).filter(([key])=>!["asOf","dataAsOf","validFrom","validTo","snapshotCount"].includes(key)).slice(0,6);
-    const header=`<header class="portrait-identity">${objectGlyph(item,"large")}<div><small>${escapeHtml(typeMeta(item).label)} · 数据截至 ${escapeHtml(businessAsOf(item))}</small><h2>${escapeHtml(item.title)}</h2><p>${escapeHtml(item.subtitle||"")}</p></div>${businessChip(item)}<div class="portrait-head-actions"><button class="button primary" data-open-object-chat>围绕此对象提问</button><button class="button quiet" data-open-comparison>对照查看</button><button class="button quiet" data-open-canvas>本体画布</button>${state.selectedIds.length>1?`<button class="button quiet" data-selection-open>返回 ${state.selectedIds.length} 个对象</button>`:""}</div></header><nav class="portrait-tabs" role="tablist" aria-label="对象详情栏目">${portraitTabs(item).map(([id,label])=>`<button role="tab" type="button" aria-selected="${id===tab}" data-detail-tab="${id}" class="${id===tab?'active':''}">${label}</button>`).join("")}</nav>`;
+    const modelRuns=global.OFW_WORK_CONTEXT?.runs(item.id)||[];
+    const modelLinks=modelRuns.length?`<section class="portrait-section"><header><h3>相关模型分析</h3><span>固定运行，供人工参考</span></header>${modelRuns.map(run=>`<div class="portrait-run-link"><strong>${escapeHtml(run.goalDefinition?.name||'模型分析')}</strong><span>${escapeHtml(global.OFW_WORK_CONTEXT.label(run.resultIdentity))} · ${escapeHtml(run.versionName)} · ${escapeHtml(run.output.asOf)} 至 ${escapeHtml(run.output.horizonEnd)}</span><button class="button quiet" data-portrait-model="${run.id}">查看结果与依据</button></div>`).join('')}</section>`:'';
+    const header=`${sessionStorage.getItem('ofw.v15.exploration-return')?`<button class="text-button" data-return-enterprise-analysis>← 返回原${sessionStorage.getItem('ofw.v15.exploration-return')?.includes('temporal.html')?'时序分析':'企业探索'}</button>`:''}<header class="portrait-identity">${objectGlyph(item,"large")}<div><small>${escapeHtml(typeMeta(item).label)} · 数据截至 ${escapeHtml(businessAsOf(item))}</small><h2>${escapeHtml(item.title)}</h2><p>${escapeHtml(item.subtitle||"")}</p></div>${businessChip(item)}<div class="portrait-head-actions">${/^ENT-\d{3}$/.test(item.id)?'<button class="button quiet" data-portrait-use-model>带此企业使用模型</button>':''}<button class="button primary" data-open-object-chat>围绕此对象提问</button><button class="button quiet" data-open-comparison>对照查看</button><button class="button quiet" data-open-canvas>本体画布</button>${state.selectedIds.length>1?`<button class="button quiet" data-selection-open>返回 ${state.selectedIds.length} 个对象</button>`:""}</div></header><nav class="portrait-tabs" role="tablist" aria-label="对象详情栏目">${portraitTabs(item).map(([id,label])=>`<button role="tab" type="button" aria-selected="${id===tab}" data-detail-tab="${id}" class="${id===tab?'active':''}">${label}</button>`).join("")}</nav>`;
     let body="";
-    if(tab==='profile')body=`<section class="portrait-section"><header><h3>基本信息与关键指标</h3><button class="text-button" data-detail-tab="evidence">数据与口径</button></header><div class="business-metrics">${metrics.map(([key,p])=>`<article><span>${escapeHtml(propertyLabel(key))}</span><strong>${escapeHtml(formatValue(p))}</strong><small>截至 ${escapeHtml(comparisonPolicy().propertyDate(item,p)||businessAsOf(item))}</small></article>`).join("")}</div>${businessRules(item)}</section><div class="portrait-visuals">${mapMarkup(item)}</div>${historyMarkup(item)}${renderBusinessDetails(item)}${relationMarkup(item)}<div class="portrait-activity-grid">${eventMarkup(item)}${actionMarkup(item)}</div>${renderReturnedResult()}`;
+    if(tab==='profile')body=`<section class="portrait-section"><header><h3>基本信息与关键指标</h3><button class="text-button" data-detail-tab="evidence">数据与口径</button></header><div class="business-metrics">${metrics.map(([key,p])=>`<article><span>${escapeHtml(propertyLabel(key))}</span><strong>${escapeHtml(formatValue(p))}</strong><small>截至 ${escapeHtml(comparisonPolicy().propertyDate(item,p)||businessAsOf(item))}</small></article>`).join("")}</div>${businessRules(item)}</section><div class="portrait-visuals">${mapMarkup(item)}</div>${historyMarkup(item)}${renderBusinessDetails(item)}${relationMarkup(item)}${modelLinks}<div class="portrait-activity-grid">${eventMarkup(item)}${actionMarkup(item)}</div>${renderReturnedResult()}`;
     if(tab==='relations')body=relationMarkup(item)+renderBusinessDetails(item);
     if(tab==='events')body=eventMarkup(item);
     if(tab==='history')body=historyMarkup(item,true);

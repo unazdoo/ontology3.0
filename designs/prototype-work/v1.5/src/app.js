@@ -1,3 +1,6 @@
+import {resultIdentityLabel} from '../composite/shared/work-items.js';
+import {taskFromModelRun} from '../composite/shared/task-workflow.js';
+import {mapContext} from './map-context.js';
 import "./styles.css";
 import { embedded, send, native, canonicalScope } from "./platform.js";
 import { createMap } from "./map.js";
@@ -90,7 +93,7 @@ const modeItems = EXPLORATION_MODES;
 const get = () => store.get();
 const activePlan = () =>
   get().plans.find((plan) => plan.id === get().activePlanId) || null;
-const modelUse=createModelUse({getData:()=>data,getScope:()=>({selectedId:get().selectedId,objectIds:rows.map(row=>row.id)}),onUpdate:()=>{if(data&&pageView==='workbench'&&get().rightTab==='models'){renderInvestigation();refreshIcons();}},onOpenStudio:payload=>send('OFW_STUDIO_OPEN',payload)});
+const modelUse=createModelUse({getData:()=>data,getScope:()=>({selectedId:get().selectedId,objectIds:rows.map(row=>row.id)}),onUpdate:()=>{if(data&&pageView==='workbench'&&get().rightTab==='models'){renderInvestigation();refreshIcons();}},onCreateTask:(run,dataset)=>{taskForm(run.objectIds,null,{objectIds:run.objectIds,asOf:dataset.asOf,horizon:Math.round((Date.parse(run.output.horizonEnd)-Date.parse(dataset.asOf))/86400000),dataVersion:dataset.dataVersion,dataDigest:dataset.digest,ontologyVersion:dataset.ontologyVersion,resultKind:run.resultIdentity,planId:null});modal.modelTaskInput={run,dataset};document.getElementById('task-title').value=run.goalDefinition.name+' · 结果研判';},onOpenStudio:payload=>send('OFW_STUDIO_OPEN',{...payload,context:{objectIds:rows.map(r=>r.id),selectedId:get().selectedId,asOf:data.asOf,horizon:get().horizon,dataVersion:data.dataVersion,ontologyVersion:data.ontologyVersion,dataDigest:data.digest}})});
 window.addEventListener('pagehide',()=>modelUse.destroy(),{once:true});
 function notify(message, error = false) {
   const node = document.createElement("div");
@@ -185,13 +188,14 @@ function renderWorkbench() {
   mapView = null;
   const surface = document.getElementById("page-surface");
   surface.className = "workbench-surface";
-  surface.innerHTML = `<section class="metric-strip" id="metric-strip" hidden></section><div class="workspace-grid enterprise-exploration-grid"><aside class="object-list-pane" id="object-list-pane"><div class="objects-head"><div><h2>企业探索</h2><span id="entity-count"></span></div>${tool('reset-filters','list-restart','清除筛选')}${tool('close-objects','x','关闭企业列表')}</div><label class="enterprise-perspective">分析视角<select id="analysis-mode" aria-label="分析视角">${modeItems.map(([id,label])=>`<option value="${id}" ${get().mode===id?'selected':''}>${label}</option>`).join('')}</select></label><label class="search-input">${icon('search')}<input id="entity-search" aria-label="搜索企业" placeholder="企业、城市或来源名称" value="${esc(get().filters.search)}"></label><div class="list-filters"><select id="industry" aria-label="产业筛选"><option value="">全部产业</option>${['风电','环保','核电'].map(industry=>`<option ${get().filters.industry===industry?'selected':''}>${industry}</option>`).join('')}</select><select id="horizon" aria-label="展望窗口">${[30,90,180,365].map(days=>`<option value="${days}" ${get().horizon===days?'selected':''}>未来${days}天</option>`).join('')}</select></div><details class="enterprise-extra-filters"><summary>更多筛选与结果范围</summary><label>历史风险筛选<select id="risk-tier"><option value="">全部历史分档</option>${['黑灯','红灯','黄灯','绿灯'].map(tier=>`<option ${get().filters.riskTier===tier?'selected':''}>${tier}</option>`).join('')}</select></label><label>数据视图<select id="active-plan"><option value="">基准快照</option>${get().plans.filter(plan=>plan.dataDigest===data.digest).map(plan=>`<option value="${plan.id}" ${get().activePlanId===plan.id?'selected':''}>方案 · ${esc(plan.name)}</option>`).join('')}</select></label>${tool('undo','undo-2','撤销筛选')}${button('save-exploration','保存探索','bookmark')}${button('scope-summary','范围概况','info')}${button('source','来源与假设','fingerprint')}</details><div id="filter-summary" class="filter-summary"></div><div id="entity-list" class="entity-list"></div><footer class="list-footer"><span>按当前视角显示指标</span><select id="sort" aria-label="企业排序">${[['view','当前视角优先'],['risk','历史风险优先'],['cost','融资成本最高'],['gap','资金缺口最大'],['due','到期本金最多']].map(([id,label])=>`<option value="${id}" ${get().filters.sort===id?'selected':''}>${label}</option>`).join('')}</select></footer></aside><main class="map-workspace"><div class="map-stage"><div id="global-map" aria-label="企业与关联银行地图"></div><div id="analysis-canvas" class="analysis-canvas" hidden></div><div class="map-top-tools"><div class="canvas-tabs">${[['map','地图','map'],['network','关系网络','share-2'],['matrix','成本 × 历史风险','scatter-chart'],['list','对象明细','table-properties']].map(([id,label,glyph])=>`<button data-action="canvas" data-canvas="${id}" aria-label="${label}" class="${get().view===id?'active':''}">${icon(glyph)}<span>${label}</span></button>`).join('')}</div><div class="enterprise-view-actions">${button('open-model-use','使用模型','workflow')}${tool('open-query','messages-square','围绕企业提问')}</div></div><div id="map-scope-label" class="map-scope-label"></div><div id="map-filter-actions" class="map-filter-actions"></div><div id="map-empty-state" class="map-empty-state" hidden><strong>没有匹配企业</strong>${button('reset-filters','显示全部企业','list-restart')}</div><div class="map-controls">${tool('zoom-in','plus','放大地图')}${tool('zoom-out','minus','缩小地图')}${tool('world','globe-2','全球视野')}${tool('fit','scan','适配当前企业')}${tool('box-select','scan-line','框选企业')}${tool('relationships','route','显示担保关系',`aria-pressed="${get().relationships}"`)}</div><div class="map-footer"><div id="map-legend" class="map-legend"></div><div class="map-date-label">金融演示快照 · ${data.enterprises.length}家 · 观察日 ${esc(data.asOf)}</div><div class="mobile-pane-switch">${button('mobile-objects','企业','building-2')}${button('mobile-analysis','分析','messages-square')}</div></div></div><section class="data-dock" id="data-dock" hidden></section></main><aside class="investigation" id="investigation" hidden></aside></div>`;
+  surface.innerHTML = `<section class="metric-strip" id="metric-strip" hidden></section><div class="workspace-grid enterprise-exploration-grid"><aside class="object-list-pane" id="object-list-pane"><div class="objects-head"><div><h2>企业探索</h2><span id="entity-count"></span></div>${tool('reset-filters','list-restart','清除筛选')}${tool('close-objects','x','关闭企业列表')}</div><label class="enterprise-perspective">分析视角<select id="analysis-mode" aria-label="分析视角">${modeItems.map(([id,label])=>`<option value="${id}" ${get().mode===id?'selected':''}>${label}</option>`).join('')}</select></label><label class="search-input">${icon('search')}<input id="entity-search" aria-label="搜索企业" placeholder="企业、城市或来源名称" value="${esc(get().filters.search)}"></label><div class="list-filters"><select id="industry" aria-label="产业筛选"><option value="">全部产业</option>${['风电','环保','核电'].map(industry=>`<option ${get().filters.industry===industry?'selected':''}>${industry}</option>`).join('')}</select><select id="horizon" aria-label="展望窗口">${[...new Set([30,90,180,365,get().horizon])].sort((a,b)=>a-b).map(days=>`<option value="${days}" ${get().horizon===days?'selected':''}>未来${days}天</option>`).join('')}</select></div><details class="enterprise-extra-filters"><summary>更多筛选与结果范围</summary><label>历史风险筛选<select id="risk-tier"><option value="">全部历史分档</option>${['黑灯','红灯','黄灯','绿灯'].map(tier=>`<option ${get().filters.riskTier===tier?'selected':''}>${tier}</option>`).join('')}</select></label><label>数据视图<select id="active-plan"><option value="">基准快照</option>${get().plans.filter(plan=>plan.dataDigest===data.digest).map(plan=>`<option value="${plan.id}" ${get().activePlanId===plan.id?'selected':''}>方案 · ${esc(plan.name)}</option>`).join('')}</select></label>${tool('undo','undo-2','撤销筛选')}${button('save-exploration','保存探索','bookmark')}${button('scope-summary','范围概况','info')}${button('source','来源与假设','fingerprint')}</details><div id="filter-summary" class="filter-summary"></div><div id="entity-list" class="entity-list"></div><footer class="list-footer"><span>按当前视角显示指标</span><select id="sort" aria-label="企业排序">${[['view','当前视角优先'],['risk','历史风险优先'],['cost','融资成本最高'],['gap','资金缺口最大'],['due','到期本金最多']].map(([id,label])=>`<option value="${id}" ${get().filters.sort===id?'selected':''}>${label}</option>`).join('')}</select></footer></aside><main class="map-workspace"><div class="map-stage"><div id="global-map" aria-label="企业与关联银行地图"></div><div id="analysis-canvas" class="analysis-canvas" hidden></div><div class="map-tool-stack"><div class="map-top-tools"><div class="canvas-tabs">${[['map','地图','map'],['network','关系网络','share-2'],['matrix','成本 × 历史风险','scatter-chart'],['list','对象明细','table-properties']].map(([id,label,glyph])=>`<button data-action="canvas" data-canvas="${id}" aria-label="${label}" class="${get().view===id?'active':''}">${icon(glyph)}<span>${label}</span></button>`).join('')}</div><div class="enterprise-view-actions"><button class="button" data-action="map-relations-menu">关系显示</button><button class="button" data-action="map-integrity">关联依据</button>${button('open-model-use','使用模型','workflow')}${tool('open-query','messages-square','围绕企业提问')}</div></div><div class="map-context-tools"><div id="map-scope-label" class="map-scope-label"></div><div id="map-filter-actions" class="map-filter-actions"></div></div></div><div id="map-empty-state" class="map-empty-state" hidden><strong>没有匹配企业</strong>${button('reset-filters','显示全部企业','list-restart')}</div><div class="map-controls">${tool('zoom-in','plus','放大地图')}${tool('zoom-out','minus','缩小地图')}${tool('world','globe-2','全球视野')}${tool('fit','scan','适配当前企业')}${tool('box-select','scan-line','框选企业')}${tool('relationships','route','查看全局借款、授信与担保关系',`aria-pressed="${get().relationships}"`)}</div><div class="map-footer"><div id="map-legend" class="map-legend"></div><div class="map-date-label">金融演示快照 · ${data.enterprises.length}家 · 观察日 ${esc(data.asOf)}</div><div class="mobile-pane-switch">${button('mobile-objects','企业','building-2')}${button('mobile-analysis','分析','messages-square')}</div></div></div><section class="data-dock" id="data-dock" hidden></section></main><aside class="investigation" id="investigation" hidden></aside></div>`;
   try {
     mapView = createMap({
       container: document.getElementById("global-map"),
       data,
       camera: get().camera,
-      onSelect: (type, id) => openObject(type, id, true),
+      onSelect:(type,id)=>{const same=type==='bank'?get().selectedBankId===id:!get().selectedBankId&&get().selectedId===id;if(same)clearMapSelection();else openObject(type,id,true);},
+      onClearSelection:clearMapSelection,onContextMenu:openMapRelationMenu,
       onCamera: (camera) => {
         try {
           store.update({ camera });
@@ -262,10 +266,10 @@ function refreshWorkbench() {
   document.getElementById("map-empty-state").hidden =
     Boolean(rows.length) || get().view !== "map";
   document.getElementById("map-scope-label").innerHTML =
-    `${badge(activePlan() ? "方案模拟" : "基准快照", activePlan() ? "amber" : "green")}<span>${rows.length} 家企业</span>`;
+    `${badge(activePlan() ? "方案模拟" : "基准快照", activePlan() ? "amber" : "green")}<span>${rows.length} 家企业</span>${get().selectedId||get().selectedBankId||get().relationships?'<button class="button" data-action="clear-map-selection">取消选择</button>':''}${get().relationships?'<span>全局关系上下文 · 统计范围保持当前选择</span>':''}`;
   document.getElementById("map-legend").innerHTML =
     get().mode === "risk"
-      ? `<span><i class="risk-dot green"></i>绿灯</span><span><i class="risk-dot amber"></i>黄灯</span><span><i class="risk-dot red"></i>红灯</span><small>点大小 · 融资余额</small>`
+      ? `<span><i class="risk-dot green"></i>绿灯</span><span><i class="risk-dot amber"></i>黄灯</span><span><i class="risk-dot red"></i>红灯</span><small>企业与银行分形图标 · 担保虚线</small>`
       : get().mode === "cost"
         ? `<span><i class="risk-dot green"></i>不高于基准</span><span><i class="risk-dot amber"></i>偏高</span><span><i class="risk-dot red"></i>高于25bp</span>`
         : get().mode === "maturity"
@@ -274,6 +278,8 @@ function refreshWorkbench() {
   mapView?.update(rows, {
     mode: get().mode,
     selectedId: get().selectedId,
+    selectedBankId:get().selectedBankId,
+    relationTypes:get().relationTypes,
     relationships: get().relationships,
     taskIds: get()
       .tasks.filter((task) => !["COMPLETED", "CANCELLED"].includes(task.status))
@@ -293,6 +299,7 @@ function renderDock() {
   dock.innerHTML = `<header><button data-action="toggle-table">${icon(get().tableOpen ? "chevron-down" : "chevron-up")}<strong>对象明细</strong><span>${rows.length} 家企业 · ${results.loans.length} 笔借款</span></button><div>${button("export-csv", "导出", "download")}${button("create-report", "加入报告", "file-plus-2")}</div></header>${get().tableOpen ? `<div class="dock-scroll"><table><thead><tr><th>企业</th><th>融资余额</th><th>融资成本</th><th>${get().horizon}天到期</th><th>测算缺口</th><th>历史风险</th></tr></thead><tbody>${rows.map((row) => `<tr><td><button class="text-button" data-object-type="enterprise" data-object-id="${row.id}">${esc(row.name)}</button></td><td>${fmt(row.balance / 100)}</td><td>${percent(row.cost)}</td><td>${fmt(row.due / 100)}</td><td>${fmt(row.gap / 100)}</td><td>${badge(row.riskTier, tierTone(row.riskTier))}</td></tr>`).join("")}</tbody></table></div>` : ""}`;
 }
 function renderInvestigation() {
+  if(get().rightTab==='scenario')save({rightTab:'object'});
   const panel = document.getElementById("investigation");
   if (!panel) return;
   panel.hidden=!get().panelOpen;
@@ -303,7 +310,6 @@ function renderInvestigation() {
   panel.innerHTML = `<header class="investigation-head"><div>${icon("scan-search")}<strong>对象信息与分析</strong></div>${tool("close-mobile", "x", "关闭分析面板")}</header><div class="investigation-tabs" role="tablist">${[
     ["query", "问数"],
     ["object", "对象"],
-    ["scenario", "方案"],
     ["models", "模型"],
   ]
     .map(
@@ -363,7 +369,7 @@ function queryPanel() {
 function objectPanel() {
   const current =
     detailStack.at(-1) ||
-    (get().selectedId ? { type: "enterprise", id: get().selectedId } : null);
+    (get().selectedBankId ? {type:"bank",id:get().selectedBankId} : get().selectedId ? { type: "enterprise", id: get().selectedId } : null);
   if (!current) return empty("尚未选择企业");
   const { type, id } = current;
   const back =
@@ -633,7 +639,7 @@ function definitionInputs(id) {
   }</section>`;
 }
 function plansPage() {
-  return `<div class="page-header"><div><span class="eyebrow">SCENARIOS</span><h1>分析方案</h1><p>基准快照与独立假设</p></div>${button("new-scenario", "新建方案", "plus", true)}</div><div class="plans-layout">${
+  return `<div class="page-header"><div><span class="eyebrow">SCENARIOS</span><h1>分析方案</h1><p>基准快照与独立假设</p></div>${button("new-scenario", "返回时序分析与方案编辑", "plus", true)}</div><div class="plans-layout">${
     get().plans.length
       ? get()
           .plans.map((plan) => {
@@ -717,7 +723,26 @@ function modelsPage() {
   return `<div class="page-header"><div><span class="eyebrow">MODELING</span><h1>模型验证</h1><p>独立模型试验环境 · 不将模型候选覆盖为融资事实</p></div><select id="model-program" aria-label="模型业务目标"><option value="S003">债务风险</option><option value="S001">融资成本</option><option value="S002">预算监督</option><option value="S004">贷前评估</option><option value="S005">投后评价</option></select></div><div class="model-frame-stage"><iframe id="model-frame" title="模型验证工作区"></iframe></div>`;
 }
 
-function openObject(type, id, reset = false) {
+let relationMenu=null;
+function closeMapRelationMenu(){relationMenu?.remove();relationMenu=null;}
+function clearMapSelection(){
+  closeMapRelationMenu();mapView?.setChoosing(false);if(!data||pageView!=='workbench')return;
+  if(!get().selectedId&&!get().selectedBankId&&!get().relationships)return;
+  detailStack=[];save({selectedId:null,selectedBankId:null,relationships:false,panelOpen:get().rightTab==='object'?false:get().panelOpen});syncRoute();refreshWorkbench();
+}
+function openMapRelationMenu({type,id,x=0,y=0}={}){
+  closeMapRelationMenu();if(id&&((type==='bank'&&get().selectedBankId!==id)||(type==='enterprise'&&(get().selectedId!==id||get().selectedBankId))))openObject(type,id,true,false);
+  const current=get().selectedBankId||get().selectedId,name=[...data.enterprises,...data.banks].find(e=>e.id===current)?.name||'当前地图';
+  const bank=Boolean(get().selectedBankId),labels=[['financing','融资借款'],['credit','银行授信'],['guarantee','担保关系']];
+  relationMenu=document.createElement('div');relationMenu.className='map-relation-menu';relationMenu.setAttribute('role','dialog');relationMenu.setAttribute('aria-label','对象关系显示');
+  relationMenu.innerHTML=`<header><strong>${esc(name)}</strong><button data-rel-menu="close" aria-label="关闭关系菜单">×</button></header><p>选择要呈现的关系</p>${labels.map(([value,label])=>`<label><input type="checkbox" data-rel-type="${value}" ${get().relationTypes.includes(value)?'checked':''} ${bank&&value==='guarantee'&&!get().relationships?'disabled':''}>${label}${bank&&value==='guarantee'&&!get().relationships?'<small>企业间关系</small>':''}</label>`).join('')}<div class="relation-presets"><button data-rel-menu="financing">仅融资</button><button data-rel-menu="guarantee" ${bank&&!get().relationships?'disabled':''}>仅担保</button><button data-rel-menu="all">全部关系</button></div><footer><button data-rel-menu="global">查看全局关系</button><button data-rel-menu="clear">取消选择</button></footer><small>再次点击对象、点击空白处或 Esc 可取消选择。</small>`;
+  relationMenu.style.left=Math.max(8,Math.min(x,innerWidth-266))+'px';relationMenu.style.top=Math.max(8,Math.min(y,innerHeight-365))+'px';document.body.append(relationMenu);
+  relationMenu.addEventListener('change',event=>{if(!event.target.dataset.relType)return;save({relationTypes:[...relationMenu.querySelectorAll('[data-rel-type]:checked')].map(e=>e.dataset.relType)});refreshWorkbench();});
+  relationMenu.addEventListener('click',event=>{const action=event.target.closest('[data-rel-menu]')?.dataset.relMenu;if(!action)return;if(action==='close'){closeMapRelationMenu();return;}if(action==='clear'){clearMapSelection();return;}if(action==='global'){save({relationships:true});refreshWorkbench();openMapRelationMenu({x,y});return;}save({relationTypes:action==='all'?['financing','credit','guarantee']:[action]});refreshWorkbench();openMapRelationMenu({x,y});});
+}
+document.addEventListener('pointerdown',event=>{if(relationMenu&&!relationMenu.contains(event.target))closeMapRelationMenu();});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!modal.open&&pageView==='workbench'&&!event.target.matches('input,textarea,select')){clearMapSelection();}});
+function openObject(type, id, reset = false, focus = true) {
   if (detailStack.length)
     detailStack.at(-1).scrollTop =
       document.getElementById("investigation-content")?.scrollTop || 0;
@@ -727,17 +752,17 @@ function openObject(type, id, reset = false) {
     shell();
   }
   if (type === "enterprise") {
-    save({ selectedId: id, rightTab: "object",panelOpen:true });
+    save({ selectedId: id,selectedBankId:null, rightTab: "object",panelOpen:true });
     if (detailStack.at(-1)?.id !== id) detailStack.push({ type, id });
   } else {
     if (!detailStack.length && get().selectedId)
       detailStack = [{ type: "enterprise", id: get().selectedId }];
     detailStack.push({ type, id });
-    save({ rightTab: "object",panelOpen:true });
+    save({ rightTab: "object",panelOpen:true,...(type==='bank'?{selectedBankId:id}:{}) });
   }
   syncRoute();
   refreshWorkbench();
-  if (type === "enterprise") mapView?.focus(id);
+  if (focus&&["enterprise","bank"].includes(type)) mapView?.focus(id);
   document
     .getElementById("object-list-pane")
     .classList.remove("mobile-visible");
@@ -745,7 +770,7 @@ function openObject(type, id, reset = false) {
 }
 function applyFilters(filters, horizon = get().horizon, fit = true) {
   mapView?.setChoosing(false);
-  save({ filters, horizon, selectedId: null }, { undoable: true });
+  save({ filters, horizon, selectedId: null,selectedBankId:null,relationships:false }, { undoable: true });
   detailStack = [];
   refreshWorkbench();
   syncInputs();
@@ -791,6 +816,7 @@ function showModal(title, body, footer = "") {
   refreshIcons();
 }
 function startScenario(ids = null) {
+  if(embedded){send('OFW_OPEN_TEMPORAL',{objectIds:ids||(get().selectedId?[get().selectedId]:rows.map(r=>r.id)),openScenario:true,horizon:get().horizon});return;}
   recompute();
   planDraft = {
     name: "融资调整方案",
@@ -903,6 +929,7 @@ function openReport(id) {
   );
 }
 function taskForm(ids = null, plan = undefined, evidence = null) {
+  modal.modelTaskInput=null;
   recompute();
   const fixedPlan = plan === undefined ? activePlan() : plan;
   const objectIds =
@@ -920,10 +947,11 @@ function taskForm(ids = null, plan = undefined, evidence = null) {
   modal.taskInput = { objectIds, plan: fixedPlan, evidence: source };
   showModal(
     "发起跟踪事项",
-    `<form id="task-form"><div class="task-scope">${badge(`${objectIds.length} 家企业`)}${badge(fixedPlan ? "附带模拟方案" : "基准分析", "amber")}</div><label class="field">事项名称<input id="task-title" required maxlength="100" value="${objectIds.length === 1 ? esc(data.enterprises.find((item) => item.id === objectIds[0])?.name) + " · " : ""}融资与风险复核"></label><label class="field">事项类型<select id="task-type"><option>风险复核</option><option>银行协商</option><option>融资安排</option><option>补充资料</option></select></label><label class="field">负责人<input id="task-owner" required maxlength="50" value="${objectIds.length === 1 ? esc(data.enterprises.find((item) => item.id === objectIds[0])?.owner || "") : ""}"></label><label class="field">到期日期<input id="task-due" type="date" required min="${new Date().toISOString().slice(0, 10)}" value="${new Date(Date.now() + 7 * 86400000).toISOString().slice(0, 10)}"></label><label class="checkbox-field"><input id="task-confirm" type="checkbox" required>确认创建本地跟踪事项，不发送外部通知或执行金融交易</label><p class="form-error" id="task-error" role="alert"></p><button type="submit" class="button primary wide">${icon("check")}确认创建</button></form>`,
+    `<form id="task-form"><div class="task-scope">${badge(`${objectIds.length} 家企业`)}${badge(fixedPlan ? "附带模拟方案" : source.resultKind&&source.resultKind!=="DEMO_BASELINE" ? resultIdentityLabel(source.resultKind) : "基准分析", "amber")}</div><label class="field">事项名称<input id="task-title" required maxlength="100" value="${objectIds.length === 1 ? esc(data.enterprises.find((item) => item.id === objectIds[0])?.name) + " · " : ""}融资与风险复核"></label><label class="field">事项类型<select id="task-type"><option>风险复核</option><option>银行协商</option><option>融资安排</option><option>补充资料</option></select></label><label class="field">负责人<input id="task-owner" required maxlength="50" value="${objectIds.length === 1 ? esc(data.enterprises.find((item) => item.id === objectIds[0])?.owner || "") : ""}"></label><label class="field">到期日期<input id="task-due" type="date" required min="${new Date().toISOString().slice(0, 10)}" value="${new Date(Date.now() + 7 * 86400000).toISOString().slice(0, 10)}"></label><label class="checkbox-field"><input id="task-confirm" type="checkbox" required>确认创建本地跟踪事项，不发送外部通知或执行金融交易</label><p class="form-error" id="task-error" role="alert"></p><button type="submit" class="button primary wide">${icon("check")}确认创建</button></form>`,
   );
 }
 function openTask(id) {
+  if(embedded){send('OFW_CASE_OPEN',{taskId:id});return;}
   const task = get().tasks.find((item) => item.id === id);
   if (!task) return;
   showModal(
@@ -1196,6 +1224,14 @@ async function handleAction(target) {
   }
   const action = target.dataset.action,
     id = target.dataset.id;
+  if(action==='clear-map-selection'){clearMapSelection();return;}
+  if(action==='map-relations-menu'){const rect=target.getBoundingClientRect();openMapRelationMenu({x:rect.left,y:rect.bottom+5});return;}
+  if(action==='map-integrity') {
+    const context=mapContext(data,rows,{selectedId:get().selectedId,selectedBankId:get().selectedBankId,relationships:get().relationships,relationTypes:get().relationTypes});
+    let institutions=[];
+    if(get().selectedId){const catalogue=await loadPublishedBusinessCatalogue(),object=catalogue.resource.objects.find(o=>o.id===get().selectedId);if(object)institutions=catalogue.experience.relations(object).map(r=>r.item).filter(o=>o.objectTypeId==='OBJ-FINANCIAL-INSTITUTION');}
+    showModal('地图关联范围与来源',`<p>当前图按 ${esc(data.dataVersion)} 的存续借款、有效授信及担保构建，关系对象不会扩入当前统计范围。</p>${facts([['统计范围',rows.length+' 家企业'],['关联企业',context.enterprises.length+' 家'],['借款 / 授信银行',context.banks.length+' 家'],['担保关系',context.edges.filter(e=>e.kind==='担保').length+' 条']])}<div class="activity-list">${context.edges.map(e=>`<article><div><strong>${esc(e.kind)}</strong><p>${esc(data.enterprises.find(c=>c.id===e.from)?.name||e.from)} → ${esc([...data.enterprises,...data.banks].find(c=>c.id===e.to)?.name||e.to)}</p><small>${esc((e.evidenceRefs||[]).join(' · '))}</small></div></article>`).join('')||'<p>选择企业或银行后可核对关联清单；全局关系可查看全部关系。</p>'}</div>${institutions.length?`<h3>原融资台账关联机构 · ${institutions.length} 家</h3><p>原台账机构与本图构造的银行关系分别保留；未登记独立地理位置的机构在这里列出。</p>${institutions.map(i=>`<p>${esc(i.title)} · ${esc(i.id)}</p>`).join('')}`:''}`);return;
+  }
   if(action==='open-model-use'){save({rightTab:'models',panelOpen:true});renderInvestigation();mapView?.resize();refreshIcons();return;}
   if(action==='open-query'){save({rightTab:'query',panelOpen:true});renderInvestigation();mapView?.resize();refreshIcons();return;}
   if(action==='scope-summary'){showModal('当前企业范围概况',facts([['企业',rows.length+' 家'],['融资余额',amount(results.totals.balance)],['加权融资成本',percent(results.totals.cost)],[get().horizon+'天到期',amount(results.totals.due)],['测算资金缺口',amount(results.totals.gap)]]));return;}
@@ -1305,7 +1341,7 @@ async function handleAction(target) {
   if (action === "detail-back") {
     detailStack.pop();
     const entity = detailStack.findLast((item) => item.type === "enterprise");
-    save({ selectedId: entity?.id || null });
+    save({ selectedId: entity?.id || null,selectedBankId:detailStack.at(-1)?.type==='bank'?detailStack.at(-1).id:null });
     refreshWorkbench();
     document.getElementById("investigation-content").scrollTop =
       detailStack.at(-1)?.scrollTop || 0;
@@ -1388,6 +1424,7 @@ async function handleAction(target) {
     return;
   }
   if (action === "new-scenario") {
+    if(embedded){send('OFW_OPEN_TEMPORAL',{objectIds:get().selectedId?[get().selectedId]:rows.map(r=>r.id),openScenario:true,horizon:get().horizon});return;}
     startScenario();
     return;
   }
@@ -1746,17 +1783,19 @@ async function handleSubmit(event) {
     if (form.id === "task-form") {
       if (!document.getElementById("task-confirm").checked)
         throw new Error("请确认本地执行边界");
-      const task = newTask({
+      const fields={
         ...modal.taskInput,
         title: document.getElementById("task-title").value,
         owner: document.getElementById("task-owner").value,
         dueDate: document.getElementById("task-due").value,
         type: document.getElementById("task-type").value,
         existing: get().tasks,
-      });
+      };
+      const task=modal.modelTaskInput?taskFromModelRun(modal.modelTaskInput.run,modal.modelTaskInput.dataset,fields,get().tasks):newTask(fields);
       save({ tasks: [task, ...get().tasks] });
       modal.close();
-      notify("跟踪事项已建立，外部执行为0");
+      notify("待研判事项已送入决策中心");
+      if(embedded){send("OFW_CASE_OPEN",{taskId:task.id});return;}
       if (pageView === "workbench") refreshWorkbench();
       else renderPage();
     }
@@ -1820,6 +1859,7 @@ async function handleSubmit(event) {
             savedAt: new Date().toISOString(),
             plan: activePlan() ? clone(activePlan()) : null,
             evidence: {
+              asOf:data.asOf,dataVersion:data.dataVersion,horizon,objectIds:rows.map(row=>row.id),resultKind:activePlan()?"SIMULATION":"DEMO_BASELINE",
               dataDigest: data.digest,
               ontologyVersion: data.ontologyVersion,
               planId: activePlan()?.id || null,
@@ -1840,7 +1880,7 @@ async function handleSubmit(event) {
         ].slice(0, 30),
       });
       modal.close();
-      notify("探索已保存");
+      notify("探索已保存，可从对象发现恢复");
     }
     if (form.id === "report-review-form") {
       const reviewer = document.getElementById("report-reviewer").value.trim(),
@@ -1991,6 +2031,7 @@ window.addEventListener("message", (event) => {
       message?.type === "OFW_V14_VIEW" &&
       navItems.some(([id]) => id === message.view)
     ) {
+      if(pageView===message.view)return;
       hostView = message.view;
       pageView = message.view;
       syncRoute(true);
@@ -2013,11 +2054,25 @@ window.addEventListener("message", (event) => {
       }
       return;
     }
+    if(message?.type==='OFW_V14_CONTEXT'&&data&&message.context?.modelUseVersionId&&!message.context.modelRunRef){
+      if(get().parentContextSignature===JSON.stringify(message.context))return;const scope=canonicalScope(message.context,data);save({filters:{...defaultFilters(),objectIds:scope.objectIds},selectedId:scope.selectedId,rightTab:'models',panelOpen:true,parentContextSignature:JSON.stringify(message.context)});modelUse.selectVersion(message.context.modelUseVersionId);refreshWorkbench();return;
+    }
+    if(message?.type==='OFW_V14_CONTEXT'&&data&&message.context?.caseTaskRef){
+      if(get().parentContextSignature===JSON.stringify(message.context))return;
+      const task=get().tasks.find(t=>t.id===message.context.caseTaskRef.id);if(!task){notify('原事项未读取到',true);return;}
+      try{restoreBasis(task.plan,task.evidence);save({filters:{...defaultFilters(),objectIds:task.objectIds},horizon:task.evidence.horizon,selectedId:task.objectIds[0],rightTab:task.modelRun?'models':'object',panelOpen:true,parentContextSignature:JSON.stringify(message.context)});if(task.modelRun)modelUse.showRun(task.modelRun.id);refreshWorkbench();}catch(error){notify(error.message,true);}return;
+    }
+    if(message?.type==='OFW_V14_CONTEXT'&&data&&message.context?.restoreExplorationId){
+      const item=get().explorations.find(e=>e.id===message.context.restoreExplorationId);if(!item){notify('保存的探索已不存在，请从当前数据重新探索',true);return;}
+      try{restoreBasis(item.plan,item.evidence);save({...item.state,parentContextSignature:JSON.stringify(message.context)});refreshWorkbench();syncInputs();notify('已恢复探索的对象、筛选、窗口和固定结果');}catch(error){notify(error.message,true);}return;
+    }
     if(message?.type==='OFW_V14_CONTEXT'&&data&&message.context?.resetEnterpriseExploration&&message.context.enterpriseEntryId!==get().lastEnterpriseEntryId){
       save({filters:{...defaultFilters(),sort:'view'},mode:'risk',view:'map',selectedId:null,panelOpen:false,activePlanId:null,lastEnterpriseEntryId:message.context.enterpriseEntryId,parentContextSignature:JSON.stringify(message.context)});detailStack=[];refreshWorkbench();syncInputs();return;
     }
     if(message?.type==='OFW_V14_CONTEXT'&&data&&message.context?.modelRunRef){
-      const scope=canonicalScope(message.context,data);save({filters:{...defaultFilters(),objectIds:scope.objectIds,sort:'view'},selectedId:scope.selectedId,rightTab:'models',panelOpen:true,view:'map'});modelUse.showRun(message.context.modelRunRef.id);refreshWorkbench();return;
+      if(get().parentContextSignature===JSON.stringify(message.context))return;
+      const context=modelUse.runContext(message.context.modelRunRef.id);if(!context){notify('原模型运行或数据快照不可用，请返回模型记录检查',true);return;}
+      const {run,dataset}=context;validateDataset(dataset);data=clone(dataset);const scope=canonicalScope(message.context,data),horizon=Math.round((Date.parse(run.output.horizonEnd)-Date.parse(run.output.asOf))/86400000);save({filters:{...defaultFilters(),objectIds:[...run.objectIds],sort:'view'},horizon,activePlanId:null,selectedId:run.objectIds.includes(scope.selectedId)?scope.selectedId:run.objectIds[0],rightTab:'models',panelOpen:true,view:'map',parentContextSignature:JSON.stringify(message.context)});modelUse.showRun(run.id);renderWorkbench();return;
     }
     if (message?.type === "OFW_V14_CONTEXT" && data) {
       const signature = JSON.stringify(message.context),

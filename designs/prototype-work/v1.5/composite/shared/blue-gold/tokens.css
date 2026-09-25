@@ -1,0 +1,43 @@
+/* Blue-gold smoke glass. The theme owns presentation, never business state. */
+html[data-ofw-theme="blue-gold"]{
+ --glass-ink:#eaf2fc;--glass-muted:#a9bdd3;--glass-faint:#8ba2ba;--glass-line:rgba(188,215,246,.2);--glass-line-strong:rgba(188,215,246,.35);--glass-blue:#96c8fa;--glass-gold:#e6c18a;--glass-green:#a0d7bd;--glass-red:#f2a495;--glass-panel:rgba(17,36,61,.77);--glass-panel-soft:rgba(21,43,70,.53);--glass-solid:#152c48;--glass-input:rgba(4,18,37,.46);--glass-hover:rgba(176,211,249,.12);--glass-type:15px;--glass-caption:13px;--glass-title:30px;--glass-subtitle:19px;--glass-radius:10px;--glass-environment:radial-gradient(ellipse at 4% 5%,#245f9d36,transparent 55%),radial-gradient(ellipse at 94% 97%,#92724522,transparent 45%),linear-gradient(135deg,#071525,#0c213d 52%,#111d2e);
+ --ink:var(--glass-ink)!important;--ink-2:#cedff0!important;--ink-soft:#cfdeef!important;--ink-secondary:#becfe2!important;--text:var(--glass-ink)!important;--text-primary:var(--glass-ink)!important;--text-secondary:var(--glass-muted)!important;--muted:var(--glass-muted)!important;--faint:var(--glass-faint)!important;--subtle:var(--glass-faint)!important;--line:var(--glass-line)!important;--line-strong:var(--glass-line-strong)!important;--border:var(--glass-line)!important;--border-color:var(--glass-line)!important;
+ --bg:transparent!important;--background:transparent!important;--canvas:rgba(5,20,39,.35)!important;--canvas-deep:rgba(5,20,39,.55)!important;--surface:var(--glass-panel)!important;--surface-2:var(--glass-panel-soft)!important;--surface-3:rgba(10,28,48,.5)!important;--surface-soft:var(--glass-panel-soft)!important;--surface-hover:var(--glass-hover)!important;
+ --blue:var(--glass-blue)!important;--blue-2:#afd4f6!important;--blue-deep:#b1d9ff!important;--blue-strong:#cce7ff!important;--blue-soft:rgba(137,187,242,.13)!important;--teal:#98d8cc!important;--teal-soft:#98d8cc14!important;--accent:var(--glass-blue)!important;--green:var(--glass-green)!important;--green-soft:rgba(131,202,170,.12)!important;--amber:var(--glass-gold)!important;--amber-soft:rgba(217,174,106,.13)!important;--orange:var(--glass-gold)!important;--orange-soft:rgba(217,174,106,.13)!important;--red:var(--glass-red)!important;--red-soft:rgba(233,149,130,.12)!important;--purple:#c5b1e3!important;--purple-soft:#c5b1e318!important;
+ --type-body:var(--glass-type)!important;--type-caption:var(--glass-caption)!important;--type-title:var(--glass-title)!important;--type-subtitle:var(--glass-subtitle)!important;--shadow:0 14px 40px #020a1428!important;--shadow-pop:0 22px 70px #01081880!important;--radius:var(--glass-radius)!important;
+ color-scheme:dark;color:var(--glass-ink)!important;background:#091b31;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+}
+html[data-ofw-theme="blue-gold"] body{color:var(--glass-ink)!important;font-size:var(--glass-type)!important;background:transparent!important}
+html[data-ofw-theme="blue-gold"] body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:var(--glass-environment)}
+html[data-ofw-theme="blue-gold"] :is(button,a,input,select,textarea,summary,[tabindex]):focus-visible{outline:2px solid var(--glass-gold)!important;outline-offset:3px!important}
+html[data-ofw-theme="blue-gold"] :is(input,select,textarea){color-scheme:dark;accent-color:#accde8}
+html[data-ofw-theme="blue-gold"] ::selection{background:#83b5e44d;color:#fff}
+html[data-ofw-theme="blue-gold"] :is(button,a){transition:background-color 160ms,border-color 160ms,color 160ms}
+html[data-ofw-theme="blue-gold"] *{scrollbar-color:#aacbe73d transparent;scrollbar-width:thin}
+html[data-ofw-theme="blue-gold"] :is(h1,h2,h3,h4){color:var(--glass-ink)!important;letter-spacing:0!important}
+html[data-ofw-theme="blue-gold"] h1{font-size:var(--glass-title)!important;line-height:1.35!important;font-weight:600!important}
+html[data-ofw-theme="blue-gold"] h2{font-size:var(--glass-subtitle)!important;line-height:1.45!important}
+html[data-ofw-theme="blue-gold"] h3{font-size:16px!important;line-height:1.5!important}
+html[data-ofw-theme="blue-gold"] :is(button,input,textarea,select){font-family:inherit}
+@media(min-width:1800px){html[data-ofw-theme="blue-gold"]{--glass-type:16px;--glass-caption:14px;--glass-title:34px;--glass-subtitle:21px}}
+@media(min-width:2350px){html[data-ofw-theme="blue-gold"]{--glass-type:18px;--glass-caption:15px;--glass-title:39px;--glass-subtitle:24px}}
+@media(max-width:720px){html[data-ofw-theme="blue-gold"]{--glass-type:14px;--glass-caption:12px;--glass-title:24px;--glass-subtitle:18px}}
+@media(prefers-reduced-motion:reduce){html[data-ofw-theme="blue-gold"] *,html[data-ofw-theme="blue-gold"] *:before,html[data-ofw-theme="blue-gold"] *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+html[data-ofw-low-motion="true"] *,html[data-ofw-low-motion="true"] *:before,html[data-ofw-low-motion="true"] *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+/* v1.5 Phase 1 design foundation. Additive only: existing --glass-* values are unchanged. */
+html[data-ofw-theme="blue-gold"]{
+  /* Spacing scale (4-base). Do not invent arbitrary gaps. */
+  --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:24px;--space-6:32px;--space-7:40px;--space-8:48px;
+  /* Radius scale: legacy 2-9px collapse into sm, 999px pill preserved. */
+  --radius-sm:6px;--radius-lg:14px;--radius-pill:999px;
+  /* Elevation: reuse existing --shadow/--shadow-pop, add a lighter resting shadow. */
+  --shadow-sm:0 4px 14px #02101f22;
+  /* Stacking order for shell chrome and overlays. */
+  --z-nav:20;--z-drawer:60;--z-modal:80;--z-toast:100;
+  /* Overlays and focus. */
+  --glass-scrim:rgba(0,13,32,.52);--focus-ring:2px solid var(--glass-gold);
+  /* Chart categorical series: remapped from existing semantic colors only, no new hues. */
+  --chart-1:var(--glass-blue);--chart-2:var(--glass-gold);--chart-3:var(--glass-green);--chart-4:var(--teal);--chart-5:var(--purple);--chart-6:var(--glass-red);
+  /* Primary action surfaces: teal legacy converges to blue, gold stays accent/focus only. */
+  --action-primary-bg:linear-gradient(135deg,#c8e3fa,#92bce4);--action-primary-ink:#112b43;--action-primary-border:rgba(214,233,251,.48);
+}

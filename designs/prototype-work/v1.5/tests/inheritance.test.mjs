@@ -130,16 +130,18 @@ test("the default entry is the inherited platform, not the standalone map applic
   assert.match(html, /report-editor\.js/);
   assert.doesNotMatch(read("src/app.js"), /href="[^"\n]*v1\.3\.2/);
 });
-test("joint views extend existing module task lists instead of removing originals", () => {
+test("analysis tools remain available in object context while decision entry is unified", () => {
   const script = read("composite/integrations/joint-workbench.js");
   for (const id of [
     "situation",
     "map-query",
     "financing-plans",
-    "analysis-tasks",
     "joint-reports",
   ])
     assert.ok(script.includes(id));
+  assert.match(script, /decision: \[\]/);
+  assert.match(script, /tasks: \["decision", "workbench"\]/);
+  assert.match(script, /plans: \["dashboard", "financing-plans"\]/);
   assert.match(script, /base\.resources/);
   assert.doesNotMatch(script, /task\("joint-data"/);
   assert.doesNotMatch(script, /task\("rule-sandbox"/);

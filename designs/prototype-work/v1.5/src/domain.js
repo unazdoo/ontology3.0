@@ -196,8 +196,8 @@ export function metrics(
   horizon = 90,
   plan = null,
 ) {
-  if (![30, 90, 180, 365].includes(horizon))
-    throw new Error("不支持的展望窗口");
+  if (!Number.isInteger(horizon) || horizon < 1 || horizon > 3660)
+    throw new Error("展望窗口须为1至3660天的整数");
   const requested = new Set(ids),
     end = dateOffset(data.asOf, horizon);
   const loans = unique(
@@ -650,8 +650,8 @@ export function createPlan(
 ) {
   const parsed = scenarioSchema.parse(parameters),
     known = new Set(data.enterprises.map((entity) => entity.id));
-  if (![30, 90, 180, 365].includes(horizon))
-    throw new Error("不支持的展望窗口");
+  if (!Number.isInteger(horizon) || horizon < 1 || horizon > 3660)
+    throw new Error("展望窗口须为1至3660天的整数");
   if (!objectIds.length || objectIds.some((id) => !known.has(id)))
     throw new Error("方案需包含有效企业");
   if (parsed.bankId && !data.banks.some((bank) => bank.id === parsed.bankId))

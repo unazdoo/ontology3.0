@@ -1,0 +1,1238 @@
+
+> ontology-financial-workbench-v15@1.5.0 test
+> node --test tests/*.test.mjs composite/tests/*.test.mjs
+
+TAP version 13
+# Subtest: 21 unique enterprise objects replace the three duplicate financing nodes
+ok 1 - 21 unique enterprise objects replace the three duplicate financing nodes
+  ---
+  duration_ms: 0.658417
+  type: 'test'
+  ...
+# Subtest: all financing, model, decision and risk aliases resolve to the same enterprise
+ok 2 - all financing, model, decision and risk aliases resolve to the same enterprise
+  ---
+  duration_ms: 1.741667
+  type: 'test'
+  ...
+# Subtest: all active relationships, events and series reference existing objects after consolidation
+ok 3 - all active relationships, events and series reference existing objects after consolidation
+  ---
+  duration_ms: 2.997458
+  type: 'test'
+  ...
+# Subtest: merged financing and risk facts retain their original version and values
+ok 4 - merged financing and risk facts retain their original version and values
+  ---
+  duration_ms: 0.131042
+  type: 'test'
+  ...
+# Subtest: coordinates are distributed, in China city ranges and explicitly synthetic
+ok 5 - coordinates are distributed, in China city ranges and explicitly synthetic
+  ---
+  duration_ms: 0.235625
+  type: 'test'
+  ...
+# Subtest: no financing values are invented for enterprises without a financing source
+ok 6 - no financing values are invented for enterprises without a financing source
+  ---
+  duration_ms: 0.104167
+  type: 'test'
+  ...
+# Subtest: host selection deduplicates aliases while preserving the requested business view
+ok 7 - host selection deduplicates aliases while preserving the requested business view
+  ---
+  duration_ms: 3.552042
+  type: 'test'
+  ...
+# Subtest: model consumers match both domains through the master without changing source envelopes
+ok 8 - model consumers match both domains through the master without changing source envelopes
+  ---
+  duration_ms: 1.543709
+  type: 'test'
+  ...
+# Subtest: v1.3.0 parent directory exactly matches the anchored parent commit
+ok 9 - v1.3.0 parent directory exactly matches the anchored parent commit
+  ---
+  duration_ms: 80.335083
+  type: 'test'
+  ...
+# Subtest: v1.2.0 and v1.1.0 baselines remain unchanged
+ok 10 - v1.2.0 and v1.1.0 baselines remain unchanged
+  ---
+  duration_ms: 81.400791
+  type: 'test'
+  ...
+# Subtest: readability distinguishes regular controls, headings and technical identifiers
+ok 11 - readability distinguishes regular controls, headings and technical identifiers
+  ---
+  duration_ms: 3.5365
+  type: 'test'
+  ...
+# Subtest: small CSS fonts are raised without reducing metric values or changing visibility
+ok 12 - small CSS fonts are raised without reducing metric values or changing visibility
+  ---
+  duration_ms: 1.196333
+  type: 'test'
+  ...
+# Subtest: responsive rules retain their font expression and newly loaded sheets are handled
+ok 13 - responsive rules retain their font expression and newly loaded sheets are handled
+  ---
+  duration_ms: 0.943625
+  type: 'test'
+  ...
+# Subtest: supplementary data content is placed inside the scrolling page, never before a full-height app
+ok 14 - supplementary data content is placed inside the scrolling page, never before a full-height app
+  ---
+  duration_ms: 0.668167
+  type: 'test'
+  ...
+# Subtest: v1.4 candidate serves the local Shell and reused model runtime
+ok 15 - v1.4 candidate serves the local Shell and reused model runtime
+  ---
+  duration_ms: 208.38675
+  type: 'test'
+  ...
+# Subtest: v1.5 inherits v1.4 with the original frozen ancestor anchors
+ok 16 - v1.5 inherits v1.4 with the original frozen ancestor anchors
+  ---
+  duration_ms: 2.25325
+  type: 'test'
+  ...
+# Subtest: one Shell registers M01-M08 with the cockpit under object panorama
+ok 17 - one Shell registers M01-M08 with the cockpit under object panorama
+  ---
+  duration_ms: 0.448625
+  type: 'test'
+  ...
+# Subtest: homepage keeps the fixed three-domain architecture and real feature launcher
+ok 18 - homepage keeps the fixed three-domain architecture and real feature launcher
+  ---
+  duration_ms: 0.562542
+  type: 'test'
+  ...
+# Subtest: object portraits and business panoramas share the Shell navigation
+ok 19 - object portraits and business panoramas share the Shell navigation
+  ---
+  duration_ms: 5.218875
+  type: 'test'
+  ...
+# Subtest: WorkspaceContext remains canonical and synchronized without a global context chip
+ok 20 - WorkspaceContext remains canonical and synchronized without a global context chip
+  ---
+  duration_ms: 2.429208
+  type: 'test'
+  ...
+# Subtest: M07 provides discovery plus six shared-context lenses
+ok 21 - M07 provides discovery plus six shared-context lenses
+  ---
+  duration_ms: 5.560834
+  type: 'test'
+  ...
+# Subtest: model entry loads the goal-based lifecycle with actual algorithm execution
+ok 22 - model entry loads the goal-based lifecycle with actual algorithm execution
+  ---
+  duration_ms: 1.563584
+  type: 'test'
+  ...
+# Subtest: inherited real workspaces retain query animation, action, decision and report flows
+ok 23 - inherited real workspaces retain query animation, action, decision and report flows
+  ---
+  duration_ms: 2.208834
+  type: 'test'
+  ...
+# Subtest: candidate pages contain no redirect wrappers or background polling loops
+ok 24 - candidate pages contain no redirect wrappers or background polling loops
+  ---
+  duration_ms: 7.494625
+  type: 'test'
+  ...
+# Subtest: cross-tab state changes never force a full page reload
+ok 25 - cross-tab state changes never force a full page reload
+  ---
+  duration_ms: 0.809625
+  type: 'test'
+  ...
+# Subtest: M07 receives host context only after its resource reports ready
+ok 26 - M07 receives host context only after its resource reports ready
+  ---
+  duration_ms: 3.945125
+  type: 'test'
+  ...
+# Subtest: Dashboard switches business views without rebuilding its iframe
+ok 27 - Dashboard switches business views without rebuilding its iframe
+  ---
+  duration_ms: 1.177625
+  type: 'test'
+  ...
+# Subtest: popstate, hashchange and stale frame callbacks remain guarded
+ok 28 - popstate, hashchange and stale frame callbacks remain guarded
+  ---
+  duration_ms: 0.736958
+  type: 'test'
+  ...
+# Subtest: required desktop and mobile layouts have explicit responsive rules
+ok 29 - required desktop and mobile layouts have explicit responsive rules
+  ---
+  duration_ms: 0.507
+  type: 'test'
+  ...
+# Subtest: baseline query settings and Agent authoring routes remain reachable from the Shell
+ok 30 - baseline query settings and Agent authoring routes remain reachable from the Shell
+  ---
+  duration_ms: 3.79425
+  type: 'test'
+  ...
+# Subtest: model question history freezes the answer, result version and original object scope
+ok 31 - model question history freezes the answer, result version and original object scope
+  ---
+  duration_ms: 5.316625
+  type: 'test'
+  ...
+# Subtest: failed and cancelled queries do not get recorded as successful conversations
+ok 32 - failed and cancelled queries do not get recorded as successful conversations
+  ---
+  duration_ms: 7.48975
+  type: 'test'
+  ...
+# Subtest: CSV preserves values and provenance while quoting delimiters and neutralizing formulas
+ok 33 - CSV preserves values and provenance while quoting delimiters and neutralizing formulas
+  ---
+  duration_ms: 0.837708
+  type: 'test'
+  ...
+# Subtest: decision projection distinguishes cancelled, failed and executing tasks
+ok 34 - decision projection distinguishes cancelled, failed and executing tasks
+  ---
+  duration_ms: 1.596625
+  type: 'test'
+  ...
+# Subtest: decision summary counts and detail filters use identical stage groups
+ok 35 - decision summary counts and detail filters use identical stage groups
+  ---
+  duration_ms: 1.106209
+  type: 'test'
+  ...
+# Subtest: task corrections take precedence over the original assignment without losing execution stage
+ok 36 - task corrections take precedence over the original assignment without losing execution stage
+  ---
+  duration_ms: 1.590125
+  type: 'test'
+  ...
+# Subtest: baseline business answers do not inherit a previously viewed model answer or model version
+ok 37 - baseline business answers do not inherit a previously viewed model answer or model version
+  ---
+  duration_ms: 3.974542
+  type: 'test'
+  ...
+# Subtest: baseline historyRuns are resolved by the selected run without falling back to a live answer
+ok 38 - baseline historyRuns are resolved by the selected run without falling back to a live answer
+  ---
+  duration_ms: 3.036542
+  type: 'test'
+  ...
+# Subtest: numeric input rejects null, empty, codes and booleans but retains zero and negatives
+ok 39 - numeric input rejects null, empty, codes and booleans but retains zero and negatives
+  ---
+  duration_ms: 3.004959
+  type: 'test'
+  ...
+# Subtest: requested result mode never falls through to another available envelope
+ok 40 - requested result mode never falls through to another available envelope
+  ---
+  duration_ms: 0.470583
+  type: 'test'
+  ...
+# Subtest: explicit current object, object set and all scopes are respected
+ok 41 - explicit current object, object set and all scopes are respected
+  ---
+  duration_ms: 1.182125
+  type: 'test'
+  ...
+# Subtest: explicit cross-module identity mappings do not guess other objects
+ok 42 - explicit cross-module identity mappings do not guess other objects
+  ---
+  duration_ms: 0.375292
+  type: 'test'
+  ...
+# Subtest: report snapshot retains exact result and model provenance without promoting null values
+ok 43 - report snapshot retains exact result and model provenance without promoting null values
+  ---
+  duration_ms: 0.552125
+  type: 'test'
+  ...
+# Subtest: report writes are idempotent, editable and isolated from older versions
+ok 44 - report writes are idempotent, editable and isolated from older versions
+  ---
+  duration_ms: 1.578
+  type: 'test'
+  ...
+# Subtest: explicit target switch clears incompatible selection atomically and keeps target identity
+ok 45 - explicit target switch clears incompatible selection atomically and keeps target identity
+  ---
+  duration_ms: 3.599541
+  type: 'test'
+  ...
+# Subtest: metric lookup matches the selected version and never another version of the same model
+ok 46 - metric lookup matches the selected version and never another version of the same model
+  ---
+  duration_ms: 0.706375
+  type: 'test'
+  ...
+# Subtest: metric formatting uses metric types, not the magnitude of a value
+ok 47 - metric formatting uses metric types, not the magnitude of a value
+  ---
+  duration_ms: 0.786833
+  type: 'test'
+  ...
+# Subtest: candidate return cannot substitute simulation or another subject
+ok 48 - candidate return cannot substitute simulation or another subject
+  ---
+  duration_ms: 3.164916
+  type: 'test'
+  ...
+# Subtest: expanding both sides of a cyclic relationship terminates without duplicating nodes
+ok 49 - expanding both sides of a cyclic relationship terminates without duplicating nodes
+  ---
+  duration_ms: 2.582333
+  type: 'test'
+  ...
+# Subtest: box selection intersects rather than overwrites the original enterprise scope
+ok 50 - box selection intersects rather than overwrites the original enterprise scope
+  ---
+  duration_ms: 8.023209
+  type: 'test'
+  ...
+# Subtest: empty business/query scopes stay empty until the user explicitly shows all enterprises
+ok 51 - empty business/query scopes stay empty until the user explicitly shows all enterprises
+  ---
+  duration_ms: 4.642
+  type: 'test'
+  ...
+# Subtest: named enterprise questions can leave the previous geographic box explicitly
+ok 52 - named enterprise questions can leave the previous geographic box explicitly
+  ---
+  duration_ms: 57.244583
+  type: 'test'
+  ...
+# Subtest: box filters persist and undo independently without deleting saved business records
+ok 53 - box filters persist and undo independently without deleting saved business records
+  ---
+  duration_ms: 4.27925
+  type: 'test'
+  ...
+# Subtest: restored box IDs are validated and deduplicated without broadening an empty scope
+ok 54 - restored box IDs are validated and deduplicated without broadening an empty scope
+  ---
+  duration_ms: 0.610125
+  type: 'test'
+  ...
+# Subtest: business directory consumes the exact M01-published snapshot and its verified data file
+ok 55 - business directory consumes the exact M01-published snapshot and its verified data file
+  ---
+  duration_ms: 84.2465
+  type: 'test'
+  ...
+# Subtest: all department budgets belong to one explicitly assigned demonstration enterprise
+ok 56 - all department budgets belong to one explicitly assigned demonstration enterprise
+  ---
+  duration_ms: 41.980833
+  type: 'test'
+  ...
+# Subtest: financing collections contain individual source-note identities and reconcile to enterprise balances
+ok 57 - financing collections contain individual source-note identities and reconcile to enterprise balances
+  ---
+  duration_ms: 17.068708
+  type: 'test'
+  ...
+# Subtest: holdings retain product-plus-ledger identity and distinct observed dates
+ok 58 - holdings retain product-plus-ledger identity and distinct observed dates
+  ---
+  duration_ms: 32.076166
+  type: 'test'
+  ...
+# Subtest: draft versions and incorrect relationship data fail before directory construction
+ok 59 - draft versions and incorrect relationship data fail before directory construction
+  ---
+  duration_ms: 50.015334
+  type: 'test'
+  ...
+# Subtest: dataset identities, foreign keys and digest are valid
+ok 60 - dataset identities, foreign keys and digest are valid
+  ---
+  duration_ms: 42.103959
+  type: 'test'
+  ...
+# Subtest: invalid identity, dates, locations and ownership are rejected
+ok 61 - invalid identity, dates, locations and ownership are rejected
+  ---
+  duration_ms: 12.15325
+  type: 'test'
+  ...
+# Subtest: all three source financing aggregates reconcile exactly
+ok 62 - all three source financing aggregates reconcile exactly
+  ---
+  duration_ms: 8.075125
+  type: 'test'
+  ...
+# Subtest: cost is principal weighted, not average of enterprises
+ok 63 - cost is principal weighted, not average of enterprises
+  ---
+  duration_ms: 2.769834
+  type: 'test'
+  ...
+# Subtest: unique loan IDs counted once; guarantees and unused facilities not principal
+ok 64 - unique loan IDs counted once; guarantees and unused facilities not principal
+  ---
+  duration_ms: 19.747542
+  type: 'test'
+  ...
+# Subtest: empty object scope never becomes all; zero principal means no available cost
+ok 65 - empty object scope never becomes all; zero principal means no available cost
+  ---
+  duration_ms: 4.091166
+  type: 'test'
+  ...
+# Subtest: maturity window excludes asOf and includes the exact horizon endpoint
+ok 66 - maturity window excludes asOf and includes the exact horizon endpoint
+  ---
+  duration_ms: 1.699291
+  type: 'test'
+  ...
+# Subtest: facilities must remain valid through the end of the selected window
+ok 67 - facilities must remain valid through the end of the selected window
+  ---
+  duration_ms: 0.507708
+  type: 'test'
+  ...
+# Subtest: cash from a surplus enterprise cannot cancel another enterprise gap
+ok 68 - cash from a surplus enterprise cannot cancel another enterprise gap
+  ---
+  duration_ms: 1.9395
+  type: 'test'
+  ...
+# Subtest: scenario changes only scoped floating rates; input data and risk scores remain immutable
+ok 69 - scenario changes only scoped floating rates; input data and risk scores remain immutable
+  ---
+  duration_ms: 8.559541
+  type: 'test'
+  ...
+# Subtest: bank scoped scenario preserves every other bank and enterprise
+ok 70 - bank scoped scenario preserves every other bank and enterprise
+  ---
+  duration_ms: 2.747458
+  type: 'test'
+  ...
+# Subtest: extension never resurrects expired or future-start loans
+ok 71 - extension never resurrects expired or future-start loans
+  ---
+  duration_ms: 1.806792
+  type: 'test'
+  ...
+# Subtest: scenario rejects data, ontology, parameters, scope and horizon mismatches
+ok 72 - scenario rejects data, ontology, parameters, scope and horizon mismatches
+  ---
+  duration_ms: 2.349833
+  type: 'test'
+  ...
+# Subtest: query preserves explicit empty and existing scopes; named aliases resolve canonical identities
+ok 73 - query preserves explicit empty and existing scopes; named aliases resolve canonical identities
+  ---
+  duration_ms: 17.75125
+  type: 'test'
+  ...
+# Subtest: query rejects unknown subjects, unsupported windows and unregistered financial requests
+ok 74 - query rejects unknown subjects, unsupported windows and unregistered financial requests
+  ---
+  duration_ms: 0.410958
+  type: 'test'
+  ...
+# Subtest: metric query does not silently narrow to enterprises with a gap
+ok 75 - metric query does not silently narrow to enterprises with a gap
+  ---
+  duration_ms: 4.217958
+  type: 'test'
+  ...
+# Subtest: selected enterprise is used only for an explicit singular reference
+ok 76 - selected enterprise is used only for an explicit singular reference
+  ---
+  duration_ms: 5.553167
+  type: 'test'
+  ...
+# Subtest: named bank returns only its actual loan exposure
+ok 77 - named bank returns only its actual loan exposure
+  ---
+  duration_ms: 2.537209
+  type: 'test'
+  ...
+# Subtest: query extracts independent rate, credit, extension and horizon parameters
+ok 78 - query extracts independent rate, credit, extension and horizon parameters
+  ---
+  duration_ms: 0.409792
+  type: 'test'
+  ...
+# Subtest: semantic threshold applies identically to query and filter rows
+ok 79 - semantic threshold applies identically to query and filter rows
+  ---
+  duration_ms: 29.97375
+  type: 'test'
+  ...
+# Subtest: task validation, deduplication and complete/reopen audit trail
+ok 80 - task validation, deduplication and complete/reopen audit trail
+  ---
+  duration_ms: 0.388916
+  type: 'test'
+  ...
+# Subtest: task requires the exact source plan identity and retains a deep snapshot
+ok 81 - task requires the exact source plan identity and retains a deep snapshot
+  ---
+  duration_ms: 0.169958
+  type: 'test'
+  ...
+# Subtest: report uses the recorded plan and cannot attach a different active plan
+ok 82 - report uses the recorded plan and cannot attach a different active plan
+  ---
+  duration_ms: 0.268791
+  type: 'test'
+  ...
+# Subtest: reports and CSV escape user controlled strings
+ok 83 - reports and CSV escape user controlled strings
+  ---
+  duration_ms: 4.53475
+  type: 'test'
+  ...
+# Subtest: store persists, restores and undoes filters without changing records
+ok 84 - store persists, restores and undoes filters without changing records
+  ---
+  duration_ms: 0.292958
+  type: 'test'
+  ...
+# Subtest: storage failure leaves a usable session and emits a persistence warning
+ok 85 - storage failure leaves a usable session and emits a persistence warning
+  ---
+  duration_ms: 0.076541
+  type: 'test'
+  ...
+# Subtest: facility drilldown uses exactly the same scenario values as enterprise credit totals
+ok 86 - facility drilldown uses exactly the same scenario values as enterprise credit totals
+  ---
+  duration_ms: 0.166291
+  type: 'test'
+  ...
+# Subtest: entity suffix boundaries and ambiguous condition groups never silently select a different scope
+ok 87 - entity suffix boundaries and ambiguous condition groups never silently select a different scope
+  ---
+  duration_ms: 0.532958
+  type: 'test'
+  ...
+# Subtest: task reassignment preserves execution status and original history
+ok 88 - task reassignment preserves execution status and original history
+  ---
+  duration_ms: 0.099084
+  type: 'test'
+  ...
+# Subtest: report evidence must match the exact result scope and horizon
+ok 89 - report evidence must match the exact result scope and horizon
+  ---
+  duration_ms: 0.0815
+  type: 'test'
+  ...
+# Subtest: risk explanation separates historical scoring from synthetic financing
+ok 90 - risk explanation separates historical scoring from synthetic financing
+  ---
+  duration_ms: 0.319458
+  type: 'test'
+  ...
+# Subtest: corrupted storage falls back; invalid historical plans cannot be active
+ok 91 - corrupted storage falls back; invalid historical plans cannot be active
+  ---
+  duration_ms: 0.191667
+  type: 'test'
+  ...
+# Subtest: geographic bounds support antimeridian crossing and include boundaries
+ok 92 - geographic bounds support antimeridian crossing and include boundaries
+  ---
+  duration_ms: 0.04325
+  type: 'test'
+  ...
+# Subtest: repricing fields come from the original ledger, while missing ratings remain missing
+ok 93 - repricing fields come from the original ledger, while missing ratings remain missing
+  ---
+  duration_ms: 2.52875
+  type: 'test'
+  ...
+# Subtest: rate changes wait for contractual repricing; fixed borrowing changes only at rollover
+ok 94 - rate changes wait for contractual repricing; fixed borrowing changes only at rollover
+  ---
+  duration_ms: 3.317375
+  type: 'test'
+  ...
+# Subtest: a selected benchmark changes only matching contracts and honors the recorded rate cap
+ok 95 - a selected benchmark changes only matching contracts and honors the recorded rate cap
+  ---
+  duration_ms: 1.864375
+  type: 'test'
+  ...
+# Subtest: AI matches same rating, agency, currency and nearby tenor before selecting a bank
+ok 96 - AI matches same rating, agency, currency and nearby tenor before selecting a bank
+  ---
+  duration_ms: 0.635791
+  type: 'test'
+  ...
+# Subtest: fallback uses a same-currency sector weighted mean, excludes the borrower, and never invents a missing quote
+ok 97 - fallback uses a same-currency sector weighted mean, excludes the borrower, and never invents a missing quote
+  ---
+  duration_ms: 0.478167
+  type: 'test'
+  ...
+# Subtest: an available rated match cannot be replaced by a cheaper but incomparable sector quote
+ok 98 - an available rated match cannot be replaced by a cheaper but incomparable sector quote
+  ---
+  duration_ms: 1.180959
+  type: 'test'
+  ...
+# Subtest: invented peer sample rates and duplicate replacement amounts fail model verification
+ok 99 - invented peer sample rates and duplicate replacement amounts fail model verification
+  ---
+  duration_ms: 8.472166
+  type: 'test'
+  ...
+# Subtest: stock continuation uses only historical levels and damped trends, without maturity, interest-rate or rollover inputs
+ok 100 - stock continuation uses only historical levels and damped trends, without maturity, interest-rate or rollover inputs
+  ---
+  duration_ms: 18.182
+  type: 'test'
+  ...
+# Subtest: published AI output indexes freeze proposals, create a specific action and prevent duplicate dispatch and tampering
+ok 101 - published AI output indexes freeze proposals, create a specific action and prevent duplicate dispatch and tampering
+  ---
+  duration_ms: 960.198125
+  type: 'test'
+  ...
+# Subtest: Embedded presentation is emitted before business scripts and leaves standalone mode untouched
+ok 102 - Embedded presentation is emitted before business scripts and leaves standalone mode untouched
+  ---
+  duration_ms: 3.957
+  type: 'test'
+  ...
+# Subtest: Every Shell module is served with early shared presentation, including the original approval assembly
+ok 103 - Every Shell module is served with early shared presentation, including the original approval assembly
+  ---
+  duration_ms: 169.558791
+  type: 'test'
+  ...
+# Subtest: cross-module transfer preserves explicit empty scopes and never replaces non-enterprise objects with all enterprises
+ok 104 - cross-module transfer preserves explicit empty scopes and never replaces non-enterprise objects with all enterprises
+  ---
+  duration_ms: 1.206667
+  type: 'test'
+  ...
+# Subtest: v1.4 baseline remains fixed and v1.5 preserves inherited data identities
+ok 105 - v1.4 baseline remains fixed and v1.5 preserves inherited data identities
+  ---
+  duration_ms: 36.530333
+  type: 'test'
+  ...
+# Subtest: all original modules, five domains and resource content are inherited without replacements
+ok 106 - all original modules, five domains and resource content are inherited without replacements
+  ---
+  duration_ms: 16.54025
+  type: 'test'
+  ...
+# Subtest: the default entry is the inherited platform, not the standalone map application
+ok 107 - the default entry is the inherited platform, not the standalone map application
+  ---
+  duration_ms: 1.267458
+  type: 'test'
+  ...
+# Subtest: analysis tools remain available in object context while decision entry is unified
+ok 108 - analysis tools remain available in object context while decision entry is unified
+  ---
+  duration_ms: 0.2955
+  type: 'test'
+  ...
+# Subtest: repeated joint-report sync preserves prose edited in the inherited editor
+ok 109 - repeated joint-report sync preserves prose edited in the inherited editor
+  ---
+  duration_ms: 5.026417
+  type: 'test'
+  ...
+# Subtest: panorama titles do not change inherited dashboard business data
+ok 110 - panorama titles do not change inherited dashboard business data
+  ---
+  duration_ms: 1.664042
+  type: 'test'
+  ...
+# Subtest: business projection preserves facts, real business warnings and referential integrity
+ok 111 - business projection preserves facts, real business warnings and referential integrity
+  ---
+  duration_ms: 3.169917
+  type: 'test'
+  ...
+# Subtest: M07 reads the original decision task and updated result without mutating facts or task state
+ok 112 - M07 reads the original decision task and updated result without mutating facts or task state
+  ---
+  duration_ms: 4.18575
+  type: 'test'
+  ...
+# Subtest: initial decision projection uses exact frozen M04 records
+ok 113 - initial decision projection uses exact frozen M04 records
+  ---
+  duration_ms: 2.071417
+  type: 'test'
+  ...
+# Subtest: report source restores the exploration URL separately from its single-object report scope
+ok 114 - report source restores the exploration URL separately from its single-object report scope
+  ---
+  duration_ms: 0.941833
+  type: 'test'
+  ...
+# Subtest: R14-015 generic rule values are not comparable, real financing cost and risk definitions remain comparable
+ok 115 - R14-015 generic rule values are not comparable, real financing cost and risk definitions remain comparable
+  ---
+  duration_ms: 10.109917
+  type: 'test'
+  ...
+# Subtest: R14-015 matching labels do not merge unrelated series, and duplicate series do not count twice
+ok 116 - R14-015 matching labels do not merge unrelated series, and duplicate series do not count twice
+  ---
+  duration_ms: 7.128917
+  type: 'test'
+  ...
+# Subtest: R14-016 outside window retains explicitly dated static snapshots and returns no series observations
+ok 117 - R14-016 outside window retains explicitly dated static snapshots and returns no series observations
+  ---
+  duration_ms: 1.562917
+  type: 'test'
+  ...
+# Subtest: R14-016 Q1 budget comparison uses 25.3% while static annual 105.4% is dated separately
+ok 118 - R14-016 Q1 budget comparison uses 25.3% while static annual 105.4% is dated separately
+  ---
+  duration_ms: 1.411208
+  type: 'test'
+  ...
+# Subtest: R14-017 deterministic layout reserves at least 190 units for labels, circles and handles
+ok 119 - R14-017 deterministic layout reserves at least 190 units for labels, circles and handles
+  ---
+  duration_ms: 18.6835
+  type: 'test'
+  ...
+# Subtest: simulated history is continuous, varied, explicitly fictional, and anchored to unchanged snapshot
+ok 120 - simulated history is continuous, varied, explicitly fictional, and anchored to unchanged snapshot
+  ---
+  duration_ms: 8.742291
+  type: 'test'
+  ...
+# Subtest: bindings control the runtime input and reject unit and foreign-key mismatches
+ok 121 - bindings control the runtime input and reject unit and foreign-key mismatches
+  ---
+  duration_ms: 80.758792
+  type: 'test'
+  ...
+# Subtest: simulation does not mark the draft validated or create business output datasets and alerts
+ok 122 - simulation does not mark the draft validated or create business output datasets and alerts
+  ---
+  duration_ms: 30.822333
+  type: 'test'
+  ...
+# Subtest: output field aliases are emitted, frozen in releases, and consumed by time-series rendering
+ok 123 - output field aliases are emitted, frozen in releases, and consumed by time-series rendering
+  ---
+  duration_ms: 597.155542
+  type: 'test'
+  ...
+# Subtest: duplicate output names cannot be published as a valid contract
+ok 124 - duplicate output names cannot be published as a valid contract
+  ---
+  duration_ms: 8.858458
+  type: 'test'
+  ...
+# Subtest: relation filters are exclusive when requested and no focus means no relation lines
+ok 125 - relation filters are exclusive when requested and no focus means no relation lines
+  ---
+  duration_ms: 0.6225
+  type: 'test'
+  ...
+# Subtest: large immutable assets use lossless column storage and retain original fingerprint after reload
+ok 126 - large immutable assets use lossless column storage and retain original fingerprint after reload
+  ---
+  duration_ms: 82.028
+  type: 'test'
+  ...
+# Subtest: asset migration preserves old stored records and algorithms can run after reload with bounded quota
+ok 127 - asset migration preserves old stored records and algorithms can run after reload with bounded quota
+  ---
+  duration_ms: 804.725
+  type: 'test'
+  ...
+# Subtest: three reference goals are backed by actual calculations and prepared source data
+ok 128 - three reference goals are backed by actual calculations and prepared source data
+  ---
+  duration_ms: 31.493083
+  type: 'test'
+  ...
+# Subtest: cost: create, scope, validate, publish, use and reload
+ok 129 - cost: create, scope, validate, publish, use and reload
+  ---
+  duration_ms: 29.303167
+  type: 'test'
+  ...
+# Subtest: structure: create, scope, validate, publish, use and reload
+ok 130 - structure: create, scope, validate, publish, use and reload
+  ---
+  duration_ms: 96.5035
+  type: 'test'
+  ...
+# Subtest: risk: create, scope, validate, publish, use and reload
+ok 131 - risk: create, scope, validate, publish, use and reload
+  ---
+  duration_ms: 40.689292
+  type: 'test'
+  ...
+# Subtest: draft edits invalidate release readiness without changing published version or results
+ok 132 - draft edits invalidate release readiness without changing published version or results
+  ---
+  duration_ms: 119.20625
+  type: 'test'
+  ...
+# Subtest: run scenarios are recorded separately; fixed risk policy cannot be overridden at use time
+ok 133 - run scenarios are recorded separately; fixed risk policy cannot be overridden at use time
+  ---
+  duration_ms: 13.271791
+  type: 'test'
+  ...
+# Subtest: failed code and invalid financial output do not produce releasable drafts
+ok 134 - failed code and invalid financial output do not produce releasable drafts
+  ---
+  duration_ms: 45.629459
+  type: 'test'
+  ...
+# Subtest: duplicate releases, foreign scopes and out-of-range parameters are rejected
+ok 135 - duplicate releases, foreign scopes and out-of-range parameters are rejected
+  ---
+  duration_ms: 27.212958
+  type: 'test'
+  ...
+# Subtest: version switch, disable and goal archive preserve history while blocking new use
+ok 136 - version switch, disable and goal archive preserve history while blocking new use
+  ---
+  duration_ms: 71.165375
+  type: 'test'
+  ...
+# Subtest: goal edits preserve frozen goal definition and stale draft saves cannot overwrite newer work
+ok 137 - goal edits preserve frozen goal definition and stale draft saves cannot overwrite newer work
+  ---
+  duration_ms: 22.791125
+  type: 'test'
+  ...
+# Subtest: risk use produces traceable model signals without changing historical scores
+ok 138 - risk use produces traceable model signals without changing historical scores
+  ---
+  duration_ms: 11.106583
+  type: 'test'
+  ...
+# Subtest: interrupted runs have a bounded lifetime and do not remain running after reload
+ok 139 - interrupted runs have a bounded lifetime and do not remain running after reload
+  ---
+  duration_ms: 0.365083
+  type: 'test'
+  ...
+# Subtest: disabling the latest monitor version does not resurrect an older alert
+ok 140 - disabling the latest monitor version does not resurrect an older alert
+  ---
+  duration_ms: 36.310167
+  type: 'test'
+  ...
+# Subtest: analysis perspectives reorder cards and keep shared map signals distinct from historical risk
+ok 141 - analysis perspectives reorder cards and keep shared map signals distinct from historical risk
+  ---
+  duration_ms: 5.580833
+  type: 'test'
+  ...
+# Subtest: bank links follow great circles, remain finite and split at the date line
+ok 142 - bank links follow great circles, remain finite and split at the date line
+  ---
+  duration_ms: 0.753459
+  type: 'test'
+  ...
+# Subtest: company relationships include institutions reached through actual financing records
+ok 143 - company relationships include institutions reached through actual financing records
+  ---
+  duration_ms: 1.602417
+  type: 'test'
+  ...
+# Subtest: institution relation maps can locate related enterprises without assigning the bank a made-up address
+ok 144 - institution relation maps can locate related enterprises without assigning the bank a made-up address
+  ---
+  duration_ms: 0.322417
+  type: 'test'
+  ...
+# Subtest: risk events have precise rule or model lineage; green scores and work logs are not events
+ok 145 - risk events have precise rule or model lineage; green scores and work logs are not events
+  ---
+  duration_ms: 0.36225
+  type: 'test'
+  ...
+# Subtest: candidate, synthetic and mismatched model outputs cannot create formal monitoring alerts
+ok 146 - candidate, synthetic and mismatched model outputs cannot create formal monitoring alerts
+  ---
+  duration_ms: 0.624791
+  type: 'test'
+  ...
+# Subtest: external business events require an explicit original event identity and evidence
+ok 147 - external business events require an explicit original event identity and evidence
+  ---
+  duration_ms: 65.338041
+  type: 'test'
+  ...
+# Subtest: object questions use the assigned enterprise budget and honor an explicit single year
+ok 148 - object questions use the assigned enterprise budget and honor an explicit single year
+  ---
+  duration_ms: 2.012208
+  type: 'test'
+  ...
+# Subtest: holding answers preserve actual first and last observations and do not claim product returns
+ok 149 - holding answers preserve actual first and last observations and do not claim product returns
+  ---
+  duration_ms: 1.225459
+  type: 'test'
+  ...
+# Subtest: questions cannot silently change the active enterprise or fabricate forecasts
+ok 150 - questions cannot silently change the active enterprise or fabricate forecasts
+  ---
+  duration_ms: 0.692958
+  type: 'test'
+  ...
+# Subtest: follow-up risk explanations retain source conditions and model contributions
+ok 151 - follow-up risk explanations retain source conditions and model contributions
+  ---
+  duration_ms: 0.86425
+  type: 'test'
+  ...
+# Subtest: exact published M01 object identities and relationship endpoints resolve
+ok 152 - exact published M01 object identities and relationship endpoints resolve
+  ---
+  duration_ms: 3.784833
+  type: 'test'
+  ...
+# Subtest: M07-style prefixes and rule IDs do not prove Object Type registration
+ok 153 - M07-style prefixes and rule IDs do not prove Object Type registration
+  ---
+  duration_ms: 1.651792
+  type: 'test'
+  ...
+# Subtest: candidate or wrong exact semantic versions cannot be consumed as published
+ok 154 - candidate or wrong exact semantic versions cannot be consumed as published
+  ---
+  duration_ms: 1.11925
+  type: 'test'
+  ...
+# Subtest: 75-loan collection cannot masquerade as a single loan object
+ok 155 - 75-loan collection cannot masquerade as a single loan object
+  ---
+  duration_ms: 0.915333
+  type: 'test'
+  ...
+# Subtest: new display IDs cannot duplicate a source business identity
+ok 156 - new display IDs cannot duplicate a source business identity
+  ---
+  duration_ms: 0.52625
+  type: 'test'
+  ...
+# Subtest: reversed relationship endpoints violate the published M01 definition
+ok 157 - reversed relationship endpoints violate the published M01 definition
+  ---
+  duration_ms: 0.5025
+  type: 'test'
+  ...
+# Subtest: native rule bootstrap attaches revisions to the existing ontologies without modifying published versions
+ok 158 - native rule bootstrap attaches revisions to the existing ontologies without modifying published versions
+  ---
+  duration_ms: 4.526625
+  type: 'test'
+  ...
+# Subtest: bootstrap is idempotent and never overwrites edited native rule drafts
+ok 159 - bootstrap is idempotent and never overwrites edited native rule drafts
+  ---
+  duration_ms: 0.725875
+  type: 'test'
+  ...
+# Subtest: legacy threshold drafts migrate into the owning financing draft without losing their evidence
+ok 160 - legacy threshold drafts migrate into the owning financing draft without losing their evidence
+  ---
+  duration_ms: 24.233916
+  type: 'test'
+  ...
+# Subtest: the generated metric catalogue is identical to the workbench source definitions
+ok 161 - the generated metric catalogue is identical to the workbench source definitions
+  ---
+  duration_ms: 0.652375
+  type: 'test'
+  ...
+# Subtest: question and report evidence retain the owning ontology and native rule revision
+ok 162 - question and report evidence retain the owning ontology and native rule revision
+  ---
+  duration_ms: 66.026959
+  type: 'test'
+  ...
+# Subtest: an explicit new query threshold does not claim the previous native rule identity
+ok 163 - an explicit new query threshold does not claim the previous native rule identity
+  ---
+  duration_ms: 10.788833
+  type: 'test'
+  ...
+# Subtest: selection actions start with a concrete business task and do not invent an empty selection
+ok 164 - selection actions start with a concrete business task and do not invent an empty selection
+  ---
+  duration_ms: 0.633042
+  type: 'test'
+  ...
+# Subtest: larger selections prefer a table while enterprise pairs compare enterprises
+ok 165 - larger selections prefer a table while enterprise pairs compare enterprises
+  ---
+  duration_ms: 0.083458
+  type: 'test'
+  ...
+# Subtest: product histories reference their actual linked holdings and share exact metric dimensions
+ok 166 - product histories reference their actual linked holdings and share exact metric dimensions
+  ---
+  duration_ms: 0.866667
+  type: 'test'
+  ...
+# Subtest: mixed types, unrelated metrics, and product with no holdings do not share time dimensions
+ok 167 - mixed types, unrelated metrics, and product with no holdings do not share time dimensions
+  ---
+  duration_ms: 49.247042
+  type: 'test'
+  ...
+# Subtest: empty time intervals do not silently use latest values outside the window
+ok 168 - empty time intervals do not silently use latest values outside the window
+  ---
+  duration_ms: 0.104917
+  type: 'test'
+  ...
+# Subtest: inherited projection adaptations are limited to the exact known idle loops
+ok 169 - inherited projection adaptations are limited to the exact known idle loops
+  ---
+  duration_ms: 6.483708
+  type: 'test'
+  ...
+# Subtest: R14-002 consumes complete questions: unregistered abbreviations and mixed subjects cannot propagate a result
+ok 170 - R14-002 consumes complete questions: unregistered abbreviations and mixed subjects cannot propagate a result
+  ---
+  duration_ms: 22.595625
+  type: 'test'
+  ...
+# Subtest: R14-002 preserves all registered names, aliases, ID case and generic portfolio questions
+ok 171 - R14-002 preserves all registered names, aliases, ID case and generic portfolio questions
+  ---
+  duration_ms: 69.799
+  type: 'test'
+  ...
+# Subtest: R14-012 repeated, conflicting, incomplete and staged parameters reject consistently
+ok 172 - R14-012 repeated, conflicting, incomplete and staged parameters reject consistently
+  ---
+  duration_ms: 10.892583
+  type: 'test'
+  ...
+# Subtest: R14-011 source changes update untouched fields and snapshots, independent of target edits
+ok 173 - R14-011 source changes update untouched fields and snapshots, independent of target edits
+  ---
+  duration_ms: 12.140208
+  type: 'test'
+  ...
+# Subtest: R14-011 older blocks migrate field ownership from fingerprints without losing previous manual changes
+ok 174 - R14-011 older blocks migrate field ownership from fingerprints without losing previous manual changes
+  ---
+  duration_ms: 3.213875
+  type: 'test'
+  ...
+# Subtest: R14-011 frozen source remains immutable while a new revision gets its own fields and snapshot
+ok 175 - R14-011 frozen source remains immutable while a new revision gets its own fields and snapshot
+  ---
+  duration_ms: 4.879917
+  type: 'test'
+  ...
+# Subtest: R14-013 rejects disjunction instead of silently converting the 21-member union into an intersection
+ok 176 - R14-013 rejects disjunction instead of silently converting the 21-member union into an intersection
+  ---
+  duration_ms: 17.002666
+  type: 'test'
+  ...
+# Subtest: R14-013 conjunction, named subjects and supported questions retain correct downstream identities
+ok 177 - R14-013 conjunction, named subjects and supported questions retain correct downstream identities
+  ---
+  duration_ms: 24.375667
+  type: 'test'
+  ...
+# Subtest: R14-014 report renderer formats currency and rate precision without altering numeric source data
+ok 178 - R14-014 report renderer formats currency and rate precision without altering numeric source data
+  ---
+  duration_ms: 2.616125
+  type: 'test'
+  ...
+# Subtest: R14-014 zero, missing, textual values and series use the same safe rendering boundary
+ok 179 - R14-014 zero, missing, textual values and series use the same safe rendering boundary
+  ---
+  duration_ms: 0.582791
+  type: 'test'
+  ...
+# Subtest: R14-002 rejects every unknown subject without expanding or partially matching the set
+ok 180 - R14-002 rejects every unknown subject without expanding or partially matching the set
+  ---
+  duration_ms: 13.973042
+  type: 'test'
+  ...
+# Subtest: R14-006 decimal parameters affect independent loan and facility calculations; malformed values fail
+ok 181 - R14-006 decimal parameters affect independent loan and facility calculations; malformed values fail
+  ---
+  duration_ms: 7.697
+  type: 'test'
+  ...
+# Subtest: R14-001 generic demonstration baselines have no FACT scores and retain explicit provenance
+ok 182 - R14-001 generic demonstration baselines have no FACT scores and retain explicit provenance
+  ---
+  duration_ms: 51.822792
+  type: 'test'
+  ...
+# Subtest: R14-005 incompatible domains, unknown IDs, time and versions remain explicit errors
+ok 183 - R14-005 incompatible domains, unknown IDs, time and versions remain explicit errors
+  ---
+  duration_ms: 1.828916
+  type: 'test'
+  ...
+# Subtest: R14-010 missing and zero-balance costs never concatenate a unit
+ok 184 - R14-010 missing and zero-balance costs never concatenate a unit
+  ---
+  duration_ms: 15.252833
+  type: 'test'
+  ...
+# Subtest: all nine asset snapshots exactly match the currently consumed simulation data
+ok 185 - all nine asset snapshots exactly match the currently consumed simulation data
+  ---
+  duration_ms: 5.857875
+  type: 'test'
+  ...
+# Subtest: missing fields, duplicate primary keys and dangling references reject the snapshot
+ok 186 - missing fields, duplicate primary keys and dangling references reject the snapshot
+  ---
+  duration_ms: 4.041958
+  type: 'test'
+  ...
+# Subtest: Excel is a real complete workbook with the exact registered SHA-256 and byte length
+ok 187 - Excel is a real complete workbook with the exact registered SHA-256 and byte length
+  ---
+  duration_ms: 0.233167
+  type: 'test'
+  ...
+# Subtest: every exported Excel cell retains its value, date/percentage type, frozen headers and full record coverage
+ok 188 - every exported Excel cell retains its value, date/percentage type, frozen headers and full record coverage
+  ---
+  duration_ms: 364.043667
+  type: 'test'
+  ...
+# Subtest: an imported model window preserves its exact day count in map calculations and restored state
+ok 189 - an imported model window preserves its exact day count in map calculations and restored state
+  ---
+  duration_ms: 5.751
+  type: 'test'
+  ...
+# Subtest: candidate trial, comparison and review preserve current application and frozen references
+ok 190 - candidate trial, comparison and review preserve current application and frozen references
+  ---
+  duration_ms: 67.876458
+  type: 'test'
+  ...
+# Subtest: fixed comparison rejects a changed horizon before recording either comparison run
+ok 191 - fixed comparison rejects a changed horizon before recording either comparison run
+  ---
+  duration_ms: 16.664875
+  type: 'test'
+  ...
+# Subtest: a scenario run is not promoted into an ordinary risk event
+ok 192 - a scenario run is not promoted into an ordinary risk event
+  ---
+  duration_ms: 7.389875
+  type: 'test'
+  ...
+# Subtest: approval, execution and effect are separate and failed recovery preserves fixed evidence
+ok 193 - approval, execution and effect are separate and failed recovery preserves fixed evidence
+  ---
+  duration_ms: 1.385541
+  type: 'test'
+  ...
+# Subtest: effect requires later dated evidence and cannot be recorded before execution
+ok 194 - effect requires later dated evidence and cannot be recorded before execution
+  ---
+  duration_ms: 0.208625
+  type: 'test'
+  ...
+# Subtest: model result becomes an unapproved fixed case; stale writes and source changes are rejected
+ok 195 - model result becomes an unapproved fixed case; stale writes and source changes are rejected
+  ---
+  duration_ms: 7.479209
+  type: 'test'
+  ...
+# Subtest: cashflow: monthly predictions preserve observed facts, loan totals and history identity
+ok 196 - cashflow: monthly predictions preserve observed facts, loan totals and history identity
+  ---
+  duration_ms: 6.479625
+  type: 'test'
+  ...
+# Subtest: reversion: monthly predictions preserve observed facts, loan totals and history identity
+ok 197 - reversion: monthly predictions preserve observed facts, loan totals and history identity
+  ---
+  duration_ms: 5.16775
+  type: 'test'
+  ...
+# Subtest: damped: monthly predictions preserve observed facts, loan totals and history identity
+ok 198 - damped: monthly predictions preserve observed facts, loan totals and history identity
+  ---
+  duration_ms: 4.285
+  type: 'test'
+  ...
+# Subtest: fixed-rate contracts keep their coupon before maturity while floating loans react to scenarios
+ok 199 - fixed-rate contracts keep their coupon before maturity while floating loans react to scenarios
+  ---
+  duration_ms: 3.356917
+  type: 'test'
+  ...
+# Subtest: zero rollover produces gaps after repayment rather than invented zero cost observations
+ok 200 - zero rollover produces gaps after repayment rather than invented zero cost observations
+  ---
+  duration_ms: 14.459333
+  type: 'test'
+  ...
+# Subtest: sector and group cost is weighted by financing balance at each point
+ok 201 - sector and group cost is weighted by financing balance at each point
+  ---
+  duration_ms: 0.164458
+  type: 'test'
+  ...
+# Subtest: forecast timing or relabeling an estimate as an actual observation is rejected
+ok 202 - forecast timing or relabeling an estimate as an actual observation is rejected
+  ---
+  duration_ms: 3.794625
+  type: 'test'
+  ...
+# Subtest: maintained forecasting methods are published in the cost goal and keep separate working drafts
+ok 203 - maintained forecasting methods are published in the cost goal and keep separate working drafts
+  ---
+  duration_ms: 242.299166
+  type: 'test'
+  ...
+# Subtest: focused map contains loan and facility banks and both guarantee endpoints outside the selected scope
+ok 204 - focused map contains loan and facility banks and both guarantee endpoints outside the selected scope
+  ---
+  duration_ms: 2.573792
+  type: 'test'
+  ...
+1..204
+# tests 204
+# suites 0
+# pass 204
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1411.131125

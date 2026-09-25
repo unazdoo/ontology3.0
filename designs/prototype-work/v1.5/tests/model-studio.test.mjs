@@ -21,6 +21,7 @@ for(const type of ['cost','structure','risk'])test(`${type}: create, scope, vali
   const validation=await studio.run(goal.id);assert.equal(validation.objectIds.length,2);
   const version=await studio.publish(goal.id,{name:'1.0.0',note:'核验后的发布',publisher:'验收人'});
   const run=await studio.run(goal.id,{purpose:'USE',versionId:version.id,objectIds:['ENT-020']});assert.equal(run.output.rows.length,1);assert.equal(run.output.rows[0].enterpriseId,'ENT-020');
+  assert.equal(studio.read().bindings[goal.id],undefined);await studio.bind(goal.id,version.id);
   const reloaded=createModelStudio({storage,executor:execute});assert.equal(reloaded.read().bindings[goal.id],version.id);assert.equal(reloaded.read().runs.find(r=>r.id===run.id).status,'SUCCEEDED');
   assert.equal(version.validationRunId,validation.id);assert.equal(version.signature,run.signature);assert.ok(run.executionSignature);
 });

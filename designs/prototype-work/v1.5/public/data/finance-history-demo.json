@@ -1,0 +1,3576 @@
+{
+  "schemaVersion": "ofw.asset.finance-history.v1",
+  "id": "asset-finance-history-demo-v1",
+  "version": "DATA-FINANCE-HISTORY-DEMO-2025-V1",
+  "name": "企业月度融资成本 · 演示历史",
+  "kind": "finance-history",
+  "classification": "SIMULATED_HISTORY_CALIBRATED_TO_EXISTING_SNAPSHOT",
+  "asOf": "2025-12-31",
+  "sourceDataVersion": "DATA-V14-20251231-DEMO-1",
+  "sourceDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+  "method": "deterministic-calibrated-seasonality-v1",
+  "note": "按用户要求虚构补充历史月份，仅用于连续时序及模型构建演示。最后一期与既有快照一致，不冒充原始台账历史。",
+  "fields": [
+    {
+      "key": "enterpriseId",
+      "label": "企业ID",
+      "type": "string",
+      "unit": ""
+    },
+    {
+      "key": "asOf",
+      "label": "月份",
+      "type": "date",
+      "unit": ""
+    },
+    {
+      "key": "rate",
+      "label": "融资成本率",
+      "type": "number",
+      "unit": "%"
+    },
+    {
+      "key": "balanceYuan",
+      "label": "月末融资本金",
+      "type": "number",
+      "unit": "元"
+    },
+    {
+      "key": "identity",
+      "label": "数据身份",
+      "type": "string",
+      "unit": ""
+    }
+  ],
+  "rows": [
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2024-01-31",
+      "rate": 2.467135,
+      "balanceYuan": 361127831.24,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2024-02-29",
+      "rate": 2.49077,
+      "balanceYuan": 369355575.78,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2024-03-31",
+      "rate": 2.446583,
+      "balanceYuan": 375899815.61,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2024-04-30",
+      "rate": 2.376292,
+      "balanceYuan": 379573597.35,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2024-05-31",
+      "rate": 2.336187,
+      "balanceYuan": 380036611.97,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2024-06-30",
+      "rate": 2.340843,
+      "balanceYuan": 377895569.28,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2024-07-31",
+      "rate": 2.364479,
+      "balanceYuan": 374525248.26,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2024-08-31",
+      "rate": 2.376583,
+      "balanceYuan": 371663004.75,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2024-09-30",
+      "rate": 2.362583,
+      "balanceYuan": 370896336.6,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2024-10-31",
+      "rate": 2.322479,
+      "balanceYuan": 373194649.72,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2024-11-30",
+      "rate": 2.270843,
+      "balanceYuan": 378623330.89,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2024-12-31",
+      "rate": 2.238187,
+      "balanceYuan": 386324461.79,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2025-01-31",
+      "rate": 2.250292,
+      "balanceYuan": 394769862.93,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2025-02-28",
+      "rate": 2.292583,
+      "balanceYuan": 402211831.57,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2025-03-31",
+      "rate": 2.30877,
+      "balanceYuan": 407198628.36,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2025-04-30",
+      "rate": 2.257135,
+      "balanceYuan": 409002669.22,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2025-05-31",
+      "rate": 2.168187,
+      "balanceYuan": 407835126.99,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2025-06-30",
+      "rate": 2.124,
+      "balanceYuan": 404783645.77,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2025-07-31",
+      "rate": 2.166292,
+      "balanceYuan": 401491539.28,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2025-08-31",
+      "rate": 2.23877,
+      "balanceYuan": 399673093.88,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2025-09-30",
+      "rate": 2.243427,
+      "balanceYuan": 400607938.19,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2025-10-31",
+      "rate": 2.154479,
+      "balanceYuan": 404763615.39,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2025-11-30",
+      "rate": 2.054,
+      "balanceYuan": 411657680.93,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-001",
+      "asOf": "2025-12-31",
+      "rate": 2.04,
+      "balanceYuan": 420000000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2024-01-31",
+      "rate": 2.682097,
+      "balanceYuan": 534620773.75,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2024-02-29",
+      "rate": 2.683427,
+      "balanceYuan": 540902891.88,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2024-03-31",
+      "rate": 2.616643,
+      "balanceYuan": 542423761.66,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2024-04-30",
+      "rate": 2.543225,
+      "balanceYuan": 539833788.35,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2024-05-31",
+      "rate": 2.518263,
+      "balanceYuan": 534995874.31,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2024-06-30",
+      "rate": 2.538862,
+      "balanceYuan": 530435954.18,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2024-07-31",
+      "rate": 2.563697,
+      "balanceYuan": 528597968.01,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2024-08-31",
+      "rate": 2.561148,
+      "balanceYuan": 531123018.86,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2024-09-30",
+      "rate": 2.528459,
+      "balanceYuan": 538365327.81,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2024-10-31",
+      "rate": 2.479993,
+      "balanceYuan": 549287756.19,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2024-11-30",
+      "rate": 2.436357,
+      "balanceYuan": 561767710.56,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2024-12-31",
+      "rate": 2.420462,
+      "balanceYuan": 573223203.71,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2025-01-31",
+      "rate": 2.441418,
+      "balanceYuan": 581374414.25,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2025-02-28",
+      "rate": 2.472964,
+      "balanceYuan": 584916122.11,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2025-03-31",
+      "rate": 2.465228,
+      "balanceYuan": 583902684.42,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2025-04-30",
+      "rate": 2.398087,
+      "balanceYuan": 579732002.86,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2025-05-31",
+      "rate": 2.317957,
+      "balanceYuan": 574733211.21,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2025-06-30",
+      "rate": 2.298183,
+      "balanceYuan": 571479695.1,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2025-07-31",
+      "rate": 2.353235,
+      "balanceYuan": 572030069.48,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2025-08-31",
+      "rate": 2.409733,
+      "balanceYuan": 577320988.17,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2025-09-30",
+      "rate": 2.383322,
+      "balanceYuan": 586890876.89,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2025-10-31",
+      "rate": 2.279687,
+      "balanceYuan": 599016075.09,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2025-11-30",
+      "rate": 2.195678,
+      "balanceYuan": 611219231.23,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-002",
+      "asOf": "2025-12-31",
+      "rate": 2.21,
+      "balanceYuan": 621000000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2024-01-31",
+      "rate": 2.886411,
+      "balanceYuan": 709374842.02,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2024-02-29",
+      "rate": 2.860961,
+      "balanceYuan": 706792153.83,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2024-03-31",
+      "rate": 2.775968,
+      "balanceYuan": 700693999.34,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2024-04-30",
+      "rate": 2.707827,
+      "balanceYuan": 694333733.16,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2024-05-31",
+      "rate": 2.702134,
+      "balanceYuan": 691042020.01,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2024-06-30",
+      "rate": 2.734927,
+      "balanceYuan": 693244451.93,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2024-07-31",
+      "rate": 2.753305,
+      "balanceYuan": 701746117.64,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2024-08-31",
+      "rate": 2.731797,
+      "balanceYuan": 715494140.83,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2024-09-30",
+      "rate": 2.683311,
+      "balanceYuan": 731888227.02,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2024-10-31",
+      "rate": 2.633789,
+      "balanceYuan": 747547622.95,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2024-11-30",
+      "rate": 2.603098,
+      "balanceYuan": 759308272.92,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2024-12-31",
+      "rate": 2.601821,
+      "balanceYuan": 765156060.1,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2025-01-31",
+      "rate": 2.624141,
+      "balanceYuan": 764820872.19,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2025-02-28",
+      "rate": 2.639139,
+      "balanceYuan": 759856271.3,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2025-03-31",
+      "rate": 2.609273,
+      "balanceYuan": 753181269.31,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2025-04-30",
+      "rate": 2.534754,
+      "balanceYuan": 748219362.56,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2025-05-31",
+      "rate": 2.469993,
+      "balanceYuan": 747888768.31,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2025-06-30",
+      "rate": 2.472658,
+      "balanceYuan": 753741693.75,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2025-07-31",
+      "rate": 2.531484,
+      "balanceYuan": 765506511.06,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2025-08-31",
+      "rate": 2.565102,
+      "balanceYuan": 781167874.22,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2025-09-30",
+      "rate": 2.510238,
+      "balanceYuan": 797561147.33,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2025-10-31",
+      "rate": 2.401648,
+      "balanceYuan": 811305816.92,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2025-11-30",
+      "rate": 2.340829,
+      "balanceYuan": 819802577.67,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-003",
+      "asOf": "2025-12-31",
+      "rate": 2.38,
+      "balanceYuan": 822000000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2024-01-31",
+      "rate": 3.080458,
+      "balanceYuan": 884038666.12,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2024-02-29",
+      "rate": 3.026775,
+      "balanceYuan": 875859809.19,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2024-03-31",
+      "rate": 2.930541,
+      "balanceYuan": 870796621.54,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2024-04-30",
+      "rate": 2.8757,
+      "balanceYuan": 872152904.18,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2024-05-31",
+      "rate": 2.89055,
+      "balanceYuan": 881339029.21,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2024-06-30",
+      "rate": 2.929317,
+      "balanceYuan": 897455949.24,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2024-07-31",
+      "rate": 2.933855,
+      "balanceYuan": 917560372.27,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2024-08-31",
+      "rate": 2.891762,
+      "balanceYuan": 937532888.47,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2024-09-30",
+      "rate": 2.832841,
+      "balanceYuan": 953292994.08,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2024-10-31",
+      "rate": 2.78947,
+      "balanceYuan": 962002639.83,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2024-11-30",
+      "rate": 2.774097,
+      "balanceYuan": 962903316.36,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2024-12-31",
+      "rate": 2.782714,
+      "balanceYuan": 957539777.24,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2025-01-31",
+      "rate": 2.798841,
+      "balanceYuan": 949304412.42,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2025-02-28",
+      "rate": 2.794061,
+      "balanceYuan": 942436659.59,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2025-03-31",
+      "rate": 2.746611,
+      "balanceYuan": 940772577.98,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2025-04-30",
+      "rate": 2.673017,
+      "balanceYuan": 946613399.03,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2025-05-31",
+      "rate": 2.627493,
+      "balanceYuan": 960046775.94,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2025-06-30",
+      "rate": 2.6477,
+      "balanceYuan": 978920930.33,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2025-07-31",
+      "rate": 2.701141,
+      "balanceYuan": 999479321.28,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2025-08-31",
+      "rate": 2.707832,
+      "balanceYuan": 1017468640.69,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2025-09-30",
+      "rate": 2.630158,
+      "balanceYuan": 1029393330.59,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2025-10-31",
+      "rate": 2.526414,
+      "balanceYuan": 1033546601.25,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2025-11-30",
+      "rate": 2.49248,
+      "balanceYuan": 1030513850.48,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-004",
+      "asOf": "2025-12-31",
+      "rate": 2.55,
+      "balanceYuan": 1023000000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2024-01-31",
+      "rate": 3.265854,
+      "balanceYuan": 607798987.42,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2024-02-29",
+      "rate": 3.185818,
+      "balanceYuan": 607812310.31,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2024-03-31",
+      "rate": 3.087041,
+      "balanceYuan": 613153388.35,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2024-04-30",
+      "rate": 3.052006,
+      "balanceYuan": 623492738.31,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2024-05-31",
+      "rate": 3.08552,
+      "balanceYuan": 637026631.87,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2024-06-30",
+      "rate": 3.122384,
+      "balanceYuan": 651009107.02,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2024-07-31",
+      "rate": 3.10708,
+      "balanceYuan": 662561892.2,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2024-08-31",
+      "rate": 3.045773,
+      "balanceYuan": 669523355.21,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2024-09-30",
+      "rate": 2.983476,
+      "balanceYuan": 671086078.71,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2024-10-31",
+      "rate": 2.952258,
+      "balanceYuan": 668035008.76,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2024-11-30",
+      "rate": 2.951651,
+      "balanceYuan": 662515934.19,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2024-12-31",
+      "rate": 2.96361,
+      "balanceYuan": 657402584.15,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2025-01-31",
+      "rate": 2.967035,
+      "balanceYuan": 655449018.98,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2025-02-28",
+      "rate": 2.942208,
+      "balanceYuan": 658477317.41,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2025-03-31",
+      "rate": 2.883728,
+      "balanceYuan": 666840152.78,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2025-04-30",
+      "rate": 2.818389,
+      "balanceYuan": 679316771.62,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2025-05-31",
+      "rate": 2.792877,
+      "balanceYuan": 693473056.13,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2025-06-30",
+      "rate": 2.823565,
+      "balanceYuan": 706379469.5,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2025-07-31",
+      "rate": 2.86347,
+      "balanceYuan": 715475125.6,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2025-08-31",
+      "rate": 2.84246,
+      "balanceYuan": 719323124.81,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2025-09-30",
+      "rate": 2.749859,
+      "balanceYuan": 718034368.92,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2025-10-31",
+      "rate": 2.659615,
+      "balanceYuan": 713234850.55,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2025-11-30",
+      "rate": 2.652832,
+      "balanceYuan": 707586065.08,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-005",
+      "asOf": "2025-12-31",
+      "rate": 2.72,
+      "balanceYuan": 704000000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2024-01-31",
+      "rate": 3.238265,
+      "balanceYuan": 779473603.01,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2024-02-29",
+      "rate": 3.145953,
+      "balanceYuan": 791719877.35,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2024-03-31",
+      "rate": 3.062958,
+      "balanceYuan": 808610807.47,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2024-04-30",
+      "rate": 3.060762,
+      "balanceYuan": 826765981.07,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2024-05-31",
+      "rate": 3.117045,
+      "balanceYuan": 842432096.03,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2024-06-30",
+      "rate": 3.152537,
+      "balanceYuan": 852590000.47,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2024-07-31",
+      "rate": 3.122708,
+      "balanceYuan": 855845194.44,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2024-08-31",
+      "rate": 3.055441,
+      "balanceYuan": 852839139.07,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2024-09-30",
+      "rate": 3.00649,
+      "balanceYuan": 846060056.96,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2024-10-31",
+      "rate": 3.00029,
+      "balanceYuan": 839109028.53,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2024-11-30",
+      "rate": 3.020054,
+      "balanceYuan": 835637849.96,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2024-12-31",
+      "rate": 3.03698,
+      "balanceYuan": 838271932.38,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2025-01-31",
+      "rate": 3.032196,
+      "balanceYuan": 847835934.35,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2025-02-28",
+      "rate": 2.998973,
+      "balanceYuan": 863110528.04,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2025-03-31",
+      "rate": 2.946018,
+      "balanceYuan": 881192041.13,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2025-04-30",
+      "rate": 2.903299,
+      "balanceYuan": 898348897.74,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2025-05-31",
+      "rate": 2.904497,
+      "balanceYuan": 911122250.3,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2025-06-30",
+      "rate": 2.946468,
+      "balanceYuan": 917346169.95,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2025-07-31",
+      "rate": 2.975728,
+      "balanceYuan": 916786489.35,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2025-08-31",
+      "rate": 2.938501,
+      "balanceYuan": 911209870.5,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2025-09-30",
+      "rate": 2.849027,
+      "balanceYuan": 903862726.15,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2025-10-31",
+      "rate": 2.787742,
+      "balanceYuan": 898513687.25,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2025-11-30",
+      "rate": 2.813985,
+      "balanceYuan": 898342041.62,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-006",
+      "asOf": "2025-12-31",
+      "rate": 2.89,
+      "balanceYuan": 905000000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2024-01-31",
+      "rate": 2.551701,
+      "balanceYuan": 66211474810.3,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2024-02-29",
+      "rate": 2.445828,
+      "balanceYuan": 67760712322.8,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2024-03-31",
+      "rate": 2.378358,
+      "balanceYuan": 69154260656.03,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2024-04-30",
+      "rate": 2.400921,
+      "balanceYuan": 70117358738.63,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2024-05-31",
+      "rate": 2.46361,
+      "balanceYuan": 70502207212.17,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2024-06-30",
+      "rate": 2.480844,
+      "balanceYuan": 70331561993.11,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2024-07-31",
+      "rate": 2.426748,
+      "balanceYuan": 69792022393.56,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2024-08-31",
+      "rate": 2.351135,
+      "balanceYuan": 69178993475.74,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2024-09-30",
+      "rate": 2.313778,
+      "balanceYuan": 68809556046.58,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2024-10-31",
+      "rate": 2.324691,
+      "balanceYuan": 68928943370.56,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2024-11-30",
+      "rate": 2.350068,
+      "balanceYuan": 69638209383.97,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2024-12-31",
+      "rate": 2.355891,
+      "balanceYuan": 70864422739.79,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2025-01-31",
+      "rate": 2.332054,
+      "balanceYuan": 72382177978.23,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2025-02-28",
+      "rate": 2.286555,
+      "balanceYuan": 73880079082.54,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2025-03-31",
+      "rate": 2.237548,
+      "balanceYuan": 75052586031.8,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2025-04-30",
+      "rate": 2.211148,
+      "balanceYuan": 75690134122.16,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2025-05-31",
+      "rate": 2.225114,
+      "balanceYuan": 75740945276.58,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2025-06-30",
+      "rate": 2.261197,
+      "balanceYuan": 75326300038.1,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2025-07-31",
+      "rate": 2.267474,
+      "balanceYuan": 74704765757.78,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2025-08-31",
+      "rate": 2.210325,
+      "balanceYuan": 74195931907.34,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2025-09-30",
+      "rate": 2.124005,
+      "balanceYuan": 74086146858.95,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2025-10-31",
+      "rate": 2.086194,
+      "balanceYuan": 74544059159.21,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2025-11-30",
+      "rate": 2.130421,
+      "balanceYuan": 75570874479.05,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-007",
+      "asOf": "2025-12-31",
+      "rate": 2.196617,
+      "balanceYuan": 77000000000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2024-01-31",
+      "rate": 2.403014,
+      "balanceYuan": 1124572012.55,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2024-02-29",
+      "rate": 2.293014,
+      "balanceYuan": 1142512296.26,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2024-03-31",
+      "rate": 2.248072,
+      "balanceYuan": 1150889089.5,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2024-04-30",
+      "rate": 2.292963,
+      "balanceYuan": 1149544654.49,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2024-05-31",
+      "rate": 2.353133,
+      "balanceYuan": 1141188539.01,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2024-06-30",
+      "rate": 2.345925,
+      "balanceYuan": 1130598392.71,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2024-07-31",
+      "rate": 2.269988,
+      "balanceYuan": 1123210794.76,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2024-08-31",
+      "rate": 2.194135,
+      "balanceYuan": 1123517729.63,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2024-09-30",
+      "rate": 2.174051,
+      "balanceYuan": 1133741671.99,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2024-10-31",
+      "rate": 2.200159,
+      "balanceYuan": 1153180065.66,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2024-11-30",
+      "rate": 2.223862,
+      "balanceYuan": 1178412543.23,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2024-12-31",
+      "rate": 2.2129,
+      "balanceYuan": 1204309766.74,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2025-01-31",
+      "rate": 2.171109,
+      "balanceYuan": 1225546330.74,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2025-02-28",
+      "rate": 2.120114,
+      "balanceYuan": 1238171495.78,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2025-03-31",
+      "rate": 2.081247,
+      "balanceYuan": 1240774462.76,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2025-04-30",
+      "rate": 2.070888,
+      "balanceYuan": 1234900489.48,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2025-05-31",
+      "rate": 2.090837,
+      "balanceYuan": 1224595115.36,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2025-06-30",
+      "rate": 2.114021,
+      "balanceYuan": 1215210925.76,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2025-07-31",
+      "rate": 2.097088,
+      "balanceYuan": 1211828801.75,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2025-08-31",
+      "rate": 2.02731,
+      "balanceYuan": 1217759309.45,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2025-09-30",
+      "rate": 1.951976,
+      "balanceYuan": 1233566245.33,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2025-10-31",
+      "rate": 1.937862,
+      "balanceYuan": 1256900343.95,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2025-11-30",
+      "rate": 1.991958,
+      "balanceYuan": 1283192196,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-008",
+      "asOf": "2025-12-31",
+      "rate": 2.04,
+      "balanceYuan": 1307000000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2024-01-31",
+      "rate": 2.585604,
+      "balanceYuan": 852057030.97,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2024-02-29",
+      "rate": 2.481477,
+      "balanceYuan": 852283397.25,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2024-03-31",
+      "rate": 2.463378,
+      "balanceYuan": 846695395.06,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2024-04-30",
+      "rate": 2.525026,
+      "balanceYuan": 838689680.26,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2024-05-31",
+      "rate": 2.573321,
+      "balanceYuan": 832376015.35,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2024-06-30",
+      "rate": 2.538101,
+      "balanceYuan": 831365091.1,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2024-07-31",
+      "rate": 2.445712,
+      "balanceYuan": 837703549.84,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2024-08-31",
+      "rate": 2.378117,
+      "balanceYuan": 851270326.38,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2024-09-30",
+      "rate": 2.378529,
+      "balanceYuan": 869812356.27,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2024-10-31",
+      "rate": 2.415086,
+      "balanceYuan": 889609119.35,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2024-11-30",
+      "rate": 2.429362,
+      "balanceYuan": 906570010.68,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2024-12-31",
+      "rate": 2.398209,
+      "balanceYuan": 917440868.42,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2025-01-31",
+      "rate": 2.342352,
+      "balanceYuan": 920763791.96,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2025-02-28",
+      "rate": 2.293268,
+      "balanceYuan": 917307151.09,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2025-03-31",
+      "rate": 2.268589,
+      "balanceYuan": 909838954.59,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2025-04-30",
+      "rate": 2.271127,
+      "balanceYuan": 902310423.45,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2025-05-31",
+      "rate": 2.28947,
+      "balanceYuan": 898690574.37,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2025-06-30",
+      "rate": 2.294849,
+      "balanceYuan": 901795554.57,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2025-07-31",
+      "rate": 2.257503,
+      "balanceYuan": 912458016.45,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2025-08-31",
+      "rate": 2.183328,
+      "balanceYuan": 929281525.93,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2025-09-30",
+      "rate": 2.12463,
+      "balanceYuan": 949052442.09,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2025-10-31",
+      "rate": 2.131235,
+      "balanceYuan": 967687783.58,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2025-11-30",
+      "rate": 2.18611,
+      "balanceYuan": 981439507.86,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-009",
+      "asOf": "2025-12-31",
+      "rate": 2.21,
+      "balanceYuan": 988000000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2024-01-31",
+      "rate": 2.775821,
+      "balanceYuan": 1027315343.26,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2024-02-29",
+      "rate": 2.686886,
+      "balanceYuan": 1017848107.23,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2024-03-31",
+      "rate": 2.696646,
+      "balanceYuan": 1009519678.36,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2024-04-30",
+      "rate": 2.766966,
+      "balanceYuan": 1006890714.84,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2024-05-31",
+      "rate": 2.794814,
+      "balanceYuan": 1012840812.08,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2024-06-30",
+      "rate": 2.731204,
+      "balanceYuan": 1027719163.34,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2024-07-31",
+      "rate": 2.630095,
+      "balanceYuan": 1049241564.8,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2024-08-31",
+      "rate": 2.578472,
+      "balanceYuan": 1073164143.71,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2024-09-30",
+      "rate": 2.599583,
+      "balanceYuan": 1094535092.66,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2024-10-31",
+      "rate": 2.639606,
+      "balanceYuan": 1109155209.96,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2024-11-30",
+      "rate": 2.637378,
+      "balanceYuan": 1114816458.15,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2024-12-31",
+      "rate": 2.585477,
+      "balanceYuan": 1111953226.78,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2025-01-31",
+      "rate": 2.52168,
+      "balanceYuan": 1103514208.81,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2025-02-28",
+      "rate": 2.481409,
+      "balanceYuan": 1094092680.77,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2025-03-31",
+      "rate": 2.472223,
+      "balanceYuan": 1088571711.48,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2025-04-30",
+      "rate": 2.48217,
+      "balanceYuan": 1090683896.23,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2025-05-31",
+      "rate": 2.491651,
+      "balanceYuan": 1101910424.23,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2025-06-30",
+      "rate": 2.477063,
+      "balanceYuan": 1121044200.43,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2025-07-31",
+      "rate": 2.424617,
+      "balanceYuan": 1144545879.37,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2025-08-31",
+      "rate": 2.354049,
+      "balanceYuan": 1167587798.51,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2025-09-30",
+      "rate": 2.314787,
+      "balanceYuan": 1185477901.88,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2025-10-31",
+      "rate": 2.336443,
+      "balanceYuan": 1195043666.52,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2025-11-30",
+      "rate": 2.383237,
+      "balanceYuan": 1195567841.12,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-010",
+      "asOf": "2025-12-31",
+      "rate": 2.38,
+      "balanceYuan": 1189000000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2024-01-31",
+      "rate": 2.768682,
+      "balanceYuan": 1200644313.29,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2024-02-29",
+      "rate": 2.711413,
+      "balanceYuan": 1196033826.21,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2024-03-31",
+      "rate": 2.755559,
+      "balanceYuan": 1201042105.7,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2024-04-30",
+      "rate": 2.833918,
+      "balanceYuan": 1216651845.89,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2024-05-31",
+      "rate": 2.843666,
+      "balanceYuan": 1240718829.98,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2024-06-30",
+      "rate": 2.763642,
+      "balanceYuan": 1268604368.96,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2024-07-31",
+      "rate": 2.671934,
+      "balanceYuan": 1294543487.44,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2024-08-31",
+      "rate": 2.651119,
+      "balanceYuan": 1313345308.6,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2024-09-30",
+      "rate": 2.698957,
+      "balanceYuan": 1321924108.28,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2024-10-31",
+      "rate": 2.743145,
+      "balanceYuan": 1320209452.29,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2024-11-30",
+      "rate": 2.728082,
+      "balanceYuan": 1311166971.03,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2024-12-31",
+      "rate": 2.666895,
+      "balanceYuan": 1299923643.96,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2025-01-31",
+      "rate": 2.611641,
+      "balanceYuan": 1292255592.12,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2025-02-28",
+      "rate": 2.594518,
+      "balanceYuan": 1292884405.69,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2025-03-31",
+      "rate": 2.608184,
+      "balanceYuan": 1304084506.5,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2025-04-30",
+      "rate": 2.62756,
+      "balanceYuan": 1325012305.07,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2025-05-31",
+      "rate": 2.631334,
+      "balanceYuan": 1351955018.17,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2025-06-30",
+      "rate": 2.606601,
+      "balanceYuan": 1379425757.81,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2025-07-31",
+      "rate": 2.555039,
+      "balanceYuan": 1401781894.03,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2025-08-31",
+      "rate": 2.503745,
+      "balanceYuan": 1414889354.06,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2025-09-30",
+      "rate": 2.4926,
+      "balanceYuan": 1417341971.01,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2025-10-31",
+      "rate": 2.530813,
+      "balanceYuan": 1410876234.13,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2025-11-30",
+      "rate": 2.571041,
+      "balanceYuan": 1399859109.68,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-011",
+      "asOf": "2025-12-31",
+      "rate": 2.55,
+      "balanceYuan": 1390000000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2024-01-31",
+      "rate": 2.979019,
+      "balanceYuan": 1371282138.93,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2024-02-29",
+      "rate": 2.949109,
+      "balanceYuan": 1387024239.94,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2024-03-31",
+      "rate": 3.012937,
+      "balanceYuan": 1413139616.79,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2024-04-30",
+      "rate": 3.08034,
+      "balanceYuan": 1444741115.94,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2024-05-31",
+      "rate": 3.059155,
+      "balanceYuan": 1475323446.82,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2024-06-30",
+      "rate": 2.959766,
+      "balanceYuan": 1498681923.54,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2024-07-31",
+      "rate": 2.877812,
+      "balanceYuan": 1510742542.89,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2024-08-31",
+      "rate": 2.881894,
+      "balanceYuan": 1510763615.48,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2024-09-30",
+      "rate": 2.941594,
+      "balanceYuan": 1501554527.76,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2024-10-31",
+      "rate": 2.972452,
+      "balanceYuan": 1488647110.78,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2024-11-30",
+      "rate": 2.932809,
+      "balanceYuan": 1478664021.34,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2024-12-31",
+      "rate": 2.858558,
+      "balanceYuan": 1477365383.04,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2025-01-31",
+      "rate": 2.810597,
+      "balanceYuan": 1487949832.31,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2025-02-28",
+      "rate": 2.81055,
+      "balanceYuan": 1510111077.55,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2025-03-31",
+      "rate": 2.833705,
+      "balanceYuan": 1540128240.11,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2025-04-30",
+      "rate": 2.846106,
+      "balanceYuan": 1571963331.03,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2025-05-31",
+      "rate": 2.831602,
+      "balanceYuan": 1599042161.64,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2025-06-30",
+      "rate": 2.791344,
+      "balanceYuan": 1616193406.78,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2025-07-31",
+      "rate": 2.739253,
+      "balanceYuan": 1621173892.14,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2025-08-31",
+      "rate": 2.702662,
+      "balanceYuan": 1615330220.62,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2025-09-30",
+      "rate": 2.70736,
+      "balanceYuan": 1603201590.55,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2025-10-31",
+      "rate": 2.744898,
+      "balanceYuan": 1591180954.78,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2025-11-30",
+      "rate": 2.764387,
+      "balanceYuan": 1585629413.15,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-012",
+      "asOf": "2025-12-31",
+      "rate": 2.72,
+      "balanceYuan": 1591000000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2024-01-31",
+      "rate": 3.199405,
+      "balanceYuan": 1094070776.98,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2024-02-29",
+      "rate": 3.198176,
+      "balanceYuan": 1118906931.75,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2024-03-31",
+      "rate": 3.273431,
+      "balanceYuan": 1143902768.47,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2024-04-30",
+      "rate": 3.320761,
+      "balanceYuan": 1163936806.92,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2024-05-31",
+      "rate": 3.268175,
+      "balanceYuan": 1175351053.98,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2024-06-30",
+      "rate": 3.157851,
+      "balanceYuan": 1177029932.29,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2024-07-31",
+      "rate": 3.094018,
+      "balanceYuan": 1170729320.76,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2024-08-31",
+      "rate": 3.122828,
+      "balanceYuan": 1160558656.49,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2024-09-30",
+      "rate": 3.186315,
+      "balanceYuan": 1151768852.33,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2024-10-31",
+      "rate": 3.196332,
+      "balanceYuan": 1149203535.1,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2024-11-30",
+      "rate": 3.132454,
+      "balanceYuan": 1155870413.27,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2024-12-31",
+      "rate": 3.052464,
+      "balanceYuan": 1172054150.45,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2025-01-31",
+      "rate": 3.018671,
+      "balanceYuan": 1195232403.58,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2025-02-28",
+      "rate": 3.035711,
+      "balanceYuan": 1220819790.44,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2025-03-31",
+      "rate": 3.061886,
+      "balanceYuan": 1243520352.52,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2025-04-30",
+      "rate": 3.060612,
+      "balanceYuan": 1258889603.01,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2025-05-31",
+      "rate": 3.027068,
+      "balanceYuan": 1264645432.51,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2025-06-30",
+      "rate": 2.977117,
+      "balanceYuan": 1261341219.28,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2025-07-31",
+      "rate": 2.931554,
+      "balanceYuan": 1252202609.87,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2025-08-31",
+      "rate": 2.911283,
+      "balanceYuan": 1242176111.57,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2025-09-30",
+      "rate": 2.926166,
+      "balanceYuan": 1236470115.32,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2025-10-31",
+      "rate": 2.955225,
+      "balanceYuan": 1239018675.86,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2025-11-30",
+      "rate": 2.95172,
+      "balanceYuan": 1251321158.53,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-013",
+      "asOf": "2025-12-31",
+      "rate": 2.89,
+      "balanceYuan": 1272000000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2024-01-31",
+      "rate": 3.428227,
+      "balanceYuan": 1266879219.8,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2024-02-29",
+      "rate": 3.453484,
+      "balanceYuan": 1291509266.4,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2024-03-31",
+      "rate": 3.530364,
+      "balanceYuan": 1306735213.6,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2024-04-30",
+      "rate": 3.550522,
+      "balanceYuan": 1310672930.25,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2024-05-31",
+      "rate": 3.469549,
+      "balanceYuan": 1304767759.61,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2024-06-30",
+      "rate": 3.358087,
+      "balanceYuan": 1293368213.97,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2024-07-31",
+      "rate": 3.318652,
+      "balanceYuan": 1282443376.74,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2024-08-31",
+      "rate": 3.368674,
+      "balanceYuan": 1277822315.67,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2024-09-30",
+      "rate": 3.426663,
+      "balanceYuan": 1283474793.67,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2024-10-31",
+      "rate": 3.41038,
+      "balanceYuan": 1300340383.52,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2024-11-30",
+      "rate": 3.325777,
+      "balanceYuan": 1326051339.9,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2024-12-31",
+      "rate": 3.248512,
+      "balanceYuan": 1355630968.21,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2025-01-31",
+      "rate": 3.233842,
+      "balanceYuan": 1382961505.35,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2025-02-28",
+      "rate": 3.264972,
+      "balanceYuan": 1402588559.81,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2025-03-31",
+      "rate": 3.286521,
+      "balanceYuan": 1411329889.67,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2025-04-30",
+      "rate": 3.266608,
+      "balanceYuan": 1409214007.88,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2025-05-31",
+      "rate": 3.216202,
+      "balanceYuan": 1399471772.34,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2025-06-30",
+      "rate": 3.163702,
+      "balanceYuan": 1387583441.28,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2025-07-31",
+      "rate": 3.130141,
+      "balanceYuan": 1379662265.87,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2025-08-31",
+      "rate": 3.12483,
+      "balanceYuan": 1380651380.91,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2025-09-30",
+      "rate": 3.142749,
+      "balanceYuan": 1392865822.52,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2025-10-31",
+      "rate": 3.157034,
+      "balanceYuan": 1415309706.02,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2025-11-30",
+      "rate": 3.131392,
+      "balanceYuan": 1443969963.07,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-014",
+      "asOf": "2025-12-31",
+      "rate": 3.06,
+      "balanceYuan": 1473000000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2024-01-31",
+      "rate": 2.472931,
+      "balanceYuan": 1442641555.42,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2024-02-29",
+      "rate": 2.519253,
+      "balanceYuan": 1449437816.49,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2024-03-31",
+      "rate": 2.587614,
+      "balanceYuan": 1444475133.42,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2024-04-30",
+      "rate": 2.576407,
+      "balanceYuan": 1432179741.72,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2024-05-31",
+      "rate": 2.47321,
+      "balanceYuan": 1419140666.33,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2024-06-30",
+      "rate": 2.370568,
+      "balanceYuan": 1412166282.4,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2024-07-31",
+      "rate": 2.358868,
+      "balanceYuan": 1416276178.53,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2024-08-31",
+      "rate": 2.423592,
+      "balanceYuan": 1433220624.34,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2024-09-30",
+      "rate": 2.46677,
+      "balanceYuan": 1460964326.73,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2024-10-31",
+      "rate": 2.421595,
+      "balanceYuan": 1494286741.58,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2024-11-30",
+      "rate": 2.32259,
+      "balanceYuan": 1526321878.16,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2024-12-31",
+      "rate": 2.256505,
+      "balanceYuan": 1550583429.72,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2025-01-31",
+      "rate": 2.263207,
+      "balanceYuan": 1562877915.84,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2025-02-28",
+      "rate": 2.302747,
+      "balanceYuan": 1562541553.49,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2025-03-31",
+      "rate": 2.311958,
+      "balanceYuan": 1552636040.46,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2025-04-30",
+      "rate": 2.270975,
+      "balanceYuan": 1539045504.7,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2025-05-31",
+      "rate": 2.208527,
+      "balanceYuan": 1528740975.11,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2025-06-30",
+      "rate": 2.160845,
+      "balanceYuan": 1527724269.94,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2025-07-31",
+      "rate": 2.142363,
+      "balanceYuan": 1539257754.78,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2025-08-31",
+      "rate": 2.147936,
+      "balanceYuan": 1562902104.62,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2025-09-30",
+      "rate": 2.161338,
+      "balanceYuan": 1594645883.3,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2025-10-31",
+      "rate": 2.156912,
+      "balanceYuan": 1628088720.34,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2025-11-30",
+      "rate": 2.112867,
+      "balanceYuan": 1656329106.39,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-015",
+      "asOf": "2025-12-31",
+      "rate": 2.04,
+      "balanceYuan": 1674000000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2024-01-31",
+      "rate": 2.503369,
+      "balanceYuan": 1619454381.08,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2024-02-29",
+      "rate": 2.571818,
+      "balanceYuan": 1606671572.92,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2024-03-31",
+      "rate": 2.631422,
+      "balanceYuan": 1591626867.28,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2024-04-30",
+      "rate": 2.597078,
+      "balanceYuan": 1582075912.71,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2024-05-31",
+      "rate": 2.489232,
+      "balanceYuan": 1584153970.65,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2024-06-30",
+      "rate": 2.413292,
+      "balanceYuan": 1600566314.17,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2024-07-31",
+      "rate": 2.43824,
+      "balanceYuan": 1629790305.12,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2024-08-31",
+      "rate": 2.517921,
+      "balanceYuan": 1666524497.69,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2024-09-30",
+      "rate": 2.547155,
+      "balanceYuan": 1703252304.92,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2024-10-31",
+      "rate": 2.48281,
+      "balanceYuan": 1732459023.21,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2024-11-30",
+      "rate": 2.386792,
+      "balanceYuan": 1748848301.34,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2024-12-31",
+      "rate": 2.348163,
+      "balanceYuan": 1750904304.31,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2025-01-31",
+      "rate": 2.384344,
+      "balanceYuan": 1741338810.34,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2025-02-28",
+      "rate": 2.433655,
+      "balanceYuan": 1726291369.26,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2025-03-31",
+      "rate": 2.432887,
+      "balanceYuan": 1713518436.47,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2025-04-30",
+      "rate": 2.38037,
+      "balanceYuan": 1710105598.95,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2025-05-31",
+      "rate": 2.321664,
+      "balanceYuan": 1720377674.64,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2025-06-30",
+      "rate": 2.294267,
+      "balanceYuan": 1744623103.26,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2025-07-31",
+      "rate": 2.300077,
+      "balanceYuan": 1779008870.7,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2025-08-31",
+      "rate": 2.319386,
+      "balanceYuan": 1816711060.26,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2025-09-30",
+      "rate": 2.330447,
+      "balanceYuan": 1849927573.33,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2025-10-31",
+      "rate": 2.315242,
+      "balanceYuan": 1872179365.88,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2025-11-30",
+      "rate": 2.267767,
+      "balanceYuan": 1880221448.69,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-016",
+      "asOf": "2025-12-31",
+      "rate": 2.21,
+      "balanceYuan": 1875000000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2024-01-31",
+      "rate": 2.58861,
+      "balanceYuan": 1729489911.79,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2024-02-29",
+      "rate": 2.660752,
+      "balanceYuan": 1717659374.49,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2024-03-31",
+      "rate": 2.695388,
+      "balanceYuan": 1717279743.67,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2024-04-30",
+      "rate": 2.631637,
+      "balanceYuan": 1732005234.81,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2024-05-31",
+      "rate": 2.520076,
+      "balanceYuan": 1761034793.23,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2024-06-30",
+      "rate": 2.468536,
+      "balanceYuan": 1799348365.91,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2024-07-31",
+      "rate": 2.517587,
+      "balanceYuan": 1839187570.98,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2024-08-31",
+      "rate": 2.593297,
+      "balanceYuan": 1872344039.81,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2024-09-30",
+      "rate": 2.593711,
+      "balanceYuan": 1892580483.23,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2024-10-31",
+      "rate": 2.505242,
+      "balanceYuan": 1897470385.91,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2024-11-30",
+      "rate": 2.412627,
+      "balanceYuan": 1889113709.38,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2024-12-31",
+      "rate": 2.397513,
+      "balanceYuan": 1873517506.37,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2025-01-31",
+      "rate": 2.450131,
+      "balanceYuan": 1858824134.86,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2025-02-28",
+      "rate": 2.491619,
+      "balanceYuan": 1852909661.83,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2025-03-31",
+      "rate": 2.467316,
+      "balanceYuan": 1861060809.75,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2025-04-30",
+      "rate": 2.397793,
+      "balanceYuan": 1884415632.75,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2025-05-31",
+      "rate": 2.341604,
+      "balanceYuan": 1919627846.46,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2025-06-30",
+      "rate": 2.330057,
+      "balanceYuan": 1959853817.79,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2025-07-31",
+      "rate": 2.348454,
+      "balanceYuan": 1996771101.04,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2025-08-31",
+      "rate": 2.365224,
+      "balanceYuan": 2023033151.23,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2025-09-30",
+      "rate": 2.359867,
+      "balanceYuan": 2034436194.55,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2025-10-31",
+      "rate": 2.32677,
+      "balanceYuan": 2031159135.48,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2025-11-30",
+      "rate": 2.274149,
+      "balanceYuan": 2017710788.72,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-017",
+      "asOf": "2025-12-31",
+      "rate": 2.2283799999999996,
+      "balanceYuan": 2001600000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2024-01-31",
+      "rate": 3.293475,
+      "balanceYuan": 1515430506.47,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2024-02-29",
+      "rate": 3.359582,
+      "balanceYuan": 1525879232.6,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2024-03-31",
+      "rate": 3.364923,
+      "balanceYuan": 1549309291.26,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2024-04-30",
+      "rate": 3.277626,
+      "balanceYuan": 1581919337.24,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2024-05-31",
+      "rate": 3.172424,
+      "balanceYuan": 1617200379.27,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2024-06-30",
+      "rate": 3.148963,
+      "balanceYuan": 1647855613.28,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2024-07-31",
+      "rate": 3.215513,
+      "balanceYuan": 1667952621.65,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2024-08-31",
+      "rate": 3.277366,
+      "balanceYuan": 1674673145.53,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2024-09-30",
+      "rate": 3.246138,
+      "balanceYuan": 1669144332.97,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2024-10-31",
+      "rate": 3.140492,
+      "balanceYuan": 1656106285.48,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2024-11-30",
+      "rate": 3.06052,
+      "balanceYuan": 1642513960.62,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2024-12-31",
+      "rate": 3.071001,
+      "balanceYuan": 1635485800.56,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2025-01-31",
+      "rate": 3.133298,
+      "balanceYuan": 1640204140.82,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2025-02-28",
+      "rate": 3.158581,
+      "balanceYuan": 1658386675.4,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2025-03-31",
+      "rate": 3.109004,
+      "balanceYuan": 1687779821.33,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2025-04-30",
+      "rate": 3.028589,
+      "balanceYuan": 1722823415.09,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2025-05-31",
+      "rate": 2.982558,
+      "balanceYuan": 1756290688.18,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2025-06-30",
+      "rate": 2.988786,
+      "balanceYuan": 1781419809.39,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2025-07-31",
+      "rate": 3.014512,
+      "balanceYuan": 1793908293.38,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2025-08-31",
+      "rate": 3.021447,
+      "balanceYuan": 1793182022.83,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2025-09-30",
+      "rate": 2.997101,
+      "balanceYuan": 1782564584.92,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2025-10-31",
+      "rate": 2.950627,
+      "balanceYuan": 1768296976.07,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2025-11-30",
+      "rate": 2.900343,
+      "balanceYuan": 1757696814.14,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-018",
+      "asOf": "2025-12-31",
+      "rate": 2.87,
+      "balanceYuan": 1757000000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2024-01-31",
+      "rate": 3.520735,
+      "balanceYuan": 1684854425.85,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2024-02-29",
+      "rate": 3.572003,
+      "balanceYuan": 1719810940.85,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2024-03-31",
+      "rate": 3.547082,
+      "balanceYuan": 1759198428.47,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2024-04-30",
+      "rate": 3.444466,
+      "balanceYuan": 1794864595.44,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2024-05-31",
+      "rate": 3.354596,
+      "balanceYuan": 1819754755.53,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2024-06-30",
+      "rate": 3.359434,
+      "balanceYuan": 1829992616.07,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2024-07-31",
+      "rate": 3.434619,
+      "balanceYuan": 1826023594.14,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2024-08-31",
+      "rate": 3.473999,
+      "balanceYuan": 1812483440.37,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2024-09-30",
+      "rate": 3.411767,
+      "balanceYuan": 1796830919.9,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2024-10-31",
+      "rate": 3.29798,
+      "balanceYuan": 1787147842.42,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2024-11-30",
+      "rate": 3.238516,
+      "balanceYuan": 1789755324.73,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2024-12-31",
+      "rate": 3.273318,
+      "balanceYuan": 1807349371.26,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2025-01-31",
+      "rate": 3.336616,
+      "balanceYuan": 1838205684.99,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2025-02-28",
+      "rate": 3.338685,
+      "balanceYuan": 1876688250.52,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2025-03-31",
+      "rate": 3.265281,
+      "balanceYuan": 1914911682.2,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2025-04-30",
+      "rate": 3.1819,
+      "balanceYuan": 1945067026.15,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2025-05-31",
+      "rate": 3.152401,
+      "balanceYuan": 1961725018.66,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2025-06-30",
+      "rate": 3.175315,
+      "balanceYuan": 1963437452.76,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2025-07-31",
+      "rate": 3.201301,
+      "balanceYuan": 1953164328.21,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2025-08-31",
+      "rate": 3.192198,
+      "balanceYuan": 1937400796.73,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2025-09-30",
+      "rate": 3.149201,
+      "balanceYuan": 1924261410.84,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2025-10-31",
+      "rate": 3.095784,
+      "balanceYuan": 1921086728.79,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2025-11-30",
+      "rate": 3.054397,
+      "balanceYuan": 1932278209.92,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-019",
+      "asOf": "2025-12-31",
+      "rate": 3.04,
+      "balanceYuan": 1958000000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2024-01-31",
+      "rate": 3.411583,
+      "balanceYuan": 33804268593.68,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2024-02-29",
+      "rate": 3.441216,
+      "balanceYuan": 34545785429.59,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2024-03-31",
+      "rate": 3.388462,
+      "balanceYuan": 35092978787.54,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2024-04-30",
+      "rate": 3.280062,
+      "balanceYuan": 35354026613,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2024-05-31",
+      "rate": 3.212312,
+      "balanceYuan": 35321505749.76,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2024-06-30",
+      "rate": 3.242196,
+      "balanceYuan": 35074581407,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2024-07-31",
+      "rate": 3.315983,
+      "balanceYuan": 34755657305.08,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2024-08-31",
+      "rate": 3.326617,
+      "balanceYuan": 34528373562.17,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2024-09-30",
+      "rate": 3.237449,
+      "balanceYuan": 34529340884.96,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2024-10-31",
+      "rate": 3.125544,
+      "balanceYuan": 34827847110.12,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2024-11-30",
+      "rate": 3.092041,
+      "balanceYuan": 35405420690.65,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2024-12-31",
+      "rate": 3.146596,
+      "balanceYuan": 36161278896.34,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2025-01-31",
+      "rate": 3.201384,
+      "balanceYuan": 36942053776.36,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2025-02-28",
+      "rate": 3.175604,
+      "balanceYuan": 37587028182.98,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2025-03-31",
+      "rate": 3.082932,
+      "balanceYuan": 37975539447.9,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2025-04-30",
+      "rate": 3.005274,
+      "balanceYuan": 38062568951.61,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2025-05-31",
+      "rate": 2.996441,
+      "balanceYuan": 37892020408.26,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2025-06-30",
+      "rate": 3.031997,
+      "balanceYuan": 37583770423.19,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2025-07-31",
+      "rate": 3.050371,
+      "balanceYuan": 37298310773.59,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2025-08-31",
+      "rate": 3.021087,
+      "balanceYuan": 37189411205.44,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2025-09-30",
+      "rate": 2.962661,
+      "balanceYuan": 37358764899.91,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2025-10-31",
+      "rate": 2.909674,
+      "balanceYuan": 37825993972.39,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2025-11-30",
+      "rate": 2.881842,
+      "balanceYuan": 38522861910.78,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-020",
+      "asOf": "2025-12-31",
+      "rate": 2.8809839999999998,
+      "balanceYuan": 39313400000,
+      "identity": "SNAPSHOT"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2024-01-31",
+      "rate": 3.745781,
+      "balanceYuan": 1584601876.35,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2024-02-29",
+      "rate": 3.758787,
+      "balanceYuan": 1599405078.15,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2024-03-31",
+      "rate": 3.692621,
+      "balanceYuan": 1600216248.26,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2024-04-30",
+      "rate": 3.597063,
+      "balanceYuan": 1590052389.84,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2024-05-31",
+      "rate": 3.564236,
+      "balanceYuan": 1575167601.2,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2024-06-30",
+      "rate": 3.621886,
+      "balanceYuan": 1563208423.52,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2024-07-31",
+      "rate": 3.693308,
+      "balanceYuan": 1560958486.26,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2024-08-31",
+      "rate": 3.681037,
+      "balanceYuan": 1572337669.1,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2024-09-30",
+      "rate": 3.580957,
+      "balanceYuan": 1597245929.75,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2024-10-31",
+      "rate": 3.489714,
+      "balanceYuan": 1631592811.47,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2024-11-30",
+      "rate": 3.49347,
+      "balanceYuan": 1668503927.21,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2024-12-31",
+      "rate": 3.569413,
+      "balanceYuan": 1700348566.67,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2025-01-31",
+      "rate": 3.615559,
+      "balanceYuan": 1720990381.54,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2025-02-28",
+      "rate": 3.569373,
+      "balanceYuan": 1727597307.35,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2025-03-31",
+      "rate": 3.473609,
+      "balanceYuan": 1721476883.57,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2025-04-30",
+      "rate": 3.418949,
+      "balanceYuan": 1707690593.6,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2025-05-31",
+      "rate": 3.440997,
+      "balanceYuan": 1693560975.4,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2025-06-30",
+      "rate": 3.491664,
+      "balanceYuan": 1686511831.91,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2025-07-31",
+      "rate": 3.503895,
+      "balanceYuan": 1691878573.29,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2025-08-31",
+      "rate": 3.462025,
+      "balanceYuan": 1711334532.61,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2025-09-30",
+      "rate": 3.402843,
+      "balanceYuan": 1742397414.61,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2025-10-31",
+      "rate": 3.366476,
+      "balanceYuan": 1779161451.1,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2025-11-30",
+      "rate": 3.363248,
+      "balanceYuan": 1814039312.95,
+      "identity": "SIMULATED_HISTORY"
+    },
+    {
+      "enterpriseId": "ENT-021",
+      "asOf": "2025-12-31",
+      "rate": 3.38,
+      "balanceYuan": 1840000000,
+      "identity": "SNAPSHOT"
+    }
+  ],
+  "digest": "d4ea155ac0f02176ba1084ed6ca1d6e8d22dd7804db6e5f9af6b8347442961f8"
+}

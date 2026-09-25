@@ -17,7 +17,12 @@
     "verify:rules": "node tests/owned-rules-browser.mjs",
     "verify:snapshots": "node tests/cockpit-snapshot-browser.mjs",
     "verify:baseline": "node composite/tests/chrome-regression.mjs",
-    "verify:current": "node tests/world-model-browser.mjs"
+    "verify:current": "node tests/world-model-browser.mjs",
+    "verify:builder": "node tests/builder-business-browser.mjs",
+    "verify:financing": "node tests/financing-models-browser.mjs",
+    "verify:closure": "node tests/task-flow-browser.mjs && node tests/exploration-handoff-browser.mjs",
+    "verify:temporal": "node tests/temporal-upgrade-browser.mjs && node tests/temporal-final-browser.mjs",
+    "verify:glass": "node tests/glass-refinement-browser.mjs && node tests/blue-gold-native-browser.mjs && node tests/blue-gold-responsive-browser.mjs"
   },
   "dependencies": {
     "maplibre-gl": "5.6.2",

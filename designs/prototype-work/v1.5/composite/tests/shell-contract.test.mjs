@@ -26,7 +26,7 @@ test("v1.5 inherits v1.4 with the original frozen ancestor anchors", () => {
   assert.equal(data.ancestorCommit, "e3990c69e77882062035490ef718fd93549bbf82");
   assert.equal(data.ancestorSubtree, "a24109c8be2ffceca73e0fedbb9387f4b85a7176");
   assert.equal(data.acceptanceReady, false);
-  assert.match(html, /v1\.2\.0\/composite\/s001-e2e-integration\/styles\.css/);
+  assert.match(html, /\.\/shell-base\.css/);
   assert.match(html, /\.\/app\.js/);
   assert.doesNotMatch(html, /<iframe[^>]+v1\.3\.0\/composite\/s001-e2e-integration/);
 });
@@ -57,11 +57,12 @@ test("object portraits and business panoramas share the Shell navigation", () =>
   const css = read("s001-e2e-integration/styles.css");
   assert.match(shell, /m07:[\s\S]*id: "discover"[\s\S]*id: "explore"/);
   for (const view of ["objectives", "models", "compare", "observe", "release"]) assert.match(shell, new RegExp(`id: "${view}"`));
-  assert.match(css, /module-subnav[^}]*background:\s*#e4ebf2/);
-  assert.match(css, /module-subnav-item span:last-child[^}]*font-size:\s*13px/);
+  const shellBase = read("s001-e2e-integration/shell-base.css");
+  assert.match(shellBase, /primary-children \.module-subnav-item/);
+  assert.match(shellBase, /module-subnav-item span:last-child[^}]*font-size:\s*13px/);
   assert.equal(loadData().nav.some(item=>item.id==='dashboard'),false);
   assert.equal(loadData().moduleById.m07.name,'对象全景');
-  assert.match(css,/\.cockpit-layout > \.module-subnav > nav[^}]*display:\s*flex/);
+  assert.match(shellBase,/\.module-workspace-layout > \.module-subnav[^}]*display:\s*none/);
   assert.doesNotMatch(shell, /data-module-scenario-select|module-scenario-control/);
 });
 

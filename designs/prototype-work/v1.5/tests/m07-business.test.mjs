@@ -33,7 +33,7 @@ test('M07 reads the original decision task and updated result without mutating f
   saved.tasks[0].result = { summary: '完成复核，后续跟踪成本' };
   const before = JSON.stringify(saved);
   const result = business.records(item, seed, { getItem: () => before });
-  assert.equal(result[0].stage, '已完成');
+  assert.equal(result[0].stage, '执行完成 · 效果待复核');
   assert.equal(result[0].task.result.summary, '完成复核，后续跟踪成本');
   assert.equal(item.properties.riskTier.value, '红灯');
   assert.equal(item.properties.averageFinancingCost.value, 2.880984);

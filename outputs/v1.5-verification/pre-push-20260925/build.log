@@ -1,0 +1,33 @@
+
+> ontology-financial-workbench-v15@1.5.0 build
+> vite build
+
+vite v7.3.6 building client environment for production...
+<script src="/composite/shared/blue-gold/presentation.js"> in "/workbench.html" can't be bundled without type="module" attribute
+<script src="/composite/shared/blue-gold/presentation.js"> in "/temporal.html" can't be bundled without type="module" attribute
+transforming...
+✓ 2169 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                     0.69 kB │ gzip:   0.47 kB
+dist/temporal.html                                  0.79 kB │ gzip:   0.44 kB
+dist/workbench.html                                 0.89 kB │ gzip:   0.51 kB
+dist/assets/temporal-BbsmqI1u.css                  11.42 kB │ gzip:   2.88 kB
+dist/assets/domain-DHgWfpk-.css                    47.05 kB │ gzip:   9.67 kB
+dist/assets/workbench-CxOCleFP.css                115.99 kB │ gzip:  19.13 kB
+dist/assets/model-studio-bridge-BxaJxixn.js         0.37 kB │ gzip:   0.28 kB
+dist/assets/index-Ck9cb-_F.js                       0.46 kB │ gzip:   0.29 kB
+dist/assets/modulepreload-polyfill-B5Qt9EMX.js      0.71 kB │ gzip:   0.40 kB
+dist/assets/ontology-consumption-CAPKY0ub.js        2.77 kB │ gzip:   1.38 kB
+dist/assets/object-experience-Bjgfxtsr.js          10.42 kB │ gzip:   4.90 kB
+dist/assets/business-catalog-DpIT5bSc.js           11.23 kB │ gzip:   4.10 kB
+dist/assets/temporal-BhfimhwH.js                   54.33 kB │ gzip:  20.05 kB
+dist/assets/domain-B6ZV2XtT.js                    235.12 kB │ gzip:  79.82 kB
+dist/assets/workbench-XD2Vwijq.js               1,080.59 kB │ gzip: 301.18 kB
+dist/assets/business-release-CM-vIdUl.js        1,418.46 kB │ gzip: 105.14 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.68s

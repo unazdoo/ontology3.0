@@ -6,30 +6,8 @@ button { transition: background-color 150ms ease, border-color 150ms ease, color
 button:disabled { cursor: not-allowed; }
 .toast-region { pointer-events: none; }
 input, textarea, select { max-width: 100%; }
-.global-nav { background: #1d292c; }
-.nav-item.active { background: #344747; border-color: #59716d; box-shadow: inset 3px 0 #76c7b6; }
-.nav-item:hover { background: #30413f; }
-.nav-foot { display: grid; gap: 7px; }
-.nav-foot button { display: flex; align-items: center; gap: 8px; padding: 0; background: transparent; border: 0; color: #c7d6d1; text-align: left; }
-.nav-foot strong { font-size: 10px; }
-.nav-foot .version-label { color: #93aaa2; font-size: 10px; }
-.connection-dot.error { background: #ed9b8b; box-shadow: none; }
-.connection-dot.checking { background: #d5b767; }
-.nav-collapsed .nav-foot strong, .nav-collapsed .version-label { display: none; }
-.global-topbar { background: #fff; }
-.user-account strong { font-size: 11px; }
-.classic-home-frame { border: 0; border-radius: 0; box-shadow: none; }
-.classic-architecture { background: #fff; }
-.home-capability-panel { background: #fafcfc; }
-.home-capability-panel > header { min-height: 125px; padding-block: 24px 16px; background: #f0f6f4; border-color: #d1e0db; }
-.home-capability-panel > header h2 { font-size: 21px; }
-.home-capability-entry { min-height: 60px; }
-.home-capability-entry:hover { padding-left: 24px; background: #eef7f3; }
-.home-capability-icon { color: #226f60; background: #e7f1ed; border-color: #c6dcd2; }
-.home-capability-panel[data-domain="intelligence"] .home-capability-icon { color: #386cab; background: #edf3fa; border-color: #cfdbed; }
-.home-capability-panel[data-domain="action"] .home-capability-icon { color: #936032; background: #fbf3e8; border-color: #e8d8bf; }
-.resource-finder { width: min(660px, 100%); }
 .resource-finder { grid-template-rows: auto auto minmax(0,1fr); }
+.resource-finder { width: min(660px, 100%); }
 .finder-filters { padding: 16px; display: grid; grid-template-columns: minmax(0,1fr) 130px; gap: 10px; border-bottom: 1px solid #e0e7e4; }
 .finder-filters label { display: flex; align-items: center; gap: 8px; }
 .finder-filters input, .finder-filters select { min-width: 0; width: 100%; height: 40px; padding: 0 10px; border: 1px solid #bbcfc6; background: #fff; border-radius: 5px; color: #243b31; }

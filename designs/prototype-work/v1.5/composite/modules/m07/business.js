@@ -36,8 +36,9 @@
     return (snapshot.requests || []).filter(request => subjects.has(request.subjectId)).map(request => {
       const task = tasks.get(request.taskId) || null;
       const s = task?.status || request.status;
-      const stage = ({ pending: '待开始', assigned: '待承接', accepted: '已承接', in_progress: '办理中', completed: '已完成', awaiting: '待审批', confirmed: '已确认', rejected: '已驳回', cancelled: '已取消', correcting: '纠正中', corrected: '已纠正', blocked: '办理受阻', failed: '办理受阻', execution_failed: '执行失败', create_failed: '待办创建失败', submitting: '提交中', decision_saved: '审批已保存', task_creating: '待办创建中', rejected_by_gate: '申请未接收', supplement_requested: '待业务反馈', c017_blocked: '办理受阻', validating: '接收核对中', withdrawn: '已撤回' })[s] || '查看事项状态';
-      return { request, task, stage, live, route: task ? `task/${encodeURIComponent(task.id)}` : `request/${encodeURIComponent(request.id)}` };
+      const stage = ({ pending: '待开始', assigned: '待承接', accepted: '已承接', in_progress: '办理中', completed: '执行完成 · 效果待复核', awaiting: '待审批', confirmed: '已确认', rejected: '已驳回', cancelled: '已取消', correcting: '纠正中', corrected: '已纠正', blocked: '办理受阻', failed: '办理受阻', execution_failed: '执行失败', create_failed: '待办创建失败', submitting: '提交中', decision_saved: '审批已保存', task_creating: '待办创建中', rejected_by_gate: '申请未接收', supplement_requested: '待业务反馈', c017_blocked: '办理受阻', validating: '接收核对中', withdrawn: '已撤回' })[s] || '查看事项状态';
+      let effect=null;try{effect=JSON.parse(storage.getItem('ofw.v15.native-effects.v1')||'{}')[`${request.scenarioContext?.scenarioRunId||'portfolio'}:${task?.id||request.id}`];}catch(_){}
+      return { request, task, stage:effect?.outcome==='MET'?'效果已复核 · 已结项':stage, effect, live, route: task ? `task/${encodeURIComponent(task.id)}` : `request/${encodeURIComponent(request.id)}` };
     });
   }
   global.OFW_M07_BUSINESS = Object.freeze({ project, directory, entries, status, records, storageKey });

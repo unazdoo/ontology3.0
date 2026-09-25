@@ -21,6 +21,8 @@ export function initialState() {
     horizon: 90,
     mode: "risk",
     selectedId: null,
+    selectedBankId:null,
+    relationTypes:['financing'],
     rightTab: "query",
     panelOpen:false,
     view: "map",
@@ -86,6 +88,7 @@ export function createStore(storage = localStorage, onStorageError = () => {}) {
         filters: prior.filters,
         horizon: prior.horizon,
         selectedId: prior.selectedId,
+        selectedBankId:prior.selectedBankId,relationships:prior.relationships,relationTypes:clone(prior.relationTypes),
         activePlanId: prior.activePlanId,
       });
       history = history.slice(-30);
@@ -108,62 +111,7 @@ export function createStore(storage = localStorage, onStorageError = () => {}) {
   };
 }
 
-export function newTask({
-  title,
-  owner,
-  dueDate,
-  objectIds,
-  evidence,
-  plan,
-  existing = [],
-  type = "风险复核",
-}) {
-  if (!title.trim() || !owner.trim() || !validDate(dueDate))
-    throw new Error("请填写事项名称、负责人和有效到期日期");
-  if (dueDate < new Date().toISOString().slice(0, 10))
-    throw new Error("到期日期不能早于今天");
-  if (!objectIds.length || !evidence?.dataVersion || !evidence?.dataDigest)
-    throw new Error("缺少对象或固定依据");
-  const ids = [...new Set(objectIds)].sort();
-  if (
-    JSON.stringify(ids) !==
-    JSON.stringify([...new Set(evidence.objectIds || [])].sort())
-  )
-    throw new Error("事项对象与分析依据范围不一致");
-  if ((plan?.id || null) !== (evidence.planId || null))
-    throw new Error("事项方案与分析依据不一致");
-  const dedupe = JSON.stringify([
-    title.trim(),
-    ids,
-    evidence.dataDigest,
-    plan?.id || null,
-  ]);
-  if (
-    existing.some(
-      (task) =>
-        task.dedupe === dedupe &&
-        !["COMPLETED", "CANCELLED"].includes(task.status),
-    )
-  )
-    throw new Error("同一范围和依据下已存在未结束的同名事项");
-  const at = new Date().toISOString();
-  return {
-    id: crypto.randomUUID(),
-    title: title.trim(),
-    owner: owner.trim(),
-    dueDate,
-    objectIds: ids,
-    evidence: clone(evidence),
-    plan: plan ? clone(plan) : null,
-    type,
-    status: "OPEN",
-    createdAt: at,
-    updatedAt: at,
-    dedupe,
-    externalSideEffects: 0,
-    history: [{ from: null, to: "OPEN", at, note: "用户确认创建本地事项" }],
-  };
-}
+export {newTask} from '../composite/shared/task-record.js';
 
 export function validateRestoredState(state, data) {
   const known = new Set(data.enterprises.map((item) => item.id));
@@ -179,7 +127,9 @@ export function validateRestoredState(state, data) {
       ? [...new Set(copy.filters.boxIds.filter((id) => known.has(id)))]
       : [];
   if (copy.selectedId && !known.has(copy.selectedId)) copy.selectedId = null;
-  if (![30, 90, 180, 365].includes(copy.horizon)) copy.horizon = 90;
+  copy.relationTypes=Array.isArray(copy.relationTypes)?[...new Set(copy.relationTypes.filter(t=>['financing','credit','guarantee'].includes(t)))]:['financing'];
+  if(copy.selectedBankId&&!data.banks.some(b=>b.id===copy.selectedBankId))copy.selectedBankId=null;
+  if (!Number.isInteger(copy.horizon) || copy.horizon < 1 || copy.horizon > 3660) copy.horizon = 90;
   if (!["risk", "cost", "maturity", "exposure"].includes(copy.mode))
     copy.mode = "risk";
   if (!["query", "object", "scenario", "models"].includes(copy.rightTab))

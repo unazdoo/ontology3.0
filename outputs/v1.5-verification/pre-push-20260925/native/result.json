@@ -1,0 +1,94 @@
+{
+  "status": "passed",
+  "checks": [
+    "01-data-source-contract-fields",
+    "02-data-pipeline-and-published-run",
+    "03-ontology-owned-rule-and-validation",
+    "04-ontology-rule-reaches-object-map",
+    "05-draft-change-preserves-published-ontology",
+    "06-authoritative-group-question",
+    "07-query-detail-and-evidence",
+    "08-query-chart-modes-and-export",
+    "09-question-controlled-action-receipt",
+    "10-question-to-decision-original-request",
+    "11-formal-report-details",
+    "11b-report-companion-returns-fixed-evidence",
+    "11c-report-agent-verification-completes",
+    "12-agent-input-result-and-evidence",
+    "13-report-generation-agent-return-and-review",
+    "14-reviewed-report-publishes-new-version"
+  ],
+  "errors": [],
+  "rule": {
+    "id": "6c555047-e353-46c0-b70e-c5e7a4b4e931",
+    "ontologyId": "ONT-GROUP-FINANCING-OPTIMIZATION",
+    "draftId": "DRAFT-V14-OPERATIONS-S001",
+    "draftRevision": 2,
+    "baseVersionId": "semantic-MSVJM48O-VJC6",
+    "ruleId": "RULE-OPS-FINANCING-PREMIUM",
+    "ruleName": "融资成本偏离预警",
+    "ruleFingerprint": "[\"DRAFT-V14-OPERATIONS-S001\",2,{\"id\":\"RULE-OPS-FINANCING-PREMIUM\",\"name\":\"融资成本偏离预警\",\"code\":\"OPS-S001\",\"type\":\"Rule\",\"objectId\":\"OBJ-FINANCING-ENTITY\",\"appliesTo\":\"融资主体\",\"metricIds\":[\"MET-OPS-costPremium\"],\"dependency\":\"融资成本偏离\",\"condition\":\"融资成本偏离 > 25 bp\",\"definition\":\"融资成本偏离预警；依赖本体内态势测算指标，模拟快照单独验证，不替代既有正式规则。\",\"validity\":\"修订草稿，尚未正式生效\",\"testSample\":\"21家企业完整模拟快照\",\"bankRanking\":\"按当前范围借款本金降序，担保与授信不重复计入\",\"evidence\":\"规则精确内容、所属本体与草稿、数据指纹、观察窗口和企业对象集\",\"businessBasis\":\"unknown\",\"decisionRefs\":[],\"owner\":\"本体管理\",\"operationsRuleKey\":\"costPremium\",\"publicationState\":\"Draft\",\"lifecycleState\":\"Draft\",\"status\":\"Draft\",\"effectiveFrom\":null,\"effectiveTo\":null,\"lastChangedAt\":\"2026-09-25T00:02:03.617Z\"},[{\"id\":\"MET-OPS-balance\",\"name\":\"存续融资余额（态势测算）\",\"type\":\"Metric\",\"owner\":\"本体管理\",\"unit\":\"百万元\",\"sourceObjectId\":\"OBJ-FINANCING-ENTITY\",\"subjectObjectId\":\"OBJ-FINANCING-ENTITY\",\"time\":\"模拟快照截至 2025-12-31；展望窗口由验证选择\",\"scope\":\"经营态势模拟对象集，不替换当前正式版本\",\"calculation\":\"Σ 当期存续借款本金 (Loan ID 唯一去重)\",\"definition\":\"起息日不晚于观察日、到期日晚于观察日的人民币借款；未用授信和担保不重复计入\",\"zeroHandling\":\"缺失保持缺失；零分母不返回0；不跨主体抵销\",\"dependencyIds\":[],\"operationsDefinitionId\":\"balance\",\"operationsInputs\":[\"loan.principal\",\"loan.startDate\",\"loan.maturityDate\"],\"sourceSnapshotVersion\":\"DATA-V14-20251231-DEMO-1\",\"businessBasis\":\"unknown\",\"publicationState\":\"Draft\",\"lifecycleState\":\"Draft\",\"status\":\"Draft\",\"effectiveFrom\":null,\"effectiveTo\":null,\"lastChangedAt\":\"2026-09-25T00:02:03.617Z\"},{\"id\":\"MET-OPS-weightedCost\",\"name\":\"余额加权融资成本（态势测算）\",\"type\":\"Metric\",\"owner\":\"本体管理\",\"unit\":\"%\",\"sourceObjectId\":\"OBJ-FINANCING-ENTITY\",\"subjectObjectId\":\"OBJ-FINANCING-ENTITY\",\"time\":\"模拟快照截至 2025-12-31；展望窗口由验证选择\",\"scope\":\"经营态势模拟对象集，不替换当前正式版本\",\"calculation\":\"Σ(存续本金 × 执行年利率) / Σ存续本金\",\"definition\":\"当期存续、同币种借款；按本金加权，不取企业利率简单平均\",\"zeroHandling\":\"缺失保持缺失；零分母不返回0；不跨主体抵销\",\"dependencyIds\":[],\"operationsDefinitionId\":\"weightedCost\",\"operationsInputs\":[\"loan.principal\",\"loan.rate\"],\"sourceSnapshotVersion\":\"DATA-V14-20251231-DEMO-1\",\"businessBasis\":\"unknown\",\"publicationState\":\"Draft\",\"lifecycleState\":\"Draft\",\"status\":\"Draft\",\"effectiveFrom\":null,\"effectiveTo\":null,\"lastChangedAt\":\"2026-09-25T00:02:03.617Z\"},{\"id\":\"MET-OPS-exposure\",\"name\":\"银行借款敞口（态势测算）\",\"type\":\"Metric\",\"owner\":\"本体管理\",\"unit\":\"百万元\",\"sourceObjectId\":\"OBJ-FINANCING-ENTITY\",\"subjectObjectId\":\"OBJ-FINANCING-ENTITY\",\"time\":\"模拟快照截至 2025-12-31；展望窗口由验证选择\",\"scope\":\"经营态势模拟对象集，不替换当前正式版本\",\"calculation\":\"Σ 当前对象集在所选银行的存续借款本金\",\"definition\":\"按唯一 Loan ID 去重；贷款和授信不相加，不叠加担保金额\",\"zeroHandling\":\"缺失保持缺失；零分母不返回0；不跨主体抵销\",\"dependencyIds\":[],\"operationsDefinitionId\":\"exposure\",\"operationsInputs\":[\"loan.bankId\",\"loan.principal\"],\"sourceSnapshotVersion\":\"DATA-V14-20251231-DEMO-1\",\"businessBasis\":\"unknown\",\"publicationState\":\"Draft\",\"lifecycleState\":\"Draft\",\"status\":\"Draft\",\"effectiveFrom\":null,\"effectiveTo\":null,\"lastChangedAt\":\"2026-09-25T00:02:03.617Z\"},{\"id\":\"MET-OPS-costPremium\",\"name\":\"融资成本偏离（态势测算）\",\"type\":\"Metric\",\"owner\":\"本体管理\",\"unit\":\"bp\",\"sourceObjectId\":\"OBJ-FINANCING-ENTITY\",\"subjectObjectId\":\"OBJ-FINANCING-ENTITY\",\"time\":\"模拟快照截至 2025-12-31；展望窗口由验证选择\",\"scope\":\"经营态势模拟对象集，不替换当前正式版本\",\"calculation\":\"(企业加权成本 − 同产业演示基准利率) × 100\",\"definition\":\"产业基准为明示演示参数，非市场报价；未做期限与信用评级匹配\",\"zeroHandling\":\"缺失保持缺失；零分母不返回0；不跨主体抵销\",\"dependencyIds\":[\"MET-OPS-weightedCost\"],\"operationsDefinitionId\":\"costPremium\",\"operationsInputs\":[\"weightedCost\",\"enterprise.benchmarkRate\"],\"sourceSnapshotVersion\":\"DATA-V14-20251231-DEMO-1\",\"businessBasis\":\"unknown\",\"publicationState\":\"Draft\",\"lifecycleState\":\"Draft\",\"status\":\"Draft\",\"effectiveFrom\":null,\"effectiveTo\":null,\"lastChangedAt\":\"2026-09-25T00:02:03.617Z\"}]]",
+    "condition": "融资成本偏离 > 25 bp",
+    "dataVersion": "DATA-V14-20251231-DEMO-1",
+    "dataDigest": "6594b6e72a6cc1a636766591e3a80675f5304247641645fb5893ea3232fe7613",
+    "ontologyVersion": "ONT-ENTERPRISE-FINANCE-RISK-1.4",
+    "asOf": "2025-12-31",
+    "horizon": 90,
+    "threshold": 25,
+    "objectIds": [
+      "ENT-005",
+      "ENT-006",
+      "ENT-012",
+      "ENT-013",
+      "ENT-014",
+      "ENT-019",
+      "ENT-021"
+    ],
+    "rows": [
+      {
+        "id": "ENT-005",
+        "name": "风电测试公司05",
+        "city": "张家口",
+        "value": "27.00 bp"
+      },
+      {
+        "id": "ENT-006",
+        "name": "风电测试公司06",
+        "city": "白城",
+        "value": "44.00 bp"
+      },
+      {
+        "id": "ENT-012",
+        "name": "风电测试公司12",
+        "city": "大同",
+        "value": "27.00 bp"
+      },
+      {
+        "id": "ENT-013",
+        "name": "风电测试公司13",
+        "city": "莆田",
+        "value": "44.00 bp"
+      },
+      {
+        "id": "ENT-014",
+        "name": "风电测试公司14",
+        "city": "阳江",
+        "value": "61.00 bp"
+      },
+      {
+        "id": "ENT-019",
+        "name": "环保测试公司3",
+        "city": "郑州",
+        "value": "39.00 bp"
+      },
+      {
+        "id": "ENT-021",
+        "name": "核电测试公司1",
+        "city": "防城港",
+        "value": "128.00 bp"
+      }
+    ],
+    "resultKind": "SIMULATION",
+    "createdAt": "2026-09-25T00:02:04.801Z"
+  }
+}

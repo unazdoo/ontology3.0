@@ -1,0 +1,10 @@
+import {escapeModelText as esc,modelMoney,modelNumber} from './model-result-view.js';
+export function financingProposals(run,ids=null){
+  const declared=run?.emittedOutput?.fields.find(f=>f.source==='proposalIds');
+  const allowed=declared?new Set(run.emittedOutput.rows.flatMap(r=>r[declared.name]||[])):null;
+  return (run?.output?.rows||[]).filter(r=>!ids||ids.includes(r.enterpriseId)).flatMap(r=>r.proposals||[]).filter(p=>!allowed||allowed.has(p.id));
+}
+export function financingProposalMarkup(proposal,{actions='',compact=false}={}){
+  const p=proposal,b=p.basis;
+  return `<section class="financing-proposal" data-proposal-id="${esc(p.id)}"><header><span>AI 推荐 · 待研判</span><strong>${esc(p.companyName)} · ${esc(p.loanId)}</strong></header><p>${esc(p.actionLabel)}</p><dl><dt>拟置换金额</dt><dd>${modelMoney(p.amountYuan)}（折人民币）</dd><dt>原融资币种</dt><dd>${esc(p.currency)}</dd><dt>当前 / 参考利率</dt><dd>${modelNumber(p.currentRate)}% → ${modelNumber(p.proposedRate)}%</dd><dt>降息空间</dt><dd>${modelNumber(p.savingBps)} bp</dd><dt>窗口内利息空间</dt><dd>${modelMoney(p.interestSavingYuan)}</dd><dt>费用 / 净节省额</dt><dd>费用未取得，净节省额待核实</dd></dl><p><b>${b.level==='RATING_BANK_TENOR'?'同评级银行相近期限匹配':'板块均值兜底'}</b> · ${esc(b.reason)}</p><p>${b.sampleCount} 笔 / ${b.borrowerCount} 家企业 · ${esc(b.currency)} · 原台账板块 ${esc(b.sector)} · 截至 ${esc(b.dataAsOf)}</p>${compact?'':`<details><summary>利率样本与原借据来源</summary><p>样本示例：${b.sampleIds.map(esc).join('、')}。完整样本集合 ${esc(b.sampleSetId)} 随原运行保留。</p><p>可比利率资产 ${esc(b.assetRef?.version)} · ${esc(b.assetRef?.sourceSheet)} · 示例行 ${b.sourceRows.map(esc).join('、')}</p><p>原借据 ${esc(p.contractSource?.sourceSheet)} · 第 ${esc(p.contractSource?.row)} 行 · ${esc(p.contractSource?.version)}</p><p class="studio-code-ref">${esc(p.contractSource?.sourceSha256)}</p></details><details><summary>办理前提</summary><ul>${p.prerequisites.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><p>${esc(p.timing)}</p></details>`}<p class="financing-proposal-boundary">按可维护匹配算法生成；参考利率不是已取得的银行报价，尚未批准或执行。</p>${actions}</section>`;
+}

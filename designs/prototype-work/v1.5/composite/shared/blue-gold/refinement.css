@@ -1,0 +1,27 @@
+/* Product chrome: navigation owns wayfinding; each page owns its business actions. */
+html[data-ofw-theme="blue-gold"]{--modern-paper:transparent!important;--modern-card:var(--glass-panel)!important;--modern-ink:var(--glass-ink)!important;--modern-muted:#b3c6d9!important;--modern-faint:#96aec7!important;--modern-grid:var(--glass-line)!important;--modern-blue:#a9d3ff!important}
+@keyframes neural-signal{0%{stroke-dashoffset:1;opacity:0}12%,76%{opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes neural-node{0%,100%{opacity:.45}30%{opacity:1;fill:#efffff}55%{opacity:.7;fill:#e7c696}}
+/* Legacy page chrome is redundant inside the platform. */
+html[data-ofw-embedded-module="report"] .module-stage>.module-bar,
+html[data-ofw-embedded-module="dashboard"] .module-stage>.module-bar{display:none!important}
+html[data-ofw-embedded-module="report"] .module-stage,
+html[data-ofw-embedded-module="dashboard"] .module-stage{grid-template-rows:minmax(0,1fr)!important}
+/* Empty, loading, metrics and auxiliary controls use the same readable surfaces. */
+html[data-ofw-theme="blue-gold"] :is(.ui-empty-state,.empty,.empty-panel,.empty-content,.loading-state,.modern-kpi-grid>button,.context-box,.view-card,.wizard,.wizard-main,.verification-agent-card,.verification-summary,.reader-chat,.ui-tooltip,.ui-popover){background:var(--glass-panel)!important;color:var(--glass-ink)!important;border-color:var(--glass-line)!important}
+html[data-ofw-theme="blue-gold"] :is(.modern-kpi-grid>button>span,.ui-empty-state p,.ui-empty-state__copy p,.modern-answer-meta,.modern-answer-warning){color:#b5c9dd!important}
+html[data-ofw-theme="blue-gold"] :is(.ui-tabs,.tabs,.modern-detail-tabs):after{background:none!important}
+html[data-ofw-theme="blue-gold"] .modern-user-message>span{background:#274665!important;color:#eef6ff!important;border:1px solid #a9cbed35}
+html[data-ofw-theme="blue-gold"] .ui-empty-state{border-style:solid;box-shadow:inset 0 1px #dbeaff0d}
+html[data-ofw-theme="blue-gold"] .history-list>button{background:#17334ee6!important;border:1px solid var(--glass-line)!important;color:var(--glass-ink)!important}
+html[data-ofw-theme="blue-gold"] .history-list>button.selected{background:#234662!important;border-color:#d9be8750!important}
+/* Dark geographic canvas, with original object and relationship signal colors. */
+html[data-ofw-theme="blue-gold"] #global-map{background:#08182c!important;color:#dfedfa!important}
+html[data-ofw-theme="blue-gold"] :is(.map-scope-label,.map-controls,.map-legend,.map-date-label,.map-footer .button,.map-filter-actions .button){background:#122d47ed!important;color:#d3e5f5!important;border-color:#b0d0ed40!important}
+html[data-ofw-theme="blue-gold"] .map-scope-label :is(span,button,.badge),html[data-ofw-theme="blue-gold"] .map-controls button{color:#d3e5f5!important;background:transparent!important;border-color:#b0d0ed40!important}
+html[data-ofw-theme="blue-gold"] .maplibregl-ctrl-attrib{background:#10243cee!important;color:#b0c9dd!important}html[data-ofw-theme="blue-gold"] .maplibregl-ctrl-attrib a{color:#b0c9dd!important}
+html[data-ofw-theme="blue-gold"] .maplibregl-popup-content{background:#163751!important;color:#e3f1fb!important;border:1px solid #b8d6ed50;box-shadow:0 8px 24px #0006;border-radius:6px}
+html[data-ofw-theme="blue-gold"] .selected-map-label{color:#d9edf8!important}
+html[data-ofw-theme="blue-gold"] .maplibregl-popup-anchor-bottom .maplibregl-popup-tip{border-top-color:#163751!important}
+html[data-ofw-theme="blue-gold"] .maplibregl-popup-anchor-top .maplibregl-popup-tip{border-bottom-color:#163751!important}
+html[data-ofw-page-hidden="true"] :is(.brain-mesh-signal,.brain-mesh-node,.path-flow,.core-scan,.core-pulse){animation-play-state:paused!important}

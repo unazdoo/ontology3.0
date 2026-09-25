@@ -697,7 +697,7 @@
         if (value) value.textContent = value.textContent.replace(/S00[1-5]\s*[·｜|]?\s*/g, "").trim();
       });
       doc.querySelectorAll(".published-ontology-card:not([data-ofw-native-model-contract])").forEach((card) => {
-        const title = card.querySelector("h2");
+        const title = card.querySelector(".ontology-card-open") || card.querySelector("h2");
         if (!title) return;
         const raw = title.textContent.trim();
         const stripped = raw.replace(/^S00[1-5]\s*[·｜|]?\s*/, "");

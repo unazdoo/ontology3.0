@@ -5,6 +5,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         index: new URL("./index.html", import.meta.url).pathname,
+        temporal: new URL("./temporal.html",import.meta.url).pathname,
         workbench: new URL("./workbench.html", import.meta.url).pathname,
       },
     },

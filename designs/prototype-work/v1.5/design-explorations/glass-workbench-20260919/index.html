@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="智财问策大屏视觉选型：三种风格、四个关键页面，独立交互预览。">
+  <title>智财问策 · 玻璃工作台 · 三种参考方案</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="layout.css">
+  <link rel="stylesheet" href="glass.css">
+  <script src="data.js" defer></script>
+  <script src="views.js" defer></script>
+  <script src="app.js" defer></script>
+  <script src="motion.js" defer></script>
+</head>
+<body>
+  <div id="glass-scene" aria-hidden="true"><div class="scene-horizon"></div><div class="scene-orb one"></div><div class="scene-orb two"></div><div class="scene-lines"></div><div class="scene-grain"></div></div>
+  <header id="review-bar" aria-label="视觉方案评审"></header>
+  <div id="app"></div>
+  <button id="return-review" type="button" hidden>返回风格评审</button>
+  <dialog id="drawer" aria-labelledby="drawer-title"></dialog>
+  <div id="context-menu" hidden></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

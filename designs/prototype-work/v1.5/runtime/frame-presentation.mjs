@@ -19,6 +19,7 @@ export async function presentFrame(html, moduleId) {
   const css = await readFile(new URL('../composite/shared/frame-presentation.css', import.meta.url), 'utf8');
   // The mode and its inline stylesheet are parsed before any business UI can paint.
   // Standalone pages do not acquire the embedding attribute and retain their navigation.
-  const presentation = `<script>if(window.parent!==window)document.documentElement.dataset.ofwEmbeddedModule=${JSON.stringify(moduleId)};</script><style id="ofw-v14-frame-presentation">${css}</style>`;
+  const theme=await readFile(new URL('../composite/shared/blue-gold/tokens.css',import.meta.url),'utf8');
+  const presentation = `<script>if(window.parent!==window){document.documentElement.dataset.ofwEmbeddedModule=${JSON.stringify(moduleId)};document.documentElement.dataset.ofwTheme="blue-gold";}</script><style id="ofw-v14-frame-presentation">${css}</style><style id="ofw-glass-initial">${theme}</style><link id="ofw-blue-gold-theme" rel="stylesheet" href="/designs/prototype-work/v1.5/composite/shared/blue-gold/index.css"><script src="/designs/prototype-work/v1.5/composite/shared/blue-gold/presentation.js" defer></script>`;
   return html.replace(/<head\b[^>]*>/i, head => head + presentation);
 }
